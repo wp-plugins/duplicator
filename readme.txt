@@ -12,17 +12,11 @@ Duplicate, clone, backup and transfer an entire site from one location to anothe
 
 == Description ==
 
-The Duplicator plugin is designed to give Wordpress Administrators the ability to migrate a site
-from one location to another location in 3 easy steps (create, download, install).  
-The plugin also serves as a simple backup utility.  This tool is great for pulling a production
-site down onto your local machine for testing and validation.  It also works great for developing 
-locally and then pushing up to a production server.  No need to change all your settings and re-run
-import/export scripts.
+The Duplicator plugin is designed to give Wordpress Administrators the ability to migrate a site from one location to another location in 3 easy steps create, download, install.  The plugin also serves as a simple backup utility.  
 
-If you need to clone, duplicate or template a WordPress application, then this plugin is ideal for
-for mass site generation.  Niche site generation is a breeze with the Duplicator and moving your
-WordPress site has never been easier.  Stay tuned for other cool features to help automate your
-Wordpress management.
+This tool is great for pulling a production site down onto your local machine for testing and validation. It also works great for developing locally and then pushing up to a production server.  No need to change all your settings and re-run import/export scripts.
+
+If you need to clone, duplicate or template a WordPress application, then this plugin is ideal for for mass site generation.  Niche site generation is a breeze with the Duplicator and moving your WordPress site has never been easier.  Stay tuned for other cool features to help automate your Wordpress management.
 
 A quick overview:
 http://www.youtube.com/watch?v=nyHNV6D2w2c
@@ -49,16 +43,16 @@ Turn on the logging (Options -> Package -> Logging). This will give you details 
 
 = When I reinstall my package I get errors on the site. =
 
-Be sure to read through all the post install notes, carefully and follow the instructions.
+Be sure to read through all the post install notes carefully and follow all instructions.
 
-= When can I get more information and support for this plugin? =
+= Where can I get more information and support for this plugin? =
 
 Please visit our knowledgebase at http://lifeinthegrid.com/support 
 
 == Screenshots ==
  
 1. The main interface used to create and manage packages
-2. The options dialog to configure and setup the Duplicator
+2. The options dialog is used to configure and setup the Duplicator
  
 
 == Changelog ==
