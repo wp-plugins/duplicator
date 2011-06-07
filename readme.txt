@@ -42,8 +42,18 @@ For complete details see:
 The Duplicator requires php 5.2 and WordPress 3.1 or higher.
 
 == Frequently Asked Questions ==
-Please visit our knowledgebase for the most recent FAQs
-[lifeinthegrid.com/support/]
+
+= I'm having trouble creating the package what should I do? =
+
+Turn on the logging (Options -> Package -> Logging). This will give you details as to what is happening.
+
+= When I reinstall my package I get errors on the site. =
+
+Be sure to read through all the post install notes, carefully and follow the instructions.
+
+= When can I get more information and support for this plugin? =
+
+Please visit our knowledgebase at http://lifeinthegrid.com/support 
 
 == Screenshots ==
  
@@ -51,7 +61,7 @@ Main Interface
  screenshot-1.jpg
  
 Options Dialog
- screenshot-1.jpg
+ screenshot-2.jpg
 
 == Changelog ==
 
