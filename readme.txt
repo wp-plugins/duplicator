@@ -57,11 +57,9 @@ Please visit our knowledgebase at http://lifeinthegrid.com/support
 
 == Screenshots ==
  
-Main Interface
- screenshot-1.jpg
+1. The main interface used to create and manage packages
+2. The options dialog to configure and setup the Duplicator
  
-Options Dialog
- screenshot-2.jpg
 
 == Changelog ==
 
