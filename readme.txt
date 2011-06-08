@@ -18,6 +18,8 @@ This tool is great for pulling a production site down onto your local machine fo
 
 If you need to clone, duplicate or template a WordPress application, then this plugin is ideal for for mass site generation.  Niche site generation is a breeze with the Duplicator and moving your WordPress site has never been easier.  Stay tuned for other cool features to help automate your Wordpress management.
 
+NOTE: This project is currently in Beta, the underlying logic to perform all these migration tasks is quite involved. It's impossible to know how each system is setup, this why your feedback is very important to us.  Thanks for helping us to make WordPress the best blogging platform in the world.
+
 A quick overview:
 http://www.youtube.com/watch?v=nyHNV6D2w2c
 
