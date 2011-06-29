@@ -60,12 +60,6 @@ Please visit our knowledgebase at http://lifeinthegrid.com/support
  
 == Changelog ==
 
-= 0.1.0 Beta =
-First Beta release of the Duplicator Plugin.
-Many thanks go out to Gaurav Aggarwal for starting the Backup and Move Plugin.
-This project is a fork of the original  Backup and Move Plugin authored by Gaurav Aggarwal
-See http://www.logiclord.com/backup-and-move/ for more details.
-
 = 0.2.0 Beta =
 <li>Added: Improved error handling around RecursiveDirectoryIterator</li>
 <li>Added: Support for SQL character encode versions</li>
@@ -75,6 +69,11 @@ See http://www.logiclord.com/backup-and-move/ for more details.
 <li>Fixed: Better regular expressions for wp-config replacement parameters</li>
 <li>Fixed: Better notice message on install screen</li>
 
+= 0.1.0 Beta =
+First Beta release of the Duplicator Plugin.
+Many thanks go out to Gaurav Aggarwal for starting the Backup and Move Plugin.
+This project is a fork of the original  Backup and Move Plugin authored by Gaurav Aggarwal
+See http://www.logiclord.com/backup-and-move/ for more details.
 
 
 
