@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.1
+Version: 0.2.0
 Author: Cory Lamle
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -34,10 +34,12 @@ Contributors:
 
 //==============================================================================
 //Update per relase
-define('DUPLICATOR_VERSION',   '0.1');
-define('DUPLICATOR_DBVERSION', '0.1');
-define("DUPLICATOR_HELPLINK",  "http://lifeinthegrid.com/support/knowledgebase.php?category=4");
-define("DUPLICATOR_GIVELINK",  "http://lifeinthegrid.com/partner/");
+define('DUPLICATOR_VERSION',   		'0.2.0');
+define('DUPLICATOR_DBVERSION', 		'0.2.0');
+define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?category=4");
+define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
+define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
+define("DUPLICATOR_DB_ICONV_OUT",	"ISO-8859-1//TRANSLIT"); 
 //==============================================================================
 
 if (is_admin() == true) {
@@ -47,7 +49,6 @@ if (is_admin() == true) {
 	$GLOBALS['duplicator_bypass-array'] 	  = count($GLOBALS['duplicator_bypass-array']) ? $GLOBALS['duplicator_bypass-array'] : null;
 	$GLOBALS['duplicator_opts']['max_time']   = is_numeric($GLOBALS['duplicator_opts']['max_time']) ? $GLOBALS['duplicator_opts']['max_time']   : 300;
 	$GLOBALS['duplicator_opts']['max_memory'] = isset($GLOBALS['duplicator_opts']['max_memory'])    ? $GLOBALS['duplicator_opts']['max_memory'] : "128M";
-	
 
 	/* Paths should ALWAYS read "/"
 		uni: /home/path/file.txt
@@ -111,7 +112,8 @@ if (is_admin() == true) {
 				'max_memory'	=>$GLOBALS['duplicator_opts']['max_memory'],
 				'dir_bypass'	=>'',
 				'log_level'		=>'0',
-				'log_paneheight'=>'200');
+				'log_paneheight'=>'200',
+				'dbiconv'		=>'1');
 				
 			update_option('duplicator_options', serialize($duplicator_opts));
 		}
@@ -125,7 +127,7 @@ if (is_admin() == true) {
 	}
 	
 	//ACTIONS
-	add_action( 'admin_init', 						'duplicator_init' );
+	add_action('admin_init', 						'duplicator_init' );
 	add_action('admin_menu', 						'duplicator_menu');
 	add_action('wp_ajax_duplicator_overwrite',		'duplicator_overwrite');
 	add_action('wp_ajax_duplicator_system_check',	'duplicator_system_check');

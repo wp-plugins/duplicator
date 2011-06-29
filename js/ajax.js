@@ -94,6 +94,7 @@ jQuery(document).ready( function($) {
 		var q;
 		var reload 	   = (reload === false) ? false : true;
 		var email_me   = $('#email-me').is(':checked') ? 1 : 0;
+		var dbiconv    = $('#dbiconv').is(':checked') ? 1 : 0;
 		var log_level  = $("select#log_level").val() ? $("select#log_level").val() : 0;
 		var dir_bypass = $("textarea#dir_bypass").val();
 		
@@ -108,7 +109,8 @@ jQuery(document).ready( function($) {
 		q += "dbname=" 		 +  $("input#dbname").val() + "&";
 		q += "dbuser=" 		 +  $("input#dbuser").val() + "&";
 		q += "nurl="   		 +  $("input#nurl").val() + "&";
-		q += "email-me="   	 +  email_me    + "&";
+		q += "dbiconv="   	 +  dbiconv    + "&";
+		q += "email-me="   	 +  email_me   + "&";
 		q += "max_time="   	 +  $("input#max_time").val() + "&";
 		q += "max_memory="   +  $("input#max_memory").val() + "&";
 		q += "dir_bypass="   +  $("textarea#dir_bypass").val() + "&";
@@ -222,7 +224,7 @@ jQuery(document).ready( function($) {
 					var validate_msg = "Create this new package?\n\n"  + msgDetails;
 					if (confirm(validate_msg)) {
 						Duplicator.setStatus("This may take several minutes. (compressing "  + size + ")", 'progress');
-						Duplicator.createPackage($("input[name=package_name]").val(),$("#email-me").is(':checked'));
+						Duplicator.createPackage($("input[name=package_name]").val(), $("#email-me").is(':checked'));
 					} else {
 						Duplicator.Log("Action canceled, logging complete.<br/>\n", true);
 					}

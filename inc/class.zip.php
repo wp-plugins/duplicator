@@ -31,22 +31,26 @@ class Duplicator_Zip {
 	}
 	  
 	function zip($folder, $parent=null) {
-		$full_path = $this->root.$parent . $folder;
-		$zip_path  = $parent . $folder;
-		$this->zip->addEmptyDir($zip_path);
-		$dir = new DirectoryIterator($full_path);
-		foreach($dir as $file) {
-			if(!$file->isDot()) {
-				$filename = $file->getFilename();
-				if(!in_array($filename, $this->ignored_names)) {
-					if($file->isDir()) {
-						$this->zip($filename, $zip_path.'/');
-					}
-					else {
-						$this->zip->addFile($full_path.'/'.$filename, $zip_path.'/'.$filename);
+		try {
+			$full_path = $this->root.$parent . $folder;
+			$zip_path  = $parent . $folder;
+			$this->zip->addEmptyDir($zip_path);
+			$dir = new DirectoryIterator($full_path);
+			foreach($dir as $file) {
+				if(!$file->isDot()) {
+					$filename = $file->getFilename();
+					if(!in_array($filename, $this->ignored_names)) {
+						if($file->isDir()) {
+							$this->zip($filename, $zip_path.'/');
+						}
+						else {
+							$this->zip->addFile($full_path.'/'.$filename, $zip_path.'/'.$filename);
+						}
 					}
 				}
 			}
+		} catch(Exception $e) {
+			duplicator_log("log:class.zip=>runtime error: " . $e);
 		}
 	}
 }

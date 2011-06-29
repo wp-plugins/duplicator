@@ -109,6 +109,7 @@ $current_url = isset($_POST['current_url'])	? trim($_POST['current_url'])	: null
 $new_url 	 = isset($_POST['nurl'])		? trim($_POST['nurl'])			: null;
 $dbmake 	 = (isset($_POST['dbmake'])  && $_POST['dbmake'] ==  '1')  ? true : false;
 $dbclean 	 = (isset($_POST['dbclean']) && $_POST['dbclean'] == '1')  ? true : false;
+$dbcharvalid = (isset($_POST['dbcharvalid']) && $_POST['dbcharvalid'] == '1')  ? true : false;
 $new_url	 = rtrim($new_url, '/'); // Remove all trailing slashes
 
 //CONSTANTS
@@ -147,7 +148,7 @@ function table_count($dbname) {
  */
 function full_copy( $source, $target ) {
 	if ( is_dir( $source ) ) {
-		@mkdir( $target, '0755' );
+		@mkdir( $target, 0755, true );
 		$d = dir( $source );
 		while ( FALSE !== ( $entry = $d->read() ) ) {
 			if ( $entry == '.' || $entry == '..' ) {
@@ -159,7 +160,7 @@ function full_copy( $source, $target ) {
 				continue;
 			}
 			@copy( $Entry, $target . '/' . $entry );
-			//@chmod("{$target}/{$entry}", '0644');
+			@chmod("{$target}/{$entry}", 0644);
 		}
 		$d->close();
 	} else {
@@ -186,7 +187,7 @@ function delete_all($directory, $empty = false) {
 	}
 	
 	if($empty == true) {
-		if(!rmdir($directory)) {
+		if(!@rmdir($directory)) {
 			return false;
 		}
 	}	
@@ -272,11 +273,13 @@ if ($action == 'dbconnect-test') {
 	<style type="text/css">
 		body {font-family:Verdana, Geneva, sans-serif;}
 		body,td,th {font-size: 16px;color: #000;}
-		h1 {font: italic normal normal 26px/20px Georgia,"Times New Roman","Bitstream Charter",Times,serif; margin-top:15px}
+		h1 {font: italic normal normal 24px/18px Georgia,"Times New Roman","Bitstream Charter",Times,serif; margin-top:12px}
 		h3 {margin:4px; padding:2px}
 		input[type=text] { width:475px}
+		a {color:navy}
+		a:hover{color:gray}
 
-		div#content {	border:1px solid #CDCDCD;  width:750px; height:760px; margin:auto; margin-top:18px;}
+		div#content {	border:1px solid #CDCDCD;  width:750px; height:740px; margin:auto; margin-top:18px;}
 		div#content-inner {padding:10px 30px;}
 		input.readonly {background-color:#efefef; border:1px solid silver; padding:2px;}
 		
@@ -284,8 +287,7 @@ if ($action == 'dbconnect-test') {
 		div.error {font-size:16px; padding-top:2px;line-height:22px; }
 		
 		table.table-inputs td{white-space:nowrap;}
-		a {color:navy}
-		a:hover{color:gray}
+
 		div.div-buttons {text-align:right; padding:10px 0px}
 		input.button {font-size:14px; padding:5px}
 		div.final-msg{height:370px;overflow-y:scroll;border:2px solid #CDCDCD; padding:8px;font-size:12px;line-height:22px !important;background-color:#efefef;}
@@ -501,10 +503,11 @@ if ($action == 'dbconnect-test') {
 		
 		//WP-CONFIG
 		$config_file = @file_get_contents('wp-config.php', true);
-		$patterns = array ("/'DB_NAME',\s*'((\w)*)'/",
-						   "/'DB_USER',\s*'((\w)*)'/",
-						   "/'DB_PASSWORD',\s*'((\w)*)'/",
-						   "/'DB_HOST',\s*'((\w)*)'/");
+		$patterns = array ("/'DB_NAME',\s*'.*?'/",
+						   "/'DB_USER',\s*'.*?'/",
+						   "/'DB_PASSWORD',\s*'.*?'/",
+						   "/'DB_HOST',\s*'.*?'/");
+						   
 		$replace = array ("'DB_NAME', "		. '\''.$dbname.'\'',
 						  "'DB_USER', "		. '\''.$dbuser.'\'',
 						  "'DB_PASSWORD', " . '\''.$dbpassword.'\'',
@@ -514,6 +517,13 @@ if ($action == 'dbconnect-test') {
 		
 		//DATABASE SCRIPT
 		$dbconfig_file = @file_get_contents('database.sql', true);
+		
+		//Complex Subject See: http://webcollab.sourceforge.net/unicode.html
+		//reject overly long 3 byte sequences and UTF-16 surrogates and replace with a ' '.
+		if ($dbcharvalid) {
+			$dbconfig_file = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'. '|\xED[\xA0-\xBF][\x80-\xBF]/S',' ', $dbconfig_file );
+		}
+		
 		$primary_list  = array($current_url);
 		if (count($GLOBALS["SCRUB_LIST"]) > 0) {
 			for($i = 0; $i < count($GLOBALS["SCRUB_LIST"]); ++$i) {
@@ -701,10 +711,10 @@ HTACCESS;
 			<input type="hidden" name="action" value="process" />
 			<fieldset>
 				<legend>Settings</legend>
-				<table width="100%" border="0" cellspacing="5" cellpadding="5" class="table-inputs">
+				<table width="100%" border="0" cellspacing="3" cellpadding="3" class="table-inputs">
 				<tr>
 					<td>Package Name</td>
-					<td><input type="text" name="package_name"  value="20110607_DuplicatorPlugin.zip" readonly="true" class="readonly" /></td>
+					<td><input type="text" name="package_name"  value="20110629_DuplicatorPlugin.zip" readonly="true" class="readonly" /></td>
 				</tr>
 				<tr valign="top">
 					<td style="width:130px">Package URL</td>
@@ -732,13 +742,14 @@ HTACCESS;
 			
 			<fieldset>
 				<legend>Database</legend>
-				<table width="100%" border="0" cellspacing="5" cellpadding="5"  class="table-inputs">
+				<table width="100%" border="0" cellspacing="3" cellpadding="3"  class="table-inputs">
 					<tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="localhost" /></td></tr>
 					<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="demo_wp-test" /></td></tr>
 					<tr><td colspan="2">
 						<div style="margin:-10px 150px; line-height:24px; width:100%; font-size:12px">
 							<input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Allow Database Creation</label> <br/>
-							<input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Allow Table Removal</label>
+							<input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Allow Table Removal</label> <br/>
+							<input type="checkbox" name="dbcharvalid" id="dbcharvalid" value="1" /> <label for="dbcharvalid">Perform Character Validation</label>
 						</div>
 					</td></tr>
 					<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="dbroot" /></td></tr>
@@ -749,7 +760,7 @@ HTACCESS;
 					<a href="javascript:validateInstall()" class="large-links">[Test Connection]</a><br/><br/>
 				</div>
 				<div style="padding:5px">
-					<i style="font-size:12px">Notice: The only two files that should be in this install directory are the package (zip file) and install.php file. No other files or directories should be in this location during install. Until you become proficient with using the Duplicator it is highly recommended that you make full backups of all your databases before continuing with installations. The Duplicator is a powerful tool that has the ability to overwrite a database. </i><br/><br/>
+					<i style="font-size:12px">Notice: Only the package (zip file) and install.php file should be in the install directory. All other files will be OVERWRITTEN during install. It is highly recommended that you make full backups of all your databases before continuing with installations. The Duplicator is a powerful tool that can overwrite files and databases. Please pay attention to your configuration!!</i><br/><br/>
 				</div>
 			</fieldset>
 			<div class="div-buttons">

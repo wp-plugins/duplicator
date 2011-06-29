@@ -201,6 +201,7 @@ function duplicator_settings(){
 		'dbhost'		=>$_POST['dbhost'],
 		'dbname'		=>$_POST['dbname'],
 		'dbuser'		=>$_POST['dbuser'],
+		'dbiconv'		=>$_POST['dbiconv'],
 		'nurl'			=>rtrim($_POST['nurl'], '/'),
 		'email-me'		=>$_POST['email-me'],
 		'max_time'		=>$_POST['max_time'],

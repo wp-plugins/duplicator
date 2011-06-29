@@ -4,7 +4,7 @@ Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone  
 Requires at least: 3.1
 Tested up to: 3.1
-Stable tag: 0.1 
+Stable tag: 0.2.0 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -57,17 +57,30 @@ Please visit our knowledgebase at http://lifeinthegrid.com/support
 2. The options dialog is used to configure and setup the Duplicator
  
 
+ 
 == Changelog ==
 
-= 0.1 Beta =
+= 0.1.0 Beta =
 First Beta release of the Duplicator Plugin.
 Many thanks go out to Gaurav Aggarwal for starting the Backup and Move Plugin.
 This project is a fork of the original  Backup and Move Plugin authored by Gaurav Aggarwal
 See http://www.logiclord.com/backup-and-move/ for more details.
 
+= 0.2.0 Beta =
+<li>Added: Improved error handling around RecursiveDirectoryIterator</li>
+<li>Added: Support for SQL character encode versions</li>
+<li>Added: 'Perform Character Validation' attempts to replace invalid characters</li>
+<li>Fixed: SSL Support for downloading installer and package</li>
+<li>Fixed: Retain Permissions with 755 on Directories and 644 on files</li>
+<li>Fixed: Better regular expressions for wp-config replacement parameters</li>
+<li>Fixed: Better notice message on install screen</li>
+
+
+
+
 == Upgrade Notice ==
 
-Currently no notices.
+Please use our ticketing system submitting your logs.  Do not post to the forums.
 
 
 
