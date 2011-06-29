@@ -9,7 +9,8 @@
 	
 	//Settings
 	$setup_link_enabled  = (strlen($GLOBALS['duplicator_opts']['nurl']) == "0")  ? false : true;
-	$email_me_enabled    = $GLOBALS['duplicator_opts']['email-me']      == "0" 	? false : true;
+	$email_me_enabled    = $GLOBALS['duplicator_opts']['email-me'] == "0" 	 	 ? false : true;
+	$duplicator_dbiconv	 = $GLOBALS['duplicator_opts']['dbiconv'] == "0" 		 ? false : true;
 	
 ?>
 
@@ -42,12 +43,12 @@
 			
 			Duplicator.downloadPackage = function(btn) {
 				$(btn).css('background-color', '#dfdfdf');
-				window.location = '<?php echo get_home_url() . '/' . DUPLICATOR_SSDIR_NAME . '/' ; ?>' + btn.id;
+				window.location = '<?php echo get_home_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' ; ?>' + btn.id;
 			}
 			
 			Duplicator.downloadInstaller = function(btn) {
 				$(btn).css('background-color', '#dfdfdf');
-				window.location='<?php echo get_home_url().'/wp-content/plugins/duplicator/files/install.php?download' ?>'
+				window.location='<?php echo get_home_url(null, '', is_ssl() ? 'https' : 'http').'/wp-content/plugins/duplicator/files/install.php?download' ?>'
 			}
 			
 			/*  ============================================================================

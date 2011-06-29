@@ -24,6 +24,12 @@
 					<span style=" font-style:italic; font-size:11px">(usefull on large sites)</span><br/>
 					<br/>
 					
+					<input type="checkbox" name="dbiconv" id="dbiconv" <?php echo ($duplicator_dbiconv) ? 'checked="checked"' : ''; ?> /> <label for="dbiconv">Enable database character encoding</label>&nbsp; 
+					<span style=" font-style:italic; font-size:11px">(recommended)</span><br/>
+					<br/>
+					
+
+					
 					<?php 
 						$safe_value = ini_get('safe_mode');
 						if( stristr($safe_value, 'on') ){
@@ -68,7 +74,7 @@
 							</td>
 							<td style="width:95%">
 							<div style="padding:5px 3px 3px 25px; font-style:italic; font-size:12px">
-								Level 1 or greater should only be enabled if you are having issues creating a package.  Information gathered in the logging pane can be used to contact support with issues.  When the logging pane is enabled you will have to manually refresh the window. Higher levels are more verbose.
+								Information gathered in the logging pane can be used to contact support with issues.  When the logging pane is enabled you will have to manually refresh the window. Higher levels are more verbose.
 							</div>
 							</td>
 						</tr>

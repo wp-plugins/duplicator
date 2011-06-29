@@ -12,39 +12,61 @@ function duplicator_create_dbscript($destination) {
 	
 	global $wpdb;
 	$tables =  $wpdb->get_col('SHOW TABLES');
-	$counter = 0;
+	$dbiconv = $GLOBALS['duplicator_opts']['dbiconv'] == "0" ? false : true;
 	
 	//CREATE TABLES
-	foreach($tables as $table) {
-		$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
-		//duplicator_log(var_dump($result));
-		$num_fields  = count($result[0]);   
-		$items		 = count($result);
-		$return		.= '';
-		$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
-		$return		.= "\n\n" . $row2[1] . ";\n\n";
-		
-		{
-			$ct=0;
-			while($ct < $items) 	{
-				
-				$row	 = $result[$ct];
-				$return .= 'INSERT INTO '.$table.' VALUES(';
-				for($j=0; $j<$num_fields; $j++) 	{
-					$row[$j] = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $row[$j]);
-					$row[$j] = mysql_real_escape_string($row[$j]);
-					if (isset($row[$j])) { 
-						$return.= '"'.$row[$j].'"' ; 
-					} else { 
-						$return.= '""'; 
+	//PERFORM ICONV
+	if ($dbiconv) {
+		duplicator_log("log:fun.duplicator_create_dbscript=>dbiconv enabled");
+		foreach($tables as $table) {
+			$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
+			$num_fields  = count($result[0]);   
+			$items		 = count($result);
+			$return		.= '';
+			$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
+			$return		.= "\n\n" . $row2[1] . ";\n\n";
+			{
+				$ct=0;
+				while($ct < $items) {
+					$row	 = $result[$ct];
+					$return .= 'INSERT INTO '.$table.' VALUES(';
+					for($j=0; $j<$num_fields; $j++) 	{
+						$row[$j] = iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $row[$j]);
+						$row[$j] = mysql_real_escape_string($row[$j]);
+						$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
+						if ($j < ($num_fields-1)) { $return .= ','; }
 					}
-					if ($j < ($num_fields-1)) { $return .= ','; }
+					$return.= ");\n";
+					$ct++;
 				}
-				$return.= ");\n";
-				$ct++;
 			}
+			$return .= "\n";
 		}
-		$return .= "\n";
+	//DO NOT PERFORM ICONV
+	} else {
+		foreach($tables as $table) {
+			$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
+			$num_fields  = count($result[0]);   
+			$items		 = count($result);
+			$return		.= '';
+			$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
+			$return		.= "\n\n" . $row2[1] . ";\n\n";
+			{
+				$ct=0;
+				while($ct < $items) {
+					$row	 = $result[$ct];
+					$return .= 'INSERT INTO '.$table.' VALUES(';
+					for($j=0; $j<$num_fields; $j++) 	{
+						$row[$j] = mysql_real_escape_string($row[$j]);
+						$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
+						if ($j < ($num_fields-1)) { $return .= ','; }
+					}
+					$return.= ");\n";
+					$ct++;
+				}
+			}
+			$return .= "\n";
+		}
 	}
 
 	$handle = fopen($destination.'/database.sql','w+');
@@ -109,22 +131,26 @@ function duplicator_full_copy( $source, $target ) {
  *  @param string $empty		Delete the topmost directory
  */
 function duplicator_delete_all($directory, $empty = false) {
-
-	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::CHILD_FIRST);
-	foreach ($iterator as $path) {
-		if ($path->isDir()) {
-			@rmdir($path->__toString());
-		} else {
-			@unlink($path->__toString());
+	try {
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::CHILD_FIRST);
+		foreach ($iterator as $path) {
+			if ($path->isDir()) {
+				@rmdir($path->__toString());
+			} else {
+				@unlink($path->__toString());
+			}
 		}
-	}
+		
+		if($empty == true) {
+			if(!rmdir($directory)) {
+				return false;
+			}
+		}	
+		return true;
 	
-	if($empty == true) {
-		if(!rmdir($directory)) {
-			return false;
-		}
-	}	
-	return true;
+	} catch(Exception $e) {
+		duplicator_log("log:fun.duplicator_delete_all=>runtime error: " . $e);
+	}
 }
 
 /**
@@ -185,9 +211,13 @@ function duplicator_parse_template($filename, $data) {
  *  @param string $size		The size in bytes
  */
 function duplicator_bytesize($size) {
-    $units = array('B', 'KB', 'MB', 'GB', 'TB');
-    for ($i = 0; $size >= 1024 && $i < 4; $i++) $size /= 1024;
-    return round($size, 2).$units[$i];
+    try {
+		$units = array('B', 'KB', 'MB', 'GB', 'TB');
+		for ($i = 0; $size >= 1024 && $i < 4; $i++) $size /= 1024;
+		return round($size, 2).$units[$i];
+	} catch (Exception $e) {
+		return "n/a";
+	}
 }
 
 /**
@@ -197,35 +227,41 @@ function duplicator_bytesize($size) {
  *  @param string $directory		The directory to calculate
  */
 function duplicator_dirSize($directory) { 
-    $size     = 0; 
-	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
-    
-	//App Directory Filter & Backup Directory Filter
-	if ($GLOBALS['duplicator_bypass-array'] != null) {
-		duplicator_log("log:duplicator_dirSize=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
-		foreach($iterator as $file){ 
-			$path = duplicator_safe_path($file->getPath());
-			foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
-				if (strstr($path, $val) ) {
-					$exclusion_found = true;
-					break;
-				} else {
-					$exclusion_found = false;
+	try {
+	
+		$size     = 0; 
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+		
+		//App Directory Filter & Backup Directory Filter
+		if ($GLOBALS['duplicator_bypass-array'] != null) {
+			duplicator_log("log:duplicator_dirSize=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
+			foreach($iterator as $file){ 
+				$path = duplicator_safe_path($file->getPath());
+				foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
+					if (strstr($path, $val) ) {
+						$exclusion_found = true;
+						break;
+					} else {
+						$exclusion_found = false;
+					}
+				}
+				if (! $exclusion_found && ! strstr($path, DUPLICATOR_SSDIR_PATH)) {
+					$size += $file->getSize();
 				}
 			}
-			if (! $exclusion_found && ! strstr($path, DUPLICATOR_SSDIR_PATH)) {
-				$size += $file->getSize();
-			}
+		//Filter Backup Directory
+		} else {
+			foreach($iterator as $file){ 
+				if (!strstr($file->getPath(), DUPLICATOR_SSDIR_PATH)) {
+					$size += $file->getSize();
+				}
+			} 
 		}
-	//Filter Backup Directory
-	} else {
-		foreach($iterator as $file){ 
-			if (!strstr($file->getPath(), DUPLICATOR_SSDIR_PATH)) {
-				$size += $file->getSize();
-			}
-		} 
+		return $size; 
+	
+	}  catch(Exception $e) {
+		duplicator_log("log:fun.duplicator_dirSize=>runtime error: " . $e);
 	}
-    return $size; 
 } 
 
 
