@@ -9,7 +9,9 @@
  */
 function duplicator_create() {
 
-	duplicator_log("log:act.duplicator_create=>start");
+	global $wp_version;
+
+	duplicator_log("log:act.duplicator_create=>start =====> version:" . DUPLICATOR_VERSION . "|wpversion:" . $wp_version );
 	$packname = isset($_POST['package_name']) ? trim($_POST['package_name']) : null;
 	
 	if($packname) {
@@ -69,7 +71,7 @@ function duplicator_create() {
 		
 	} 
 	
-	die(duplicator_log("log:act.duplicator_create=>end"));
+	die(duplicator_log("log:act.duplicator_create======>end"));
 }
 
 
