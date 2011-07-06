@@ -3,8 +3,8 @@ Contributors: Cory Lamle
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone  
 Requires at least: 3.1
-Tested up to: 3.1
-Stable tag: 0.2.0 
+Tested up to: 3.2
+Stable tag: 0.2.1 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -35,7 +35,7 @@ For complete details see:
 4. Open the options dialog button in the right hand corner and click on the systems tab to check your servers compatibility.
 5. Check out the help by clicking the help icon and create your first package.
 
-The Duplicator requires php 5.2 and WordPress 3.1 or higher.
+The Duplicator requires php 5.3 and WordPress 3.1 or higher.
 
 == Frequently Asked Questions ==
 
@@ -57,8 +57,12 @@ Please visit our knowledgebase at http://lifeinthegrid.com/support
 2. The options dialog is used to configure and setup the Duplicator
  
 
- 
 == Changelog ==
+
+= 0.2.1 Beta =
+<li>Added: New output for complete log on installer</li>
+<li>Added: Improved Database Character Validation</li>
+<li>Added: Include version # in the logging output</li>
 
 = 0.2.0 Beta =
 <li>Added: Improved error handling around RecursiveDirectoryIterator</li>
@@ -79,7 +83,7 @@ See http://www.logiclord.com/backup-and-move/ for more details.
 
 == Upgrade Notice ==
 
-Please use our ticketing system submitting your logs.  Do not post to the forums.
+Please use our ticketing system when submitting your logs.  Do not post to the forums.
 
 
 

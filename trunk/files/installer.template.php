@@ -521,6 +521,14 @@ if ($action == 'dbconnect-test') {
 		//Complex Subject See: http://webcollab.sourceforge.net/unicode.html
 		//reject overly long 3 byte sequences and UTF-16 surrogates and replace with a ' '.
 		if ($dbcharvalid) {
+			debug('SCRIPT-FILES', "Performed Database Character Validation\n" . $log);
+			$dbconfig_file = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
+			 '|[\x00-\x7F][\x80-\xBF]+' .
+			 '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*' .
+			 '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})' .
+			 '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S',
+			 ' ', $dbconfig_file );
+		
 			$dbconfig_file = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'. '|\xED[\xA0-\xBF][\x80-\xBF]/S',' ', $dbconfig_file );
 		}
 		
@@ -778,14 +786,22 @@ HTACCESS;
 	<div style="margin:auto; width:750px; margin-top:20px;">
 		<b style="font-size:16px">Debug Enabled</b><hr size="1" />
 		<?php 
+			$COMPLETE_LOG = "";
 			foreach ($GLOBALS["DEBUG_LOG"] as $key => $val) { 
+				$COMPLETE_LOG .= $val;
 				$id = str_replace(" ", "", $key);
 				$html  = "<div class='debug-info'>";
 				$html .= "<div class='debug-hdr'><b><input id='chk_{$id}' type='checkbox' onclick=\"$('#{$id}').toggle()\" /><label for='chk_{$id}'>{$key}</label></b></div>";
 				$html .= "<textarea id='{$id}' style='width:100%; height:500px; display:none'>{$val}</textarea>";
 				$html .= "</div>";
 				echo $html;
-			}  
+			} 
+			//COMPLETE LOG
+			$html  = "<div class='debug-info'>";
+			$html .= "<div class='debug-hdr'><b><input id='chk_COMPLETE_LOG' type='checkbox' onclick=\"$('#COMPLETE_LOG').toggle()\" /><label for='chk_COMPLETE_LOG'>COMPLETE LOG</label></b></div>";
+			$html .= "<textarea id='COMPLETE_LOG' style='width:100%; height:500px; display:none'>{$COMPLETE_LOG}</textarea>";
+			$html .= "</div>";
+			echo $html;
 		?>
 	</div>
 <?php endif; ?> 
