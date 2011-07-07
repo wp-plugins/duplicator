@@ -107,6 +107,7 @@ $dbuser		 = isset($_POST['dbuser'])	 	? trim($_POST['dbuser'])	 	: null;
 $dbpassword  = isset($_POST['dbpassword']) 	? trim($_POST['dbpassword'])	: null;
 $current_url = isset($_POST['current_url'])	? trim($_POST['current_url'])	: null;
 $new_url 	 = isset($_POST['nurl'])		? trim($_POST['nurl'])			: null;
+$disable_ssl = (isset($_POST['disable_ssl'])  && $_POST['disable_ssl'] ==  '1')  ? true : false;
 $dbmake 	 = (isset($_POST['dbmake'])  && $_POST['dbmake'] ==  '1')  ? true : false;
 $dbclean 	 = (isset($_POST['dbclean']) && $_POST['dbclean'] == '1')  ? true : false;
 $dbcharvalid = (isset($_POST['dbcharvalid']) && $_POST['dbcharvalid'] == '1')  ? true : false;
@@ -279,7 +280,7 @@ if ($action == 'dbconnect-test') {
 		a {color:navy}
 		a:hover{color:gray}
 
-		div#content {	border:1px solid #CDCDCD;  width:750px; height:740px; margin:auto; margin-top:18px;}
+		div#content {	border:1px solid #CDCDCD;  width:750px; height:750px; margin:auto; margin-top:18px;}
 		div#content-inner {padding:10px 30px;}
 		input.readonly {background-color:#efefef; border:1px solid silver; padding:2px;}
 		
@@ -503,6 +504,7 @@ if ($action == 'dbconnect-test') {
 		
 		//WP-CONFIG
 		$config_file = @file_get_contents('wp-config.php', true);
+	
 		$patterns = array ("/'DB_NAME',\s*'.*?'/",
 						   "/'DB_USER',\s*'.*?'/",
 						   "/'DB_PASSWORD',\s*'.*?'/",
@@ -512,6 +514,12 @@ if ($action == 'dbconnect-test') {
 						  "'DB_USER', "		. '\''.$dbuser.'\'',
 						  "'DB_PASSWORD', " . '\''.$dbpassword.'\'',
 						  "'DB_HOST', "		. '\''.$dbhost.'\'');		
+						  
+		if ($disable_ssl) {
+			array_push($patterns, "/'FORCE_SSL_ADMIN',\s*true/");
+			array_push($replace,  "'FORCE_SSL_ADMIN', false");
+		} 
+		
 		$config_file = preg_replace($patterns, $replace, $config_file);
 		file_put_contents('wp-config.php', $config_file);
 		
@@ -519,18 +527,13 @@ if ($action == 'dbconnect-test') {
 		$dbconfig_file = @file_get_contents('database.sql', true);
 		
 		//Complex Subject See: http://webcollab.sourceforge.net/unicode.html
-		//reject overly long 3 byte sequences and UTF-16 surrogates and replace with a ' '.
+		//Remove no breaking characters
 		if ($dbcharvalid) {
 			debug('SCRIPT-FILES', "Performed Database Character Validation\n" . $log);
-			$dbconfig_file = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
-			 '|[\x00-\x7F][\x80-\xBF]+' .
-			 '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*' .
-			 '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})' .
-			 '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S',
-			 ' ', $dbconfig_file );
-		
-			$dbconfig_file = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'. '|\xED[\xA0-\xBF][\x80-\xBF]/S',' ', $dbconfig_file );
+			//$dbconfig_file = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'. '|\xED[\xA0-\xBF][\x80-\xBF]/S',' ', $dbconfig_file );
+			$dbconfig_file = str_ireplace("\xA0"," ",$dbconfig_file );
 		}
+		
 		
 		$primary_list  = array($current_url);
 		if (count($GLOBALS["SCRUB_LIST"]) > 0) {
@@ -722,7 +725,7 @@ HTACCESS;
 				<table width="100%" border="0" cellspacing="3" cellpadding="3" class="table-inputs">
 				<tr>
 					<td>Package Name</td>
-					<td><input type="text" name="package_name"  value="20110706_DuplicatorPlugin.zip" readonly="true" class="readonly" /></td>
+					<td><input type="text" name="package_name"  value="20110707_DuplicatorPlugin.zip" readonly="true" class="readonly" /></td>
 				</tr>
 				<tr valign="top">
 					<td style="width:130px">Package URL</td>
@@ -742,7 +745,10 @@ HTACCESS;
 				</tr>		
 				<tr>
 					<td></td>
-					<td style="font-size:12px"><input type="checkbox" name="debug" id="debug" value="1" /> Enable Logging <i style="font-size:11px">(shows useful debugging details)</i></td>
+					<td style="font-size:12px">
+						<input type="checkbox" name="debug" id="debug" value="1" checked="checked" /> Enable Logging <i style="font-size:11px">(shows debugging details)</i><br/>
+						<input type="checkbox" name="disable_ssl" id="disabled_ssl" value="1" /> Disable SSL Admin <i style="font-size:11px">(sets FORCE_SSL_ADMIN to false)</i><br/>
+					</td>
 				</tr>
 
 				</table>
@@ -752,15 +758,15 @@ HTACCESS;
 				<legend>Database</legend>
 				<table width="100%" border="0" cellspacing="3" cellpadding="3"  class="table-inputs">
 					<tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="localhost" /></td></tr>
-					<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="demo_wp-test" /></td></tr>
+					<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="" /></td></tr>
 					<tr><td colspan="2">
-						<div style="margin:-10px 150px; line-height:24px; width:100%; font-size:12px">
+						<div style="margin:-10px 0px 0px 140px; line-height:24px; font-size:12px;">
 							<input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Allow Database Creation</label> <br/>
 							<input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Allow Table Removal</label> <br/>
-							<input type="checkbox" name="dbcharvalid" id="dbcharvalid" value="1" /> <label for="dbcharvalid">Perform Character Validation</label>
+							<input type="checkbox" name="dbcharvalid" id="dbcharvalid" value="1" /> <label for="dbcharvalid">Replace Invalid Characters</label>&nbsp; <i style="font-size:11px">(useful for Linux to Windows migrations)</i>
 						</div>
 					</td></tr>
-					<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="dbroot" /></td></tr>
+					<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="" /></td></tr>
 					<tr><td>Password</td><td><input type="text" name="dbpassword" id="dbpassword" /></td></tr>
 				</table>
 				

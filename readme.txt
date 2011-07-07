@@ -4,7 +4,7 @@ Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone  
 Requires at least: 3.1
 Tested up to: 3.2
-Stable tag: 0.2.1 
+Stable tag: 0.2.2 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -58,6 +58,10 @@ Please visit our knowledgebase at http://lifeinthegrid.com/support
  
 
 == Changelog ==
+
+= 0.2.2 Beta =
+Added: "Disable SSL Admin" if enabled. New installer option
+Fixed: Nonbreaking space character validation for Linux to Windows 
 
 = 0.2.1 Beta =
 <li>Added: New output for complete log on installer</li>

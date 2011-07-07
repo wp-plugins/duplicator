@@ -1,29 +1,29 @@
 <?php
 /*
 Plugin Name: Duplicator
-Plugin URI: http://www.lifeinthegrid.com
+Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.2.1
+Version: 0.2.2
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
 */
 
 /* ================================================================================ 
-	Copyright 2011  Cory Lamle  (email : admin@lifeinthegrid.com)
-	Copyright 2011  Gaurav Aggarwal  (email : admin@logiclord.com)
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
-    published by the Free Software Foundation.
+Copyright 2011  Cory Lamle 
+Copyright 2011  Gaurav Aggarwal  
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License, version 2, as 
+published by the Free Software Foundation.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	
 Contributors:
  Many thanks go out to Gaurav Aggarwal for starting the Backup and Move Plugin.
@@ -34,8 +34,8 @@ Contributors:
 
 //==============================================================================
 //Update per relase
-define('DUPLICATOR_VERSION',   		'0.2.1');
-define('DUPLICATOR_DBVERSION', 		'0.2.1');
+define('DUPLICATOR_VERSION',   		'0.2.2');
+define('DUPLICATOR_DBVERSION', 		'0.2.2');
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?category=4");
 define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
 define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
