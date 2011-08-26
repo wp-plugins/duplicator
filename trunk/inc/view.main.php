@@ -20,14 +20,14 @@
 
 	//Protect from other plugins not using jQuery or other versions
 	jQuery.noConflict()(function($){
-		$(document).ready(function() {
+		jQuery(document).ready(function() {
 		
 			/*  ============================================================================
 			MAIN GRID
 			Actions that revolve around the main grid */
-			$("input#select-all").click(function (event) {
-				var state = $('input#select-all').is(':checked') ? 1 : 0;
-				$("input[name=delete_confirm]").each(function() {
+			jQuery("input#select-all").click(function (event) {
+				var state = jQuery('input#select-all').is(':checked') ? 1 : 0;
+				jQuery("input[name=delete_confirm]").each(function() {
 					 this.checked = (state) ? true : false;
 					 Duplicator.rowColor(this);
 				});
@@ -35,104 +35,104 @@
 
 			Duplicator.rowColor = function(chk) {
 				if (chk.checked) {
-					$(chk).parent().parent().css("text-decoration", "line-through");
+					jQuery(chk).parent().parent().css("text-decoration", "line-through");
 				} else {
-					$(chk).parent().parent().css("text-decoration", "none");
+					jQuery(chk).parent().parent().css("text-decoration", "none");
 				}
 			}
 			
 			Duplicator.downloadPackage = function(btn) {
-				$(btn).css('background-color', '#dfdfdf');
+				jQuery(btn).css('background-color', '#dfdfdf');
 				window.location = '<?php echo get_home_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' ; ?>' + btn.id;
 			}
 			
 			Duplicator.downloadInstaller = function(btn) {
-				$(btn).css('background-color', '#dfdfdf');
-				window.location='<?php echo get_home_url(null, '', is_ssl() ? 'https' : 'http').'/wp-content/plugins/duplicator/files/install.php?download' ?>'
+				jQuery(btn).css('background-color', '#dfdfdf');
+				window.location='<?php echo DUPLICATOR_PLUGIN_URL .'files/install.php?download' ?>'
 			}
 			
 			/*  ============================================================================
 			DIALOG WINDOWS
 			Browser Specific. IE9 does not support modal correctly this is a workaround  */
 			Duplicator._dlgCreate = function(evt, ui) {
-				if (! $.browser.msie) {
-					$('#' + this.id).dialog('option', 'modal',  	true);
-					$('#' + this.id).dialog('option', 'draggable',  true);
+				if (! jQuery.browser.msie) {
+					jQuery('#' + this.id).dialog('option', 'modal',  	true);
+					jQuery('#' + this.id).dialog('option', 'draggable',  true);
 				} else {
-					$('#' + this.id).dialog('option', 'draggable',  false);
-					$('#' + this.id).dialog('option', 'open',  function() {$("div#wpwrap").addClass('ie-simulated-overlay');} );
+					jQuery('#' + this.id).dialog('option', 'draggable',  false);
+					jQuery('#' + this.id).dialog('option', 'open',  function() {jQuery("div#wpwrap").addClass('ie-simulated-overlay');} );
 				}
 			}
 			Duplicator._dlgClose = function(evt, ui) {
-				if ($.browser.msie) {$("div#wpwrap").removeClass('ie-simulated-overlay');}
+				if (jQuery.browser.msie) {jQuery("div#wpwrap").removeClass('ie-simulated-overlay');}
 			}
-			$("#dialog-options").dialog( {autoOpen:false, height:610, width:750, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
-			$("#dialog-log-copy").dialog({autoOpen:false, height:600, width:700, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
+			jQuery("#dialog-options").dialog( {autoOpen:false, height:610, width:750, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
+			jQuery("#dialog-log-copy").dialog({autoOpen:false, height:600, width:700, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
 			
 			
 
 			/*  ============================================================================
 			LOG PANE: 
 			Methods used to control and render the log pane visibility	*/
-			$('select#log_level').val(<?php echo DUPLICATOR_LOGLEVEL ?>);
+			jQuery('select#log_level').val(<?php echo DUPLICATOR_LOGLEVEL ?>);
 			<?php 
-				echo (DUPLICATOR_LOGLEVEL >= 1) ?  '$("#log-pane").css("display", "block")' : '$("#log-pane").css("display", "none")';
+				echo (DUPLICATOR_LOGLEVEL >= 1) ?  'jQuery("#log-pane").css("display", "block")' : 'jQuery("#log-pane").css("display", "none")';
 			?>
 		
 			Duplicator.Log = function(msg, seperator) {
-				$('#log-msg').append(msg); 
+				jQuery('#log-msg').append(msg); 
 				if (seperator) {
-					$('#log-msg').append('======================================================= <br/>\n');
+					jQuery('#log-msg').append('======================================================= <br/>\n');
 				}
-				$("#log-msg").animate({ scrollTop: $("#log-msg").attr("scrollHeight") }, 2000)
+				jQuery("#log-msg").animate({ scrollTop: jQuery("#log-msg").attr("scrollHeight") }, 2000)
 			}
-			Duplicator.logToggle	= function() { $("#log-pane").toggle(500);}			
-			Duplicator.logClearPane	= function() { $('#log-msg').empty();}
-			Duplicator.logSizePane 	= function() { $("#log-pane").css("width", $("div#wpbody").width() - 7);}
+			Duplicator.logToggle	= function() { jQuery("#log-pane").toggle(500);}			
+			Duplicator.logClearPane	= function() { jQuery('#log-msg').empty();}
+			Duplicator.logSizePane 	= function() { jQuery("#log-pane").css("width", jQuery("div#wpbody").width() - 7);}
 			Duplicator.logCopy		= function() { 
-				$("textarea#log-msg-txt").val($('#log-msg').text());
-				$("#dialog-log-copy").dialog("open");
-				$("textarea#log-msg-txt").select();
+				jQuery("textarea#log-msg-txt").val(jQuery('#log-msg').text());
+				jQuery("#dialog-log-copy").dialog("open");
+				jQuery("textarea#log-msg-txt").select();
 			}
 			
 			var _sliderHeight = <?php echo isset($GLOBALS['duplicator_opts']['log_paneheight']) ? $GLOBALS['duplicator_opts']['log_paneheight'] : 300; ?>;
-			$("#slider-range-min").slider({
+			jQuery("#slider-range-min").slider({
 				range: "min", 
 				value: _sliderHeight , 
 				min: 100, 
 				max: 400,
 				slide: function( event, ui ) {
-					$( "#log_paneheight" ).val( ui.value );
-					$("#log-msg").css("height", ui.value);
+					jQuery( "#log_paneheight" ).val( ui.value );
+					jQuery("#log-msg").css("height", ui.value);
 				},
 				stop: function(event, ui) {Duplicator.saveSettings(false); }
 			});
-			$("#log_paneheight").val($("#slider-range-min").slider("value") )
-			$("#log-msg").css("height", _sliderHeight + "px");
+			jQuery("#log_paneheight").val(jQuery("#slider-range-min").slider("value") )
+			jQuery("#log-msg").css("height", _sliderHeight + "px");
 			Duplicator.logSizePane();
-			$(window).bind('resize', function() {Duplicator.logSizePane();});
+			jQuery(window).bind('resize', function() {Duplicator.logSizePane();});
 			
 			
 			/*  ============================================================================
 			OPTIONS DIALOG
 			Actions that revolve around the options dialog */
-			$("#tabs-opts").tabs();
+			jQuery("#tabs-opts").tabs();
 			Duplicator.optionsSystemCheck = function() {
-				$("#dialog-options").dialog("open");
-				$('#tabs-opts').tabs('option', 'selected', 2);
+				jQuery("#dialog-options").dialog("open");
+				jQuery('#tabs-opts').tabs('option', 'selected', 2);
 			}
 			Duplicator.optionsAppendByPassList = function(path) {
-				 $('#dir_bypass').append(path);
-				 $('#tabs-opts').tabs('option', 'selected', 0);
-				 $('#dir_bypass').animate({ borderColor: "blue", borderWidth: 2 }, 3000);
-				 $('#dir_bypass').animate({ borderColor: "#dfdfdf", borderWidth: 1  }, 100);
+				 jQuery('#dir_bypass').append(path);
+				 jQuery('#tabs-opts').tabs('option', 'selected', 0);
+				 jQuery('#dir_bypass').animate({ borderColor: "blue", borderWidth: 2 }, 3000);
+				 jQuery('#dir_bypass').animate({ borderColor: "#dfdfdf", borderWidth: 1  }, 100);
 			}
-			Duplicator.optionsOpen  = function() {$("div#dialog-options").dialog("open");}
-			Duplicator.optionsClose = function() {$('div#dialog-options').dialog('close');}
+			Duplicator.optionsOpen  = function() {jQuery("div#dialog-options").dialog("open");}
+			Duplicator.optionsClose = function() {jQuery('div#dialog-options').dialog('close');}
 			
 			
 			//MISC
-			$("div#div-render-blanket").show();
+			jQuery("div#div-render-blanket").show();
 			Duplicator.newWindow = function(url) {window.open(url);}
 			
 		});
@@ -157,12 +157,12 @@ MAIN FORM: Lists all the backups 			-->
 				<?php if ($setup_link_enabled) : ?>
 					<td align="center"><input type="button" class="btn-setup-link" onclick="window.open('<?php echo $GLOBALS['duplicator_opts']['nurl'] ?>/install.php', '_blank')" title="Launch the installer window." /></td>
 				<?php endif; ?>			
-				<td><img src="<?php echo get_bloginfo('url') ?>/wp-content/plugins/duplicator/img/hdivider.png" style="height:26px; padding:0px 5px 0px 5px"/></td>
+				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/hdivider.png" style="height:26px; padding:0px 5px 0px 5px"/></td>
 				<td><input type="button"  id="btn-opts-dialog" class="btn-opts-dialog" title="Options..." onclick="Duplicator.optionsOpen()" /></td>	
 				<?php if (DUPLICATOR_LOGLEVEL > 1) : ?>
 					<td align="center"><input type="button" class="btn-diag-dialog" onclick="Duplicator.logToggle()" title="Show Log Pane..." /></td>
 				<?php endif; ?>		
-				<td><img src="<?php echo get_bloginfo('url') ?>/wp-content/plugins/duplicator/img/hdivider.png" style="height:26px; padding:0px 5px 0px 5px"/></td>
+				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/hdivider.png" style="height:26px; padding:0px 5px 0px 5px"/></td>
 				<td><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="Help..." /></td>
 				<td><input type="button" id="btn-contribute-dialog" value="Contribute" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="Contribute..." /></td>
 			</tr>
@@ -176,8 +176,8 @@ MAIN FORM: Lists all the backups 			-->
 				<th>
 					<b>Status:</b> 
 					<span id="span-status">Ready to create new package.</span>
-					<img id="img-status-error" src="<?php echo get_bloginfo('url') ?>/wp-content/plugins/duplicator/img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
-					<img id="img-status-progress" src="<?php echo get_bloginfo('url') ?>/wp-content/plugins/duplicator/img/progress.gif" style="height:10px; width:46px; display:none" />
+					<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
+					<img id="img-status-progress" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/progress.gif" style="height:10px; width:46px; display:none" />
 				</th>
 				</tr>
 			</thead>

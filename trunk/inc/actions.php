@@ -54,6 +54,8 @@ function duplicator_create() {
 						'ver_db'=>DUPLICATOR_DBVERSION ) );
 			$wpdb->flush;
 			duplicator_create_installerFile($zipfilename);
+		} else {
+			duplicator_log("log:act.duplicator_create=>error: zipsize is zero. unable to write to database.");
 		}
 
 		//SEND EMAIL
@@ -84,15 +86,22 @@ function duplicator_create() {
  *		- see: duplicator_unlink
  */
 function duplicator_delete() {
-	$id = isset($_POST['duplicator_delid']) ? trim($_POST['duplicator_delid']) : null;
-	if ($id != null) {
-		$arr = explode(",", $id);
-		foreach ($arr as $val) {
-			$path = DUPLICATOR_SSDIR_PATH . '/' . $val;
-			$msg  = duplicator_unlink($val, $path);
+	try
+	{
+		$id = isset($_POST['duplicator_delid']) ? trim($_POST['duplicator_delid']) : null;
+		if ($id != null) {
+			$arr = explode(",", $id);
+			foreach ($arr as $val) {
+				$path = DUPLICATOR_SSDIR_PATH . '/' . $val;
+				$msg  = duplicator_unlink($val, $path);
+			}
 		}
+		die(duplicator_log($msg));
+	}  
+	catch(Exception $e) 
+	{
+		duplicator_log("log:fun.duplicator_delete=>runtime error: " . $e);
 	}
-	die(duplicator_log($msg));
 }
 
 
@@ -134,10 +143,17 @@ function duplicator_system_check() {
  *		- see: duplicator_unlink
  */
 function duplicator_overwrite(){
-	$file_name = isset($_POST['duplicator_new']) ? trim($_POST['duplicator_new']) . '.zip' : null;
-	$file_path = DUPLICATOR_SSDIR_PATH . '/' . $file_name;
-	$msg  = duplicator_unlink($file_name, $file_path);
-	die(duplicator_log($msg));
+	try 
+	{
+		$file_name = isset($_POST['duplicator_new']) ? trim($_POST['duplicator_new']) . '.zip' : null;
+		$file_path = DUPLICATOR_SSDIR_PATH . '/' . $file_name;
+		$msg  = duplicator_unlink($file_name, $file_path);
+		die(duplicator_log($msg));
+	}  
+	catch(Exception $e) 
+	{
+		duplicator_log("log:fun.duplicator_overwrite=>runtime error: " . $e);
+	}
 }
 
 
@@ -153,21 +169,28 @@ function duplicator_overwrite(){
  *		- log:act.duplicator_unlink=>error
  */
 function duplicator_unlink($file, $path) {
-	$msg = "log:act.duplicator_unlink=>error";
-	if($file && $path) {
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'duplicator';
-		if($wpdb->query("DELETE FROM $table_name WHERE zipname= '".$file."'" ) != 0) {
-			$msg = "log:act.duplicator_unlink=>removed";
-			try {
-				unlink($path);
-			}
-			catch(Exception $e) {
-				error_log(var_dump($e->getMessage()));
+	try
+	{
+		$msg = "log:act.duplicator_unlink=>error";
+		if($file && $path) {
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'duplicator';
+			if($wpdb->query("DELETE FROM $table_name WHERE zipname= '".$file."'" ) != 0) {
+				$msg = "log:act.duplicator_unlink=>removed";
+				try {
+					unlink($path);
+				}
+				catch(Exception $e) {
+					error_log(var_dump($e->getMessage()));
+				}
 			}
 		}
-	}
-	return $msg;
+		return $msg;
+	}  
+	catch(Exception $e) 
+	{
+		duplicator_log("log:fun.duplicator_unlink=>runtime error: " . $e);
+	}	
 }
 
 

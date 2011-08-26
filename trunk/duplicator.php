@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.2.2
+Version: 0.2.3
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -34,12 +34,14 @@ Contributors:
 
 //==============================================================================
 //Update per relase
-define('DUPLICATOR_VERSION',   		'0.2.2');
-define('DUPLICATOR_DBVERSION', 		'0.2.2');
+define('DUPLICATOR_VERSION',   		'0.2.3');
+define('DUPLICATOR_DBVERSION', 		'0.2.3');
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?category=4");
 define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
 define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
 define("DUPLICATOR_DB_ICONV_OUT",	"ISO-8859-1//TRANSLIT"); 
+define('DUPLICATOR_PLUGIN_URL', plugin_dir_url( __FILE__ ));
+define('DUPLICATOR_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 //==============================================================================
 
 if (is_admin() == true) {
@@ -142,8 +144,8 @@ if (is_admin() == true) {
 	 *  Init routines  */
 	function duplicator_init() {
 	   /* Register our stylesheet. */
-	   wp_register_style('jquery-ui', 		  WP_PLUGIN_URL . '/duplicator/css/jquery-ui.css' );
-	   wp_register_style('duplicator_style',  WP_PLUGIN_URL . '/duplicator/css/style.css' );
+	   wp_register_style('jquery-ui', 		  DUPLICATOR_PLUGIN_URL . 'css/jquery-ui.css' );
+	   wp_register_style('duplicator_style',  DUPLICATOR_PLUGIN_URL . 'css/style.css' );
 	}
 
 	/**

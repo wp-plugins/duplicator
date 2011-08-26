@@ -86,7 +86,7 @@ $GLOBALS["SERIAL_STR_FIX"] 		= true;
 //$GLOBALS["SERIAL_TABLES"]["TABLE_TO_SEARCH"] = array('column_id' => 'an_indexable_id',  'column_value' => 'the_column_to_perform_search_on');
 
 ini_set("max_execution_time", "900"); 
-ini_set('memory_limit', '128M');
+ini_set('memory_limit', '256M');
 
 /* ================================================================================================
 END ADVANCED FEATURES: Do not edit below here.
@@ -231,7 +231,7 @@ function add_ending_slash($path){
  *  @param string $msg		A a message that belongs to a unique title block
  */
 function debug($title, $msg) {
-	if ($GLOBALS["DEBUG"]) {
+	if ($GLOBALS["DEBUG"] && isset($title)) {
 		$GLOBALS["DEBUG_LOG"]["$title"] .= "{$msg}\n";
 	}
 }
@@ -410,7 +410,8 @@ if ($action == 'dbconnect-test') {
 		echo "<script type='text/javascript'> _stopWatch.startStop(); </script>";
 		
 		$tryagain_html	 = "<div class='tryagain'><a href='javascript:window.history.back()' style='color:#444; font-weight:bold'>Try Again</a></div><script type='text/javascript'> _stopWatch.startStop(); </script>";
-
+		$log = "";
+		
 		//====================================================================================================
 		//PRECHECKS: Validate and make sure to have a clean enviroment
 		//====================================================================================================
@@ -630,7 +631,7 @@ if ($action == 'dbconnect-test') {
 		if(!file_exists(DUPLICATOR_SSDIR_NAME)) {
 			mkdir(DUPLICATOR_SSDIR_NAME,'0755');
 		}
-		$fp = fopen(DUPLICATOR_SSDIR_NAME . '\index.php', 'w');
+		$fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 		fclose($fp);
 		copy($zip_name, DUPLICATOR_SSDIR_NAME . '/'.$zip_name);
 		
