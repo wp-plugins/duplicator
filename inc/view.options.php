@@ -157,7 +157,7 @@
 				<?php if (phpversion() >= 5.3): ?>
 					<span class="dup-test-good"><?php echo phpversion(); ?></span>
 				<?php elseif (phpversion() >= 5.2): ?>
-					<span class="dup-test-ok"><?php echo phpversion(); ?></span>
+					<span class="dup-test-ok"><?php echo phpversion(); ?></span> <i style="font-size:11px">(5.3+ is highly recommended. 5.2.17+ is required)</i>
 				<?php else: ?> 
 					<span class="dup-test-bad"><?php echo phpversion(); ?> </span>
 				<?php endif; ?>
@@ -188,12 +188,12 @@
 					<br />
 				
 			    	Compression:
-				<?php if (function_exists('gzencode')): ?>
+				<?php if (class_exists('ZipArchive')): ?>
 					<span class="dup-test-good">Pass</span>
 				<?php else: ?>
 					<span class="dup-test-bad">Not installed</span>
 				<?php endif; ?>
-				<i style="font-size:11px">(zlib extension required for compression)</i>
+				<i style="font-size:11px">(ZipArchive extension required for compression)</i>
 				<br /><br />
 
 				<b>CACHE STORE CHECKS</b> <br/>

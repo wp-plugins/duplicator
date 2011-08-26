@@ -7,7 +7,7 @@
  *  @param string $destination		Where will the file be written to
  */
 function duplicator_create_dbscript($destination) {
-
+	try {
 	duplicator_log("log:fun.duplicator_create_dbscript=>started");
 	
 	global $wpdb;
@@ -76,6 +76,10 @@ function duplicator_create_dbscript($destination) {
 	$return = '';
 	
 	duplicator_log("log:fun.duplicator_create_dbscript=>ended");
+	
+	} catch(Exception $e) {
+		duplicator_log("log:fun.duplicator_create_dbscript=>runtime error: " . $e);
+	}
 }
 
 
@@ -164,8 +168,8 @@ function duplicator_create_installerFile($packagename) {
 	duplicator_log("log:duplicator_create_installerFile=>started");
 	
 	global $wpdb;
-	$template 	= DUPLICATOR_WPROOTPATH . 'wp-content/plugins/duplicator/files/installer.template.php';
-	$installer	= DUPLICATOR_WPROOTPATH . 'wp-content/plugins/duplicator/files/install.php';
+	$template 	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.template.php');
+	$installer	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/install.php');
 	
 	get_option('duplicator_options') == ""  ? "" : $duplicator_opts = unserialize(get_option('duplicator_options'));
 	$replace_items = Array(
@@ -184,6 +188,10 @@ function duplicator_create_installerFile($packagename) {
 			or die(duplicator_log("log:duplicator_create_installerFile=>file-create-error"));
 		fwrite($fp, $str, strlen($str));
 		fclose($fp);
+	} 
+	else
+	{
+		die(duplicator_log("log:duplicator_create_installerFile=>Template missing: '$template'"));
 	}
 	
 	duplicator_log("log:duplicator_create_installerFile=>ended");
