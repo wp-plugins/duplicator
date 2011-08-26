@@ -56,7 +56,7 @@ Visit the [Duplicator Page](http://lifeinthegrid.com/duplicator) at lifeinthegri
 
 = How can I test this in a non production environment? =
 
-Put WordPress on [your computer](http://lifeinthegrid.com/xampp). See video below.
+[Get WordPress on your computer](http://lifeinthegrid.com/xampp). See video below.
 
 http://www.youtube.com/watch?v=-hF7FbTQIkk
 
