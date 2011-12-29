@@ -5,14 +5,20 @@
  *  new culmination of a 'Package Set'
  *
  *  @return string   A message about the action
- *		- log:act.duplicator_create=>done
+ *		- log:act__create=>done
  */
 function duplicator_create() {
 
 	global $wp_version;
-
-	duplicator_log("log:act.duplicator_create=>start =====> version:" . DUPLICATOR_VERSION . "|wpversion:" . $wp_version );
 	$packname = isset($_POST['package_name']) ? trim($_POST['package_name']) : null;
+
+	duplicator_log("*********************************************************");
+	duplicator_log("START PROCESSING");
+	duplicator_log("package: {$packname}");
+	duplicator_log("server: {$_SERVER['SERVER_SOFTWARE']}");
+	duplicator_log("duplicator:" . DUPLICATOR_VERSION . " | wp:{$wp_version} | php:" .  phpversion());
+	duplicator_log("max_time:{$GLOBALS['duplicator_opts']['max_time']} | max_memory:{$GLOBALS['duplicator_opts']['max_memory']}");
+	
 	
 	if($packname) {
 		
@@ -25,55 +31,91 @@ function duplicator_create() {
 		get_currentuserinfo();
 		$zipfilename = $packname.'.zip';
 		$temp_path 	 = DUPLICATOR_SSDIR_PATH . "/{$packname}";
+		$zipsize = 0;
 		
-
 		if(!file_exists($temp_path)) {
 			if (!mkdir($temp_path, 0755)) {
 				die(duplicator_log("Unable to create temporary snapshot directory '$temp_path' "));
 			}
 		}
 		
-		duplicator_log("log:act.duplicator_create=>using temp directory:" . $temp_path, 2);
-		
-		//CREATE DBSCRIPT AND ZIP FILE
+		//TEMPORARY BACKUP
 		//Very important to remove trailing slash for copy function to work
+		duplicator_log("*********************************************************");
+		duplicator_log("TEMPORARY BACKUP");
+		duplicator_log("log:act__create=>temp backup to: " . $temp_path, 2);
 		duplicator_full_copy(rtrim(DUPLICATOR_WPROOTPATH, "/\\") ,$temp_path);
+		duplicator_log("log:act__create=>temp backup complete.", 2);
+		
+		
+		//SQL SCRIPT
+		duplicator_log("*********************************************************");
+		duplicator_log("SQL SCRIPT");
 		duplicator_create_dbscript($temp_path);
+		duplicator_log("log:act__create=>sql script complete.", 2);
+		
+		
+		//CREATE ZIP ARCHIVE
+		duplicator_log("*********************************************************");
+		duplicator_log("ZIP ARCHIVE");
 		$zip = new Duplicator_Zip("{$temp_path}.zip", $temp_path, '.svn');
-		duplicator_delete_all($temp_path, true);
-	
 		$zipsize = filesize("{$temp_path}.zip");
-		if ($zipsize) {
-			$wpdb->insert($wpdb->prefix . "duplicator", 
-				array(	'zipname' => $zipfilename, 
-						'created' => current_time('mysql', get_option('gmt_offset')),
-						'owner'=>$current_user->user_login,
-						'zipsize'=>$zipsize, 
-						'type'=>'Manual',
-						'ver_plug'=>DUPLICATOR_VERSION, 
-						'ver_db'=>DUPLICATOR_DBVERSION ) );
-			$wpdb->flush;
-			duplicator_create_installerFile($zipfilename);
+		if ($zipsize == false) {
+			duplicator_log("log:act__create=>warning: zipsize is unknown.");
 		} else {
-			duplicator_log("log:act.duplicator_create=>error: zipsize is zero. unable to write to database.");
+			duplicator_log("log:act__create=>zip file size is: " . $zipsize);
 		}
+		duplicator_log("log:act__create=>zip archive complete.", 2);
+		//Record archive info to database
+		$wpdb->insert($wpdb->prefix . "duplicator", 
+						array(	'zipname' => $zipfilename, 
+								'created' => current_time('mysql', get_option('gmt_offset')),
+								'owner'=>$current_user->user_login,
+								'zipsize'=>$zipsize, 
+								'type'=>'Manual',
+								'ver_plug'=>DUPLICATOR_VERSION, 
+								'ver_db'=>DUPLICATOR_DBVERSION ) );
+								
+		if ($wpdb->insert_id) {
+			duplicator_log("log:act__create=>recorded archieve id: " . $wpdb->insert_id);
+		} else {
+			duplicator_log("log:act__create=>unable to record to database.");
+		}
+		$wpdb->flush();
+		
+		
+		//REMOVE TEMPORARY BACKUP
+		duplicator_log("*********************************************************");
+		duplicator_log("REMOVE TEMPORARY BACKUP");
+		duplicator_log("log:act__create=>remove backup temp data from: " . $temp_path, 2);
+		duplicator_delete_all($temp_path, true);
+		duplicator_log("log:act__create=>backup temp data removed.", 2);
+		
+	
+		//UPDATE INSTALL FILE
+		duplicator_log("*********************************************************");
+		duplicator_log("UPDATE INSTALLER FILE");
+		duplicator_create_installerFile($zipfilename);
+
 
 		//SEND EMAIL
 		//TODO: Send only SQL File via mail.  Zip files can get too large
 		if( $GLOBALS['duplicator_opts']['email-me'] == "1" ) {
-			duplicator_log("log:act.duplicator_create=>email started");
+			duplicator_log("log:act__create=>email started");
 			$status      = ($zipsize) ? 'Success' : 'Failure';
 			$attachments = ""; //array(DUPLICATOR_SSDIR_PATH . '/' . $packname .'.zip');
 			$headers = 'From: Duplicator Plugin <no-reply@lifeinthegrid.com>' ."\r\n";
 			$subject = "Package '{$packname}' completed";
 			$message = "Run Status: {$status}\n\rSite Name: " . get_bloginfo('name') . "\n\rPackage Name: {$packname} \n\rCompleted at: " .current_time('mysql',get_option('gmt_offset'))  ;
 			wp_mail($current_user->user_email, $subject, $message, $headers, $attachments);
-			duplicator_log("log:act.duplicator_create=>email finished");
+			duplicator_log("log:act__create=>email finished");
 		}
-		
+
 	} 
 	
-	die(duplicator_log("log:act.duplicator_create======>end"));
+	duplicator_log("*********************************************************");
+	duplicator_log("DONE PROCESSING => {$packname}");
+	die(duplicator_log("*********************************************************"));
 }
 
 
@@ -100,7 +142,7 @@ function duplicator_delete() {
 	}  
 	catch(Exception $e) 
 	{
-		duplicator_log("log:fun.duplicator_delete=>runtime error: " . $e);
+		duplicator_log("log:fun__delete=>runtime error: " . $e);
 	}
 }
 
@@ -110,26 +152,26 @@ function duplicator_delete() {
  *  Check to see if the package already exsits
  *  
  *  @return string   A message about the action
- *		- log:act.duplicator_system_check=>create new package
- *		- log:act.duplicator_system_check=>overwrite
+ *		- log:act__system_check=>create new package
+ *		- log:act__system_check=>overwrite
  */
 function duplicator_system_check() {
 	global $wpdb;
 	
 	$dirSize = duplicator_dirSize(DUPLICATOR_WPROOTPATH);
 	$dirSizeFormat = duplicator_bytesize($dirSize);
-	duplicator_log("log:act.duplicator_system_check=>content_size: <input type='hidden' class='dir-size' value='{$dirSizeFormat}' />{$dirSizeFormat}");
+	duplicator_log("log:act__system_check=>content_size: <input type='hidden' class='dir-size' value='{$dirSizeFormat}' />{$dirSizeFormat}");
 	//TODO: Find a way around the 2GB limit
 	if ($dirSize >  2100000000) {
-		die(duplicator_log("log:act.duplicator_system_check=>size_limit"));
+		die(duplicator_log("log:act__system_check=>size_limit"));
 	}
 	
 	$new_name = isset($_POST['duplicator_new']) ? trim($_POST['duplicator_new']).'.zip' : null;
-	$msg = "log:act.duplicator_system_check=>create new package";
+	$msg = "log:act__system_check=>create new package";
 	$table = $wpdb->prefix . 'duplicator';
 	$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `{$table}` WHERE zipname= '".$new_name."'"));
 	if($count > 0) {
-		$msg="log:act.duplicator_system_check=>overwrite";
+		$msg="log:act__system_check=>overwrite";
 	}
 	die(duplicator_log($msg));
 }
@@ -152,7 +194,7 @@ function duplicator_overwrite(){
 	}  
 	catch(Exception $e) 
 	{
-		duplicator_log("log:fun.duplicator_overwrite=>runtime error: " . $e);
+		duplicator_log("log:fun__overwrite=>runtime error: " . $e);
 	}
 }
 
@@ -165,20 +207,20 @@ function duplicator_overwrite(){
  *  @param string $path		The full path and file name of the file to delete
  *
  *  @return string   A message about the action
- *		- log:act.duplicator_unlink=>removed
- *		- log:act.duplicator_unlink=>error
+ *		- log:act__unlink=>removed
+ *		- log:act__unlink=>error
  */
 function duplicator_unlink($file, $path) {
 	try
 	{
-		$msg = "log:act.duplicator_unlink=>error";
+		$msg = "log:act__unlink=>error";
 		if($file && $path) {
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'duplicator';
 			if($wpdb->query("DELETE FROM $table_name WHERE zipname= '".$file."'" ) != 0) {
-				$msg = "log:act.duplicator_unlink=>removed";
+				$msg = "log:act__unlink=>removed";
 				try {
-					unlink($path);
+					@unlink($path);
 				}
 				catch(Exception $e) {
 					error_log(var_dump($e->getMessage()));
@@ -189,7 +231,7 @@ function duplicator_unlink($file, $path) {
 	}  
 	catch(Exception $e) 
 	{
-		duplicator_log("log:fun.duplicator_unlink=>runtime error: " . $e);
+		duplicator_log("log:fun__unlink=>runtime error: " . $e);
 	}	
 }
 
@@ -199,7 +241,7 @@ function duplicator_unlink($file, $path) {
  *  Saves plugin settings
  *  
  *  @return string   A message about the action
- *		- log:act.duplicator_settings=>saved
+ *		- log:act__settings=>saved
  */
 function duplicator_settings(){
 
@@ -210,15 +252,15 @@ function duplicator_settings(){
 	$by_pass_clean = "";
 	
 	foreach ($by_pass_array as $val) {
-		if (strlen($val)) {
+		if (strlen($val) >= 2) {
 			$by_pass_clean .= duplicator_safe_path(trim(rtrim($val, "/\\"))) . ";";
 		}
 	}
 
 	if (is_numeric($_POST['max_memory'])) {
-		$maxmem = $_POST['max_memory'] < 128 ? 128 : $_POST['max_memory'];
+		$maxmem = $_POST['max_memory'] < 256 ? 256 : $_POST['max_memory'];
 	} else {
-		$maxmem = 128;
+		$maxmem = 256;
 	}
 	
 
@@ -235,9 +277,10 @@ function duplicator_settings(){
 		'log_level'			=>$_POST['log_level'],
 		'log_paneheight'	=>$_POST['log_paneheight']);
 		
+
 	update_option('duplicator_options', serialize($duplicator_opts));
 	
-	die(duplicator_log("log:act.duplicator_settings=>saved"));
+	die(duplicator_log("log:act__settings=>saved"));
 }
 //DO NOT ADD A CARRIAGE RETURN BEYOND THIS POINT (headers issue)!!
 ?>

@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.2.3
+Version: 0.2.4
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -34,8 +34,8 @@ Contributors:
 
 //==============================================================================
 //Update per relase
-define('DUPLICATOR_VERSION',   		'0.2.3');
-define('DUPLICATOR_DBVERSION', 		'0.2.3');
+define('DUPLICATOR_VERSION',   		'0.2.4');
+define('DUPLICATOR_DBVERSION', 		'0.2.4');
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?category=4");
 define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
 define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
@@ -46,11 +46,26 @@ define('DUPLICATOR_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 
 if (is_admin() == true) {
 	
-	$GLOBALS['duplicator_opts'] 		      = unserialize(get_option('duplicator_options'));	
+	$GLOBALS['duplicator_opts'] = unserialize(get_option('duplicator_options', false));
+	//Unable to fetch options so set manually
+	if ($GLOBALS['duplicator_opts'] == false) {
+		$GLOBALS['duplicator_opts']['dbhost'] = '';
+		$GLOBALS['duplicator_opts']['dbname'] = '';
+		$GLOBALS['duplicator_opts']['dbuser'] = '';
+		$GLOBALS['duplicator_opts']['dbiconv'] = '1';
+		$GLOBALS['duplicator_opts']['nurl'] = '';
+		$GLOBALS['duplicator_opts']['email-me'] = '0';
+		$GLOBALS['duplicator_opts']['max_time'] = '900';
+		$GLOBALS['duplicator_opts']['max_memory'] = '512M';
+		$GLOBALS['duplicator_opts']['dir_bypass'] = '';
+		$GLOBALS['duplicator_opts']['log_level'] = '0';
+		$GLOBALS['duplicator_opts']['log_paneheight'] = '300';
+	}
+	
 	$GLOBALS['duplicator_bypass-array']		  = explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
 	$GLOBALS['duplicator_bypass-array'] 	  = count($GLOBALS['duplicator_bypass-array']) ? $GLOBALS['duplicator_bypass-array'] : null;
-	$GLOBALS['duplicator_opts']['max_time']   = is_numeric($GLOBALS['duplicator_opts']['max_time']) ? $GLOBALS['duplicator_opts']['max_time']   : 300;
-	$GLOBALS['duplicator_opts']['max_memory'] = isset($GLOBALS['duplicator_opts']['max_memory'])    ? $GLOBALS['duplicator_opts']['max_memory'] : "128M";
+	$GLOBALS['duplicator_opts']['max_time']   = is_numeric($GLOBALS['duplicator_opts']['max_time']) ? $GLOBALS['duplicator_opts']['max_time']   : 900;
+	$GLOBALS['duplicator_opts']['max_memory'] = isset($GLOBALS['duplicator_opts']['max_memory'])    ? $GLOBALS['duplicator_opts']['max_memory'] : "512M";
 
 	/* Paths should ALWAYS read "/"
 		uni: /home/path/file.txt
@@ -169,9 +184,12 @@ if (is_admin() == true) {
 	 *  Loads the required javascript libs only for this plugin  */
 	function duplicator_scripts() {
 		$script_path = path_join(WP_PLUGIN_URL, basename( dirname( __FILE__ ) ).'/js');
-		wp_deregister_script('jquery');
-		wp_enqueue_script("jquery",    "${script_path}/jquery.min.js",    '',  	 "1.5.1");
-		wp_enqueue_script("jquery-ui", "${script_path}/jquery-ui.min.js", array( 'jquery' ), "1.8.10");
+		
+		//Starting in 0.2.4 use Wordpress built in jQuery. Enable below for legacy fall back
+		//wp_deregister_script('jquery');
+		//wp_enqueue_script("jquery",    "${script_path}/jquery.min.js",    '',  	 "1.6.4");
+		
+		wp_enqueue_script("jquery-ui", "${script_path}/jquery-ui.min.js", array( 'jquery' ), "1.8.16");
 		wp_enqueue_script("duplicator_handler_script", "${script_path}/ajax.js", array( 'jquery' )  );
 	}
 

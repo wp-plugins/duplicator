@@ -158,7 +158,7 @@ jQuery(document).ready( function($) {
 				url: ajaxurl,
 				data: "duplicator_delid="+list+"&action=duplicator_delete",
 				success: function(data){ 
-					if (data.indexOf("log:act.duplicator_unlink=>removed") != -1) {
+					if (data.indexOf("log:act__unlink=>removed") != -1) {
 						Duplicator.reload(data);
 					} else {
 						var msg = data + "\nlog:ajax.event-delete=>Error while deleting backup. File may not exsist.\n<br/>";
@@ -205,7 +205,7 @@ jQuery(document).ready( function($) {
 				var msgDetails = "Uncompressed Size:  " + size + "\nName:  " + packname  ;
 
 				//Overwrite	Message			
-				if (data.indexOf("log:act.duplicator_system_check=>overwrite") != -1)	{
+				if (data.indexOf("log:act__system_check=>overwrite") != -1)	{
 					var validate_msg = "Package name already exists! Overwrite with newer package?\n\n" + msgDetails;
 
 					if (confirm(validate_msg)) {
@@ -213,9 +213,10 @@ jQuery(document).ready( function($) {
 						Duplicator.overwrite(packname);
 					} else {
 						Duplicator.Log("Action canceled, logging complete.<br/>\n", true);
+						Duplicator.setStatus("Ready to create new package.");
 					}
 				//Size Limit
-				} else if (data.indexOf("log:act.duplicator_system_check=>size_limit") != -1) {
+				} else if (data.indexOf("log:act__system_check=>size_limit") != -1) {
 					alert('2GB archive size reached!  Currently the Duplicator only\nsupports achieving sites under 2GB.  We are currently\nworking on this limitation in future releases.\n\nYou can easily overcome this limitation by temporarily\nmoving large files outside of your root WordPress directory.\nOnce you have created your package and installed it you can\nthen move those files back to the same location.');
 					Duplicator.setStatus("2GB Size limit reached!");
 					return false
@@ -227,6 +228,7 @@ jQuery(document).ready( function($) {
 						Duplicator.createPackage($("input[name=package_name]").val(), $("#email-me").is(':checked'));
 					} else {
 						Duplicator.Log("Action canceled, logging complete.<br/>\n", true);
+						Duplicator.setStatus("Ready to create new package.");
 					}
 				}
 			},

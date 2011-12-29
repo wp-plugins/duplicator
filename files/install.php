@@ -52,9 +52,6 @@ if (file_exists('installer.template.php')) {
 /* ==============================================================================================
 	ADVANCED FEATURES - Allows admins to perform aditional logic on the import. 
 
-	$GLOBALS["DEBUG"]: (false)
-		Set to true if you need detailed information shown on the export of the script.
-	
 	$GLOBALS["SCRUB_LIST"]:	(empty)
 		Use this list to scrub additional urls in the database.  This list be replace with 
 		the 'Install URL' value on the main install page.  This is useful if you have urls 
@@ -71,33 +68,37 @@ if (file_exists('installer.template.php')) {
 	$GLOBALS["SERIAL_TABLES"]: requires $GLOBALS["SERIAL_STR_FIX"] to be true
 		By default the Duplicator only scrubs the wordpress options table.  If you would like other 
 		tables to be scrubbed to fix serialized strings that are associted with the 'Install URL'
-		and $GLOBALS["SCRUB_LIST"] urls then and the tables here.  The table will need to have
+		and $GLOBALS["SCRUB_LIST"] urls then add the tables here.  The table will need to have
 		a unique column index passed as the 'column_id' key and a column were the actual correction
 		will be made in the 'column_value'.
 
 ================================================================================================= */
 
 $GLOBALS["SCRUB_LIST"] 	   		= null; //array("");
-$GLOBALS["DEBUG"]	   	   		= isset($_POST['debug']) ? true : false;
 $GLOBALS["REMOVE_DBCACHE"] 		= true;
 $GLOBALS["SERIAL_STR_FIX"] 		= true;
 
 //Add item for every table to search and scrub.
 //$GLOBALS["SERIAL_TABLES"]["TABLE_TO_SEARCH"] = array('column_id' => 'an_indexable_id',  'column_value' => 'the_column_to_perform_search_on');
 
-ini_set("max_execution_time", "900"); 
-ini_set('memory_limit', '256M');
+ini_set("max_execution_time", "1000"); 
+ini_set('memory_limit', '512M');
 
 /* ================================================================================================
 END ADVANCED FEATURES: Do not edit below here.
 =================================================================================================== */
 
 
-
 //GLOBALS
-$GLOBALS["DEBUG_LOG"] =	array();
-$GLOBALS["SERIAL_TABLES"]["wpplug_options"] = array('column_id' => 'option_id',  'column_value' => 'option_value');
-$GLOBALS["DEBUG_SQL_FILE"] = "install-data.sql";
+$GLOBALS["SERIAL_TABLES"]["wpplug_options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
+$GLOBALS["SERIAL_TABLES"]["wpplug_postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');															 
+
+$GLOBALS["SQL_FILE_NAME"] 	= "install-data.sql";
+$GLOBALS["LOG_FILE_NAME"] 	= "install-log.txt";
+$GLOBALS["LOG_FILE_HANDLE"] = fopen($GLOBALS["LOG_FILE_NAME"], "w+");
+$GLOBALS["SEPERATOR1"]      = str_repeat("********", 10);
+$GLOBALS["SEPERATOR2"]      = str_repeat("\n", 5);
+$GLOBALS["LOG_LEVEL"]  	 	= isset($_POST['log_level']) ? $_POST['log_level'] : 1;
 
 //POST PARMS
 $action 	 = isset($_POST['action']) 		? trim($_POST['action']) 		: null;
@@ -107,11 +108,14 @@ $dbuser		 = isset($_POST['dbuser'])	 	? trim($_POST['dbuser'])	 	: null;
 $dbpassword  = isset($_POST['dbpassword']) 	? trim($_POST['dbpassword'])	: null;
 $current_url = isset($_POST['current_url'])	? trim($_POST['current_url'])	: null;
 $new_url 	 = isset($_POST['nurl'])		? trim($_POST['nurl'])			: null;
-$disable_ssl = (isset($_POST['disable_ssl'])  && $_POST['disable_ssl'] ==  '1')  ? true : false;
-$dbmake 	 = (isset($_POST['dbmake'])  && $_POST['dbmake'] ==  '1')  ? true : false;
-$dbclean 	 = (isset($_POST['dbclean']) && $_POST['dbclean'] == '1')  ? true : false;
-$dbcharvalid = (isset($_POST['dbcharvalid']) && $_POST['dbcharvalid'] == '1')  ? true : false;
-$new_url	 = rtrim($new_url, '/'); // Remove all trailing slashes
+$new_url	 = rtrim($new_url, '/'); 
+
+$disable_ssl = (isset($_POST['disable_ssl']) && $_POST['disable_ssl'] == '1')  	? true : false;
+$dbmake 	 = (isset($_POST['dbmake'])  	 && $_POST['dbmake'] ==  '1')  		? true : false;
+$dbclean 	 = (isset($_POST['dbclean']) 	 && $_POST['dbclean'] == '1')  		? true : false;
+$dbcharvalid = (isset($_POST['dbcharvalid']) && $_POST['dbcharvalid'] == '1')  	? true : false;
+$zip_delete  = (isset($_POST['zip_delete'])  && $_POST['zip_delete'] == '1') 	? true : false;
+$zip_manual  = (isset($_POST['zip_manual'])  && $_POST['zip_manual'] == '1')  	? true : false;
 
 //CONSTANTS
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?article=3#installer-ui");
@@ -121,10 +125,11 @@ define('MSG_FAIL_DBCONNECT_CREATE', '<div class="error"><b style="color:#B80000;
 define('MSG_FAIL_DBTRYCLEAN',   	'<div class="error"><b style="color:#C16C1D;">DATABASE CREATION FAILURE!</b><br/> Unable to remove all tables from database "%s".<br/>  Please remove all tables from this database and try the installation again.</div>');
 define('MSG_ERR_CONFIG', 			'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> A configuration file already exists in this location.  You have two options: <ul><li>Empty this root directory and recopy the package and installer.</li><li>Copy package from "' . DUPLICATOR_SSDIR_NAME . '" directory back up to your root (same location as install.php) and delete the wp-config.php file.</li></ul></div>');
 define('MSG_ERR_DBCREATE',   		'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> The database "%s" does not exists.<br/>  Enable allow database creation to proceed with the installation.</div>');
-define('MSG_ERR_DBCLEANCHECK', 		'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> The database "%s" has %s tables.  The Duplicator only works with an EMPTY database.  Enable the "Allow Table Removal" checkbox to delete all tables and proceed with installation.</div>');
+define('MSG_ERR_DBCLEANCHECK', 		'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> The database "%s" has %s tables.  The Duplicator only works with an EMPTY database.  Enable the "Allow Table Removal" checkbox to delete all tables and proceed with installation.  Please backup all your data before proceeding!<br/><br/>  Some hosting providers do not allow table removal from scripts like the Duplicator.  In this case you will need to login to your hosting providers control panel and remove the tables manually.  Please contact your hosting provider for further details. </div>');
 define('MSG_ERR_ZIPNOTFOUND', 		'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> The packaged zip file was not found. Be sure the zip package is in the same directory as the installer file.  If you are trying to reinstall a package you can copy the package from the "' . DUPLICATOR_SSDIR_NAME . '" directory back up to your root (the same location as your install.php file). </div>');
 define('MSG_ERR_ZIPDIR_TEMPERED',	'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> There are issues with reading the package file.  Your permissions for where you are attempting to exact the package may not be correct.  Temporarily increase the permission of the packages containing directory in order for the package extraction to work.  The package could also be tempered.  Please remove all zip packages and installer files and make sure the package and installer files are from the same creation time and no modification have been made to either file (such as a file rename).</div>');
 define('MSG_ERR_ZIPEXTRACTION', 	'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> Failed in extracting zip file. Please be sure the archive is completely downloaded. Try to extract the archive manually to make sure the file is not corrupted.  </div>');
+define('MSG_ERR_ZIPMANUAL', 		'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> When choosing manual package extraction, the contents of the package must already be extracted and the wp-config.php and database.sql files must be present in the same directory as the install.php for the process to continue.  Please manually extract the package into the current directory before continuing in manual extraction mode.  </div>');
 define('MSG_OK_PASS', 				'<div class="error"><b style="color:#006E32;">VALIDATION SUCCESSFUL!</b><br/> Please proceed with installation.</div>');
 
 
@@ -227,12 +232,20 @@ function add_ending_slash($path){
  *  DEBUG
  *  Used to write debug info to the output page
  *
- *  @param string $title	A unique name used to identify a block
  *  @param string $msg		A a message that belongs to a unique title block
+ *  @param int $loglevel	Log level
+ *  @param bool $newline	Insert a newline
  */
-function debug($title, $msg) {
-	if ($GLOBALS["DEBUG"] && isset($title)) {
-		$GLOBALS["DEBUG_LOG"]["$title"] .= "{$msg}\n";
+function write_log($msg, $loglevel = 1, $newline = true) {
+	
+	if ($loglevel <= $GLOBALS["LOG_LEVEL"] ) {
+		if (isset($GLOBALS["LOG_FILE_HANDLE"])) {
+			if ($newline) {
+				fwrite($GLOBALS["LOG_FILE_HANDLE"], "{$msg}\n");
+			} else {
+				fwrite($GLOBALS["LOG_FILE_HANDLE"], "{$msg}");
+			}
+		}
 	}
 }
 
@@ -243,8 +256,22 @@ function debug($title, $msg) {
  *  @param string $sObject	The string ojbect to recalculate the size on.
  */
 function set_serialized_string($sObject) {
-	$ret =preg_replace('!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $sObject );
+	$ret =preg_replace('!s:(\d+):"([\w-\W]*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $sObject );
 	return $ret;
+}
+
+/**
+ *  SET_SAFE_PATH
+ *  Makes path safe for any OS
+ *  Paths should ALWAYS READ be "/"
+ *		uni: /home/path/file.xt
+ *		win:  D:/home/path/file.txt 
+ *
+ *  @param string $path		The path to make safe
+ *
+ */
+function set_safe_path($path) {
+	return str_replace("\\", "/", $path);
 }
 
 //AJAX MESSAGE REQUESTS
@@ -280,27 +307,23 @@ if ($action == 'dbconnect-test') {
 		a {color:navy}
 		a:hover{color:gray}
 
-		div#content {	border:1px solid #CDCDCD;  width:750px; height:750px; margin:auto; margin-top:18px;}
+		div#content {	border:1px solid #CDCDCD;  width:750px; height:775px; margin:auto; margin-top:18px; border-radius:5px}
 		div#content-inner {padding:10px 30px;}
 		input.readonly {background-color:#efefef; border:1px solid silver; padding:2px;}
-		
 		div.tryagain{padding-top:50px; text-align:right; width:100%;}
 		div.error {font-size:16px; padding-top:2px;line-height:22px; }
-		
 		table.table-inputs td{white-space:nowrap;}
-
 		div.div-buttons {text-align:right; padding:10px 0px}
 		input.button {font-size:14px; padding:5px}
-		div.final-msg{height:370px;overflow-y:scroll;border:2px solid #CDCDCD; padding:8px;font-size:12px;line-height:22px !important;background-color:#efefef;}
+		div.final-msg{height:365px;overflow-y:scroll;border:1px solid #CDCDCD; padding:8px;font-size:12px;line-height:22px !important;background-color:#efefef; border-radius:5px;}
 		
 		/*DB Conn Window */
-		div#dbconn-test { position:absolute;	display:none; background-color:#fff; width:450px; min-height:180px; border:2px solid silver; margin:100px 0px 0px 150px; z-index:10; line-height:24px;}
-		div#dbconn-test-hdr {font-weight:bold; background-color:#e4e4e4; padding:5px; }
+		div#dbconn-test { position:absolute;	display:none; background-color:#fff; width:450px; min-height:180px; border:2px solid silver; border-radius:5px; margin:90px 0px 0px 150px; z-index:10; line-height:24px;}
+		div#dbconn-test-hdr {font-weight:bold; background-color:#C0C0C0; padding:5px; }
 		div#dbconn-test-msg {background-color:#fff; padding:2px 15px; height:150px; overflow-y:scroll; }
-		div#dbconn-test-close {background-color:#e4e4e4;font-size:14px;}
+		div#dbconn-test-close {background-color:#C0C0C0;font-size:14px;}
 		
-		div.debug-info {padding:8px; border:1px solid silver;background-color:#E4E4E4}
-		div.debug-hdr {}
+		div.connect {padding:5px; font-size:12px; border:1px solid silver; border-radius:5px; background-color:#fff; text-align:center; margin-top:15px; line-height:22px;}
 	</style>
 	<script type="text/javascript">
 		//NOTE: We can't assume the user will always have an http connection.
@@ -370,7 +393,7 @@ if ($action == 'dbconnect-test') {
 				if ( $("#dbuser").val() == "" ) {alert("The field database user is required!"); return false;}
 				
 				var msg =  "Proceed with installation with the following settings?\n\nServer: " + $("#dbhost").val() + "\nDatabase: " + $("#dbname").val() + "\n\n";
-				    msg += "Warning: Be sure these database parameters are correct! Entering the wrong information WILL overwrite an existing database!\n\n";
+				    msg += "Warning: Be sure these database parameters are correct! Entering the wrong information WILL overwrite an existing database!  Be sure to have backups of all your data!\n\n";
 				var answer = confirm(msg);
 				if (answer) {
 					$("#submit").val('Processing Please Wait... ');
@@ -403,10 +426,12 @@ if ($action == 'dbconnect-test') {
 	</table>
 	
 	<div id="content-inner">
+	
 	<?php
 	if ($action == 'process') {
 		
 		//START Stopwatch
+		echo "<div style='text-align:center; font-size:11px'><i>See <a href='install-log.txt' target='_blank'>install-log.txt</a> for an overview of this process.</i></div>";	
 		echo "<script type='text/javascript'> _stopWatch.startStop(); </script>";
 		
 		$tryagain_html	 = "<div class='tryagain'><a href='javascript:window.history.back()' style='color:#444; font-weight:bold'>Try Again</a></div><script type='text/javascript'> _stopWatch.startStop(); </script>";
@@ -416,7 +441,9 @@ if ($action == 'dbconnect-test') {
 		//PRECHECKS: Validate and make sure to have a clean enviroment
 		//====================================================================================================
 		if(file_exists('wp-config.php')) {
-			die(MSG_ERR_CONFIG . $tryagain_html);
+			if (! $zip_manual) {
+				die(MSG_ERR_CONFIG . $tryagain_html);
+			}
 		}
 		$conn = @mysql_connect($dbhost, $dbuser, $dbpassword) 
 			or die(sprintf(MSG_FAIL_DBCONNECT, mysql_error()) . $tryagain_html);
@@ -432,7 +459,7 @@ if ($action == 'dbconnect-test') {
 		}
 		
 		if (! $dbclean) {
-			$log = "REMOVING TABLES:\nDatabase already empty. Ready for install.";
+			$log = "Database already empty. Ready for install.";
 			$tblcount = table_count($dbname);
 			if ($tblcount > 0) {
 				die(sprintf(MSG_ERR_DBCLEANCHECK, $dbname, $tblcount ) . $tryagain_html);
@@ -440,6 +467,7 @@ if ($action == 'dbconnect-test') {
 		} else {
 			/* Remove all existing tables */
 			$sql = "SHOW TABLES FROM `{$dbname}`";
+			$found_tables = null;
 			if($result = mysql_query($sql, $conn)){
 				while($row = mysql_fetch_row($result)){
 					$found_tables[] = $row[0];
@@ -454,20 +482,31 @@ if ($action == 'dbconnect-test') {
 							$log .=  "{$sql}\n";
 						}
 					}
-				} 
+				} else {
+					$log = "No tables found to remove.";
+				}
 			} 
 		}
-		debug('PRECHECKS', "CONNECTION:\nhost:{$dbhost}\nuser:{$dbuser}@{$dbpassword}\ndatabase:{$dbname}\n ");
-		debug('PRECHECKS', $log);
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		write_log('START-PRECHECK:' . date('h:i:s'));
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		write_log("php:" .  phpversion() . " | server: {$_SERVER['SERVER_SOFTWARE']}");
+		write_log("connection passed=>host:{$dbhost} | database:{$dbname} ");
+		write_log("log level: {$GLOBALS['LOG_LEVEL']}");
+		write_log("drop tables status=>{$log}");
+		write_log('END-PRECHECK:' . date('h:i:s') . $GLOBALS["SEPERATOR2"] );
 		$log = '';
 		echo "<h3>&raquo; Prechecks Completed</h3>";
-		
 		flush();
+		
 		
 		
 		//====================================================================================================
 		//PACKAGE EXTRACTED: Extract the contents of the zip file
 		//====================================================================================================
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		write_log("START-PACKAGE-EXTRACTION:"  . date('h:i:s'));
+		write_log("{$GLOBALS['SEPERATOR1']}");
 		$zip_name	 = '';
 		$folder_name = '';
 		
@@ -478,25 +517,47 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
-		$zip 		= new ZipArchive;
-		$source 	= dirname(__FILE__).'/'.$folder_name;
-		$target 	= dirname(__FILE__);
-		$zip_size 	= filesize($filename);		
-		if ($zip->open($zip_name) === TRUE)	{
-			$zip->extractTo(dirname(__FILE__));
-			if( ! file_exists($folder_name ))	{
-			  die(MSG_ERR_ZIPDIR_TEMPERED  . $tryagain_html);
-			}	
-			debug('PACKAGE', "ZIP INFORMATION:\n" . print_r($zip, true));
-			full_copy($source, $target);
-			delete_all($source, true);
-			$zip->close();
-		 } else {
-			die(MSG_ERR_ZIPEXTRACTION . $tryagain_html );
+		
+		$source 	= set_safe_path(dirname(__FILE__).'/'.$folder_name);
+		$target 	= set_safe_path(dirname(__FILE__));
+		$zip_size 	= filesize($filename);	
+		
+		if ($zip_manual) {
+			write_log("\n-package extraction is in manual mode-\n");
+			
+			if (! file_exists("wp-config.php") && ! file_exists("database.sql")) {
+				write_log("files wp-config.php or database.sql not found\n");
+				die(MSG_ERR_ZIPMANUAL  . $tryagain_html);
+			}
+			
+		} else {
+			write_log("starting package extraction");
+			$zip 		= new ZipArchive();
+			if ($zip->open($zip_name) === TRUE)	{
+				$zip->extractTo(dirname(__FILE__));
+				if( ! file_exists($folder_name ))	{
+				  die(MSG_ERR_ZIPDIR_TEMPERED  . $tryagain_html);
+				}	
+				write_log("zip information:\n" . print_r($zip, true));
+				write_log("package extracted successfully\n");
+				$zip->close();
+				
+				write_log("copying files\n-source:{$source}\n-target:{$target}");
+				full_copy($source, $target);
+				write_log("copy completed\nremoving directory:{$source}");
+				delete_all($source, true);
+				write_log("source directory removed\n");
+				
+			 } else {
+				die(MSG_ERR_ZIPEXTRACTION . $tryagain_html );
+			}
+			
+			
+			echo "<h3>&raquo; Package Extracted</h3>";
+			flush();
 		}
-		debug('PACKAGE', "Package Extracted Successfully");
-		echo "<h3>&raquo; Package Extracted</h3>";
-		flush();
+		write_log('END-PACKAGE-EXTRACTION:' . date('h:i:s') . $GLOBALS["SEPERATOR2"] );
+
 	
 	
 		//====================================================================================================
@@ -504,6 +565,9 @@ if ($action == 'dbconnect-test') {
 		//====================================================================================================
 		
 		//WP-CONFIG
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		write_log('START SCRIPT FILES ROUTINE:'  . date('h:i:s'));
+		write_log("{$GLOBALS['SEPERATOR1']}");
 		$config_file = @file_get_contents('wp-config.php', true);
 	
 		$patterns = array ("/'DB_NAME',\s*'.*?'/",
@@ -525,16 +589,14 @@ if ($action == 'dbconnect-test') {
 		file_put_contents('wp-config.php', $config_file);
 		
 		//DATABASE SCRIPT
-		$dbconfig_file = @file_get_contents('database.sql', true);
+		$sql_file = @file_get_contents('database.sql', true);
 		
 		//Complex Subject See: http://webcollab.sourceforge.net/unicode.html
 		//Remove no breaking characters
 		if ($dbcharvalid) {
-			debug('SCRIPT-FILES', "Performed Database Character Validation\n" . $log);
-			//$dbconfig_file = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]'. '|\xED[\xA0-\xBF][\x80-\xBF]/S',' ', $dbconfig_file );
-			$dbconfig_file = str_ireplace("\xA0"," ",$dbconfig_file );
+			write_log("performed database character validation\n" . $log);
+			$sql_file = str_ireplace("\xA0"," ",$sql_file );
 		}
-		
 		
 		$primary_list  = array($current_url);
 		if (count($GLOBALS["SCRUB_LIST"]) > 0) {
@@ -545,24 +607,30 @@ if ($action == 'dbconnect-test') {
 
 		for($i = 0; $i < count($primary_list); ++$i) {
 			$old_url 		= $primary_list[$i];
-			$log		   .= "\t- {$old_url}\n";
-			$dbconfig_file	= str_replace($old_url, $new_url, $dbconfig_file);
+			$log		   .= "- {$old_url}\n";
+			$sql_file	= str_replace($old_url, $new_url, $sql_file);
 		}	
 
-		$res = explode(";\n", $dbconfig_file);
+		$res = explode(";\n", $sql_file);
 		$len = count($res);
-		file_put_contents($GLOBALS["DEBUG_SQL_FILE"], $dbconfig_file);
+		file_put_contents($GLOBALS["SQL_FILE_NAME"], $sql_file);
 		
-		debug('SCRIPT-FILES', "FINALIZED SCRIPTS:\n\t- See {$GLOBALS['DEBUG_SQL_FILE']} in root directory for the SQL script ran.\n\t- See wp-config.php in root directory for the updated changes." );
-		debug('SCRIPT-FILES', "Scrubbed the following URL(s) in the database script:\n" . $log);
+		write_log("finalized scripts:\n- see {$GLOBALS['SQL_FILE_NAME']} in root directory for the SQL script ran.\n- see wp-config.php in root directory for the updated changes." );
+		write_log("scrubbed the following url(s) in the database script:\n" . $log);
 		$log = '';
 		echo "<h3>&raquo; Script Files Updated</h3>";
+		write_log('END SCRIPT FILES ROUTINE:'  . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
 		flush();
+	
 	
 	
 		//====================================================================================================
 		//DATABASE ROUTINES
 		//====================================================================================================
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		write_log('START DB-ROUTINES:' . date('h:i:s'));
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		
 		$temp=0;
 		while ($temp < $len) {
 			mysql_query(($res[$temp]));	
@@ -579,19 +647,22 @@ if ($action == 'dbconnect-test') {
 		
 		//Fix string length on any serilized data.
 		if ($GLOBALS["SERIAL_STR_FIX"]) {
+		
+			write_log("serialization fix enabled (filtering internally on serlizable strings)\n");
+			$fix_count	= 0;
+			$seperator1  = str_repeat("####", 10);
+			$seperator2  = str_repeat("----", 10);
+			
 			foreach($GLOBALS["SERIAL_TABLES"] as $table_name => $column_info) {
-				$seperator  = str_repeat("----", 23);
-				$fix_count	= 0;
-
+				
 				$table 	 = $table_name; 
 				$col_id  = $column_info['column_id'];
 				$col_val = $column_info['column_value'];  
 				$sql 	 = "SELECT {$col_id}, {$col_val} FROM {$table} WHERE {$col_val} LIKE '%{$new_url}%'" ;
 				$retid 	 = mysql_query($sql, $conn);
-				$serial_count = @mysql_num_rows($retid);
-				
-				debug('DB-ROUTINES', "SERIALIZATION FIX ENABLED:\n");
-				debug('DB-ROUTINES', "Serialization Query:\n{$sql} (filtering internally on serlizable strings)\n");
+				//$serial_count = @mysql_num_rows($retid);
+			
+				write_log("serialization query:\n{$sql} \n");
 				while ($row = @mysql_fetch_array($retid)) {
 					if (strpos($row[$col_val], 's:')) {
 						$old_val	= $row[$col_val];
@@ -603,31 +674,38 @@ if ($action == 'dbconnect-test') {
 							$result = mysql_query("$sql",$conn);
 							if ($result) {
 								$fix_count++;
-								$log .= "{$seperator}\nID:{$row[$col_id]} before\n{$old_val}\n" . "{$seperator}\nID:{$row[$col_id]} after\n{$new_val}\n";
+								$log .= "{$seperator1}\n{$table}=id:{$row[$col_id]} [before]\n{$old_val}\n";
+								$log .= "{$seperator2}\n{$table}=id:{$row[$col_id]} [after]\n{$new_val}\n";
 							}
 						}
 					}
 				}
 			}
 			
-			debug('DB-ROUTINES', "Serialization Replacements:\nUpdated {$fix_count} records\n" . $log);
+			write_log("serialization replacements:\nupdated {$fix_count} records\n");
+			write_log("serialization replacements overview:". $log, 2);
 			$log = '';
 		}
 
 		//Perform Transient Cache Cleanup
 		if ($GLOBALS["REMOVE_DBCACHE"]) {
-			debug('DB-ROUTINES', "TRANSIENT CACHED CLEANUP ENABLED:Performing cleanup.\n");
+			write_log("transient cached cleanup enabled:performing cleanup.\n");
 			mysql_query("DELETE FROM `wpplug_options` WHERE `option_name` LIKE ('_transient%')");
 			mysql_query("DELETE FROM `wpplug_options` WHERE `option_name` LIKE ('_site_transient%')");
 		}
 
 		echo "<h3>&raquo; Database Routines Completed</h3>";
+		write_log('END DB-ROUTINES:'  . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
 		flush();
 		
 		
 		//====================================================================================================
 		//FINAL CLEANUP
 		//====================================================================================================
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		write_log('START FINAL CLEANUP:' . date('h:i:s'));
+		write_log("{$GLOBALS['SEPERATOR1']}");
+		
 		if(!file_exists(DUPLICATOR_SSDIR_NAME)) {
 			mkdir(DUPLICATOR_SSDIR_NAME,'0755');
 		}
@@ -635,22 +713,24 @@ if ($action == 'dbconnect-test') {
 		fclose($fp);
 		copy($zip_name, DUPLICATOR_SSDIR_NAME . '/'.$zip_name);
 		
-		@unlink($zip_name);
+		if ($zip_delete) {
+			@unlink($zip_name);
+		}
 		@unlink('database.sql');
 		
 		$currdata = parse_url("http://localhost/projects/wpplug_duplicator"); 
 		$newdata  = parse_url($new_url);
-		$currpath = add_ending_slash($currdata['path']);
-		$newpath  = add_ending_slash($newdata['path']);
+		$currpath = add_ending_slash(isset($currdata['path']) ? $currdata['path'] : "");
+		$newpath  = add_ending_slash(isset($newdata['path'])  ? $newdata['path']  : "");
 		
 		//WEB CONFIG FILE
 		if ($currpath != $newpath) {
-			debug('FINALIZE', "HTACCESS CHANGES:");
+			write_log("HTACCESS CHANGES:");
 			@copy('.htaccess', '.htaccess.orig');
 			@copy('web.config', 'web.config.orig');
 			@unlink('.htaccess');
 			@unlink('web.config');
-			debug('FINALIZE', "Created backup of original .htaccess to htaccess.orig and web.config to web.config.orig");
+			write_log("created backup of original .htaccess to htaccess.orig and web.config to web.config.orig");
 			
 			$tmp_htaccess = <<<HTACCESS
 # BEGIN WordPress
@@ -660,14 +740,15 @@ if ($action == 'dbconnect-test') {
 	RewriteRule ^index\.php$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule . {$newpath}/index.php [L]
+	RewriteRule . {$newpath}index.php [L]
 	</IfModule>
 # END WordPress
 HTACCESS;
 			file_put_contents('.htaccess', $tmp_htaccess);
-			debug('FINALIZE', "Created basic .htaccess file.  Using IIS web.config this process will need to be done manually.");
+			write_log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
+			write_log("updated .htaccess file as follows:\n {$tmp_htaccess}");
 		}  else {
-			debug('FINALIZE', "Web configuration file was not renamed because the paths did not change.");
+			write_log("web configuration file was not renamed because the paths did not change.");
 		}
 		
 		//DEACTIVATED PLUGINS
@@ -677,7 +758,7 @@ HTACCESS;
 		$html .= "<h3>&#10004; Process completed!</h3><br/>";
 		$html .= "<font style='color:#BE2323'><b>IMPORTANT FINAL STEPS!</b></font>";
 		$html .= "<div class='final-msg'>";
-		$html .= "Complete <u>all</u> these steps to finish setup:<ul><li>Validate directory and file permissions</li><li>Resave permalinks - <a href='{$new_url}/wp-admin/options-permalink.php' target='_blank'>take me there</a></li><li>Empty cache on <u>all</u> cache plugins <i style='font-size:11px'>(W3 Cache, etc...)</i> and resave plugin settings</li><li>Delete the <b style='color:#BE2323'>install.php &amp; install-data.sql</b> files.</li><li>Validate all sections of your site - <a href='{$new_url}' target='_blank'>take me there</a> </li></ul>";
+		$html .= "Complete <u>all</u> these steps to finish setup:<ul><li>Validate directory and file permissions</li><li>Resave permalinks - <a href='{$new_url}/wp-admin/options-permalink.php' target='_blank'>take me there</a></li><li>Empty cache on <u>all</u> cache plugins <i style='font-size:11px'>(W3 Cache, etc...)</i> and resave plugin settings</li><li>Delete the <b style='color:#BE2323'>install.php, install-data.sql, install-log.txt &amp; package</b> files if present.</li><li>Validate all sections of your site - <a href='{$new_url}' target='_blank'>take me there</a> </li></ul>";
 		
 		$html .= "<hr size='1' /><b>TROUBLESHOOTING</b><br/><br/><b>Common Quick Fix Issues:</b><ul><li>Validate directory and file permissions (see below)</li><li>Validate web server configuration file (see below)</li><li>Clear your browsers cache</li><li>Deactivate and reactivate all plugins</li><li>Resave a plugins settings if it reports errors</li><li>Make sure your root directory is empty</li></ul>";		
 		
@@ -687,19 +768,23 @@ HTACCESS;
 		
 		$html .= "<b>Plugin Notes:</b><br/> It's impossible to know how all 3rd party plugins function.  The Duplicator attempts to fix the new install URL for settings stored in the WordPress options table.   Please validate that all plugins retained there settings after installing. If you experience issues try to bulk deactivate all plugins then bulk reactivate them on your new duplicated site. If you run into issues were a plugin does not retain its data then try to resave the plugins settings.<br/><br/>";
 		
-		$html .= "<b>Cache Systems:</b><br/>Any type of cache system such as Super Cache, W3 Cache, etc. should be emptied before you actually create a package.  Another alternative is to include the cache directory in the directory exclusion path list found in the options dialog. Including a directory such as \pathtowordpress\wp-content\w3tc\ (the w3 Total Cache directory) will exclude this directory from being packaged. In is highly recommended to always perform a cache empty when you first fire up your new site even if you excluded your cache directory.<br/><br/>";
+		$html .= "<b>Cache Systems:</b><br/>Any type of cache system such as Super Cache, W3 Cache, etc. should be emptied before you create a package.  Another alternative is to include the cache directory in the directory exclusion path list found in the options dialog. Including a directory such as \pathtowordpress\wp-content\w3tc\ (the w3 Total Cache directory) will exclude this directory from being packaged. In is highly recommended to always perform a cache empty when you first fire up your new site even if you excluded your cache directory.<br/><br/>";
 		
-		$html .= "<b>Additional Notes:</b><br/>If you have made changes to your PHP files directly this might have an impact on your duplicated site.  Be sure all changes made will correspond to the sites new location.  Only the package (zip file) and the install.php file should be in the directory where you are installing the site.  Please read through our knowledge base before submitting any issues. <br/><br/>";
+		$html .= "<b>Trying Again:</b><br/>If you need to retry and reinstall this package you can easily run the process again by deleting all files except the install.php and package file and then browse to the install.php again.<br/><br/>";
+		
+		$html .= "<b>Additional Notes:</b><br/>If you have made changes to your PHP files directly this might have an impact on your duplicated site.  Be sure all changes made will correspond to the sites new location.  Only the package (zip file) and the install.php file should be in the directory where you are installing the site.  Please read through our knowledge base before submitting any issues.  If you have a large log file that needs evaluated please email the file, or attach it to a help ticket.<br/><br/>";
 		
 		$html .= "</div>";
 		
-		$html .= "<div style='padding: 15px 0px'>If you run into any errors please see our FAQs or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a></div>";
+		$html .= "<div class='connect'>For issues or errors please see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership</a> with us!</div>";
 		
 		//Stop the watch when completed
 		$html .= "<script type='text/javascript'> _stopWatch.startStop();  prepAdminPage();</script>";
 		echo $html;
 		
 		mysql_close($conn);
+		write_log('END FINAL CLEANUP:' . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
+		fclose($GLOBALS["LOG_FILE_HANDLE"]);
 	}
 	?>
 	
@@ -712,7 +797,7 @@ HTACCESS;
 				<div id="dbconn-test-hdr">Installer Validation Prechecks</div>
 				<div id="dbconn-test-msg"></div>
 				<div id="dbconn-test-close" style="text-align:center">
-					<a id="dbconn-test-close-link" href="javascript:void(0)" class="large-links"><b>Close</b></a>
+					<a id="dbconn-test-close-link" href="javascript:void(0)"><b>Close</b></a>
 				</div>
 			</div>
 		</div>
@@ -723,10 +808,10 @@ HTACCESS;
 			<input type="hidden" name="action" value="process" />
 			<fieldset>
 				<legend>Settings</legend>
-				<table width="100%" border="0" cellspacing="3" cellpadding="3" class="table-inputs">
+				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="table-inputs">
 				<tr>
 					<td>Package Name</td>
-					<td><input type="text" name="package_name"  value="20110826_DuplicatorPlugin2.zip" readonly="true" class="readonly" /></td>
+					<td><input type="text" name="package_name"  value="20111229_DuplicatorPlugin.zip" readonly="true" class="readonly" /></td>
 				</tr>
 				<tr valign="top">
 					<td style="width:130px">Package URL</td>
@@ -738,7 +823,7 @@ HTACCESS;
 				</tr>
 				<tr>
 					<td>Install URL</td>
-					<td><input type="text" name="nurl" id="nurl" value="" />&nbsp;<a href="javascript:getNewURL()" class="links">get</a></td>
+					<td><input type="text" name="nurl" id="nurl" value="" />&nbsp;<a href="javascript:getNewURL()" style="font-size:12px">get</a></td>
 				</tr>
 				<tr>
 					<td>Site Title</td>
@@ -747,8 +832,16 @@ HTACCESS;
 				<tr>
 					<td></td>
 					<td style="font-size:12px">
-						<input type="checkbox" name="debug" id="debug" value="1" checked="checked" /> Enable Logging <i style="font-size:11px">(shows debugging details)</i><br/>
 						<input type="checkbox" name="disable_ssl" id="disabled_ssl" value="1" /> Disable SSL Admin <i style="font-size:11px">(sets FORCE_SSL_ADMIN to false)</i><br/>
+						<input type="checkbox" name="zip_delete" id="zip_delete" value="1" /> Delete Package After Install <br/>
+						<input type="checkbox" name="zip_manual" id="zip_manual" value="1" /> Manual Package Extraction <i style="font-size:11px">(manually unzip the package)</i><br/>
+						<div style="padding:5px 0px 0px 60px">
+							<label for="log_level">Log Level:</label> 
+							<select name="log_level" id="log_level" style="font-size:12px">
+								<option value="1" selected="selected">Level 1 - light</option>
+								<option value="2">Level 2 - detailed</option>
+							</select>
+						</div>
 					</td>
 				</tr>
 
@@ -757,11 +850,11 @@ HTACCESS;
 			
 			<fieldset>
 				<legend>Database</legend>
-				<table width="100%" border="0" cellspacing="3" cellpadding="3"  class="table-inputs">
+				<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
 					<tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="localhost" /></td></tr>
 					<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="" /></td></tr>
 					<tr><td colspan="2">
-						<div style="margin:-10px 0px 0px 140px; line-height:24px; font-size:12px;">
+						<div style="margin:-5px 0px 0px 140px; font-size:12px;">
 							<input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Allow Database Creation</label> <br/>
 							<input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Allow Table Removal</label> <br/>
 							<input type="checkbox" name="dbcharvalid" id="dbcharvalid" value="1" /> <label for="dbcharvalid">Replace Invalid Characters</label>&nbsp; <i style="font-size:11px">(useful for Linux to Windows migrations)</i>
@@ -772,11 +865,11 @@ HTACCESS;
 				</table>
 				
 				<div style="text-align:center">
-					<a href="javascript:validateInstall()" class="large-links">[Test Connection]</a><br/><br/>
+					<a href="javascript:validateInstall()" style="font-size:12px">[Test Connection]</a><br/><br/>
 				</div>
 				<div style="padding:5px">
-					<i style="font-size:12px">Notice: Only the package (zip file) and install.php file should be in the install directory. All other files will be OVERWRITTEN during install. It is highly recommended that you make full backups of all your databases before continuing with installations. The Duplicator is a powerful tool that can overwrite files and databases. Please pay attention to your configuration!!</i><br/><br/>
-				</div>
+					<i style="font-size:12px; color:gray">Warning: Only the package (zip file) and install.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install. Make sure you have full backups of all your databases and files before continuing with installations. Please pay attention to your configuration!!<br/><br/>Notice: Manual extraction requires that all contents in the package are extracted to the same directory as the install.php file.  Manual extraction is not recommended and only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
+				</i></div>
 			</fieldset>
 			<div class="div-buttons">
 				<input type="reset" value="  Reset  "  class="button"/>
@@ -789,30 +882,6 @@ HTACCESS;
 
 </div><br/>
 
-<?php if  ($GLOBALS["DEBUG"] && $action == 'process') : ?>
-	<div style="margin:auto; width:750px; margin-top:20px;">
-		<b style="font-size:16px">Debug Enabled</b><hr size="1" />
-		<?php 
-			$COMPLETE_LOG = "";
-			foreach ($GLOBALS["DEBUG_LOG"] as $key => $val) { 
-				$COMPLETE_LOG .= $val;
-				$id = str_replace(" ", "", $key);
-				$html  = "<div class='debug-info'>";
-				$html .= "<div class='debug-hdr'><b><input id='chk_{$id}' type='checkbox' onclick=\"$('#{$id}').toggle()\" /><label for='chk_{$id}'>{$key}</label></b></div>";
-				$html .= "<textarea id='{$id}' style='width:100%; height:500px; display:none'>{$val}</textarea>";
-				$html .= "</div>";
-				echo $html;
-			} 
-			//COMPLETE LOG
-			$html  = "<div class='debug-info'>";
-			$html .= "<div class='debug-hdr'><b><input id='chk_COMPLETE_LOG' type='checkbox' onclick=\"$('#COMPLETE_LOG').toggle()\" /><label for='chk_COMPLETE_LOG'>COMPLETE LOG</label></b></div>";
-			$html .= "<textarea id='COMPLETE_LOG' style='width:100%; height:500px; display:none'>{$COMPLETE_LOG}</textarea>";
-			$html .= "</div>";
-			echo $html;
-		?>
-	</div>
-<?php endif; ?> 
-<div style="height:200px"><br/><br/></div>
 
 </body>
 </html>
