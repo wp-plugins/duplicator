@@ -24,7 +24,7 @@
 					<span style=" font-style:italic; font-size:11px">(usefull on large sites)</span><br/>
 					<br/>
 					
-					<input type="checkbox" name="dbiconv" id="dbiconv" <?php echo ($duplicator_dbiconv) ? 'checked="checked"' : ''; ?> /> <label for="dbiconv">Enable database character encoding</label>&nbsp; 
+					<input type="checkbox" name="dbiconv" id="dbiconv" <?php echo ($duplicator_dbiconv) ? 'checked="checked"' : ''; ?> /> <label for="dbiconv">Enable database encoding</label>&nbsp; 
 					<span style=" font-style:italic; font-size:11px">(recommended)</span><br/>
 					<br/>
 					
@@ -44,7 +44,7 @@
 					<table width="100%" border="0">
 						<tr>
 							<td style="width:50%">Max Execution Time: <input type="text" name="max_time" id="max_time" value="<?php echo $max_time_val ?>" <?php echo $max_read_only ?> maxlength="4" style="width:75px" /> seconds</td>
-							<td style="width:50%">Max Memory Limit: <input type="text" name="max_memory" id="max_memory" value="<?php echo preg_replace('/\D/', '', $GLOBALS['duplicator_opts']['max_memory'] ) ?>" maxlength="3" style="width:40px" /> MB <i style='font-size:11px'>(minimum 128)</i></td>
+							<td style="width:50%">Max Memory Limit: <input type="text" name="max_memory" id="max_memory" value="<?php echo preg_replace('/\D/', '', $GLOBALS['duplicator_opts']['max_memory'] ) ?>" maxlength="4" style="width:45px" /> MB <i style='font-size:11px'>(minimum 128)</i></td>
 						</tr>
 					</table><br/>
 					
@@ -80,6 +80,7 @@
 						</tr>
 					</table>
 				</fieldset>
+				<i style='font-size:10px'>Having issues saving these options?  Temporarily disable all "Object Caches" (i.e. W3C Total Object Cache).</i>
 				</div>
 			</div>
 			
@@ -98,7 +99,7 @@
 					</table>
 				</fieldset><br/>
 			
-				<fieldset style="height:160px">
+				<fieldset style="height:190px">
 					<legend>Database Defaults</legend>
 					<table width="100%" border="0" cellspacing="5" cellpadding="5">
 					<tr>
@@ -215,7 +216,7 @@
 					<span class="dup-test-good">Cache Directory Not Found</span>
 				<?php endif; ?>
 				<br /><br /><hr size="1"/>
-				It is highly recommended to exclude all cache store directories.  This will help for a faster and cleaner install.
+				It is highly recommended to exclude all cache store directories. <br/> This will help for a faster and cleaner install.
 				
 			
 				<!--FTP functions:

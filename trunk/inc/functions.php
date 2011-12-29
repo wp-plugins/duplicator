@@ -8,77 +8,83 @@
  */
 function duplicator_create_dbscript($destination) {
 	try {
-	duplicator_log("log:fun.duplicator_create_dbscript=>started");
-	
-	global $wpdb;
-	$tables =  $wpdb->get_col('SHOW TABLES');
-	$dbiconv = $GLOBALS['duplicator_opts']['dbiconv'] == "0" ? false : true;
-	
-	//CREATE TABLES
-	//PERFORM ICONV
-	if ($dbiconv) {
-		duplicator_log("log:fun.duplicator_create_dbscript=>dbiconv enabled");
-		foreach($tables as $table) {
-			$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
-			$num_fields  = count($result[0]);   
-			$items		 = count($result);
-			$return		.= '';
-			$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
-			$return		.= "\n\n" . $row2[1] . ";\n\n";
-			{
-				$ct=0;
-				while($ct < $items) {
-					$row	 = $result[$ct];
-					$return .= 'INSERT INTO '.$table.' VALUES(';
-					for($j=0; $j<$num_fields; $j++) 	{
-						$row[$j] = iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $row[$j]);
-						$row[$j] = mysql_real_escape_string($row[$j]);
-						$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
-						if ($j < ($num_fields-1)) { $return .= ','; }
+		duplicator_log("log:fun__create_dbscript=>started");
+		
+		global $wpdb;
+		$tables =  $wpdb->get_col('SHOW TABLES');
+		$dbiconv = $GLOBALS['duplicator_opts']['dbiconv'] == "0" ? false : true;
+		$return = "";
+		
+		//CREATE TABLES
+		//PERFORM ICONV
+		if ($dbiconv) {
+			duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
+			foreach($tables as $table) {
+				duplicator_log("log:fun__create_dbscript=>creating table: $table", 2);
+				$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
+				$num_fields  = count(@$result[0]);   
+				$items		 = count($result);
+				$return		.= '';
+				$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
+				$return		.= "\n\n" . $row2[1] . ";\n\n";
+				{
+					$ct=0;
+					while($ct < $items) {
+						$row	 = $result[$ct];
+						$return .= 'INSERT INTO '.$table.' VALUES(';
+						for($j=0; $j<$num_fields; $j++) 	{
+							$row[$j] = iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $row[$j]);
+							$row[$j] = mysql_real_escape_string($row[$j]);
+							$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
+							if ($j < ($num_fields-1)) { $return .= ','; }
+						}
+						$return.= ");\n";
+						$ct++;
 					}
-					$return.= ");\n";
-					$ct++;
 				}
+				duplicator_log("log:fun__create_dbscript=>table processed: $table", 2);
+				$return .= "\n";
 			}
-			$return .= "\n";
-		}
-	//DO NOT PERFORM ICONV
-	} else {
-		foreach($tables as $table) {
-			$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
-			$num_fields  = count($result[0]);   
-			$items		 = count($result);
-			$return		.= '';
-			$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
-			$return		.= "\n\n" . $row2[1] . ";\n\n";
-			{
-				$ct=0;
-				while($ct < $items) {
-					$row	 = $result[$ct];
-					$return .= 'INSERT INTO '.$table.' VALUES(';
-					for($j=0; $j<$num_fields; $j++) 	{
-						$row[$j] = mysql_real_escape_string($row[$j]);
-						$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
-						if ($j < ($num_fields-1)) { $return .= ','; }
+		//DO NOT PERFORM ICONV
+		} else {
+			foreach($tables as $table) {
+				duplicator_log("log:fun__create_dbscript=>creating table: $table", 2);
+				$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
+				$num_fields  = count($result[0]);   
+				$items		 = count($result);
+				$return		.= '';
+				$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
+				$return		.= "\n\n" . $row2[1] . ";\n\n";
+				{
+					$ct=0;
+					while($ct < $items) {
+						$row	 = $result[$ct];
+						$return .= 'INSERT INTO '.$table.' VALUES(';
+						for($j=0; $j<$num_fields; $j++) 	{
+							$row[$j] = mysql_real_escape_string($row[$j]);
+							$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
+							if ($j < ($num_fields-1)) { $return .= ','; }
+						}
+						$return.= ");\n";
+						$ct++;
 					}
-					$return.= ");\n";
-					$ct++;
 				}
+				duplicator_log("log:fun__create_dbscript=>table processed: $table", 2);
+				$return .= "\n";
 			}
-			$return .= "\n";
 		}
-	}
 
-	$handle = fopen($destination.'/database.sql','w+');
-	fwrite($handle,$return);
-	fclose($handle);
-	$wpdb->flush();
-	$return = '';
-	
-	duplicator_log("log:fun.duplicator_create_dbscript=>ended");
+		$handle = fopen($destination.'/database.sql','w+');
+		fwrite($handle,$return);
+		duplicator_log("log:fun__create_dbscript=>database.sql created", 2);
+		fclose($handle);
+		$wpdb->flush();
+		$return = '';
+		
+		duplicator_log("log:fun__create_dbscript=>ended");
 	
 	} catch(Exception $e) {
-		duplicator_log("log:fun.duplicator_create_dbscript=>runtime error: " . $e);
+		duplicator_log("log:fun__create_dbscript=>runtime error: " . $e);
 	}
 }
 
@@ -137,6 +143,7 @@ function duplicator_full_copy( $source, $target ) {
 function duplicator_delete_all($directory, $empty = false) {
 	try {
 		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::CHILD_FIRST);
+		//duplicator_log("log:fun__delete_all=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
 		foreach ($iterator as $path) {
 			if ($path->isDir()) {
 				@rmdir($path->__toString());
@@ -146,14 +153,14 @@ function duplicator_delete_all($directory, $empty = false) {
 		}
 		
 		if($empty == true) {
-			if(!rmdir($directory)) {
+			if(! @rmdir($directory)) {
 				return false;
 			}
 		}	
 		return true;
 	
 	} catch(Exception $e) {
-		duplicator_log("log:fun.duplicator_delete_all=>runtime error: " . $e);
+		duplicator_log("log:fun__delete_all=>runtime error: " . $e);
 	}
 }
 
@@ -165,7 +172,7 @@ function duplicator_delete_all($directory, $empty = false) {
  */
 function duplicator_create_installerFile($packagename) {
 
-	duplicator_log("log:duplicator_create_installerFile=>started");
+	duplicator_log("log:fun__create_installerFile=>started");
 	
 	global $wpdb;
 	$template 	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.template.php');
@@ -185,16 +192,17 @@ function duplicator_create_installerFile($packagename) {
 	if( file_exists($template)) {
 		$str = duplicator_parse_template($template, $replace_items);
 		$fp = fopen($installer, 'w') 
-			or die(duplicator_log("log:duplicator_create_installerFile=>file-create-error"));
+			or die(duplicator_log("log:fun__create_installerFile=>file-create-error"));
 		fwrite($fp, $str, strlen($str));
 		fclose($fp);
+		duplicator_log("log:fun__create_installerFile=>install.php updated at: {$installer}");
 	} 
 	else
 	{
-		die(duplicator_log("log:duplicator_create_installerFile=>Template missing: '$template'"));
+		die(duplicator_log("log:fun__create_installerFile=>Template missing: '$template'"));
 	}
 	
-	duplicator_log("log:duplicator_create_installerFile=>ended");
+	duplicator_log("log:fun__create_installerFile=>ended");
 }
 
 /**
@@ -242,11 +250,11 @@ function duplicator_dirSize($directory) {
 		
 		//App Directory Filter & Backup Directory Filter
 		if ($GLOBALS['duplicator_bypass-array'] != null) {
-			duplicator_log("log:duplicator_dirSize=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
+			duplicator_log("log:fun__dirSize=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
 			foreach($iterator as $file){ 
 				$path = duplicator_safe_path($file->getPath());
 				foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
-					if (strstr($path, $val) ) {
+					if (@strstr($path, $val) ) {
 						$exclusion_found = true;
 						break;
 					} else {
@@ -268,10 +276,9 @@ function duplicator_dirSize($directory) {
 		return $size; 
 	
 	}  catch(Exception $e) {
-		duplicator_log("log:fun.duplicator_dirSize=>runtime error: " . $e);
+		duplicator_log("log:fun__dirSize=>runtime error: " . $e);
 	}
 } 
-
 
 /**
  *  DUPLICATOR_LOG
@@ -303,7 +310,7 @@ function duplicator_create_snapshotpath() {
 			if (! mkdir(DUPLICATOR_SSDIR_PATH , 0755)) {
 				die(duplicator_log("Unable to create directory '" . DUPLICATOR_SSDIR_PATH . "'. Directory is required for snapshot generation."));
 			}
-			duplicator_log("log:duplicator_create_snapshotpath=>path created" . DUPLICATOR_SSDIR_PATH, 2);
+			duplicator_log("log:fun__create_snapshotpath=>path created" . DUPLICATOR_SSDIR_PATH, 2);
 		}
 		$fh = fopen(DUPLICATOR_SSDIR_PATH.'/index.php', 'w');
 		fclose($fh);

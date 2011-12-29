@@ -3,8 +3,8 @@ Contributors: Cory Lamle
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.1
-Tested up to: 3.2
-Stable tag: 0.2.3 
+Tested up to: 3.3
+Stable tag: 0.2.4 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -12,16 +12,18 @@ Duplicate, clone, backup and transfer an entire site from one location to anothe
 
 == Description ==
 
-The Duplicator plugin is designed to give Wordpress Administrators the ability to migrate a site from one location to another location in 3 easy steps create, download, install.  The plugin also serves as a simple backup utility.  
+The Duplicator plugin is designed to give Wordpress Administrators the ability to migrate a site from one location to another location in 3 easy steps.  Just create a package, download it and install.  No need to change all your settings and re-run import/export scripts. The plugin also serves as a simple backup utility. 
 
-This tool is great for pulling a production site down onto your local machine for testing and validation. It also works great for developing locally and then pushing up to a production server.  No need to change all your settings and re-run import/export scripts.
+If you need to clone, duplicate or template a WordPress application, then this plugin is ideal for multiple site generation.  Niche site generation is a breeze with the Duplicator and moving your WordPress site has never been easier.  Stay tuned for other cool features to help automate your Wordpress management.
 
-If you need to clone, duplicate or template a WordPress application, then this plugin is ideal for for mass site generation.  Niche site generation is a breeze with the Duplicator and moving your WordPress site has never been easier.  Stay tuned for other cool features to help automate your Wordpress management.
+A Quick Overview:
+http://www.youtube.com/watch?v=nyHNV6D2w2c
+
+DEVELOPERS: This tool is great for pulling a production site down onto your local machine for testing and validation. It also works great for developing locally and then pushing up to a production server.
+
+DISCLAIMER: Be sure to always make full backups of all your databases and files before ever running any backup utility.
 
 NOTE: This project is currently in Beta, the underlying logic to perform all these migration tasks is quite involved. It's impossible to know how each system is setup, this is why your feedback is very important to us.  Thanks for helping us to make WordPress the best blogging platform in the world.
-
-A quick overview:
-http://www.youtube.com/watch?v=nyHNV6D2w2c
 
 For complete details see: 
 [lifeinthegrid.com](http://lifeinthegrid.com/) 
@@ -46,7 +48,7 @@ Turn on the logging (Options -> Package -> Logging). This will give you details 
 
 = When I reinstall my package I get errors on the site. =
 
-Be sure to read through all the post install notes carefully and follow all instructions.
+Be sure to read through all the post install instructions and carefully follow all instructions.  You can also view the install-log.txt file for a detail of the process.
 
 
 = Where can I get more information and support for this plugin? =
@@ -56,7 +58,7 @@ Visit the [Duplicator Page](http://lifeinthegrid.com/duplicator) at lifeinthegri
 
 = How can I test this in a non production environment? =
 
-[Get WordPress on your computer](http://lifeinthegrid.com/xampp). See video below.
+Put WordPress on [your computer](http://lifeinthegrid.com/xampp). See video below.
 
 http://www.youtube.com/watch?v=-hF7FbTQIkk
 
@@ -65,9 +67,22 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
  
 1. The main interface used to create and manage packages
 2. The options dialog is used to configure and setup the Duplicator
+3. The installer screen used to install a packaged instance
  
 
 == Changelog ==
+
+= 0.2.4  =
+<li>Added: Detailed table logging during creation</li>
+<li>Added: Support for memory blocks up to 1GB</li>
+<li>Added: jQuery support from internal WordPress</li>
+<li>Added: Manual package extraction on installer (kudos to Aaron Crawford)</li>
+<li>Added: At install time packages are not deleted unless requested</li>
+<li>Added: At install time new external install-log.txt file</li>
+<li>Added: Added wp_usermeta to the serialization cleans list</li>
+<li>Fixed: Several notices and warnings in both creation and installer interfaces</li>
+<li>Fixed: Support for serialized data with newlines</li>
+<li>Fixed: Several minor bugs submitted as help tickets</li>
 
 = 0.2.3  =
 <li>Added: Additional error checking</li>

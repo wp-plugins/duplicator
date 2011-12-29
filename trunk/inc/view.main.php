@@ -51,6 +51,10 @@
 				window.location='<?php echo DUPLICATOR_PLUGIN_URL .'files/install.php?download' ?>'
 			}
 			
+			Duplicator.startCreate = function() {
+				jQuery('span#span-status').html("Evaluating WordPress Setup. Please Wait...");
+			}
+			
 			/*  ============================================================================
 			DIALOG WINDOWS
 			Browser Specific. IE9 does not support modal correctly this is a workaround  */
@@ -149,10 +153,10 @@ MAIN FORM: Lists all the backups 			-->
 		
 		<!-- TOOLBAR -->
 		<table border="0" id="toolbar-table">
-			<tr>
+			<tr valign="top">
 				<td style="white-space:nowrap"><label>Package Name:</label></td>
 				<td style="white-space:nowrap;width:100%"><input name="package_name" type="text" style="width:250px" value="<?php echo $package_name ?>" maxlength="40" /></td>
-				<td><input type="submit" id="btn-create-pack" class="btn-create-pack"value="..." name="submit" title="Create Package" /></td>
+				<td><input type="submit" id="btn-create-pack" class="btn-create-pack" value="..." name="submit" title="Create Package" onclick="Duplicator.startCreate()" /></td>
 				<td><input type="button" id="btn-delete-pack" title="Delete selected package(s)"/></td>
 				<?php if ($setup_link_enabled) : ?>
 					<td align="center"><input type="button" class="btn-setup-link" onclick="window.open('<?php echo $GLOBALS['duplicator_opts']['nurl'] ?>/install.php', '_blank')" title="Launch the installer window." /></td>
@@ -164,7 +168,11 @@ MAIN FORM: Lists all the backups 			-->
 				<?php endif; ?>		
 				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/hdivider.png" style="height:26px; padding:0px 5px 0px 5px"/></td>
 				<td><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="Help..." /></td>
-				<td><input type="button" id="btn-contribute-dialog" value="Contribute" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="Contribute..." /></td>
+				<td><input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="Partner with us..." /></td>
+				<td>
+					<a href="https://twitter.com/share" class="twitter-share-button" data-url="lifeinthegrid.com/duplicator" data-text="Duplicate Your Efforts! Tools for Online Entrepreneurs" data-via="lifeinthegrid.com" data-size="large" data-related="lifeinthegrid" data-hashtags="WordPress">Tweet</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				</td>
 			</tr>
 		</table>
 
