@@ -40,6 +40,8 @@ if ( isset($_GET['download'])) {
 			readfile($file);
 			exit;
 		} 
+	} else {
+		die("You must be a WordPress Administrator to download the Duplicator installer file.");
 	}
 } 
 
@@ -77,12 +79,13 @@ if (file_exists('installer.template.php')) {
 $GLOBALS["SCRUB_LIST"] 	   		= null; //array("");
 $GLOBALS["REMOVE_DBCACHE"] 		= true;
 $GLOBALS["SERIAL_STR_FIX"] 		= true;
+$GLOBALS["MAX_TIME"] 			= 3000; //in seconds
 
 //Add item for every table to search and scrub.
 //$GLOBALS["SERIAL_TABLES"]["TABLE_TO_SEARCH"] = array('column_id' => 'an_indexable_id',  'column_value' => 'the_column_to_perform_search_on');
 
-ini_set("max_execution_time", "1000"); 
-ini_set('memory_limit', '512M');
+ini_set("max_execution_time", "{$GLOBALS['MAX_TIME']}"); 
+ini_set('memory_limit', '900M');
 
 /* ================================================================================================
 END ADVANCED FEATURES: Do not edit below here.
@@ -97,7 +100,7 @@ $GLOBALS["SQL_FILE_NAME"] 	= "install-data.sql";
 $GLOBALS["LOG_FILE_NAME"] 	= "install-log.txt";
 $GLOBALS["LOG_FILE_HANDLE"] = fopen($GLOBALS["LOG_FILE_NAME"], "w+");
 $GLOBALS["SEPERATOR1"]      = str_repeat("********", 10);
-$GLOBALS["SEPERATOR2"]      = str_repeat("\n", 5);
+$GLOBALS["SEPERATOR2"]      = str_repeat("\n", 2);
 $GLOBALS["LOG_LEVEL"]  	 	= isset($_POST['log_level']) ? $_POST['log_level'] : 1;
 
 //POST PARMS
@@ -130,7 +133,21 @@ define('MSG_ERR_ZIPNOTFOUND', 		'<div class="error"><b style="color:#C16C1D;">IN
 define('MSG_ERR_ZIPDIR_TEMPERED',	'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> There are issues with reading the package file.  Your permissions for where you are attempting to exact the package may not be correct.  Temporarily increase the permission of the packages containing directory in order for the package extraction to work.  The package could also be tempered.  Please remove all zip packages and installer files and make sure the package and installer files are from the same creation time and no modification have been made to either file (such as a file rename).</div>');
 define('MSG_ERR_ZIPEXTRACTION', 	'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> Failed in extracting zip file. Please be sure the archive is completely downloaded. Try to extract the archive manually to make sure the file is not corrupted.  </div>');
 define('MSG_ERR_ZIPMANUAL', 		'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> When choosing manual package extraction, the contents of the package must already be extracted and the wp-config.php and database.sql files must be present in the same directory as the install.php for the process to continue.  Please manually extract the package into the current directory before continuing in manual extraction mode.  </div>');
+define('MSG_ERR_ZIPTOMANY', 		'<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> When running the duplicator only one .zip archive file can be placed within the same directory as the install.php file.  Please make sure the .zip is the correct Package you are trying to install and only one exists. </div>');
 define('MSG_OK_PASS', 				'<div class="error"><b style="color:#006E32;">VALIDATION SUCCESSFUL!</b><br/> Please proceed with installation.</div>');
+
+
+//DETECT ARCHIVE FILES
+$GLOBALS["ZIP_FILE_NAME"]  = "No package file found";
+$GLOBALS["ZIP_FILE_COUNT"] = 0;
+foreach (glob("*.zip") as $filename) {
+	$GLOBALS["ZIP_FILE_NAME"] = $filename;
+	$GLOBALS["ZIP_FILE_COUNT"]++;
+}
+if ($GLOBALS["ZIP_FILE_COUNT"] > 1) {
+	$GLOBALS["ZIP_FILE_NAME"] = "Too many zip files found in directory";
+}
+
 
 
 /**
@@ -440,6 +457,10 @@ if ($action == 'dbconnect-test') {
 		//====================================================================================================
 		//PRECHECKS: Validate and make sure to have a clean enviroment
 		//====================================================================================================
+		if ($GLOBALS["ZIP_FILE_COUNT"] > 1) {
+			die(MSG_ERR_ZIPTOMANY . $tryagain_html);
+		}
+		
 		if(file_exists('wp-config.php')) {
 			if (! $zip_manual) {
 				die(MSG_ERR_CONFIG . $tryagain_html);
@@ -490,7 +511,9 @@ if ($action == 'dbconnect-test') {
 		write_log("{$GLOBALS['SEPERATOR1']}");
 		write_log('START-PRECHECK:' . date('h:i:s'));
 		write_log("{$GLOBALS['SEPERATOR1']}");
-		write_log("php:" .  phpversion() . " | server: {$_SERVER['SERVER_SOFTWARE']}");
+		write_log("server: {$_SERVER['SERVER_SOFTWARE']}");
+		write_log("browser: {$_SERVER['HTTP_USER_AGENT']}");
+		write_log("php: " .  phpversion());
 		write_log("connection passed=>host:{$dbhost} | database:{$dbname} ");
 		write_log("log level: {$GLOBALS['LOG_LEVEL']}");
 		write_log("drop tables status=>{$log}");
@@ -509,6 +532,7 @@ if ($action == 'dbconnect-test') {
 		write_log("{$GLOBALS['SEPERATOR1']}");
 		$zip_name	 = '';
 		$folder_name = '';
+		$filename = null;
 		
 		foreach (glob("*.zip") as $filename) {
 			$zip_name = $filename;
@@ -537,7 +561,8 @@ if ($action == 'dbconnect-test') {
 				$zip->extractTo(dirname(__FILE__));
 				if( ! file_exists($folder_name ))	{
 				  die(MSG_ERR_ZIPDIR_TEMPERED  . $tryagain_html);
-				}	
+				}
+			
 				write_log("zip information:\n" . print_r($zip, true));
 				write_log("package extracted successfully\n");
 				$zip->close();
@@ -629,6 +654,7 @@ if ($action == 'dbconnect-test') {
 		//====================================================================================================
 		write_log("{$GLOBALS['SEPERATOR1']}");
 		write_log('START DB-ROUTINES:' . date('h:i:s'));
+		write_log("mysql wait_timeout set:{$GLOBALS['MAX_TIME']}");
 		write_log("{$GLOBALS['SEPERATOR1']}");
 		
 		$temp=0;
@@ -637,12 +663,15 @@ if ($action == 'dbconnect-test') {
 			$temp++;
 		}
 		
-		//Record this backup
+		//Remove all duplicator entries and record this one since this is a new install.
 		mysql_query("DELETE FROM `%wp_tableprefix%duplicator`");
 		mysql_query("INSERT INTO `%wp_tableprefix%duplicator` (bid, zipname, zipsize, created, owner) VALUES (1, '{$zip_name}', '{$zip_size}', '" . date( "Y:m:d G:i:s",time()) . "','duplicator plugin')");
 		
 		//Update site title
 		$site_title = mysql_real_escape_string($_POST['site_title']);
+		
+
+		mysql_query("SET wait_timeout = {$GLOBALS['MAX_TIME']}");
 		mysql_query("UPDATE `%wp_tableprefix%options` SET option_value = '{$site_title}' WHERE option_name = 'blogname' ");
 		
 		//Fix string length on any serilized data.
@@ -683,7 +712,7 @@ if ($action == 'dbconnect-test') {
 			}
 			
 			write_log("serialization replacements:\nupdated {$fix_count} records\n");
-			write_log("serialization replacements overview:". $log, 2);
+			write_log("serialization replacements overview:\n". $log, 2);
 			$log = '';
 		}
 
@@ -707,7 +736,7 @@ if ($action == 'dbconnect-test') {
 		write_log("{$GLOBALS['SEPERATOR1']}");
 		
 		if(!file_exists(DUPLICATOR_SSDIR_NAME)) {
-			mkdir(DUPLICATOR_SSDIR_NAME,'0755');
+			mkdir(DUPLICATOR_SSDIR_NAME, 0755);
 		}
 		$fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 		fclose($fp);
@@ -794,7 +823,7 @@ HTACCESS;
 		DB CONNECTION -->
 		<div style="text-align:left;position:relative">
 			<div id="dbconn-test">
-				<div id="dbconn-test-hdr">Installer Validation Prechecks</div>
+				<div id="dbconn-test-hdr">Installer Prechecks</div>
 				<div id="dbconn-test-msg"></div>
 				<div id="dbconn-test-close" style="text-align:center">
 					<a id="dbconn-test-close-link" href="javascript:void(0)"><b>Close</b></a>
@@ -811,7 +840,7 @@ HTACCESS;
 				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="table-inputs">
 				<tr>
 					<td>Package Name</td>
-					<td><input type="text" name="package_name"  value="%package_name%" readonly="true" class="readonly" /></td>
+					<td><input type="text" name="package_name"  value="<?php echo $GLOBALS["ZIP_FILE_NAME"] ?>" readonly="true" class="readonly" /></td>
 				</tr>
 				<tr valign="top">
 					<td style="width:130px">Package URL</td>
@@ -832,8 +861,8 @@ HTACCESS;
 				<tr>
 					<td></td>
 					<td style="font-size:12px">
-						<input type="checkbox" name="disable_ssl" id="disabled_ssl" value="1" /> Disable SSL Admin <i style="font-size:11px">(sets FORCE_SSL_ADMIN to false)</i><br/>
 						<input type="checkbox" name="zip_delete" id="zip_delete" value="1" /> Delete Package After Install <br/>
+						<input type="checkbox" name="disable_ssl" id="disabled_ssl" value="1" /> Disable SSL Admin <i style="font-size:11px">(sets FORCE_SSL_ADMIN to false)</i><br/>
 						<input type="checkbox" name="zip_manual" id="zip_manual" value="1" /> Manual Package Extraction <i style="font-size:11px">(manually unzip the package)</i><br/>
 						<div style="padding:5px 0px 0px 60px">
 							<label for="log_level">Log Level:</label> 
@@ -868,11 +897,12 @@ HTACCESS;
 					<a href="javascript:validateInstall()" style="font-size:12px">[Test Connection]</a><br/><br/>
 				</div>
 				<div style="padding:5px">
-					<i style="font-size:12px; color:gray">Warning: Only the package (zip file) and install.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install. Make sure you have full backups of all your databases and files before continuing with installations. Please pay attention to your configuration!!<br/><br/>Notice: Manual extraction requires that all contents in the package are extracted to the same directory as the install.php file.  Manual extraction is not recommended and only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
+					<i style="font-size:12px; color:gray">Warning: Only the package (zip file) and install.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install. Make sure you have full backups of all your databases and files before continuing with installations. Please pay attention to your configuration!!<br/><br/>Notice: Manual extraction requires that all contents in the package are extracted to the same directory as the install.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
 				</i></div>
 			</fieldset>
 			<div class="div-buttons">
-				<input type="reset" value="  Reset  "  class="button"/>
+				<input type="button" value=" Reload " class="button" onclick="window.location.reload()"/>
+				<input type="reset" value=" Reset "  class="button"/>
 				<input type="submit" name="submit" id="submit" value=" Install " class="button" />
 			</div>
 		</form>

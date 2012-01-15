@@ -14,8 +14,9 @@ function duplicator_create() {
 
 	duplicator_log("*********************************************************");
 	duplicator_log("START PROCESSING");
-	duplicator_log("package: {$packname}");
-	duplicator_log("server: {$_SERVER['SERVER_SOFTWARE']}");
+	duplicator_log("package:{$packname}");
+	duplicator_log("server:{$_SERVER['SERVER_SOFTWARE']}");
+	duplicator_log("browser:{$_SERVER['HTTP_USER_AGENT']}");
 	duplicator_log("duplicator:" . DUPLICATOR_VERSION . " | wp:{$wp_version} | php:" .  phpversion());
 	duplicator_log("max_time:{$GLOBALS['duplicator_opts']['max_time']} | max_memory:{$GLOBALS['duplicator_opts']['max_memory']}");
 	
@@ -33,26 +34,28 @@ function duplicator_create() {
 		$temp_path 	 = DUPLICATOR_SSDIR_PATH . "/{$packname}";
 		$zipsize = 0;
 		
+		duplicator_log("mysql wait_timeout: {$GLOBALS['duplicator_opts']['max_time']}");
+		$wpdb->query("SET wait_timeout = {$GLOBALS['duplicator_opts']['max_time']}");
+		
 		if(!file_exists($temp_path)) {
 			if (!mkdir($temp_path, 0755)) {
 				die(duplicator_log("Unable to create temporary snapshot directory '$temp_path' "));
 			}
 		}
 		
-		//TEMPORARY BACKUP
+		//TEMPORARY FILE BACKUP
 		//Very important to remove trailing slash for copy function to work
 		duplicator_log("*********************************************************");
-		duplicator_log("TEMPORARY BACKUP");
+		duplicator_log("TEMPORARY FILE BACKUP");
 		duplicator_log("log:act__create=>temp backup to: " . $temp_path, 2);
 		duplicator_full_copy(rtrim(DUPLICATOR_WPROOTPATH, "/\\") ,$temp_path);
 		duplicator_log("log:act__create=>temp backup complete.", 2);
-		
 		
 		//SQL SCRIPT
 		duplicator_log("*********************************************************");
 		duplicator_log("SQL SCRIPT");
 		duplicator_create_dbscript($temp_path);
-		duplicator_log("log:act__create=>sql script complete.", 2);
+		duplicator_log("log:act__create=>sql script complete.", 2);		
 		
 		
 		//CREATE ZIP ARCHIVE
@@ -65,6 +68,7 @@ function duplicator_create() {
 		} else {
 			duplicator_log("log:act__create=>zip file size is: " . $zipsize);
 		}
+		
 		duplicator_log("log:act__create=>zip archive complete.", 2);
 		//Record archive info to database
 		$wpdb->insert($wpdb->prefix . "duplicator", 
@@ -74,7 +78,8 @@ function duplicator_create() {
 								'zipsize'=>$zipsize, 
 								'type'=>'Manual',
 								'ver_plug'=>DUPLICATOR_VERSION, 
-								'ver_db'=>DUPLICATOR_DBVERSION ) );
+								'ver_db'=>DUPLICATOR_DBVERSION ) 
+						);
 								
 		if ($wpdb->insert_id) {
 			duplicator_log("log:act__create=>recorded archieve id: " . $wpdb->insert_id);
@@ -161,19 +166,30 @@ function duplicator_system_check() {
 	$dirSize = duplicator_dirSize(DUPLICATOR_WPROOTPATH);
 	$dirSizeFormat = duplicator_bytesize($dirSize);
 	duplicator_log("log:act__system_check=>content_size: <input type='hidden' class='dir-size' value='{$dirSizeFormat}' />{$dirSizeFormat}");
+	
 	//TODO: Find a way around the 2GB limit
 	if ($dirSize >  2100000000) {
 		die(duplicator_log("log:act__system_check=>size_limit"));
 	}
 	
 	$new_name = isset($_POST['duplicator_new']) ? trim($_POST['duplicator_new']).'.zip' : null;
-	$msg = "log:act__system_check=>create new package";
+	$ajax_msg = "log:act__system_check=>create new package";
 	$table = $wpdb->prefix . 'duplicator';
 	$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `{$table}` WHERE zipname= '".$new_name."'"));
 	if($count > 0) {
-		$msg="log:act__system_check=>overwrite";
+		$ajax_msg="log:act__system_check=>overwrite";
 	}
-	die(duplicator_log($msg));
+	
+	//Check for reserved files
+	$phpFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP) ? DUPLICATOR_INSTALL_PHP : "";
+	$sqlFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL) ? DUPLICATOR_INSTALL_SQL : "";
+	$logFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG) ? DUPLICATOR_INSTALL_LOG : "";
+	
+	if(strlen($phpFile) || strlen($sqlFile ) || strlen($logFile) ) {
+		$ajax_msg = "log:act__system_check=>reserved-file " . $phpFile  ." ". $sqlFile ." ". $logFile . " found in root directory";
+	}
+
+	die(duplicator_log($ajax_msg));
 }
 
 

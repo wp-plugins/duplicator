@@ -5,14 +5,14 @@ fieldset {border:1px solid gray; padding:5px;}
 label {font-size:13px !important}
 
 /*BUTTONS*/
-input.btn-create-pack{width:28px; height:28px;background:url(../img/create.png) no-repeat 5px 4px;}
-input#btn-delete-pack{width:28px; height:28px;background:url(../img/delete.png) no-repeat 5px 4px;}
-input.btn-opts-dialog {width:28px;height:28px;background:url(../img/options.png) no-repeat 5px 4px;}
-input.btn-diag-dialog {width:28px; height:28px;background:url(../img/debug.png) no-repeat 5px 4px;}
-input#btn-help-dialog {width:28px;height:28px; background:url(../img/help.png) no-repeat 5px 4px; }
-input.btn-save-packitem {text-indent:10px; background:url(../img/save.png) no-repeat 5px 4px; width:100px;}
-input.btn-setup-link {width:28px; background:url(../img/setup.png) no-repeat 5px 4px;}
-input#btn-contribute-dialog {width:28px; height:28px; background:url(../img/partner.png) no-repeat 3px 3px;}
+input.btn-create-pack{width:28px; height:27px;background:url(../img/create.png) no-repeat 5px 4px;}
+input#btn-delete-pack{width:28px; height:27px;background:url(../img/delete.png) no-repeat 5px 4px;}
+input.btn-opts-dialog {width:28px;height:27px;background:url(../img/options.png) no-repeat 5px 4px;}
+input.btn-diag-dialog {width:28px; height:27px;background:url(../img/debug.png) no-repeat 5px 4px;}
+input#btn-help-dialog {width:28px;height:27px; background:url(../img/help.png) no-repeat 5px 4px; }
+input.btn-save-packitem {text-indent:10px; height:27px; background:url(../img/save.png) no-repeat 5px 4px; width:100px; }
+input.btn-setup-link {width:28px;  background:url(../img/setup.png) no-repeat 5px 4px;}
+input#btn-contribute-dialog {width:28px; height:27px; background:url(../img/partner.png) no-repeat 3px 3px;}
 img.btn-delete-all {height:16px; width:16px;margin-left:2px}
 input.btn-save-opts {width:80px}
 
