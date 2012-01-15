@@ -48,7 +48,7 @@
 			
 			Duplicator.downloadInstaller = function(btn) {
 				jQuery(btn).css('background-color', '#dfdfdf');
-				window.location='<?php echo DUPLICATOR_PLUGIN_URL .'files/install.php?download' ?>'
+				window.location='<?php echo DUPLICATOR_PLUGIN_URL .'files/install.php?download'; ?>'
 			}
 			
 			Duplicator.startCreate = function() {
@@ -72,8 +72,7 @@
 			}
 			jQuery("#dialog-options").dialog( {autoOpen:false, height:610, width:750, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
 			jQuery("#dialog-log-copy").dialog({autoOpen:false, height:600, width:700, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
-			
-			
+				
 
 			/*  ============================================================================
 			LOG PANE: 
@@ -134,15 +133,12 @@
 			Duplicator.optionsOpen  = function() {jQuery("div#dialog-options").dialog("open");}
 			Duplicator.optionsClose = function() {jQuery('div#dialog-options').dialog('close');}
 			
-			
 			//MISC
 			jQuery("div#div-render-blanket").show();
 			Duplicator.newWindow = function(url) {window.open(url);}
-			
 		});
 	});
 </script>
-
 
 
 <!-- ==========================================
@@ -154,8 +150,8 @@ MAIN FORM: Lists all the backups 			-->
 		<!-- TOOLBAR -->
 		<table border="0" id="toolbar-table">
 			<tr valign="top">
-				<td style="white-space:nowrap"><label>Package Name:</label></td>
-				<td style="white-space:nowrap;width:100%"><input name="package_name" type="text" style="width:250px" value="<?php echo $package_name ?>" maxlength="40" /></td>
+				<td style="white-space:nowrap; vertical-align:middle"><label style="font-size:14px !important;">Package Name:</label></td>
+				<td style="white-space:nowrap;width:100%; vertical-align:middle"><input name="package_name" type="text" style="width:250px" value="<?php echo $package_name ?>" maxlength="40" /></td>
 				<td><input type="submit" id="btn-create-pack" class="btn-create-pack" value="..." name="submit" title="Create Package" onclick="Duplicator.startCreate()" /></td>
 				<td><input type="button" id="btn-delete-pack" title="Delete selected package(s)"/></td>
 				<?php if ($setup_link_enabled) : ?>
@@ -170,25 +166,28 @@ MAIN FORM: Lists all the backups 			-->
 				<td><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="Help..." /></td>
 				<td><input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="Partner with us..." /></td>
 				<td>
-					<a href="https://twitter.com/share" class="twitter-share-button" data-url="lifeinthegrid.com/duplicator" data-text="Duplicate Your Efforts! Tools for Online Entrepreneurs" data-via="lifeinthegrid.com" data-size="large" data-related="lifeinthegrid" data-hashtags="WordPress">Tweet</a>
-					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://lifeinthegrid.com/duplicator" data-text="Duplicate Your Efforts! Tools for Online Entrepreneurs" data-via="lifeinthegrid" data-size="large" data-related="lifeinthegrid" data-count="none" data-hashtags="Duplicator">Tweet</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 				</td>
 			</tr>
 		</table>
 
 		<!-- STATUS 
 		id comes from wp-themes: major-publishing-actions  keeps themeing correct -->
-		<table width="100%" class="widefat" cellspacing="0" border="1">
-			<thead>
-				<tr>
-				<th>
+		<table width="100%"  class="widefat pack-table" cellspacing="0" border="1">
+			<tr>
+				<td width="100%" style="font-size:14px; vertical-align:middle">
 					<b>Status:</b> 
 					<span id="span-status">Ready to create new package.</span>
 					<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
 					<img id="img-status-progress" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/progress.gif" style="height:10px; width:46px; display:none" />
-				</th>
-				</tr>
-			</thead>
+				</td>
+				<?php if($total_elements!=0)  :	?>
+					<td style="white-space:nowrap;">
+						<input type="button" id="duplicator-installer" value="Installer" class="btn-save-packitem" onclick="Duplicator.downloadInstaller(this)" title="Download this installer" />
+					</td>
+				<?php endif; ?>	
+			</tr>
 		</table><div style="height:5px"></div>
 		
 		
@@ -202,7 +201,7 @@ MAIN FORM: Lists all the backups 			-->
 					<th title="Server time when package was created">Created</th>
 					<th title="Compressed size of the package">Size</th>
 					<th title="The name of the package" style="width:100%">Package Name</th>
-					<th title="Files need to duplicate your site" style="text-align:center;" >Downloads</th>
+					<th title="Your database and WordPress files." style="text-align:center;" >Package</th>
 				</tr>
 			</thead>
 			<?php
@@ -218,10 +217,7 @@ MAIN FORM: Lists all the backups 			-->
 						<td style="white-space:nowrap;"><?php echo date( "m-d-y G:i",strtotime($row['created']));?> &nbsp; </td>
 						<td style="white-space:nowrap;"><?php echo duplicator_bytesize($row['zipsize']);?>&nbsp; </td>
 						<td><?php echo $row['zipname'];?>&nbsp;</td>
-						<td style="white-space:nowrap;">
-							<input type="button" value="Package" id="<?php echo $row['zipname'];?>" class="btn-save-packitem" onclick="Duplicator.downloadPackage(this)" title="Download this package" />&nbsp;
-							<input type="button" value="Installer" class="btn-save-packitem" onclick="Duplicator.downloadInstaller(this)" title="Download this installer" />
-						</td>
+						<td style="white-space:nowrap;"><input type="button" value="Package" id="<?php echo $row['zipname'];?>" class="btn-save-packitem" onclick="Duplicator.downloadPackage(this)" title="Download this package" /></td>
 					</tr>
 					<?php
 					$ct++;
@@ -238,7 +234,7 @@ MAIN FORM: Lists all the backups 			-->
 					<th title="Server time when package was created">Created</th>
 					<th title="Compressed size of the package">Size</th>
 					<th title="The name of the package" style="width:100%">Package Name</th>
-					<th title="Files need to duplicate your site" style="text-align:center;" >Downloads</th>
+					<th title="Your database and WordPress files." style="text-align:center;" >Package</th>
 				</tr>
 			</tfoot>
 		</table>

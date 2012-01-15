@@ -43,8 +43,8 @@
 					
 					<table width="100%" border="0">
 						<tr>
-							<td style="width:50%">Max Execution Time: <input type="text" name="max_time" id="max_time" value="<?php echo $max_time_val ?>" <?php echo $max_read_only ?> maxlength="4" style="width:75px" /> seconds</td>
-							<td style="width:50%">Max Memory Limit: <input type="text" name="max_memory" id="max_memory" value="<?php echo preg_replace('/\D/', '', $GLOBALS['duplicator_opts']['max_memory'] ) ?>" maxlength="4" style="width:45px" /> MB <i style='font-size:11px'>(minimum 128)</i></td>
+							<td style="width:50%">Max Time: <input type="text" name="max_time" id="max_time" value="<?php echo $max_time_val ?>" <?php echo $max_read_only ?> maxlength="4" style="width:75px" /> seconds</td>
+							<td style="width:50%">Max Memory: <input type="text" name="max_memory" id="max_memory" value="<?php echo preg_replace('/\D/', '', $GLOBALS['duplicator_opts']['max_memory'] ) ?>" maxlength="4" style="width:45px" /> MB <i style='font-size:11px'>(minimum 128)</i></td>
 						</tr>
 					</table><br/>
 					
@@ -120,7 +120,7 @@
 					</tr>
 					</table>
 				</fieldset>
-				<i style="font-size:11px">The installer can have these fields pre-filled with these optional settings.  These values are only applied to packages after the data is saved.</i>
+				<i style="font-size:11px">The installer can have these fields pre-filled with these optional settings.  These values are only applied to packages after the data is saved and a package is created.</i>
 			</div>
 			<!--div id="tabs-opts-3">
 					FTP in Version 1.1

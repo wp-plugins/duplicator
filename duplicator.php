@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.2.4
+Version: 0.2.5
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -34,13 +34,13 @@ Contributors:
 
 //==============================================================================
 //Update per relase
-define('DUPLICATOR_VERSION',   		'0.2.4');
-define('DUPLICATOR_DBVERSION', 		'0.2.4');
+define('DUPLICATOR_VERSION',   		'0.2.5');
+define('DUPLICATOR_DBVERSION', 		'0.2.5');
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?category=4");
 define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
 define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
 define("DUPLICATOR_DB_ICONV_OUT",	"ISO-8859-1//TRANSLIT"); 
-define('DUPLICATOR_PLUGIN_URL', plugin_dir_url( __FILE__ ));
+define('DUPLICATOR_PLUGIN_URL',  plugin_dir_url( __FILE__ ));
 define('DUPLICATOR_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 //==============================================================================
 
@@ -74,10 +74,14 @@ if (is_admin() == true) {
 	if ( !defined('ABSPATH') ) {
 		define('ABSPATH', dirname('__FILE__'));
 	}
-	define('DUPLICATOR_WPROOTPATH',  str_replace("\\", "/", ABSPATH));
-	define("DUPLICATOR_SSDIR_NAME",  'wp-snapshots'); 
-	define("DUPLICATOR_SSDIR_PATH",  DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME);
-	define("DUPLICATOR_LOGLEVEL",    $GLOBALS['duplicator_opts']['log_level']);
+	define('DUPLICATOR_WPROOTPATH',		str_replace("\\", "/", ABSPATH));
+	define("DUPLICATOR_SSDIR_NAME",		'wp-snapshots'); 
+	define("DUPLICATOR_SSDIR_PATH",		DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME);
+	define("DUPLICATOR_LOGLEVEL",		$GLOBALS['duplicator_opts']['log_level']);
+	define("DUPLICATOR_INSTALL_PHP",	'install.php');
+	define("DUPLICATOR_INSTALL_SQL",	'install-data.sql');
+	define("DUPLICATOR_INSTALL_LOG",	'install-log.txt');
+	define("DUPLICATOR_ZIP_FILE_POOL",	1000);
 	
 	
 	switch (DUPLICATOR_LOGLEVEL) {

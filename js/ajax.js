@@ -27,11 +27,11 @@ jQuery(document).ready( function($) {
 	*/
 	Duplicator.toggleToolbarState = function(state) {
 		if (state == "DISABLED") {
-			$('#toolbar-table :input').attr("disabled", "true");
-			$('#toolbar-table :input').css("background-color", "#efefef");
+			$('#toolbar-table :input, #duplicator-installer').attr("disabled", "true");
+			$('#toolbar-table :input, #duplicator-installer').css("background-color", "#efefef");
 		} else {
-			$('#toolbar-table :input').removeAttr("disabled");
-			$('#toolbar-table :input').css("background-color", "#f9f9f9");
+			$('#toolbar-table :input, #duplicator-installer').removeAttr("disabled");
+			$('#toolbar-table :input, #duplicator-installer').css("background-color", "#f9f9f9");
 		}
 	}
 	
@@ -204,8 +204,19 @@ jQuery(document).ready( function($) {
 				var size = $('input.dir-size:last').val();
 				var msgDetails = "Uncompressed Size:  " + size + "\nName:  " + packname  ;
 
+				//Invalid file		
+			console.log(data);
+				if (data.indexOf("log:act__system_check=>reserved-file") != -1)	{
+					var validate_msg = "WARNING:\nA reserved file was found in the WordPress root directory.\n";
+					validate_msg 	+= "The Duplicator uses the following reserved file names:\n\n";
+					validate_msg 	+= "install.php, install-data.sql, and install-log.txt\n\n";
+					validate_msg 	+= "In order to archive your data correctly please remove any of\n";
+					validate_msg 	+= "these reserved files from your WordPress root directory.\n";
+					validate_msg 	+= "Then try creating a your package again."
+					alert(validate_msg);
+					return false;
 				//Overwrite	Message			
-				if (data.indexOf("log:act__system_check=>overwrite") != -1)	{
+				} else if (data.indexOf("log:act__system_check=>overwrite") != -1)	{
 					var validate_msg = "Package name already exists! Overwrite with newer package?\n\n" + msgDetails;
 
 					if (confirm(validate_msg)) {

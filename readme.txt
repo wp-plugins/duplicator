@@ -4,7 +4,7 @@ Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 0.2.4 
+Stable tag: 0.2.5 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -72,7 +72,17 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
 
 == Changelog ==
 
-= 0.2.4  =
+= 0.2.5 Beta =
+<li>Added: Self reference check for reserved file names within the package (archive)</li>
+<li>Added: Installer has mysql wait timeout support for longer session handles</li>
+<li>Added: Package creation has mysql wait timeout support for longer session handles</li>
+<li>Added: Additional logging around the ZipArchive close routine</li>
+<li>Added: File count limit around ZipArchive open/close handles</li>
+<li>Fixed: Installer bound to a package perception in the UI.</li>
+<li>Fixed: No access message for non WordPress admin accounts</li>
+<li>Fixed: Permission on snapshop folder to 755 on install</li>
+
+= 0.2.4 Beta =
 <li>Added: Detailed table logging during creation</li>
 <li>Added: Support for memory blocks up to 1GB</li>
 <li>Added: jQuery support from internal WordPress</li>
@@ -84,7 +94,7 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
 <li>Fixed: Support for serialized data with newlines</li>
 <li>Fixed: Several minor bugs submitted as help tickets</li>
 
-= 0.2.3  =
+= 0.2.3 Beta =
 <li>Added: Additional error checking</li>
 <li>Fixed: Logging failed attempt to create database entry record</li>
 <li>Fixed: Compression check for ZipArchive class</li>
@@ -120,7 +130,7 @@ See http://www.logiclord.com/backup-and-move/ for more details.
 
 == Upgrade Notice ==
 
-Please use our ticketing system when submitting your logs.  Do not post to the forums.
+Please use our ticketing system when submitting your logs.  Please do not post to the forums.
 
 
 
