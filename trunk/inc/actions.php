@@ -14,42 +14,45 @@ function duplicator_create() {
 
 	duplicator_log("*********************************************************");
 	duplicator_log("START PROCESSING");
-	duplicator_log("package:{$packname}");
+	duplicator_log("duplicator:" . DUPLICATOR_VERSION . " | wp:{$wp_version} | php:" .  phpversion());
 	duplicator_log("server:{$_SERVER['SERVER_SOFTWARE']}");
 	duplicator_log("browser:{$_SERVER['HTTP_USER_AGENT']}");
-	duplicator_log("duplicator:" . DUPLICATOR_VERSION . " | wp:{$wp_version} | php:" .  phpversion());
-	duplicator_log("max_time:{$GLOBALS['duplicator_opts']['max_time']} | max_memory:{$GLOBALS['duplicator_opts']['max_memory']}");
-	
+	duplicator_log("package:{$packname}");
 	
 	if($packname) {
 		
-		duplicator_create_snapshotpath();
-		ini_set("max_execution_time", $GLOBALS['duplicator_opts']['max_time']); 
-		ini_set('memory_limit', $GLOBALS['duplicator_opts']['max_memory']);
+		$max_time   = @ini_set("max_execution_time", $GLOBALS['duplicator_opts']['max_time']); 
+		$max_memory = @ini_set('memory_limit', $GLOBALS['duplicator_opts']['max_memory']);
+		$max_time   = ($max_time == false)   ? "Unabled to set max_execution_time" : $GLOBALS['duplicator_opts']['max_time'];
+		$max_memory = ($max_memory == false) ? "Unabled to set memory_limit"		: $GLOBALS['duplicator_opts']['max_memory'];
+		duplicator_log("max_time:{$max_time} | max_memory:{$max_memory}");
 			
 		global $wpdb;
 		global $current_user;
-		get_currentuserinfo();
+
 		$zipfilename = $packname.'.zip';
 		$temp_path 	 = DUPLICATOR_SSDIR_PATH . "/{$packname}";
 		$zipsize = 0;
 		
 		duplicator_log("mysql wait_timeout: {$GLOBALS['duplicator_opts']['max_time']}");
-		$wpdb->query("SET wait_timeout = {$GLOBALS['duplicator_opts']['max_time']}");
+		$wpdb->query("SET session wait_timeout = {$GLOBALS['duplicator_opts']['max_time']}");
 		
+		
+		//TEMPORARY FILE BACKUP
+		//Very important to remove trailing slash for copy function to work
+		duplicator_log("*********************************************************");
+		duplicator_log("TEMPORARY FILE BACKUP");
+		
+		duplicator_create_snapshotpath();
 		if(!file_exists($temp_path)) {
 			if (!mkdir($temp_path, 0755)) {
 				die(duplicator_log("Unable to create temporary snapshot directory '$temp_path' "));
 			}
 		}
 		
-		//TEMPORARY FILE BACKUP
-		//Very important to remove trailing slash for copy function to work
-		duplicator_log("*********************************************************");
-		duplicator_log("TEMPORARY FILE BACKUP");
-		duplicator_log("log:act__create=>temp backup to: " . $temp_path, 2);
+		duplicator_log("log:act__create=>temp backup to: " . $temp_path, 1);
 		duplicator_full_copy(rtrim(DUPLICATOR_WPROOTPATH, "/\\") ,$temp_path);
-		duplicator_log("log:act__create=>temp backup complete.", 2);
+		duplicator_log("log:act__create=>temp backup complete.", 1);
 		
 		//SQL SCRIPT
 		duplicator_log("*********************************************************");

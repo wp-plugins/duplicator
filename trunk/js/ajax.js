@@ -59,6 +59,8 @@ jQuery(document).ready( function($) {
 		$.ajax({
 			type: "POST",
 			url: ajaxurl,
+			beforeSend: function() { Duplicator.Log("<div id='duplicator-process-msg'>Processing please wait. &nbsp; This may take several minutes...</div>");},
+			complete: function() { jQuery('#duplicator-process-msg').empty()},
 			data: "package_name=" + packname +"&action=duplicator_create",
 			success: function(data){Duplicator.reload(data);},
 			error:   function(data){ 
@@ -205,7 +207,6 @@ jQuery(document).ready( function($) {
 				var msgDetails = "Uncompressed Size:  " + size + "\nName:  " + packname  ;
 
 				//Invalid file		
-			console.log(data);
 				if (data.indexOf("log:act__system_check=>reserved-file") != -1)	{
 					var validate_msg = "WARNING:\nA reserved file was found in the WordPress root directory.\n";
 					validate_msg 	+= "The Duplicator uses the following reserved file names:\n\n";

@@ -295,7 +295,6 @@ function duplicator_log($msg, $level = 0) {
 	if (DUPLICATOR_LOGLEVEL >= $level) {
 		$stamp = date('h:i:s');
 		echo "{$stamp} {$msg} <br/>\n";
-		flush();
 	} 
 }
 
@@ -314,6 +313,12 @@ function duplicator_create_snapshotpath() {
 		}
 		$fh = fopen(DUPLICATOR_SSDIR_PATH.'/index.php', 'w');
 		fclose($fh);
+	} else {
+		$perms = chmod(DUPLICATOR_SSDIR_PATH, 0755);
+		$msg   = ($perms) 
+			? "log:fun__create_snapshotpath=>success setting 755 for: " . DUPLICATOR_SSDIR_PATH 
+			: "log:fun__create_snapshotpath=>error setting 755 for directory: " . DUPLICATOR_SSDIR_PATH;
+		duplicator_log($msg, 2);
 	}
 }
 
