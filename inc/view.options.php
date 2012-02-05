@@ -148,51 +148,59 @@
 			TAB 3 SYSTEM -->
 			<div id="tabs-opts-3">		
 				Key:
-				<span class="dup-test-good" style="padding:10px">Good</span>
-				<span class="dup-test-ok" style="padding:10px">OK</span>
-				<span class="dup-test-bad" style="padding:10px">Bad</span><br/><hr size="1" />
+				<span class="dup-test-good" style="padding:10px">Good <sup>[1]</sup></span>
+				<span class="dup-test-ok" style="padding:10px">OK <sup>[0]</sup></span>
+				<span class="dup-test-bad" style="padding:10px">Bad <sup>[-1]</sup></span><br/><hr size="1" />
 				
 				<div style="line-height:24px">
 				<b>SERVER CHECKS</b> <br/>
 				PHP Version: 
 				<?php if (phpversion() >= 5.3): ?>
-					<span class="dup-test-good"><?php echo phpversion(); ?></span>
+					<span class="dup-test-good"><?php echo phpversion(); ?> <sup>[1]</sup></span>
 				<?php elseif (phpversion() >= 5.2): ?>
-					<span class="dup-test-ok"><?php echo phpversion(); ?></span> <i style="font-size:11px">(5.3+ is highly recommended. 5.2.17+ is required)</i>
+					<span class="dup-test-ok"><?php echo phpversion(); ?> <sup>[0]</sup></span> <i style="font-size:11px">(5.3+ is highly recommended. 5.2.17+ is required)</i>
 				<?php else: ?> 
-					<span class="dup-test-bad"><?php echo phpversion(); ?> </span>
+					<span class="dup-test-bad"><?php echo phpversion(); ?> <sup>[-1]</sup></span>
 				<?php endif; ?>
 				<br />
 				
 				 Web Server: 
 				<?php if (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') !== false): ?>
-					<span class="dup-test-good">Apache</span>
+					<span class="dup-test-good">Apache <sup>[1]</sup></span>
 				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false): ?> 
-					<span class="dup-test-ok">Lite Speed</span>
+					<span class="dup-test-ok">Lite Speed <sup>[0]</sup></span>
 				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false): ?> 
-					<span class="dup-test-ok">nginx</span>
+					<span class="dup-test-ok">nginx <sup>[0]</sup></span>
 				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'lighttpd') !== false): ?> 
-					<span class="dup-test-ok">lighttpd</span>
+					<span class="dup-test-ok">lighttpd <sup>[0]</sup></span>
 				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') !== false): ?> 
-					<span class="dup-test-ok">Microsoft IIS</span>
+					<span class="dup-test-ok">Microsoft IIS <sup>[0]</sup></span>
 				<?php else: ?>
-					<span>Not detected</span>
-				<?php endif; ?>
-				<br />
+					<span>Not detected <sup>[-1]</sup></span>
+				<?php endif; ?>	<br />
 				
 				Safe Mode: 
 				<?php if (stristr($safe_value, 'on')): ?>
-					<span class="dup-test-bad">On</span>
+					<span class="dup-test-bad">On <sup>[-1]</sup></span>
 				<?php else: ?>
-					<span class="dup-test-good">Off</span>
-				<?php endif; ?>
-					<br />
+					<span class="dup-test-good">Off <sup>[1]</sup></span>
+				<?php endif; ?>	<br />
 				
-			    	Compression:
-				<?php if (class_exists('ZipArchive')): ?>
-					<span class="dup-test-good">Pass</span>
+				
+				Open Base Dir: 
+				<?php 
+				$open_basedir_set = ini_get("open_basedir");
+				if (empty($open_basedir_set)): ?>
+					<span class="dup-test-good">Not Enabled <sup>[1]</sup></span>
 				<?php else: ?>
-					<span class="dup-test-bad">Not installed</span>
+					<span class="dup-test-ok">Enabled <sup>[0]</sup></span> <i style="font-size:11px">(contact your host to temporarily disable)</i>
+				<?php endif; ?>	<br />
+				
+			    Compression:
+				<?php if (class_exists('ZipArchive')): ?>
+					<span class="dup-test-good">Pass <sup>[1]</sup></span>
+				<?php else: ?>
+					<span class="dup-test-bad">Not installed <sup>[-1]</sup></span>
 				<?php endif; ?>
 				<i style="font-size:11px">(ZipArchive extension required for compression)</i>
 				<br /><br />

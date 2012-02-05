@@ -4,7 +4,7 @@ Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 0.2.5 
+Stable tag: 0.2.6 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -71,6 +71,16 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
  
 
 == Changelog ==
+
+= 0.2.6 Beta =
+<li>Added: Message for ZipArchive Close when disk quota is full</li>
+<li>Added: UTF-8 support on installer for Uni-code data see  mysql_query("SET NAMES 'utf8' ")</li>
+<li>Added: Unique names to installer functions to avoid possible function name conflicts</li>
+<li>Added: Support for color blindness, and open_base_dir check</li>
+<li>Fixed: String serialized object was causing errors with ";"" embedded semicolon double quote</li>
+<li>Fixed: Prevention of double click on create package button</li>
+<li>Fixed: Snapshot directory to attempt correct permission settings</li>
+
 
 = 0.2.5 Beta =
 <li>Added: Self reference check for reserved file names within the package (archive)</li>

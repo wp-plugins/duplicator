@@ -44,7 +44,7 @@ class Duplicator_Zip
 			
 			$msg = 'log:class.zip=>archive info: ' . print_r($this->zipArchive, true);
 			duplicator_log($msg);
-			duplicator_log("log:class.zip=>close returned: " . $this->zipArchive->close());
+			duplicator_log("log:class.zip=>close returned: " . $this->zipArchive->close() . " (if null check your disk quota)" );
 			duplicator_log("log:class.zip=>ended");
 		} 
 		catch(Exception $e) 

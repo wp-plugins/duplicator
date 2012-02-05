@@ -152,7 +152,7 @@ MAIN FORM: Lists all the backups 			-->
 			<tr valign="top">
 				<td style="white-space:nowrap; vertical-align:middle"><label style="font-size:14px !important;">Package Name:</label></td>
 				<td style="white-space:nowrap;width:100%; vertical-align:middle"><input name="package_name" type="text" style="width:250px" value="<?php echo $package_name ?>" maxlength="40" /></td>
-				<td><input type="submit" id="btn-create-pack" class="btn-create-pack" value="..." name="submit" title="Create Package" onclick="Duplicator.startCreate()" /></td>
+				<td><input type="submit" id="btn-create-pack" class="btn-create-pack" value="..." name="submit" title="Create Package" onclick="Duplicator.startCreate()" ondblclick="javascript:return void(0);" /></td>
 				<td><input type="button" id="btn-delete-pack" title="Delete selected package(s)"/></td>
 				<?php if ($setup_link_enabled) : ?>
 					<td align="center"><input type="button" class="btn-setup-link" onclick="window.open('<?php echo $GLOBALS['duplicator_opts']['nurl'] ?>/install.php', '_blank')" title="Launch the installer window." /></td>

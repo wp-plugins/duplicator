@@ -93,6 +93,7 @@ END ADVANCED FEATURES: Do not edit below here.
 
 
 //GLOBALS
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.2.6';
 $GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
 $GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');															 
 
@@ -156,7 +157,7 @@ if ($GLOBALS["ZIP_FILE_COUNT"] > 1) {
  *
  *  @param string $dbname		Database to count tables in
  */
-function table_count($dbname) {
+function dinstaller_table_count($dbname) {
 	$res   = mysql_query("SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = '{$dbname}' ");
 	$count = mysql_result($res, 0) ;
 	return ($count == false) ? 0 : $count;
@@ -169,7 +170,7 @@ function table_count($dbname) {
  *  @param string $source		The path to backup
  *  @param string $target		Where the source will be written to
  */
-function full_copy( $source, $target ) {
+function dinstaller_full_copy( $source, $target ) {
 	if ( is_dir( $source ) ) {
 		@mkdir( $target, 0755, true );
 		$d = dir( $source );
@@ -179,7 +180,7 @@ function full_copy( $source, $target ) {
 			}
 			$Entry = $source . '/' . $entry;
 			if ( is_dir( $Entry ) ) {
-				full_copy( $Entry, $target . '/' . $entry );
+				dinstaller_full_copy( $Entry, $target . '/' . $entry );
 				continue;
 			}
 			@copy( $Entry, $target . '/' . $entry );
@@ -198,8 +199,7 @@ function full_copy( $source, $target ) {
  *  @param string $directory	The path to delete
  *  @param string $empty		Delete the topmost directory
  */
-function delete_all($directory, $empty = false) {
-
+function dinstaller_delete_all($directory, $empty = false) {
 	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::CHILD_FIRST);
 	foreach ($iterator as $path) {
 		if ($path->isDir()) {
@@ -223,7 +223,7 @@ function delete_all($directory, $empty = false) {
  *
  *  @param string $name		File name
  */
-function remove_extension($name) { 
+function dinstaller_remove_extension($name) { 
 	 $ext = strrchr($name, '.'); 
 	 if($ext !== false) { 
 		 $name = substr($name, 0, -strlen($ext)); 
@@ -237,7 +237,7 @@ function remove_extension($name) {
  *
  *  @param string $path		A path
  */
-function add_ending_slash($path){
+function dinstaller_add_slash($path){
 	$last_char = substr($path, strlen($path)-1, 1);
 	if ($last_char != '/' ) {
 		$path .= '/';
@@ -253,7 +253,7 @@ function add_ending_slash($path){
  *  @param int $loglevel	Log level
  *  @param bool $newline	Insert a newline
  */
-function write_log($msg, $loglevel = 1, $newline = true) {
+function dinstaller_log($msg, $loglevel = 1, $newline = true) {
 	
 	if ($loglevel <= $GLOBALS["LOG_LEVEL"] ) {
 		if (isset($GLOBALS["LOG_FILE_HANDLE"])) {
@@ -271,10 +271,28 @@ function write_log($msg, $loglevel = 1, $newline = true) {
  *  Fixes the string length of a string object that has been serialized
  *
  *  @param string $sObject	The string ojbect to recalculate the size on.
- */
-function set_serialized_string($sObject) {
-	$ret =preg_replace('!s:(\d+):"([\w-\W]*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $sObject );
-	return $ret;
+*/
+function dinstaller_serialize_callback($match) { 
+    return 's:' . strlen($match[2]); 
+} 
+
+function dinstaller_set_serialized_string($sObject) {
+	//$serialized = preg_replace('!s:(\d+):"([\w-\W]*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $sObject );  version 0.2.3
+	//$serialized = preg_replace('!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $sObject );  version 0.2.4
+	$serialized = preg_replace_callback( 
+		'!(?<=^|;)s:(\d+)(?=:"(.*?)";(?:}|a:|s:|b:|d:|i:|o:|N;))!s', 
+		'dinstaller_serialize_callback', 
+		$sObject
+	); 
+	return $serialized;
+} 
+
+function dinstaller_is_serializable($str) {
+	if ($str === 'b:0;' || $str !== false) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /**
@@ -287,9 +305,10 @@ function set_serialized_string($sObject) {
  *  @param string $path		The path to make safe
  *
  */
-function set_safe_path($path) {
+function dinstaller_set_safe_path($path) {
 	return str_replace("\\", "/", $path);
 }
+
 
 //AJAX MESSAGE REQUESTS
 if ($action == 'dbconnect-test') {
@@ -301,7 +320,7 @@ if ($action == 'dbconnect-test') {
 	}
 	
 	if (! $dbclean) {
-		$tblcount = table_count($dbname);
+		$tblcount = dinstaller_table_count($dbname);
 		if ($tblcount > 0) {
 			die(sprintf(MSG_ERR_DBCLEANCHECK, $dbname, $tblcount ));
 		}
@@ -340,7 +359,7 @@ if ($action == 'dbconnect-test') {
 		div#dbconn-test-msg {background-color:#fff; padding:2px 15px; height:150px; overflow-y:scroll; }
 		div#dbconn-test-close {background-color:#C0C0C0;font-size:14px;}
 		
-		div.connect {padding:5px; font-size:12px; border:1px solid silver; border-radius:5px; background-color:#fff; text-align:center; margin-top:15px; line-height:22px;}
+		div.connect {padding:18px; font-size:12px; border:1px solid silver; border-radius:5px; background-color:#fff; text-align:center; margin-top:15px; line-height:22px;background-color:#efefef;}
 	</style>
 	<script type="text/javascript">
 		//NOTE: We can't assume the user will always have an http connection.
@@ -411,6 +430,7 @@ if ($action == 'dbconnect-test') {
 				
 				var msg =  "Proceed with installation with the following settings?\n\nServer: " + $("#dbhost").val() + "\nDatabase: " + $("#dbname").val() + "\n\n";
 				    msg += "Warning: Be sure these database parameters are correct! Entering the wrong information WILL overwrite an existing database!  Be sure to have backups of all your data!\n\n";
+					msg += "Notice: Servers with compression enabled may only see a white screen while processing.  This may take a few minutes.";
 				var answer = confirm(msg);
 				if (answer) {
 					$("#submit").val('Processing Please Wait... ');
@@ -448,7 +468,7 @@ if ($action == 'dbconnect-test') {
 	if ($action == 'process') {
 		
 		//START Stopwatch
-		echo "<div style='text-align:center; font-size:11px'><i>See <a href='install-log.txt' target='_blank'>install-log.txt</a> for an overview of this process.</i></div>";	
+		echo "<div style='text-align:center;'><i>See <a href='install-log.txt' target='_blank'>install-log.txt</a> for an overview of this process.</i></div>";	
 		echo "<script type='text/javascript'> _stopWatch.startStop(); </script>";
 		
 		$tryagain_html	 = "<div class='tryagain'><a href='javascript:window.history.back()' style='color:#444; font-weight:bold'>Try Again</a></div><script type='text/javascript'> _stopWatch.startStop(); </script>";
@@ -481,7 +501,7 @@ if ($action == 'dbconnect-test') {
 		
 		if (! $dbclean) {
 			$log = "Database already empty. Ready for install.";
-			$tblcount = table_count($dbname);
+			$tblcount = dinstaller_table_count($dbname);
 			if ($tblcount > 0) {
 				die(sprintf(MSG_ERR_DBCLEANCHECK, $dbname, $tblcount ) . $tryagain_html);
 			}
@@ -508,18 +528,29 @@ if ($action == 'dbconnect-test') {
 				}
 			} 
 		}
-		write_log("{$GLOBALS['SEPERATOR1']}");
-		write_log('START-PRECHECK:' . date('h:i:s'));
-		write_log("{$GLOBALS['SEPERATOR1']}");
-		write_log("server: {$_SERVER['SERVER_SOFTWARE']}");
-		write_log("browser: {$_SERVER['HTTP_USER_AGENT']}");
-		write_log("php: " .  phpversion());
-		write_log("connection passed=>host:{$dbhost} | database:{$dbname} ");
-		write_log("log level: {$GLOBALS['LOG_LEVEL']}");
-		write_log("drop tables status=>{$log}");
-		write_log('END-PRECHECK:' . date('h:i:s') . $GLOBALS["SEPERATOR2"] );
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log('START-PRECHECK:' . date('h:i:s'));
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log("installer version: {$GLOBALS['DUPLICATOR_INSTALLER_VERSION']}");
+		dinstaller_log("log level: {$GLOBALS['LOG_LEVEL']}");
+		dinstaller_log("php:" .  phpversion() . " | server: {$_SERVER['SERVER_SOFTWARE']}");
+		
+		dinstaller_log("----------------------------------");
+		dinstaller_log("SETTINGS:");
+		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
+		dinstaller_log("database create:{$dbmake}");
+		dinstaller_log("database clean:{$dbclean}");
+		dinstaller_log("database character validate:{$dbcharvalid}");
+		dinstaller_log("old url:'{$current_url}'");
+		dinstaller_log("new url:'{$new_url}'");
+		dinstaller_log("disable ssl: {$disable_ssl}");
+		dinstaller_log("zip delete: {$zip_delete}");
+		dinstaller_log("zip manual: {$zip_manual}");
+		dinstaller_log("----------------------------------");
+		dinstaller_log("drop tables status=>{$log}");
+		dinstaller_log('END-PRECHECK:' . date('h:i:s') . $GLOBALS["SEPERATOR2"] );
 		$log = '';
-		echo "<h3>&raquo; Prechecks Completed</h3>";
+		echo "<h3>&#10004; Prechecks Completed</h3>";
 		flush();
 		
 		
@@ -527,61 +558,63 @@ if ($action == 'dbconnect-test') {
 		//====================================================================================================
 		//PACKAGE EXTRACTED: Extract the contents of the zip file
 		//====================================================================================================
-		write_log("{$GLOBALS['SEPERATOR1']}");
-		write_log("START-PACKAGE-EXTRACTION:"  . date('h:i:s'));
-		write_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log("PACKAGE-EXTRACTION:"  . date('h:i:s'));
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
 		$zip_name	 = '';
 		$folder_name = '';
 		$filename = null;
 		
 		foreach (glob("*.zip") as $filename) {
 			$zip_name = $filename;
-			$folder_name = remove_extension($zip_name);
+			$folder_name = dinstaller_remove_extension($zip_name);
 		}
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
 		
-		$source 	= set_safe_path(dirname(__FILE__).'/'.$folder_name);
-		$target 	= set_safe_path(dirname(__FILE__));
+		$source 	= dinstaller_set_safe_path(dirname(__FILE__).'/'.$folder_name);
+		$target 	= dinstaller_set_safe_path(dirname(__FILE__));
 		$zip_size 	= filesize($filename);	
 		
 		if ($zip_manual) {
-			write_log("\n-package extraction is in manual mode-\n");
+			dinstaller_log("\n-package extraction is in manual mode-\n");
 			
 			if (! file_exists("wp-config.php") && ! file_exists("database.sql")) {
-				write_log("files wp-config.php or database.sql not found\n");
+				dinstaller_log("files wp-config.php or database.sql not found\n");
 				die(MSG_ERR_ZIPMANUAL  . $tryagain_html);
 			}
 			
 		} else {
-			write_log("starting package extraction");
+			dinstaller_log("starting package extraction");
 			$zip 		= new ZipArchive();
 			if ($zip->open($zip_name) === TRUE)	{
-				$zip->extractTo(dirname(__FILE__));
+			
+				//TODO: Make sure $target eg dirname(__FILE__) has the correct level up access to extract to.
+				$zip->extractTo($target);
 				if( ! file_exists($folder_name ))	{
 				  die(MSG_ERR_ZIPDIR_TEMPERED  . $tryagain_html);
 				}
 			
-				write_log("zip information:\n" . print_r($zip, true));
-				write_log("package extracted successfully\n");
-				$zip->close();
+				dinstaller_log("zip information:\n" . print_r($zip, true));
+				$close_response = $zip->close();
+				dinstaller_log("zip close response: {$close_response}");
+				dinstaller_log("package extracted complete\n");
 				
-				write_log("copying files\n-source:{$source}\n-target:{$target}");
-				full_copy($source, $target);
-				write_log("copy completed\nremoving directory:{$source}");
-				delete_all($source, true);
-				write_log("source directory removed\n");
+				dinstaller_log("copying files\n-source:{$source}\n-target:{$target}");
+				dinstaller_full_copy($source, $target);
+				dinstaller_log("copy completed\nremoving source dir:{$source}");
+				dinstaller_delete_all($source, true);
+				dinstaller_log("source dir removed\n");
 				
 			 } else {
 				die(MSG_ERR_ZIPEXTRACTION . $tryagain_html );
 			}
 			
-			
-			echo "<h3>&raquo; Package Extracted</h3>";
+			echo "<h3>&#10004; Package Extracted</h3>";
 			flush();
 		}
-		write_log('END-PACKAGE-EXTRACTION:' . date('h:i:s') . $GLOBALS["SEPERATOR2"] );
+		dinstaller_log('END-PACKAGE-EXTRACTION:' . date('h:i:s') . $GLOBALS["SEPERATOR2"] );
 
 	
 	
@@ -590,9 +623,9 @@ if ($action == 'dbconnect-test') {
 		//====================================================================================================
 		
 		//WP-CONFIG
-		write_log("{$GLOBALS['SEPERATOR1']}");
-		write_log('START SCRIPT FILES ROUTINE:'  . date('h:i:s'));
-		write_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log('SCRIPT FILES ROUTINE:'  . date('h:i:s'));
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
 		$config_file = @file_get_contents('wp-config.php', true);
 	
 		$patterns = array ("/'DB_NAME',\s*'.*?'/",
@@ -619,7 +652,7 @@ if ($action == 'dbconnect-test') {
 		//Complex Subject See: http://webcollab.sourceforge.net/unicode.html
 		//Remove no breaking characters
 		if ($dbcharvalid) {
-			write_log("performed database character validation\n" . $log);
+			dinstaller_log("performed database character validation\n" . $log);
 			$sql_file = str_ireplace("\xA0"," ",$sql_file );
 		}
 		
@@ -640,22 +673,23 @@ if ($action == 'dbconnect-test') {
 		$len = count($res);
 		file_put_contents($GLOBALS["SQL_FILE_NAME"], $sql_file);
 		
-		write_log("finalized scripts:\n- see {$GLOBALS['SQL_FILE_NAME']} in root directory for the SQL script ran.\n- see wp-config.php in root directory for the updated changes." );
-		write_log("scrubbed the following url(s) in the database script:\n" . $log);
+		dinstaller_log("finalized scripts:\n- see {$GLOBALS['SQL_FILE_NAME']} in root directory for the SQL script ran.\n- see wp-config.php in root directory for the updated changes." );
+		
+		dinstaller_log("new url is: {$new_url}");
+		dinstaller_log("scrubbed old url(s) in the database script:\n" . $log);
 		$log = '';
-		echo "<h3>&raquo; Script Files Updated</h3>";
-		write_log('END SCRIPT FILES ROUTINE:'  . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
+		echo "<h3>&#10004; Script Files Updated</h3>";
+		dinstaller_log('END SCRIPT FILES ROUTINE:'  . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
 		flush();
-	
 	
 	
 		//====================================================================================================
 		//DATABASE ROUTINES
 		//====================================================================================================
-		write_log("{$GLOBALS['SEPERATOR1']}");
-		write_log('START DB-ROUTINES:' . date('h:i:s'));
-		write_log("mysql wait_timeout set:{$GLOBALS['MAX_TIME']}");
-		write_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log('START DB-ROUTINES:' . date('h:i:s'));
+		dinstaller_log("mysql wait_timeout set:{$GLOBALS['MAX_TIME']}");
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
 		
 		$temp=0;
 		while ($temp < $len) {
@@ -670,17 +704,16 @@ if ($action == 'dbconnect-test') {
 		//Update site title
 		$site_title = mysql_real_escape_string($_POST['site_title']);
 		
-
 		mysql_query("SET wait_timeout = {$GLOBALS['MAX_TIME']}");
+		mysql_query("SET NAMES 'utf8' ");
 		mysql_query("UPDATE `%wp_tableprefix%options` SET option_value = '{$site_title}' WHERE option_name = 'blogname' ");
 		
 		//Fix string length on any serilized data.
 		if ($GLOBALS["SERIAL_STR_FIX"]) {
 		
-			write_log("serialization fix enabled (filtering internally on serlizable strings)\n");
+			dinstaller_log("serialization fix enabled (filtering internally on serlizable strings)\n");
 			$fix_count	= 0;
 			$seperator1  = str_repeat("####", 10);
-			$seperator2  = str_repeat("----", 10);
 			
 			foreach($GLOBALS["SERIAL_TABLES"] as $table_name => $column_info) {
 				
@@ -689,51 +722,52 @@ if ($action == 'dbconnect-test') {
 				$col_val = $column_info['column_value'];  
 				$sql 	 = "SELECT {$col_id}, {$col_val} FROM {$table} WHERE {$col_val} LIKE '%{$new_url}%'" ;
 				$retid 	 = mysql_query($sql, $conn);
-				//$serial_count = @mysql_num_rows($retid);
+				$serial_count = @mysql_num_rows($retid);
 			
-				write_log("serialization query:\n{$sql} \n");
+				dinstaller_log("serialization query ({$serial_count}):\n{$sql} \n");
 				while ($row = @mysql_fetch_array($retid)) {
 					if (strpos($row[$col_val], 's:')) {
 						$old_val	= $row[$col_val];
 						$index 		= $row[$col_id];
-						$new_val	= set_serialized_string($old_val);
+						$new_val	= dinstaller_set_serialized_string($old_val);
 						//Change found make update.
 						if ($old_val != $new_val) {
 							$sql    = "UPDATE {$table} SET {$col_val} = '" . mysql_real_escape_string($new_val) . "' WHERE {$col_id} = '{$index}' ";
 							$result = mysql_query("$sql",$conn);
 							if ($result) {
 								$fix_count++;
-								$log .= "{$seperator1}\n{$table}=id:{$row[$col_id]} [before]\n{$old_val}\n";
-								$log .= "{$seperator2}\n{$table}=id:{$row[$col_id]} [after]\n{$new_val}\n";
+								$serial_check = dinstaller_is_serializable($new_val);
+								$log .= "{$seperator1}\n{$table}=id:{$row[$col_id]} [before] \n{$seperator1}\n{$old_val} \n";
+								$log .= "{$seperator1}\n{$table}=id:{$row[$col_id]} [after] serialized: {$serial_check} \n{$seperator1} \n{$new_val}\n";
 							}
 						}
 					}
 				}
 			}
 			
-			write_log("serialization replacements:\nupdated {$fix_count} records\n");
-			write_log("serialization replacements overview:\n". $log, 2);
+			dinstaller_log("serialization replacements:\nupdated {$fix_count} records\n");
+			dinstaller_log("serialization replacements overview:\n". $log, 2);
 			$log = '';
 		}
 
 		//Perform Transient Cache Cleanup
 		if ($GLOBALS["REMOVE_DBCACHE"]) {
-			write_log("transient cached cleanup enabled:performing cleanup.\n");
+			dinstaller_log("transient cached cleanup enabled:performing cleanup.\n");
 			mysql_query("DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_transient%')");
 			mysql_query("DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_site_transient%')");
 		}
 
-		echo "<h3>&raquo; Database Routines Completed</h3>";
-		write_log('END DB-ROUTINES:'  . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
+		echo "<h3>&#10004; Database Routines Completed</h3>";
+		dinstaller_log('END DB-ROUTINES:'  . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
 		flush();
 		
 		
 		//====================================================================================================
 		//FINAL CLEANUP
 		//====================================================================================================
-		write_log("{$GLOBALS['SEPERATOR1']}");
-		write_log('START FINAL CLEANUP:' . date('h:i:s'));
-		write_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
+		dinstaller_log('START FINAL CLEANUP:' . date('h:i:s'));
+		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
 		
 		if(!file_exists(DUPLICATOR_SSDIR_NAME)) {
 			mkdir(DUPLICATOR_SSDIR_NAME, 0755);
@@ -749,17 +783,17 @@ if ($action == 'dbconnect-test') {
 		
 		$currdata = parse_url("%current_url%"); 
 		$newdata  = parse_url($new_url);
-		$currpath = add_ending_slash(isset($currdata['path']) ? $currdata['path'] : "");
-		$newpath  = add_ending_slash(isset($newdata['path'])  ? $newdata['path']  : "");
+		$currpath = dinstaller_add_slash(isset($currdata['path']) ? $currdata['path'] : "");
+		$newpath  = dinstaller_add_slash(isset($newdata['path'])  ? $newdata['path']  : "");
 		
 		//WEB CONFIG FILE
 		if ($currpath != $newpath) {
-			write_log("HTACCESS CHANGES:");
+			dinstaller_log("HTACCESS CHANGES:");
 			@copy('.htaccess', '.htaccess.orig');
 			@copy('web.config', 'web.config.orig');
 			@unlink('.htaccess');
 			@unlink('web.config');
-			write_log("created backup of original .htaccess to htaccess.orig and web.config to web.config.orig");
+			dinstaller_log("created backup of original .htaccess to htaccess.orig and web.config to web.config.orig");
 			
 			$tmp_htaccess = <<<HTACCESS
 # BEGIN WordPress
@@ -774,10 +808,10 @@ if ($action == 'dbconnect-test') {
 # END WordPress
 HTACCESS;
 			file_put_contents('.htaccess', $tmp_htaccess);
-			write_log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
-			write_log("updated .htaccess file as follows:\n {$tmp_htaccess}");
+			dinstaller_log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
+			dinstaller_log("updated .htaccess file as follows:\n {$tmp_htaccess}");
 		}  else {
-			write_log("web configuration file was not renamed because the paths did not change.");
+			dinstaller_log("web configuration file was not renamed because the paths did not change.");
 		}
 		
 		//DEACTIVATED PLUGINS
@@ -805,14 +839,14 @@ HTACCESS;
 		
 		$html .= "</div>";
 		
-		$html .= "<div class='connect'>For issues or errors please see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership</a> with us!</div>";
+		$html .= "<div class='connect'>For troubleshooting see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership</a> with us!</div>";
 		
 		//Stop the watch when completed
 		$html .= "<script type='text/javascript'> _stopWatch.startStop();  prepAdminPage();</script>";
 		echo $html;
 		
 		mysql_close($conn);
-		write_log('END FINAL CLEANUP:' . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
+		dinstaller_log('END FINAL CLEANUP:' . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
 		fclose($GLOBALS["LOG_FILE_HANDLE"]);
 	}
 	?>
