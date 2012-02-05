@@ -74,10 +74,10 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
 
 = 0.2.6 Beta =
 <li>Added: Message for ZipArchive Close when disk quota is full</li>
-<li>Added: UTF-8 support on installer for Uni-code data see  mysql_query("SET NAMES 'utf8' ")</li>
+<li>Added: UTF-8 support on installer for uni-code data see: "SET NAMES 'utf8'</li>
 <li>Added: Unique names to installer functions to avoid possible function name conflicts</li>
 <li>Added: Support for color blindness, and open_base_dir check</li>
-<li>Fixed: String serialized object was causing errors with ";"" embedded semicolon double quote</li>
+<li>Fixed: String serialized object with ";"" embedded semicolon double quote</li>
 <li>Fixed: Prevention of double click on create package button</li>
 <li>Fixed: Snapshot directory to attempt correct permission settings</li>
 
