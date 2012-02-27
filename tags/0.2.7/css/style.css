@@ -1,0 +1,41 @@
+
+input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
+input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
+fieldset {border:1px solid gray; padding:5px;}
+label {font-size:13px !important}
+
+/*BUTTONS*/
+input.btn-create-pack{width:28px; height:27px;background:url(../img/create.png) no-repeat 5px 4px;}
+input#btn-delete-pack{width:28px; height:27px;background:url(../img/delete.png) no-repeat 5px 4px;}
+input.btn-opts-dialog {width:28px;height:27px;background:url(../img/options.png) no-repeat 5px 4px;}
+input.btn-diag-dialog {width:28px; height:27px;background:url(../img/debug.png) no-repeat 5px 4px;}
+input#btn-help-dialog {width:28px;height:27px; background:url(../img/help.png) no-repeat 5px 4px; }
+input.btn-save-packitem {text-indent:10px; height:27px; background:url(../img/save.png) no-repeat 5px 4px; width:100px; }
+input.btn-setup-link {width:28px;  background:url(../img/setup.png) no-repeat 5px 4px;}
+input#btn-contribute-dialog {width:28px; height:27px; background:url(../img/partner.png) no-repeat 3px 3px;}
+img.btn-delete-all {height:16px; width:16px;margin-left:2px}
+input.btn-save-opts {width:80px}
+
+/*PACKAGE TABLE */
+table.pack-table {word-break:break-all}
+table.pack-table  th{white-space:nowrap !important; cursor:help}
+div.pack-status {padding:6px 0px 6px 5px !important;margin-bottom:4px; border:1px solid #dfdfdf !important}
+div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); opacity:0.6;}
+tr.pack-information td {white-space:nowrap; padding-right:10px;}
+td.pack-details-row {display:none; padding-left:10px; line-height:22px}
+
+/*OPTIONS VIEW*/
+div#tabs-opts {height:500px}
+input.txt-settings {width:450px}
+span.dup-test-good {color:green;font-weight:bold}
+span.dup-test-ok {color:#C15D1A;font-weight:bold}
+span.dup-test-bad {color:#AC2725;font-weight:bold}
+
+/*LOG PANE*/
+div#log-pane {position:fixed; bottom:2px; right:9px; z-index:1000;  }
+div#log-area {padding:5px;margin-top:3px}
+div#log-msg {height:200px; width:99%; background-color:#fff;padding:3px;display:block; overflow-y:scroll; border:1px solid silver; }
+
+
+
+
