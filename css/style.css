@@ -21,6 +21,8 @@ table.pack-table {word-break:break-all}
 table.pack-table  th{white-space:nowrap !important; cursor:help}
 div.pack-status {padding:6px 0px 6px 5px !important;margin-bottom:4px; border:1px solid #dfdfdf !important}
 div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); opacity:0.6;}
+tr.pack-information td {white-space:nowrap; padding-right:10px;}
+td.pack-details-row {display:none; padding-left:10px; line-height:22px}
 
 /*OPTIONS VIEW*/
 div#tabs-opts {height:500px}

@@ -127,17 +127,17 @@
 					<table width="100%" border="0" cellspacing="5" cellpadding="5">
 					<tr>
 						<td style="width:130px">Host</td>
-						<td><input type="text" name="ftp-host" id="ftp-host" value="<?php echo $GLOBALS['duplicator_opts']['ftp-host'] ?>"  style="width:300px" /></td>
+						<td><input type="text" name="ftp-host" id="ftp-host" value="<?php //echo $GLOBALS['duplicator_opts']['ftp-host'] ?>"  style="width:300px" /></td>
 						<td>Port</td>
-						<td><input type="text" name="ftp-port" id="ftp-port" value="<?php echo $GLOBALS['duplicator_opts']['ftp-port'] ?>" style="width:60px" /></td>
+						<td><input type="text" name="ftp-port" id="ftp-port" value="<?php //echo $GLOBALS['duplicator_opts']['ftp-port'] ?>" style="width:60px" /></td>
 					</tr>
 					<tr>
 						<td style="white-space:nowrap">User Name</td>
-						<td colspan="3"><input type="text" name="ftp-user" id="ftp-user" value="<?php echo $GLOBALS['duplicator_opts']['ftp-user'] ?>"  class="txt-settings"/></td>
+						<td colspan="3"><input type="text" name="ftp-user" id="ftp-user" value="<?php //echo $GLOBALS['duplicator_opts']['ftp-user'] ?>"  class="txt-settings"/></td>
 					</tr>
 					<tr>
 						<td style="white-space:nowrap">Password</td>
-						<td colspan="3"><input type="password" name="ftp-pass" id="ftp-pass" value="<?php echo $GLOBALS['duplicator_opts']['ftp-pass'] ?>"  class="txt-settings"/></td>
+						<td colspan="3"><input type="password" name="ftp-pass" id="ftp-pass" value="<?php //echo $GLOBALS['duplicator_opts']['ftp-pass'] ?>"  class="txt-settings"/></td>
 					</tr>
 					</table>
 			</div>

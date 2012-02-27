@@ -46,6 +46,7 @@ jQuery(document).ready( function($) {
 			Duplicator.setStatus("Logging Enabled - &gt; <a href='javascript:window.location.reload()'>reload page</a> to view results.");
 			Duplicator.toggleToolbarState("ENABLED");
 		} else {
+			Duplicator.toggleToolbarState("ENABLED");
 			window.location.reload();
 		}
 	}

@@ -4,7 +4,7 @@ Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 0.2.6 
+Stable tag: 0.2.7 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -21,7 +21,7 @@ http://www.youtube.com/watch?v=nyHNV6D2w2c
 
 DEVELOPERS: This tool is great for pulling a production site down onto your local machine for testing and validation. It also works great for developing locally and then pushing up to a production server.
 
-DISCLAIMER: Be sure to always make full backups of all your databases and files before ever running any backup utility.
+DISCLAIMER: This plugin has been heavily tested, however it does require above average technical knowledge.  Please use it at your own risk and do not forget to back up your files beforehand.
 
 NOTE: This project is currently in Beta, the underlying logic to perform all these migration tasks is quite involved. It's impossible to know how each system is setup, this is why your feedback is very important to us.  Thanks for helping us to make WordPress the best blogging platform in the world.
 
@@ -72,6 +72,16 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
 
 == Changelog ==
 
+= 0.2.7 Beta =
+<li>Added: Database record check for post install</li>
+<li>Added: Package Detail information via ID link</li>
+<li>Added: Security token to end of package file name</li>
+<li>Added: Uninstall routine to remove table and options settings</li>
+<li>Fixed: Permission denied exception for children in RecursiveDirectoryIterator</li>
+<li>Fixed: PHP Notices in the options dialog</li>
+<li>Fixed: Directory size calculation for windows style paths</li>
+<li>Fixed: Firefox UI bug with enabled fields</li>
+
 = 0.2.6 Beta =
 <li>Added: Message for ZipArchive Close when disk quota is full</li>
 <li>Added: UTF-8 support on installer for uni-code data see: "SET NAMES 'utf8'</li>
@@ -80,7 +90,6 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
 <li>Fixed: String serialized object with ";"" embedded semicolon double quote</li>
 <li>Fixed: Prevention of double click on create package button</li>
 <li>Fixed: Snapshot directory to attempt correct permission settings</li>
-
 
 = 0.2.5 Beta =
 <li>Added: Self reference check for reserved file names within the package (archive)</li>
