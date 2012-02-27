@@ -30,9 +30,11 @@ function duplicator_create() {
 		global $wpdb;
 		global $current_user;
 
-		$zipfilename = $packname.'.zip';
-		$temp_path 	 = DUPLICATOR_SSDIR_PATH . "/{$packname}";
-		$zipsize = 0;
+		$secure_token = uniqid();
+		$uniquename   = $packname . '_' .  $secure_token;
+		$zipfilename  = "{$uniquename}.zip";
+		$temp_path 	  = DUPLICATOR_SSDIR_PATH . "/{$uniquename}";
+		$zipsize 	  = 0;
 		
 		duplicator_log("mysql wait_timeout: {$GLOBALS['duplicator_opts']['max_time']}");
 		$wpdb->query("SET session wait_timeout = {$GLOBALS['duplicator_opts']['max_time']}");
@@ -71,19 +73,24 @@ function duplicator_create() {
 		} else {
 			duplicator_log("log:act__create=>zip file size is: " . $zipsize);
 		}
-		
 		duplicator_log("log:act__create=>zip archive complete.", 2);
+		
+		//Serlized settings
+		$settings = array('plugin_version' => DUPLICATOR_VERSION, 
+						  'secure_token'   => $secure_token,
+						  'type' 		   => 'Manual');
+		$serialized_settings = serialize($settings);
+		
 		//Record archive info to database
-		$wpdb->insert($wpdb->prefix . "duplicator", 
-						array(	'zipname' => $zipfilename, 
-								'created' => current_time('mysql', get_option('gmt_offset')),
-								'owner'=>$current_user->user_login,
-								'zipsize'=>$zipsize, 
-								'type'=>'Manual',
-								'ver_plug'=>DUPLICATOR_VERSION, 
-								'ver_db'=>DUPLICATOR_DBVERSION ) 
+		 $results = $wpdb->insert($wpdb->prefix . "duplicator", 
+						array('packname' => $packname, 
+							  'zipname'  => $zipfilename, 
+							  'zipsize'  => $zipsize, 
+							  'created'  => current_time('mysql', get_option('gmt_offset')),
+							  'owner'    => $current_user->user_login,
+							  'settings' => "{$serialized_settings}") 
 						);
-								
+						
 		if ($wpdb->insert_id) {
 			duplicator_log("log:act__create=>recorded archieve id: " . $wpdb->insert_id);
 		} else {

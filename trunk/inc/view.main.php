@@ -12,6 +12,11 @@
 	$email_me_enabled    = $GLOBALS['duplicator_opts']['email-me'] == "0" 	 	 ? false : true;
 	$duplicator_dbiconv	 = $GLOBALS['duplicator_opts']['dbiconv'] == "0" 		 ? false : true;
 	
+	
+	function duplicator_get_download_link() {
+		return get_home_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' ;
+	}
+	
 ?>
 
 <script type="text/javascript">
@@ -43,7 +48,7 @@
 			
 			Duplicator.downloadPackage = function(btn) {
 				jQuery(btn).css('background-color', '#dfdfdf');
-				window.location = '<?php echo get_home_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' ; ?>' + btn.id;
+				window.location = '<?php echo duplicator_get_download_link(); ?>' + btn.id;
 			}
 			
 			Duplicator.downloadInstaller = function(btn) {
@@ -133,6 +138,12 @@
 			Duplicator.optionsOpen  = function() {jQuery("div#dialog-options").dialog("open");}
 			Duplicator.optionsClose = function() {jQuery('div#dialog-options').dialog('close');}
 			
+			/* Row Details */
+			Duplicator.toggleDetail = function(id) {
+				jQuery('#' + id).toggle();
+				return false;
+			}
+			
 			//MISC
 			jQuery("div#div-render-blanket").show();
 			Duplicator.newWindow = function(url) {window.open(url);}
@@ -205,19 +216,38 @@ MAIN FORM: Lists all the backups 			-->
 				</tr>
 			</thead>
 			<?php
-			if($total_elements!=0)  {
-				$ct=0;
-				while($ct<$total_elements) {
-					$row=$result[$ct];
+			if($total_elements != 0)  {
+				$ct = 0;
+				$token_len = (DUPLICATOR_SECURE_TOKEN_LEN + 5);
+				while($ct < $total_elements) {
+					$row	   = $result[$ct];
+					$settings  = unserialize($row['settings']);
+					$detail_id = "duplicator-detail-row-{$ct}";
+					$packname  = empty($row['packname']) ? $row['zipname'] : $row['packname'];
 					?>
-					<tr>
+					<tr class="pack-information">
 						<td><input name="delete_confirm" type="checkbox" id="<?php echo $row['zipname'];?>" onclick="Duplicator.rowColor(this)" /></td>
-						<td style="cursor:help;white-space:nowrap;" title="created with: version <?php echo $row['ver_plug'];?>"><?php echo $row['bid'];?>&nbsp;  </td>
-						<td style="white-space:nowrap;"><?php echo $row['owner'];?>&nbsp;  </td>
-						<td style="white-space:nowrap;"><?php echo date( "m-d-y G:i",strtotime($row['created']));?> &nbsp; </td>
-						<td style="white-space:nowrap;"><?php echo duplicator_bytesize($row['zipsize']);?>&nbsp; </td>
-						<td><?php echo $row['zipname'];?>&nbsp;</td>
-						<td style="white-space:nowrap;"><input type="button" value="Package" id="<?php echo $row['zipname'];?>" class="btn-save-packitem" onclick="Duplicator.downloadPackage(this)" title="Download this package" /></td>
+						<td><a href="javascript:void(0);" onclick="return Duplicator.toggleDetail('<?php echo $detail_id ;?>');">[<?php echo $row['bid'];?>]</a></td>
+						<td><?php echo $row['owner'];?></td>
+						<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
+						<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
+						<td><?php echo $packname ;?></td>
+						<td><input type="button" value="Package" id="<?php echo $row['zipname'];?>" class="btn-save-packitem" onclick="Duplicator.downloadPackage(this)" title="Download this package" /></td>
+					</tr>
+					<tr>
+						<td colspan="7" id="<?php echo $detail_id; ?>" class="pack-details-row">
+							<?php 
+								$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
+								$secure_token   = empty($settings['secure_token'])   ? 'unknown' : $settings['secure_token'];
+								$download_link  = duplicator_get_download_link() . $row['zipname'];
+								
+								echo "<b>Plugin Version:</b> {$plugin_version} <br />" ;
+								echo "<b>Security Token:</b> {$secure_token} <br />" ;
+								echo "<b>File Name:</b> {$row['zipname']} <br />" ;
+								echo "<b>File Path:</b> " . DUPLICATOR_SSDIR_PATH . "/{$row['zipname']} <br />" ;
+								echo "<b>URL Path:</b> <a href='{$download_link}'>{$download_link}</a>"  ;
+							?>
+						</td>
 					</tr>
 					<?php
 					$ct++;

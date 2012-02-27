@@ -17,7 +17,7 @@ function duplicator_create_dbscript($destination) {
 		
 		//CREATE TABLES
 		//PERFORM ICONV
-		if ($dbiconv) {
+		if ($dbiconv && function_exists("iconv")) {
 			duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
 			foreach($tables as $table) {
 				duplicator_log("log:fun__create_dbscript=>creating table: $table", 2);
@@ -246,8 +246,10 @@ function duplicator_dirSize($directory) {
 	try {
 	
 		$size     = 0; 
-		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
-		
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), 
+								RecursiveIteratorIterator::LEAVES_ONLY,
+								RecursiveIteratorIterator::CATCH_GET_CHILD);
+			
 		//App Directory Filter & Backup Directory Filter
 		if ($GLOBALS['duplicator_bypass-array'] != null) {
 			duplicator_log("log:fun__dirSize=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
@@ -267,10 +269,12 @@ function duplicator_dirSize($directory) {
 			}
 		//Filter Backup Directory
 		} else {
+			
 			foreach($iterator as $file){ 
-				if (!strstr($file->getPath(), DUPLICATOR_SSDIR_PATH)) {
+				$path = duplicator_safe_path($file->getPath());
+				if (!strstr($path , DUPLICATOR_SSDIR_PATH)) {
 					$size += $file->getSize();
-				}
+				} 
 			} 
 		}
 		return $size; 
@@ -335,5 +339,4 @@ function duplicator_create_snapshotpath() {
 function duplicator_safe_path($path) {
 	return str_replace("\\", "/", $path);
 }
-
 ?>

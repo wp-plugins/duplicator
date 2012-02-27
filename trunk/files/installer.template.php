@@ -93,7 +93,7 @@ END ADVANCED FEATURES: Do not edit below here.
 
 
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.2.6';
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.2.7';
 $GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
 $GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');															 
 
@@ -162,6 +162,20 @@ function dinstaller_table_count($dbname) {
 	$count = mysql_result($res, 0) ;
 	return ($count == false) ? 0 : $count;
 }
+
+/**
+ *  TABLE_ROW_COUNT
+ *  Returns the table count
+ *
+ *  @param string $table_name	A valid table name
+ *
+ */
+function dinstaller_table_row_count($table_name) { 
+	$total = mysql_query("SELECT COUNT(*) FROM `$table_name`"); 
+	$total = mysql_fetch_array($total); 
+	return $total[0]; 
+} 
+
 
 /**
  *  FULL_COPY
@@ -343,7 +357,7 @@ if ($action == 'dbconnect-test') {
 		a {color:navy}
 		a:hover{color:gray}
 
-		div#content {	border:1px solid #CDCDCD;  width:750px; height:775px; margin:auto; margin-top:18px; border-radius:5px}
+		div#content {	border:1px solid #CDCDCD;  width:750px; height:780px; margin:auto; margin-top:18px; border-radius:5px}
 		div#content-inner {padding:10px 30px;}
 		input.readonly {background-color:#efefef; border:1px solid silver; padding:2px;}
 		div.tryagain{padding-top:50px; text-align:right; width:100%;}
@@ -360,6 +374,7 @@ if ($action == 'dbconnect-test') {
 		div#dbconn-test-close {background-color:#C0C0C0;font-size:14px;}
 		
 		div.connect {padding:18px; font-size:12px; border:1px solid silver; border-radius:5px; background-color:#fff; text-align:center; margin-top:15px; line-height:22px;background-color:#efefef;}
+		h3.detail-warning {color:grey; font-weight:bold}
 	</style>
 	<script type="text/javascript">
 		//NOTE: We can't assume the user will always have an http connection.
@@ -699,16 +714,25 @@ if ($action == 'dbconnect-test') {
 		
 		//Remove all duplicator entries and record this one since this is a new install.
 		mysql_query("DELETE FROM `%wp_tableprefix%duplicator`");
-		mysql_query("INSERT INTO `%wp_tableprefix%duplicator` (bid, zipname, zipsize, created, owner) VALUES (1, '{$zip_name}', '{$zip_size}', '" . date( "Y:m:d G:i:s",time()) . "','duplicator plugin')");
 		
 		//Update site title
 		$site_title = mysql_real_escape_string($_POST['site_title']);
-		
 		mysql_query("SET wait_timeout = {$GLOBALS['MAX_TIME']}");
 		mysql_query("SET NAMES 'utf8' ");
 		mysql_query("UPDATE `%wp_tableprefix%options` SET option_value = '{$site_title}' WHERE option_name = 'blogname' ");
 		
-		//Fix string length on any serilized data.
+		//Validate the core tables have content
+		$table_users	= dinstaller_table_row_count("%wp_tableprefix%users");
+		$table_posts	= dinstaller_table_row_count("%wp_tableprefix%posts");
+		$table_opts		= dinstaller_table_row_count("%wp_tableprefix%options");
+		dinstaller_log("Users table row count: {$table_users}");
+		dinstaller_log("Options table row count: {$table_opts}");
+		dinstaller_log("Posts table row count: {$table_posts}\n");
+		if ($table_users == 0 || $table_opts == 0) {
+			dinstaller_log("Notice: You may have run to run the install-data.sql manually to validate data input.\n");
+		}
+		
+		//SERIALIZATION LOGIC
 		if ($GLOBALS["SERIAL_STR_FIX"]) {
 		
 			dinstaller_log("serialization fix enabled (filtering internally on serlizable strings)\n");
@@ -756,8 +780,13 @@ if ($action == 'dbconnect-test') {
 			mysql_query("DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_transient%')");
 			mysql_query("DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_site_transient%')");
 		}
+		
 
-		echo "<h3>&#10004; Database Routines Completed</h3>";
+		if ($table_users == 0 || $table_opts == 0 ) {
+			echo "<h3 class='detail-warning'>~ Database Routines Completed (see logs)</h3>";
+		} else {
+			echo "<h3>&#10004; Database Routines Completed</h3>";
+		}
 		dinstaller_log('END DB-ROUTINES:'  . date('h:i:s') . $GLOBALS["SEPERATOR2"]);
 		flush();
 		
@@ -774,7 +803,6 @@ if ($action == 'dbconnect-test') {
 		}
 		$fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 		fclose($fp);
-		copy($zip_name, DUPLICATOR_SSDIR_NAME . '/'.$zip_name);
 		
 		if ($zip_delete) {
 			@unlink($zip_name);

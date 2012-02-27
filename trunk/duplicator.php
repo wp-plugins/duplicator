@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.2.6
+Version: 0.2.7
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -34,8 +34,7 @@ Contributors:
 
 //==============================================================================
 //Update per relase
-define('DUPLICATOR_VERSION',   		'0.2.6');
-define('DUPLICATOR_DBVERSION', 		'0.2.6');
+define('DUPLICATOR_VERSION',   		'0.2.7');
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?category=4");
 define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
 define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
@@ -46,7 +45,11 @@ define('DUPLICATOR_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 
 if (is_admin() == true) {
 	
-	$GLOBALS['duplicator_opts'] = unserialize(get_option('duplicator_options', false));
+	$_tmpDuplicatorOptions = get_option('duplicator_options', false);
+	$GLOBALS['duplicator_opts'] = ($_tmpDuplicatorOptions == false) ? array() : unserialize($_tmpDuplicatorOptions);
+	//TODO: remove line below once validated.
+	//$GLOBALS['duplicator_opts'] = unserialize(get_option('duplicator_options', false));
+	
 	//Unable to fetch options so set manually
 	if ($GLOBALS['duplicator_opts'] == false) {
 		$GLOBALS['duplicator_opts']['dbhost'] = '';
@@ -74,14 +77,15 @@ if (is_admin() == true) {
 	if ( !defined('ABSPATH') ) {
 		define('ABSPATH', dirname('__FILE__'));
 	}
-	define('DUPLICATOR_WPROOTPATH',		str_replace("\\", "/", ABSPATH));
-	define("DUPLICATOR_SSDIR_NAME",		'wp-snapshots'); 
-	define("DUPLICATOR_SSDIR_PATH",		DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME);
-	define("DUPLICATOR_LOGLEVEL",		$GLOBALS['duplicator_opts']['log_level']);
-	define("DUPLICATOR_INSTALL_PHP",	'install.php');
-	define("DUPLICATOR_INSTALL_SQL",	'install-data.sql');
-	define("DUPLICATOR_INSTALL_LOG",	'install-log.txt');
-	define("DUPLICATOR_ZIP_FILE_POOL",	1000);
+	define('DUPLICATOR_WPROOTPATH',			str_replace("\\", "/", ABSPATH));
+	define("DUPLICATOR_SSDIR_NAME",			'wp-snapshots'); 
+	define("DUPLICATOR_SSDIR_PATH",			DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME);
+	define("DUPLICATOR_LOGLEVEL",			$GLOBALS['duplicator_opts']['log_level']);
+	define("DUPLICATOR_INSTALL_PHP",		'install.php');
+	define("DUPLICATOR_INSTALL_SQL",		'install-data.sql');
+	define("DUPLICATOR_INSTALL_LOG",		'install-log.txt');
+	define("DUPLICATOR_ZIP_FILE_POOL",		1000);
+	define("DUPLICATOR_SECURE_TOKEN_LEN",	13);
 	
 	
 	switch (DUPLICATOR_LOGLEVEL) {
@@ -96,58 +100,86 @@ if (is_admin() == true) {
 
 	/* ACTIVATION 
 	Only called when plugin is activated */
-	register_activation_hook(__FILE__ , 'duplicator_activate');
 	function duplicator_activate() {
-		global $wpdb;
 
+		global $wpdb;
 		$table_name = $wpdb->prefix . "duplicator";
 		
-		if ( $wpdb->get_var('SHOW TABLES LIKE ' . $table_name) != $table_name ) {
+		//PRIMARY KEY must have 2 spaces before for dbDelta
+		$sql = "CREATE TABLE `{$table_name}` (
+		 bid BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+		 packname 	 VARCHAR(250) NOT NULL, 
+		 zipname 	 VARCHAR(250) NOT NULL, 
+		 zipsize 	 INT (11),
+		 created 	 DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+		 owner 		 VARCHAR(60) NOT NULL,
+		 settings 	 LONGTEXT NOT NULL)" ;
+
+		require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
 		
-			$sql = "CREATE TABLE {$table_name} (
-			 bid BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-			 zipname 	VARCHAR(250) NOT NULL, 
-			 zipsize 	INT (11),
-			 created 	DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-			 owner 		VARCHAR(60) NOT NULL,
-			 type 		VARCHAR(30) NOT NULL,
-			 status		VARCHAR(30) NOT NULL,
-			 ver_plug 	VARCHAR(10) NOT NULL,
-			 ver_db 	VARCHAR(10) NOT NULL)" ;
-
-			require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
-			dbDelta($sql);
-			duplicator_create_snapshotpath();
-			
-			//defaults, duplicator_version_plugin reffers to this plugin
-			add_option('duplicator_version_plugin', 	DUPLICATOR_VERSION);
-			add_option('duplicator_version_database', 	DUPLICATOR_DBVERSION);
-
-			$duplicator_opts = array(
-				'dbhost'		=>'localhost',
-				'dbname'		=>'',
-				'dbuser'		=>'',
-				'nurl'			=>'',
-				'email-me'		=>'0',
-				'max_time'		=>$GLOBALS['duplicator_opts']['max_time'],
-				'max_memory'	=>$GLOBALS['duplicator_opts']['max_memory'],
-				'dir_bypass'	=>'',
-				'log_level'		=>'0',
-				'log_paneheight'=>'200',
-				'dbiconv'		=>'1');
+		//Create the snapshot directory
+		duplicator_create_snapshotpath();
+		
+		$duplicator_opts = array(
+			'dbhost'		=>'localhost',
+			'dbname'		=>'',
+			'dbuser'		=>'',
+			'nurl'			=>'',
+			'email-me'		=>'0',
+			'max_time'		=>$GLOBALS['duplicator_opts']['max_time'],
+			'max_memory'	=>$GLOBALS['duplicator_opts']['max_memory'],
+			'dir_bypass'	=>'',
+			'log_level'		=>'0',
+			'log_paneheight'=>'200',
+			'dbiconv'		=>'1');
 				
-			update_option('duplicator_options', serialize($duplicator_opts));
+		update_option('duplicator_version_plugin', 	DUPLICATOR_VERSION);
+		update_option('duplicator_options', serialize($duplicator_opts));
+
+		//CLEANUP LEGACY
+		//PRE 0.2.7
+		delete_option('duplicator_version_database');
+		$wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN ver_db");
+		$wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN ver_plug");
+		$wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN status");
+		$wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN type");	
+	}
+	
+	/* UPDATE 
+	register_activation_hook is not called when a plugin is updated
+	so we need to use the following function */
+	function duplicator_update() {
+		if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
+			duplicator_activate();
 		}
 	}
-	
+
+
 	/* DEACTIVATION 
 	Only called when plugin is deactivated */
-	register_deactivation_hook(__FILE__ , 'duplicator_deactivate');
 	function duplicator_deactivate() {
-		//Possible Cleanup
+		//No actions needed yet
 	}
 	
-	//ACTIONS
+	/* UNINSTALL 
+	Uninstall all duplicator logic */
+	function duplicator_uninstall() {
+		global $wpdb;
+		$table_name = $wpdb->prefix . "duplicator";
+		$wpdb->query("DROP TABLE `{$table_name}`");
+	
+		delete_option('duplicator_version_plugin');
+		delete_option('duplicator_options');
+	}
+
+
+	//HOOKS & ACTIONS
+	register_activation_hook(__FILE__ ,	    'duplicator_activate');
+	register_deactivation_hook(__FILE__ ,	'duplicator_deactivate');
+	register_uninstall_hook(__FILE__ , 		'duplicator_uninstall');
+	
+	add_action('plugins_loaded', 					'duplicator_update');
 	add_action('admin_init', 						'duplicator_init' );
 	add_action('admin_menu', 						'duplicator_menu');
 	add_action('wp_ajax_duplicator_overwrite',		'duplicator_overwrite');
@@ -188,11 +220,6 @@ if (is_admin() == true) {
 	 *  Loads the required javascript libs only for this plugin  */
 	function duplicator_scripts() {
 		$script_path = path_join(WP_PLUGIN_URL, basename( dirname( __FILE__ ) ).'/js');
-		
-		//Starting in 0.2.4 use Wordpress built in jQuery. Enable below for legacy fall back
-		//wp_deregister_script('jquery');
-		//wp_enqueue_script("jquery",    "${script_path}/jquery.min.js",    '',  	 "1.6.4");
-		
 		wp_enqueue_script("jquery-ui", "${script_path}/jquery-ui.min.js", array( 'jquery' ), "1.8.16");
 		wp_enqueue_script("duplicator_handler_script", "${script_path}/ajax.js", array( 'jquery' )  );
 	}
