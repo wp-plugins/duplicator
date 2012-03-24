@@ -14,7 +14,7 @@
 	
 	
 	function duplicator_get_download_link() {
-		return get_home_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' ;
+		return get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' ;
 	}
 	
 ?>
@@ -22,11 +22,14 @@
 <script type="text/javascript">
 	//Unique namespace to avoid conflicts
 	Duplicator = new Object();
-
+	
 	//Protect from other plugins not using jQuery or other versions
-	jQuery.noConflict()(function($){
+	jQuery.noConflict()(function($) {
 		jQuery(document).ready(function() {
 		
+			
+			<?php require_once('ajax.js.php'); ?>
+			
 			/*  ============================================================================
 			MAIN GRID
 			Actions that revolve around the main grid */
@@ -57,7 +60,7 @@
 			}
 			
 			Duplicator.startCreate = function() {
-				jQuery('span#span-status').html("Evaluating WordPress Setup. Please Wait...");
+				jQuery('span#span-status').html("<?php _e("Evaluating WordPress Setup. Please Wait", 'WPDuplicator') ?>...");
 			}
 			
 			/*  ============================================================================
@@ -161,21 +164,21 @@ MAIN FORM: Lists all the backups 			-->
 		<!-- TOOLBAR -->
 		<table border="0" id="toolbar-table">
 			<tr valign="top">
-				<td style="white-space:nowrap; vertical-align:middle"><label style="font-size:14px !important;">Package Name:</label></td>
-				<td style="white-space:nowrap;width:100%; vertical-align:middle"><input name="package_name" type="text" style="width:250px" value="<?php echo $package_name ?>" maxlength="40" /></td>
-				<td><input type="submit" id="btn-create-pack" class="btn-create-pack" value="..." name="submit" title="Create Package" onclick="Duplicator.startCreate()" ondblclick="javascript:return void(0);" /></td>
-				<td><input type="button" id="btn-delete-pack" title="Delete selected package(s)"/></td>
+				<td class="toolbar-label"><label><?php _e("Package Name", 'WPDuplicator') ?>:</label></td>
+				<td class="toolbar-textbox"><input name="package_name" type="text" style="width:250px" value="<?php echo $package_name ?>" maxlength="40" /></td>
+				<td><input type="submit" id="btn-create-pack" class="btn-create-pack" value="..." name="submit" title="<?php _e("Create Package", 'WPDuplicator') ?>" onclick="Duplicator.startCreate()" ondblclick="javascript:return void(0);" /></td>
+				<td><input type="button" id="btn-delete-pack" title="<?php _e("Delete selected package(s)", 'WPDuplicator') ?>"/></td>
 				<?php if ($setup_link_enabled) : ?>
-					<td align="center"><input type="button" class="btn-setup-link" onclick="window.open('<?php echo $GLOBALS['duplicator_opts']['nurl'] ?>/install.php', '_blank')" title="Launch the installer window." /></td>
+					<td align="center"><input type="button" class="btn-setup-link" onclick="window.open('<?php echo $GLOBALS['duplicator_opts']['nurl'] ?>/install.php', '_blank')" title="<?php _e("Launch the installer window", 'WPDuplicator') ?>" /></td>
 				<?php endif; ?>			
-				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/hdivider.png" style="height:26px; padding:0px 5px 0px 5px"/></td>
-				<td><input type="button"  id="btn-opts-dialog" class="btn-opts-dialog" title="Options..." onclick="Duplicator.optionsOpen()" /></td>	
+				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/hdivider.png" class="toolbar-divider" /></td>
+				<td><input type="button"  id="btn-opts-dialog" class="btn-opts-dialog" title="<?php _e("Options", 'WPDuplicator') ?>..." onclick="Duplicator.optionsOpen()" /></td>	
 				<?php if (DUPLICATOR_LOGLEVEL > 1) : ?>
-					<td align="center"><input type="button" class="btn-diag-dialog" onclick="Duplicator.logToggle()" title="Show Log Pane..." /></td>
+					<td align="center"><input type="button" class="btn-diag-dialog" onclick="Duplicator.logToggle()" title="<?php _e("Show Log Pane", 'WPDuplicator') ?>..." /></td>
 				<?php endif; ?>		
-				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/hdivider.png" style="height:26px; padding:0px 5px 0px 5px"/></td>
-				<td><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="Help..." /></td>
-				<td><input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="Partner with us..." /></td>
+				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/hdivider.png" class="toolbar-divider" /></td>
+				<td><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="<?php _e("Help", 'WPDuplicator') ?>..." /></td>
+				<td><input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="<?php _e("Partner with us", 'WPDuplicator') ?>..." /></td>
 				<td>
 				<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://lifeinthegrid.com/duplicator" data-text="Duplicate Your Efforts! Tools for Online Entrepreneurs" data-via="lifeinthegrid" data-size="large" data-related="lifeinthegrid" data-count="none" data-hashtags="Duplicator">Tweet</a>
 				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -188,14 +191,14 @@ MAIN FORM: Lists all the backups 			-->
 		<table width="100%"  class="widefat pack-table" cellspacing="0" border="1">
 			<tr>
 				<td width="100%" style="font-size:14px; vertical-align:middle">
-					<b>Status:</b> 
-					<span id="span-status">Ready to create new package.</span>
+					<b><?php _e("Status", 'WPDuplicator') ?>:</b> 
+					<span id="span-status"><?php _e("Ready to create new package", 'WPDuplicator' ) ?>.</span>
 					<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
 					<img id="img-status-progress" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/progress.gif" style="height:10px; width:46px; display:none" />
 				</td>
 				<?php if($total_elements!=0)  :	?>
 					<td style="white-space:nowrap;">
-						<input type="button" id="duplicator-installer" value="Installer" class="btn-save-packitem" onclick="Duplicator.downloadInstaller(this)" title="Download this installer" />
+						<input type="button" id="duplicator-installer" value="<?php _e("Installer", 'WPDuplicator') ?>" class="btn-save-packitem" onclick="Duplicator.downloadInstaller(this)" title="<?php _e("Download this installer", 'WPDuplicator') ?>" />
 					</td>
 				<?php endif; ?>	
 			</tr>
@@ -206,13 +209,13 @@ MAIN FORM: Lists all the backups 			-->
 		<table width="100%" class="widefat pack-table" border="1" >
 			<thead>
 				<tr style="font-weight:bold">
-					<th><input type="checkbox" id="select-all"  title="Select all packages" style="margin:0px;padding:0px 0px 0px 5px;" /></th>
-					<th title="The unique number of this package set">ID</th>
-					<th title="Creator of this package">Owner</th>
-					<th title="Server time when package was created">Created</th>
-					<th title="Compressed size of the package">Size</th>
-					<th title="The name of the package" style="width:100%">Package Name</th>
-					<th title="Your database and WordPress files." style="text-align:center;" >Package</th>
+					<th><input type="checkbox" id="select-all"  title="<?php _e("Select all packages", 'WPDuplicator') ?>" style="margin:0px;padding:0px 0px 0px 5px;" /></th>
+					<th><?php _e("ID", 'WPDuplicator') ?></th>
+					<th><?php _e("Owner", 'WPDuplicator') ?></th>
+					<th><?php _e("Created", 'WPDuplicator') ?></th>
+					<th><?php _e("Size", 'WPDuplicator') ?></th>
+					<th style="width:100%"><?php _e("Package Name", 'WPDuplicator') ?></th>
+					<th style="text-align:center;" ><?php _e("Package", 'WPDuplicator') ?></th>
 				</tr>
 			</thead>
 			<?php
@@ -232,7 +235,7 @@ MAIN FORM: Lists all the backups 			-->
 						<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
 						<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
 						<td><?php echo $packname ;?></td>
-						<td><input type="button" value="Package" id="<?php echo $row['zipname'];?>" class="btn-save-packitem" onclick="Duplicator.downloadPackage(this)" title="Download this package" /></td>
+						<td><input type="button" value="Package" id="<?php echo $row['zipname'];?>" class="btn-save-packitem" onclick="Duplicator.downloadPackage(this)" title="<?php _e("Download this package", 'WPDuplicator') ?>" /></td>
 					</tr>
 					<tr>
 						<td colspan="7" id="<?php echo $detail_id; ?>" class="pack-details-row">
@@ -240,12 +243,11 @@ MAIN FORM: Lists all the backups 			-->
 								$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
 								$secure_token   = empty($settings['secure_token'])   ? 'unknown' : $settings['secure_token'];
 								$download_link  = duplicator_get_download_link() . $row['zipname'];
-								
-								echo "<b>Plugin Version:</b> {$plugin_version} <br />" ;
-								echo "<b>Security Token:</b> {$secure_token} <br />" ;
-								echo "<b>File Name:</b> {$row['zipname']} <br />" ;
-								echo "<b>File Path:</b> " . DUPLICATOR_SSDIR_PATH . "/{$row['zipname']} <br />" ;
-								echo "<b>URL Path:</b> <a href='{$download_link}'>{$download_link}</a>"  ;
+								printf('<b>%s:</b> %s <br />', __("Plugin Version", 'WPDuplicator'), $plugin_version );
+								printf('<b>%s:</b> %s <br />', __("Security Token", 'WPDuplicator'), $secure_token );
+								printf('<b>%s:</b> %s <br />', __("File Name",      'WPDuplicator'), $row['zipname'] );
+								printf('<b>%s:</b> %s <br />', __("File Path",      'WPDuplicator'), DUPLICATOR_SSDIR_PATH . "/{$row['zipname']}");
+								printf('<b>%s:</b> %s <br />', __("URL Path",       'WPDuplicator'), "<a href='{$download_link}'>{$download_link}</a>" );
 							?>
 						</td>
 					</tr>
@@ -253,18 +255,37 @@ MAIN FORM: Lists all the backups 			-->
 					$ct++;
 				}
 			} else {
-				echo "<tr><td colspan='7' <div style='padding:60px 20px;text-align:center'><b style='font-size:14px'>No packages found.<br/> To create a new package, enter a name click the create button <input type='button' class='btn-create-pack' /><br/> Check your <a href='javascript:void(0)' onclick='Duplicator.optionsSystemCheck()'>servers compatability</a> with the duplicator.</b><br/><br/><i>This process will backup all your files and database.<br/> Creating a package may take several minutes if you have a large site.<br/> This window should remain open for the process to complete.<br/><br/> Please be patient while we work through this Beta version.<br/>Please report any issues to <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a> </i></div></td></tr>";
+				$msg1 = __("No packages found", 'WPDuplicator');
+				$msg2 = __("To create a new package, enter a name and click the create button ", 'WPDuplicator');
+				$msg3 = sprintf("%s <a href='javascript:void(0)' onclick='Duplicator.optionsSystemCheck()'>%s</a> %s",
+							__("Check Your", 'WPDuplicator'), 
+							__("servers compatability", 'WPDuplicator'),
+							__("with the duplicator", 'WPDuplicator'));
+				$msg4 = __("This process will backup all your files and database", 'WPDuplicator');
+				$msg5 = __("Creating a package may take several minutes if you have a large site", 'WPDuplicator');
+				$msg6 = __("This window should remain open for the process to complete", 'WPDuplicator');
+				$msg7 = __("Please be patient while we work through this Beta version", 'WPDuplicator');
+				$msg8 = __("Please report any issues to", 'WPDuplicator');
+				
+				echo "<tr>
+						<td colspan='7'>
+							<div style='padding:60px 20px;text-align:center'>
+								<b style='font-size:14px'>{$msg1}.<br/> {$msg2} <input type='button' class='btn-create-pack' /><br/> {$msg3}.</b><br/><br/>
+								<i>{$msg4}.<br/> {$msg5}.<br/> {$msg6}. <br/><br/> {$msg7}.<br/> {$msg8} <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a></i>
+							</div>
+							</td>
+						</tr>";
 			}
 			?>
 			<tfoot>
 				<tr style="background-color:#F1F1F1;font-weight:bold">
 					<th></th>
-					<th title="The unique number of this package set">ID</th>
-					<th title="Creator of this package">Owner</th>
-					<th title="Server time when package was created">Created</th>
-					<th title="Compressed size of the package">Size</th>
-					<th title="The name of the package" style="width:100%">Package Name</th>
-					<th title="Your database and WordPress files." style="text-align:center;" >Package</th>
+					<th><?php _e("ID", 'WPDuplicator') ?></th>
+					<th><?php _e("Owner", 'WPDuplicator') ?></th>
+					<th><?php _e("Created", 'WPDuplicator') ?></th>
+					<th><?php _e("Size", 'WPDuplicator') ?></th>
+					<th style="width:100%"><?php _e("Package Name", 'WPDuplicator') ?></th>
+					<th style="text-align:center;" ><?php _e("Package", 'WPDuplicator') ?></th>
 				</tr>
 			</tfoot>
 		</table>
@@ -283,11 +304,11 @@ MAIN FORM: Lists all the backups 			-->
 	<table id="log-table" class="widefat" align="center">
 		<thead>
 		<tr>
-			<th style="width:100%"><b>Logging Pane:</b> </th>
+			<th style="width:100%"><b><?php _e("Logging Pane", 'WPDuplicator') ?>:</b> </th>
 			<th style="text-align:right;white-space:nowrap">
-				<a href="javascript:Duplicator.logClearPane();" title="clear the logging pane">[clear]</a>&nbsp;
-				<a href='javascript:Duplicator.logCopy()' title="report this issue">[copy]</a>&nbsp;
-				<a href='javascript:window.location.reload()' title="reload this window">[reload page]</a>&nbsp;
+				<a href="javascript:Duplicator.logClearPane();" title="<?php _e("clear the logging pane", 'WPDuplicator') ?>">[<?php _e("clear", 'WPDuplicator') ?>]</a>&nbsp;
+				<a href='javascript:Duplicator.logCopy()' title="<?php _e("report this issue", 'WPDuplicator') ?>">[<?php _e("copy", 'WPDuplicator') ?>]</a>&nbsp;
+				<a href='javascript:window.location.reload()' title="<?php _e("reload this window", 'WPDuplicator') ?>">[<?php _e("reload page", 'WPDuplicator') ?>]</a>&nbsp;
 			</th>
 		</tr>
 		</thead>
@@ -298,9 +319,17 @@ MAIN FORM: Lists all the backups 			-->
 					<div id="log-msg"></div>
 						<table  style="width:100%">
 							<tr>
-								<td style="width:100%"><i style="font-size:11px">To disable this pane, set reporting level to 'none' in the <a href="javascript:void(0)" onclick="Duplicator.optionsOpen()">options dialog</a>. </i></td>
+								<td style="width:100%">
+									<i style="font-size:11px">
+									<?php
+										printf('%s. <a href="javascript:void(0)" onclick="Duplicator.optionsOpen()">%s</a>.', 
+											__("To disable this pane, set reporting level to 'none' in the", 'WPDuplicator'),
+											__("options dialog", 'WPDuplicator'));
+									?>
+									</i>
+								</td>
 								<td><div id="slider-range-min" style="width:150px; margin-top:8px"></div></td>
-								<td style="white-space:nowrap">Height:<input type="text" id="log_paneheight" style="border:0;font-size:11px;background-color:transparent;width:50px;padding-top:5px" /></td>
+								<td style="white-space:nowrap;"><div style="margin-top:4px"><?php _e("Height", 'WPDuplicator') ?>:<input type="text" id="log_paneheight" /></div></td>
 							</tr>
 						</table>
 					</div>
@@ -312,9 +341,9 @@ MAIN FORM: Lists all the backups 			-->
 </div>
 </div>
 
-<div id="dialog-log-copy" title="Logging - Copy (Ctrl + C)">
+<div id="dialog-log-copy" title="<?php _e("Logging - Copy (Ctrl + C)", 'WPDuplicator') ?>">
 	<textarea id="log-msg-txt" style="width:97%;min-height:500px; height:95%;font-size:11px"></textarea><br/>
-	<a href="<?php echo DUPLICATOR_HELPLINK ?>" target="_blank">Visit Support Center</a>
+	<a href="<?php echo DUPLICATOR_HELPLINK ?>" target="_blank"><?php _e("Visit Support Center", 'WPDuplicator') ?></a>
 </div>
 
 

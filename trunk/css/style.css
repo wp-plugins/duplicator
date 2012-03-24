@@ -16,9 +16,15 @@ input#btn-contribute-dialog {width:28px; height:27px; background:url(../img/part
 img.btn-delete-all {height:16px; width:16px;margin-left:2px}
 input.btn-save-opts {width:80px}
 
+/*PACKAGE TOOLBAR */
+td.toolbar-label {white-space:nowrap; vertical-align:middle;font-size:14px !important;}
+td.toolbar-label label {font-size:14px !important;}
+td.toolbar-textbox {white-space:nowrap;width:100%; vertical-align:middle}
+img.toolbar-divider {height:26px; padding:0px 5px 0px 5px}
+
 /*PACKAGE TABLE */
 table.pack-table {word-break:break-all}
-table.pack-table  th{white-space:nowrap !important; cursor:help}
+table.pack-table  th{white-space:nowrap !important;}
 div.pack-status {padding:6px 0px 6px 5px !important;margin-bottom:4px; border:1px solid #dfdfdf !important}
 div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); opacity:0.6;}
 tr.pack-information td {white-space:nowrap; padding-right:10px;}
@@ -35,6 +41,7 @@ span.dup-test-bad {color:#AC2725;font-weight:bold}
 div#log-pane {position:fixed; bottom:2px; right:9px; z-index:1000;  }
 div#log-area {padding:5px;margin-top:3px}
 div#log-msg {height:200px; width:99%; background-color:#fff;padding:3px;display:block; overflow-y:scroll; border:1px solid silver; }
+input#log_paneheight {border:0;font-size:11px;background-color:transparent;width:50px;}
 
 
 
