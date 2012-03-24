@@ -23,8 +23,10 @@ function duplicator_create() {
 		
 		$max_time   = @ini_set("max_execution_time", $GLOBALS['duplicator_opts']['max_time']); 
 		$max_memory = @ini_set('memory_limit', $GLOBALS['duplicator_opts']['max_memory']);
-		$max_time   = ($max_time == false)   ? "Unabled to set max_execution_time" : $GLOBALS['duplicator_opts']['max_time'];
+		$max_time   = ($max_time == false)   ? "Unabled to set max_execution_time"  : $GLOBALS['duplicator_opts']['max_time'];
 		$max_memory = ($max_memory == false) ? "Unabled to set memory_limit"		: $GLOBALS['duplicator_opts']['max_memory'];
+		@ini_set("max_input_time", $GLOBALS['duplicator_opts']['max_time']);
+		@set_time_limit(0);
 		duplicator_log("max_time:{$max_time} | max_memory:{$max_memory}");
 			
 		global $wpdb;

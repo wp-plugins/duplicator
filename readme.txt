@@ -4,7 +4,7 @@ Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 0.2.7 
+Stable tag: 0.2.8 
 License: GPLv2
 
 Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
@@ -71,6 +71,15 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
  
 
 == Changelog ==
+
+= 0.2.8 Beta =
+<li>Added: Localization support for the plugin admin</li>
+<li>Added: 404 message to index in wp-snapshots folder</li>
+<li>Added: Improved Warnings for non technical users</li>
+<li>Added: Better display support for firefox</li>
+<li>Fixed: Timeout issues for jQuery Ajax Requests</li>
+<li>Fixed: Download link for package and installer when not in WP root</li>
+<li>Removed: Processing display timer from installer</li>
 
 = 0.2.7 Beta =
 <li>Added: Database record check for post install</li>

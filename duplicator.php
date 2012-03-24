@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.2.7
+Version: 0.2.8
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -34,7 +34,7 @@ Contributors:
 
 //==============================================================================
 //Update per relase
-define('DUPLICATOR_VERSION',   		'0.2.7');
+define('DUPLICATOR_VERSION',   		'0.2.8');
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?category=4");
 define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
 define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
@@ -46,7 +46,7 @@ define('DUPLICATOR_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 if (is_admin() == true) {
 	
 	$_tmpDuplicatorOptions = get_option('duplicator_options', false);
-	$GLOBALS['duplicator_opts'] = ($_tmpDuplicatorOptions == false) ? array() : unserialize($_tmpDuplicatorOptions);
+	$GLOBALS['duplicator_opts'] = ($_tmpDuplicatorOptions == false) ? array() : @unserialize($_tmpDuplicatorOptions);
 	//TODO: remove line below once validated.
 	//$GLOBALS['duplicator_opts'] = unserialize(get_option('duplicator_options', false));
 	
@@ -84,7 +84,7 @@ if (is_admin() == true) {
 	define("DUPLICATOR_INSTALL_PHP",		'install.php');
 	define("DUPLICATOR_INSTALL_SQL",		'install-data.sql');
 	define("DUPLICATOR_INSTALL_LOG",		'install-log.txt');
-	define("DUPLICATOR_ZIP_FILE_POOL",		1000);
+	define("DUPLICATOR_ZIP_FILE_POOL",		3000);
 	define("DUPLICATOR_SECURE_TOKEN_LEN",	13);
 	
 	
@@ -162,6 +162,7 @@ if (is_admin() == true) {
 		//No actions needed yet
 	}
 	
+	
 	/* UNINSTALL 
 	Uninstall all duplicator logic */
 	function duplicator_uninstall() {
@@ -173,8 +174,8 @@ if (is_admin() == true) {
 		delete_option('duplicator_options');
 	}
 
-
 	//HOOKS & ACTIONS
+	load_plugin_textdomain('WPDuplicator' , FALSE, basename( dirname( __FILE__ ) ) . '/lang/' );
 	register_activation_hook(__FILE__ ,	    'duplicator_activate');
 	register_deactivation_hook(__FILE__ ,	'duplicator_deactivate');
 	register_uninstall_hook(__FILE__ , 		'duplicator_uninstall');
@@ -210,7 +211,7 @@ if (is_admin() == true) {
 	 *  DUPLICATOR_MENU
 	 *  Loads the menu item into the WP tools section and queues the actions for only this plugin */
 	function duplicator_menu() {
-		$view = add_submenu_page('tools.php','Duplicator', 'Duplicator', 'import', 'duplicator_list', 'duplicator_views');
+		$view = add_submenu_page('tools.php', 'Duplicator', 'Duplicator', 'import', 'duplicator_list', 'duplicator_views');
 		add_action('admin_print_scripts-' . $view, 'duplicator_scripts');
 		add_action('admin_print_styles-'  . $view, 'duplicator_styles' );
 	}
@@ -221,7 +222,7 @@ if (is_admin() == true) {
 	function duplicator_scripts() {
 		$script_path = path_join(WP_PLUGIN_URL, basename( dirname( __FILE__ ) ).'/js');
 		wp_enqueue_script("jquery-ui", "${script_path}/jquery-ui.min.js", array( 'jquery' ), "1.8.16");
-		wp_enqueue_script("duplicator_handler_script", "${script_path}/ajax.js", array( 'jquery' )  );
+		//Removed 0.2.8 wp_enqueue_script("duplicator_handler_script", "${script_path}/ajax.js", array( 'jquery' )  );
 	}
 
 	/**
@@ -240,8 +241,8 @@ if (is_admin() == true) {
 		if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
 		 
 		if ($file == $this_plugin){
-		$settings_link = '<a href="tools.php?page=duplicator_list">'.__("Manage", "manage-duplicator").'</a>';
-			array_unshift($links, $settings_link);
+			$settings_link = '<a href="tools.php?page=duplicator_list">'. __("Manage", "WPDuplicator") .'</a>';
+				array_unshift($links, $settings_link);
 		}
 		return $links;
 	}

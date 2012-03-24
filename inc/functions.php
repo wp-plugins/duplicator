@@ -191,6 +191,10 @@ function duplicator_create_installerFile($packagename) {
 		
 	if( file_exists($template)) {
 		$str = duplicator_parse_template($template, $replace_items);
+		
+		if (empty($str)) {
+			die(duplicator_log("log:fun__create_installerFile=>file-empty-read"));
+		}
 		$fp = fopen($installer, 'w') 
 			or die(duplicator_log("log:fun__create_installerFile=>file-create-error"));
 		fwrite($fp, $str, strlen($str));
@@ -315,8 +319,7 @@ function duplicator_create_snapshotpath() {
 			}
 			duplicator_log("log:fun__create_snapshotpath=>path created" . DUPLICATOR_SSDIR_PATH, 2);
 		}
-		$fh = fopen(DUPLICATOR_SSDIR_PATH.'/index.php', 'w');
-		fclose($fh);
+
 	} else {
 		$perms = chmod(DUPLICATOR_SSDIR_PATH, 0755);
 		$msg   = ($perms) 
@@ -324,6 +327,11 @@ function duplicator_create_snapshotpath() {
 			: "log:fun__create_snapshotpath=>error setting 755 for directory: " . DUPLICATOR_SSDIR_PATH;
 		duplicator_log($msg, 2);
 	}
+	
+	$fh = @fopen(DUPLICATOR_SSDIR_PATH.'/index.php', 'w');
+	$data = "<?php header('HTTP/1.0 404 Not Found'); ?>";
+	@fwrite($fh, $data);
+	@fclose($fh);
 }
 
 /**
