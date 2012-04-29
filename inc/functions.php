@@ -177,6 +177,7 @@ function duplicator_create_installerFile($packagename) {
 	global $wpdb;
 	$template 	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.template.php');
 	$installer	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/install.php');
+	chmod(DUPLICATOR_PLUGIN_PATH . 'files', 0755);
 	
 	get_option('duplicator_options') == ""  ? "" : $duplicator_opts = unserialize(get_option('duplicator_options'));
 	$replace_items = Array(
@@ -195,8 +196,14 @@ function duplicator_create_installerFile($packagename) {
 		if (empty($str)) {
 			die(duplicator_log("log:fun__create_installerFile=>file-empty-read"));
 		}
-		$fp = fopen($installer, 'w') 
-			or die(duplicator_log("log:fun__create_installerFile=>file-create-error"));
+		
+		if (!file_exists($installer)) {
+			$fp = fopen($installer, 'x+') 
+				or die(duplicator_log("log:fun__create_installerFile=>file-create-error-x"));
+		} else {
+			$fp = fopen($installer, 'w') 
+				or die(duplicator_log("log:fun__create_installerFile=>file-create-error-w"));
+		}
 		fwrite($fp, $str, strlen($str));
 		fclose($fp);
 		duplicator_log("log:fun__create_installerFile=>install.php updated at: {$installer}");
@@ -284,7 +291,7 @@ function duplicator_dirSize($directory) {
 		return $size; 
 	
 	}  catch(Exception $e) {
-		duplicator_log("log:fun__dirSize=>runtime error: " . $e);
+		duplicator_log("log:fun__dirSize=>runtime error: " . $e . "\nNOTE: Try excluding the stat failed to the Duplicators directory exclusion list or change the permissions.");
 	}
 } 
 
@@ -312,6 +319,15 @@ function duplicator_log($msg, $level = 0) {
  *
  */
 function duplicator_create_snapshotpath() {
+
+	//Make sure the snapshot paths parent is setup correctly
+	$wproot_perms = chmod(DUPLICATOR_WPROOTPATH, 0755);
+	if ($wproot_perms) {
+		duplicator_log("log:fun__create_snapshotpath=>wp-root folder enabled to 755 " . DUPLICATOR_WPROOTPATH, 2);
+	} else {
+		duplicator_log("log:fun__create_snapshotpath=>error setting wp-root folder to 755.  This process may need to be done manually." . DUPLICATOR_WPROOTPATH, 2);
+	}
+
 	if(!file_exists(DUPLICATOR_SSDIR_PATH.'/index.php')) {
 		if(!file_exists(DUPLICATOR_SSDIR_PATH)) {
 			if (! mkdir(DUPLICATOR_SSDIR_PATH , 0755)) {
