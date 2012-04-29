@@ -1,7 +1,7 @@
 <!-- ==========================================
 #OPTIONS DIALOG -->
 <div id="div-render-blanket" style="display:none;">
-<div id="dialog-options" title="Duplicator - <?php _e("Options", 'WPDuplicator') ?>">
+<div id="dialog-options" title="<?php _e("Duplicator Options", 'WPDuplicator') ?>">
 	<form id="form-duplicator-opts" method="post">
 		<input type="hidden" name="action" value="settings" />
 		<div id="tabs-opts">
@@ -9,7 +9,7 @@
 				<li><a href="#tabs-opts-1"><?php _e("Package", 'WPDuplicator') ?></a></li>
 				<li><a href="#tabs-opts-2"><?php _e("Installer", 'WPDuplicator') ?></a></li>
 				<li><a href="#tabs-opts-3"><?php _e("System", 'WPDuplicator') ?></a></li>
-				<!--li><a href="#tabs-opts-4"><?php _e("FTP", 'WPDuplicator') ?>FTP</a></li>-->
+				<!--li><a href="#tabs-opts-4"><?php _e("FTP", 'WPDuplicator') ?></a></li>-->
 			</ul>
 			
 			
@@ -24,7 +24,7 @@
 					<label for="email-me"><?php _e("Email when complete", 'WPDuplicator') ?></label><br/><br/>
 					
 					<input type="checkbox" name="dbiconv" id="dbiconv" <?php echo ($duplicator_dbiconv) ? 'checked="checked"' : ''; ?> /> 
-					<label for="dbiconv"><?php _e("Enable database encoding", 'WPDuplicator') ?></label>&nbsp;<br/><br/>
+					<label for="dbiconv"><?php _e("Enable database encoding", 'WPDuplicator') ?></label><br/><br/>
 					
 					<?php 
 						$safe_value = ini_get('safe_mode');
@@ -51,7 +51,7 @@
 					<div style="font-style:italic; font-size:11px">
 						<?php 
 							printf("%s (i.e. /path1/dir1;/path2/dir2) %s.<br/>",
-								__("Apply path seperated by a semicolon", 'WPDuplicator'),
+								__("Apply path separated by a semicolon", 'WPDuplicator'),
 								__("paths will exclude all sub-directories",   'WPDuplicator'));
 								
 							printf("%s: %s",
@@ -63,21 +63,21 @@
 					
 	
 				<fieldset style="padding:10px; width:97%">
-					<legend>Logging</legend>
+					<legend><?php _e("Logging", 'WPDuplicator') ?></legend>
 					<table width="100%" border="0">
 						<tr valign="top">
 							<td>
-								<label for="log_level"><?php _e("Reporting Level", 'WPDuplicator') ?>:</label> <br/>
+								<label for="log_level"><?php _e("Reporting Level", 'WPDuplicator') ?>:</label><br/>
 								<select name="log_level" id="log_level">
-									<option value="0">Level 0 - none</option>
-									<option value="1">Level 1 - light</option>
-									<option value="2">Level 2 - detailed</option>
-									<option value="3">Level 3 - debug</option>
+									<option value="0"><?php _e("Level 0 - None", 'WPDuplicator') ?></option>
+									<option value="1"><?php _e("Level 1 - Light", 'WPDuplicator') ?></option>
+									<option value="2"><?php _e("Level 2 - Detailed", 'WPDuplicator') ?></option>
+									<option value="3"><?php _e("Level 3 - Debug", 'WPDuplicator') ?></option>
 								</select>
 							</td>
 							<td style="width:95%">
 							<div style="padding:5px 3px 3px 25px; font-style:italic; font-size:12px">
-								<?php _e("Information in the logging pane can be used to contact support.  When the logging pane is enabled you will have to manually refresh the window.", 'WPDuplicator') ?>
+								<?php _e("Information in the logging panel can be used to contact support.  When the logging pane is enabled you will have to manually refresh the window.", 'WPDuplicator') ?>
 								
 							</div>
 							</td>
@@ -133,13 +133,13 @@
 				<span class="dup-test-bad" style="padding:10px"><?php _e("Bad", 'WPDuplicator') ?> <sup>[-1]</sup></span><br/><hr size="1" />
 				
 				<div style="line-height:24px">
-					<b><?php _e("SERVER CHECKS", 'WPDuplicator') ?></b> <br/>
-					PHP <?php _e("Version", 'WPDuplicator') ?>: 
+					<b><?php _e("SERVER CHECKS", 'WPDuplicator') ?></b><br/>
+					<?php _e("PHP Version", 'WPDuplicator') ?>: 
 					<?php if (phpversion() >= 5.3): ?>
 						<span class="dup-test-good"><?php echo phpversion(); ?> <sup>[1]</sup></span>
 					<?php elseif (phpversion() >= 5.2): ?>
 						<span class="dup-test-ok"><?php echo phpversion(); ?> <sup>[0]</sup></span> 
-						<i style="font-size:11px">(5.2.17+ <?php _e("is required", 'WPDuplicator') ?>)</i>
+						<i style="font-size:11px">(<?php _e("PHP 5.2.17+ is required", 'WPDuplicator') ?>)</i>
 					<?php else: ?> 
 						<span class="dup-test-bad"><?php echo phpversion(); ?> <sup>[-1]</sup></span>
 					<?php endif; ?>	<br />
@@ -175,7 +175,7 @@
 					if (empty($open_basedir_set)): ?>
 						<span class="dup-test-good"><?php _e("Not Enabled", 'WPDuplicator') ?> <sup>[1]</sup></span>
 					<?php else: ?>
-						<span class="dup-test-ok"><?php _e("Enabled", 'WPDuplicator') ?> <sup>[0]</sup></span> <i style="font-size:11px">(contact your host to temporarily disable)</i>
+						<span class="dup-test-ok"><?php _e("Enabled", 'WPDuplicator') ?> <sup>[0]</sup></span> <i style="font-size:11px">(<?php _e("contact your host to temporarily disable", 'WPDuplicator') ?>)</i>
 					<?php endif; ?>	<br />
 					
 					
@@ -197,12 +197,12 @@
 					?>
 						<span class="dup-test-bad"><?php _e("Cache Directory Found", 'WPDuplicator') ?>.</span> 
 						<div style="padding-left:10px; font-style:italic; font-size:11px">
-							- <?php _e("Full Path", 'WPDuplicator') ?>: '<?php echo $w3tc_path;  ?>'<br/>
-							- <a href="javascript:void(0)" onclick="Duplicator.optionsAppendByPassList('<?php echo addslashes($w3tc_path); ?>')"><?php _e("Add to directory exclusion list for me", 'WPDuplicator') ?>.</a>
+							- <?php _e("Full Path:", 'WPDuplicator') ?> '<?php echo $w3tc_path; ?>'<br/>
+							- <a href="javascript:void(0)" onclick="Duplicator.optionsAppendByPassList('<?php echo addslashes($w3tc_path); ?>')"><?php _e("Add to directory exclusion list for me.", 'WPDuplicator') ?></a>
 						</div>
 					<?php elseif (strstr($GLOBALS['duplicator_opts']['dir_bypass'], $w3tc_path)): ?>
 						<span class="dup-test-good"><?php _e("Cache Directory is being excluded", 'WPDuplicator') ?></span>
-						<br/>Full Path: <?php echo $w3tc_path;  ?>
+						<br/><?php _e("Full Path:", 'WPDuplicator') ?> <?php echo $w3tc_path;  ?>
 						<br/><i style="font-size:11px"><?php _e("See Package Tab -&gt; Directory Exclusion", 'WPDuplicator') ?></i>
 					<?php else: ?>
 						<span class="dup-test-good"><?php _e("Cache Directory Not Found", 'WPDuplicator') ?></span>

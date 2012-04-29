@@ -215,6 +215,7 @@ $("#form-duplicator").submit(function (event) {
 	$.ajax({
 		type: "POST",
 		url: ajaxurl,
+		timeout: 10000000,
 		data: "duplicator_new="+ packname +"&action=duplicator_system_check",
 		success: function(data) {
 			Duplicator.Log(data);

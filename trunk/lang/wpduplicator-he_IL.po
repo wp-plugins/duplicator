@@ -1,0 +1,593 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WPDuplicator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-22 15:47-0700\n"
+"PO-Revision-Date: 2012-04-22 15:48-0700\n"
+"Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
+"Language-Team: רמי יושובייב <www.wp-tricks.co.il>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ./\n"
+"X-Poedit-Language: Hebrew\n"
+"X-Poedit-Country: ISRAEL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../duplicator.php:243
+msgid "Manage"
+msgstr "ניהול"
+
+#: ../inc/ajax.js.php:45
+msgid "Logging Enabled"
+msgstr "אפשר רישום"
+
+#: ../inc/ajax.js.php:46
+#: ../inc/view.main.php:311
+msgid "reload page"
+msgstr "רענן עמוד"
+
+#: ../inc/ajax.js.php:47
+msgid "to view results"
+msgstr "הצג תוצאות"
+
+#: ../inc/ajax.js.php:75
+msgid "An error occurred while creating a package!  Please try again.  If the problem persits please submit the logs in a support ticket."
+msgstr "אירעה שגיאה בעת יצירת החבילה! אנא נסה שוב. אם הבעיה חוזרת על עצמה אנא שלח העתק רישום לתמיכה."
+
+#: ../inc/ajax.js.php:95
+msgid "An error occurred while overwriting a package!  Please try again.  If the problem persits please submit the logs in a support ticket."
+msgstr "אירעה שגיאה בעת החלפת החבילה! אנא נסה שוב. אם הבעיה חוזרת על עצמה אנא שלח העתק רישום לתמיכה."
+
+#: ../inc/ajax.js.php:140
+msgid "Saving"
+msgstr "שומר"
+
+#: ../inc/ajax.js.php:146
+msgid "An error occurred while saving your settings!  Please try again.  If the problem persits please submit the logs in a support ticket."
+msgstr "אירעה שגיאה בעת שמירת ההגדרות! אנא נסה שוב. אם הבעיה חוזרת על עצמה אנא שלח העתק רישום לתמיכה."
+
+#: ../inc/ajax.js.php:164
+msgid "Please select at least one package to delete."
+msgstr "לא נבחרו חבילות למחיקה."
+
+#: ../inc/ajax.js.php:168
+msgid "Are you sure, you want to delete the selected package(s)?"
+msgstr "אתה בטוח שאתה רוצה למחוק את חבילות אלה?"
+
+#: ../inc/ajax.js.php:184
+msgid "An error occurred while deleting a package!  Please try again.  If the problem persits please submit the logs in a support ticket."
+msgstr "אירעה שגיאה בעת מחיקת החבילה! אנא נסה שוב. אם הבעיה חוזרת על עצמה אנא שלח העתק רישום לתמיכה."
+
+#: ../inc/ajax.js.php:188
+#: ../inc/ajax.js.php:242
+#: ../inc/ajax.js.php:255
+#: ../inc/ajax.js.php:280
+msgid "Ready to create new package."
+msgstr "מוכן ליצור חבילה חדשה."
+
+#: ../inc/ajax.js.php:202
+msgid "Please enter a backup name."
+msgstr "יש להזין שם."
+
+#: ../inc/ajax.js.php:209
+msgid "Alpanumeric characters only on package name"
+msgstr "ניתן להשתמש רק בתווים אלפאנומריים"
+
+#: ../inc/ajax.js.php:227
+msgid "Uncompressed Size"
+msgstr "גודל לא דחוס"
+
+#: ../inc/ajax.js.php:227
+#: ../inc/view.options.php:114
+msgid "Name"
+msgstr "שם"
+
+#: ../inc/ajax.js.php:228
+msgid "This may take several minutes"
+msgstr "הפעולה עשויה להמשך מספר דקות"
+
+#: ../inc/ajax.js.php:229
+msgid "Compressing"
+msgstr "דחוס"
+
+#: ../inc/ajax.js.php:234
+msgid "WARNING"
+msgstr "אזהרה"
+
+#: ../inc/ajax.js.php:235
+msgid "A reserved file was found in the WordPress root directory."
+msgstr "קובץ שמור נמצא בספרייה הראשית של וורדפרס."
+
+#: ../inc/ajax.js.php:236
+msgid "The Duplicator uses the following reserved file names"
+msgstr "התוסף משתמשת בשמות קבצים הבאים"
+
+#: ../inc/ajax.js.php:237
+msgid "install.php, install-data.sql, and install-log.txt"
+msgstr "install.php, install-data.sql, install-log.txt"
+
+#: ../inc/ajax.js.php:238
+msgid "In order to archive your data correctly please remove any of"
+msgstr "על מנת לארכב נתונים בצורה נכונה יש להסיר מההבאים"
+
+#: ../inc/ajax.js.php:239
+msgid "these reserved files from your WordPress root directory."
+msgstr "קבצים שמורים בספרייה הראשית של וורדפרס."
+
+#: ../inc/ajax.js.php:240
+msgid "Then try creating a your package again."
+msgstr "לאחר מכן נסה שוב ליצור חבילה."
+
+#: ../inc/ajax.js.php:248
+msgid "Package name already exists! Overwrite with newer package?"
+msgstr "חבילה בשם זה כבר קיימת! החלף חבילה קיימת בחבילה חדשה יותר?"
+
+#: ../inc/ajax.js.php:261
+msgid "2GB archive size reached!  Currently the Duplicator only"
+msgstr "ארכיון הגיע לגודל 2GB! כרגע התוסף "
+
+#: ../inc/ajax.js.php:262
+msgid "supports achieving sites under 2GB.  We are currently"
+msgstr "תומך באתרים עד 2GB. כרגע אנחנו מבצעים "
+
+#: ../inc/ajax.js.php:263
+msgid "working on this limitation in future releases"
+msgstr "מגבלה זו נמצאת בטיפול לגרסה הבאה"
+
+#: ../inc/ajax.js.php:264
+msgid "You can easily overcome this limitation by temporarily"
+msgstr "ניתן להתגבר על מגבלה זו בקלות על ידי "
+
+#: ../inc/ajax.js.php:265
+msgid "moving large files outside of your root WordPress directory"
+msgstr "העברת קבצים גדולים מחוץ לספריית הבסיס של וורדפרס"
+
+#: ../inc/ajax.js.php:266
+msgid "Once you have created your package and installed it you can"
+msgstr "לאחר יצירת החבלילה והתקנתה, ניתן "
+
+#: ../inc/ajax.js.php:267
+msgid "then move those files back to the same location"
+msgstr "חזרה לאותו המקום"
+
+#: ../inc/ajax.js.php:269
+msgid "2GB Size limit reached"
+msgstr "עבר גודל מקסימלי של 2GB"
+
+#: ../inc/ajax.js.php:274
+msgid "Create this new package?"
+msgstr "ליצור חבילה חדשה?"
+
+#: ../inc/ajax.js.php:286
+msgid "An error occurred while submitting a package!  Please try again.  If the problem persits please submit the logs in a support ticket."
+msgstr "אירעה שגיאה בעת שליחת החבילה! אנא נסה שוב. אם הבעיה חוזרת על עצמה אנא שלח העתק רישום לתמיכה."
+
+#: ../inc/view.main.php:63
+msgid "Evaluating WordPress Setup. Please Wait"
+msgstr "אנא המתן בזמן שביצוע הערכה של התקנת וורדפרס."
+
+#: ../inc/view.main.php:167
+#: ../inc/view.main.php:217
+#: ../inc/view.main.php:287
+msgid "Package Name"
+msgstr "שם חבילה"
+
+#: ../inc/view.main.php:169
+msgid "Create Package"
+msgstr "צור חבילה"
+
+#: ../inc/view.main.php:170
+msgid "Delete selected package(s)"
+msgstr "מחק חבילות מסומנות"
+
+#: ../inc/view.main.php:172
+msgid "Launch the installer window"
+msgstr "הפעל חלון התקנה"
+
+#: ../inc/view.main.php:175
+msgid "Options"
+msgstr "אפשרויות"
+
+#: ../inc/view.main.php:177
+msgid "Show Log Pane"
+msgstr "הצג חלון רישום"
+
+#: ../inc/view.main.php:180
+msgid "Help"
+msgstr "עזרה"
+
+#: ../inc/view.main.php:181
+msgid "Partner with us"
+msgstr "עזרו לנו"
+
+#: ../inc/view.main.php:194
+msgid "Status"
+msgstr "סטטוס"
+
+#: ../inc/view.main.php:195
+msgid "Ready to create new package"
+msgstr "מוכן ליצור חבילה חדשה"
+
+#: ../inc/view.main.php:201
+#: ../inc/view.options.php:10
+msgid "Installer"
+msgstr "קובץ התקנה"
+
+#: ../inc/view.main.php:201
+msgid "Download this installer"
+msgstr "הורד קובץ התקנה"
+
+#: ../inc/view.main.php:212
+msgid "Select all packages"
+msgstr "בחר את כל החבילות"
+
+#: ../inc/view.main.php:213
+#: ../inc/view.main.php:283
+msgid "ID"
+msgstr "מספר"
+
+#: ../inc/view.main.php:214
+#: ../inc/view.main.php:284
+msgid "Owner"
+msgstr "בעלים"
+
+#: ../inc/view.main.php:215
+#: ../inc/view.main.php:285
+msgid "Created"
+msgstr "תאריך"
+
+#: ../inc/view.main.php:216
+#: ../inc/view.main.php:286
+msgid "Size"
+msgstr "גודל"
+
+#: ../inc/view.main.php:218
+#: ../inc/view.main.php:288
+#: ../inc/view.options.php:9
+msgid "Package"
+msgstr "חבילה"
+
+#: ../inc/view.main.php:238
+msgid "Download this package"
+msgstr "הורד חבילה"
+
+#: ../inc/view.main.php:246
+msgid "Plugin Version"
+msgstr "גרסת תוסף"
+
+#: ../inc/view.main.php:247
+msgid "Security Token"
+msgstr "אסימון אבטחה"
+
+#: ../inc/view.main.php:248
+msgid "File Name"
+msgstr "שם מלא"
+
+#: ../inc/view.main.php:249
+msgid "File Path"
+msgstr "נתיב"
+
+#: ../inc/view.main.php:250
+msgid "URL Path"
+msgstr "כתובת"
+
+#: ../inc/view.main.php:258
+msgid "No packages found"
+msgstr "לא נמצאו חבילות"
+
+#: ../inc/view.main.php:259
+msgid "To create a new package, enter a name and click the create button "
+msgstr "ליצירת חבילה חדשה, הזן שם ולחץ על כפתור ההפעלה"
+
+#: ../inc/view.main.php:261
+msgid "Check Your"
+msgstr "בדוק "
+
+#: ../inc/view.main.php:262
+msgid "servers compatability"
+msgstr "תאימות שרת"
+
+#: ../inc/view.main.php:263
+msgid "with the duplicator"
+msgstr "עם התוסף"
+
+#: ../inc/view.main.php:264
+msgid "This process will backup all your files and database"
+msgstr "התהליך יגבה את הקבצים ומסד הנתונים"
+
+#: ../inc/view.main.php:265
+msgid "Creating a package may take several minutes if you have a large site"
+msgstr "יצירת חבילה עשוי להמשך מספר דקות, אם מדובר באתר גדול."
+
+#: ../inc/view.main.php:266
+msgid "This window should remain open for the process to complete"
+msgstr "אין לסגור את החלון עד סיום הפעולה"
+
+#: ../inc/view.main.php:267
+msgid "Please be patient while we work through this Beta version"
+msgstr "יש להמתין בסבלנות בזמן שאנו עובדים עם גרסת בטא זה"
+
+#: ../inc/view.main.php:268
+msgid "Please report any issues to"
+msgstr "אנא דווחו על תקלות ל"
+
+#: ../inc/view.main.php:307
+msgid "Logging Pane"
+msgstr "חלונית רישום"
+
+#: ../inc/view.main.php:309
+msgid "clear the logging pane"
+msgstr "נקה חלונית רישום"
+
+#: ../inc/view.main.php:309
+msgid "clear"
+msgstr "נקה"
+
+#: ../inc/view.main.php:310
+msgid "report this issue"
+msgstr "דווח על בעיה"
+
+#: ../inc/view.main.php:310
+msgid "copy"
+msgstr "העתק"
+
+#: ../inc/view.main.php:311
+msgid "reload this window"
+msgstr "רענן חלון"
+
+#: ../inc/view.main.php:326
+msgid "To disable this pane, set reporting level to 'none' in the"
+msgstr "על מנת לבטל חלונית זו, יש להגדיר רמת דיווח \"ללא\""
+
+#: ../inc/view.main.php:327
+msgid "options dialog"
+msgstr "אפשרויות"
+
+#: ../inc/view.main.php:332
+msgid "Height"
+msgstr "גובה"
+
+#: ../inc/view.main.php:344
+msgid "Logging - Copy (Ctrl + C)"
+msgstr "העתק רישום (Ctrl + C)"
+
+#: ../inc/view.main.php:346
+msgid "Visit Support Center"
+msgstr "מרכז תמיכה"
+
+#: ../inc/view.options.php:4
+msgid "Duplicator Options"
+msgstr "מעתק אפשרויות"
+
+#: ../inc/view.options.php:11
+msgid "System"
+msgstr "מערכת"
+
+#: ../inc/view.options.php:12
+msgid "FTP"
+msgstr "FTP"
+
+#: ../inc/view.options.php:21
+msgid "Processing"
+msgstr "עיבוד נתונים"
+
+#: ../inc/view.options.php:24
+msgid "Email when complete"
+msgstr "שלח דוא\"K בסיום התהליך"
+
+#: ../inc/view.options.php:27
+msgid "Enable database encoding"
+msgstr "אפשר קידוד מסד נתונים"
+
+#: ../inc/view.options.php:42
+msgid "Max Time"
+msgstr "זמן מירבי"
+
+#: ../inc/view.options.php:42
+msgid "seconds"
+msgstr "שניות"
+
+#: ../inc/view.options.php:43
+msgid "Max Memory"
+msgstr "זיכרון מירבי"
+
+#: ../inc/view.options.php:48
+msgid "Directory Exclusion"
+msgstr "הסרת ספריות"
+
+#: ../inc/view.options.php:54
+msgid "Apply path separated by a semicolon"
+msgstr "הנתיבים מופרדים על ידי נקודה-פסיק"
+
+#: ../inc/view.options.php:55
+msgid "paths will exclude all sub-directories"
+msgstr "הנתיבים יוצגו ללא תת-ספריות "
+
+#: ../inc/view.options.php:58
+msgid "Your root path is"
+msgstr "נתיב שורש"
+
+#: ../inc/view.options.php:66
+msgid "Logging"
+msgstr "חלונית רישום"
+
+#: ../inc/view.options.php:70
+msgid "Reporting Level"
+msgstr "רמת דיווח"
+
+#: ../inc/view.options.php:72
+msgid "Level 0 - None"
+msgstr "רמה 0 - אף אחד"
+
+#: ../inc/view.options.php:73
+msgid "Level 1 - Light"
+msgstr "רמה 1 - אור"
+
+#: ../inc/view.options.php:74
+msgid "Level 2 - Detailed"
+msgstr "רמה 2 - מפורט"
+
+#: ../inc/view.options.php:75
+msgid "Level 3 - Debug"
+msgstr "רמה 3 - Debug"
+
+#: ../inc/view.options.php:80
+msgid "Information in the logging panel can be used to contact support.  When the logging pane is enabled you will have to manually refresh the window."
+msgstr "מידע בחלונית הרישום יכול לשמש כדי ליצור קשר עם התמיכה. כאשר החלונית מופעלת יהיה עליך לרענן אותה באופן ידני."
+
+#: ../inc/view.options.php:87
+msgid "Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)"
+msgstr "בעיותבעת  שמירת האפשרויות? השבת באופן זמני את כל תוספי מטמון-אובייקטים (דוגמת W3C Total Object Cache)"
+
+#: ../inc/view.options.php:96
+msgid "Settings Defaults"
+msgstr "הגדרות ברירת מחדל"
+
+#: ../inc/view.options.php:99
+msgid "Install URL"
+msgstr "כתובת התקנה"
+
+#: ../inc/view.options.php:101
+msgid "Launch installer window"
+msgstr "הפעל חלון התקנה"
+
+#: ../inc/view.options.php:107
+msgid "Database Defaults"
+msgstr "מסד נתונים ברירת מחדל"
+
+#: ../inc/view.options.php:110
+msgid "Host"
+msgstr "שרת"
+
+#: ../inc/view.options.php:118
+msgid "User"
+msgstr "משתמש"
+
+#: ../inc/view.options.php:123
+msgid "The installer can have these fields pre-filled at install time.  These values are optional."
+msgstr "אין חובה למלא שדות אלא, אולם ניתן להזין נתונים ברירת מחדל שיוזנו מראש בקובץ ההתקנה."
+
+#: ../inc/view.options.php:130
+msgid "Key"
+msgstr "מפתח"
+
+#: ../inc/view.options.php:131
+msgid "Good"
+msgstr "תקין"
+
+#: ../inc/view.options.php:132
+msgid "OK"
+msgstr "בסדר"
+
+#: ../inc/view.options.php:133
+msgid "Bad"
+msgstr "לא תקין"
+
+#: ../inc/view.options.php:136
+msgid "SERVER CHECKS"
+msgstr "בדיקות שרת"
+
+#: ../inc/view.options.php:137
+msgid "PHP Version"
+msgstr "גרסה"
+
+#: ../inc/view.options.php:142
+msgid "PHP 5.2.17+ is required"
+msgstr "נדרש"
+
+#: ../inc/view.options.php:148
+msgid "Web Server"
+msgstr "שרת"
+
+#: ../inc/view.options.php:160
+msgid "Not detected"
+msgstr "לא נמצא"
+
+#: ../inc/view.options.php:164
+msgid "Safe Mode"
+msgstr "מצב בטוח"
+
+#: ../inc/view.options.php:166
+msgid "On"
+msgstr "פעיל"
+
+#: ../inc/view.options.php:168
+msgid "Off"
+msgstr "כבוי"
+
+#: ../inc/view.options.php:172
+msgid "Open Base Dir"
+msgstr "פתח ספריית בסיס"
+
+#: ../inc/view.options.php:176
+msgid "Not Enabled"
+msgstr "לא זמין"
+
+#: ../inc/view.options.php:178
+msgid "Enabled"
+msgstr "זמין"
+
+#: ../inc/view.options.php:178
+msgid "contact your host to temporarily disable"
+msgstr "צור קשר עם המארח שלך לבטל באופן זמני"
+
+#: ../inc/view.options.php:182
+msgid "Compression"
+msgstr "דחיסה"
+
+#: ../inc/view.options.php:184
+msgid "Pass"
+msgstr "עבר"
+
+#: ../inc/view.options.php:186
+msgid "Not installed"
+msgstr "לא מותקן"
+
+#: ../inc/view.options.php:188
+msgid "ZipArchive extension required for compression"
+msgstr "נדרשת הרחבה ZipArchive לדחיסת הנתונים"
+
+#: ../inc/view.options.php:192
+msgid "CACHE STORE CHECKS"
+msgstr "בדיקות מטמון"
+
+#: ../inc/view.options.php:198
+msgid "Cache Directory Found"
+msgstr "נמצא ספריית מטמון"
+
+#: ../inc/view.options.php:200
+#: ../inc/view.options.php:205
+msgid "Full Path:"
+msgstr "נתיב מלא"
+
+#: ../inc/view.options.php:201
+msgid "Add to directory exclusion list for me."
+msgstr "הוסף לרשימת הספריות להסרה"
+
+#: ../inc/view.options.php:204
+msgid "Cache Directory is being excluded"
+msgstr "הסרת ספריית מטמון"
+
+#: ../inc/view.options.php:206
+msgid "See Package Tab -&gt; Directory Exclusion"
+msgstr "ראה טאב \"חבילה\" -> \"הסרת ספריות\""
+
+#: ../inc/view.options.php:208
+msgid "Cache Directory Not Found"
+msgstr "לא נמצאה ספריית מטמון"
+
+#: ../inc/view.options.php:211
+msgid "Please exclude all cache store directories. This will help for a faster and cleaner install."
+msgstr "יש להסיר את כל ספריות המטמון. הדבר מזרז את התהליך ומקטין סבירות לשיבושים."
+
+#: ../inc/view.options.php:247
+msgid "Save"
+msgstr "שמור"
+
+#: ../inc/view.options.php:248
+msgid "Close"
+msgstr "סגור"
+
