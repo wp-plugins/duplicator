@@ -1,0 +1,78 @@
+
+input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
+input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
+fieldset {border:1px solid gray; padding:5px;}
+label {font-size:13px !important}
+.no-select {user-select: none; -o-user-select:none;  -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none;}
+
+/*BUTTONS*/
+input.btn-create-pack{width:28px; height:27px;background:url(../img/create.png) no-repeat 4px 3px;}
+input#btn-delete-pack{width:28px; height:27px;background:url(../img/delete.png) no-repeat 5px 4px;}
+input.btn-opts-dialog {width:28px;height:27px;background:url(../img/options.png) no-repeat 5px 4px;}
+input.btn-sys-dialog {width:28px; height:27px;background:url(../img/sys-check.png) no-repeat 5px 4px;}
+input.btn-log-dialog {width:28px; height:27px;background:url(../img/debug.png) no-repeat 5px 4px;}
+
+
+input#btn-help-dialog {width:28px;height:27px; background:url(../img/help.png) no-repeat 5px 4px; }
+div.dup-installer-btn {height:18px; background:url(../img/save.png) no-repeat 5px 5px; min-width:60px; border:1px solid #dfdfdf; border-radius:4px; padding:3px 5px 1px 24px; font-size:13px; box-shadow: 1px 1px 2px #BBBBBB; margin:-2px 0px 2px 0px; display:inline-block; text-align:left; font-weight:bold}
+input.btn-setup-link {width:28px;  background:url(../img/setup.png) no-repeat 5px 4px;}
+input#btn-contribute-dialog {width:28px; height:27px; background:url(../img/partner.png) no-repeat 3px 3px;}
+
+img.btn-delete-all {height:16px; width:16px;margin-left:2px}
+input.btn-save-opts {width:80px}
+div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); opacity:0.6;}
+
+/*PACKAGE TOOLBAR */
+table#toolbar-table td {padding:0px; white-space:nowrap;}
+td.toolbar-label label {font-size:14px !important; margin-top:7px; display:inline-block; font-weight:bold}
+td.toolbar-textbox {white-space:nowrap;width:100%; vertical-align:middle}
+img.toolbar-divider {height:26px; padding:0px 5px 0px 5px}
+
+/*TABLE PACKAGE DETAILS */
+table.dup-pack-table {word-break:break-all}
+table.dup-pack-table th {white-space:nowrap !important;}
+tr.dup-pack-info td {white-space:nowrap; padding:6px 40px 6px 7px;}
+td.dup-pack-details {display:none; padding-left:10px; line-height:22px;background-color:#fff;}
+div.dup-details-area {margin:5px 0px 15px 0px; padding:4px; border:1px solid #dfdfdf; border-radius:2px;  box-shadow: 0 8px 6px -6px #999;}
+
+/*DIALOG: OPTIONS VIEW*/
+form#form-duplicator-opts input[type=checkbox] {margin-top:3px}
+form#form-duplicator-opts fieldset {border-radius:4px; border:1px solid silver; padding:5px 10px 5px 10px;  line-height:23px}
+div#dup-tabs-opts {height:500px}
+input.txt-settings {width:450px}
+div.dup-opts-directory-info {font-style:italic; font-size:0.85em;margin:-5px 0px 5px 3px;  line-height:16px}
+
+
+/*DIALOG: SYSTEM CHECK*/
+div#dup-sys-check-data {width:99%; height:90%; font-size:11px; padding:5px; line-height:20px; }
+ul#dup-sys-check-data-reqs {line-height:16px}
+div#dup-sys-check-data li {margin:0px}
+div#dup-system-err-msg1 {width:99%; height:125px; font-size:11px; border:1px solid silver; border-radius:5px; overflow-y:scroll; padding:8px;}
+div#dup-system-err-msg2 {width:99%; height:175px; font-size:11px; border:1px solid silver; border-radius:5px; overflow-y:scroll; padding:8px;}
+div.dup-sys-check-data-details {display:none; padding:5px; border:1px dotted silver; border-radius:4px; line-height:16px; background-color:#efefef; font-weight:normal}
+div.dup-sys-check-title {display:inline-block; width:250px; padding:1px; }
+div.dup-sys-pass {display:inline-block; color:green;}
+div.dup-sys-ok {display:inline-block; color:#5860C7;}
+div.dup-sys-fail {display:inline-block; color:#AF0000;}
+span.dup-toggle {float:left; margin:0 2px 2px 0; }
+hr.dup-dots { border:none; border-top: 1px dotted silver; height: 1px; width:100%;}
+
+/*SERVER INFO */
+div#dup-server-info-area { padding:10px 5px;  }
+div#dup-server-info-area table { padding: 1px; background: #dfdfdf;  -webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px; min-width:650px; max-width:650px !important; box-shadow: 0 8px 6px -6px #777; }
+div#dup-server-info-area td, th {padding:3px; background:#fff; -webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
+div#dup-server-info-area tr.h img { display:none; }
+div#dup-server-info-area tr.h td{ background:none; }
+div#dup-server-info-area tr.h th{ text-align:center; background-color:#efefef;  }
+div#dup-server-info-area td.e{ font-weight:bold }
+
+
+
+
+
+
+
+
+
+
+

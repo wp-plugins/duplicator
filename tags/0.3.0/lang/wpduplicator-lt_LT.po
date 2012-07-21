@@ -1,0 +1,973 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WPDuplicator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-21 06:42-0700\n"
+"PO-Revision-Date: 2012-07-21 06:45-0700\n"
+"Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ./\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../duplicator.php:151
+msgid "FAQ"
+msgstr "DUK"
+
+#: ../duplicator.php:152
+#, fuzzy
+msgid "Partner"
+msgstr "Tapkite mūsų partneriais"
+
+#: ../duplicator.php:153
+msgid "Certified Hosts"
+msgstr "Sertifikuoti Šeimininkai"
+
+#: ../duplicator.php:202
+msgid "Dashboard"
+msgstr "Prietaisų Skydas"
+
+#: ../duplicator.php:203
+msgid "Server Info."
+msgstr "Serverio Info."
+
+#: ../duplicator.php:234
+msgid "Manage"
+msgstr "Valdyti"
+
+#: ../files/log-read.php:38
+#, fuzzy
+msgid "No log file found"
+msgstr "Nerasta jokių paketų"
+
+#: ../files/log-read.php:40
+msgid "The log file for the Duplicator Plugin can be found in the directory wp-snapshots with the extension *.log"
+msgstr "Dublikatoriaus plugin žurnalo failą galima rasti kataloge WP-kompiliuoti su pratęsimo *. Žurnalas"
+
+#: ../files/log-read.php:41
+msgid "If no log file is present the try to create a package"
+msgstr "Jei nėra žurnalo failas yra pabandyti sukurti paketą"
+
+#: ../files/log-read.php:43
+msgid "Reasons for log file not showing"
+msgstr "Priežastys, dėl kurių log failą nerodomas"
+
+#: ../files/log-read.php:44
+msgid "The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755"
+msgstr "Snapshots katalogas neturi tinkamų teisių, rašyti failus. Pabandykite nustatyti teises į 755"
+
+#: ../files/log-read.php:45
+msgid "The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details"
+msgstr "Procesą, kad PHP veikia pagal neturi pakankamai teisių kurti failus. Prašome susisiekti su savo daugiau informacijos prieglobos paslaugų teikėjas"
+
+#: ../files/log-view.php:97
+#, fuzzy
+msgid "Duplicator: Create Package Log"
+msgstr "Sukurti Paketą"
+
+#: ../files/log-view.php:100
+msgid "Processing may take several minutes, please wait for progress bar to complete on the main status bar"
+msgstr "Tvarkymas gali užtrukti keletą minučių, prašome palaukti pažangos juostoje baigti pagrindinės būsenos juostoje"
+
+#: ../files/log-view.php:105
+msgid "Auto Refresh"
+msgstr "Automatinio atnaujinimo"
+
+#: ../files/log-view.php:106
+msgid "Refresh"
+msgstr "atnaujinti"
+
+#: ../files/log-view.php:114
+#, fuzzy
+msgid "Support Center"
+msgstr "Aplankykite Pagalbos Centrą"
+
+#: ../files/log-view.php:115
+msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
+msgstr "NEGALIMA skelbti šiuos duomenis į WordPress.org forumuose viešosiose vietose, pavyzdžiui, kaip ji yra atskirti slaptus duomenis jų rinkimo."
+
+#: ../inc/javascript.php:127
+msgid "Saving"
+msgstr "Įrašoma"
+
+#: ../inc/javascript.php:148
+msgid "Please select at least one package to delete."
+msgstr "Prašome pasirinkt bent vieną paketą, kurį norite ištrinti."
+
+#: ../inc/javascript.php:152
+msgid "Are you sure, you want to delete the selected package(s)?"
+msgstr "Ar tikrai norite ištrinti pažymėtus paketus?"
+
+#: ../inc/javascript.php:168
+#: ../inc/javascript.php:223
+#: ../inc/javascript.php:308
+#: ../inc/javascript.php:367
+msgid "Ready to create new package."
+msgstr "Galima sukurti naują paketą."
+
+#: ../inc/javascript.php:183
+msgid "Please enter a backup name."
+msgstr "Prašome įvesti atsarginės kopijos pavadinimą."
+
+#: ../inc/javascript.php:191
+msgid "Alpanumeric characters only on package name"
+msgstr "Paketo vardą turi sudaryti tik skaitiniai ir raidiniai simboliai"
+
+#: ../inc/javascript.php:204
+msgid "Evaluating WordPress Setup. Please Wait"
+msgstr "Įvertinamas WordPress Diegimas. Prašome Palaukti"
+
+#: ../inc/javascript.php:214
+#, fuzzy
+msgid "This may take several minutes. Please Wait..."
+msgstr "Tai gali užtrukti kelias minutes"
+
+#: ../inc/javascript.php:215
+#, fuzzy
+msgid "Create new package?"
+msgstr "Sukurti šį naują paketą?"
+
+#: ../inc/javascript.php:216
+#: ../inc/view.options.php:105
+msgid "Name"
+msgstr "Pavadinimas"
+
+#: ../inc/javascript.php:217
+msgid "For estimated scan size open system check dialog."
+msgstr "Numatomą skenavimo dydžio atviros sistemos žymės dialoge."
+
+#: ../inc/javascript.php:278
+msgid "Cancel"
+msgstr "atšaukti"
+
+#: ../inc/javascript.php:313
+msgid "Checking System Status.  Please Wait!"
+msgstr "Sistemos būsenos tikrinimas. Prašome palaukti!"
+
+#: ../inc/javascript.php:339
+msgid "Scanning Please Wait"
+msgstr "Skenavimo Prašome palaukti"
+
+#: ../inc/javascript.php:344
+#: ../inc/javascript.php:345
+#: ../inc/javascript.php:346
+msgid "unreadable"
+msgstr "EnglishLithuanianHebrewneįskaitomas"
+
+#: ../inc/javascript.php:347
+msgid "*Large File Found"
+msgstr "* Iš viso: Didelis Failo"
+
+#: ../inc/javascript.php:348
+#, fuzzy
+msgid "Files"
+msgstr "žlugti"
+
+#: ../inc/javascript.php:348
+msgid "Folders"
+msgstr "aplankai"
+
+#: ../inc/javascript.php:353
+msgid "error scanning directory"
+msgstr "klaida skenavimas katalogas"
+
+#: ../inc/javascript.php:363
+#, fuzzy
+msgid "AJAX Response"
+msgstr "AJAX atsakas tekstas:"
+
+#: ../inc/view.main.php:30
+msgid "By"
+msgstr "pagal"
+
+#: ../inc/view.main.php:37
+#: ../inc/view.main.php:87
+#: ../inc/view.main.php:167
+msgid "Package Name"
+msgstr "Paketo Pavadinimas"
+
+#: ../inc/view.main.php:40
+msgid "Create Package"
+msgstr "Sukurti Paketą"
+
+#: ../inc/view.main.php:41
+msgid "Delete selected package(s)"
+msgstr "Ištrinti pažymėtus paketus"
+
+#: ../inc/view.main.php:44
+msgid "Options"
+msgstr "Parinktys"
+
+#: ../inc/view.main.php:45
+#, fuzzy
+msgid "System Check"
+msgstr "Sistema"
+
+#: ../inc/view.main.php:46
+msgid "Show Create Log"
+msgstr "Rodyti Sukurti Prisijungti"
+
+#: ../inc/view.main.php:49
+msgid "Help"
+msgstr "Pagalba"
+
+#: ../inc/view.main.php:50
+msgid "Partner with us"
+msgstr "Tapkite mūsų partneriais"
+
+#: ../inc/view.main.php:59
+msgid "Status"
+msgstr "Būsena"
+
+#: ../inc/view.main.php:60
+msgid "Ready to create new package"
+msgstr "Galima sukurti naują paketą"
+
+#: ../inc/view.main.php:67
+#: ../inc/view.options.php:10
+msgid "Installer"
+msgstr "Diegiklis"
+
+#: ../inc/view.main.php:82
+msgid "Select all packages"
+msgstr "Pažymėti visus paketus"
+
+#: ../inc/view.main.php:83
+#: ../inc/view.main.php:163
+msgid "Information"
+msgstr "informacija"
+
+#: ../inc/view.main.php:84
+#: ../inc/view.main.php:164
+msgid "Owner"
+msgstr "Savininkas"
+
+#: ../inc/view.main.php:85
+#: ../inc/view.main.php:165
+msgid "Created"
+msgstr "Sukurta"
+
+#: ../inc/view.main.php:86
+#: ../inc/view.main.php:166
+msgid "Size"
+msgstr "Dydis"
+
+#: ../inc/view.main.php:88
+#: ../inc/view.main.php:112
+#: ../inc/view.options.php:9
+msgid "Package"
+msgstr "Paketas"
+
+#: ../inc/view.main.php:105
+msgid "View"
+msgstr "peržiūrėti"
+
+#: ../inc/view.main.php:125
+msgid "Plugin Version"
+msgstr "Papildinio Versija"
+
+#: ../inc/view.main.php:126
+#, fuzzy
+msgid "Secure Name"
+msgstr "Paketo Pavadinimas"
+
+#: ../inc/view.main.php:127
+#, fuzzy
+msgid "Database File"
+msgstr "Duomenų bazės Numatymai"
+
+#: ../inc/view.main.php:135
+msgid "No packages found"
+msgstr "Nerasta jokių paketų"
+
+#: ../inc/view.main.php:136
+msgid "To create a new package, enter a name and click the create button "
+msgstr "Kad sukurtumėte naują paketą, įveskite pavadinimą ir paspauskite sukūrimo mygtuką"
+
+#: ../inc/view.main.php:138
+msgid "Check Your"
+msgstr "Patikrinkite Jūsų"
+
+#: ../inc/view.main.php:139
+msgid "servers compatability"
+msgstr "serverių suderinamumą"
+
+#: ../inc/view.main.php:140
+msgid "with the duplicator"
+msgstr "su duplicator"
+
+#: ../inc/view.main.php:141
+msgid "This process will backup all your files and database"
+msgstr "Šis procesas sukurs visų Jūsų rinkmenų ir duomenų bazės atsargines kopijas"
+
+#: ../inc/view.main.php:142
+msgid "Creating a package may take several minutes if you have a large site"
+msgstr "Paketo sukūrimas gali užtrukti kelias minutes, jeigu Jūsų svetainė pakankamai didelė"
+
+#: ../inc/view.main.php:143
+msgid "This window should remain open for the process to complete"
+msgstr "Šis langas turėtų likti atidarytas, kad sistema galėtų užbaigti procesus"
+
+#: ../inc/view.main.php:144
+msgid "Please be patient while we work through this Beta version"
+msgstr "Prašome būti kantriam kol ištobulinsime šią Beta versiją"
+
+#: ../inc/view.main.php:145
+msgid "Please report any issues to"
+msgstr "Prašome pranešti apie bet kokias problemas"
+
+#: ../inc/view.options.php:4
+msgid "Duplicator Options"
+msgstr "kopijavimo nustatymai"
+
+#: ../inc/view.options.php:11
+msgid "FTP"
+msgstr "FTP"
+
+#: ../inc/view.options.php:19
+msgid "Processing"
+msgstr "Vykdoma"
+
+#: ../inc/view.options.php:33
+msgid "Max Time"
+msgstr "Maksimalus Laikas"
+
+#: ../inc/view.options.php:33
+msgid "seconds"
+msgstr "sekundės"
+
+#: ../inc/view.options.php:34
+msgid "Max Memory"
+msgstr "Maksimali Atmintis"
+
+#: ../inc/view.options.php:39
+#, fuzzy
+msgid "Directory Filters"
+msgstr "Katalogo Išskyrimas"
+
+#: ../inc/view.options.php:40
+#, fuzzy
+msgid "Separate by semicolon"
+msgstr "Pritaikyti kelią, atskirtą kabliataškiais"
+
+#: ../inc/view.options.php:45
+#, fuzzy
+msgid "Root Path"
+msgstr "Universaliosios nuorodos Adresas"
+
+#: ../inc/view.options.php:46
+#: ../inc/view.system.php:180
+msgid "Pre-Zip Overview"
+msgstr "Pasirengimo Pašto apžvalga"
+
+#: ../inc/view.options.php:48
+#, fuzzy
+msgid "Scan Size"
+msgstr "Paketo Pavadinimas"
+
+#: ../inc/view.options.php:53
+msgid "Email when complete. Add optional emails separated by semicolon"
+msgstr "Elektroniniu paštu, kai užpildyti. Pridėti pasirenkamų laiškus, atskirtus kabliataškiais"
+
+#: ../inc/view.options.php:61
+#, fuzzy
+msgid "Database Encoding"
+msgstr "Duomenų bazės Numatymai"
+
+#: ../inc/view.options.php:64
+#, fuzzy
+msgid "Enable character conversion encoding"
+msgstr "Suaktyvinti duomenų bazės kodavimą"
+
+#: ../inc/view.options.php:69
+msgid "From"
+msgstr "nuo"
+
+#: ../inc/view.options.php:70
+msgid "to"
+msgstr "į"
+
+#: ../inc/view.options.php:71
+msgid "Please disable this option for international character sets"
+msgstr "Prašome išjungti šią parinktį, tarptautinių simbolių rinkinių"
+
+#: ../inc/view.options.php:78
+msgid "Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)"
+msgstr "Turite problemų įrašant šią parinkį? Laikinai išjungti visas 'Objektų Spartinančiasias atmintines (pvz. W3C Total Object Cache)"
+
+#: ../inc/view.options.php:88
+msgid "Settings Defaults"
+msgstr "Nuostatų Numatymai"
+
+#: ../inc/view.options.php:91
+msgid "Install URL"
+msgstr "Įdiegimo Universalioji nuoroda"
+
+#: ../inc/view.options.php:98
+msgid "Database Defaults"
+msgstr "Duomenų bazės Numatymai"
+
+#: ../inc/view.options.php:101
+msgid "Host"
+msgstr "Serveris"
+
+#: ../inc/view.options.php:109
+msgid "User"
+msgstr "Vartotojas"
+
+#: ../inc/view.options.php:114
+msgid "The installer can have these fields pre-filled at install time.  These values are optional."
+msgstr "Diegiklis gali automatiškai užpildyti šiuos langus įdiegimo metu. Šios reikšmės yra pasirinktinos."
+
+#: ../inc/view.options.php:140
+msgid "Save"
+msgstr "Įrašyti"
+
+#: ../inc/view.options.php:141
+msgid "Close"
+msgstr "Uždaryti"
+
+#: ../inc/view.system.php:3
+#, fuzzy
+msgid "System Constraint"
+msgstr "Sistema"
+
+#: ../inc/view.system.php:6
+msgid "Please try again! An issue has occurred."
+msgstr "Bandykite dar kartą!Problema buvo."
+
+#: ../inc/view.system.php:10
+msgid "Recommendations"
+msgstr "Rekomendacijos"
+
+#: ../inc/view.system.php:15
+msgid "Validate"
+msgstr "patvirtinti"
+
+#: ../inc/view.system.php:16
+#, fuzzy
+msgid "your system"
+msgstr "Patvirtinkite savo sistemą"
+
+#: ../inc/view.system.php:17
+#, fuzzy
+msgid "refresh"
+msgstr "atnaujinti"
+
+#: ../inc/view.system.php:18
+msgid "the dashboard."
+msgstr "prietaisų skydelis."
+
+#: ../inc/view.system.php:22
+#, fuzzy
+msgid "Monitor"
+msgstr "Stebėkite savo"
+
+#: ../inc/view.system.php:23
+#, fuzzy
+msgid "your log file a few more minutes as processing may continue on some systems"
+msgstr "keletą minučių, kaip perdirbti, gali ir toliau kai kuriose sistemose"
+
+#: ../inc/view.system.php:26
+msgid "Contact your server admin to have the page timeout increased (see duration below)"
+msgstr "Susisiekite su savo serverio administratoriumi puslapis timeout padidėjo (žr. trukmę žemiau)"
+
+#: ../inc/view.system.php:27
+msgid "Consider adding a directory filter in the options dialog if the process continues to timeout"
+msgstr "Apsvarstykite pridedant parinkčių dialogo katalogo filtrą, jei šis procesas ir toliau pertrauka"
+
+#: ../inc/view.system.php:28
+msgid "Check your disk space.  For hosted sites review your providers help."
+msgstr "Patikrinkite savo diske. Patalpinta svetainėse peržiūrėti savo teikėjus."
+
+#: ../inc/view.system.php:31
+msgid "Consider using a"
+msgstr "Apsvarstykite galimybę naudoti"
+
+#: ../inc/view.system.php:33
+#, fuzzy
+msgid "certified"
+msgstr "Sertifikuoti Šeimininkai"
+
+#: ../inc/view.system.php:34
+#, fuzzy
+msgid "hosting provider."
+msgstr "Reikia hostingo teikėjo, kuris yra"
+
+#: ../inc/view.system.php:38
+msgid "Server Response"
+msgstr "Server Response"
+
+#: ../inc/view.system.php:43
+#, fuzzy
+msgid "See online help for more details at"
+msgstr "Daugiau informacijos pagalbos puslapyje internete"
+
+#: ../inc/view.system.php:53
+#, fuzzy
+msgid "System Checks"
+msgstr "Sistema"
+
+#: ../inc/view.system.php:56
+msgid "Please validate your system configuration."
+msgstr "Prašome patvirtinti jūsų sistemos konfigūraciją."
+
+#: ../inc/view.system.php:57
+msgid "Click link for details"
+msgstr "Spustelėkite nuorodą daugiau informacijos"
+
+#: ../inc/view.system.php:66
+msgid "SYSTEM REQUIRMENTS"
+msgstr "SISTEMOS REIKALAVIMAI"
+
+#: ../inc/view.system.php:67
+msgid "File Permissions"
+msgstr "failų leidimai"
+
+#: ../inc/view.system.php:70
+msgid "The following directories should have permissions of 755 and files 644.  Keep in mind that PHP may be accessing the paths/files as the user id that the web server runs as."
+msgstr "Šie katalogai turi turėti leidimus, 755 ir 644 failus. Atminkite, kad PHP gali būti pasiekti kelius / files kaip vartotojo vardą, kad interneto serveris veikia kaip."
+
+#: ../inc/view.system.php:90
+msgid "Reserved Files"
+msgstr "Rezervuotos Failai"
+
+#: ../inc/view.system.php:93
+#, fuzzy
+msgid "If this check fails then a reserved file was found in the WordPress root directory. The following are reserved file names installer.php, installer-data.sql and installer-log.txt.  In order to archive your data correctly please remove any of these files from your WordPress root directory. Then try creating your package again."
+msgstr "Jei šis patikrinimas nepavyksta tada saugomos byla buvo rasti WordPress šakniniame kataloge. Taip rezervuoti failų vardus install.php, install-data.sql ir install-log.txt. Siekiant archyvuoti jūsų duomenys korektiškai pašalinti bet kurį iš šių failų iš savo WordPress šakniniame kataloge. Tada vėl pabandykite sukurti savo paketą."
+
+#: ../inc/view.system.php:98
+#, fuzzy
+msgid "Zip Archive Enabled"
+msgstr "zip \"archyvas"
+
+#: ../inc/view.system.php:101
+msgid "The ZipArchive extension for PHP is required for compression.  Please contact your hosting provider if you're on a hosted server.  For additional information see our online documentation."
+msgstr "ZipArchive PHP išplėtimas suspaudimo. Prašome kreipkitės į prieglobos paslaugų teikėjas, jei esate serverio? Papildomos informacijos ieškokite mūsų internetinėje dokumentaciją."
+
+#: ../inc/view.system.php:106
+#, fuzzy
+msgid "Safe Mode Off"
+msgstr "Ribotoji Veiksena"
+
+#: ../inc/view.system.php:109
+#, fuzzy
+msgid "Safe Mode needs to be disabled in order for the Duplicator to operate correctly.  Please set safe_mode = Off in you php.ini file.  If you're on a hosted server and don't have access to the php.ini file then you will need to request this setting be updated. Safe Mode is no longer in future versions of PHP.  If your host will not work with you to resolve the issue then consider a higher reputable hosting provider."
+msgstr "Saugus režimas turi būti išjungtas tam, kopijavimo veiktų teisingai. Prašome nurodyti, safe_mode = Off You php.ini failą. Jei esate serverio? Ir neturi prieigos prie php.ini failą, tada jums reikės prašyti, šis nustatymas bus atnaujintas."
+
+#: ../inc/view.system.php:114
+msgid "MySQLi Support"
+msgstr "MySQLi palaikymas"
+
+#: ../inc/view.system.php:117
+msgid "In order to complete an install the mysqli extension for PHP is required. If you are on a hosted server please contact your host and request that mysqli extension be enabled. For more information visit: http://php.net/manual/en/mysqli.installation.php"
+msgstr "Siekiant užbaigti įdiegti mysqli pratęsti PHP. Jei esate Patalpinta serveryje, prašome kreiptis į jūsų serverį ir paprašyti, kad mysqli pratęsimas būti įjungtas. Norėdami gauti daugiau informacijos, apsilankykite: http://php.net/manual/en/mysqli.installation.php"
+
+#: ../inc/view.system.php:127
+#, fuzzy
+msgid "SYSTEM CHECKS"
+msgstr "SERVERIO PATIKRINIMAI"
+
+#: ../inc/view.system.php:130
+#, fuzzy
+msgid "PHP Version"
+msgstr "Versija"
+
+#: ../inc/view.system.php:132
+#: ../inc/view.system.php:144
+#: ../inc/view.system.php:168
+msgid "Good"
+msgstr "Gerai"
+
+#: ../inc/view.system.php:134
+#: ../inc/view.system.php:147
+#: ../inc/view.system.php:150
+#: ../inc/view.system.php:153
+#: ../inc/view.system.php:156
+msgid "OK"
+msgstr "OK"
+
+#: ../inc/view.system.php:135
+#, fuzzy
+msgid "PHP 5.2.17+ is required"
+msgstr "yra privaloma"
+
+#: ../inc/view.system.php:137
+#: ../inc/view.system.php:159
+#: ../inc/view.system.php:171
+msgid "Fail"
+msgstr "žlugti"
+
+#: ../inc/view.system.php:143
+#: ../inc/view.system.php:146
+#: ../inc/view.system.php:149
+#: ../inc/view.system.php:152
+#: ../inc/view.system.php:155
+#: ../inc/view.system.php:158
+msgid "Web Server"
+msgstr "Žiniatinklio Serveris"
+
+#: ../inc/view.system.php:158
+msgid "Not detected"
+msgstr "Neaptikta(-s)"
+
+#: ../inc/view.system.php:167
+#: ../inc/view.system.php:170
+msgid "Open Base Dir"
+msgstr "Atverti Bazinį Katalogą"
+
+#: ../inc/view.system.php:167
+msgid "Off"
+msgstr "Išjungti"
+
+#: ../inc/view.system.php:170
+msgid "On"
+msgstr "Įjungti"
+
+#: ../inc/view.system.php:177
+msgid "PHP SAPI"
+msgstr "PHP SAPI"
+
+#: ../inc/view.system.php:182
+msgid "Scan Now"
+msgstr "Skenavimo Dabar"
+
+#: ../inc/view.system.php:191
+msgid "Cache Directory Found"
+msgstr "Spartinančiosios atmintinės Katalogas Rastas"
+
+#: ../inc/view.system.php:192
+#, fuzzy
+msgid "Add to exclusion path now"
+msgstr "Pridėti į mano katalogų išskyrimo sąrašą"
+
+#: ../inc/view.system.php:194
+#, fuzzy
+msgid "Directory excluded"
+msgstr "Katalogo Išskyrimas"
+
+#: ../inc/view.system.php:195
+#, fuzzy
+msgid "Path"
+msgstr "Universaliosios nuorodos Adresas"
+
+#: ../inc/view.system.php:197
+msgid "Cache Directory Not Found"
+msgstr "Spartinančiosios atmintinės Katalogas Nerastas"
+
+#: ../inc/view.system.php:203
+msgid "ONLINE RESOURCES"
+msgstr "Online ištekliai"
+
+#: ../inc/view.system.php:208
+msgid "For additional online help please visit"
+msgstr "Dėl papildomos pagalba internete, apsilankykite"
+
+#: ../inc/view.system.php:214
+msgid "Need a hosting provider that is"
+msgstr "Reikia hostingo teikėjo, kuris yra"
+
+#: ../inc/view.system.php:216
+msgid "Duplicator Certified"
+msgstr "dublikatorius Sertifikuota"
+
+#~ msgid "Email when complete"
+#~ msgstr "Kai bus baigta, pranešti elektroniniu paštu"
+
+#, fuzzy
+#~ msgid "log file"
+#~ msgstr "Nerasta jokių paketų"
+
+#, fuzzy
+#~ msgid "Snapshot Directory"
+#~ msgstr "Spartinančiosios atmintinės Katalogas Rastas"
+
+#~ msgid ""
+#~ "If this check fails then a snapshot directory was not found or the "
+#~ "correct permissions are not set"
+#~ msgstr ""
+#~ "Jei šis patikrinimas nepavyksta tada fotografiją katalogas nerastas arba "
+#~ "nėra nustatyti reikiamus leidimus"
+
+#~ msgid "To resolve this issue create a directory named"
+#~ msgstr "Norėdami išspręsti šią problemą sukurti katalogą, pavadintą"
+
+#~ msgid "at the root of your WordPress install"
+#~ msgstr "savo WordPress diegimo šaknų"
+
+#~ msgid ""
+#~ "Please be sure the directory is writeable and has the effective "
+#~ "permissions of 755"
+#~ msgstr ""
+#~ "Prašome būti tikri, katalogas yra prieinamas rašymui ir turi veiksmingas "
+#~ "teises 755"
+
+#~ msgid "Donate"
+#~ msgstr "Aukoti"
+
+#, fuzzy
+#~ msgid ""
+#~ "Please check to see if a create log file exists.  To view the create log "
+#~ "file, click on the Show Create Log button in the upper right hand "
+#~ "toolbar.  Be sure to send the message above and the create log file if it "
+#~ "contains data. On some systems processing will continue even when the "
+#~ "webpage times out.  Continue to monitor the log file and refresh this "
+#~ "page."
+#~ msgstr ""
+#~ "Prašome patikrinti, norėdami pamatyti, jei yra sukurti žurnalo failą."
+#~ "Norėdami peržiūrėti sukurti žurnalo failą, spustelėkite Rodyti Sukurti "
+#~ "Prisijungti viršutiniame dešiniajame įrankių juostos mygtuką. Būtinai, "
+#~ "jei norite siųsti šinutę virš ir sukurti žurnalo failą, jei jis yra "
+#~ "duomenų."
+
+#~ msgid "Uncompressed Size"
+#~ msgstr "Nesuspaustas Dydis"
+
+#~ msgid "Compressing"
+#~ msgstr "Suspaudžiama"
+
+#~ msgid "paths will exclude all sub-directories"
+#~ msgstr "keliai išskirs visas subdirektorijas"
+
+#~ msgid "Your root path is"
+#~ msgstr "Jūsų šaknies adresas yra"
+
+#~ msgid "Encoding"
+#~ msgstr "EnglishLithuanianHebrewKodavimas"
+
+#, fuzzy
+#~ msgid ""
+#~ "An unknown error has occurred. Please try again! If the problems persist "
+#~ "please contact support."
+#~ msgstr ""
+#~ "Kuriant paketą įvyko klaida! Prašome bandyti dar kartą. Jeigu problema "
+#~ "kartosis, prašome pateikti žurnalo įrašus pagalbos kreipimesi."
+
+#~ msgid "Additional Details"
+#~ msgstr "Papildomos detalės"
+
+#~ msgid ""
+#~ "Please validate the following system checks (for more details click the "
+#~ "link)."
+#~ msgstr ""
+#~ "Prašome patvirtinti šiuos sistemos patikrinimus Daugiau informacijos "
+#~ "Paspauskite nuorodą)."
+
+#~ msgid ""
+#~ "Currently the Duplicator only supports achieving sites under 2GB. You can "
+#~ "easily overcome this limitation by excluding directories with large files "
+#~ "such as your 'wp-content/uploads' directory or any directory with large "
+#~ "files such as videos or audio.  Use the options dialog to add the "
+#~ "directories you would like to exclude.  Once you have created your "
+#~ "package and installed it you can then move those directories back to the "
+#~ "same location."
+#~ msgstr ""
+#~ "Šiuo dublikatorius palaiko tik pasiekti svetaines pagal 2GB. Jūs galite "
+#~ "lengvai įveikti šį apribojimą, išskyrus katalogus su dideliais failais, "
+#~ "pavyzdžiui, savo \"wp-content/uploads\" katalogą arba bet su dideliais "
+#~ "failais, pavyzdžiui, vaizdo ar garso kataloge. Naudokite parinkčių "
+#~ "dialogą pridėti katalogų norėtumėte pašalinti. Sukūrę savo paketą ir "
+#~ "įdiegti jį galite perkelti šiuos katalogus atgal į tą pačią vietą."
+
+#~ msgid "Pass"
+#~ msgstr "Slaptažodis"
+
+#~ msgid "CACHE STORE CHECKS"
+#~ msgstr "SPARTINANČIOSIOS ATMINTINĖS BŪSENOS PATIKRINIMAI"
+
+#~ msgid "Cache Directory is being excluded"
+#~ msgstr "Spartinančiosios atmintinės Katalogas išskirtas"
+
+#~ msgid "Download this installer"
+#~ msgstr "Parsisiųsti šį diegiklį"
+
+#~ msgid "ID"
+#~ msgstr "Identifikatorius"
+
+#~ msgid "Download this package"
+#~ msgstr "Parsisiųsti šį paketą"
+
+#~ msgid "Security Token"
+#~ msgstr "Saugumo Priemonė"
+
+#~ msgid "File Name"
+#~ msgstr "Rinkmenos Pavadinimas"
+
+#~ msgid "File Path"
+#~ msgstr "Rinkmenos Adresas"
+
+#~ msgid "Logging Enabled"
+#~ msgstr "Įrašymas į žurnalą Suaktyvintas"
+
+#~ msgid "reload page"
+#~ msgstr "Įkelti puslapį iš naujo"
+
+#~ msgid "to view results"
+#~ msgstr "kad peržiūrėti rezultatus"
+
+#~ msgid ""
+#~ "An error occurred while overwriting a package!  Please try again.  If the "
+#~ "problem persits please submit the logs in a support ticket."
+#~ msgstr ""
+#~ "Įvyko klaida keičiant paketą! Prašome bandyti dar kartą. Jeigu problema "
+#~ "kartosis, prašome pateikti žurnalo įrašus pagalbos kreipimesi."
+
+#~ msgid ""
+#~ "An error occurred while saving your settings!  Please try again.  If the "
+#~ "problem persits please submit the logs in a support ticket."
+#~ msgstr ""
+#~ "Įrašant Jūsų nuostatas įvyko klaida! Prašome bandyti dar kartą. Jeigu "
+#~ "problema kartosis, prašome pateikti žurnalo įrašus pagalbos kreipimesi."
+
+#~ msgid ""
+#~ "An error occurred while deleting a package!  Please try again.  If the "
+#~ "problem persits please submit the logs in a support ticket."
+#~ msgstr ""
+#~ "Ištrinant paketą įvyko klaida! Prašome bandyti dar kartą. Jeigu problema "
+#~ "kartosis, prašome pateikti žurnalo įrašus pagalbos kreipimesi."
+
+#~ msgid "WARNING"
+#~ msgstr "DĖMESIO"
+
+#~ msgid "A reserved file was found in the WordPress root directory."
+#~ msgstr "WordPress šaknies kataloge nerasta atsarginė rinkmena."
+
+#~ msgid "The Duplicator uses the following reserved file names"
+#~ msgstr "Duplicator naudoja šiuos atsarginių rinkmenų pavadinimus"
+
+#~ msgid "install.php, install-data.sql, and install-log.txt"
+#~ msgstr "install.php, install-data.sql, ir install-log.txt"
+
+#~ msgid "In order to archive your data correctly please remove any of"
+#~ msgstr ""
+#~ "Kad Jūsų duomenys būtų teisingai archyvuojami, prašome pašalinti visas"
+
+#~ msgid "these reserved files from your WordPress root directory."
+#~ msgstr "šias atsargines rinkmenas iš Jūsų WordPress šaknies katalogo."
+
+#~ msgid "Then try creating a your package again."
+#~ msgstr "O tuomet vėl pabandykite sukurti Jūsų paketą."
+
+#~ msgid "Package name already exists! Overwrite with newer package?"
+#~ msgstr "Toks paketo vardas jau yra! Perrašyti paketo versiją?"
+
+#~ msgid "2GB archive size reached!  Currently the Duplicator only"
+#~ msgstr "2GB archyvo dydis pasiektas! Šiuo metu Duplikator"
+
+#~ msgid "supports achieving sites under 2GB.  We are currently"
+#~ msgstr "palaiko tik puslapius, nesiekiančius 2GB. Šiuo metu"
+
+#~ msgid "working on this limitation in future releases"
+#~ msgstr "dirbame ties šio apribojimo keitimu ateities leidimuose"
+
+#~ msgid "You can easily overcome this limitation by temporarily"
+#~ msgstr "Jūs galite lengvai išvengti šio apribojimo laikinai"
+
+#~ msgid "moving large files outside of your root WordPress directory"
+#~ msgstr ""
+#~ "perkeliant dideles rinkmenas iš Jūsų šaknies WordPress katalogo kur nors "
+#~ "kitur"
+
+#~ msgid "Once you have created your package and installed it you can"
+#~ msgstr "Kai sukursite ir įdiegsite savo paketą Jūs galėsite"
+
+#~ msgid "then move those files back to the same location"
+#~ msgstr "perkelti šias rinkmenas atgal į buvusią vietą"
+
+#~ msgid "2GB Size limit reached"
+#~ msgstr "2GB Dydžio limitas pasiektas"
+
+#~ msgid ""
+#~ "An error occurred while submitting a package!  Please try again.  If the "
+#~ "problem persits please submit the logs in a support ticket."
+#~ msgstr ""
+#~ "Pateikiant paketą įvyko klaida! Prašome bandyti dar kartą. Jeigu problema "
+#~ "kartosis, prašome pateikti žurnalo įrašus pagalbos kreipimesi."
+
+#~ msgid "Launch the installer window"
+#~ msgstr "Paleisti diegiklio langą"
+
+#~ msgid "Show Log Pane"
+#~ msgstr "Rodyti Žurnalo Polangį"
+
+#~ msgid "Logging Pane"
+#~ msgstr "Žurnalo Polangyje"
+
+#~ msgid "clear the logging pane"
+#~ msgstr "išvalyti žurnalo polangį"
+
+#~ msgid "clear"
+#~ msgstr "išvalyti"
+
+#~ msgid "report this issue"
+#~ msgstr "pranešti apie šią problemą"
+
+#~ msgid "copy"
+#~ msgstr "kopijuoti"
+
+#~ msgid "reload this window"
+#~ msgstr "įkelti šį langą iš naujo"
+
+#~ msgid "To disable this pane, set reporting level to 'none' in the"
+#~ msgstr "Kad išjungtumėte šį polangį, nustatykite ataskaitų lygį į 'none'"
+
+#~ msgid "options dialog"
+#~ msgstr "parinkčių dialogo lange"
+
+#~ msgid "Height"
+#~ msgstr "Aukštis"
+
+#~ msgid "Logging - Copy (Ctrl + C)"
+#~ msgstr "Žurnalas - Kopijuoti (Ctrl +C)"
+
+#~ msgid "Reporting Level"
+#~ msgstr "Ataskaitų Lygmuo"
+
+#~ msgid ""
+#~ "Information in the logging pane can be used to contact support.  When the "
+#~ "logging pane is enabled you will have to manually refresh the window."
+#~ msgstr ""
+#~ "Informacija žurnalo polangyje gali būti naudojama susisiekiant su "
+#~ "pagalbos centru. Kuomet žurnalo polangis yra suaktyvintas, Jūs turėsite "
+#~ "rankiniu būdu atnaujinti langą."
+
+#~ msgid "Launch installer window"
+#~ msgstr "Paleisti diegiklio langą"
+
+#~ msgid "Key"
+#~ msgstr "Kodas"
+
+#~ msgid "Bad"
+#~ msgstr "Blogai"
+
+#~ msgid "Not Enabled"
+#~ msgstr "Nesuaktyvinta(-s)"
+
+#~ msgid "Enabled"
+#~ msgstr "Suaktyvinta(-s)"
+
+#~ msgid "Compression"
+#~ msgstr "Glaudinimas"
+
+#~ msgid "Not installed"
+#~ msgstr "Neįdiegta(-s)"
+
+#~ msgid "ZipArchive extension required for compression"
+#~ msgstr "Glaudinimui reikalingas ZipArchive plėtinys"
+
+#~ msgid "Full Path"
+#~ msgstr "Pilnas Adresas"
+
+#~ msgid "See Package Tab -&gt; Directory Exclusion"
+#~ msgstr "Žiūrėti Paketo Kortelę  -&gt; Katalogo Išskyrimas"
+
+#~ msgid ""
+#~ "Please exclude all cache store directories. This will help for a faster "
+#~ "and cleaner install."
+#~ msgstr ""
+#~ "Prašome išskirti visus spartinančiosios atmintinės laikmenų katalogus. "
+#~ "Tai įtakos greitesnį ir švaresnį įdiegimą."

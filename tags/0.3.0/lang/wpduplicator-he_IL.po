@@ -1,0 +1,799 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WPDuplicator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-21 06:39-0700\n"
+"PO-Revision-Date: 2012-07-21 06:42-0700\n"
+"Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
+"Language-Team: רמי יושובייב <www.wp-tricks.co.il>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ./\n"
+"X-Poedit-Language: Hebrew\n"
+"X-Poedit-Country: ISRAEL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../duplicator.php:151
+msgid "FAQ"
+msgstr "שאלות נפוצות"
+
+#: ../duplicator.php:152
+#, fuzzy
+msgid "Partner"
+msgstr "עזרו לנו"
+
+#: ../duplicator.php:153
+msgid "Certified Hosts"
+msgstr "רואי צבאות"
+
+#: ../duplicator.php:202
+msgid "Dashboard"
+msgstr "לוח מחוונים"
+
+#: ../duplicator.php:203
+msgid "Server Info."
+msgstr "פרטי השרת."
+
+#: ../duplicator.php:234
+msgid "Manage"
+msgstr "ניהול"
+
+#: ../files/log-read.php:38
+#, fuzzy
+msgid "No log file found"
+msgstr "לא נמצאו חבילות"
+
+#: ../files/log-read.php:40
+msgid "The log file for the Duplicator Plugin can be found in the directory wp-snapshots with the extension *.log"
+msgstr "קובץ היומן עבור Plugin מעתק ניתן למצוא במדריך WP-* תמונות עם סיומת. יומן"
+
+#: ../files/log-read.php:41
+msgid "If no log file is present the try to create a package"
+msgstr "אם אין קובץ היומן קיים ניסיון ליצור חבילה"
+
+#: ../files/log-read.php:43
+msgid "Reasons for log file not showing"
+msgstr "הסיבות יומן הקובץ לא מראה"
+
+#: ../files/log-read.php:44
+msgid "The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755"
+msgstr "מדריך תמונות אין את ההרשאות הנכונות כדי לכתוב קבצים. נסה להגדיר את הרשאות 755"
+
+#: ../files/log-read.php:45
+msgid "The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details"
+msgstr "תהליך PHP פועל תחת אין הרשאות מספיק כדי ליצור קבצים. אנא צור קשר עם ספק האירוח שלך לקבלת פרטים נוספים"
+
+#: ../files/log-view.php:97
+#, fuzzy
+msgid "Duplicator: Create Package Log"
+msgstr "צור חבילה"
+
+#: ../files/log-view.php:100
+msgid "Processing may take several minutes, please wait for progress bar to complete on the main status bar"
+msgstr "עיבוד עשוי להימשך מספר דקות, אנא המתן מד ההתקדמות כדי להשלים את בשורת המצב המרכזי"
+
+#: ../files/log-view.php:105
+msgid "Auto Refresh"
+msgstr "Auto Refresh"
+
+#: ../files/log-view.php:106
+msgid "Refresh"
+msgstr "לרענן"
+
+#: ../files/log-view.php:114
+#, fuzzy
+msgid "Support Center"
+msgstr "מרכז תמיכה"
+
+#: ../files/log-view.php:115
+msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
+msgstr "נא לא לפרסם נתונים אלה באתרים ציבוריים כמו פורומים WordPress.org שכן הוא מכיל מידע רגיש."
+
+#: ../inc/javascript.php:127
+msgid "Saving"
+msgstr "שומר"
+
+#: ../inc/javascript.php:148
+msgid "Please select at least one package to delete."
+msgstr "לא נבחרו חבילות למחיקה."
+
+#: ../inc/javascript.php:152
+msgid "Are you sure, you want to delete the selected package(s)?"
+msgstr "אתה בטוח שאתה רוצה למחוק את חבילות אלה?"
+
+#: ../inc/javascript.php:168
+#: ../inc/javascript.php:223
+#: ../inc/javascript.php:308
+#: ../inc/javascript.php:367
+msgid "Ready to create new package."
+msgstr "מוכן ליצור חבילה חדשה."
+
+#: ../inc/javascript.php:183
+msgid "Please enter a backup name."
+msgstr "יש להזין שם."
+
+#: ../inc/javascript.php:191
+msgid "Alpanumeric characters only on package name"
+msgstr "ניתן להשתמש רק בתווים אלפאנומריים"
+
+#: ../inc/javascript.php:204
+msgid "Evaluating WordPress Setup. Please Wait"
+msgstr "אנא המתן בזמן שביצוע הערכה של התקנת וורדפרס."
+
+#: ../inc/javascript.php:214
+#, fuzzy
+msgid "This may take several minutes. Please Wait..."
+msgstr "הפעולה עשויה להמשך מספר דקות"
+
+#: ../inc/javascript.php:215
+#, fuzzy
+msgid "Create new package?"
+msgstr "ליצור חבילה חדשה?"
+
+#: ../inc/javascript.php:216
+#: ../inc/view.options.php:105
+msgid "Name"
+msgstr "שם"
+
+#: ../inc/javascript.php:217
+msgid "For estimated scan size open system check dialog."
+msgstr "לסריקת מוערך גודל שיח פתוח במערכת המחאה."
+
+#: ../inc/javascript.php:278
+msgid "Cancel"
+msgstr "לבטל"
+
+#: ../inc/javascript.php:313
+msgid "Checking System Status.  Please Wait!"
+msgstr "בדיקת מצב המערכת. אנא המתן!"
+
+#: ../inc/javascript.php:339
+msgid "Scanning Please Wait"
+msgstr "סריקה אנא המתן"
+
+#: ../inc/javascript.php:344
+#: ../inc/javascript.php:345
+#: ../inc/javascript.php:346
+msgid "unreadable"
+msgstr "קריא"
+
+#: ../inc/javascript.php:347
+msgid "*Large File Found"
+msgstr "* קובץ גדול נמצא"
+
+#: ../inc/javascript.php:348
+#, fuzzy
+msgid "Files"
+msgstr "להיכשל"
+
+#: ../inc/javascript.php:348
+msgid "Folders"
+msgstr "תיקיות"
+
+#: ../inc/javascript.php:353
+msgid "error scanning directory"
+msgstr "סריקה טעות במדריך"
+
+#: ../inc/javascript.php:363
+#, fuzzy
+msgid "AJAX Response"
+msgstr "AJAX טקסט תגובה:"
+
+#: ../inc/view.main.php:30
+msgid "By"
+msgstr "על ידי"
+
+#: ../inc/view.main.php:37
+#: ../inc/view.main.php:87
+#: ../inc/view.main.php:167
+msgid "Package Name"
+msgstr "שם חבילה"
+
+#: ../inc/view.main.php:40
+msgid "Create Package"
+msgstr "צור חבילה"
+
+#: ../inc/view.main.php:41
+msgid "Delete selected package(s)"
+msgstr "מחק חבילות מסומנות"
+
+#: ../inc/view.main.php:44
+msgid "Options"
+msgstr "אפשרויות"
+
+#: ../inc/view.main.php:45
+#, fuzzy
+msgid "System Check"
+msgstr "מערכת"
+
+#: ../inc/view.main.php:46
+msgid "Show Create Log"
+msgstr "הצג יצירת התחבר"
+
+#: ../inc/view.main.php:49
+msgid "Help"
+msgstr "עזרה"
+
+#: ../inc/view.main.php:50
+msgid "Partner with us"
+msgstr "עזרו לנו"
+
+#: ../inc/view.main.php:59
+msgid "Status"
+msgstr "סטטוס"
+
+#: ../inc/view.main.php:60
+msgid "Ready to create new package"
+msgstr "מוכן ליצור חבילה חדשה"
+
+#: ../inc/view.main.php:67
+#: ../inc/view.options.php:10
+msgid "Installer"
+msgstr "קובץ התקנה"
+
+#: ../inc/view.main.php:82
+msgid "Select all packages"
+msgstr "בחר את כל החבילות"
+
+#: ../inc/view.main.php:83
+#: ../inc/view.main.php:163
+msgid "Information"
+msgstr "מידע"
+
+#: ../inc/view.main.php:84
+#: ../inc/view.main.php:164
+msgid "Owner"
+msgstr "בעלים"
+
+#: ../inc/view.main.php:85
+#: ../inc/view.main.php:165
+msgid "Created"
+msgstr "תאריך"
+
+#: ../inc/view.main.php:86
+#: ../inc/view.main.php:166
+msgid "Size"
+msgstr "גודל"
+
+#: ../inc/view.main.php:88
+#: ../inc/view.main.php:112
+#: ../inc/view.options.php:9
+msgid "Package"
+msgstr "חבילה"
+
+#: ../inc/view.main.php:105
+msgid "View"
+msgstr "לראות"
+
+#: ../inc/view.main.php:125
+msgid "Plugin Version"
+msgstr "גרסת תוסף"
+
+#: ../inc/view.main.php:126
+#, fuzzy
+msgid "Secure Name"
+msgstr "שם חבילה"
+
+#: ../inc/view.main.php:127
+#, fuzzy
+msgid "Database File"
+msgstr "מסד נתונים ברירת מחדל"
+
+#: ../inc/view.main.php:135
+msgid "No packages found"
+msgstr "לא נמצאו חבילות"
+
+#: ../inc/view.main.php:136
+msgid "To create a new package, enter a name and click the create button "
+msgstr "ליצירת חבילה חדשה, הזן שם ולחץ על כפתור ההפעלה"
+
+#: ../inc/view.main.php:138
+msgid "Check Your"
+msgstr "בדוק "
+
+#: ../inc/view.main.php:139
+msgid "servers compatability"
+msgstr "תאימות שרת"
+
+#: ../inc/view.main.php:140
+msgid "with the duplicator"
+msgstr "עם התוסף"
+
+#: ../inc/view.main.php:141
+msgid "This process will backup all your files and database"
+msgstr "התהליך יגבה את הקבצים ומסד הנתונים"
+
+#: ../inc/view.main.php:142
+msgid "Creating a package may take several minutes if you have a large site"
+msgstr "יצירת חבילה עשוי להמשך מספר דקות, אם מדובר באתר גדול."
+
+#: ../inc/view.main.php:143
+msgid "This window should remain open for the process to complete"
+msgstr "אין לסגור את החלון עד סיום הפעולה"
+
+#: ../inc/view.main.php:144
+msgid "Please be patient while we work through this Beta version"
+msgstr "יש להמתין בסבלנות בזמן שאנו עובדים עם גרסת בטא זה"
+
+#: ../inc/view.main.php:145
+msgid "Please report any issues to"
+msgstr "אנא דווחו על תקלות ל"
+
+#: ../inc/view.options.php:4
+msgid "Duplicator Options"
+msgstr "מעתק אפשרויות"
+
+#: ../inc/view.options.php:11
+msgid "FTP"
+msgstr "FTP"
+
+#: ../inc/view.options.php:19
+msgid "Processing"
+msgstr "עיבוד נתונים"
+
+#: ../inc/view.options.php:33
+msgid "Max Time"
+msgstr "זמן מירבי"
+
+#: ../inc/view.options.php:33
+msgid "seconds"
+msgstr "שניות"
+
+#: ../inc/view.options.php:34
+msgid "Max Memory"
+msgstr "זיכרון מירבי"
+
+#: ../inc/view.options.php:39
+#, fuzzy
+msgid "Directory Filters"
+msgstr "הסרת ספריות"
+
+#: ../inc/view.options.php:40
+#, fuzzy
+msgid "Separate by semicolon"
+msgstr "הנתיבים מופרדים על ידי נקודה-פסיק"
+
+#: ../inc/view.options.php:45
+#, fuzzy
+msgid "Root Path"
+msgstr "כתובת"
+
+#: ../inc/view.options.php:46
+#: ../inc/view.system.php:180
+msgid "Pre-Zip Overview"
+msgstr "Pre-Zip סקירה כללית"
+
+#: ../inc/view.options.php:48
+#, fuzzy
+msgid "Scan Size"
+msgstr "שם חבילה"
+
+#: ../inc/view.options.php:53
+#, fuzzy
+msgid "Email when complete. Add optional emails separated by semicolon"
+msgstr "דוא\"ל כאשר להשלים. הוסף מיילים נפרדים אופציונליים ידי פסיק"
+
+#: ../inc/view.options.php:61
+#, fuzzy
+msgid "Database Encoding"
+msgstr "מסד נתונים ברירת מחדל"
+
+#: ../inc/view.options.php:64
+#, fuzzy
+msgid "Enable character conversion encoding"
+msgstr "אפשר קידוד מסד נתונים"
+
+#: ../inc/view.options.php:69
+msgid "From"
+msgstr "מן"
+
+#: ../inc/view.options.php:70
+msgid "to"
+msgstr "אל"
+
+#: ../inc/view.options.php:71
+msgid "Please disable this option for international character sets"
+msgstr "נא לבטל אפשרות זו על ערכות תווים בינלאומיים"
+
+#: ../inc/view.options.php:78
+msgid "Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)"
+msgstr "בעיותבעת  שמירת האפשרויות? השבת באופן זמני את כל תוספי מטמון-אובייקטים (דוגמת W3C Total Object Cache)"
+
+#: ../inc/view.options.php:88
+msgid "Settings Defaults"
+msgstr "הגדרות ברירת מחדל"
+
+#: ../inc/view.options.php:91
+msgid "Install URL"
+msgstr "כתובת התקנה"
+
+#: ../inc/view.options.php:98
+msgid "Database Defaults"
+msgstr "מסד נתונים ברירת מחדל"
+
+#: ../inc/view.options.php:101
+msgid "Host"
+msgstr "שרת"
+
+#: ../inc/view.options.php:109
+msgid "User"
+msgstr "משתמש"
+
+#: ../inc/view.options.php:114
+msgid "The installer can have these fields pre-filled at install time.  These values are optional."
+msgstr "אין חובה למלא שדות אלא, אולם ניתן להזין נתונים ברירת מחדל שיוזנו מראש בקובץ ההתקנה."
+
+#: ../inc/view.options.php:140
+msgid "Save"
+msgstr "שמור"
+
+#: ../inc/view.options.php:141
+msgid "Close"
+msgstr "סגור"
+
+#: ../inc/view.system.php:3
+#, fuzzy
+msgid "System Constraint"
+msgstr "מערכת"
+
+#: ../inc/view.system.php:6
+msgid "Please try again! An issue has occurred."
+msgstr "אנא נסה שוב! הבעיה התרחשה."
+
+#: ../inc/view.system.php:10
+msgid "Recommendations"
+msgstr "המלצות"
+
+#: ../inc/view.system.php:15
+msgid "Validate"
+msgstr "לאמת"
+
+#: ../inc/view.system.php:16
+#, fuzzy
+msgid "your system"
+msgstr "אמת המערכת"
+
+#: ../inc/view.system.php:17
+#, fuzzy
+msgid "refresh"
+msgstr "לרענן"
+
+#: ../inc/view.system.php:18
+msgid "the dashboard."
+msgstr "לוח המחוונים."
+
+#: ../inc/view.system.php:22
+#, fuzzy
+msgid "Monitor"
+msgstr "הצג"
+
+#: ../inc/view.system.php:23
+#, fuzzy
+msgid "your log file a few more minutes as processing may continue on some systems"
+msgstr "עוד כמה דקות כמו עיבוד יכול להמשיך על כמה מערכות"
+
+#: ../inc/view.system.php:26
+msgid "Contact your server admin to have the page timeout increased (see duration below)"
+msgstr "צור קשר עם מנהל השרת שלך כדי לקבל את פסק הזמן הדף גדל (ראה המשך למטה)"
+
+#: ../inc/view.system.php:27
+msgid "Consider adding a directory filter in the options dialog if the process continues to timeout"
+msgstr "לשקול להוסיף פילטר הספרייה שיח אפשרויות אם התהליך ממשיך פסק זמן"
+
+#: ../inc/view.system.php:28
+msgid "Check your disk space.  For hosted sites review your providers help."
+msgstr "יש לבדוק את שטח הדיסק שלך. עבור מתארח אתרים ביקורת לסייע לספקי שלך."
+
+#: ../inc/view.system.php:31
+msgid "Consider using a"
+msgstr "שקול להשתמש"
+
+#: ../inc/view.system.php:33
+#, fuzzy
+msgid "certified"
+msgstr "רואי צבאות"
+
+#: ../inc/view.system.php:34
+#, fuzzy
+msgid "hosting provider."
+msgstr "צריך ספקית אירוח זה"
+
+#: ../inc/view.system.php:38
+msgid "Server Response"
+msgstr "שרת תגובה"
+
+#: ../inc/view.system.php:43
+#, fuzzy
+msgid "See online help for more details at"
+msgstr "ראה את העזרה המקוונת לקבלת פרטים נוספים על"
+
+#: ../inc/view.system.php:53
+#, fuzzy
+msgid "System Checks"
+msgstr "מערכת"
+
+#: ../inc/view.system.php:56
+msgid "Please validate your system configuration."
+msgstr "אנא בדוק את תצורת המערכת שלך."
+
+#: ../inc/view.system.php:57
+msgid "Click link for details"
+msgstr "לחץ על הקישור לפרטים"
+
+#: ../inc/view.system.php:66
+msgid "SYSTEM REQUIRMENTS"
+msgstr "מערכת requirments"
+
+#: ../inc/view.system.php:67
+msgid "File Permissions"
+msgstr "הרשאות הקובץ"
+
+#: ../inc/view.system.php:70
+msgid "The following directories should have permissions of 755 and files 644.  Keep in mind that PHP may be accessing the paths/files as the user id that the web server runs as."
+msgstr "את הספריות הבאות צריך להיות בעל הרשאות של 755 ו 644 קבצים. זכור כי PHP ניתן לגשת השבילים / קבצים, מזהה את המשתמש ששרת האינטרנט פועל בשם."
+
+#: ../inc/view.system.php:90
+msgid "Reserved Files"
+msgstr "שמורות קבצים"
+
+#: ../inc/view.system.php:93
+#, fuzzy
+msgid "If this check fails then a reserved file was found in the WordPress root directory. The following are reserved file names installer.php, installer-data.sql and installer-log.txt.  In order to archive your data correctly please remove any of these files from your WordPress root directory. Then try creating your package again."
+msgstr "אם בדיקה זו נכשלת ואז הקובץ שמור נמצא בספרייה הראשית וורדפרס. להלן שמות שמורות הקובץ install.php, התקנה data.sql, install-log.txt. על מנת ארכיון הנתונים בצורה נכונה בבקשה להסיר את כל הקבצים האלה מספריית השורש שלך WordPress. לאחר מכן נסה ליצור החבילה שלך שוב."
+
+#: ../inc/view.system.php:98
+#, fuzzy
+msgid "Zip Archive Enabled"
+msgstr "Zip ארכיון"
+
+#: ../inc/view.system.php:101
+msgid "The ZipArchive extension for PHP is required for compression.  Please contact your hosting provider if you're on a hosted server.  For additional information see our online documentation."
+msgstr "הארכת ZipArchive עבור PHP נדרש דחיסה. אנא צור קשר עם ספק האירוח שלך אם אתה מתארח על שרת. לקבלת מידע נוסף עיין בתיעוד המקוון שלנו."
+
+#: ../inc/view.system.php:106
+#, fuzzy
+msgid "Safe Mode Off"
+msgstr "מצב בטוח"
+
+#: ../inc/view.system.php:109
+#, fuzzy
+msgid "Safe Mode needs to be disabled in order for the Duplicator to operate correctly.  Please set safe_mode = Off in you php.ini file.  If you're on a hosted server and don't have access to the php.ini file then you will need to request this setting be updated. Safe Mode is no longer in future versions of PHP.  If your host will not work with you to resolve the issue then consider a higher reputable hosting provider."
+msgstr "במצב בטוח צריך להיות מבוטל על מנת מעתק לפעול כראוי. נא לקבוע safe_mode = off בקובץ php.ini לך. אם אתה על שרת אירוח אין גישה לקובץ php.ini ואז תצטרך לבקש הגדרה זו להתעדכן."
+
+#: ../inc/view.system.php:114
+msgid "MySQLi Support"
+msgstr "MySQLi תמיכה"
+
+#: ../inc/view.system.php:117
+msgid "In order to complete an install the mysqli extension for PHP is required. If you are on a hosted server please contact your host and request that mysqli extension be enabled. For more information visit: http://php.net/manual/en/mysqli.installation.php"
+msgstr "על מנת להשלים את התקנת ההרחבה mysqli עבור PHP נדרש. אם אתה על שרת אירוח צור קשר עם המארח שלך ולבקש הארכה mysqli להיות מופעלת. לביקור מידע נוסף: http://php.net/manual/en/mysqli.installation.php"
+
+#: ../inc/view.system.php:127
+#, fuzzy
+msgid "SYSTEM CHECKS"
+msgstr "בדיקות שרת"
+
+#: ../inc/view.system.php:130
+msgid "PHP Version"
+msgstr "גרסה"
+
+#: ../inc/view.system.php:132
+#: ../inc/view.system.php:144
+#: ../inc/view.system.php:168
+msgid "Good"
+msgstr "טוב"
+
+#: ../inc/view.system.php:134
+#: ../inc/view.system.php:147
+#: ../inc/view.system.php:150
+#: ../inc/view.system.php:153
+#: ../inc/view.system.php:156
+msgid "OK"
+msgstr "בסדר"
+
+#: ../inc/view.system.php:135
+msgid "PHP 5.2.17+ is required"
+msgstr "נדרש"
+
+#: ../inc/view.system.php:137
+#: ../inc/view.system.php:159
+#: ../inc/view.system.php:171
+msgid "Fail"
+msgstr "להיכשל"
+
+#: ../inc/view.system.php:143
+#: ../inc/view.system.php:146
+#: ../inc/view.system.php:149
+#: ../inc/view.system.php:152
+#: ../inc/view.system.php:155
+#: ../inc/view.system.php:158
+msgid "Web Server"
+msgstr "שרת"
+
+#: ../inc/view.system.php:158
+msgid "Not detected"
+msgstr "לא נמצא"
+
+#: ../inc/view.system.php:167
+#: ../inc/view.system.php:170
+msgid "Open Base Dir"
+msgstr "פתח ספריית בסיס"
+
+#: ../inc/view.system.php:167
+msgid "Off"
+msgstr "כבוי"
+
+#: ../inc/view.system.php:170
+msgid "On"
+msgstr "פעיל"
+
+#: ../inc/view.system.php:177
+msgid "PHP SAPI"
+msgstr "PHP SAPI"
+
+#: ../inc/view.system.php:182
+msgid "Scan Now"
+msgstr "סרוק כעת"
+
+#: ../inc/view.system.php:191
+msgid "Cache Directory Found"
+msgstr "נמצא ספריית מטמון"
+
+#: ../inc/view.system.php:192
+#, fuzzy
+msgid "Add to exclusion path now"
+msgstr "הוסף לרשימת הספריות להסרה"
+
+#: ../inc/view.system.php:194
+#, fuzzy
+msgid "Directory excluded"
+msgstr "הסרת ספריות"
+
+#: ../inc/view.system.php:195
+#, fuzzy
+msgid "Path"
+msgstr "כתובת"
+
+#: ../inc/view.system.php:197
+msgid "Cache Directory Not Found"
+msgstr "לא נמצאה ספריית מטמון"
+
+#: ../inc/view.system.php:203
+msgid "ONLINE RESOURCES"
+msgstr "משאבים מקוונים"
+
+#: ../inc/view.system.php:208
+msgid "For additional online help please visit"
+msgstr "לקבלת עזרה מקוונת נוסף ניתן למצוא באתר"
+
+#: ../inc/view.system.php:214
+msgid "Need a hosting provider that is"
+msgstr "צריך ספקית אירוח זה"
+
+#: ../inc/view.system.php:216
+#, fuzzy
+msgid "Duplicator Certified"
+msgstr "מעתק אפשרויות"
+
+#~ msgid "Email when complete"
+#~ msgstr "שלח דוא\"K בסיום התהליך"
+
+#, fuzzy
+#~ msgid "log file"
+#~ msgstr "לא נמצאו חבילות"
+
+#, fuzzy
+#~ msgid "Snapshot Directory"
+#~ msgstr "נמצא ספריית מטמון"
+
+#~ msgid ""
+#~ "If this check fails then a snapshot directory was not found or the "
+#~ "correct permissions are not set"
+#~ msgstr ""
+#~ "אם בדיקה זו נכשלת ואז המדריך תמונת מצב לא נמצא או ההרשאות הנכונות אינם "
+#~ "מוגדרים"
+
+#~ msgid "To resolve this issue create a directory named"
+#~ msgstr "כדי לפתור בעיה זו ליצור ספרייה בשם"
+
+#~ msgid "at the root of your WordPress install"
+#~ msgstr "השורש של התקנת וורדפרס שלך"
+
+#~ msgid ""
+#~ "Please be sure the directory is writeable and has the effective "
+#~ "permissions of 755"
+#~ msgstr "אנא הקפידו המדריך הוא לצריבה ויש לו את ההרשאות הפעילות של 755"
+
+#~ msgid "Donate"
+#~ msgstr "לתרום"
+
+#~ msgid ""
+#~ "Please check to see if a create log file exists.  To view the create log "
+#~ "file, click on the Show Create Log button in the upper right hand "
+#~ "toolbar.  Be sure to send the message above and the create log file if it "
+#~ "contains data. On some systems processing will continue even when the "
+#~ "webpage times out.  Continue to monitor the log file and refresh this "
+#~ "page.  It is also important to make sure you have not ran out of disk "
+#~ "space on your server."
+#~ msgstr ""
+#~ "הכלים הימנית העליונה. הקפידו לשלוח את ההודעה מעל קובץ יומן צור אם הוא "
+#~ "מכיל נתונים. על עיבוד כמה מערכות תמשיך גם כאשר פעמים את דף האינטרנט. "
+#~ "להמשיך ולעקוב אחר את קובץ היומן ולרענן דף זה. כמו כן, חשוב לוודא אנא בדוק "
+#~ "אם קובץ יומן יצירה קיימת. כדי לראות את הקובץ ליצור יומן, לחץ על הצג על "
+#~ "לחצן צור התחברשלא נגמר שטח דיסק בשרת."
+
+#~ msgid "Uncompressed Size"
+#~ msgstr "גודל לא דחוס"
+
+#~ msgid "Compressing"
+#~ msgstr "דחוס"
+
+#~ msgid "paths will exclude all sub-directories"
+#~ msgstr "הנתיבים יוצגו ללא תת-ספריות "
+
+#~ msgid "Your root path is"
+#~ msgstr "נתיב שורש"
+
+#~ msgid "Encoding"
+#~ msgstr "קידוד"
+
+#, fuzzy
+#~ msgid ""
+#~ "An unknown error has occurred. Please try again! If the problems persist "
+#~ "please contact support."
+#~ msgstr ""
+#~ "אירעה שגיאה בעת יצירת החבילה! אנא נסה שוב. אם הבעיה חוזרת על עצמה אנא שלח "
+#~ "העתק רישום לתמיכה."
+
+#~ msgid "Additional Details"
+#~ msgstr "פרטים נוספים"
+
+#~ msgid ""
+#~ "Please validate the following system checks (for more details click the "
+#~ "link)."
+#~ msgstr "אנא בדוק את הבדיקות הבאות המערכת (לפרטים נוספים לחץ על הקישור)."
+
+#~ msgid ""
+#~ "Currently the Duplicator only supports achieving sites under 2GB. You can "
+#~ "easily overcome this limitation by excluding directories with large files "
+#~ "such as your 'wp-content/uploads' directory or any directory with large "
+#~ "files such as videos or audio.  Use the options dialog to add the "
+#~ "directories you would like to exclude.  Once you have created your "
+#~ "package and installed it you can then move those directories back to the "
+#~ "same location."
+#~ msgstr ""
+#~ "נכון לעכשיו מעתק תומך רק השגת אתרים תחת 2GB. אתה יכול בקלות להתגבר על "
+#~ "מגבלה זו על ידי כולל ספריות עם קבצים גדולים כגון ספריה של wp-content/"
+#~ "uploads שלך או של כל ספרייה עם קבצים גדולים כגון וידאו או אודיו. השתמש "
+#~ "שיח אפשרויות להוסיף את הספריות שאתה רוצה לכלול. לאחר שיצרת את החבילה "
+#~ "ולהתקין אותה אז אתה יכול להעביר אותם מדריכים חזרה באותו מקום."
+
+#~ msgid "Pass"
+#~ msgstr "עבר"
+
+#~ msgid "CACHE STORE CHECKS"
+#~ msgstr "בדיקות מטמון"
+
+#~ msgid "Cache Directory is being excluded"
+#~ msgstr "הסרת ספריית מטמון"
+
+#~ msgid "Download this installer"
+#~ msgstr "הורד קובץ התקנה"
+
+#~ msgid "ID"
+#~ msgstr "מספר"
+
+#~ msgid "Download this package"
+#~ msgstr "הורד חבילה"
+
+#~ msgid "Security Token"
+#~ msgstr "אסימון אבטחה"
+
+#~ msgid "File Name"
+#~ msgstr "שם מלא"
+
+#~ msgid "File Path"
+#~ msgstr "נתיב"
