@@ -2,12 +2,12 @@
 Contributors: Cory Lamle
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
-Requires at least: 3.1
-Tested up to: 3.3.2
-Stable tag: 0.2.9 
+Requires at least: 3.2
+Tested up to: 3.3
+Stable tag: 0.3.0 
 License: GPLv2
 
-Duplicate, clone, backup and transfer an entire site from one location to another in 3 easy steps.
+Duplicate, clone, backup, move and transfer an entire site from one location to another in 3 easy steps.
 
 
 == Description ==
@@ -32,23 +32,23 @@ Special contributor thanks to:
 <li>Aaron Crawford</li>
 <li>Rami from www.wp-tricks.co.il</li>
 <li>Paal Joachim Romdahl</li>
+<li>Vincent G from www.Host1Free.com</li>
 
 
 == Installation ==
 
 1. Upload `duplicator` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Click on the Tools menu then the Duplicator link
-4. Open the options dialog button in the right hand corner and click on the systems tab to check your servers compatibility.
-5. Check out the help by clicking the help icon and create your first package.
+3. Click on the Duplicator link from the main menu
+4. Check out the help by clicking the help icon and create your first package.
 
-The Duplicator requires php 5.3 and WordPress 3.1 or higher.
+The Duplicator requires php 5.3 and WordPress 3.2 or higher.
 
 == Frequently Asked Questions ==
 
 = I'm having trouble creating the package what should I do? =
 
-Turn on the logging (Options -> Package -> Logging). This will give you details as to what is happening.
+Click on the 'Show Create Log' button. This log will give you details as to what is happening.
 
 
 = When I reinstall my package I get errors on the site. =
