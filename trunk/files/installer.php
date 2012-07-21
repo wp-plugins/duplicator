@@ -115,8 +115,8 @@ END ADVANCED FEATURES: Do not edit below here.
 
 //GLOBALS
 $GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.3.0';
-$GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
-$GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');															 
+$GLOBALS["SERIAL_TABLES"]["wpplug_options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
+$GLOBALS["SERIAL_TABLES"]["wpplug_postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');															 
 
 $GLOBALS["SQL_FILE_NAME"] 	= "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
@@ -734,19 +734,19 @@ if ($action == 'dbconnect-test') {
 		
 		if ($table_count == 0) {
 			dinstaller_log("NOTICE: You may have to manually run the installer-data.sql to validate data input. Also check to make sure your installer file is correct and the
-			table prefix '%wp_tableprefix%' is correct for this particular version of WordPress. \n");
+			table prefix 'wpplug_' is correct for this particular version of WordPress. \n");
 		}
 		
 		//Update site title
 		$site_title = mysqli_real_escape_string($mysqli_conn, $_POST['site_title']);
-		mysqli_query($mysqli_conn, "UPDATE `%wp_tableprefix%options` SET option_value = '{$site_title}' WHERE option_name = 'blogname' ");
+		mysqli_query($mysqli_conn, "UPDATE `wpplug_options` SET option_value = '{$site_title}' WHERE option_name = 'blogname' ");
 		
 		
 		//DATA CLEANUP: Perform Transient Cache Cleanup
 		//Remove all duplicator entries and record this one since this is a new install.
-		mysqli_query($mysqli_conn, "DELETE FROM `%wp_tableprefix%duplicator`");
-		mysqli_query($mysqli_conn, "DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_transient%')");
-		mysqli_query($mysqli_conn, "DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_site_transient%')");
+		mysqli_query($mysqli_conn, "DELETE FROM `wpplug_duplicator`");
+		mysqli_query($mysqli_conn, "DELETE FROM `wpplug_options` WHERE `option_name` LIKE ('_transient%')");
+		mysqli_query($mysqli_conn, "DELETE FROM `wpplug_options` WHERE `option_name` LIKE ('_site_transient%')");
 		dinstaller_log("\nTransient cached cleanup completed.\n");
 		
 		
@@ -843,7 +843,7 @@ if ($action == 'dbconnect-test') {
 		}
 		@unlink('database.sql');
 		
-		$currdata = parse_url("%current_url%"); 
+		$currdata = parse_url(""); 
 		$newdata  = parse_url($new_url);
 		$currpath = dinstaller_add_slash(isset($currdata['path']) ? $currdata['path'] : "");
 		$newpath  = dinstaller_add_slash(isset($newdata['path'])  ? $newdata['path']  : "");
@@ -956,18 +956,18 @@ HTACCESS;
 				<tr valign="top">
 					<td style="width:130px">Package Url</td>
 					<td>
-						<input type="text" name="current_url" id="current_url" value="%current_url%" readonly="true"  class="readonly" />
+						<input type="text" name="current_url" id="current_url" value="" readonly="true"  class="readonly" />
 						<a href="javascript:editNewURL()" id="edit_current_url" style="font-size:12px">edit</a>
 					
 					</td>
 				</tr>
 				<tr>
 					<td>Install Url</td>
-					<td><input type="text" name="nurl" id="nurl" value="%nurl%" />&nbsp;<a href="javascript:getNewURL()" style="font-size:12px">get</a></td>
+					<td><input type="text" name="nurl" id="nurl" value="" />&nbsp;<a href="javascript:getNewURL()" style="font-size:12px">get</a></td>
 				</tr>
 				<tr>
 					<td>Site Title</td>
-					<td><input type="text" name="site_title" id="site_title" value="%site_title%" /></td>
+					<td><input type="text" name="site_title" id="site_title" value="Duplicator Plugin" /></td>
 				</tr>		
 				<tr>
 					<td></td>
@@ -985,7 +985,7 @@ HTACCESS;
 			
 			<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
 				<tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="localhost" /></td></tr>
-				<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="%dbname%" /></td></tr>
+				<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="" /></td></tr>
 				<tr><td colspan="2">
 					<div style="margin:-5px 0px 0px 140px; ">
 						<table cellpadding="2" class="dbtable-opts">
@@ -1003,7 +1003,7 @@ HTACCESS;
 						
 					</div>
 				</td></tr>
-				<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="%dbuser%" /></td></tr>
+				<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="" /></td></tr>
 				<tr><td>Password</td><td><input type="text" name="dbpassword" id="dbpassword" /></td></tr>
 			</table>
 			

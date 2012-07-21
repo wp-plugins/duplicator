@@ -1,10 +1,9 @@
 <?php
 
 /**
- *  duplicator_create_dbscript
+ *  DUPLICATOR_CREATE_DBSCRIPT
  *  Create the SQL DataDump File
- *
- *  @param string $destination		Where will the file be written to
+ *  @param string $destination		The full path and filname where the sql script will be written
  */
 function duplicator_create_dbscript($destination) {
 	try {
@@ -14,6 +13,7 @@ function duplicator_create_dbscript($destination) {
 		$tables =  $wpdb->get_col('SHOW TABLES');
 		$dbiconv = $GLOBALS['duplicator_opts']['dbiconv'] == "0" ? false : true;
 		$return = "";
+		$handle = fopen($destination,'w+');
 		
 		//CREATE TABLES
 		//PERFORM ICONV
@@ -24,7 +24,7 @@ function duplicator_create_dbscript($destination) {
 				$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
 				$num_fields  = count(@$result[0]);   
 				$items		 = count($result);
-				$return		.= '';
+				$return		 = '';
 				$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
 				$return		.= "\n\n" . $row2[1] . ";\n\n";
 				{
@@ -44,6 +44,7 @@ function duplicator_create_dbscript($destination) {
 				}
 				duplicator_log("log:fun__create_dbscript=>table processed: $table", 2);
 				$return .= "\n";
+				@fwrite($handle, $return);
 			}
 		//DO NOT PERFORM ICONV
 		} else {
@@ -52,7 +53,7 @@ function duplicator_create_dbscript($destination) {
 				$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
 				$num_fields  = count($result[0]);   
 				$items		 = count($result);
-				$return		.= '';
+				$return		 = '';
 				$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
 				$return		.= "\n\n" . $row2[1] . ";\n\n";
 				{
@@ -71,16 +72,13 @@ function duplicator_create_dbscript($destination) {
 				}
 				duplicator_log("log:fun__create_dbscript=>table processed: $table", 2);
 				$return .= "\n";
+				@fwrite($handle, $return);
 			}
 		}
 
-		$handle = fopen($destination.'/database.sql','w+');
-		fwrite($handle,$return);
-		duplicator_log("log:fun__create_dbscript=>database.sql created", 2);
+		duplicator_log("log:fun__create_dbscript=>sql file written to {$destination}");
 		fclose($handle);
 		$wpdb->flush();
-		$return = '';
-		
 		duplicator_log("log:fun__create_dbscript=>ended");
 	
 	} catch(Exception $e) {
@@ -88,101 +86,25 @@ function duplicator_create_dbscript($destination) {
 	}
 }
 
-
-/**
- *  DUPLICATOR_FULL_COPY
- *  Recursively copy all files except for the wp-snapshot file
- *
- *  @param string $source		The path to backup
- *  @param string $target		Where the source will be written to
- */
-function duplicator_full_copy( $source, $target ) {
-  if (is_readable($source)) {
-	if ( is_dir( $source ) ) {
-		
-		//Directory Exclusions
-		if ($GLOBALS['duplicator_bypass-array'] != null) {
-			foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
-				if (duplicator_safe_path($source) == $val) {
-					duplicator_log("directory exclusion found: {$val}", 2);
-					return;
-				}
-			}
-		}
-
-		if( ! strstr(duplicator_safe_path($source), DUPLICATOR_SSDIR_PATH) ) {
-			@mkdir( $target );
-			$d = dir( $source );
-			while ( FALSE !== ( $entry = $d->read() ) ) {
-				if ( $entry == '.' || $entry == '..' ) {
-					continue;
-				}
-				$Entry = "{$source}/{$entry}";
-				if ( is_dir( $Entry ) ) {
-					duplicator_full_copy($Entry,  $target . '/' . $entry );
-					continue;
-				}
-				@copy( $Entry, $target . '/' . $entry );
-			}
-			$d->close();
-		}
-
-	} else {
-		copy( $source, $target );
-	}
-  }
-}
-
-/**
- *  DUPLICATOR_DELETE_ALL
- *  Recursively delete all files/directories
- *
- *  @param string $directory	The path to delete
- *  @param string $empty		Delete the topmost directory
- */
-function duplicator_delete_all($directory, $empty = false) {
-	try {
-		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::CHILD_FIRST);
-		//duplicator_log("log:fun__delete_all=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
-		foreach ($iterator as $path) {
-			if ($path->isDir()) {
-				@rmdir($path->__toString());
-			} else {
-				@unlink($path->__toString());
-			}
-		}
-		
-		if($empty == true) {
-			if(! @rmdir($directory)) {
-				return false;
-			}
-		}	
-		return true;
-	
-	} catch(Exception $e) {
-		duplicator_log("log:fun__delete_all=>runtime error: " . $e);
-	}
-}
-
 /**
  *  DUPLICATOR_CREATE_INSTALLERFILE
  *  Prep the Installer file for use. use %string% token for replacing 
- *
- *  @param string $packagename	The package name this installer file will be associated with
+ *  @param string $uniquename	The unique name this installer file will be associated with
  */
-function duplicator_create_installerFile($packagename) {
+function duplicator_create_installerFile($uniquename) {
 
 	duplicator_log("log:fun__create_installerFile=>started");
 	
 	global $wpdb;
 	$template 	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.template.php');
-	$installer	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/install.php');
-	chmod(DUPLICATOR_PLUGIN_PATH . 'files', 0755);
+	$installer	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.php');
+	$installDir = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH) . "files/";
+	$err_msg    = "\n!!!WARNING!!! unable to read/write installer\nSee file:{$installer} \nPlease check permission and owner on path:{$installDir}"; 
 	
 	get_option('duplicator_options') == ""  ? "" : $duplicator_opts = unserialize(get_option('duplicator_options'));
 	$replace_items = Array(
 		"current_url" 		=> get_option('siteurl'),
-		"package_name"  	=> $packagename,
+		"package_name"  	=> "{$uniquename}_package.zip",
 		"nurl" 				=> $duplicator_opts['nurl'],
 		"dbhost" 			=> $duplicator_opts['dbhost'],
 		"dbname" 			=> $duplicator_opts['dbname'],
@@ -194,19 +116,24 @@ function duplicator_create_installerFile($packagename) {
 		$str = duplicator_parse_template($template, $replace_items);
 		
 		if (empty($str)) {
-			die(duplicator_log("log:fun__create_installerFile=>file-empty-read"));
+			die(duplicator_log("log:fun__create_installerFile=>file-empty-read" . $err_msg));
 		}
 		
 		if (!file_exists($installer)) {
 			$fp = fopen($installer, 'x+') 
-				or die(duplicator_log("log:fun__create_installerFile=>file-create-error-x"));
+				or die(duplicator_log("log:fun__create_installerFile=>file-open-error-x" . $err_msg));
 		} else {
 			$fp = fopen($installer, 'w') 
-				or die(duplicator_log("log:fun__create_installerFile=>file-create-error-w"));
+				or die(duplicator_log("log:fun__create_installerFile=>file-open-error-w" . $err_msg));
 		}
-		fwrite($fp, $str, strlen($str));
+		
+		if (fwrite($fp, $str, strlen($str))) {
+			duplicator_log("log:fun__create_installerFile=>install.php updated at: {$installer}");
+		} else {
+			duplicator_log("log:fun__create_installerFile=>file-create-error" . $err_msg);
+		}
 		fclose($fp);
-		duplicator_log("log:fun__create_installerFile=>install.php updated at: {$installer}");
+		
 	} 
 	else
 	{
@@ -231,10 +158,10 @@ function duplicator_parse_template($filename, $data) {
     return $q;
 }
 
+
 /**
  *  DUPLICATOR_BYTESIZE
  *  Display human readable byte sizes
- *
  *  @param string $size		The size in bytes
  */
 function duplicator_bytesize($size) {
@@ -250,105 +177,95 @@ function duplicator_bytesize($size) {
 /**
  *  DUPLICATOR_DIRSIZE
  *  Get the directory size recursively, but don't calc the snapshot directory, exclusion diretories
- *
  *  @param string $directory		The directory to calculate
  */
-function duplicator_dirSize($directory) { 
+function duplicator_dirInfo($directory) { 
 	try {
-	
-		$size     = 0; 
-		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), 
-								RecursiveIteratorIterator::LEAVES_ONLY,
-								RecursiveIteratorIterator::CATCH_GET_CHILD);
-			
-		//App Directory Filter & Backup Directory Filter
+		
+		$size = 0; 
+		$count = 0;
+		$folders = 0;
+		$flag = false;
+
+		//EXCLUDE: Snapshot directory
+		$directory = duplicator_safe_path($directory);
+		if( strstr($directory, DUPLICATOR_SSDIR_PATH)) {
+			return;
+		}
+		
+		//EXCLUDE: Directory Exclusions List
 		if ($GLOBALS['duplicator_bypass-array'] != null) {
-			duplicator_log("log:fun__dirSize=>exclusion list: " . implode(";", $GLOBALS['duplicator_bypass-array']), 2);
-			foreach($iterator as $file){ 
-				$path = duplicator_safe_path($file->getPath());
-				foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
-					if (@strstr($path, $val) ) {
-						$exclusion_found = true;
-						break;
-					} else {
-						$exclusion_found = false;
-					}
-				}
-				if (! $exclusion_found && ! strstr($path, DUPLICATOR_SSDIR_PATH)) {
-					$size += $file->getSize();
+			foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
+				if (strstr($directory, duplicator_safe_path($val))) {
+					return;
 				}
 			}
-		//Filter Backup Directory
-		} else {
-			
-			foreach($iterator as $file){ 
-				$path = duplicator_safe_path($file->getPath());
-				if (!strstr($path , DUPLICATOR_SSDIR_PATH)) {
-					$size += $file->getSize();
+		}
+
+		if ($handle = @opendir($directory)) { 
+			while (false !== ($file = @readdir($handle))) { 
+				$nextpath = $directory . '/' . $file; 
+				if ($file != '.' && $file != '..') { 
+					if (is_dir($nextpath)) { 
+					  $folders++;
+					  $result = duplicator_dirInfo($nextpath); 
+					  $size  += $result['size']; 
+					  $count += $result['count']; 
+					  $folders += $result['folders']; 
+					} 
+					else if (is_file($nextpath)) { 
+					  $fmod  = @filesize($nextpath);
+					  if ($fod === false) {
+						$flag = true;
+					  } else {
+						$size +=  @filesize($nextpath);
+					  }
+					  $count++; 
+					} 
 				} 
 			} 
-		}
-		return $size; 
-	
+		} 
+		closedir ($handle); 
+		$total['size']    = $size; 
+		$total['count']   = $count; 
+		$total['folders'] = $folders; 
+		$total['flag']    = $flag; 
+		return $total; 
+		
 	}  catch(Exception $e) {
-		duplicator_log("log:fun__dirSize=>runtime error: " . $e . "\nNOTE: Try excluding the stat failed to the Duplicators directory exclusion list or change the permissions.");
+		duplicator_log("log:fun__dirInfo=>runtime error: " . $e . "\nNOTE: Try excluding the stat failed to the Duplicators directory exclusion list or change the permissions.");
 	}
 } 
 
 /**
- *  DUPLICATOR_LOG
- *  Centralized logging method
- *
- *  @param string $msg		The message to log
- * 
- *  LEVEL 0: pane disabled: required responses
- *	LEVEL 1: pane enabled: light general info
- *	LEVEL 2: pane enabled: detailed heavy logging
- *	LEVEL 3: pane enabled: debug all levels plus php errors
- */
-function duplicator_log($msg, $level = 0) {
-	if (DUPLICATOR_LOGLEVEL >= $level) {
-		$stamp = date('h:i:s');
-		echo "{$stamp} {$msg} <br/>\n";
-	} 
-}
-
-/**
  *  DUPLICATOR_CREATE_SNAPSHOTPATH
  *  Creates the snapshot directory if it doesn't already exisit
- *
  */
-function duplicator_create_snapshotpath() {
+function duplicator_init_snapshotpath() {
 
-	//Make sure the snapshot paths parent is setup correctly
-	$wproot_perms = chmod(DUPLICATOR_WPROOTPATH, 0755);
-	if ($wproot_perms) {
-		duplicator_log("log:fun__create_snapshotpath=>wp-root folder enabled to 755 " . DUPLICATOR_WPROOTPATH, 2);
-	} else {
-		duplicator_log("log:fun__create_snapshotpath=>error setting wp-root folder to 755.  This process may need to be done manually." . DUPLICATOR_WPROOTPATH, 2);
-	}
+	//WORDPRESS ROOT DIRECTORY
+	@chmod(DUPLICATOR_WPROOTPATH, 0755);
 
-	if(!file_exists(DUPLICATOR_SSDIR_PATH.'/index.php')) {
-		if(!file_exists(DUPLICATOR_SSDIR_PATH)) {
-			if (! mkdir(DUPLICATOR_SSDIR_PATH , 0755)) {
-				die(duplicator_log("Unable to create directory '" . DUPLICATOR_SSDIR_PATH . "'. Directory is required for snapshot generation."));
-			}
-			duplicator_log("log:fun__create_snapshotpath=>path created" . DUPLICATOR_SSDIR_PATH, 2);
-		}
-
-	} else {
-		$perms = chmod(DUPLICATOR_SSDIR_PATH, 0755);
-		$msg   = ($perms) 
-			? "log:fun__create_snapshotpath=>success setting 755 for: " . DUPLICATOR_SSDIR_PATH 
-			: "log:fun__create_snapshotpath=>error setting 755 for directory: " . DUPLICATOR_SSDIR_PATH;
-		duplicator_log($msg, 2);
-	}
+	//SNAPSHOT DIRECTORY
+	@mkdir(DUPLICATOR_SSDIR_PATH, 0755);
+	@chmod(DUPLICATOR_SSDIR_PATH, 0755);
 	
-	$fh = @fopen(DUPLICATOR_SSDIR_PATH.'/index.php', 'w');
-	$data = "<?php header('HTTP/1.0 404 Not Found'); ?>";
-	@fwrite($fh, $data);
-	@fclose($fh);
+	//Create Index File
+	$ssfile = @fopen(DUPLICATOR_SSDIR_PATH.'/index.php', 'w');
+	@fwrite($ssfile, "<?php header('HTTP/1.0 404 Not Found'); ?>");
+	@fclose($ssfile);
+	
+	//Create .htaccess
+	$htfile = @fopen(DUPLICATOR_SSDIR_PATH.'/.htaccess', 'w');
+	@fwrite($htfile, "Options -Indexes");
+	@fclose($htfile);
+	
+	//PLUGINS DIR/FILES
+	@chmod(DUPLICATOR_PLUGIN_PATH . 'files', 0755);
+	@chmod(duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.php'), 0644);
+	
 }
+
 
 /**
  *  DUPLICATOR_SAFE_PATH
@@ -356,11 +273,31 @@ function duplicator_create_snapshotpath() {
  *  Paths should ALWAYS READ be "/"
  *		uni: /home/path/file.xt
  *		win:  D:/home/path/file.txt 
- *
  *  @param string $path		The path to make safe
- *
  */
 function duplicator_safe_path($path) {
 	return str_replace("\\", "/", $path);
 }
+
+
+/**
+ *  DUPLICATOR_SNAPSHOT_URLPATH
+ *	returns the snapshot url
+ */
+function duplicator_snapshot_urlpath() {
+	return get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' ;
+}
+
+/**
+ *  DUPLICATOR_LOG
+ *  Centralized logging method
+ *  @param string $msg		The message to log
+ */
+function duplicator_log($msg, $level = 0) {
+	$stamp = date('h:i:s');
+	@fwrite($GLOBALS['duplicator_package_log_handle'], "{$stamp} {$msg} \n");
+}
+
+
+
 ?>
