@@ -1,0 +1,736 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WPDuplicator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-02 06:59-0700\n"
+"PO-Revision-Date: 2012-08-02 07:00-0700\n"
+"Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ./\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../duplicator.php:155
+msgid "FAQ"
+msgstr ""
+
+#: ../duplicator.php:156
+msgid "Partner"
+msgstr ""
+
+#: ../duplicator.php:157
+msgid "Certified Hosts"
+msgstr ""
+
+#: ../duplicator.php:208
+msgid "Dashboard"
+msgstr ""
+
+#: ../duplicator.php:210
+msgid "Diagnostics"
+msgstr ""
+
+#: ../duplicator.php:241
+msgid "Manage"
+msgstr ""
+
+#: ../files/log-read.php:38
+msgid "No log file found"
+msgstr ""
+
+#: ../files/log-read.php:40
+msgid ""
+"The log file for the Duplicator Plugin can be found in the directory wp-"
+"snapshots with the extension *.log"
+msgstr ""
+
+#: ../files/log-read.php:41
+msgid "If no log file is present the try to create a package"
+msgstr ""
+
+#: ../files/log-read.php:43
+msgid "Reasons for log file not showing"
+msgstr ""
+
+#: ../files/log-read.php:44
+msgid ""
+"The snapshots directory does not have the correct permissions to write "
+"files.  Try setting the permissions to 755"
+msgstr ""
+
+#: ../files/log-read.php:45
+msgid ""
+"The process that PHP runs under does not have enough permissions to create "
+"files.  Please contact your hosting provider for more details"
+msgstr ""
+
+#: ../files/log-view.php:97
+msgid "Duplicator: Create Package Log"
+msgstr ""
+
+#: ../files/log-view.php:100
+msgid ""
+"Processing may take several minutes, please wait for progress bar to "
+"complete on the main status bar"
+msgstr ""
+
+#: ../files/log-view.php:105
+msgid "Auto Refresh"
+msgstr ""
+
+#: ../files/log-view.php:106
+msgid "Refresh"
+msgstr ""
+
+#: ../files/log-view.php:114
+msgid "Support Center"
+msgstr ""
+
+#: ../files/log-view.php:115
+msgid ""
+"Do NOT post this data to public sites like the WordPress.org forums as it "
+"contains sensitive data."
+msgstr ""
+
+#: ../inc/javascript.php:128
+msgid "Saving"
+msgstr ""
+
+#: ../inc/javascript.php:149
+msgid "Please select at least one package to delete."
+msgstr ""
+
+#: ../inc/javascript.php:153
+msgid "Are you sure, you want to delete the selected package(s)?"
+msgstr ""
+
+#: ../inc/javascript.php:169 ../inc/javascript.php:208
+#: ../inc/javascript.php:309 ../inc/javascript.php:409
+#: ../inc/javascript.php:426
+msgid "Ready to create new package."
+msgstr ""
+
+#: ../inc/javascript.php:184
+msgid "Please enter a backup name."
+msgstr ""
+
+#: ../inc/javascript.php:192
+msgid "Alpanumeric characters only on package name"
+msgstr ""
+
+#: ../inc/javascript.php:205
+msgid "Evaluating WordPress Setup. Please Wait"
+msgstr ""
+
+#: ../inc/javascript.php:263
+msgid "Cancel"
+msgstr ""
+
+#: ../inc/javascript.php:269
+msgid "Create Package Set"
+msgstr ""
+
+#: ../inc/javascript.php:314
+msgid "Checking System Status.  Please Wait!"
+msgstr ""
+
+#: ../inc/javascript.php:340
+msgid "Scanning Please Wait"
+msgstr ""
+
+#: ../inc/javascript.php:345 ../inc/javascript.php:346
+#: ../inc/javascript.php:347
+msgid "unreadable"
+msgstr ""
+
+#: ../inc/javascript.php:348
+msgid "*Large File Found"
+msgstr ""
+
+#: ../inc/javascript.php:349
+msgid "Files"
+msgstr ""
+
+#: ../inc/javascript.php:349
+msgid "Folders"
+msgstr ""
+
+#: ../inc/javascript.php:354
+msgid "error scanning directory"
+msgstr ""
+
+#: ../inc/javascript.php:384
+msgid "DATABASE"
+msgstr ""
+
+#: ../inc/javascript.php:385
+msgid "INSTALLER"
+msgstr ""
+
+#: ../inc/javascript.php:386
+msgid "PACKAGE"
+msgstr ""
+
+#: ../inc/javascript.php:405
+msgid "AJAX Response"
+msgstr ""
+
+#: ../inc/javascript.php:423
+msgid "This may take several minutes. Please Wait..."
+msgstr ""
+
+#: ../inc/page.main.php:30
+msgid "By"
+msgstr ""
+
+#: ../inc/page.main.php:37 ../inc/page.main.php:80
+msgid "Package Name"
+msgstr ""
+
+#: ../inc/page.main.php:40
+msgid "Create Package"
+msgstr ""
+
+#: ../inc/page.main.php:41
+msgid "Delete selected package(s)"
+msgstr ""
+
+#: ../inc/page.main.php:44
+msgid "Options"
+msgstr ""
+
+#: ../inc/page.main.php:45
+msgid "System Check"
+msgstr ""
+
+#: ../inc/page.main.php:46
+msgid "Show Create Log"
+msgstr ""
+
+#: ../inc/page.main.php:49
+msgid "Help"
+msgstr ""
+
+#: ../inc/page.main.php:50
+msgid "Partner with us"
+msgstr ""
+
+#: ../inc/page.main.php:59
+msgid "Status"
+msgstr ""
+
+#: ../inc/page.main.php:60
+msgid "Ready to create new package"
+msgstr ""
+
+#: ../inc/page.main.php:75
+msgid "Select all packages"
+msgstr ""
+
+#: ../inc/page.main.php:76
+msgid "Information"
+msgstr ""
+
+#: ../inc/page.main.php:77
+msgid "Owner"
+msgstr ""
+
+#: ../inc/page.main.php:78
+msgid "Created"
+msgstr ""
+
+#: ../inc/page.main.php:79
+msgid "Size"
+msgstr ""
+
+#: ../inc/page.main.php:81
+msgid "Package Set"
+msgstr ""
+
+#: ../inc/page.main.php:111 ../inc/page.main.php:139
+msgid "View"
+msgstr ""
+
+#: ../inc/page.main.php:117 ../inc/view.options.php:10
+msgid "Installer"
+msgstr ""
+
+#: ../inc/page.main.php:118 ../inc/page.main.php:147 ../inc/view.options.php:9
+msgid "Package"
+msgstr ""
+
+#: ../inc/page.main.php:124
+msgid "Version"
+msgstr ""
+
+#: ../inc/page.main.php:125
+msgid "Secure Name"
+msgstr ""
+
+#: ../inc/page.main.php:126
+msgid "Download SQL File"
+msgstr ""
+
+#: ../inc/page.main.php:127
+msgid "Show Download Links"
+msgstr ""
+
+#: ../inc/page.main.php:153
+msgid "Legacy Version"
+msgstr ""
+
+#: ../inc/page.main.php:156
+msgid ""
+"This package was built with a version that is no longer supported.  It is "
+"highly recommended that this package be deleted.  For more details see the"
+msgstr ""
+
+#: ../inc/page.main.php:157
+msgid "Online FAQs"
+msgstr ""
+
+#: ../inc/page.main.php:169
+msgid "No packages found"
+msgstr ""
+
+#: ../inc/page.main.php:170
+msgid "To create a new package, enter a name and click the create button "
+msgstr ""
+
+#: ../inc/page.main.php:172
+msgid "Check Your"
+msgstr ""
+
+#: ../inc/page.main.php:173
+msgid "servers compatability"
+msgstr ""
+
+#: ../inc/page.main.php:174
+msgid "with the duplicator"
+msgstr ""
+
+#: ../inc/page.main.php:175
+msgid "This process will backup all your files and database"
+msgstr ""
+
+#: ../inc/page.main.php:176
+msgid "Creating a package may take several minutes if you have a large site"
+msgstr ""
+
+#: ../inc/page.main.php:177
+msgid "This window should remain open for the process to complete"
+msgstr ""
+
+#: ../inc/page.main.php:178
+msgid "Please be patient while we work through this Beta version"
+msgstr ""
+
+#: ../inc/page.main.php:179
+msgid "Please report any issues to"
+msgstr ""
+
+#: ../inc/page.main.php:196
+msgid "Total Storage Used"
+msgstr ""
+
+#: ../inc/view.options.php:4
+msgid "Duplicator Options"
+msgstr ""
+
+#: ../inc/view.options.php:11
+msgid "FTP"
+msgstr ""
+
+#: ../inc/view.options.php:21
+msgid "Processing"
+msgstr ""
+
+#: ../inc/view.options.php:35
+msgid "Max Time"
+msgstr ""
+
+#: ../inc/view.options.php:35
+msgid "seconds"
+msgstr ""
+
+#: ../inc/view.options.php:36
+msgid "Max Memory"
+msgstr ""
+
+#: ../inc/view.options.php:43
+msgid "Email when completed"
+msgstr ""
+
+#: ../inc/view.options.php:44
+msgid "WP-Admin email is included.  Add extra emails semicolon separated."
+msgstr ""
+
+#: ../inc/view.options.php:53
+msgid "Exclusion Filters"
+msgstr ""
+
+#: ../inc/view.options.php:56
+msgid "Directories"
+msgstr ""
+
+#: ../inc/view.options.php:58
+msgid "Root Path"
+msgstr ""
+
+#: ../inc/view.options.php:60
+msgid "File extensions"
+msgstr ""
+
+#: ../inc/view.options.php:63
+msgid "Separate all filters by semicolon"
+msgstr ""
+
+#: ../inc/view.options.php:68
+msgid "Database Encoding"
+msgstr ""
+
+#: ../inc/view.options.php:71
+msgid "Enable character conversion encoding"
+msgstr ""
+
+#: ../inc/view.options.php:76
+msgid "From"
+msgstr ""
+
+#: ../inc/view.options.php:77
+msgid "to"
+msgstr ""
+
+#: ../inc/view.options.php:78
+msgid "Disable this option for extended or double byte character sets"
+msgstr ""
+
+#: ../inc/view.options.php:85
+msgid ""
+"Having issues saving these options?  Temporarily disable all 'Object "
+"Caches' (i.e. W3C Total Object Cache)"
+msgstr ""
+
+#: ../inc/view.options.php:95
+msgid "Settings Defaults"
+msgstr ""
+
+#: ../inc/view.options.php:98
+msgid "Install URL"
+msgstr ""
+
+#: ../inc/view.options.php:105
+msgid "Database Defaults"
+msgstr ""
+
+#: ../inc/view.options.php:108
+msgid "Host"
+msgstr ""
+
+#: ../inc/view.options.php:112 ../inc/view.system.php:9
+msgid "Name"
+msgstr ""
+
+#: ../inc/view.options.php:116
+msgid "User"
+msgstr ""
+
+#: ../inc/view.options.php:121
+msgid ""
+"The installer can have these fields pre-filled at install time.  These "
+"values are optional."
+msgstr ""
+
+#: ../inc/view.options.php:147
+msgid "Save"
+msgstr ""
+
+#: ../inc/view.options.php:148
+msgid "Close"
+msgstr ""
+
+#: ../inc/view.system.php:3
+msgid "Package Creation"
+msgstr ""
+
+#: ../inc/view.system.php:6
+msgid "Create a new Package Set?"
+msgstr ""
+
+#: ../inc/view.system.php:11 ../inc/view.system.php:199
+msgid "Pre-Zip Overview"
+msgstr ""
+
+#: ../inc/view.system.php:13
+msgid "Perform Scan"
+msgstr ""
+
+#: ../inc/view.system.php:16
+msgid ""
+"Note: A scan will provide an estimate on the size of your file system.  The "
+"scan will exclude items in the <a href=\"javascript:void(0)\"  onclick="
+"\"Duplicator.optionsOpen()\">directory filter list</a>. Files that are not "
+"readable by the plugin will not be included in the overview.  Directories "
+"that are empty will not be included in the final package. "
+msgstr ""
+
+#: ../inc/view.system.php:23
+msgid "System Constraint"
+msgstr ""
+
+#: ../inc/view.system.php:26
+msgid "Please try again! An issue has occurred."
+msgstr ""
+
+#: ../inc/view.system.php:30
+msgid "Recommendations"
+msgstr ""
+
+#: ../inc/view.system.php:35
+msgid "Validate"
+msgstr ""
+
+#: ../inc/view.system.php:36
+msgid "your system"
+msgstr ""
+
+#: ../inc/view.system.php:37
+msgid "refresh"
+msgstr ""
+
+#: ../inc/view.system.php:38
+msgid "the dashboard."
+msgstr ""
+
+#: ../inc/view.system.php:42
+msgid "Monitor"
+msgstr ""
+
+#: ../inc/view.system.php:43
+msgid ""
+"your log file a few more minutes as processing may continue on some systems"
+msgstr ""
+
+#: ../inc/view.system.php:46
+msgid ""
+"Contact your server admin to have the page timeout increased (see duration "
+"below)"
+msgstr ""
+
+#: ../inc/view.system.php:47
+msgid ""
+"Consider adding a directory filter in the options dialog if the process "
+"continues to timeout"
+msgstr ""
+
+#: ../inc/view.system.php:48
+msgid "Check your disk space.  For hosted sites review your providers help."
+msgstr ""
+
+#: ../inc/view.system.php:51
+msgid "Consider using a"
+msgstr ""
+
+#: ../inc/view.system.php:53
+msgid "certified"
+msgstr ""
+
+#: ../inc/view.system.php:54
+msgid "hosting provider."
+msgstr ""
+
+#: ../inc/view.system.php:58
+msgid "Server Response"
+msgstr ""
+
+#: ../inc/view.system.php:63
+msgid "See online help for more details at"
+msgstr ""
+
+#: ../inc/view.system.php:73
+msgid "System Checks"
+msgstr ""
+
+#: ../inc/view.system.php:76
+msgid "Please validate your system configuration."
+msgstr ""
+
+#: ../inc/view.system.php:77
+msgid "Click link for details"
+msgstr ""
+
+#: ../inc/view.system.php:86
+msgid "SYSTEM REQUIRMENTS"
+msgstr ""
+
+#: ../inc/view.system.php:87
+msgid "File Permissions"
+msgstr ""
+
+#: ../inc/view.system.php:90
+msgid ""
+"The following directories should have permissions of 755 and files 644.  "
+"Keep in mind that PHP may be accessing the paths/files as the user id that "
+"the web server runs as."
+msgstr ""
+
+#: ../inc/view.system.php:110
+msgid "Reserved Files"
+msgstr ""
+
+#: ../inc/view.system.php:113
+msgid ""
+"If this check fails then a reserved file was found in the WordPress root "
+"directory. The following are reserved file names installer.php, installer-"
+"data.sql and installer-log.txt.  In order to archive your data correctly "
+"please remove any of these files from your WordPress root directory. Then "
+"try creating your package again."
+msgstr ""
+
+#: ../inc/view.system.php:118
+msgid "Zip Archive Enabled"
+msgstr ""
+
+#: ../inc/view.system.php:121
+msgid ""
+"The ZipArchive extension for PHP is required for compression.  Please "
+"contact your hosting provider if you're on a hosted server.  For additional "
+"information see our online documentation."
+msgstr ""
+
+#: ../inc/view.system.php:126
+msgid "Safe Mode Off"
+msgstr ""
+
+#: ../inc/view.system.php:129
+msgid ""
+"Safe Mode needs to be disabled in order for the Duplicator to operate "
+"correctly.  Please set safe_mode = Off in you php.ini file.  If you're on a "
+"hosted server and don't have access to the php.ini file then you will need "
+"to request this setting be updated. Safe Mode is no longer in future "
+"versions of PHP.  If your host will not work with you to resolve the issue "
+"then consider a higher reputable hosting provider."
+msgstr ""
+
+#: ../inc/view.system.php:134
+msgid "MySQLi Support"
+msgstr ""
+
+#: ../inc/view.system.php:137
+msgid ""
+"In order to complete an install the mysqli extension for PHP is required. If "
+"you are on a hosted server please contact your host and request that mysqli "
+"extension be enabled. For more information visit: http://php.net/manual/en/"
+"mysqli.installation.php"
+msgstr ""
+
+#: ../inc/view.system.php:146
+msgid "SYSTEM CHECKS"
+msgstr ""
+
+#: ../inc/view.system.php:149
+msgid "PHP Version"
+msgstr ""
+
+#: ../inc/view.system.php:151 ../inc/view.system.php:163
+#: ../inc/view.system.php:187
+msgid "Good"
+msgstr ""
+
+#: ../inc/view.system.php:153 ../inc/view.system.php:166
+#: ../inc/view.system.php:169 ../inc/view.system.php:172
+#: ../inc/view.system.php:175
+msgid "OK"
+msgstr ""
+
+#: ../inc/view.system.php:154
+msgid "PHP 5.2.17+ is required"
+msgstr ""
+
+#: ../inc/view.system.php:156 ../inc/view.system.php:178
+#: ../inc/view.system.php:190
+msgid "Fail"
+msgstr ""
+
+#: ../inc/view.system.php:162 ../inc/view.system.php:165
+#: ../inc/view.system.php:168 ../inc/view.system.php:171
+#: ../inc/view.system.php:174 ../inc/view.system.php:177
+msgid "Web Server"
+msgstr ""
+
+#: ../inc/view.system.php:177
+msgid "Not detected"
+msgstr ""
+
+#: ../inc/view.system.php:186 ../inc/view.system.php:189
+msgid "Open Base Dir"
+msgstr ""
+
+#: ../inc/view.system.php:186
+msgid "Off"
+msgstr ""
+
+#: ../inc/view.system.php:189
+msgid "On"
+msgstr ""
+
+#: ../inc/view.system.php:196
+msgid "PHP SAPI"
+msgstr ""
+
+#: ../inc/view.system.php:201
+msgid "Scan Now"
+msgstr ""
+
+#: ../inc/view.system.php:210
+msgid "Cache Directory Found"
+msgstr ""
+
+#: ../inc/view.system.php:211
+msgid "Add to exclusion path now"
+msgstr ""
+
+#: ../inc/view.system.php:213
+msgid "Directory excluded"
+msgstr ""
+
+#: ../inc/view.system.php:214
+msgid "Path"
+msgstr ""
+
+#: ../inc/view.system.php:216
+msgid "Cache Directory Not Found"
+msgstr ""
+
+#: ../inc/view.system.php:222
+msgid "ONLINE RESOURCES"
+msgstr ""
+
+#: ../inc/view.system.php:227
+msgid "For additional online help please visit"
+msgstr ""
+
+#: ../inc/view.system.php:233
+msgid "Need a hosting provider that is"
+msgstr ""
+
+#: ../inc/view.system.php:235
+msgid "Duplicator Certified"
+msgstr ""
+
+#: ../inc/view.system.php:246
+msgid "Download Links"
+msgstr ""
+
+#: ../inc/view.system.php:249
+msgid "The following links contain senstive data.  Please share with caution!"
+msgstr ""
+
+#: ../inc/view.system.php:255
+msgid ""
+"The database SQL script is a quick link to your database backup script.  An "
+"exact copy is also stored in the package."
+msgstr ""
