@@ -20,9 +20,11 @@ function duplicator_create_dbscript($destination) {
 		if ($dbiconv && function_exists("iconv")) {
 			duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
 			foreach($tables as $table) {
-				duplicator_log("log:fun__create_dbscript=>creating table: $table", 2);
-				$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
+				duplicator_log("log:fun__create_dbscript=>creating table: {$table}", 2);
+				$sql         = $wpdb->prepare("SELECT * FROM `{$table}`");
+				$result 	 = $wpdb->get_results($sql, ARRAY_N);
 				$num_fields  = count(@$result[0]);   
+				duplicator_log("log:fun__create_dbscript=>rows found: {$num_fields}", 2);
 				$items		 = count($result);
 				$return		 = '';
 				$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
@@ -33,7 +35,7 @@ function duplicator_create_dbscript($destination) {
 						$row	 = $result[$ct];
 						$return .= 'INSERT INTO '.$table.' VALUES(';
 						for($j=0; $j<$num_fields; $j++) 	{
-							$row[$j] = iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $row[$j]);
+							$row[$j] = @iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $row[$j]);
 							$row[$j] = mysql_real_escape_string($row[$j]);
 							$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
 							if ($j < ($num_fields-1)) { $return .= ','; }
@@ -96,48 +98,58 @@ function duplicator_create_installerFile($uniquename) {
 	duplicator_log("log:fun__create_installerFile=>started");
 	
 	global $wpdb;
-	$template 	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.template.php');
-	$installer	= duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.php');
-	$installDir = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH) . "files/";
-	$err_msg    = "\n!!!WARNING!!! unable to read/write installer\nSee file:{$installer} \nPlease check permission and owner on path:{$installDir}"; 
+	$template		 = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH  . 'files/installer.template.php');
+	$installerRescue = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH  . 'files/installer.rescue.php');
+	$installerCore	 = duplicator_safe_path(DUPLICATOR_SSDIR_PATH)  . "/{$uniquename}_installer.php";
+
+	$err_msg    = "\n!!!WARNING!!! unable to read/write installer\nSee file:{$installerCore} \nPlease check permission and owner on file and parent folder."; 
 	
 	get_option('duplicator_options') == ""  ? "" : $duplicator_opts = unserialize(get_option('duplicator_options'));
 	$replace_items = Array(
-		"current_url" 		=> get_option('siteurl'),
-		"package_name"  	=> "{$uniquename}_package.zip",
-		"nurl" 				=> $duplicator_opts['nurl'],
-		"dbhost" 			=> $duplicator_opts['dbhost'],
-		"dbname" 			=> $duplicator_opts['dbname'],
-		"dbuser" 			=> $duplicator_opts['dbuser'],
-		"wp_tableprefix" 	=> $wpdb->prefix,
-		"site_title"		=> get_option('blogname'));
+		"fwrite_current_url" 		=> get_option('siteurl'),
+		"fwrite_package_name"  	 	=> "{$uniquename}_package.zip",
+		"fwrite_secure_name"	 	=> "{$uniquename}",
+		"fwrite_nurl" 				=> $duplicator_opts['nurl'],
+		"fwrite_dbhost" 			=> $duplicator_opts['dbhost'],
+		"fwrite_dbname" 			=> $duplicator_opts['dbname'],
+		"fwrite_dbuser" 			=> $duplicator_opts['dbuser'],
+		"fwrite_wp_tableprefix" 	=> $wpdb->prefix,
+		"fwrite_site_title"			=> get_option('blogname'),
+		"fwrite_rescue_flag"		=> "");
 		
-	if( file_exists($template)) {
-		$str = duplicator_parse_template($template, $replace_items);
-		
-		if (empty($str)) {
+	if( file_exists($template) && is_readable($template)) {
+	
+		$install_str = duplicator_parse_template($template, $replace_items);
+		if (empty($install_str)) {
 			die(duplicator_log("log:fun__create_installerFile=>file-empty-read" . $err_msg));
 		}
 		
-		if (!file_exists($installer)) {
-			$fp = fopen($installer, 'x+') 
-				or die(duplicator_log("log:fun__create_installerFile=>file-open-error-x" . $err_msg));
+		//RESCUE FILE
+		$replace_items["fwrite_rescue_flag"] = '(rescue file)';
+		$rescue_str = duplicator_parse_template($template, $replace_items);
+		$fp  = fopen($installerRescue, (!file_exists($installerRescue)) ? 'x+' : 'w');	
+		@fwrite($fp, $rescue_str, strlen($rescue_str));
+		@fclose($fp);
+		$rescue_str = null;
+		
+		//INSTALLER FILE
+		if (!file_exists($installerCore)) {
+			$fp2 = fopen($installerCore, 'x+') or die(duplicator_log("log:fun__create_installerFile=>file-open-error-x" . $err_msg));
 		} else {
-			$fp = fopen($installer, 'w') 
-				or die(duplicator_log("log:fun__create_installerFile=>file-open-error-w" . $err_msg));
+			$fp2 = fopen($installerCore, 'w')  or die(duplicator_log("log:fun__create_installerFile=>file-open-error-w" . $err_msg));
 		}
 		
-		if (fwrite($fp, $str, strlen($str))) {
-			duplicator_log("log:fun__create_installerFile=>install.php updated at: {$installer}");
+		if (fwrite($fp2, $install_str, strlen($install_str))) {
+			duplicator_log("log:fun__create_installerFile=>installer.php updated at: {$installerCore}");
 		} else {
 			duplicator_log("log:fun__create_installerFile=>file-create-error" . $err_msg);
 		}
-		fclose($fp);
-		
+				
+		@fclose($fp2);
 	} 
 	else
 	{
-		die(duplicator_log("log:fun__create_installerFile=>Template missing: '$template'"));
+		die(duplicator_log("log:fun__create_installerFile=>Template missing or unreadable: '$template'"));
 	}
 	
 	duplicator_log("log:fun__create_installerFile=>ended");
@@ -207,20 +219,22 @@ function duplicator_dirInfo($directory) {
 				$nextpath = $directory . '/' . $file; 
 				if ($file != '.' && $file != '..') { 
 					if (is_dir($nextpath)) { 
-					  $folders++;
-					  $result = duplicator_dirInfo($nextpath); 
-					  $size  += $result['size']; 
-					  $count += $result['count']; 
-					  $folders += $result['folders']; 
+						$folders++;
+						$result = duplicator_dirInfo($nextpath); 
+						$size  += $result['size']; 
+						$count += $result['count']; 
+						$folders += $result['folders']; 
 					} 
 					else if (is_file($nextpath)) { 
-					  $fmod  = @filesize($nextpath);
-					  if ($fod === false) {
-						$flag = true;
-					  } else {
-						$size +=  @filesize($nextpath);
-					  }
-					  $count++; 
+						if(!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $GLOBALS['duplicator_opts']['skip_ext_array'])) {
+							$fmod  = @filesize($nextpath);
+							if ($fmod === false) {
+								$flag = true;
+							} else {
+								$size +=  @filesize($nextpath);
+							}
+							$count++;
+						}
 					} 
 				} 
 			} 
@@ -243,27 +257,49 @@ function duplicator_dirInfo($directory) {
  */
 function duplicator_init_snapshotpath() {
 
-	//WORDPRESS ROOT DIRECTORY
-	@chmod(DUPLICATOR_WPROOTPATH, 0755);
-
-	//SNAPSHOT DIRECTORY
-	@mkdir(DUPLICATOR_SSDIR_PATH, 0755);
-	@chmod(DUPLICATOR_SSDIR_PATH, 0755);
+	$path_wproot = duplicator_safe_path(DUPLICATOR_WPROOTPATH);
+	$path_ssdir  = duplicator_safe_path(DUPLICATOR_SSDIR_PATH);
+	$path_plugin = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH);
 	
-	//Create Index File
-	$ssfile = @fopen(DUPLICATOR_SSDIR_PATH.'/index.php', 'w');
-	@fwrite($ssfile, "<?php header('HTTP/1.0 404 Not Found'); ?>");
+	//--------------------------------
+	//CHMOD DIRECTORY ACCESS
+	//wordpress root directory
+	@chmod($path_wproot , 0755);
+
+	//snapshot directory
+	@mkdir($path_ssdir, 0755);
+	@chmod($path_ssdir, 0755);
+	
+	//plugins dir/files
+	@chmod($path_plugin . 'files', 0755);
+	@chmod(duplicator_safe_path($path_plugin . 'files/installer.rescue.php'), 0644);
+	
+	//--------------------------------
+	//FILE CREATION	
+	//SSDIR: Create Index File
+	$ssfile = @fopen($path_ssdir .'/index.php', 'w');
+	@fwrite($ssfile, '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTML/1.1 404 Not Found", true, 404);} exit(); ?>');
 	@fclose($ssfile);
 	
-	//Create .htaccess
-	$htfile = @fopen(DUPLICATOR_SSDIR_PATH.'/.htaccess', 'w');
+	//SSDIR: Create token file in snapshot
+	$tokenfile = @fopen($path_ssdir .'/dtoken.php', 'w');
+	@fwrite($tokenfile, '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTML/1.1 404 Not Found", true, 404);} exit(); ?>');
+	@fclose($tokenfile);
+	
+	//SSDIR: Create .htaccess
+	$htfile = @fopen($path_ssdir .'/.htaccess', 'w');
 	@fwrite($htfile, "Options -Indexes");
 	@fclose($htfile);
 	
-	//PLUGINS DIR/FILES
-	@chmod(DUPLICATOR_PLUGIN_PATH . 'files', 0755);
-	@chmod(duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.php'), 0644);
+	//SSDIR: Robots.txt file
+	$robotfile = @fopen($path_ssdir .'/robots.txt', 'w');
+	@fwrite($robotfile, "User-agent: * \nDisallow: /" . DUPLICATOR_SSDIR_NAME . '/');
+	@fclose($robotfile);
 	
+	//PLUG DIR: Create token file in plugin
+	$tokenfile2 = @fopen($path_plugin .'files/dtoken.php', 'w');
+	@fwrite($tokenfile2, '<?php @error_reporting(0); @require_once("../../../../wp-admin/admin.php"); global $wp_query; $wp_query->set_404(); header("HTML/1.1 404 Not Found", true, 404); header("Status: 404 Not Found"); @include(get_template_directory () . "/404.php"); ?>');
+	@fclose($tokenfile2);
 }
 
 
@@ -297,7 +333,5 @@ function duplicator_log($msg, $level = 0) {
 	$stamp = date('h:i:s');
 	@fwrite($GLOBALS['duplicator_package_log_handle'], "{$stamp} {$msg} \n");
 }
-
-
 
 ?>

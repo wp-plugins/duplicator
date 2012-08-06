@@ -15,8 +15,10 @@
 			TAB 1 PACKAGE -->
 			<div id="dup-tabs-opts-1">
 				<div style="text-align:left;">
-					<fieldset style="width:97%; height:250px;">
-						<legend><?php _e("Processing", 'WPDuplicator') ?></legend>
+				
+					<!-- PROCESSING -->
+					<fieldset style="width:97%; height:115px;">
+						<legend><b><?php _e("Processing", 'WPDuplicator') ?></b></legend>
 						
 						<?php 
 							$safe_value = ini_get('safe_mode');
@@ -34,49 +36,54 @@
 								<td style="width:50%"><?php _e("Max Memory", 'WPDuplicator') ?>: <input type="text" name="max_memory" id="max_memory" value="<?php echo preg_replace('/\D/', '', $GLOBALS['duplicator_opts']['max_memory'] ) ?>" maxlength="4" style="width:45px" /> MB</td>
 							</tr>
 						</table>						
-						
-						<label for="dir_bypass" style="font-size:13px">
-							<?php _e("Directory Filters", 'WPDuplicator') ?>: 
-							<i style="font-size:11px;display:inline-block"><?php printf("%s (/path1/dir1;/path2/dir2)<br/>", __("Separate by semicolon", 'WPDuplicator')); ?></i>
-						</label> 
-						<textarea name="dir_bypass" id="dir_bypass" style="width:625px;height:50px;background-color:#efefef;font-size:12px" /><?php echo $GLOBALS['duplicator_opts']['dir_bypass'] ?></textarea>
-						
-						<div class="dup-opts-directory-info">
-							<?php printf("%s: %s",__("Root Path", 'WPDuplicator'), rtrim(duplicator_safe_path(WP_CONTENT_DIR), 'wp-content'));	?><br/>
-							<?php _e('Pre-Zip Overview', 'WPDuplicator'); ?>:
-							<span id='dup-opts-scannow-data'>
-								<a href="javascript:void(0)" id="dup-opts-scannow-lnk" onclick="Duplicator.getSystemDirectory()"><?php _e("Scan Size", 'WPDuplicator') ?></a> 
-							</span><br/>
-						</div>
-						
 						<input type="checkbox" name="email-me" id="email-me" <?php echo ($email_me_enabled) ? 'checked="checked"' : ''; ?> /> 
-						<label for="email-me"><?php _e("Email when complete. Add optional emails separate by semicolon", 'WPDuplicator') ?></label><br/>
-						<input type="text" name="email_others" id="email_others"  value="<?php echo $GLOBALS['duplicator_opts']['email_others'] ?>" style="width:95%" /> 
-						<br/>
+						<label for="email-me">
+							<?php 
+								printf("%s: <i style='font-size:11px'>%s</i>",
+									__("Email when completed", 'WPDuplicator'),
+									__("WP-Admin email is included.  Add extra emails semicolon separated.", 'WPDuplicator'));
+							?>
+						</label><br/>
+						<input type="text" name="email_others" id="email_others"  value="<?php echo $GLOBALS['duplicator_opts']['email_others'] ?>" style="width:95%" /> <br/>
 						
 					</fieldset><br/>
 					
+					<!-- FILTERS -->
+					<fieldset style="width:97%; height:175px; line-height: 17px"  class='no-select'>
+						<legend><b><?php _e("Exclusion Filters", 'WPDuplicator') ?></b></legend>
+						
+						
+						<label for="dir_bypass"><?php _e("Directories", 'WPDuplicator') ?>: </label> 
+						<textarea name="dir_bypass" id="dir_bypass" style="width:625px;height:50px;font-size:11px" /><?php echo $GLOBALS['duplicator_opts']['dir_bypass'] ?></textarea><br/>
+						<div style='font-size:11px; margin:-6px 0px 5px 0px'><i><?php printf("%s: %s",__("Root Path", 'WPDuplicator'), rtrim(duplicator_safe_path(WP_CONTENT_DIR), 'wp-content'));	?></i></div>
+						
+						<label><?php _e("File extensions", 'WPDuplicator') ?>:</label><br/>
+						<input type="text" name="skip_ext" id="skip_ext"  value="<?php echo $GLOBALS['duplicator_opts']['skip_ext'] ?>" style="width:95%" /> <br/>
+						
+						<i style="font-size:11px;"><?php printf("%s (/path1;/path2 or exe;txt;)", __("Separate all filters by semicolon", 'WPDuplicator')); ?></i>
+					</fieldset><br/>
+					
 					<!-- ENCODEING OPTIONS -->
-					<fieldset style="width:97%; height:100px;"  class='no-select'>
-						<legend><?php _e("Database Encoding", 'WPDuplicator') ?></legend>
+					<fieldset style="width:97%; height:75px; line-height: 17px"  class='no-select'>
+						<legend><b><?php _e("Database Encoding", 'WPDuplicator') ?></b></legend>
 						
 							<input type="checkbox" name="dbiconv" id="dbiconv" <?php echo ($duplicator_dbiconv) ? 'checked="checked"' : ''; ?> /> 
 							<label for="dbiconv"><?php _e("Enable character conversion encoding", 'WPDuplicator') ?></label><br/>
 					
-							<i style='font-size:11px'>
+							<i style='font-size:11px;'>
 								<?php 
 									printf("%s %s %s %s <br/> %s",
 										__("From", 'WPDuplicator'), DUPLICATOR_DB_ICONV_IN,
 										__("to", 'WPDuplicator'), DUPLICATOR_DB_ICONV_OUT,
-										__("Please disable this option for international character sets", 'WPDuplicator')) ;
+										__("Disable this option for extended or double byte character sets", 'WPDuplicator')) ;
 										
 								?>
 							</i><br/><br/>					
 							
 					</fieldset>
-					<div style='position:absolute; bottom:5px'>	
+					<!--div style='position:absolute; bottom:5px'>	
 						<i style='font-size:10px'><?php _e("Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)", 'WPDuplicator') ?>.</i>
-					</div>
+					</div-->
 				</div>
 			</div>
 			

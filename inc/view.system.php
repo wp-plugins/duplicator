@@ -1,6 +1,32 @@
 <!-- ==========================================
+DIALOG: PACKAGE CONFIRMATION-->
+<div id="dup-dlg-package-confirm" title="<?php _e('Package Creation', 'WPDuplicator'); ?>">
+	<span class="ui-icon ui-icon-disk" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
+	<b><?php _e("Create a new Package Set?", 'WPDuplicator');	?></b>
+	
+	<p style="padding:10px 20px 10px 20px; line-height:26px; text-align:left; border:1px solid #efefef; border-radius:5px">
+		<b><?php _e('Name', 'WPDuplicator') ?>:</b> <span id="dup-dlg-package-confirm-msg"></span><br/>
+
+		<b><?php _e('Pre-Zip Overview', 'WPDuplicator'); ?>:</b>
+		<span id='dup-dlg-package-confirm-scannow-data'>
+			<a href="javascript:void(0)" onclick="Duplicator.getSystemDirectory()"><?php _e("Perform Scan", 'WPDuplicator') ?></a> 
+		</span><br/>
+		
+		<div style='font-size:11px; line-height:15px'>
+			<i>
+				<?php printf("%s <a href='javascript:void(0)'  onclick='Duplicator.optionsOpen()'>%s</a>. %s",
+						__('Note: A scan will provide an estimate on the size of your file system.  The scan will exclude items in the', 'WPDuplicator'),
+						__('directory filter list'),
+						__('Files that are not readable by the plugin will not be included in the overview.  Directories that are empty will not be included in the final package. ', 'WPDuplicator'));
+				?>
+			</i>
+		</div>
+	</p>
+</div>
+
+<!-- ==========================================
 DIALOG: SYSTEM ERROR -->
-<div id="dup-dialog-system-error" title="<?php _e('System Constraint', 'WPDuplicator'); ?>">
+<div id="dup-dlg-system-error" title="<?php _e('System Constraint', 'WPDuplicator'); ?>">
 	<p>
 		<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
 		<?php _e("Please try again! An issue has occurred.", 'WPDuplicator');	?>
@@ -37,20 +63,20 @@ DIALOG: SYSTEM ERROR -->
 	
 		<b><?php _e("Server Response", 'WPDuplicator') ?></b><br/>
 		<div id="dup-system-err-msg2"></div>
-			<i style='font-size:11px'>
-				<?php 
-					printf('%s %s', 
-						__("See online help for more details at", 'WPDuplicator'), 
-						"<a href='" . DUPLICATOR_HELPLINK . "' target='_blank'>support.lifeinthegrid.com</a>" );
-				?>
-			</i>
+		<i style='font-size:11px'>
+			<?php 
+				printf('%s %s', 
+					__("See online help for more details at", 'WPDuplicator'), 
+					"<a href='" . DUPLICATOR_HELPLINK . "' target='_blank'>support.lifeinthegrid.com</a>" );
+			?>
+		</i>
 	</div>
 </div>
 
 
 <!-- ==========================================
 DIALOG: SYSTEM CHECK -->
-<div id="dup-dialog-system-check" title="<?php _e('System Checks', 'WPDuplicator'); ?>">
+<div id="dup-dlg-system-check" title="<?php _e('System Checks', 'WPDuplicator'); ?>">
 	
 	<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
 	<?php _e("Please validate your system configuration.", 'WPDuplicator'); ?>
@@ -79,8 +105,8 @@ DIALOG: SYSTEM CHECK -->
 							$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/') ? 'Pass' : 'Fail';
 							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_PLUGIN_PATH . 'files/');
 							
-							$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.php') ? 'Pass' : 'Fail';
-							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_PLUGIN_PATH . 'files/installer.php');
+							$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php') ? 'Pass' : 'Fail';
+							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php');
 							
 							echo "<br/>";
 						?>
@@ -118,7 +144,6 @@ DIALOG: SYSTEM CHECK -->
 						?>
 					</div>
 				</li>	
-				
 			</ul>
 	
 		
@@ -185,7 +210,7 @@ DIALOG: SYSTEM CHECK -->
 			
 			<b>W3 Total Cache:</b>
 			<?php 
-				$w3tc_path = DUPLICATOR_WPROOTPATH . 'wp-content/w3tc';
+				$w3tc_path = duplicator_safe_path(WP_CONTENT_DIR) .  '/w3tc';
 				if (file_exists($w3tc_path) && ! strstr($GLOBALS['duplicator_opts']['dir_bypass'], $w3tc_path)):
 			?>
 				<div class="dup-sys-fail"><?php _e("Cache Directory Found", 'WPDuplicator') ?>.</div> 
@@ -217,8 +242,24 @@ DIALOG: SYSTEM CHECK -->
 				?><br/>			
 			</div>
 			
-
 		</div>
-
 	</div>
 </div>
+
+
+<!-- ==========================================
+DIALOG: QUICK PATH -->
+<div id="dup-dlg-quick-path" title="<?php _e('Download Links', 'WPDuplicator'); ?>">
+	<p>
+		<span class="ui-icon ui-icon-locked" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
+		<?php _e("The following links contain sensitive data.  Please share with caution!", 'WPDuplicator');	?>
+	</p>
+	
+	<div style="padding: 0px 20px 20px 20px;">
+		<a href="javascript:void(0)" style="display:inline-block; text-align:right" onclick="Duplicator.selectQuickPath()">[Select All]</a> <br/>
+		<textarea id="dup-dlg-quick-path-data" style='border:1px solid silver; border-radius:5px; width:96%; height:205px; font-size:11px'></textarea><br/>
+		<i style='font-size:11px'><?php _e("The database SQL script is a quick link to your database backup script.  An exact copy is also stored in the package.", 'WPDuplicator'); ?></i>
+	</div>
+</div>
+
+

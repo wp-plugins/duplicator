@@ -4,7 +4,7 @@
 	$package_name = sanitize_file_name($package_name);
 	
 	global $wpdb;
-	$result = $wpdb->get_results('SELECT * FROM '. $wpdb->prefix . "duplicator ORDER BY id DESC", ARRAY_A);
+	$result = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator` ORDER BY id DESC", ARRAY_A);
 	$total_elements = count($result);
 	
 	//Settings
@@ -25,7 +25,7 @@ MAIN FORM: Lists all the backups 			-->
 	<form id="form-duplicator" method="post">
 
 		<h2 style='margin-top:-3px'>
-			<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.jpg" style='text-align:top'  /></div> 
+			<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 
 			<div style='float:left;height:35px; padding-top:7px'>
 				Duplicator <i style='font-size:11px'><?php _e("By", 'WPDuplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
 			</div> <br style='clear:both' />
@@ -61,13 +61,6 @@ MAIN FORM: Lists all the backups 			-->
 					<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
 					<img id="img-status-progress" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/progress.gif" style="height:10px; width:46px; display:none" />
 				</td>
-				<?php if($total_elements != 0)  :	?>
-				<td style="white-space:nowrap; font-weight:bold">
-					<a href="<?php echo DUPLICATOR_PLUGIN_URL .'files/installer.php?download'; ?>">
-						<div id="duplicator-installer" class="dup-installer-btn"><?php _e("Installer", 'WPDuplicator') ?></div>
-					</a>
-				</td>
-				<?php endif; ?>
 			</tr>
 		</table><div style="height:5px"></div>
 		
@@ -85,49 +78,90 @@ MAIN FORM: Lists all the backups 			-->
 						<th><?php _e("Created", 'WPDuplicator') ?></th>
 						<th><?php _e("Size", 'WPDuplicator') ?></th>
 						<th><?php _e("Package Name", 'WPDuplicator') ?></th>
-						<th style="width:90%; text-align:right"><?php _e("Package",  'WPDuplicator')?></th>
+						<th style="width:90%; text-align:right; padding-right:10px" colspan="2"><?php _e("Package Set",  'WPDuplicator')?></th>
 					<?php endif; ?>	
 				</tr>
 			</thead>
 			<?php
 			if($total_elements != 0)  {
 				$ct = 0;
+				$total_size = 0;
 				while($ct < $total_elements) {
 					$row	   = $result[$ct];
 					$settings  = unserialize($row['settings']);
 					$detail_id = "duplicator-detail-row-{$ct}";
 					$packname  = empty($row['packname']) ? $row['zipname'] : $row['packname'];
-					$uniqueid  = "{$row['token']}_{$row['packname']}";
-					$packagepath = duplicator_snapshot_urlpath() . "{$uniqueid}_package.zip";
+					$total_size = $total_size + $row['zipsize'];
+					$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
+					$plugin_compat  = version_compare($plugin_version, DUPLICATOR_VERSION);
 					?>
-					<tr class="dup-pack-info">
-						<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" onclick="Duplicator.rowColor(this)" /></td>
-						<td><a href="javascript:void(0);" onclick="return Duplicator.toggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'WPDuplicator') . ' ' . $row['id'];?></a>]</td>
-						<td><?php echo $row['owner'];?></td>
-						<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
-						<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
-						<td><?php echo $packname ;?></td>
-						<td style="width:90%; text-align:right; padding-right:5px !important">
-							<a href="<?php echo $packagepath; ?>">
-								<div id="<?php echo "{$uniqueid}_package.zip" ?>" class="dup-installer-btn"><?php _e("Package", 'WPDuplicator') ?></div>
-							</a>
-						</td>
+					
+					
+					<?php if($plugin_compat >= 0)  :	?>
+						<?php
+							//Links
+							$uniqueid  			= "{$row['token']}_{$row['packname']}";
+							$sqlfilelink		= duplicator_snapshot_urlpath() . "{$uniqueid}_database.sql";
+							$packagepath 		= duplicator_snapshot_urlpath() . "{$uniqueid}_package.zip";
+							$installerpath		= duplicator_snapshot_urlpath() . "{$uniqueid}_installer.php";
+							$installfilelink	= "{$installerpath}?get=1&file={$uniqueid}_installer.php";
+						?>
+						<tr class="dup-pack-info">
+							<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" onclick="Duplicator.rowColor(this)" /></td>
+							<td><a href="javascript:void(0);" onclick="return Duplicator.toggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'WPDuplicator') . ' ' . $row['id'];?>]</a></td>
+							<td><?php echo $row['owner'];?></td>
+							<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
+							<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
+							<td class='pack-name'><?php echo $packname ;?></td>
+							<td style="width:90%;" class="get-btns">	
+								<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="dup-installer-btn no-select" onclick="Duplicator.downloadFile('<?php echo $installfilelink; ?>', this); return false;"><?php _e("Installer", 'WPDuplicator') ?></button> &nbsp;
+								<button id="<?php echo "{$uniqueid}_package.zip" ?>" class="dup-installer-btn no-select" onclick="Duplicator.downloadFile('<?php echo $packagepath; ?>', this); return false;"><?php _e("Package", 'WPDuplicator') ?></button>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details">
+								<div class="dup-details-area">
+									<b><?php _e("Version", 'WPDuplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
+									<b><?php _e("Secure Name", 'WPDuplicator')?>:</b> <?php echo "{$row['token']}_{$row['packname']}" ;?> <br/>
+									<button class='dup-dlg-quick-path-database-link no-select' onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><?php _e("Download SQL File", 'WPDuplicator')?></button>
+									<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.showQuickPath(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}' " ;?>); return false;"><?php _e("Show Download Links", 'WPDuplicator')?></button>
+								</div>
+							</td>
+						</tr>	
+						
+					<!-- LEGACY PRE 0.3.1 PACKS -->
+					<?php else : ?>	
+						<?php
+							$legacy_package = duplicator_snapshot_urlpath() . "{$row['zipname']}";
+						?>
+						<tr class="dup-pack-info">
+							<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $row['zipname'] ;?>" onclick="Duplicator.rowColor(this)" /></td>
+							<td><a href="javascript:void(0);" onclick="return Duplicator.toggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'WPDuplicator') . ' ' . $row['id'];?></a>]</td>
+							<td><?php echo $row['owner'];?></td>
+							<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
+							<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
+							<td class='pack-name'><?php echo $packname ;?></td>
+							<td style="width:90%;" class="get-btns">	
+								<span style='display:inline-block; padding:7px 10px 0px 0px'>
+								<a href="javascript:void(0);" onclick="return Duplicator.toggleDetail('<?php echo $detail_id ;?>');">[Not Supported]</a></span>
+								<button id="<?php echo "{$row['zipname']}" ?>" class="dup-installer-btn no-select" onclick="Duplicator.downloadFile('<?php echo $legacy_package; ?>', this); return false;"><?php _e("Package", 'WPDuplicator') ?></button>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details">
+								<div class="dup-details-area ui-state-error">
+									<b><?php _e("Legacy Version", 'WPDuplicator') ?>:</b> <?php echo $plugin_version ?> <br/>
+									<i style="color:#000"><?php
+									printf("%s <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a>",
+									__("This package was built with a version that is no longer supported.  It is highly recommended that this package be deleted.  For more details see the", 'WPDuplicator'),
+									__("Online FAQs", 'WPDuplicator')); 
+									?></i>
+								</div>
+							</td>
+						</tr>	
+					<?php endif; ?>	
+					
 
-					</tr>
-					<tr>
-						<td colspan="7" id="<?php echo $detail_id; ?>" class="dup-pack-details">
-							<div class="dup-details-area">
-								<?php 
-									$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
-									$secure_token   = empty($row['token'])               ? 'unknown' : $row['token'];
-									$sqlfilepath = duplicator_snapshot_urlpath() . "{$uniqueid}_database.sql"
-								?>
-								<b><?php _e("Plugin Version", 'WPDuplicator') ?>:</b> <?php echo $plugin_version ?><br/>
-								<b><?php _e("Secure Name", 'WPDuplicator')?>:</b> <?php echo "{$row['token']}_{$row['packname']}" ;?> <br/>
-								<b><?php _e("Database File",  'WPDuplicator')?>:</b> <?php echo "<a href='{$sqlfilepath}' target='_blank'>[SQL Backup]</a>"; ?> <br/>
-							</div>
-						</td>
-					</tr>
 					<?php
 					$ct++;
 				}
@@ -157,15 +191,9 @@ MAIN FORM: Lists all the backups 			-->
 			<tfoot>
 				<tr>
 					<?php if($total_elements == 0)  :	?>
-						<th colspan="7">&nbsp;</th>
+						<th colspan="8">&nbsp;</th>
 					<?php else : ?>	
-						<th></th>
-						<th><?php _e("Information", 'WPDuplicator') ?></th>
-						<th><?php _e("Owner", 'WPDuplicator') ?></th>
-						<th><?php _e("Created", 'WPDuplicator') ?></th>
-						<th><?php _e("Size", 'WPDuplicator') ?></th>
-						<th><?php _e("Package Name", 'WPDuplicator') ?></th>
-						<th></th>
+						<th colspan="8" style='text-align:right; font-size:12px'><?php echo _e("Total Storage Used", 'WPDuplicator') . ': ' . duplicator_bytesize($total_size); ?></th>
 					<?php endif; ?>	
 				</tr>
 			</tfoot>
