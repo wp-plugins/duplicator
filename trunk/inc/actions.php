@@ -39,7 +39,6 @@ function duplicator_create() {
 		
 		$max_time   = @ini_set("max_execution_time", $GLOBALS['duplicator_opts']['max_time']); 
 		$max_memory = @ini_set('memory_limit', $GLOBALS['duplicator_opts']['max_memory']);
-		
 		$max_time   = ($max_time === false)   ? "Unabled to set max_execution_time"  : "from={$max_time} to={$GLOBALS['duplicator_opts']['max_time']}";
 		$max_memory = ($max_memory === false) ? "Unabled to set memory_limit"		 : "from={$max_memory} to={$GLOBALS['duplicator_opts']['max_memory']}";
 		
@@ -70,7 +69,7 @@ function duplicator_create() {
 		duplicator_log("*********************************************************");
 		duplicator_log("ZIP ARCHIVE");
 		duplicator_log("*********************************************************");
-		$zip = new Duplicator_Zip($zipfilepath, DUPLICATOR_WPROOTPATH, '.svn', $sqlfilepath);
+		$zip = new Duplicator_Zip($zipfilepath, DUPLICATOR_WPROOTPATH, $GLOBALS['duplicator_opts']['skip_ext_array'], $sqlfilepath);
 		$zipsize = filesize($zipfilepath);
 			
 		($zipsize == false) 
@@ -95,7 +94,6 @@ function duplicator_create() {
 							  'owner'    => $current_user->user_login,
 							  'settings' => "{$serialized_settings}") 
 						);
-						
 		if ($wpdb->insert_id) {
 			duplicator_log("log:act__create=>recorded archieve id: " . $wpdb->insert_id);
 		} else {
@@ -187,7 +185,7 @@ function duplicator_system_check() {
 	$test = is_readable(DUPLICATOR_WPROOTPATH)
 			&& is_writeable(DUPLICATOR_SSDIR_PATH)
 			&& is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/')
-			&& is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.php');
+			&& is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php');
 	$json['SYS-100'] = ($test) ? 'Pass' : 'Fail';
 
 	//SYS-101 RESERVED FILE
@@ -264,8 +262,17 @@ function duplicator_unlink($uniqueid) {
 				    @chmod(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_database.sql"), 0644);
 					@unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_package.zip"));
 					@unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_database.sql"));
+					@unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_installer.php"));
 				}
 				catch(Exception $e) {
+					error_log(var_dump($e->getMessage()));
+				}
+			//Check for Legacy pre 0.3.1
+			} else if($wpdb->query("DELETE FROM {$table_name} WHERE zipname= '{$uniqueid}'" ) != 0) {
+				try {
+					@chmod(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}"), 0644);
+					@unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}"));
+				} catch(Exception $e) {
 					error_log(var_dump($e->getMessage()));
 				}
 			}
@@ -291,6 +298,7 @@ function duplicator_settings(){
 	//defaults
 	add_option('duplicator_options', '');
 	
+	$skip_ext = str_replace(array(' ', '.'), "", $_POST['skip_ext']);
 	$by_pass_array = explode(";", $_POST['dir_bypass']);
 	$by_pass_clean = "";
 	
@@ -317,6 +325,7 @@ function duplicator_settings(){
 		'email_others'	=>$_POST['email_others'],
 		'max_time'		=>$_POST['max_time'],
 		'max_memory'	=>preg_replace('/\D/', '', $maxmem) . 'M',
+		'skip_ext'		=>str_replace(",", ";", $skip_ext),
 		'dir_bypass'	=>$by_pass_clean,
 		'log_level'		=>$_POST['log_level']);
 		

@@ -17,43 +17,34 @@
 */
 
 //DOWNLOAD ONLY: 
-if ( isset($_GET['download'])) {
+if ( isset($_GET['get'])) {
 	
-	/** WordPress Administration Bootstrap 
-	see: http://codex.wordpress.org/Roles_and_Capabilities#export
-	Must be logged in from the WordPress Admin */
-	require_once('../../../../wp-admin/admin.php');
-
-	if (( current_user_can('level_8') )) {
-		$file = "installer.php";
-		if (file_exists($file)) {
-			header('Content-Description: File Transfer');
-			header('Content-Type: application/octet-stream');
-			header('Content-Disposition: attachment; filename='.basename($file));
-			header('Content-Transfer-Encoding: binary');
-			header('Expires: 0');
-			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-			header('Pragma: public');
-			header('Content-Length: ' . filesize($file));
-			ob_clean();
-			flush();
-			if (@readfile($file) == false) {
-				$data = file_get_contents($file);
-				if ($data == false) {
-					die("Unable to read installer file.  The server currently has readfile and file_get_contents disabled on this server.  Please contact your server admin to remove this restriction");
-				} else {
-					print $data;
-				}
+	$file = $_GET['file'];
+	if (file_exists($file)) {
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename=installer.php');
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($file));
+		ob_clean();
+		flush();
+		if (@readfile($file) == false) {
+			$data = file_get_contents($file);
+			if ($data == false) {
+				die("Unable to read installer file.  The server currently has readfile and file_get_contents disabled on this server.  Please contact your server admin to remove this restriction");
+			} else {
+				print $data;
 			}
-			exit;
-		} 
-	} else {
-		die("You must be a WordPress Administrator to download the Duplicator installer file.");
-	}
+		}
+		exit;
+	} 
 } 
 
-//Prevent Access from rovers
-if (file_exists('installer.template.php')) {
+//Prevent Access from rovers or direct browsing in snapshop directory
+if (file_exists('dtoken.php')) {
 	exit;
 }
 ?>
@@ -112,11 +103,11 @@ set_time_limit(0);
 END ADVANCED FEATURES: Do not edit below here.
 =================================================================================================== */
 
-
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.3.0';
-$GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
-$GLOBALS["SERIAL_TABLES"]["%wp_tableprefix%postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');															 
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.3.1';
+$GLOBALS["SERIAL_TABLES"]["%fwrite_wp_tableprefix%options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
+$GLOBALS["SERIAL_TABLES"]["%fwrite_wp_tableprefix%postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');													 
+$GLOBALS["SERIAL_TABLES"]["%fwrite_wp_tableprefix%usermeta"] = array('column_id' => 'umeta_id',    'column_value' => 'meta_value');
 
 $GLOBALS["SQL_FILE_NAME"] 	= "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
@@ -127,22 +118,21 @@ $GLOBALS["MYSQL_CHARSET"] 	= 'UTF-8';
 $GLOBALS["CURRENT_ROOT_PATH"] = dirname(__FILE__);
 
 //POST PARMS
-$action 	 = isset($_POST['action']) 		? trim($_POST['action']) 		: null;
-$dbhost		 = isset($_POST['dbhost'])	 	? trim($_POST['dbhost'])	 	: null;
-$dbname		 = isset($_POST['dbname'])	 	? trim($_POST['dbname'])	 	: null;
-$dbuser		 = isset($_POST['dbuser'])	 	? trim($_POST['dbuser'])	 	: null;
-$dbpassword  = isset($_POST['dbpassword']) 	? trim($_POST['dbpassword'])	: null;
-$current_url = isset($_POST['current_url'])	? trim($_POST['current_url'])	: null;
-$new_url 	 = isset($_POST['nurl'])		? trim($_POST['nurl'])			: null;
+$action 	 	= isset($_POST['action']) 			? trim($_POST['action']) 		: null;
+$dbhost		 	= isset($_POST['dbhost'])	 		? trim($_POST['dbhost'])	 	: null;
+$dbname		 	= isset($_POST['dbname'])	 		? trim($_POST['dbname'])	 	: null;
+$dbuser		 	= isset($_POST['dbuser'])	 		? trim($_POST['dbuser'])	 	: null;
+$dbpassword  	= isset($_POST['dbpassword']) 		? trim($_POST['dbpassword'])	: null;
+$current_url 	= isset($_POST['current_url'])		? trim($_POST['current_url'])	: null;
+$new_url 	 	= isset($_POST['nurl'])				? trim($_POST['nurl'])			: null;
 $new_url	 = rtrim($new_url, '/'); 
 
-$disable_ssl = (isset($_POST['disable_ssl']) && $_POST['disable_ssl'] == '1')  	? true : false;
-$dbmake 	 = (isset($_POST['dbmake'])  	 && $_POST['dbmake'] ==  '1')  		? true : false;
-$dbclean 	 = (isset($_POST['dbclean']) 	 && $_POST['dbclean'] == '1')  		? true : false;
-$dbcharvalid = (isset($_POST['dbcharvalid']) && $_POST['dbcharvalid'] == '1')  	? true : false;
+$disable_ssl  = (isset($_POST['disable_ssl']) && $_POST['disable_ssl'] == '1')  	? true : false;
+$dbmake 	  = (isset($_POST['dbmake'])  	 && $_POST['dbmake'] ==  '1')  		? true : false;
+$dbclean 	  = (isset($_POST['dbclean']) 	 && $_POST['dbclean'] == '1')  		? true : false;
+$dbcharvalid  = (isset($_POST['dbcharvalid']) && $_POST['dbcharvalid'] == '1')  	? true : false;
 $dbmysqlichar = (isset($_POST['dbmysqlichar']) && $_POST['dbmysqlichar'] == '1')  	? true : false;
-$zip_delete  = (isset($_POST['zip_delete'])  && $_POST['zip_delete'] == '1') 	? true : false;
-$zip_manual  = (isset($_POST['zip_manual'])  && $_POST['zip_manual'] == '1')  	? true : false;
+$zip_manual   = (isset($_POST['zip_manual'])  && $_POST['zip_manual'] == '1')  	? true : false;
 
 //CONSTANTS
 define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/support/knowledgebase.php?article=3#installer-ui");
@@ -275,7 +265,7 @@ function dinstaller_serialize_callback($match) {
 
 function dinstaller_is_serialized($data) {
 	$test = @unserialize($data);
-	return (test !== false || $test === 'b:0;') ? true : false;
+	return ($test !== false || $test === 'b:0;') ? true : false;
 }
 
 
@@ -322,15 +312,16 @@ if ($action == 'dbconnect-test') {
 	<title>Wordpress Duplicator</title>
 	<style type="text/css">
 		body {font-family:Verdana, Geneva, sans-serif;}
-		body,td,th {font-size: 16px;color: #000;}
+		body,td,th {font-size: 13px;color: #000;}
+		fieldset {border:1px solid silver; border-radius:4px}
 		h1 {margin:5px; font-size:26px; text-shadow: 1px 1px 1px #888; font-weight:normal;}
 		h3 {margin:1px; padding:2px; font-size:16px;}
 		a {color:navy}
 		a:hover{color:gray}
-		input[type=text] { width:510px; border-radius:3px; height:22px; font-size:14px; border:1px solid silver;}
+		input[type=text] { width:510px; border-radius:3px; height:18px; font-size:13px; border:1px solid silver;}
 
 
-		div#content {	border:1px solid #CDCDCD;  width:750px; height:800px; margin:auto; margin-top:18px; border-radius:5px; -moz-box-shadow:    3px 3px 5px 6px #ccc; -webkit-box-shadow: 3px 3px 5px 6px #ccc; box-shadow:  3px 3px 5px 6px #ccc;}
+		div#content {	border:1px solid #CDCDCD;  width:750px; min-height:750px; margin:auto; margin-top:18px; border-radius:5px; -moz-box-shadow:    3px 3px 5px 6px #ccc; -webkit-box-shadow: 3px 3px 5px 6px #ccc; box-shadow:  3px 3px 5px 6px #ccc;}
 		div#content-inner {padding:10px 30px;}
 		table.content-title {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; -webkit-box-shadow: 0 6px 4px -4px #777; -moz-box-shadow: 0 6px 4px -4px #777; box-shadow: 0 6px 4px -4px #777;	background-color:#E4E4E4}
 		input.readonly {background-color:#efefef;}
@@ -340,9 +331,14 @@ if ($action == 'dbconnect-test') {
 		table.dbtable-opts td{font-size:12px;}
 		div.div-buttons {text-align:right; padding:10px 0px}
 		input.button {font-size:14px; padding:5px}
-		div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:120px; border:1px solid silver;}
+		div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:120px; border:1px solid silver; margin:10px 0px}
 		div.warning-area {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
 		div.final-msg{height:350px;overflow-y:scroll;border:1px solid #CDCDCD; padding:8px;font-size:12px;line-height:22px !important;background-color:#efefef; border-radius:5px;-webkit-box-shadow: 0 4px 2px -2px #777; -moz-box-shadow: 0 4px 2px -2px #777; box-shadow: 0 4px 2px -2px #777;}
+		span.warning {color:#C04B40}
+		span.pass {color:#52A34E}
+		
+		div#dup-adv-opts {display:none; padding:5px; line-height:22px;}
+		div.dlg-shadow {box-shadow: 7px 7px 5px #888888;}
 		
 		/*DB Conn Window */
 		div#dbconn-test { position:absolute; display:none; background-color:#fff; width:500px; min-height:300px; border:1px solid silver; border-radius:5px; margin:40px 0px 0px 105px; z-index:10; line-height:24px;}
@@ -363,7 +359,8 @@ if ($action == 'dbconnect-test') {
 	</script>	
 	<script type="text/javascript">
 		getNewURL = function() {
-			$("#nurl").val(window.location.href.replace('installer.php', ''));
+			var filename= window.location.pathname.split('/').pop() || 'installer.php' ;
+			$("#nurl").val(window.location.href.replace(filename, ''));
 		}
 		
 		editNewURL = function() {
@@ -411,6 +408,13 @@ if ($action == 'dbconnect-test') {
 				$("#installbtn").removeAttr("disabled");
 			} else {
 				$("#installbtn").attr("disabled", "true");
+			}
+		}
+		
+		 RemoveInstallerFiles = function(package) {
+			var msg = "Delete all installer files now? \n\nThis will remove the page you are now viewing.\nYou will not be able to refresh this page after you continue.";
+			if (confirm(msg)) {
+				window.open('<?php echo "{$new_url}/wp-content/plugins/duplicator/files/installer.cleanup.php?remove=1&package="?>' + package, "_blank");
 			}
 		}
 		
@@ -548,6 +552,7 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("server: {$_SERVER['SERVER_SOFTWARE']}");
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
 		dinstaller_log("document root 755: {$root_path_chown}");
+		dinstaller_log("secure build name: %fwrite_secure_name%");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
 		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
@@ -555,8 +560,9 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("old url:'{$current_url}'");
 		dinstaller_log("new url:'{$new_url}'");
 		dinstaller_log("disable ssl: " . var_export($disable_ssl, true));
-		dinstaller_log("zip delete: "  . var_export($zip_delete, true));
 		dinstaller_log("zip manual: "  . var_export($zip_manual, true));
+		dinstaller_log("zip archive installed: " . var_export(class_exists('ZipArchive'), true));
+		
 		dinstaller_log("----------------------------------");
 		dinstaller_log("DROP TABLES STATUS:");
 		dinstaller_log("results => {$log}");
@@ -576,6 +582,7 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log('START-EXTRACTION:' . @date('h:i:s') . "\n" );
 		$zip_name	 = '';
 		$filename = null;
+		$package_set_warning = false;
 		
 		foreach (glob("*.zip") as $filename) {
 			$zip_name = $filename;
@@ -583,6 +590,11 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
+		if ('%fwrite_package_name%' != $zip_name) {
+			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   %fwrite_package_name%  \nprocessed with: {$zip_name}  \n");
+			$package_set_warning = true;
+		}
+		
 		
 		$target 	= dinstaller_set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
 		$zip_size 	= filesize($filename);	
@@ -609,7 +621,11 @@ if ($action == 'dbconnect-test') {
 				die(MSG_ERR_ZIPEXTRACTION . $tryagain_html );
 			}
 			
-			echo "<h3>&#10004; Package Extracted</h3>";
+			
+			
+			echo ($package_set_warning) 
+				? "<h3 class='detail-warning'>Package Extracted <i style='font-size:16px'>(possible issues see log)</i></h3>"
+				: "<h3>&#10004; Package Extracted</h3>";
 			flush();
 		}
 		dinstaller_log('END-EXTRACTION:' . @date('h:i:s'). "\n");
@@ -734,19 +750,19 @@ if ($action == 'dbconnect-test') {
 		
 		if ($table_count == 0) {
 			dinstaller_log("NOTICE: You may have to manually run the installer-data.sql to validate data input. Also check to make sure your installer file is correct and the
-			table prefix '%wp_tableprefix%' is correct for this particular version of WordPress. \n");
+			table prefix '%fwrite_wp_tableprefix%' is correct for this particular version of WordPress. \n");
 		}
 		
 		//Update site title
 		$site_title = mysqli_real_escape_string($mysqli_conn, $_POST['site_title']);
-		mysqli_query($mysqli_conn, "UPDATE `%wp_tableprefix%options` SET option_value = '{$site_title}' WHERE option_name = 'blogname' ");
+		mysqli_query($mysqli_conn, "UPDATE `%fwrite_wp_tableprefix%options` SET option_value = '{$site_title}' WHERE option_name = 'blogname' ");
 		
 		
 		//DATA CLEANUP: Perform Transient Cache Cleanup
 		//Remove all duplicator entries and record this one since this is a new install.
-		mysqli_query($mysqli_conn, "DELETE FROM `%wp_tableprefix%duplicator`");
-		mysqli_query($mysqli_conn, "DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_transient%')");
-		mysqli_query($mysqli_conn, "DELETE FROM `%wp_tableprefix%options` WHERE `option_name` LIKE ('_site_transient%')");
+		mysqli_query($mysqli_conn, "DELETE FROM `%fwrite_wp_tableprefix%duplicator`");
+		mysqli_query($mysqli_conn, "DELETE FROM `%fwrite_wp_tableprefix%options` WHERE `option_name` LIKE ('_transient%')");
+		mysqli_query($mysqli_conn, "DELETE FROM `%fwrite_wp_tableprefix%options` WHERE `option_name` LIKE ('_site_transient%')");
 		dinstaller_log("\nTransient cached cleanup completed.\n");
 		
 		
@@ -812,11 +828,8 @@ if ($action == 'dbconnect-test') {
 			$log = '';
 		}
 
-
-		
-
 		if ($table_count == 0 ) {
-			echo "<h3 class='detail-warning'>Database Routines Done <i style='font-size:16px'>(possible issues see logs)</i></h3>";
+			echo "<h3 class='detail-warning'>Database Routines Done <i style='font-size:16px'>(possible issues see log)</i></h3>";
 		} else {
 			echo "<h3>&#10004; Database Routines Completed</h3>";
 		}
@@ -838,12 +851,9 @@ if ($action == 'dbconnect-test') {
 		$fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 		fclose($fp);
 		
-		if ($zip_delete) {
-			@unlink($zip_name);
-		}
 		@unlink('database.sql');
 		
-		$currdata = parse_url("%current_url%"); 
+		$currdata = parse_url("%fwrite_current_url%"); 
 		$newdata  = parse_url($new_url);
 		$currpath = dinstaller_add_slash(isset($currdata['path']) ? $currdata['path'] : "");
 		$newpath  = dinstaller_add_slash(isset($newdata['path'])  ? $newdata['path']  : "");
@@ -876,14 +886,12 @@ HTACCESS;
 			dinstaller_log("web configuration file was not renamed because the paths did not change.");
 		}
 		
-		//DEACTIVATED PLUGINS
-		$html_active_plugins = "";
 
 		$html = "";
 		$html .= "<h3>&#10004; Process completed!</h3><br/>";
-		$html .= "<font style='color:#BE2323'><b>IMPORTANT FINAL STEPS!</b></font>";
+		$html .= "<font style='color:#BE2323' class='dup-final-steps'><b>IMPORTANT FINAL STEPS!</b></font>";
 		$html .= "<div class='final-msg'>";
-		$html .= "Complete <u>all</u> these steps to finish setup:<ul><li>Resave permalinks - <a href='{$new_url}/wp-admin/options-permalink.php' target='_blank'>take me there</a></li><li>Empty cache on <u>all</u> cache plugins <i style='font-size:11px'>(W3 Cache, etc...)</i> and resave plugin settings</li><li>Delete the <b style='color:#BE2323'>installer.php, installer-data.sql, installer-log.txt &amp; package</b> files if present.</li><li>Validate all sections of your site - <a href='{$new_url}' target='_blank'>take me there</a> </li><li>Validate directory and file permissions</li></ul>";
+		$html .= "Complete <u>all</u> these steps to finish setup:<ul><li>Resave permalinks - <a href='{$new_url}/wp-admin/options-permalink.php' target='_blank'>take me there</a></li><li>Empty cache on <u>all</u> cache plugins <i style='font-size:11px'>(W3 Cache, etc...)</i> and resave plugin settings</li><li>Delete <b style='color:#BE2323'>installer.php, installer-data.sql, installer-log.txt &amp; package</b> files - <a href=\"javascript:void(0)\" onclick=\"RemoveInstallerFiles('{$zip_name}')\">delete for me</a> <div style='margin-top:-4px; font-size:11px'><i>Must have already logged into this newly installed Wordpress Administrator</i></div></li><li>Validate all sections of your site - <a href='{$new_url}' target='_blank'>take me there</a> </li></ul>";
 		
 		$html .= "<hr size='1' /><b>TROUBLESHOOTING</b><br/><br/><b>Common Quick Fix Issues:</b><ul><li>Validate directory and file permissions (see below)</li><li>Validate web server configuration file (see below)</li><li>Clear your browsers cache</li><li>Deactivate and reactivate all plugins</li><li>Resave a plugins settings if it reports errors</li><li>Make sure your root directory is empty</li></ul>";		
 		
@@ -905,6 +913,8 @@ HTACCESS;
 		
 		$html .= "<div class='connect'>For troubleshooting see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership</a> with us!</div>";
 		
+		$html .= "<div style='margin-top:4px'><i style='font-size:11px; color:#999'>installer version: {$GLOBALS['DUPLICATOR_INSTALLER_VERSION']} %fwrite_rescue_flag%</i></div>";
+		
 		//Stop the watch when completed
 		$html .= "<script type='text/javascript'>prepAdminPage();</script>";
 		echo $html;
@@ -921,7 +931,7 @@ HTACCESS;
 		<!--  ============================
 		DB CONNECTION -->
 		<div style="text-align:left;position:relative">
-			<div id="dbconn-test">
+			<div id="dbconn-test" class="dlg-shadow">
 				<div id="dbconn-test-border">
 					<div id="dbconn-test-hdr">Installer Prechecks</div>
 					<div id="dbconn-test-msg"></div>
@@ -934,7 +944,7 @@ HTACCESS;
 	
 		<!--  ============================
 		FORM ENTRY -->
-		<form id="form-installer" action="installer.php" method="post" >
+		<form id="form-installer" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" >
 			<input type="hidden" name="action" value="process" />
 			<table>
 				<tr>
@@ -956,60 +966,66 @@ HTACCESS;
 				<tr valign="top">
 					<td style="width:130px">Package Url</td>
 					<td>
-						<input type="text" name="current_url" id="current_url" value="%current_url%" readonly="true"  class="readonly" />
+						<input type="text" name="current_url" id="current_url" value="%fwrite_current_url%" readonly="true"  class="readonly" />
 						<a href="javascript:editNewURL()" id="edit_current_url" style="font-size:12px">edit</a>
 					
 					</td>
 				</tr>
 				<tr>
 					<td>Install Url</td>
-					<td><input type="text" name="nurl" id="nurl" value="%nurl%" />&nbsp;<a href="javascript:getNewURL()" style="font-size:12px">get</a></td>
+					<td><input type="text" name="nurl" id="nurl" value="%fwrite_nurl%" />&nbsp;<a href="javascript:getNewURL()" style="font-size:12px">get</a></td>
 				</tr>
 				<tr>
 					<td>Site Title</td>
-					<td><input type="text" name="site_title" id="site_title" value="%site_title%" /></td>
-				</tr>		
-				<tr>
-					<td></td>
-					<td style="font-size:12px">
-						<input type="checkbox" name="zip_delete" id="zip_delete" value="1" /> Delete Package After Install <br/>
-						<input type="checkbox" name="disable_ssl" id="disabled_ssl" value="1" /> Disable SSL Admin <i style="font-size:11px">(sets FORCE_SSL_ADMIN to false)</i><br/>
-						<input type="checkbox" name="zip_manual" id="zip_manual" value="1" /> Manual Package Extraction <i style="font-size:11px">(manually unzip the package)</i><br/>
-					</td>
+					<td><input type="text" name="site_title" id="site_title" value="%fwrite_site_title%" /></td>
 				</tr>
-
 			</table><br/>
 			
+			<!-- *******************
+			DATABASE -->
 			<b>Database</b>
 			<hr size="1" style="margin-top:7px" />
-			
 			<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
 				<tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="localhost" /></td></tr>
-				<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="%dbname%" /></td></tr>
+				<tr><td>Name</td><td><input type="text" name="dbname" id="dbname" value="%fwrite_dbname%" /></td></tr>
 				<tr><td colspan="2">
 					<div style="margin:-5px 0px 0px 140px; ">
 						<table cellpadding="2" class="dbtable-opts">
 							<tr>
 								<td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Allow Database Creation</label></td>
-								<td><input type="checkbox" name="dbcharvalid" id="dbcharvalid" value="1" /> <label for="dbcharvalid">Replace Invalid Characters</label></td>
-							</tr>
-							<tr>
 								<td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Allow Table Removal</label> </td>
-								<td><input type="checkbox" name="dbmysqlichar" id="dbmysqlichar" value="1" /> <label for="dbmysqlichar">Enable MySQL character set</label></td>
-							</tr>							
+							</tr>						
 						</table>
-						
-						
-						
 					</div>
 				</td></tr>
-				<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="%dbuser%" /></td></tr>
+				<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="%fwrite_dbuser%" /></td></tr>
 				<tr><td>Password</td><td><input type="text" name="dbpassword" id="dbpassword" /></td></tr>
 			</table>
 			
 			<div style="text-align:center">
 				<a href="javascript:validateInstall()" style="font-size:12px">[Test Connection]</a><br/><br/>
 			</div>
+			
+			
+			<!-- *******************
+			ADVANCED OPTS -->
+			<b><a href="javascript:void(0)" onclick="$('#dup-adv-opts').toggle(400)">Advanced Options</a></b>
+			<div id="dup-adv-opts">
+				<table style='width:100%'>
+					<tr>
+						<td colspan="2">
+							<input type="checkbox" name="zip_manual" id="zip_manual" value="1" /> Manual Package Extraction <i style="font-size:11px">(manually unzip the package)</i><br/>
+							<input type="checkbox" name="dbcharvalid" id="dbcharvalid" value="1" /> <label for="dbcharvalid">Replace Invalid Database Characters</label> <br/>
+							<input type="checkbox" name="dbmysqlichar" id="dbmysqlichar" value="1" /> <label for="dbmysqlichar">Enable MySQL Character Set</label> <br/>
+							<input type="checkbox" name="disable_ssl" id="disabled_ssl" value="1" /> Disable FORCE_SSL_ADMIN <i style="font-size:11px">(sets value to false)</i>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			
+			<!-- *******************
+			NOTICES  -->
 			<div class="warning-info">
 				<b>WARNINGS &AMP; NOTICES</b> 
 				
@@ -1022,9 +1038,7 @@ HTACCESS;
 				<p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
 				
 				<p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
-				These files contain sensitive information and should not remain on a production system.</p>
-				
-				<br/>
+				These files contain sensitive information and should not remain on a production system.</p><br/>
 			</div>
 			
 			<div class="warning-area">
@@ -1038,7 +1052,7 @@ HTACCESS;
 			</div>
 			
 		</form>
-		
+		<div style='margin-top:-7px'><i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['DUPLICATOR_INSTALLER_VERSION']?> %fwrite_rescue_flag%</i></div>
 	<?php endif; ?> <br/>
 	
 	</div>

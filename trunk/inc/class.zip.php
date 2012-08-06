@@ -30,7 +30,11 @@ class Duplicator_Zip
 			$this->zipFileName = duplicator_safe_path($zipFilePath);
 		
 			$this->rootFolder  = rtrim(duplicator_safe_path($folderPath), '/');
-			$this->skipNames   = is_array($ignored) ? $ignored : $ignored ? array($ignored) : array();
+			$this->skipNames   = is_array($ignored) ? $ignored : array();
+			if (! empty($this->skipNames) ) {
+				duplicator_log("log:class.zip=>skip extensions:" . implode(",", $this->skipNames));
+			}
+			
 			
 			if ($this->zipArchive->open($this->zipFileName, ZIPARCHIVE::CREATE) === TRUE) {
 				duplicator_log("log:class.zip=>opened");
@@ -88,23 +92,23 @@ class Duplicator_Zip
 					continue;
 				}
 				
-				if(!in_array($file, $this->skipNames)) {
-					$fullpath = "{$folderPath}/{$file}";
-					if(is_dir($fullpath)) {
-						$this->resursiveZip($fullpath);
-						//KEEP Buffer active to prevent Idle timeout
-						echo(str_repeat(' ',256));
-						@flush();
-					}
-					else if(is_file($fullpath)) {
+				$fullpath = "{$folderPath}/{$file}";
+				if(is_dir($fullpath)) {
+					//KEEP Buffer active to prevent Idle timeout
+					echo(str_repeat(' ',256));
+					@flush();
+					$this->resursiveZip($fullpath);
+				}
+				else if(is_file($fullpath)) {
+					//Check filter extensions
+					if(!in_array(@pathinfo($file, PATHINFO_EXTENSION), $this->skipNames)) {
 						$localpath = str_replace($this->rootFolder, '', $folderPath);
 						$localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
 						$this->zipArchive->addFile("{$folderPath}/{$file}", "{$localname}{$file}");
-					} 
-
-					$this->limitItems++;
-				}
-			}
+					}
+				} 
+				$this->limitItems++;
+			} 
 			
 			//Check if were over our count
 			if($this->limitItems > $this->limit) {

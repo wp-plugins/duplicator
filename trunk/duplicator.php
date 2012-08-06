@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.3.0
+Version: 0.3.1
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -52,13 +52,16 @@ if (is_admin() == true) {
 		$GLOBALS['duplicator_opts']['max_memory'] = '512M';
 		$GLOBALS['duplicator_opts']['dir_bypass'] = '';
 		$GLOBALS['duplicator_opts']['log_level'] = '0';
+		$GLOBALS['duplicator_opts']['skip_ext'] = '';
 	}
 	
-	$GLOBALS['duplicator_bypass-array']		  	= explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
-	$GLOBALS['duplicator_bypass-array'] 	  	= count($GLOBALS['duplicator_bypass-array']) ? $GLOBALS['duplicator_bypass-array'] : null;
-	$GLOBALS['duplicator_opts']['max_time']   	= is_numeric($GLOBALS['duplicator_opts']['max_time']) ? $GLOBALS['duplicator_opts']['max_time']   : 1000;
-	$GLOBALS['duplicator_opts']['max_memory'] 	= isset($GLOBALS['duplicator_opts']['max_memory'])    ? $GLOBALS['duplicator_opts']['max_memory'] : "512M";
-	$GLOBALS['duplicator_opts']['email_others'] = isset($GLOBALS['duplicator_opts']['email_others'])    ? $GLOBALS['duplicator_opts']['email_others'] : "";
+	$GLOBALS['duplicator_bypass-array']		  		= explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
+	$GLOBALS['duplicator_bypass-array'] 	  		= count($GLOBALS['duplicator_bypass-array']) 			? $GLOBALS['duplicator_bypass-array'] : null;
+	$GLOBALS['duplicator_opts']['max_time']   		= is_numeric($GLOBALS['duplicator_opts']['max_time'])	? $GLOBALS['duplicator_opts']['max_time']   : 1000;
+	$GLOBALS['duplicator_opts']['max_memory'] 		= isset($GLOBALS['duplicator_opts']['max_memory'])  	? $GLOBALS['duplicator_opts']['max_memory'] : "512M";
+	$GLOBALS['duplicator_opts']['email_others'] 	= isset($GLOBALS['duplicator_opts']['email_others']) 	? $GLOBALS['duplicator_opts']['email_others'] : "";
+	$GLOBALS['duplicator_opts']['skip_ext'] 	 	= isset($GLOBALS['duplicator_opts']['skip_ext'])  		? $GLOBALS['duplicator_opts']['skip_ext'] : "";
+	$GLOBALS['duplicator_opts']['skip_ext_array']	= explode(";", $GLOBALS['duplicator_opts']['skip_ext']) ? explode(";", $GLOBALS['duplicator_opts']['skip_ext']) : array();
 
 	require_once 'inc/functions.php';
 	require_once 'inc/class.zip.php';
@@ -102,8 +105,9 @@ if (is_admin() == true) {
 		update_option('duplicator_options', serialize($duplicator_opts));
 
 		//CLEANUP LEGACY
-		//PRE 0.2.7
+		//PRE 0.2.9
 		delete_option('duplicator_version_database');
+		$wpdb->query("ALTER TABLE `{$table_name}` CHANGE bid id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT");
 		$wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN ver_db");
 		$wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN ver_plug");
 		$wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN status");
@@ -186,26 +190,29 @@ if (is_admin() == true) {
 	/**
 	 *  DUPLICATOR_VIEWS
 	 *  Inlcude all visual elements  */
-	function duplicator_views() {
-		include 'inc/view.main.php';
+	function duplicator_main_page() {
+		include 'inc/page.main.php';
 	}
 	
-	function duplicator_serverinfo() {
-		include 'inc/view.servinfo.php';
+	//Diagnostics Page
+	function duplicator_diag_page() {
+		include 'inc/page.diag.php';
 	}
 
 	/**
 	 *  DUPLICATOR_MENU
 	 *  Loads the menu item into the WP tools section and queues the actions for only this plugin */
 	function duplicator_menu() {	
-		$view_main = add_menu_page('Duplicator', 'Duplicator', "import", basename(__FILE__), 'duplicator_views', plugins_url('duplicator/img/create.png'));
-		add_submenu_page(basename(__FILE__), __('Dashboard', 'WPDuplicator'),  __('Dashboard', 'WPDuplicator'), "import" , basename(__FILE__), 'duplicator_views');
-		$view_server = add_submenu_page(basename(__FILE__), __('Server Info.', 'WPDuplicator'), __('Server Info.', 'WPDuplicator'), 'import', 'duplicator_serverinfo', 'duplicator_serverinfo');
+		//Main Menu
+		$page_main = add_menu_page('Duplicator', 'Duplicator', "import", basename(__FILE__), 'duplicator_main_page', plugins_url('duplicator/img/create.png'));
+		add_submenu_page(basename(__FILE__), __('Dashboard', 'WPDuplicator'),  __('Dashboard', 'WPDuplicator'), "import" , basename(__FILE__), 'duplicator_main_page');
+		//Sub Menus
+		$page_diag = add_submenu_page(basename(__FILE__), __('Diagnostics', 'WPDuplicator'), __('Diagnostics', 'WPDuplicator'), 'import', 'duplicator_diag_page', 'duplicator_diag_page');
 
 		//Apply scripts and styles
-		add_action('admin_print_scripts-' . $view_main, 'duplicator_scripts');
-		add_action('admin_print_styles-'  . $view_main, 'duplicator_styles' );
-		add_action('admin_print_styles-'  . $view_server, 'duplicator_styles' );
+		add_action('admin_print_scripts-' . $page_main, 'duplicator_scripts');
+		add_action('admin_print_styles-'  . $page_main, 'duplicator_styles' );
+		add_action('admin_print_styles-'  . $page_diag, 'duplicator_styles' );
 	}
 
 	/**
