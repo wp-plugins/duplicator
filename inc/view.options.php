@@ -49,15 +49,14 @@
 					</fieldset><br/>
 					
 					<!-- FILTERS -->
-					<fieldset style="width:97%; height:175px; line-height: 17px"  class='no-select'>
+					<fieldset style="width:97%; height:175px; line-height: 17px">
 						<legend><b><?php _e("Exclusion Filters", 'WPDuplicator') ?></b></legend>
-						
 						
 						<label for="dir_bypass"><?php _e("Directories", 'WPDuplicator') ?>: </label> 
 						<textarea name="dir_bypass" id="dir_bypass" style="width:625px;height:50px;font-size:11px" /><?php echo $GLOBALS['duplicator_opts']['dir_bypass'] ?></textarea><br/>
 						<div style='font-size:11px; margin:-6px 0px 5px 0px'><i><?php printf("%s: %s",__("Root Path", 'WPDuplicator'), rtrim(duplicator_safe_path(WP_CONTENT_DIR), 'wp-content'));	?></i></div>
 						
-						<label><?php _e("File extensions", 'WPDuplicator') ?>:</label><br/>
+						<label class="no-select"><?php _e("File extensions", 'WPDuplicator') ?>:</label><br/>
 						<input type="text" name="skip_ext" id="skip_ext"  value="<?php echo $GLOBALS['duplicator_opts']['skip_ext'] ?>" style="width:95%" /> <br/>
 						
 						<i style="font-size:11px;"><?php printf("%s (/path1;/path2 or exe;txt;)", __("Separate all filters by semicolon", 'WPDuplicator')); ?></i>
