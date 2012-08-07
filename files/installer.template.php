@@ -114,7 +114,7 @@ $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
 $GLOBALS["LOG_FILE_HANDLE"] = fopen($GLOBALS["LOG_FILE_NAME"], "w+");
 $GLOBALS["SEPERATOR1"]      = str_repeat("********", 10);
 $GLOBALS["LOG_LEVEL"]  	 	= isset($_POST['log_level']) ? $_POST['log_level'] : 1;
-$GLOBALS["MYSQL_CHARSET"] 	= 'UTF-8';
+$GLOBALS["MYSQL_CHARSET"] 	= 'utf8';
 $GLOBALS["CURRENT_ROOT_PATH"] = dirname(__FILE__);
 
 //POST PARMS
@@ -721,8 +721,11 @@ if ($action == 'dbconnect-test') {
 		//Possible fix for utf8 characters however Causing issues in large inserts
 		//mysqli_query($mysqli_conn, "SET NAMES 'utf8' ");   This seems to cause problems
 		if ($dbmysqlichar) {
-			mysqli_set_charset( $mysqli_conn, "{$GLOBALS['MYSQL_CHARSET']}");
-			dinstaller_log("MySql: charater set enabled to '{$GLOBALS['MYSQL_CHARSET']}'\n");
+			if (mysqli_set_charset( $mysqli_conn, "{$GLOBALS['MYSQL_CHARSET']}")) {
+				dinstaller_log("MySql: charater set loaded [{$GLOBALS['MYSQL_CHARSET']}]\n");
+			} else {
+				dinstaller_log("MySql: charater set error using [{$GLOBALS['MYSQL_CHARSET']}]\n"); 
+			}
 		}
 		
 		$profile_start = DInstaller::get_microtime();
