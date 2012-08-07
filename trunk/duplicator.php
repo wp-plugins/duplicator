@@ -93,13 +93,14 @@ if (is_admin() == true) {
 			'dbname'		=>'',
 			'dbuser'		=>'',
 			'nurl'			=>'',
-			'email-me'		=>'0',
+			'email-me'		=>"{$GLOBALS['duplicator_opts']['email-me']}",
 			'email_others'	=>"{$GLOBALS['duplicator_opts']['email_others']}",
 			'max_time'		=>$GLOBALS['duplicator_opts']['max_time'],
 			'max_memory'	=>$GLOBALS['duplicator_opts']['max_memory'],
-			'dir_bypass'	=>'',
+			'dir_bypass'	=>"{$GLOBALS['duplicator_opts']['dir_bypass']}",
 			'log_level'		=>'0',
-			'dbiconv'		=>'1');
+			'dbiconv'		=>"{$GLOBALS['duplicator_opts']['dbiconv']}",
+			'skip_ext'		=>"{$GLOBALS['duplicator_opts']['skip_ext']}");
 				
 		update_option('duplicator_version_plugin', 	DUPLICATOR_VERSION);
 		update_option('duplicator_options', serialize($duplicator_opts));
