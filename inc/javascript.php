@@ -20,7 +20,7 @@ jQuery.noConflict()(function($) {
 	/** **********************************************
 	*  METHOD: Duplicator.setStatus  
 	*  Sets the status of the Duplicator status bar */
-	Duplicator.setStatus = function(msg, img) {
+	Duplicator.setStatus = function(msg, img, postmsg) {
 		//Clean Status Bar
 		$("#img-status-error").hide();
 		$("#img-status-progress").hide();
@@ -30,6 +30,7 @@ jQuery.noConflict()(function($) {
 			case 'error' 	: $("#img-status-error").show('slow'); break;
 			case 'progress' : $("#img-status-progress").show('slow'); break;
 		}
+		$('#span-status-post').html(postmsg);
 	}
 	
 
@@ -96,7 +97,8 @@ jQuery.noConflict()(function($) {
 		var log_level  		= $("select#log_level").val() ? $("select#log_level").val() : 0;
 		var email_others	= $("input#email_others").val();
 		var dir_bypass 		= $("textarea#dir_bypass").val();
-		
+		var rm_snapshot   	= $('#rm_snapshot').is(':checked') ? 1 : 0;
+
 		//append semicolon if user forgot
 		if (dir_bypass.length > 1) {
 			var has_semicolon	= dir_bypass.charAt(dir_bypass.length - 1) == ";";
@@ -104,24 +106,27 @@ jQuery.noConflict()(function($) {
 			$("textarea#dir_bypass").val(dir_bypass);
 		}
 
-		q  = "dbhost=" 		 +  $("input#dbhost").val() + "&";
-		q += "dbname=" 		 +  $("input#dbname").val() + "&";
-		q += "dbuser=" 		 +  $("input#dbuser").val() + "&";
-		q += "nurl="   		 +  $("input#nurl").val() + "&";
-		q += "dbiconv="   	 +  dbiconv    + "&";
-		q += "email-me="   	 +  email_me   + "&";
-		q += "email_others=" +  email_others   + "&";
-		q += "max_time="   	 +  $("input#max_time").val() + "&";
-		q += "max_memory="   +  $("input#max_memory").val() + "&";
-		q += "skip_ext="     +  $("input#skip_ext").val() + "&";
-		q += "dir_bypass="   +  $("textarea#dir_bypass").val() + "&";
-		q += "log_level="    +  log_level + "&";
-
 		$.ajax({
 			type: "POST",
 			url: ajaxurl,
 			timeout: 10000000,
-			data: q + "action=duplicator_settings",
+			data: 
+			{
+				'action'  		: 'duplicator_settings',
+				'dbhost' 		: $("input#dbhost").val(),
+				'dbname'  		: $("input#dbname").val(),
+				'dbuser'  		: $("input#dbuser").val(),
+				'nurl'  		: $("input#nurl").val(),
+				'dbiconv'  		: dbiconv,
+				'email-me'  	: email_me,
+				'email_others'  : email_others,
+				'max_time'  	: $("input#max_time").val(),
+				'max_memory'  	: $("input#max_memory").val(),
+				'skip_ext'  	: $("input#skip_ext").val(),
+				'dir_bypass'  	: $("textarea#dir_bypass").val(),
+				'log_level'  	: log_level,
+				'rm_snapshot'  	: rm_snapshot
+			},
 			beforeSend: function() {Duplicator.startAjaxTimer(); },
 			complete: function() {Duplicator.endAjaxTimer(); },
 			success: function(data) { 
@@ -201,7 +206,7 @@ jQuery.noConflict()(function($) {
 			dataType: "json",
 			timeout: 10000000,
 			data: "duplicator_new="+ packname +"&action=duplicator_system_check",
-			beforeSend: function() { 
+			beforeSend: function() {
 				Duplicator.setStatus("<?php _e("Evaluating WordPress Setup. Please Wait", 'WPDuplicator') ?>...", 'progress');
 			},
 			success: function(data) {
@@ -428,7 +433,9 @@ jQuery.noConflict()(function($) {
 	
 	Duplicator.processCreateConfirmation = function(result) {
 		if (result) {
-			Duplicator.setStatus("<?php _e('This may take several minutes. Please Wait...', 'WPDuplicator') ?>.", 'progress');
+			var msg = "<?php _e('Creating package may take several minutes. Please Wait... ', 'WPDuplicator'); ?>";
+			var postmsg = "<?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.openLog()'>[%s]</a>", 	__('Preview Log', 'WPDuplicator'));?>";
+			Duplicator.setStatus(msg, 'progress', postmsg);
 			Duplicator.createPackage($("input[name=package_name]").val());
 		} else {
 			Duplicator.setStatus("<?php _e('Ready to create new package.', 'WPDuplicator') ?>");

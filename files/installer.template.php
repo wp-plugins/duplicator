@@ -731,7 +731,7 @@ if ($action == 'dbconnect-test') {
 		$profile_start = DInstaller::get_microtime();
 		$temp=0;
 		while ($temp < $sql_result_file_length) {
-			mysqli_query($mysqli_conn,  ($sql_result_file[$temp]));	
+			@mysqli_query($mysqli_conn,  ($sql_result_file[$temp]));	
 			$temp++;
 		}
 		$profile_end = DInstaller::get_microtime();
@@ -910,11 +910,11 @@ HTACCESS;
 		
 		$html .= "<b>Additional Notes:</b><br/>If you have made changes to your PHP files directly this might have an impact on your duplicated site.  Be sure all changes made will correspond to the sites new location.  Only the package (zip file) and the installer.php file should be in the directory where you are installing the site.  Please read through our knowledge base before submitting any issues.  If you have a large log file that needs evaluated please email the file, or attach it to a help ticket.<br/><br/>";
 		
-		$html .= "<b>Certified Hosts:</b><br/>Please check out our <a href='http://lifeinthegrid.com/duplicator-certified' target='_blank'>certified hosts page</a> as it has a list of hosting providers and themes that have been tested successfully with the Duplicator plugin.<br/><br/>";		
+		$html .= "<b>Approved Hosts:</b><br/>Please check out our <a href='http://lifeinthegrid.com/duplicator-certified' target='_blank'>approved hosts page</a> as it has a list of hosting providers and themes that have been tested successfully with the Duplicator plugin.<br/><br/>";		
 		
 		$html .= "</div>";
 		
-		$html .= "<div class='connect'>For troubleshooting see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership</a> with us!</div>";
+		$html .= "<div class='connect'>For troubleshooting see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership or donation</a>!</div>";
 		
 		$html .= "<div style='margin-top:4px'><i style='font-size:11px; color:#999'>installer version: {$GLOBALS['DUPLICATOR_INSTALLER_VERSION']} %fwrite_rescue_flag%</i></div>";
 		

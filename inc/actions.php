@@ -314,7 +314,6 @@ function duplicator_settings(){
 		$maxmem = 256;
 	}
 	
-
 	$duplicator_opts = array(
 		'dbhost'		=>$_POST['dbhost'],
 		'dbname'		=>$_POST['dbname'],
@@ -327,7 +326,8 @@ function duplicator_settings(){
 		'max_memory'	=>preg_replace('/\D/', '', $maxmem) . 'M',
 		'skip_ext'		=>str_replace(",", ";", $skip_ext),
 		'dir_bypass'	=>$by_pass_clean,
-		'log_level'		=>$_POST['log_level']);
+		'log_level'		=>$_POST['log_level'],
+		'rm_snapshot'	=>$_POST['rm_snapshot']);
 		
 
 	update_option('duplicator_options', serialize($duplicator_opts));

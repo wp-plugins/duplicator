@@ -7,77 +7,95 @@
  */
 function duplicator_create_dbscript($destination) {
 	try {
-		duplicator_log("log:fun__create_dbscript=>started");
-		
-		global $wpdb;
-		$tables =  $wpdb->get_col('SHOW TABLES');
-		$dbiconv = $GLOBALS['duplicator_opts']['dbiconv'] == "0" ? false : true;
-		$return = "";
-		$handle = fopen($destination,'w+');
-		
-		//CREATE TABLES
-		//PERFORM ICONV
-		if ($dbiconv && function_exists("iconv")) {
-			duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
-			foreach($tables as $table) {
-				duplicator_log("log:fun__create_dbscript=>creating table: {$table}", 2);
-				$sql         = $wpdb->prepare("SELECT * FROM `{$table}`");
-				$result 	 = $wpdb->get_results($sql, ARRAY_N);
-				$num_fields  = count(@$result[0]);   
-				duplicator_log("log:fun__create_dbscript=>rows found: {$num_fields}", 2);
-				$items		 = count($result);
-				$return		 = '';
-				$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
-				$return		.= "\n\n" . $row2[1] . ";\n\n";
-				{
-					$ct=0;
-					while($ct < $items) {
-						$row	 = $result[$ct];
-						$return .= 'INSERT INTO '.$table.' VALUES(';
-						for($j=0; $j<$num_fields; $j++) 	{
-							$row[$j] = @iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $row[$j]);
-							$row[$j] = mysql_real_escape_string($row[$j]);
-							$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
-							if ($j < ($num_fields-1)) { $return .= ','; }
-						}
-						$return.= ");\n";
-						$ct++;
-					}
-				}
-				duplicator_log("log:fun__create_dbscript=>table processed: $table", 2);
-				$return .= "\n";
-				@fwrite($handle, $return);
-			}
-		//DO NOT PERFORM ICONV
-		} else {
-			foreach($tables as $table) {
-				duplicator_log("log:fun__create_dbscript=>creating table: $table", 2);
-				$result 	 = $wpdb->get_results("SELECT * FROM {$table}", ARRAY_N);
-				$num_fields  = count($result[0]);   
-				$items		 = count($result);
-				$return		 = '';
-				$row2 		 = $wpdb->get_row('SHOW CREATE TABLE '.$table, ARRAY_N); 
-				$return		.= "\n\n" . $row2[1] . ";\n\n";
-				{
-					$ct=0;
-					while($ct < $items) {
-						$row	 = $result[$ct];
-						$return .= 'INSERT INTO '.$table.' VALUES(';
-						for($j=0; $j<$num_fields; $j++) 	{
-							$row[$j] = mysql_real_escape_string($row[$j]);
-							$return .= (isset($row[$j])) ? '"'.$row[$j].'"'	: '""'; 
-							if ($j < ($num_fields-1)) { $return .= ','; }
-						}
-						$return.= ");\n";
-						$ct++;
-					}
-				}
-				duplicator_log("log:fun__create_dbscript=>table processed: $table", 2);
-				$return .= "\n";
-				@fwrite($handle, $return);
-			}
-		}
 
+		global $wpdb;
+		$dbiconv = ($GLOBALS['duplicator_opts']['dbiconv'] == "0" && function_exists("iconv")) ? false : true;
+		$handle  = fopen($destination,'w+');
+		$tables  = $wpdb->get_col('SHOW TABLES');
+		
+		duplicator_log("log:fun__create_dbscript=>started");
+		if ($dbiconv) {
+			duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
+		}
+		
+		foreach ($tables as $table) {
+		
+			//Generate Drop Statement
+			//$sql_del = ($GLOBALS['duplicator_opts']['dbadd_drop']) ? "DROP TABLE IF EXISTS {$table};\n\n" : "";
+			//@fwrite($handle, $sql_del);
+			
+			//Generate Create Statement
+			$row_count  = $wpdb->get_var("SELECT Count(*) FROM `{$table}`");
+			duplicator_log("start: {$table} ({$row_count})");	
+		
+			$create  = $wpdb->get_row("SHOW CREATE TABLE `{$table}`", ARRAY_N);
+			$sql_crt = "{$create[1]};\n\n";
+			@fwrite($handle, $sql_crt);
+			
+			if ($row_count > 100) {
+				$row_count = ceil($row_count / 100);
+			} else if ($row_count > 0) {
+				$row_count = 1;  
+			}
+			
+			//PERFORM ICONV ROUTINE
+			//Chunck the query results to avoid memory issues
+			if ($dbiconv) {
+			
+				for ($i = 0; $i < $row_count; $i++) {
+					$sql   = "";
+					$limit = $i * 100;
+					$query = "SELECT * FROM `{$table}` LIMIT {$limit}, 100";
+					$rows  = $wpdb->get_results($query, ARRAY_A);
+					if (is_array($rows)) {
+						foreach ($rows as $row) {
+							$sql .= "INSERT INTO `{$table}` VALUES(";
+							$num_values  = count($row);
+							$num_counter = 1;
+							foreach ($row as $value) {
+								$value = @iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $value);
+								($num_values == $num_counter) 
+									? $sql .= '"' . @mysql_real_escape_string($value) . '"'
+									: $sql .= '"' . @mysql_real_escape_string($value) . '", ';
+								$num_counter++;
+							}
+							$sql .= ");\n";
+						}
+						@fwrite($handle, $sql);
+					}
+				}
+				
+			//DO NOT PERFORM ICONV
+			} else {
+
+				for ($i = 0; $i < $row_count; $i++) {
+					$sql   = "";
+					$limit = $i * 100;
+					$query = "SELECT * FROM `{$table}` LIMIT {$limit}, 100";
+					$rows  = $wpdb->get_results($query, ARRAY_A);
+					if (is_array($rows)) {
+						foreach ($rows as $row) {
+							$sql .= "INSERT INTO `{$table}` VALUES(";
+							$num_values  = count($row);
+							$num_counter = 1;
+							foreach ($row as $value) {
+								($num_values == $num_counter) 
+									? $sql .= '"' . @mysql_real_escape_string($value) . '"'
+									: $sql .= '"' . @mysql_real_escape_string($value) . '", ';
+								$num_counter++;
+							}
+							$sql .= ");\n";
+						}
+						@fwrite($handle, $sql);
+					}
+				}
+			
+			}
+			
+			@fwrite($handle, "\n\n");
+			duplicator_log("done:  {$table}");
+		}		
+	
 		duplicator_log("log:fun__create_dbscript=>sql file written to {$destination}");
 		fclose($handle);
 		$wpdb->flush();

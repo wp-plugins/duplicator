@@ -54,9 +54,9 @@ DIALOG: SYSTEM ERROR -->
 			<li><?php _e('Check your disk space.  For hosted sites review your providers help.', 'WPDuplicator') ?></li>
 			<li>
 				<?php printf("%s <a href='%s' target='_blank'>%s</a> %s", 
-						__("Consider using a" , 'WPDuplicator'),
+						__("Consider using an" , 'WPDuplicator'),
 						__(DUPLICATOR_CERTIFIED, 'WPDuplicator'),
-						__("certified" , 'WPDuplicator'),
+						__("approved" , 'WPDuplicator'),
 						__("hosting provider.", 'WPDuplicator')	); ?>
 			</li>
 		</div><br/>
@@ -238,7 +238,7 @@ DIALOG: SYSTEM CHECK -->
 					printf("%s <i><a href='%s' target='_blank'>%s</a></i>?", 
 						__("Need a hosting provider that is", 'WPDuplicator'), 
 						DUPLICATOR_CERTIFIED,
-						__("Duplicator Certified") );
+						__("Duplicator Approved") );
 				?><br/>			
 			</div>
 			
