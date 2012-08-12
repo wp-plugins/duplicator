@@ -10,6 +10,7 @@
 	//Settings
 	$email_me_enabled    = $GLOBALS['duplicator_opts']['email-me'] == "0" 	 	 ? false : true;
 	$duplicator_dbiconv	 = $GLOBALS['duplicator_opts']['dbiconv'] == "0" 		 ? false : true;
+	$rm_snapshot		 = $GLOBALS['duplicator_opts']['rm_snapshot'] == "0" 	 ? false : true;
 	
 	//INLINE DIALOG WINDOWS
 	require_once('javascript.php'); 
@@ -60,6 +61,7 @@ MAIN FORM: Lists all the backups 			-->
 					<span id="span-status"><?php _e("Ready to create new package", 'WPDuplicator' ) ?>.</span>
 					<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
 					<img id="img-status-progress" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/progress.gif" style="height:10px; width:46px; display:none" />
+					<span id="span-status-post" style="display:inline-block"></span>
 				</td>
 			</tr>
 		</table><div style="height:5px"></div>
@@ -78,7 +80,10 @@ MAIN FORM: Lists all the backups 			-->
 						<th><?php _e("Created", 'WPDuplicator') ?></th>
 						<th><?php _e("Size", 'WPDuplicator') ?></th>
 						<th><?php _e("Package Name", 'WPDuplicator') ?></th>
-						<th style="width:90%; text-align:right; padding-right:10px" colspan="2"><?php _e("Package Set",  'WPDuplicator')?></th>
+						<th style="width:90%; text-align:right; padding-right:10px" colspan="2">
+							<?php _e("Package Set",  'WPDuplicator')?>
+							<i style='font-size:10px'><?php _e("(Download Both)",  'WPDuplicator')?></i>
+						</th>
 					<?php endif; ?>	
 				</tr>
 			</thead>

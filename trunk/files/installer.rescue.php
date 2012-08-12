@@ -114,7 +114,7 @@ $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
 $GLOBALS["LOG_FILE_HANDLE"] = fopen($GLOBALS["LOG_FILE_NAME"], "w+");
 $GLOBALS["SEPERATOR1"]      = str_repeat("********", 10);
 $GLOBALS["LOG_LEVEL"]  	 	= isset($_POST['log_level']) ? $_POST['log_level'] : 1;
-$GLOBALS["MYSQL_CHARSET"] 	= 'UTF-8';
+$GLOBALS["MYSQL_CHARSET"] 	= 'utf8';
 $GLOBALS["CURRENT_ROOT_PATH"] = dirname(__FILE__);
 
 //POST PARMS
@@ -552,7 +552,7 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("server: {$_SERVER['SERVER_SOFTWARE']}");
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
 		dinstaller_log("document root 755: {$root_path_chown}");
-		dinstaller_log("secure build name: 501f2d2a1c37b9595_package");
+		dinstaller_log("secure build name: 502810c5eed691802_20120812_duplicatorplugin");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
 		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
@@ -590,8 +590,8 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
-		if ('501f2d2a1c37b9595_package_package.zip' != $zip_name) {
-			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   501f2d2a1c37b9595_package_package.zip  \nprocessed with: {$zip_name}  \n");
+		if ('502810c5eed691802_20120812_duplicatorplugin_package.zip' != $zip_name) {
+			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   502810c5eed691802_20120812_duplicatorplugin_package.zip  \nprocessed with: {$zip_name}  \n");
 			$package_set_warning = true;
 		}
 		
@@ -721,14 +721,17 @@ if ($action == 'dbconnect-test') {
 		//Possible fix for utf8 characters however Causing issues in large inserts
 		//mysqli_query($mysqli_conn, "SET NAMES 'utf8' ");   This seems to cause problems
 		if ($dbmysqlichar) {
-			mysqli_set_charset( $mysqli_conn, "{$GLOBALS['MYSQL_CHARSET']}");
-			dinstaller_log("MySql: charater set enabled to '{$GLOBALS['MYSQL_CHARSET']}'\n");
+			if (mysqli_set_charset( $mysqli_conn, "{$GLOBALS['MYSQL_CHARSET']}")) {
+				dinstaller_log("MySql: charater set loaded [{$GLOBALS['MYSQL_CHARSET']}]\n");
+			} else {
+				dinstaller_log("MySql: charater set error using [{$GLOBALS['MYSQL_CHARSET']}]\n"); 
+			}
 		}
 		
 		$profile_start = DInstaller::get_microtime();
 		$temp=0;
 		while ($temp < $sql_result_file_length) {
-			mysqli_query($mysqli_conn,  ($sql_result_file[$temp]));	
+			@mysqli_query($mysqli_conn,  ($sql_result_file[$temp]));	
 			$temp++;
 		}
 		$profile_end = DInstaller::get_microtime();
@@ -907,7 +910,7 @@ HTACCESS;
 		
 		$html .= "<b>Additional Notes:</b><br/>If you have made changes to your PHP files directly this might have an impact on your duplicated site.  Be sure all changes made will correspond to the sites new location.  Only the package (zip file) and the installer.php file should be in the directory where you are installing the site.  Please read through our knowledge base before submitting any issues.  If you have a large log file that needs evaluated please email the file, or attach it to a help ticket.<br/><br/>";
 		
-		$html .= "<b>Certified Hosts:</b><br/>Please check out our <a href='http://lifeinthegrid.com/duplicator-certified' target='_blank'>certified hosts page</a> as it has a list of hosting providers and themes that have been tested successfully with the Duplicator plugin.<br/><br/>";		
+		$html .= "<b>Approved Hosts:</b><br/>Please check out our <a href='http://lifeinthegrid.com/duplicator-certified' target='_blank'>approved hosts page</a> as it has a list of hosting providers and themes that have been tested successfully with the Duplicator plugin.<br/><br/>";		
 		
 		$html .= "</div>";
 		

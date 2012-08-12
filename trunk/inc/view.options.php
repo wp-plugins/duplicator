@@ -8,7 +8,8 @@
 			<ul>
 				<li><a href="#dup-tabs-opts-1"><?php _e("Package", 'WPDuplicator') ?></a></li>
 				<li><a href="#dup-tabs-opts-2"><?php _e("Installer", 'WPDuplicator') ?></a></li>
-				<!--li><a href="#dup-tabs-opts-3"><?php _e("FTP", 'WPDuplicator') ?></a></li>-->
+				<li><a href="#dup-tabs-opts-3"><?php _e("System", 'WPDuplicator') ?></a></li>
+				<!--li><a href="#dup-tabs-opts-4"><?php _e("FTP", 'WPDuplicator') ?></a></li>-->
 			</ul>
 			
 			<!-- =============================================================================
@@ -90,8 +91,8 @@
 			<!-- =============================================================================
 			TAB 2 INSTALLER -->
 			<div id="dup-tabs-opts-2">
-				<fieldset style="height:55px">
-					<legend><?php _e("Settings Defaults", 'WPDuplicator') ?></legend>
+				<fieldset style="height:70px">
+					<legend><b><?php _e("Settings Defaults", 'WPDuplicator') ?></b></legend>
 					<table width="100%" border="0" cellspacing="5" cellpadding="5">
 						<tr>
 							<td style="width:130px"><?php _e("Install URL", 'WPDuplicator') ?></td>
@@ -101,7 +102,7 @@
 				</fieldset><br/>
 			
 				<fieldset style="height:165px">
-					<legend><?php _e("Database Defaults", 'WPDuplicator') ?></legend>
+					<legend><b><?php _e("Database Defaults", 'WPDuplicator') ?></b></legend>
 					<table width="100%" border="0" cellspacing="5" cellpadding="5">
 					<tr>
 						<td style="width:130px"><?php _e("Host", 'WPDuplicator') ?></td>
@@ -120,8 +121,21 @@
 				<i style="font-size:11px"><?php _e("The installer can have these fields pre-filled at install time.  These values are optional.", 'WPDuplicator') ?></i>
 			</div>
 
-			
-			<!--div id="dup-tabs-opts-3">
+			<!-- =============================================================================
+			TAB 3 SYSTEM -->
+			<div id="dup-tabs-opts-3">
+				<fieldset style="height:100px">
+					<legend><b><?php _e("Uninstall Options", 'WPDuplicator') ?></b></legend>
+					
+						<input type="checkbox" name="rm_snapshot" id="rm_snapshot" <?php echo ($rm_snapshot) ? 'checked="checked"' : ''; ?> /> 
+						<label for="rm_snapshot"><?php _e("Delete Entire Snapshot Directory", 'WPDuplicator') ?></label><br/>
+						<i style='font-size:11px'><?php _e("Snapshot Directory", 'WPDuplicator'); ?>: <?php echo duplicator_safe_path(DUPLICATOR_SSDIR_PATH); ?></i><br/>
+					
+				</fieldset>
+			</div>
+
+
+			<!--div id="dup-tabs-opts-4">
 					FTP in Version 1.1
 					<table width="100%" border="0" cellspacing="5" cellpadding="5">
 					<tr>
