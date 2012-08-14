@@ -111,11 +111,17 @@ $GLOBALS["SERIAL_TABLES"]["%fwrite_wp_tableprefix%usermeta"] = array('column_id'
 
 $GLOBALS["SQL_FILE_NAME"] 	= "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
-$GLOBALS["LOG_FILE_HANDLE"] = fopen($GLOBALS["LOG_FILE_NAME"], "w+");
+
 $GLOBALS["SEPERATOR1"]      = str_repeat("********", 10);
 $GLOBALS["LOG_LEVEL"]  	 	= isset($_POST['log_level']) ? $_POST['log_level'] : 1;
 $GLOBALS["MYSQL_CHARSET"] 	= 'utf8';
 $GLOBALS["CURRENT_ROOT_PATH"] = dirname(__FILE__);
+
+//Update Permissions
+$chown_root_path = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
+$chown_log_path  = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}/{$GLOBALS['LOG_FILE_NAME']}", 0644);
+$GLOBALS["LOG_FILE_HANDLE"] = @fopen($GLOBALS["LOG_FILE_NAME"], "w+");
+
 
 //POST PARMS
 $action 	 	= isset($_POST['action']) 			? trim($_POST['action']) 		: null;
@@ -478,7 +484,6 @@ if ($action == 'dbconnect-test') {
 		} 
 		
 		//Detect file write access
-		$root_path_chown = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
 		if ($GLOBALS["LOG_FILE_HANDLE"] == false) {
 			die(MSG_ERR_FWRITE);
 		}
@@ -551,7 +556,8 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("mysql:" .  mysqli_get_server_info($mysqli_conn));
 		dinstaller_log("server: {$_SERVER['SERVER_SOFTWARE']}");
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
-		dinstaller_log("document root 755: {$root_path_chown}");
+		dinstaller_log("document root 755: " . var_export($chown_root_path, true));
+		dinstaller_log("log file 644: "      . var_export($chown_log_path, true));
 		dinstaller_log("secure build name: %fwrite_secure_name%");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
