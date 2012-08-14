@@ -99,7 +99,7 @@ class Duplicator_Zip
 					@flush();
 					$this->resursiveZip($fullpath);
 				}
-				else if(is_file($fullpath)) {
+				else if(is_file($fullpath) && is_readable($fullpath)) {
 					//Check filter extensions
 					if(!in_array(@pathinfo($file, PATHINFO_EXTENSION), $this->skipNames)) {
 						$localpath = str_replace($this->rootFolder, '', $folderPath);

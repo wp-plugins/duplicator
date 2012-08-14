@@ -111,11 +111,17 @@ $GLOBALS["SERIAL_TABLES"]["wpplug_usermeta"] = array('column_id' => 'umeta_id', 
 
 $GLOBALS["SQL_FILE_NAME"] 	= "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
-$GLOBALS["LOG_FILE_HANDLE"] = fopen($GLOBALS["LOG_FILE_NAME"], "w+");
+
 $GLOBALS["SEPERATOR1"]      = str_repeat("********", 10);
 $GLOBALS["LOG_LEVEL"]  	 	= isset($_POST['log_level']) ? $_POST['log_level'] : 1;
 $GLOBALS["MYSQL_CHARSET"] 	= 'utf8';
 $GLOBALS["CURRENT_ROOT_PATH"] = dirname(__FILE__);
+
+//Update Permissions
+$chown_root_path = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
+$chown_log_path  = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}/{$GLOBALS['LOG_FILE_NAME']}", 0644);
+$GLOBALS["LOG_FILE_HANDLE"] = @fopen($GLOBALS["LOG_FILE_NAME"], "w+");
+
 
 //POST PARMS
 $action 	 	= isset($_POST['action']) 			? trim($_POST['action']) 		: null;
@@ -478,7 +484,6 @@ if ($action == 'dbconnect-test') {
 		} 
 		
 		//Detect file write access
-		$root_path_chown = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
 		if ($GLOBALS["LOG_FILE_HANDLE"] == false) {
 			die(MSG_ERR_FWRITE);
 		}
@@ -551,8 +556,9 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("mysql:" .  mysqli_get_server_info($mysqli_conn));
 		dinstaller_log("server: {$_SERVER['SERVER_SOFTWARE']}");
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
-		dinstaller_log("document root 755: {$root_path_chown}");
-		dinstaller_log("secure build name: 502810c5eed691802_20120812_duplicatorplugin");
+		dinstaller_log("document root 755:" . var_export($chown_root_path, true));
+		dinstaller_log("log file 644: "     . var_export($chown_log_path, true));
+		dinstaller_log("secure build name: 502a709e094dc7861_package");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
 		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
@@ -590,8 +596,8 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
-		if ('502810c5eed691802_20120812_duplicatorplugin_package.zip' != $zip_name) {
-			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   502810c5eed691802_20120812_duplicatorplugin_package.zip  \nprocessed with: {$zip_name}  \n");
+		if ('502a709e094dc7861_package_package.zip' != $zip_name) {
+			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   502a709e094dc7861_package_package.zip  \nprocessed with: {$zip_name}  \n");
 			$package_set_warning = true;
 		}
 		
@@ -914,7 +920,7 @@ HTACCESS;
 		
 		$html .= "</div>";
 		
-		$html .= "<div class='connect'>For troubleshooting see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership</a> with us!</div>";
+		$html .= "<div class='connect'>For troubleshooting see our <a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> or submit a help ticket at <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a><br/> If this product has benefited you consider a <a href='http://lifeinthegrid.com/partner/' target='_blank'>partnership or donation</a>!</div>";
 		
 		$html .= "<div style='margin-top:4px'><i style='font-size:11px; color:#999'>installer version: {$GLOBALS['DUPLICATOR_INSTALLER_VERSION']} (rescue file)</i></div>";
 		

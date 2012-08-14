@@ -20,7 +20,7 @@
 	$logname  = basename($logs[0]);
 	$logurl   = get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' . $logname;
 	$logfound = (strlen($logname) > 0) ? true :false;
-	$file     = ($logfound) ? file_get_contents($logurl) : null;
+	$file     = ($logfound) ? file_get_contents($logurl) : "";
 	
 	$plugins_url = plugins_url();
 	$admin_url   = admin_url();
@@ -36,14 +36,16 @@
 </head>
 <body>
 
-	<?php if (! $logfound)  :	?>
+
+	<?php if (! $logfound || strlen($file) == 0)  :	?>
 		<div style="padding:20px">
-			<h2><?php _e("No log file found", 'WPDuplicator') ?>.</h2>
+			<h2><?php _e("Log file not found or unreadable", 'WPDuplicator') ?>.</h2>
 			
-			<?php _e("The log file for the Duplicator Plugin can be found in the directory wp-snapshots with the extension *.log", 'WPDuplicator') ?>.
+			<?php _e("The log file for the Duplicator Plugin can be found in the snapshots directory with the extension *.log", 'WPDuplicator') ?>.
 			<?php _e("If no log file is present the try to create a package", 'WPDuplicator') ?>.<br/><br/>
 			
 			<?php _e("Reasons for log file not showing", 'WPDuplicator') ?>: <br/>
+			- <?php _e("The web server does not support returning .log file extentions", 'WPDuplicator') ?>. <br/>
 			- <?php _e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'WPDuplicator') ?>. <br/>
 			- <?php _e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'WPDuplicator') ?>. <br/>
 		</div>
