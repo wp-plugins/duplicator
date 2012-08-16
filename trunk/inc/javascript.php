@@ -130,7 +130,7 @@ jQuery.noConflict()(function($) {
 			beforeSend: function() {Duplicator.startAjaxTimer(); },
 			complete: function() {Duplicator.endAjaxTimer(); },
 			success: function(data) { 
-				$('#opts-save-btn').val("<?php _e('Saving', 'WPDuplicator') ?>...");
+				$('#opts-save-btn').val("<?php _e('Saving', 'wpduplicator') ?>...");
 				window.location.reload();
 			},
 			error: function(data) { 
@@ -151,11 +151,11 @@ jQuery.noConflict()(function($) {
 		});
 		var list = arr.join(',');
 		if (list.length == 0) {
-			alert("<?php _e('Please select at least one package to delete.', 'WPDuplicator') ?>");
+			alert("<?php _e('Please select at least one package to delete.', 'wpduplicator') ?>");
 			return;
 		}
 		
-		var answer = confirm("<?php _e('Are you sure, you want to delete the selected package(s)?', 'WPDuplicator') ?>");
+		var answer = confirm("<?php _e('Are you sure, you want to delete the selected package(s)?', 'wpduplicator') ?>");
 		if (answer){
 			$.ajax({
 				type: "POST",
@@ -171,7 +171,7 @@ jQuery.noConflict()(function($) {
 				}
 			});
 		} else {
-			Duplicator.setStatus("<?php _e('Ready to create new package.', 'WPDuplicator') ?>");
+			Duplicator.setStatus("<?php _e('Ready to create new package.', 'wpduplicator') ?>");
 		}
 		if (event)
 			event.preventDefault(); 
@@ -186,7 +186,7 @@ jQuery.noConflict()(function($) {
 		
 		//Validate length test
 		if ($("input[name=package_name]").val().length <= 0) 	{
-			Duplicator.setStatus("<?php _e('Please enter a backup name.', 'WPDuplicator') ?>", "error");
+			Duplicator.setStatus("<?php _e('Please enter a backup name.', 'wpduplicator') ?>", "error");
 			return;
 		}
 		
@@ -194,7 +194,7 @@ jQuery.noConflict()(function($) {
 		var newstring = $("input[name=package_name]").val().replace(/ /g, "");
 		$("input[name=package_name]").val(newstring)
 		if ( ! /^[0-9A-Za-z|_]+$/.test($("input[name=package_name]").val())) {
-			Duplicator.setStatus("<?php _e('Alpanumeric characters only on package name', 'WPDuplicator') ?>", "error");
+			Duplicator.setStatus("<?php _e('Alpanumeric characters only on package name', 'wpduplicator') ?>", "error");
 			return;
 		}
 		
@@ -207,10 +207,10 @@ jQuery.noConflict()(function($) {
 			timeout: 10000000,
 			data: "duplicator_new="+ packname +"&action=duplicator_system_check",
 			beforeSend: function() {
-				Duplicator.setStatus("<?php _e("Evaluating WordPress Setup. Please Wait", 'WPDuplicator') ?>...", 'progress');
+				Duplicator.setStatus("<?php _e("Evaluating WordPress Setup. Please Wait", 'wpduplicator') ?>...", 'progress');
 			},
 			success: function(data) {
-				Duplicator.setStatus("<?php _e('Ready to create new package.', 'WPDuplicator') ?>");
+				Duplicator.setStatus("<?php _e('Ready to create new package.', 'wpduplicator') ?>");
 				if (data.Success) {
 					Duplicator.showCreateConfirmation(packname);
 				} else {
@@ -273,13 +273,13 @@ jQuery.noConflict()(function($) {
 		if ($.browser.msie) {$("div#wpwrap").removeClass('ie-simulated-overlay');}
 	}
 	$("#dialog-options").dialog( {autoOpen:false, height:610, width:750, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
-	$("#dup-dlg-system-check").dialog({autoOpen:false, height:600, width:700, create:Duplicator._dlgCreate, close:Duplicator._dlgClose, modal: true, buttons: {<?php _e("Cancel", 'WPDuplicator') ?>: function() { $(this).dialog("close");}}});
+	$("#dup-dlg-system-check").dialog({autoOpen:false, height:600, width:700, create:Duplicator._dlgCreate, close:Duplicator._dlgClose, modal: true, buttons: {<?php _e("Cancel", 'wpduplicator') ?>: function() { $(this).dialog("close");}}});
 	$("#dup-dlg-system-error").dialog({autoOpen:false, height:550, width:650, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });	
 	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:355, width:800, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });	
 	$("#dup-dlg-package-confirm").dialog(
 		{autoOpen:false, height:285, width:625, create:Duplicator._dlgCreate, close:Duplicator._dlgClose,
 		buttons: {
-				"<?php _e('Create Package Set', 'WPDuplicator') ?>" : function() {
+				"<?php _e('Create Package Set', 'wpduplicator') ?>" : function() {
 					$(this).dialog("close");
 					Duplicator.processCreateConfirmation(true);
 				},
@@ -319,12 +319,12 @@ jQuery.noConflict()(function($) {
 
 		$('#system-check-msg').animate({ scrollTop: $('#system-check-msg').attr("scrollHeight") }, 2000)
 		$("#dup-dlg-system-check").dialog("open");
-		Duplicator.setStatus("<?php _e('Ready to create new package.', 'WPDuplicator'); ?>");
+		Duplicator.setStatus("<?php _e('Ready to create new package.', 'wpduplicator'); ?>");
 	}	
 
 	//Performs the ajax request for a system check
 	Duplicator.getSystemCheck = function() {
-		Duplicator.setStatus("<?php _e('Checking System Status.  Please Wait!', 'WPDuplicator'); ?>", 'progress');
+		Duplicator.setStatus("<?php _e('Checking System Status.  Please Wait!', 'wpduplicator'); ?>", 'progress');
 		$.ajax({
 			type: "POST",
 			url: ajaxurl,
@@ -350,21 +350,21 @@ jQuery.noConflict()(function($) {
 			data: "action=duplicator_system_directory",
 			beforeSend: function() { 
 				Duplicator.startAjaxTimer(); 
-				var html = "<?php _e('Scanning Please Wait', 'WPDuplicator'); ?>... " + "<img src='<?php echo DUPLICATOR_PLUGIN_URL  ?>img/progress.gif' style='height:7px; width:46px;'  />" ;
+				var html = "<?php _e('Scanning Please Wait', 'wpduplicator'); ?>... " + "<img src='<?php echo DUPLICATOR_PLUGIN_URL  ?>img/progress.gif' style='height:7px; width:46px;'  />" ;
 				$('#dup-sys-scannow-data, #dup-dlg-package-confirm-scannow-data').html(html);	
 			},
 			complete: function() {Duplicator.endAjaxTimer(); },
 			success: function(data) {
-				var size    =  data.size 	|| "<?php _e('unreadable', 'WPDuplicator'); ?>";
-				var count   =  data.count 	|| "<?php _e('unreadable', 'WPDuplicator'); ?>";
-				var folders =  data.folders || "<?php _e('unreadable', 'WPDuplicator'); ?>";
-				var flag    =  (data.flag || size.indexOf("-") != -1) ? "<?php _e('*Scan Error', 'WPDuplicator'); ?>" : "";
-				var html    =  size + " " + count +  " <?php _e('Files', 'WPDuplicator'); ?>, " + folders +  " <?php _e('Folders', 'WPDuplicator'); ?> " + flag; 
+				var size    =  data.size 	|| "<?php _e('unreadable', 'wpduplicator'); ?>";
+				var count   =  data.count 	|| "<?php _e('unreadable', 'wpduplicator'); ?>";
+				var folders =  data.folders || "<?php _e('unreadable', 'wpduplicator'); ?>";
+				var flag    =  (data.flag || size.indexOf("-") != -1) ? "<?php _e('*Scan Error', 'wpduplicator'); ?>" : "";
+				var html    =  size + " " + count +  " <?php _e('Files', 'wpduplicator'); ?>, " + folders +  " <?php _e('Folders', 'wpduplicator'); ?> " + flag; 
 				$('#dup-sys-scannow-data, #dup-dlg-package-confirm-scannow-data').html("<i>" + html + "</i>");
 				
 			},
 			error: function(data)   {
-				$('#dup-sys-scannow-data, #dup-dlg-package-confirm-scannow-data').html("<?php _e('error scanning directory', 'WPDuplicator'); ?>");
+				$('#dup-sys-scannow-data, #dup-dlg-package-confirm-scannow-data').html("<?php _e('error scanning directory', 'wpduplicator'); ?>");
 				Duplicator.showSystemError('Duplicator.getSystemDirectory', data);
 			}
 		});
@@ -394,9 +394,9 @@ jQuery.noConflict()(function($) {
 	Duplicator.showQuickPath = function(db, install, pack) {
 		$("#dup-dlg-quick-path").dialog("open");
 		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + install + "\n\n%s:\n" + pack;', 
-		__("DATABASE",  'WPDuplicator'), 
-		__("PACKAGE", 'WPDuplicator'), 
-		__("INSTALLER",   'WPDuplicator')); 
+		__("DATABASE",  'wpduplicator'), 
+		__("PACKAGE", 'wpduplicator'), 
+		__("INSTALLER",   'wpduplicator')); 
 		?>
 		$("#dup-dlg-quick-path-data").val(msg);
 
@@ -415,11 +415,11 @@ jQuery.noConflict()(function($) {
 	Duplicator.showSystemError = function(action, xhrData) {
 		Duplicator.endAjaxTimer();
 		var time = Duplicator.AJAX_TIMER || 'not set';
-		var msg  = '<?php _e('AJAX Response', 'WPDuplicator') ?>' + ' ' + action + '<br/>';
+		var msg  = '<?php _e('AJAX Response', 'wpduplicator') ?>' + ' ' + action + '<br/>';
 		msg += "duration: " + time + " secs<br/>code: " + xhrData.status + "<br/>status: " + xhrData.statusText + "<br/>response: " +  xhrData.responseText;
 		$("#dup-system-err-msg2").html(msg);
 		$("#dup-dlg-system-error").dialog("open");
-		Duplicator.setStatus("<?php _e('Ready to create new package.', 'WPDuplicator'); ?>");
+		Duplicator.setStatus("<?php _e('Ready to create new package.', 'wpduplicator'); ?>");
 	}
 	
 	
@@ -433,12 +433,12 @@ jQuery.noConflict()(function($) {
 	
 	Duplicator.processCreateConfirmation = function(result) {
 		if (result) {
-			var msg = "<?php _e('Creating package may take several minutes. Please Wait... ', 'WPDuplicator'); ?>";
-			var postmsg = "<?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.openLog()'>[%s]</a>", 	__('Preview Log', 'WPDuplicator'));?>";
+			var msg = "<?php _e('Creating package may take several minutes. Please Wait... ', 'wpduplicator'); ?>";
+			var postmsg = "<?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.openLog()'>[%s]</a>", 	__('Preview Log', 'wpduplicator'));?>";
 			Duplicator.setStatus(msg, 'progress', postmsg);
 			Duplicator.createPackage($("input[name=package_name]").val());
 		} else {
-			Duplicator.setStatus("<?php _e('Ready to create new package.', 'WPDuplicator') ?>");
+			Duplicator.setStatus("<?php _e('Ready to create new package.', 'wpduplicator') ?>");
 		}
 		return result;
 	}

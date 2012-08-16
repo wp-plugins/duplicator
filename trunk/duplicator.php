@@ -192,16 +192,16 @@ if (is_admin() == true) {
 		$plugin = plugin_basename(__FILE__);
 		// create link
 		if ( $file == $plugin ) {
-			$links[] = '<a href="' . DUPLICATOR_HELPLINK . '" title="' . __( 'FAQ', 'WPDuplicator' ) . '" target="_blank">' . __( 'FAQ', 'WPDuplicator' ) . '</a>';
-			$links[] = '<a href="' . DUPLICATOR_GIVELINK . '" title="' . __( 'Partner', 'WPDuplicator' )  . '" target="_blank">' . __( 'Partner', 'WPDuplicator' )  . '</a>';
-			$links[] = '<a href="' . DUPLICATOR_CERTIFIED .'" title="' . __( 'Approved Hosts', 'WPDuplicator'  ) . '"  target="_blank">' . __( 'Approved Hosts', 'WPDuplicator'  ) . '</a>';
+			$links[] = '<a href="' . DUPLICATOR_HELPLINK . '" title="' . __( 'FAQ', 'wpduplicator' ) . '" target="_blank">' . __( 'FAQ', 'wpduplicator' ) . '</a>';
+			$links[] = '<a href="' . DUPLICATOR_GIVELINK . '" title="' . __( 'Partner', 'wpduplicator' )  . '" target="_blank">' . __( 'Partner', 'wpduplicator' )  . '</a>';
+			$links[] = '<a href="' . DUPLICATOR_CERTIFIED .'" title="' . __( 'Approved Hosts', 'wpduplicator'  ) . '"  target="_blank">' . __( 'Approved Hosts', 'wpduplicator'  ) . '</a>';
 			return $links;
 		}
 		return $links;
 	}
 	
 	//HOOKS & ACTIONS
-	load_plugin_textdomain('WPDuplicator' , FALSE, basename( dirname( __FILE__ ) ) . '/lang/' );
+	load_plugin_textdomain('wpduplicator' , FALSE, basename( dirname( __FILE__ ) ) . '/lang/' );
 	register_activation_hook(__FILE__ ,	    'duplicator_activate');
 	register_deactivation_hook(__FILE__ ,	'duplicator_deactivate');
 	register_uninstall_hook(__FILE__ , 		'duplicator_uninstall');
@@ -245,9 +245,9 @@ if (is_admin() == true) {
 	function duplicator_menu() {	
 		//Main Menu
 		$page_main = add_menu_page('Duplicator', 'Duplicator', "import", basename(__FILE__), 'duplicator_main_page', plugins_url('duplicator/img/create.png'));
-		add_submenu_page(basename(__FILE__), __('Dashboard', 'WPDuplicator'),  __('Dashboard', 'WPDuplicator'), "import" , basename(__FILE__), 'duplicator_main_page');
+		add_submenu_page(basename(__FILE__), __('Dashboard', 'wpduplicator'),  __('Dashboard', 'wpduplicator'), "import" , basename(__FILE__), 'duplicator_main_page');
 		//Sub Menus
-		$page_diag = add_submenu_page(basename(__FILE__), __('Diagnostics', 'WPDuplicator'), __('Diagnostics', 'WPDuplicator'), 'import', 'duplicator_diag_page', 'duplicator_diag_page');
+		$page_diag = add_submenu_page(basename(__FILE__), __('Diagnostics', 'wpduplicator'), __('Diagnostics', 'wpduplicator'), 'import', 'duplicator_diag_page', 'duplicator_diag_page');
 
 		//Apply scripts and styles
 		add_action('admin_print_scripts-' . $page_main, 'duplicator_scripts');
@@ -278,7 +278,7 @@ if (is_admin() == true) {
 		if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
 		 
 		if ($file == $this_plugin){
-			$settings_link = '<a href="admin.php?page=duplicator.php">'. __("Manage", "WPDuplicator") .'</a>';
+			$settings_link = '<a href="admin.php?page=duplicator.php">'. __("Manage", 'wpduplicator') .'</a>';
 		    array_unshift($links, $settings_link);
 		}
 		return $links;
