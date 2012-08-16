@@ -556,9 +556,9 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("mysql:" .  mysqli_get_server_info($mysqli_conn));
 		dinstaller_log("server: {$_SERVER['SERVER_SOFTWARE']}");
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
-		dinstaller_log("document root 755:" . var_export($chown_root_path, true));
-		dinstaller_log("log file 644: "     . var_export($chown_log_path, true));
-		dinstaller_log("secure build name: 502a709e094dc7861_package");
+		dinstaller_log("document root 755: " . var_export($chown_root_path, true));
+		dinstaller_log("log file 644: "      . var_export($chown_log_path, true));
+		dinstaller_log("secure build name: 502d025cea67c4108_package");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
 		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
@@ -596,8 +596,8 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
-		if ('502a709e094dc7861_package_package.zip' != $zip_name) {
-			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   502a709e094dc7861_package_package.zip  \nprocessed with: {$zip_name}  \n");
+		if ('502d025cea67c4108_package_package.zip' != $zip_name) {
+			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   502d025cea67c4108_package_package.zip  \nprocessed with: {$zip_name}  \n");
 			$package_set_warning = true;
 		}
 		
@@ -862,7 +862,7 @@ if ($action == 'dbconnect-test') {
 		
 		@unlink('database.sql');
 		
-		$currdata = parse_url(""); 
+		$currdata = parse_url("http://localhost/projects/wpplug_duplicator"); 
 		$newdata  = parse_url($new_url);
 		$currpath = dinstaller_add_slash(isset($currdata['path']) ? $currdata['path'] : "");
 		$newpath  = dinstaller_add_slash(isset($newdata['path'])  ? $newdata['path']  : "");
@@ -975,7 +975,7 @@ HTACCESS;
 				<tr valign="top">
 					<td style="width:130px">Package Url</td>
 					<td>
-						<input type="text" name="current_url" id="current_url" value="" readonly="true"  class="readonly" />
+						<input type="text" name="current_url" id="current_url" value="http://localhost/projects/wpplug_duplicator" readonly="true"  class="readonly" />
 						<a href="javascript:editNewURL()" id="edit_current_url" style="font-size:12px">edit</a>
 					
 					</td>

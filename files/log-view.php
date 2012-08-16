@@ -97,16 +97,16 @@
 			<tr>
 				<td><div id="icon-tools" class="icon32" style="height:34px; width:34px">&nbsp;</div></td>
 				<td style='white-space:nowrap'>
-					<b style='font-size:18px'><?php _e("Duplicator: Create Package Log", 'WPDuplicator') ?></b> <br/>
+					<b style='font-size:18px'><?php _e("Duplicator: Create Package Log", 'wpduplicator') ?></b> <br/>
 					
 					<i style='font-size:12px'>
-						<?php _e("Processing may take several minutes, please wait for progress bar to complete on the main status bar", 'WPDuplicator') ?>.<br/>
+						<?php _e("Processing may take several minutes, please wait for progress bar to complete on the main status bar", 'wpduplicator') ?>.<br/>
 						<?php echo "log: {$logurl}" ?>
 					</i>
 				</td>
 				<td style='width:100%; text-align:right; padding-right:20px; white-space:nowrap'>
-					<input type='checkbox' id="AutoRefresh" /> <label for="AutoRefresh" style='white-space:nowrap'><?php _e("Auto Refresh", 'WPDuplicator') ?> [<span id="spanCount"></span>]</label> <br/>
-					<button id="Refresh" style="margin: 8px 5px 0px 0px"><?php _e("Refresh", 'WPDuplicator') ?></button>
+					<input type='checkbox' id="AutoRefresh" /> <label for="AutoRefresh" style='white-space:nowrap'><?php _e("Auto Refresh", 'wpduplicator') ?> [<span id="spanCount"></span>]</label> <br/>
+					<button id="Refresh" style="margin: 8px 5px 0px 0px"><?php _e("Refresh", 'wpduplicator') ?></button>
 				</td>
 			</tr>
 			<tr><td colspan='3'><hr size='1' /></td></tr>
@@ -114,8 +114,8 @@
 		
 		<iframe id="log-data" name="logData" src="log-read.php"></iframe><br/><br/>
 		<i style='font-size:12px'>
-			<a href="<?php echo DUPLICATOR_HELPLINK ?>" target="_blank"><?php _e("Support Center", 'WPDuplicator') ?></a> &nbsp;
-			<?php _e("Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data.", 'WPDuplicator') ?>
+			<a href="<?php echo DUPLICATOR_HELPLINK ?>" target="_blank"><?php _e("Support Center", 'wpduplicator') ?></a> &nbsp;
+			<?php _e("Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data.", 'wpduplicator') ?>
 		</i>
 	</div>
 

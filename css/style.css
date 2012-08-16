@@ -1,7 +1,7 @@
 
 input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
 input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
-fieldset {border:1px solid gray; padding:0px 5px 0px 5px;}
+fieldset {border:1px solid gray; padding:0px 5px 10px 10px; }
 label {font-size:13px !important}
 
 .no-select {user-select: none; -o-user-select:none;  -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none;}
@@ -36,7 +36,7 @@ button.dup-dlg-quick-path-download-link {white-space:nowrap}
 
 /*DIALOG: Options view*/
 form#form-duplicator-opts input[type=checkbox] {margin-top:3px}
-form#form-duplicator-opts fieldset {border-radius:4px; border:1px solid silver; padding:5px 10px 5px 10px;  line-height:23px}
+form#form-duplicator-opts fieldset {border-radius:4px; border:1px solid silver;  line-height:23px}
 div#dup-tabs-opts {height:500px}
 input.txt-settings {width:450px}
 input.btn-save-opts {width:80px}

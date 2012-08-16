@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Duplicator v0.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-16 06:57-0700\n"
-"PO-Revision-Date: 2012-08-16 14:01:59+0000\n"
+"POT-Creation-Date: 2012-08-16 06:56-0700\n"
+"PO-Revision-Date: 2012-08-16 14:20:47+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,123 +14,122 @@ msgstr ""
 "X-Poedit-Country: \n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
-"X-Poedit-Basepath: ./\n"
+"X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
-"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
 #: duplicator.php:195
 #@ wpduplicator
 msgid "FAQ"
-msgstr "DUK"
+msgstr "Häufig gestellte Fragen"
 
 #: duplicator.php:196
-#, fuzzy
 #@ wpduplicator
 msgid "Partner"
-msgstr "Tapkite mūsų partneriais"
+msgstr ""
 
 #: duplicator.php:197
+#, fuzzy
 #@ wpduplicator
 msgid "Approved Hosts"
-msgstr ""
+msgstr "Zertifizierte Hosts"
 
 #: duplicator.php:248
 #@ wpduplicator
 msgid "Dashboard"
-msgstr "Prietaisų Skydas"
+msgstr "Dashboard"
 
 #: duplicator.php:250
 #@ wpduplicator
 msgid "Diagnostics"
-msgstr "diagnostika"
+msgstr "Diagnose"
 
 #: duplicator.php:281
 #@ wpduplicator
 msgid "Manage"
-msgstr "Valdyti"
+msgstr "Verwalten"
 
 #: files/log-read.php:42
 #@ wpduplicator
 msgid "Log file not found or unreadable"
-msgstr ""
+msgstr "Log-Datei nicht gefunden oder nicht lesbar"
 
 #: files/log-read.php:44
+#, fuzzy
 #@ wpduplicator
 msgid "The log file for the Duplicator Plugin can be found in the snapshots directory with the extension *.log"
-msgstr ""
+msgstr "Die Log-Datei für das Plugin Duplicator befindet sichim Verzeichnis wp-snapshots mit der Endung *.log"
 
 #: files/log-read.php:45
 #@ wpduplicator
 msgid "If no log file is present the try to create a package"
-msgstr "Jei nėra žurnalo failas yra pabandyti sukurti paketą"
+msgstr "Wenn keine Log-Datei vorhanden ist, erstelle zuerst ein Archiv"
 
 #: files/log-read.php:47
 #@ wpduplicator
 msgid "Reasons for log file not showing"
-msgstr "Priežastys, dėl kurių log failą nerodomas"
+msgstr "Die Gründe für die Log-Datei werden nicht angezeigt"
 
 #: files/log-read.php:48
 #@ wpduplicator
 msgid "The web server does not support returning .log file extentions"
-msgstr ""
+msgstr "Der Webserver unterstützt keine wiederkehrenden .log-Datei-Erweiterungen"
 
 #: files/log-read.php:49
 #@ wpduplicator
 msgid "The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755"
-msgstr "Snapshots katalogas neturi tinkamų teisių, rašyti failus. Pabandykite nustatyti teises į 755"
+msgstr "In das Verzeichnis wp-snapshots kann nich geschrieben werden. Bitte setze die Berechtigung auf 755"
 
 #: files/log-read.php:50
 #@ wpduplicator
 msgid "The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details"
-msgstr "Procesą, kad PHP veikia pagal neturi pakankamai teisių kurti failus. Prašome susisiekti su savo daugiau informacijos prieglobos paslaugų teikėjas"
+msgstr "Der Prozess hat nicht genügend Berechtigungen, um Dateien zu erstellen. Bitte kontaktiere deinen Hosting-Provider für weitere Informationen"
 
 #: files/log-view.php:100
-#, fuzzy
 #@ wpduplicator
 msgid "Duplicator: Create Package Log"
-msgstr "Sukurti Paketą"
+msgstr "Duplicator: Erstellen eines Archiv Log"
 
 #: files/log-view.php:103
 #@ wpduplicator
 msgid "Processing may take several minutes, please wait for progress bar to complete on the main status bar"
-msgstr "Tvarkymas gali užtrukti keletą minučių, prašome palaukti pažangos juostoje baigti pagrindinės būsenos juostoje"
+msgstr "Die Verarbeitung kann einige Minuten dauern. Bitte warten, bis der Fortschrittsbalken verschwunden ist."
 
 #: files/log-view.php:108
 #@ wpduplicator
 msgid "Auto Refresh"
-msgstr "Automatinio atnaujinimo"
+msgstr "Automatisch neu laden"
 
 #: files/log-view.php:109
 #@ wpduplicator
 msgid "Refresh"
-msgstr "atnaujinti"
+msgstr "Neu laden"
 
 #: files/log-view.php:117
-#, fuzzy
 #@ wpduplicator
 msgid "Support Center"
-msgstr "Aplankykite Pagalbos Centrą"
+msgstr "Support-Center"
 
 #: files/log-view.php:118
 #@ wpduplicator
 msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
-msgstr "NEGALIMA skelbti šiuos duomenis į WordPress.org forumuose viešosiose vietose, pavyzdžiui, kaip ji yra atskirti slaptus duomenis jų rinkimo."
+msgstr "Diesen Inhalt NICHT an öffentliche Stellen wie die WordPress.org Foren eingeben, da er sensible Daten enthält."
 
 #: inc/javascript.php:133
 #@ wpduplicator
 msgid "Saving"
-msgstr "Įrašoma"
+msgstr "Sichern"
 
 #: inc/javascript.php:154
 #@ wpduplicator
 msgid "Please select at least one package to delete."
-msgstr "Prašome pasirinkt bent vieną paketą, kurį norite ištrinti."
+msgstr "Bitte wähle mindestens ein Archiv zum Löschen."
 
 #: inc/javascript.php:158
 #@ wpduplicator
 msgid "Are you sure, you want to delete the selected package(s)?"
-msgstr "Ar tikrai norite ištrinti pažymėtus paketus?"
+msgstr "Ausgewählte Archive wirklich löschen?"
 
 #: inc/javascript.php:174
 #: inc/javascript.php:213
@@ -139,81 +138,79 @@ msgstr "Ar tikrai norite ištrinti pažymėtus paketus?"
 #: inc/javascript.php:441
 #@ wpduplicator
 msgid "Ready to create new package."
-msgstr "Galima sukurti naują paketą."
+msgstr "Bereit für ein neues Archiv zu erstellen."
 
 #: inc/javascript.php:189
 #@ wpduplicator
 msgid "Please enter a backup name."
-msgstr "Prašome įvesti atsarginės kopijos pavadinimą."
+msgstr "Bitte einen Namen für die Sicherungskopie eingeben."
 
 #: inc/javascript.php:197
 #@ wpduplicator
 msgid "Alpanumeric characters only on package name"
-msgstr "Paketo vardą turi sudaryti tik skaitiniai ir raidiniai simboliai"
+msgstr "Nur Alphanumerische Zeichen erlaubt"
 
 #: inc/javascript.php:210
 #@ wpduplicator
 msgid "Evaluating WordPress Setup. Please Wait"
-msgstr "Įvertinamas WordPress Diegimas. Prašome Palaukti"
+msgstr "Auswerten der WordPress-Einstellungen. Bitte warten"
 
 #: inc/javascript.php:276
 #@ wpduplicator
 msgid "Cancel"
-msgstr "atšaukti"
+msgstr "Abbrechen"
 
 #: inc/javascript.php:282
-#, fuzzy
 #@ wpduplicator
 msgid "Create Package Set"
-msgstr "Sukurti Paketą"
+msgstr "Erzeuge Archiv Set"
 
 #: inc/javascript.php:327
 #@ wpduplicator
 msgid "Checking System Status.  Please Wait!"
-msgstr "Sistemos būsenos tikrinimas. Prašome palaukti!"
+msgstr "Prüfen des System-Status. Bitte warten!"
 
 #: inc/javascript.php:353
 #@ wpduplicator
 msgid "Scanning Please Wait"
-msgstr "Skenavimo Prašome palaukti"
+msgstr "Scannen. Bitte warten"
 
 #: inc/javascript.php:358
 #: inc/javascript.php:359
 #: inc/javascript.php:360
 #@ wpduplicator
 msgid "unreadable"
-msgstr "EnglishLithuanianHebrewneįskaitomas"
+msgstr "unleserlich"
 
 #: inc/javascript.php:361
 #@ wpduplicator
 msgid "*Scan Error"
-msgstr ""
+msgstr "* Scan-Fehler"
 
 #: inc/javascript.php:362
-#, fuzzy
 #@ wpduplicator
 msgid "Files"
-msgstr "žlugti"
+msgstr "Dateien"
 
 #: inc/javascript.php:362
 #@ wpduplicator
 msgid "Folders"
-msgstr "aplankai"
+msgstr "Verzeichnisse"
 
 #: inc/javascript.php:367
 #@ wpduplicator
 msgid "error scanning directory"
-msgstr "klaida skenavimas katalogas"
+msgstr "Fehler beim Scannen der Verzeichnisse"
 
 #: inc/javascript.php:397
 #@ wpduplicator
 msgid "DATABASE"
-msgstr "DUOMENŲ BAZĖ"
+msgstr "Datenbank"
 
 #: inc/javascript.php:398
 #@ wpduplicator
 msgid "PACKAGE"
-msgstr "PAKUOTĖS"
+msgstr "Archive"
 
 #: inc/javascript.php:399
 #@ wpduplicator
@@ -221,15 +218,15 @@ msgid "INSTALLER"
 msgstr ""
 
 #: inc/javascript.php:418
-#, fuzzy
 #@ wpduplicator
 msgid "AJAX Response"
-msgstr "AJAX atsakas tekstas:"
+msgstr "AJAX-Antwort"
 
 #: inc/javascript.php:436
+#, fuzzy
 #@ wpduplicator
 msgid "Creating package may take several minutes. Please Wait... "
-msgstr ""
+msgstr "Dies kann einige Minuten dauern. Bitte warten ..."
 
 #: inc/javascript.php:437
 #@ wpduplicator
@@ -239,90 +236,88 @@ msgstr ""
 #: inc/page.main.php:31
 #@ wpduplicator
 msgid "By"
-msgstr "pagal"
+msgstr "von"
 
 #: inc/page.main.php:38
 #: inc/page.main.php:82
 #@ wpduplicator
 msgid "Package Name"
-msgstr "Paketo Pavadinimas"
+msgstr "Archiv-Name"
 
 #: inc/page.main.php:41
 #@ wpduplicator
 msgid "Create Package"
-msgstr "Sukurti Paketą"
+msgstr "Archiv erstellen"
 
 #: inc/page.main.php:42
 #@ wpduplicator
 msgid "Delete selected package(s)"
-msgstr "Ištrinti pažymėtus paketus"
+msgstr "Ausgewählte Archive löschen"
 
 #: inc/page.main.php:45
 #@ wpduplicator
 msgid "Options"
-msgstr "Parinktys"
+msgstr "Optionen"
 
 #: inc/page.main.php:46
-#, fuzzy
 #@ wpduplicator
 msgid "System Check"
-msgstr "Sistema"
+msgstr "System-Check"
 
 #: inc/page.main.php:47
 #@ wpduplicator
 msgid "Show Create Log"
-msgstr "Rodyti Sukurti Prisijungti"
+msgstr "Log-Datei ansehen"
 
 #: inc/page.main.php:50
 #@ wpduplicator
 msgid "Help"
-msgstr "Pagalba"
+msgstr "Hilfe"
 
 #: inc/page.main.php:51
 #@ wpduplicator
 msgid "Partner with us"
-msgstr "Tapkite mūsų partneriais"
+msgstr "Unterstütze uns..."
 
 #: inc/page.main.php:60
 #@ wpduplicator
 msgid "Status"
-msgstr "Būsena"
+msgstr ""
 
 #: inc/page.main.php:61
 #@ wpduplicator
 msgid "Ready to create new package"
-msgstr "Galima sukurti naują paketą"
+msgstr "Bereit zum Erstellen eines neuen Archivs"
 
 #: inc/page.main.php:77
 #@ wpduplicator
 msgid "Select all packages"
-msgstr "Pažymėti visus paketus"
+msgstr "Alle Archive auswählen"
 
 #: inc/page.main.php:78
 #@ wpduplicator
 msgid "Information"
-msgstr "informacija"
+msgstr ""
 
 #: inc/page.main.php:79
 #@ wpduplicator
 msgid "Owner"
-msgstr "Savininkas"
+msgstr "Besitzer"
 
 #: inc/page.main.php:80
 #@ wpduplicator
 msgid "Created"
-msgstr "Sukurta"
+msgstr "Erstellt"
 
 #: inc/page.main.php:81
 #@ wpduplicator
 msgid "Size"
-msgstr "Dydis"
+msgstr "Größe"
 
 #: inc/page.main.php:84
-#, fuzzy
 #@ wpduplicator
 msgid "Package Set"
-msgstr "Paketo Pavadinimas"
+msgstr "Archiv Set"
 
 #: inc/page.main.php:85
 #@ wpduplicator
@@ -333,119 +328,115 @@ msgstr ""
 #: inc/page.main.php:144
 #@ wpduplicator
 msgid "View"
-msgstr "peržiūrėti"
+msgstr "Ansicht"
 
 #: inc/page.main.php:122
 #: inc/view.options.php:10
 #@ wpduplicator
 msgid "Installer"
-msgstr "Diegiklis"
+msgstr ""
 
 #: inc/page.main.php:123
 #: inc/page.main.php:152
 #: inc/view.options.php:9
 #@ wpduplicator
 msgid "Package"
-msgstr "Paketas"
+msgstr "Archiv"
 
 #: inc/page.main.php:129
-#, fuzzy
 #@ wpduplicator
 msgid "Version"
-msgstr "Versija"
+msgstr ""
 
 #: inc/page.main.php:130
-#, fuzzy
 #@ wpduplicator
 msgid "Secure Name"
-msgstr "Paketo Pavadinimas"
+msgstr "Sichere Namen"
 
 #: inc/page.main.php:131
-#, fuzzy
 #@ wpduplicator
 msgid "Download SQL File"
-msgstr "Parsisiųsti šį diegiklį"
+msgstr "SQL-Datei herunterladen"
 
 #: inc/page.main.php:132
 #@ wpduplicator
 msgid "Show Download Links"
-msgstr "Rodyti Parsisiųsti Nuorodos"
+msgstr "Zeige Download-Links"
 
 #: inc/page.main.php:158
-#, fuzzy
 #@ wpduplicator
 msgid "Legacy Version"
-msgstr "Papildinio Versija"
+msgstr ""
 
 #: inc/page.main.php:161
 #@ wpduplicator
 msgid "This package was built with a version that is no longer supported.  It is highly recommended that this package be deleted.  For more details see the"
-msgstr "Šis paketas buvo pastatytas su versija, kad nebepalaikomas. Labai rekomenduojama, kad šis paketas išbraukiamas. Dėl išsamesnės informacijos žr."
+msgstr "Dieses Archiv wurde mit einer früheren Version erstellt, welche nicht mehr unterstützt wird. Es wird dringend empfohlen, dieses Archiv zu löschen. Für weitere Details siehe die"
 
 #: inc/page.main.php:162
 #@ wpduplicator
 msgid "Online FAQs"
-msgstr "Prisijungę DUK"
+msgstr ""
 
 #: inc/page.main.php:174
 #@ wpduplicator
 msgid "No packages found"
-msgstr "Nerasta jokių paketų"
+msgstr "Keine Archive gefunden"
 
 #: inc/page.main.php:175
 #@ wpduplicator
 msgid "To create a new package, enter a name and click the create button "
-msgstr "Kad sukurtumėte naują paketą, įveskite pavadinimą ir paspauskite sukūrimo mygtuką"
+msgstr "Um ein neues Archiv zu erstellen, gib einen Archiv-Namen ein und klicke auf die Schaltfläche Erstellen"
 
 #: inc/page.main.php:177
 #@ wpduplicator
 msgid "Check Your"
-msgstr "Patikrinkite Jūsų"
+msgstr "Überprüfe die"
 
 #: inc/page.main.php:178
 #@ wpduplicator
 msgid "servers compatability"
-msgstr "serverių suderinamumą"
+msgstr "Server-Kompatibilität"
 
 #: inc/page.main.php:179
 #@ wpduplicator
 msgid "with the duplicator"
-msgstr "su duplicator"
+msgstr "mit dem Duplicator"
 
 #: inc/page.main.php:180
 #@ wpduplicator
 msgid "This process will backup all your files and database"
-msgstr "Šis procesas sukurs visų Jūsų rinkmenų ir duomenų bazės atsargines kopijas"
+msgstr "Dieser Prozess erstellt ein Backup aller Dateien und der Datenbank."
 
 #: inc/page.main.php:181
 #@ wpduplicator
 msgid "Creating a package may take several minutes if you have a large site"
-msgstr "Paketo sukūrimas gali užtrukti kelias minutes, jeigu Jūsų svetainė pakankamai didelė"
+msgstr "Bei großen Websites kann das Erstellen eines Archivs einige Minuten dauern"
 
 #: inc/page.main.php:182
 #@ wpduplicator
 msgid "This window should remain open for the process to complete"
-msgstr "Šis langas turėtų likti atidarytas, kad sistema galėtų užbaigti procesus"
+msgstr "Dieses Fenster sollte bis zum Abschluss des Prozesses offen bleiben"
 
 #: inc/page.main.php:183
 #@ wpduplicator
 msgid "Please be patient while we work through this Beta version"
-msgstr "Prašome būti kantriam kol ištobulinsime šią Beta versiją"
+msgstr "Bitte etwas Geduld; dies ist eine Beta-Version"
 
 #: inc/page.main.php:184
 #@ wpduplicator
 msgid "Please report any issues to"
-msgstr "Prašome pranešti apie bet kokias problemas"
+msgstr "Bitte berichte alle Probleme an"
 
 #: inc/page.main.php:201
 #@ wpduplicator
 msgid "Total Storage Used"
-msgstr "Bendra Sandėliavimo Naudota"
+msgstr "Gesamter Speicherplatz"
 
 #: inc/view.options.php:4
 #@ wpduplicator
 msgid "Duplicator Options"
-msgstr "kopijavimo nustatymai"
+msgstr "Duplicator-Einstellungen"
 
 #: inc/view.options.php:11
 #@ wpduplicator
@@ -455,136 +446,128 @@ msgstr ""
 #: inc/view.options.php:12
 #@ wpduplicator
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 #: inc/view.options.php:22
 #@ wpduplicator
 msgid "Processing"
-msgstr "Vykdoma"
+msgstr "Verarbeitung"
 
 #: inc/view.options.php:36
 #@ wpduplicator
 msgid "Max Time"
-msgstr "Maksimalus Laikas"
+msgstr "Maximale Zeit"
 
 #: inc/view.options.php:36
 #@ wpduplicator
 msgid "seconds"
-msgstr "sekundės"
+msgstr "Sekunden"
 
 #: inc/view.options.php:37
 #@ wpduplicator
 msgid "Max Memory"
-msgstr "Maksimali Atmintis"
+msgstr "Maximaler Arbeitsspeicher"
 
 #: inc/view.options.php:45
-#, fuzzy
 #@ wpduplicator
 msgid "Email when completed"
-msgstr "Kai bus baigta, pranešti elektroniniu paštu"
+msgstr "Email senden wenn vollständig"
 
 #: inc/view.options.php:46
 #@ wpduplicator
 msgid "WP-Admin email is included.  Add extra emails semicolon separated."
-msgstr "WP-Administratoriaus el.paštas. Papildykite laiškus kabliataškiu atskirti."
+msgstr "Email an WP-Admin ist enthalten. Weitere Empfänger mit Semikolon getrennt einfügen."
 
 #: inc/view.options.php:55
 #@ wpduplicator
 msgid "Exclusion Filters"
-msgstr "Pašalinimo filtrai"
+msgstr "Ausschlusskriterien"
 
 #: inc/view.options.php:57
-#, fuzzy
 #@ wpduplicator
 msgid "Directories"
-msgstr "Katalogo Išskyrimas"
+msgstr "Verzeichnisse"
 
 #: inc/view.options.php:59
-#, fuzzy
 #@ wpduplicator
 msgid "Root Path"
-msgstr "Universaliosios nuorodos Adresas"
+msgstr "Root-Pfad"
 
 #: inc/view.options.php:61
-#, fuzzy
 #@ wpduplicator
 msgid "File extensions"
-msgstr "failų leidimai"
+msgstr "Datei-Erweiterungen"
 
 #: inc/view.options.php:64
-#, fuzzy
 #@ wpduplicator
 msgid "Separate all filters by semicolon"
-msgstr "Pritaikyti kelią, atskirtą kabliataškiais"
+msgstr "Trenne alle Filter durch ein Semikolon"
 
 #: inc/view.options.php:69
-#, fuzzy
 #@ wpduplicator
 msgid "Database Encoding"
-msgstr "Duomenų bazės Numatymai"
+msgstr "Datenbank-Encoding"
 
 #: inc/view.options.php:72
-#, fuzzy
 #@ wpduplicator
 msgid "Enable character conversion encoding"
-msgstr "Suaktyvinti duomenų bazės kodavimą"
+msgstr "Aktiviere die Konvertierung der Zeichen-Kodierung"
 
 #: inc/view.options.php:77
 #@ wpduplicator
 msgid "From"
-msgstr "nuo"
+msgstr "Von"
 
 #: inc/view.options.php:78
 #@ wpduplicator
 msgid "to"
-msgstr "į"
+msgstr "zu"
 
 #: inc/view.options.php:79
-#, fuzzy
 #@ wpduplicator
 msgid "Disable this option for extended or double byte character sets"
-msgstr "Prašome išjungti šią parinktį, tarptautinių simbolių rinkinių"
+msgstr "Deaktiviere diese Option für erweiterte oder Doppel-Byte Zeichensätze"
 
 #: inc/view.options.php:86
 #@ wpduplicator
 msgid "Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)"
-msgstr "Turite problemų įrašant šią parinkį? Laikinai išjungti visas 'Objektų Spartinančiasias atmintines (pvz. W3C Total Object Cache)"
+msgstr "Fragen zu diesen Optionen? Deaktiviere vorübergehend alle Cache-Tools (z. B. W3C Total Object Cache)"
 
 #: inc/view.options.php:96
 #@ wpduplicator
 msgid "Settings Defaults"
-msgstr "Nuostatų Numatymai"
+msgstr "Grundeinstellungen"
 
 #: inc/view.options.php:99
 #@ wpduplicator
 msgid "Install URL"
-msgstr "Įdiegimo Universalioji nuoroda"
+msgstr ""
 
 #: inc/view.options.php:106
 #@ wpduplicator
 msgid "Database Defaults"
-msgstr "Duomenų bazės Numatymai"
+msgstr "Datenbank-Voreinstellungen"
 
 #: inc/view.options.php:109
 #@ wpduplicator
 msgid "Host"
-msgstr "Serveris"
+msgstr ""
 
 #: inc/view.options.php:113
 #: inc/view.system.php:8
 #@ wpduplicator
 msgid "Name"
-msgstr "Pavadinimas"
+msgstr ""
 
 #: inc/view.options.php:117
 #@ wpduplicator
 msgid "User"
-msgstr "Vartotojas"
+msgstr "Benutzer"
 
 #: inc/view.options.php:122
 #@ wpduplicator
 msgid "The installer can have these fields pre-filled at install time.  These values are optional."
-msgstr "Diegiklis gali automatiškai užpildyti šiuos langus įdiegimo metu. Šios reikšmės yra pasirinktinos."
+msgstr "Der Installer kann diese Felder vor der Installation bereits ausgefüllt haben. Diese Werte sind optional."
 
 #: inc/view.options.php:129
 #@ wpduplicator
@@ -597,128 +580,122 @@ msgid "Delete Entire Snapshot Directory"
 msgstr ""
 
 #: inc/view.options.php:133
+#, fuzzy
 #@ wpduplicator
 msgid "Snapshot Directory"
-msgstr ""
+msgstr "Cache-Verzeichnis gefunden"
 
 #: inc/view.options.php:161
 #@ wpduplicator
 msgid "Save"
-msgstr "Įrašyti"
+msgstr "Sichern"
 
 #: inc/view.options.php:162
 #@ wpduplicator
 msgid "Close"
-msgstr "Uždaryti"
+msgstr "Schließen"
 
 #: inc/view.system.php:3
-#, fuzzy
 #@ wpduplicator
 msgid "Package Creation"
-msgstr "Paketo Pavadinimas"
+msgstr "Archiv erzeugen"
 
 #: inc/view.system.php:5
-#, fuzzy
 #@ wpduplicator
 msgid "Create a new Package Set?"
-msgstr "Sukurti šį naują paketą?"
+msgstr "Neues Archiv erzeugen?"
 
 #: inc/view.system.php:10
 #: inc/view.system.php:205
 #@ wpduplicator
 msgid "Pre-Zip Overview"
-msgstr "Pasirengimo Pašto apžvalga"
+msgstr "ZIP-Übersicht"
 
 #: inc/view.system.php:12
 #@ wpduplicator
 msgid "Perform Scan"
-msgstr "atlikti Scan"
+msgstr "Scan durchführen"
 
 #: inc/view.system.php:18
 #@ wpduplicator
 msgid "Note: A scan will provide an estimate on the size of your file system.  The scan will exclude items in the"
-msgstr "Pastaba: nuskaitymas bus pateikti sąmatą jūsų failų sistemos dydžio. Skenavimas bus pašalinti elementus"
+msgstr "Hinweis: Ein Scan wird eine Schätzung der Größe des Dateisystems anzeigen. Der Suchlauf wird Einstellungen ausschließen in"
 
 #: inc/view.system.php:19
-#, fuzzy
 #@ wpduplicator
 msgid "directory filter list"
-msgstr "Katalogo Išskyrimas"
+msgstr ""
 
 #: inc/view.system.php:20
 #@ wpduplicator
 msgid "Files that are not readable by the plugin will not be included in the overview.  Directories that are empty will not be included in the final package. "
-msgstr "Failai, kurie nėra įskaitomi į Įskiepiai nebus įtrauktos į apžvalgą. Katalogai, kad yra tuščia nebus įtrauktas į galutinę pakuotę."
+msgstr "Nicht lesbare Dateien werden in die Übersicht nicht aufgenommen. Leere Verzeichnisse sind im endgültigen Archiv nicht enthalten."
 
 #: inc/view.system.php:29
-#, fuzzy
 #@ wpduplicator
 msgid "System Constraint"
-msgstr "Sistema"
+msgstr ""
 
 #: inc/view.system.php:32
 #@ wpduplicator
 msgid "Please try again! An issue has occurred."
-msgstr "Bandykite dar kartą!Problema buvo."
+msgstr "Bitte versuche es erneut! Ein Problem ist aufgetreten."
 
 #: inc/view.system.php:36
 #@ wpduplicator
 msgid "Recommendations"
-msgstr "Rekomendacijos"
+msgstr "Empfehlungen"
 
 #: inc/view.system.php:41
 #@ wpduplicator
 msgid "Validate"
-msgstr "patvirtinti"
+msgstr "prüfe"
 
 #: inc/view.system.php:42
-#, fuzzy
 #@ wpduplicator
 msgid "your system"
-msgstr "Patvirtinkite savo sistemą"
+msgstr "dein System"
 
 #: inc/view.system.php:43
-#, fuzzy
 #@ wpduplicator
 msgid "refresh"
-msgstr "atnaujinti"
+msgstr "Neu laden"
 
 #: inc/view.system.php:44
 #@ wpduplicator
 msgid "the dashboard."
-msgstr "prietaisų skydelis."
+msgstr "das Dashboard."
 
 #: inc/view.system.php:48
-#, fuzzy
 #@ wpduplicator
 msgid "Monitor"
-msgstr "Stebėkite savo"
+msgstr ""
 
 #: inc/view.system.php:49
-#, fuzzy
 #@ wpduplicator
 msgid "your log file a few more minutes as processing may continue on some systems"
-msgstr "keletą minučių, kaip perdirbti, gali ir toliau kai kuriose sistemose"
+msgstr "Die Log-Datei steht nach ein paar Minuten bereit"
 
 #: inc/view.system.php:52
 #@ wpduplicator
 msgid "Contact your server admin to have the page timeout increased (see duration below)"
-msgstr "Susisiekite su savo serverio administratoriumi puslapis timeout padidėjo (žr. trukmę žemiau)"
+msgstr "Kontaktiere deinen Server Admin, um das Timeout zu erhöhen (Dauer siehe unten))"
 
 #: inc/view.system.php:53
 #@ wpduplicator
 msgid "Consider adding a directory filter in the options dialog if the process continues to timeout"
-msgstr "Apsvarstykite pridedant parinkčių dialogo katalogo filtrą, jei šis procesas ir toliau pertrauka"
+msgstr "Erwägen Sie ein Verzeichnis mit Filter in den Einstellungen, wenn der Prozess fortgesetzt wird"
 
 #: inc/view.system.php:54
 #@ wpduplicator
 msgid "Check your disk space.  For hosted sites review your providers help."
-msgstr "Patikrinkite savo diske. Patalpinta svetainėse peržiūrėti savo teikėjus."
+msgstr "Überprüfe deinen Speicherplatz. Für gehostete Websites wende dich an den Provider."
 
 #: inc/view.system.php:57
+#, fuzzy
 #@ wpduplicator
 msgid "Consider using an"
-msgstr ""
+msgstr "Erwägen einen"
 
 #: inc/view.system.php:59
 #@ wpduplicator
@@ -726,115 +703,106 @@ msgid "approved"
 msgstr ""
 
 #: inc/view.system.php:60
-#, fuzzy
 #@ wpduplicator
 msgid "hosting provider."
-msgstr "Reikia hostingo teikėjo, kuris yra"
+msgstr "Hosting-Provider."
 
 #: inc/view.system.php:64
 #@ wpduplicator
 msgid "Server Response"
-msgstr "Server Response"
+msgstr "Server-Antwort"
 
 #: inc/view.system.php:69
-#, fuzzy
 #@ wpduplicator
 msgid "See online help for more details at"
-msgstr "Daugiau informacijos pagalbos puslapyje internete"
+msgstr "Siehe Online-Hilfe für weitere Informationen unter"
 
 #: inc/view.system.php:79
-#, fuzzy
 #@ wpduplicator
 msgid "System Checks"
-msgstr "Sistema"
+msgstr ""
 
 #: inc/view.system.php:82
 #@ wpduplicator
 msgid "Please validate your system configuration."
-msgstr "Prašome patvirtinti jūsų sistemos konfigūraciją."
+msgstr "Bitte überprüfe deine System-Einstellungen"
 
 #: inc/view.system.php:83
 #@ wpduplicator
 msgid "Click link for details"
-msgstr "Spustelėkite nuorodą daugiau informacijos"
+msgstr "Klicke auf den Link für Details"
 
 #: inc/view.system.php:92
 #@ wpduplicator
 msgid "SYSTEM REQUIRMENTS"
-msgstr "SISTEMOS REIKALAVIMAI"
+msgstr "System-Anforderungen"
 
 #: inc/view.system.php:93
 #@ wpduplicator
 msgid "File Permissions"
-msgstr "failų leidimai"
+msgstr "Datei-Berechtigungen"
 
 #: inc/view.system.php:96
 #@ wpduplicator
 msgid "The following directories should have permissions of 755 and files 644.  Keep in mind that PHP may be accessing the paths/files as the user id that the web server runs as."
-msgstr "Šie katalogai turi turėti leidimus, 755 ir 644 failus. Atminkite, kad PHP gali būti pasiekti kelius / files kaip vartotojo vardą, kad interneto serveris veikia kaip."
+msgstr "Die folgenden Verzeichnisse sollten die Berechtigung 755 und 644 für Dateien haben. Beachte, dass PHP Zugriff auf die Pfade / Dateien hat und der Webserver läuft."
 
 #: inc/view.system.php:116
 #@ wpduplicator
 msgid "Reserved Files"
-msgstr "Rezervuotos Failai"
+msgstr "Reservierte Dateien"
 
 #: inc/view.system.php:119
-#, fuzzy
 #@ wpduplicator
 msgid "If this check fails then a reserved file was found in the WordPress root directory. The following are reserved file names installer.php, installer-data.sql and installer-log.txt.  In order to archive your data correctly please remove any of these files from your WordPress root directory. Then try creating your package again."
-msgstr "Jei šis patikrinimas nepavyksta tada saugomos byla buvo rasti WordPress šakniniame kataloge. Taip rezervuoti failų vardus install.php, install-data.sql ir install-log.txt. Siekiant archyvuoti jūsų duomenys korektiškai pašalinti bet kurį iš šių failų iš savo WordPress šakniniame kataloge. Tada vėl pabandykite sukurti savo paketą."
+msgstr "Wenn diese Prüfung fehlschlägt, wurde eine reserviertes Datei im WordPress-Root-Verzeichnis gefunden. Bitte entferne die Dateien installer.php, install-data.sql und install-log.txt vom deinem WordPress-Stammverzeichnis. Dann starte den Installer erneut."
 
 #: inc/view.system.php:124
-#, fuzzy
 #@ wpduplicator
 msgid "Zip Archive Enabled"
-msgstr "zip \"archyvas"
+msgstr "Zip-Archiv Aktiviert"
 
 #: inc/view.system.php:127
 #@ wpduplicator
 msgid "The ZipArchive extension for PHP is required for compression.  Please contact your hosting provider if you're on a hosted server.  For additional information see our online documentation."
-msgstr "ZipArchive PHP išplėtimas suspaudimo. Prašome kreipkitės į prieglobos paslaugų teikėjas, jei esate serverio? Papildomos informacijos ieškokite mūsų internetinėje dokumentaciją."
+msgstr "Die Zip-Archiv-Erweiterung für PHP erfordern eine Kompression. Weitere Informationen befinden sich auf unserer Online-Dokumentation."
 
 #: inc/view.system.php:132
-#, fuzzy
 #@ wpduplicator
 msgid "Safe Mode Off"
-msgstr "Ribotoji Veiksena"
+msgstr ""
 
 #: inc/view.system.php:135
-#, fuzzy
 #@ wpduplicator
 msgid "Safe Mode needs to be disabled in order for the Duplicator to operate correctly.  Please set safe_mode = Off in you php.ini file.  If you're on a hosted server and don't have access to the php.ini file then you will need to request this setting be updated. Safe Mode is no longer in future versions of PHP.  If your host will not work with you to resolve the issue then consider a higher reputable hosting provider."
-msgstr "Saugus režimas turi būti išjungtas tam, kopijavimo veiktų teisingai. Prašome nurodyti, safe_mode = Off You php.ini failą. Jei esate serverio? Ir neturi prieigos prie php.ini failą, tada jums reikės prašyti, šis nustatymas bus atnaujintas."
+msgstr "Safe Mode muss deaktiviert werden. Bitte safe_mode = off in der Datei php.ini einstellen. Wenn du auf einem Server gehostet bist und keinen Zugriff auf die php.ini-Datei hast, kontaktiere deinen Provider. Safe Mode ist nicht mehr in zukünftigen Versionen von PHP. Falls erforderlich, wechsle den Hosting-Anbieter."
 
 #: inc/view.system.php:140
 #@ wpduplicator
 msgid "MySQLi Support"
-msgstr "MySQLi palaikymas"
+msgstr ""
 
 #: inc/view.system.php:143
 #@ wpduplicator
 msgid "In order to complete an install the mysqli extension for PHP is required. If you are on a hosted server please contact your host and request that mysqli extension be enabled. For more information visit: http://php.net/manual/en/mysqli.installation.php"
-msgstr "Siekiant užbaigti įdiegti mysqli pratęsti PHP. Jei esate Patalpinta serveryje, prašome kreiptis į jūsų serverį ir paprašyti, kad mysqli pratęsimas būti įjungtas. Norėdami gauti daugiau informacijos, apsilankykite: http://php.net/manual/en/mysqli.installation.php"
+msgstr "Zur Vervollständigung der Installation ist die mysqli-Erweiterung für PHP nicht erforderlich. Kontaktiere deinen Provider, ob die mysqli-Erweiterung aktiviert werden kann. Für weitere Informationen besuchen diese Seite: http://php.net/manual/en/mysqli.installation.php"
 
 #: inc/view.system.php:152
-#, fuzzy
 #@ wpduplicator
 msgid "SYSTEM CHECKS"
-msgstr "SERVERIO PATIKRINIMAI"
+msgstr ""
 
 #: inc/view.system.php:155
-#, fuzzy
 #@ wpduplicator
 msgid "PHP Version"
-msgstr "Versija"
+msgstr ""
 
 #: inc/view.system.php:157
 #: inc/view.system.php:169
 #: inc/view.system.php:193
 #@ wpduplicator
 msgid "Good"
-msgstr "Gerai"
+msgstr "Gut"
 
 #: inc/view.system.php:159
 #: inc/view.system.php:172
@@ -843,20 +811,19 @@ msgstr "Gerai"
 #: inc/view.system.php:181
 #@ wpduplicator
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: inc/view.system.php:160
-#, fuzzy
 #@ wpduplicator
 msgid "PHP 5.2.17+ is required"
-msgstr "yra privaloma"
+msgstr "PHP 5.2.17+ ist erforderlich"
 
 #: inc/view.system.php:162
 #: inc/view.system.php:184
 #: inc/view.system.php:196
 #@ wpduplicator
 msgid "Fail"
-msgstr "žlugti"
+msgstr "Gescheitert"
 
 #: inc/view.system.php:168
 #: inc/view.system.php:171
@@ -866,100 +833,97 @@ msgstr "žlugti"
 #: inc/view.system.php:183
 #@ wpduplicator
 msgid "Web Server"
-msgstr "Žiniatinklio Serveris"
+msgstr ""
 
 #: inc/view.system.php:183
 #@ wpduplicator
 msgid "Not detected"
-msgstr "Neaptikta(-s)"
+msgstr "Nicht erkannt"
 
 #: inc/view.system.php:192
 #: inc/view.system.php:195
 #@ wpduplicator
 msgid "Open Base Dir"
-msgstr "Atverti Bazinį Katalogą"
+msgstr ""
 
 #: inc/view.system.php:192
 #@ wpduplicator
 msgid "Off"
-msgstr "Išjungti"
+msgstr "Aus"
 
 #: inc/view.system.php:195
 #@ wpduplicator
 msgid "On"
-msgstr "Įjungti"
+msgstr "An"
 
 #: inc/view.system.php:202
 #@ wpduplicator
 msgid "PHP SAPI"
-msgstr "PHP SAPI"
+msgstr ""
 
 #: inc/view.system.php:207
 #@ wpduplicator
 msgid "Scan Now"
-msgstr "Skenavimo Dabar"
+msgstr "Jetzt scannen"
 
 #: inc/view.system.php:216
 #@ wpduplicator
 msgid "Cache Directory Found"
-msgstr "Spartinančiosios atmintinės Katalogas Rastas"
+msgstr "Cache-Verzeichnis gefunden"
 
 #: inc/view.system.php:217
-#, fuzzy
 #@ wpduplicator
 msgid "Add to exclusion path now"
-msgstr "Pridėti į mano katalogų išskyrimo sąrašą"
+msgstr "In den Ausschluss Pfad hinzufügen"
 
 #: inc/view.system.php:219
-#, fuzzy
 #@ wpduplicator
 msgid "Directory excluded"
-msgstr "Katalogo Išskyrimas"
+msgstr "Verzeichnis ausgeschlossen"
 
 #: inc/view.system.php:220
-#, fuzzy
 #@ wpduplicator
 msgid "Path"
-msgstr "Universaliosios nuorodos Adresas"
+msgstr "Pfad"
 
 #: inc/view.system.php:222
 #@ wpduplicator
 msgid "Cache Directory Not Found"
-msgstr "Spartinančiosios atmintinės Katalogas Nerastas"
+msgstr "Cache-Verzeichnis nicht gefunden"
 
 #: inc/view.system.php:228
 #@ wpduplicator
 msgid "ONLINE RESOURCES"
-msgstr "Online ištekliai"
+msgstr "ONLINE-Quellen"
 
 #: inc/view.system.php:233
 #@ wpduplicator
 msgid "For additional online help please visit"
-msgstr "Dėl papildomos pagalba internete, apsilankykite"
+msgstr "Für weitere Online-Hilfe besuche bitte"
 
 #: inc/view.system.php:239
 #@ wpduplicator
 msgid "Need a hosting provider that is"
-msgstr "Reikia hostingo teikėjo, kuris yra"
+msgstr "Benötigst du einen für Duplicator zertifizierten Hosting-Anbieter?"
 
 #: inc/view.system.php:241
-#@ wpduplicator
-msgid "Duplicator Approved"
-msgstr ""
-
-#: inc/view.system.php:252
 #, fuzzy
 #@ wpduplicator
+msgid "Duplicator Approved"
+msgstr "Duplicator-Einstellungen"
+
+#: inc/view.system.php:252
+#@ wpduplicator
 msgid "Download Links"
-msgstr "Parsisiųsti šį diegiklį"
+msgstr ""
 
 #: inc/view.system.php:255
 #@ wpduplicator
 msgid "The following links contain sensitive data.  Please share with caution!"
-msgstr "Šios nuorodos turi slaptus duomenis. Prašome pasidalyti su atsargiai!"
+msgstr "Die folgenden Links enthalten sensible Daten. Bitte verwende sie mit Vorsicht!"
 
 #: inc/view.system.php:261
 #@ wpduplicator
 msgid "The database SQL script is a quick link to your database backup script.  An exact copy is also stored in the package."
-msgstr "Duomenų bazės SQL scenarijus yra greitai nuorodą į savo duomenų bazės atsarginę kopiją scenarijų.Tiksli kopija taip pat laikyti pakuotėje."
+msgstr "Das Datenbank SQL-Skript ist ein schneller Link zum Datenbank-Backup-Skript. Eine exakte Kopie ist auch im Archiv gespeichert."
 
