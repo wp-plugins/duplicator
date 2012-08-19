@@ -62,6 +62,7 @@ function duplicator_create_dbscript($destination) {
 							$sql .= ");\n";
 						}
 						@fwrite($handle, $sql);
+						duplicator_fcgi_flush();
 					}
 				}
 				
@@ -87,6 +88,7 @@ function duplicator_create_dbscript($destination) {
 							$sql .= ");\n";
 						}
 						@fwrite($handle, $sql);
+						duplicator_fcgi_flush();
 					}
 				}
 			
@@ -226,7 +228,7 @@ function duplicator_dirInfo($directory) {
 		//EXCLUDE: Directory Exclusions List
 		if ($GLOBALS['duplicator_bypass-array'] != null) {
 			foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
-				if (strstr($directory, duplicator_safe_path($val))) {
+				if (duplicator_safe_path($val) == $directory) {
 					return;
 				}
 			}
@@ -234,8 +236,8 @@ function duplicator_dirInfo($directory) {
 
 		if ($handle = @opendir($directory)) { 
 			while (false !== ($file = @readdir($handle))) { 
-				$nextpath = $directory . '/' . $file; 
 				if ($file != '.' && $file != '..') { 
+					$nextpath = $directory . '/' . $file; 
 					if (is_dir($nextpath)) { 
 						$folders++;
 						$result = duplicator_dirInfo($nextpath); 
@@ -243,8 +245,8 @@ function duplicator_dirInfo($directory) {
 						$count += $result['count']; 
 						$folders += $result['folders']; 
 					} 
-					else if (is_file($nextpath)) { 
-						if(!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $GLOBALS['duplicator_opts']['skip_ext_array'])) {
+					else if (is_file($nextpath) && is_readable($nextpath)) { 
+						if(!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $GLOBALS['duplicator_skip_ext-array'])) {
 							$fmod  = @filesize($nextpath);
 							if ($fmod === false) {
 								$flag = true;
@@ -257,7 +259,7 @@ function duplicator_dirInfo($directory) {
 				} 
 			} 
 		} 
-		closedir ($handle); 
+		closedir($handle); 
 		$total['size']    = $size; 
 		$total['count']   = $count; 
 		$total['folders'] = $folders; 
@@ -333,6 +335,16 @@ function duplicator_safe_path($path) {
 	return str_replace("\\", "/", $path);
 }
 
+
+/**
+ *  DUPLICATOR_FCGI_FLUSH
+ *  PHP_SAPI for fcgi requires a data flush of at least 256
+ *  bytes every 40 seconds or else it forces a script hault
+ */
+function duplicator_fcgi_flush() {
+	echo(str_repeat(' ',256));
+	@flush();
+}
 
 /**
  *  DUPLICATOR_SNAPSHOT_URLPATH

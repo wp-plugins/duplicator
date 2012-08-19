@@ -30,7 +30,7 @@ if ( isset($_GET['get'])) {
 		header('Pragma: public');
 		header('Content-Length: ' . filesize($file));
 		ob_clean();
-		flush();
+		@flush();
 		if (@readfile($file) == false) {
 			$data = file_get_contents($file);
 			if ($data == false) {
@@ -287,6 +287,15 @@ function dinstaller_set_safe_path($path) {
 	return str_replace("\\", "/", $path);
 }
 
+/**
+ *  DUPLICATOR_FCGI_FLUSH
+ *  PHP_SAPI for fcgi requires a data flush of at least 256
+ *  bytes every 40 seconds or else it forces a script hault
+ */
+function dinstaller_fcgi_flush() {
+	echo(str_repeat(' ',256));
+	@flush();
+}
 
 //DATABASE CONNECTION AJAX MESSAGE REQUESTS
 if ($action == 'dbconnect-test') {
@@ -575,7 +584,7 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log('END-PRECHECK:' . @date('h:i:s') . "\n");
 		$log = '';
 		echo "<h3>&#10004; Prechecks Completed</h3>";
-		flush();
+		dinstaller_fcgi_flush();
 		
 		
 		
@@ -601,7 +610,6 @@ if ($action == 'dbconnect-test') {
 			$package_set_warning = true;
 		}
 		
-		
 		$target 	= dinstaller_set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
 		$zip_size 	= filesize($filename);	
 		
@@ -626,13 +634,11 @@ if ($action == 'dbconnect-test') {
 			 } else {
 				die(MSG_ERR_ZIPEXTRACTION . $tryagain_html );
 			}
-			
-			
-			
+
 			echo ($package_set_warning) 
 				? "<h3 class='detail-warning'>Package Extracted <i style='font-size:16px'>(possible issues see log)</i></h3>"
 				: "<h3>&#10004; Package Extracted</h3>";
-			flush();
+			dinstaller_fcgi_flush();
 		}
 		dinstaller_log('END-EXTRACTION:' . @date('h:i:s'). "\n");
 
@@ -705,7 +711,7 @@ if ($action == 'dbconnect-test') {
 		$log = '';
 		echo "<h3>&#10004; Script Files Updated</h3>";
 		dinstaller_log('END FILES:'  . @date('h:i:s') . "\n");
-		flush();
+		dinstaller_fcgi_flush();
 	
 	
 		//====================================================================================================
@@ -736,9 +742,15 @@ if ($action == 'dbconnect-test') {
 		
 		$profile_start = DInstaller::get_microtime();
 		$temp=0;
+		$fcgi_buffer_pool  = 1000;
+		$fcgi_buffer_count = 0;
 		while ($temp < $sql_result_file_length) {
 			@mysqli_query($mysqli_conn,  ($sql_result_file[$temp]));	
 			$temp++;
+			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
+				$fcgi_buffer_count = 0;
+				dinstaller_fcgi_flush();
+			}
 		}
 		$profile_end = DInstaller::get_microtime();
 		dinstaller_log("----------------------------------");
@@ -843,7 +855,7 @@ if ($action == 'dbconnect-test') {
 			echo "<h3>&#10004; Database Routines Completed</h3>";
 		}
 		dinstaller_log('END DB-ROUTINES:'  . @date('h:i:s') . "\n" );
-		flush();
+		dinstaller_fcgi_flush();
 		
 		
 		//====================================================================================================

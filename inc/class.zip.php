@@ -6,7 +6,7 @@ class Duplicator_Zip
 	protected $zipArchive;
 	protected $rootFolder;
 	protected $skipNames;
-	protected $zipFileName;
+	protected $zipFilePath;
 	private   $limitItems = 0;
 	
 	/**
@@ -15,32 +15,32 @@ class Duplicator_Zip
 	 *
 	 *  @param string $zipFilePath	The full path to the zip file that will be made
 	 *  @param string $folderPath	The folder that will be zipped
-	 *  @param string $ignored		The file extentions to ignore
 	 *  @param string $sqlfilepath	The path to the database file to include in the package
 	 */
-	function __construct($zipFilePath, $folderPath, $ignored=null, $sqlfilepath) {
+	function __construct($zipFilePath, $folderPath, $sqlfilepath) {
 		try 
 		{
 		
 			duplicator_log("log:class.zip=>started");
-			duplicator_log("log:class.zip=>archive file:   {$zipFilePath}");
-			duplicator_log("log:class.zip=>archive folder: {$folderPath}");
+			duplicator_log("archive this folder: {$folderPath}");
+			duplicator_log("archive file name:   {$zipFilePath}");
 			
 			$this->zipArchive  = new ZipArchive();
-			$this->zipFileName = duplicator_safe_path($zipFilePath);
-		
+			$this->zipFilePath = duplicator_safe_path($zipFilePath);
 			$this->rootFolder  = rtrim(duplicator_safe_path($folderPath), '/');
-			$this->skipNames   = is_array($ignored) ? $ignored : array();
-			if (! empty($this->skipNames) ) {
-				duplicator_log("log:class.zip=>skip extensions:" . implode(",", $this->skipNames));
-			}
+			$this->skipNames   = $GLOBALS['duplicator_skip_ext-array'];
 			
+			$exts_list = implode(";", $this->skipNames);
+			$path_list = implode(";", $GLOBALS['duplicator_bypass-array']);
+			duplicator_log("filter file extensions: '{$exts_list}'");
+			duplicator_log("filter directory paths: '{$path_list}'");
 			
-			if ($this->zipArchive->open($this->zipFileName, ZIPARCHIVE::CREATE) === TRUE) {
-				duplicator_log("log:class.zip=>opened");
+
+			if ($this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE) === TRUE) {
+				duplicator_log("zipArchive opened");
 			} 
 			else {
-				$err = "log:class.zip=>cannot open <{$this->zipFileName}>";
+				$err = "cannot open <{$this->zipFilePath}>";
 				duplicator_log($err);
 				throw new Exception($err);
 			}
@@ -51,10 +51,8 @@ class Duplicator_Zip
 			//ADD SQL File
 			$this->zipArchive->addFile($sqlfilepath, "database.sql");
 
-
-			$msg = 'log:class.zip=>archive info: ' . print_r($this->zipArchive, true);
-			duplicator_log($msg);
-			duplicator_log("log:class.zip=>close returned: " . $this->zipArchive->close() . " (if null check your disk quota)" );
+			duplicator_log("archive info: " . print_r($this->zipArchive, true));
+			duplicator_log("close returned: " . $this->zipArchive->close() . " (if null check your disk quota)" );
 			duplicator_log("log:class.zip=>ended");
 		} 
 		catch(Exception $e) 
@@ -62,6 +60,7 @@ class Duplicator_Zip
 			duplicator_log("log:class.zip=>runtime error: " . $e);
 		}
 	}
+	
 	
 	function resursiveZip($directory)
 	{
@@ -81,40 +80,36 @@ class Duplicator_Zip
 			if ($GLOBALS['duplicator_bypass-array'] != null) {
 				foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
 					if (duplicator_safe_path($val) == $folderPath) {
-						duplicator_log("directory exclusion found: {$val}", 2);
+						duplicator_log("path filter found: {$val}", 2);
 						return;
 					}
 				}
 			}
 			
-			while($file = readdir($dh)) {
-				if($file == "." || $file == "..") {
-					continue;
-				}
-				
-				$fullpath = "{$folderPath}/{$file}";
-				if(is_dir($fullpath)) {
-					//KEEP Buffer active to prevent Idle timeout
-					echo(str_repeat(' ',256));
-					@flush();
-					$this->resursiveZip($fullpath);
-				}
-				else if(is_file($fullpath) && is_readable($fullpath)) {
-					//Check filter extensions
-					if(!in_array(@pathinfo($file, PATHINFO_EXTENSION), $this->skipNames)) {
-						$localpath = str_replace($this->rootFolder, '', $folderPath);
-						$localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
-						$this->zipArchive->addFile("{$folderPath}/{$file}", "{$localname}{$file}");
+			while (false !== ($file = @readdir($dh))) { 
+				if ($file != '.' && $file != '..') { 
+					$fullpath = "{$folderPath}/{$file}";
+					if(is_dir($fullpath)) {
+						duplicator_fcgi_flush();
+						$this->resursiveZip($fullpath);
 					}
-				} 
-				$this->limitItems++;
+					else if(is_file($fullpath) && is_readable($fullpath)) {
+						//Check filter extensions
+						if(!in_array(@pathinfo($fullpath, PATHINFO_EXTENSION), $this->skipNames)) {
+							$localpath = str_replace($this->rootFolder, '', $folderPath);
+							$localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
+							$this->zipArchive->addFile("{$folderPath}/{$file}", "{$localname}{$file}");
+						}
+					} 
+					$this->limitItems++;
+				}
 			} 
 			
 			//Check if were over our count
 			if($this->limitItems > $this->limit) {
 				duplicator_log("log:class.zip=>new open handle {$this->zipArchive->numFiles}");
 				$this->zipArchive->close();
-				$this->zipArchive->open($this->zipFileName, ZIPARCHIVE::CREATE);
+				$this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE);
 				$this->limitItems = 0;
 			}
 			

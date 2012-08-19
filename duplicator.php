@@ -39,35 +39,26 @@ if (is_admin() == true) {
 	$_tmpDuplicatorOptions = get_option('duplicator_options', false);
 	$GLOBALS['duplicator_opts'] = ($_tmpDuplicatorOptions == false) ? array() : @unserialize($_tmpDuplicatorOptions);
 	
-	//Unable to fetch options so set manually
-	if ($GLOBALS['duplicator_opts'] == false) {
-		$GLOBALS['duplicator_opts']['dbhost'] = '';
-		$GLOBALS['duplicator_opts']['dbname'] = '';
-		$GLOBALS['duplicator_opts']['dbuser'] = '';
-		$GLOBALS['duplicator_opts']['dbiconv'] = '1';
-		$GLOBALS['duplicator_opts']['dbadd_drop'] = '0';
-		$GLOBALS['duplicator_opts']['nurl'] = '';
-		$GLOBALS['duplicator_opts']['email-me'] = '0';
-		$GLOBALS['duplicator_opts']['email_others'] = '';
-		$GLOBALS['duplicator_opts']['max_time'] = '1000';
-		$GLOBALS['duplicator_opts']['max_memory'] = '512M';
-		$GLOBALS['duplicator_opts']['dir_bypass'] = '';
-		$GLOBALS['duplicator_opts']['log_level'] = '0';
-		$GLOBALS['duplicator_opts']['skip_ext'] = '';
-		$GLOBALS['duplicator_opts']['rm_snapshot'] = '1';
-	}
-	
-	//Defaults
-	$GLOBALS['duplicator_opts']['dbadd_drop'] 	 = isset($GLOBALS['duplicator_opts']['dbadd_drop'])     ? $GLOBALS['duplicator_opts']['dbadd_drop']      : '0';
-	$GLOBALS['duplicator_opts']['max_time']   	 = is_numeric($GLOBALS['duplicator_opts']['max_time'])	? $GLOBALS['duplicator_opts']['max_time']   	: 1000;
-	$GLOBALS['duplicator_opts']['max_memory'] 	 = isset($GLOBALS['duplicator_opts']['max_memory'])  	? $GLOBALS['duplicator_opts']['max_memory'] 	: "512M";
-	$GLOBALS['duplicator_opts']['email_others']  = isset($GLOBALS['duplicator_opts']['email_others']) 	? $GLOBALS['duplicator_opts']['email_others'] 	: "";
-	$GLOBALS['duplicator_opts']['skip_ext'] 	 = isset($GLOBALS['duplicator_opts']['skip_ext'])  		? $GLOBALS['duplicator_opts']['skip_ext'] 		: "";
+	//OPTIONS
+	$GLOBALS['duplicator_opts']['dbhost']		= isset($GLOBALS['duplicator_opts']['dbhost'])			? $GLOBALS['duplicator_opts']['dbhost']			: '';
+	$GLOBALS['duplicator_opts']['dbname']		= isset($GLOBALS['duplicator_opts']['dbname'])			? $GLOBALS['duplicator_opts']['dbname']			: '';
+	$GLOBALS['duplicator_opts']['dbuser']		= isset($GLOBALS['duplicator_opts']['dbuser'])			? $GLOBALS['duplicator_opts']['dbuser'] 		: '';
+	$GLOBALS['duplicator_opts']['dbiconv']		= isset($GLOBALS['duplicator_opts']['dbiconv'])			? $GLOBALS['duplicator_opts']['dbiconv']		: '1';
+	$GLOBALS['duplicator_opts']['dbadd_drop']	= isset($GLOBALS['duplicator_opts']['dbadd_drop'])		? $GLOBALS['duplicator_opts']['dbadd_drop']     : '0';
+	$GLOBALS['duplicator_opts']['nurl']  		= isset($GLOBALS['duplicator_opts']['nurl'] ) 			? $GLOBALS['duplicator_opts']['nurl']  			: '';
+	$GLOBALS['duplicator_opts']['email-me']		= isset($GLOBALS['duplicator_opts']['email-me'])		? $GLOBALS['duplicator_opts']['email-me']		: '0';
+	$GLOBALS['duplicator_opts']['log_level'] 	= isset($GLOBALS['duplicator_opts']['log_level'])		? $GLOBALS['duplicator_opts']['log_level']  	: '0';
+	$GLOBALS['duplicator_opts']['max_time']		= is_numeric($GLOBALS['duplicator_opts']['max_time'])	? $GLOBALS['duplicator_opts']['max_time']   	: 1000;
+	$GLOBALS['duplicator_opts']['max_memory']	= isset($GLOBALS['duplicator_opts']['max_memory'])  	? $GLOBALS['duplicator_opts']['max_memory'] 	: '1000M';
+	$GLOBALS['duplicator_opts']['email_others']	= isset($GLOBALS['duplicator_opts']['email_others']) 	? $GLOBALS['duplicator_opts']['email_others']	: '';
+	$GLOBALS['duplicator_opts']['skip_ext']		= isset($GLOBALS['duplicator_opts']['skip_ext'])  		? $GLOBALS['duplicator_opts']['skip_ext'] 		: '';
+	$GLOBALS['duplicator_opts']['dir_bypass']	= isset($GLOBALS['duplicator_opts']['dir_bypass'])		? $GLOBALS['duplicator_opts']['dir_bypass']		: '';
+	$GLOBALS['duplicator_opts']['rm_snapshot']  = isset($GLOBALS['duplicator_opts']['rm_snapshot']) 	? $GLOBALS['duplicator_opts']['rm_snapshot'] 	: '1';
 	
 	//Default Arrays
-	$GLOBALS['duplicator_bypass-array']		  		= explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
-	$GLOBALS['duplicator_bypass-array'] 	  		= count($GLOBALS['duplicator_bypass-array']) 			? $GLOBALS['duplicator_bypass-array'] 			: null;
-	$GLOBALS['duplicator_opts']['skip_ext_array']	= explode(";", $GLOBALS['duplicator_opts']['skip_ext']) ? explode(";", $GLOBALS['duplicator_opts']['skip_ext']) : array();
+	$GLOBALS['duplicator_bypass-array']	  = explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
+	$GLOBALS['duplicator_bypass-array']   = count($GLOBALS['duplicator_bypass-array']) 			  ? $GLOBALS['duplicator_bypass-array'] 			      : null;
+	$GLOBALS['duplicator_skip_ext-array'] = explode(";", $GLOBALS['duplicator_opts']['skip_ext']) ? explode(";", $GLOBALS['duplicator_opts']['skip_ext']) : array();
 
 	require_once 'inc/functions.php';
 	require_once 'inc/class.zip.php';
@@ -153,35 +144,43 @@ if (is_admin() == true) {
 		delete_option('duplicator_options');
 		
 		if ($GLOBALS['duplicator_opts']['rm_snapshot']) {
+		
 			$ssdir = duplicator_safe_path(DUPLICATOR_SSDIR_PATH);
-			
-			foreach (glob("{$ssdir}/*_database.sql")  as $file) {@unlink("{$file}");}
-			foreach (glob("{$ssdir}/*_installer.php") as $file) {@unlink("{$file}");}
-			foreach (glob("{$ssdir}/*_package.zip")   as $file) {@unlink("{$file}");}
-			foreach (glob("{$ssdir}/*.log") as $file) {@unlink("{$file}");}
-			
-			//Check for core files and only continue removing data if the snapshots directory
-			//has not been edited by 3rd party sources, this helps to keep the system stable
-			$files = glob("{$ssdir}/*");
-			if(is_array($files) && count($files) == 3)
-			{
-				$defaults = array("{$ssdir}/index.php", "{$ssdir}/robots.txt", "{$ssdir}/dtoken.php");
-				$compare = array_diff($defaults, $files);
+		
+			//Sanity check for strange setup
+			$check = glob("{$ssdir}/wp-config.php");
+			if (count($check) == 0) {
+
+				//PHP is sometimes flaky so lets do a sanity check
+				foreach (glob("{$ssdir}/*_database.sql")  as $file) { if (strstr($file, '_database.sql'))  {@unlink("{$file}");} }
+				foreach (glob("{$ssdir}/*_installer.php") as $file) { if (strstr($file, '_installer.php')) {@unlink("{$file}");} }
+				foreach (glob("{$ssdir}/*_package.zip")   as $file) { if (strstr($file, '_package.zip'))   {@unlink("{$file}");} }
+				foreach (glob("{$ssdir}/*.log") as $file) 			{ if (strstr($file, '.log'))   		   {@unlink("{$file}");} }
 				
-				if (count($compare) == 0) {
-					foreach($defaults as $file) {@unlink("{$file}");}
-					@unlink("{$ssdir}/.htaccess");
-					@rmdir($ssdir);
-				}
-			//No packages have ever been created
-			} else if(is_array($files) && count($files) == 1) {
-				$defaults = array("{$ssdir}/index.php");
-				$compare  = array_diff($defaults, $files);
-				if (count($compare) == 0) {
-					@unlink("{$ssdir}/index.php");
-					@rmdir($ssdir);
-				}
-			} 
+				//Check for core files and only continue removing data if the snapshots directory
+				//has not been edited by 3rd party sources, this helps to keep the system stable
+				$files = glob("{$ssdir}/*");
+				if(is_array($files) && count($files) == 3)
+				{
+					$defaults = array("{$ssdir}/index.php", "{$ssdir}/robots.txt", "{$ssdir}/dtoken.php");
+					$compare = array_diff($defaults, $files);
+					
+					if (count($compare) == 0) {
+						foreach($defaults as $file) {@unlink("{$file}");}
+						@unlink("{$ssdir}/.htaccess");
+						@rmdir($ssdir);
+					}
+				//No packages have ever been created
+				} else if(is_array($files) && count($files) == 1) {
+					$defaults = array("{$ssdir}/index.php");
+					$compare  = array_diff($defaults, $files);
+					if (count($compare) == 0) {
+						@unlink("{$ssdir}/index.php");
+						@rmdir($ssdir);
+					}
+				} 
+			
+			}
 		}
 	}
 	
