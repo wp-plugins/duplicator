@@ -69,7 +69,8 @@ function duplicator_create() {
 		duplicator_log("*********************************************************");
 		duplicator_log("ZIP ARCHIVE");
 		duplicator_log("*********************************************************");
-		$zip = new Duplicator_Zip($zipfilepath, DUPLICATOR_WPROOTPATH, $GLOBALS['duplicator_opts']['skip_ext_array'], $sqlfilepath);
+		
+		$zip = new Duplicator_Zip($zipfilepath, rtrim(DUPLICATOR_WPROOTPATH, '/'), $sqlfilepath);
 		$zipsize = filesize($zipfilepath);
 			
 		($zipsize == false) 

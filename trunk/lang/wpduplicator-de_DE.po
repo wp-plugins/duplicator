@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.3.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-16 06:56-0700\n"
-"PO-Revision-Date: 2012-08-16 14:20:47+0000\n"
+"PO-Revision-Date: 2012-08-18 23:49:10+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,33 +19,33 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: duplicator.php:195
+#: duplicator.php:194
 #@ wpduplicator
 msgid "FAQ"
 msgstr "Häufig gestellte Fragen"
 
-#: duplicator.php:196
+#: duplicator.php:195
 #@ wpduplicator
 msgid "Partner"
 msgstr ""
 
-#: duplicator.php:197
+#: duplicator.php:196
 #, fuzzy
 #@ wpduplicator
 msgid "Approved Hosts"
 msgstr "Zertifizierte Hosts"
 
-#: duplicator.php:248
+#: duplicator.php:247
 #@ wpduplicator
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: duplicator.php:250
+#: duplicator.php:249
 #@ wpduplicator
 msgid "Diagnostics"
 msgstr "Diagnose"
 
-#: duplicator.php:281
+#: duplicator.php:280
 #@ wpduplicator
 msgid "Manage"
 msgstr "Verwalten"
@@ -114,7 +114,7 @@ msgstr "Support-Center"
 #: files/log-view.php:118
 #@ wpduplicator
 msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
-msgstr "Diesen Inhalt NICHT an öffentliche Stellen wie die WordPress.org Foren eingeben, da er sensible Daten enthält."
+msgstr "Diesen Inhalt NICHT an öffentlichen Stellen wie die WordPress.org Foren eingeben, da er sensible Daten enthält."
 
 #: inc/javascript.php:133
 #@ wpduplicator
@@ -138,7 +138,7 @@ msgstr "Ausgewählte Archive wirklich löschen?"
 #: inc/javascript.php:441
 #@ wpduplicator
 msgid "Ready to create new package."
-msgstr "Bereit für ein neues Archiv zu erstellen."
+msgstr "Bereit zum Erstellen eines neuen Archivs."
 
 #: inc/javascript.php:189
 #@ wpduplicator
@@ -231,7 +231,7 @@ msgstr "Dies kann einige Minuten dauern. Bitte warten ..."
 #: inc/javascript.php:437
 #@ wpduplicator
 msgid "Preview Log"
-msgstr ""
+msgstr "Vorschau Log-Datei"
 
 #: inc/page.main.php:31
 #@ wpduplicator
@@ -322,7 +322,7 @@ msgstr "Archiv Set"
 #: inc/page.main.php:85
 #@ wpduplicator
 msgid "(Download Both)"
-msgstr ""
+msgstr "(Archiv u. Installer herunterladen)"
 
 #: inc/page.main.php:116
 #: inc/page.main.php:144
@@ -351,7 +351,7 @@ msgstr ""
 #: inc/page.main.php:130
 #@ wpduplicator
 msgid "Secure Name"
-msgstr "Sichere Namen"
+msgstr "Sicherer Dateiname"
 
 #: inc/page.main.php:131
 #@ wpduplicator
@@ -376,7 +376,7 @@ msgstr "Dieses Archiv wurde mit einer früheren Version erstellt, welche nicht m
 #: inc/page.main.php:162
 #@ wpduplicator
 msgid "Online FAQs"
-msgstr ""
+msgstr "Häufig gestellte Fragen (Online)"
 
 #: inc/page.main.php:174
 #@ wpduplicator
@@ -386,7 +386,7 @@ msgstr "Keine Archive gefunden"
 #: inc/page.main.php:175
 #@ wpduplicator
 msgid "To create a new package, enter a name and click the create button "
-msgstr "Um ein neues Archiv zu erstellen, gib einen Archiv-Namen ein und klicke auf die Schaltfläche Erstellen"
+msgstr "Um ein neues Archiv zu erstellen, gib einen Namen ein und klicke auf die Schaltfläche Erstellen"
 
 #: inc/page.main.php:177
 #@ wpduplicator
@@ -406,7 +406,7 @@ msgstr "mit dem Duplicator"
 #: inc/page.main.php:180
 #@ wpduplicator
 msgid "This process will backup all your files and database"
-msgstr "Dieser Prozess erstellt ein Backup aller Dateien und der Datenbank."
+msgstr "Dieser Prozess erstellt ein Backup aller Dateien und der Datenbank"
 
 #: inc/page.main.php:181
 #@ wpduplicator
@@ -456,7 +456,7 @@ msgstr "Verarbeitung"
 #: inc/view.options.php:36
 #@ wpduplicator
 msgid "Max Time"
-msgstr "Maximale Zeit"
+msgstr "Maximale Laufzeit"
 
 #: inc/view.options.php:36
 #@ wpduplicator
@@ -471,7 +471,7 @@ msgstr "Maximaler Arbeitsspeicher"
 #: inc/view.options.php:45
 #@ wpduplicator
 msgid "Email when completed"
-msgstr "Email senden wenn vollständig"
+msgstr "Email senden, wenn Archiv vollständig erstellt ist"
 
 #: inc/view.options.php:46
 #@ wpduplicator
@@ -572,12 +572,12 @@ msgstr "Der Installer kann diese Felder vor der Installation bereits ausgefüllt
 #: inc/view.options.php:129
 #@ wpduplicator
 msgid "Uninstall Options"
-msgstr ""
+msgstr "Deinstallations-Optionen"
 
 #: inc/view.options.php:132
 #@ wpduplicator
 msgid "Delete Entire Snapshot Directory"
-msgstr ""
+msgstr "Snapshot-Verzeichnis löschen"
 
 #: inc/view.options.php:133
 #, fuzzy
@@ -619,12 +619,12 @@ msgstr "Scan durchführen"
 #: inc/view.system.php:18
 #@ wpduplicator
 msgid "Note: A scan will provide an estimate on the size of your file system.  The scan will exclude items in the"
-msgstr "Hinweis: Ein Scan wird eine Schätzung der Größe des Dateisystems anzeigen. Der Suchlauf wird Einstellungen ausschließen in"
+msgstr "Hinweis: Ein Scan zeigt die geschätzte Größe aller Dateien (unkomprimiert) an. Der Suchlauf enthält keine Dateien aus der"
 
 #: inc/view.system.php:19
 #@ wpduplicator
 msgid "directory filter list"
-msgstr ""
+msgstr "Verzeichnis-Liste"
 
 #: inc/view.system.php:20
 #@ wpduplicator
@@ -695,7 +695,7 @@ msgstr "Überprüfe deinen Speicherplatz. Für gehostete Websites wende dich an 
 #, fuzzy
 #@ wpduplicator
 msgid "Consider using an"
-msgstr "Erwägen einen"
+msgstr "Erwäge einen"
 
 #: inc/view.system.php:59
 #@ wpduplicator
