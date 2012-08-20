@@ -18,9 +18,11 @@
 	} 
 	
 	$logname  = basename($logs[0]);
-	$logurl   = get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' . $logname;
+	$logpath  = DUPLICATOR_SSDIR_PATH . '/' . $logname;
 	$logfound = (strlen($logname) > 0) ? true :false;
-	$file     = ($logfound) ? file_get_contents($logurl) : "";
+	
+	$handle   = fopen($logpath , "c+");	
+	$file     = ($handle) ? fread($handle, filesize($logpath)) : "";
 	
 	$plugins_url = plugins_url();
 	$admin_url   = admin_url();

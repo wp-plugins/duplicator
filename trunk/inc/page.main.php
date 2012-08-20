@@ -175,7 +175,7 @@ MAIN FORM: Lists all the backups 			-->
 				$msg2 = __("To create a new package, enter a name and click the create button ", 'wpduplicator');
 				$msg3 = sprintf("%s <a href='javascript:void(0)' onclick='Duplicator.getSystemCheck()'>%s</a> %s",
 							__("Check Your", 'wpduplicator'), 
-							__("servers compatability", 'wpduplicator'),
+							__("servers compatibility", 'wpduplicator'),
 							__("with the duplicator", 'wpduplicator'));
 				$msg4 = __("This process will backup all your files and database", 'wpduplicator');
 				$msg5 = __("Creating a package may take several minutes if you have a large site", 'wpduplicator');
