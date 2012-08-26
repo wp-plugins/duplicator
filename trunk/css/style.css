@@ -38,13 +38,14 @@ button.dup-dlg-quick-path-database-link {white-space:nowrap}
 button.dup-dlg-quick-path-download-link {white-space:nowrap}
 
 /*PAGE-ABOUT: */
-.dup-drop-cap:first-child:first-letter { float: left; color: #777; font-size:45px; line-height: 35px; padding-top: 4px; padding-right: 8px; padding-left: 3px; font-family: Georgia; }
+.dup-drop-cap:first-child:first-letter { float: left; color: #777; font-size:40px; line-height: 30px; padding-top: 4px; padding-right: 8px; padding-left: 3px; font-family: Georgia; }
 div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
 div.dup-spread-word-arrow {display:inline-block; font-size:40px; font-weight:bold; }
 div.dup-wrap {line-height:20px}
-table.dup-support-table td {padding:8px 4px 4px 15px}
-td.dup-support-cell {border:1px solid transparent; }
-td.dup-support-cell:hover {border:1px solid silver;   box-shadow:inset 0 0 10px #999; border-radius:4px}
+table.dup-support-table {border-spacing:8px;}
+div.dup-support-cell {border:1px solid silver; box-shadow:inset 0 0 10px #C7C7C7, 0 8px 6px -6px #999; border-radius:10px; height:70px; width:150px; float:left; margin:0px 20px 0px 10px; padding:4px}
+div.dup-support-cell:hover {background-color:#efefef; cursor:pointer}
+div.dup-support-txts {padding:10px 0px 0px 0px}
 @-webkit-keyframes approve-keyframe  { 
     from {-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
     to {-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(30deg);}

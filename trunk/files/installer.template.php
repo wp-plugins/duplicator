@@ -648,6 +648,7 @@ if ($action == 'dbconnect-test') {
 		//SCRIPTS UPDATED: wp-config.php & database.sql
 		//====================================================================================================
 		
+		//========================================
 		//WP-CONFIG
 		dinstaller_log("{$GLOBALS['SEPERATOR1']}");
 		dinstaller_log('SCRIPT FILES ROUTINE');
@@ -677,8 +678,14 @@ if ($action == 'dbconnect-test') {
 		$config_file = preg_replace($patterns, $replace, $config_file);
 		file_put_contents('wp-config.php', $config_file);
 		
+		//========================================
 		//DATABASE SCRIPT
-		$sql_file = @file_get_contents('database.sql', true);
+		@chmod(dinstaller_set_safe_path(dirname(__FILE__) . "/database.sql"), 0777);
+		$sql_file = file_get_contents('database.sql', true);
+		if ($sql_file == false) {
+			$parent_path = dirname(__FILE__);
+			dinstaller_log("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$parent_path}'\n");
+		}
 		
 		//Complex Subject See: http://webcollab.sourceforge.net/unicode.html
 		//Removes no breaking characters
@@ -695,23 +702,26 @@ if ($action == 'dbconnect-test') {
 		}
 
 		for($i = 0; $i < count($primary_list); ++$i) {
-			$old_url 		= $primary_list[$i];
-			$log		   .= "- {$old_url}\n";
-			$sql_file	= str_replace($old_url, $new_url, $sql_file);
+			$old_url 	 = $primary_list[$i];
+			$log		.= "- {$old_url}\n";
+			$sql_file	 = str_replace($old_url, $new_url, $sql_file);
 		}	
 
-		$sql_result_file = explode(";\n", $sql_file);
-		$sql_result_file_length = count($sql_result_file);
-		$sql_file_path = dinstaller_set_safe_path(dirname(__FILE__) . "/{$GLOBALS['SQL_FILE_NAME']}");
+		$sql_result_file_data   = explode(";\n", $sql_file);
+		$sql_result_file_length = count($sql_result_file_data);
+		$sql_result_file_path   = dinstaller_set_safe_path(dirname(__FILE__) . "/{$GLOBALS['SQL_FILE_NAME']}");
 		
-		@chmod($sql_file_path, 0777);
-		$sql_file_result = file_put_contents($GLOBALS["SQL_FILE_NAME"], $sql_file);
-		if (is_readable($sql_file_path) && filesize($sql_file_path) > 0) {
-			dinstaller_log("New sql file generated from database.sql to {$sql_file_path} \n");
+		//Write new contents to install-data.sql
+		@chmod($sql_result_file_path, 0644);
+		file_put_contents($GLOBALS["SQL_FILE_NAME"], $sql_file);
+		if (is_readable($sql_result_file_path) && filesize($sql_result_file_path) > 0) {
+			dinstaller_log("New sql file generated from database.sql to {$sql_result_file_path} \n");
 		} else {
 			$parent_path = dirname(__FILE__);
 			dinstaller_log("ERROR: Unable to create new sql file {$GLOBALS['SQL_FILE_NAME']}.\nValidate the permissions and/or group-owner rights on directory '{$parent_path}' and file '{$GLOBALS['SQL_FILE_NAME']}'\n");
 		}
+		
+		
 		
 		dinstaller_log("new url is: {$new_url}");
 		dinstaller_log("scrubbed old url(s) in {$GLOBALS['SQL_FILE_NAME']}:\n" . $log);
@@ -754,7 +764,7 @@ if ($action == 'dbconnect-test') {
 		$fcgi_buffer_pool  = 1000;
 		$fcgi_buffer_count = 0;
 		while ($temp < $sql_result_file_length) {
-			@mysqli_query($mysqli_conn,  ($sql_result_file[$temp]));	
+			@mysqli_query($mysqli_conn,  ($sql_result_file_data[$temp]));	
 			$temp++;
 			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
 				$fcgi_buffer_count = 0;
