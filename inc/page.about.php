@@ -1,8 +1,8 @@
 <script type="text/javascript">var switchTo5x=true;</script>
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
 <script type="text/javascript">stLight.options({publisher: "1a44d92e-2a78-42c3-a32e-414f78f9f484"}); </script> 
 <script>
-	jQuery(function() { console.log(jQuery("#dup-survey"));	jQuery("#dup-survey").button();	});
+	jQuery(function() {	jQuery("#dup-survey").button();	});
 </script>
 
 
@@ -16,14 +16,14 @@
 				<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
 			</div> 
 			<div style='float:right; padding:5px 0px 0px 0px'>
-				<input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
+				<input type="button" id="btn-contribute-dialog"  onclick="window.open('<?php echo DUPLICATOR_GIVELINK ?>', '_blank')" title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
 			</div>
 			<br style='clear:both' />
 		</div>
 		
 
 
-	<div style="width:900px; margin:auto">
+	<div style="width:850px; margin:auto">
 
 		<table>
 			<tr>
@@ -51,52 +51,55 @@
 		<!--  ========================
 		SUPPORT DUPLICATOR -->
 		<h2 style="margin-top:-40px"><?php _e('Support Duplicator', 'wpduplicator') ?></h2><hr size="1" />
-		<table border="0" class="dup-support-table">
-			<tr>
-				<td class="dup-support-cell" style="height:80px">
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:inline-block;height:50px"> 
-						<input name="cmd" type="hidden" value="_s-xclick" /> 
-						<input name="hosted_button_id" type="hidden" value="EYJ7AV43RTZJL" /> 
-						<input alt="PayPal - The safer, easier way to pay online!" name="submit" src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/btn/btn_donateCC_LG.gif" type="image" title="<?php _e('Donate via Pay-Pal', 'wpduplicator') ?>" /> 
-						<img src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /> 
-					</form>
-				</td>
-				<td >
-					<?php _e('Consider a donation of any amount; it will take less than 60 seconds or about as fast as you can duplicate a site.  These proceeds help to cover development and support costs.  Thanks for your generosity!!', 'wpduplicator') ?>
-				</td>
-			</tr>
-			<tr>
-				<td class="dup-support-cell">
-					<a href='http://wordpress.org/extend/plugins/duplicator/' target='_blank'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/5star.png" style='text-align:top; margin-left:20px' title="<?php _e('Vote at WordPress.org', 'wpduplicator') ?>"   /></a>
-				</td>
-				<td>
-					<?php 
-						printf("%s <a href='http://wordpress.org/extend/plugins/duplicator' target='_blank'>%s</a>  ",
-						__("Help out by leaving a 5 star review on the", 'wpduplicator'),
-						__("WordPress plugins directory", 'wpduplicator')
-						); 
-						_e('and by giving your opinion on the survey below.', 'wpduplicator');
-					?><br/>
-					<div style="text-align:center; padding:10px">
-						<input id="dup-survey" type="button" onclick="window.open('http://lifeinthegrid.com/duplicator-survey')" value="<?php _e('Give us your Opinion?', 'wpduplicator') ?>" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="dup-support-cell">
-					<a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'><img id="dup-about-approved" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/approved.png" style='text-align:top; margin-left:20px' title="<?php _e('Preview Approved Hosts', 'wpduplicator') ?>"   /></a>
-				</td>
-				<td valign="top">
-					<?php 
-						_e('Not all hosting companies are created equal and to get the most out of the plugin we recommend using hosting providers that we do our own testing on.  Please visit our', 'wpduplicator');
-							
-						printf(" <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>%s</a> %s.",
-							__("Approved Affiliate Hosting Program", 'wpduplicator'),
-							__("and consider making a switch to hosts that we trust and have experienced good success with when testing and using the plugin", 'wpduplicator')); 			
-					?>
-				</td>
-			</tr>			
-		</table><br/>
+
+		<!-- DONTATE -->
+		<div class="dup-support-cell" onclick="jQuery('#dup-donate-form').submit()">
+			<form id="dup-donate-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:inline-block;height:50px; margin:5px 0px 0px -2px"> 
+				<input name="cmd" type="hidden" value="_s-xclick" /> 
+				<input name="hosted_button_id" type="hidden" value="EYJ7AV43RTZJL" /> 
+				<input alt="PayPal - The safer, easier way to pay online!" name="submit" src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/btn/btn_donateCC_LG.gif" type="image" /> 
+				<img src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /> 
+			</form>
+		</div>
+		<div class="dup-support-txts">
+			<?php _e('Consider a donation of any amount; it will take less than 60 seconds or about as fast as you can duplicate a site.  These proceeds help to cover development and support costs.  Thanks for your generosity!!', 'wpduplicator') ?>
+		</div>
+		<div style="clear:both; height:15px"></div>
+					
+					
+		<!-- FIVE STAR -->			
+		<div class="dup-support-cell no-select" onclick="window.open('http://wordpress.org/extend/plugins/duplicator', '_blank')">
+			<img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/5star.png" style='text-align:top; margin-left:20px'   />
+		</div> 
+		<div class="dup-support-txts">
+			<?php 
+				printf("%s <a href='http://wordpress.org/extend/plugins/duplicator' target='_blank'>%s</a>  ",
+				__("Help out by leaving a 5 star review on the", 'wpduplicator'),
+				__("WordPress plugins directory", 'wpduplicator')); 
+				_e('and by giving your opinion on the survey below.', 'wpduplicator');
+			?>
+			<div style="text-align:center; padding:10px">
+				<input id="dup-survey" type="button" onclick="window.open('http://lifeinthegrid.com/duplicator-survey')" value="<?php _e('Give us your Opinion?', 'wpduplicator') ?>" />
+			</div>
+		</div>
+		<div style="clear:both; height:15px"></div>
+
+
+		<!-- APPROVED QA -->
+		<div class="dup-support-cell no-select"  onclick="window.open('<?php echo DUPLICATOR_CERTIFIED  ?>', '_blank')">
+			<img id="dup-about-approved" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/approved.png" style='text-align:top; margin:2px 0px 0px 25px' />
+		</div>
+		<div class="dup-support-txts">		
+			<?php 
+				_e('Not all hosting companies are created equal and to get the most out of the plugin we recommend using hosting providers that we do our own testing on.  Please visit our', 'wpduplicator');
+					
+				printf(" <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>%s</a> %s.",
+					__("Approved Affiliate Hosting Program", 'wpduplicator'),
+					__("and consider making a switch to hosts that we trust and have experienced good success with when testing and using the plugin", 'wpduplicator')); 			
+			?>
+		</div>
+		<div style="clear:both; height:15px"></div>
+
 
 		
 		<!--  ========================

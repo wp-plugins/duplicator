@@ -20,7 +20,7 @@
 				<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
 			</div> 
 			<div style='float:right; padding:5px 0px 0px 0px'>
-				<input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
+				<input type="button" id="btn-contribute-dialog"  onclick="window.open('<?php echo DUPLICATOR_GIVELINK ?>', '_blank')" title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
 				<input type="button" id="dup-btn-about" onclick='window.location.href="?page=duplicator_about_page"' title="<?php _e("About Duplicator", 'wpduplicator') ?>" />
 			</div>
 			<br style='clear:both' />

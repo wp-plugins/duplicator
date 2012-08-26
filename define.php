@@ -4,9 +4,9 @@
 	if (function_exists('plugin_dir_url')) {
 		define('DUPLICATOR_VERSION',   		'0.3.1');
 		define("DUPLICATOR_HOMEPAGE",		"http://lifeinthegrid.com/labs/duplicator");
-		define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner/");
-		define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/duplicator-docs/");
-		define("DUPLICATOR_CERTIFIED",		"http://lifeinthegrid.com/duplicator-certified/");
+		define("DUPLICATOR_GIVELINK",		"http://lifeinthegrid.com/partner");
+		define("DUPLICATOR_HELPLINK",  		"http://lifeinthegrid.com/duplicator-docs");
+		define("DUPLICATOR_CERTIFIED",		"http://lifeinthegrid.com/duplicator-hosts");
 		
 		define("DUPLICATOR_DB_ICONV_IN",	"UTF-8"); 
 		define("DUPLICATOR_DB_ICONV_OUT",	"ISO-8859-1//TRANSLIT"); 
