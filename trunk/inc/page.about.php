@@ -107,12 +107,18 @@
 		<h2><?php _e('Spread the Word', 'wpduplicator') ?></h2><hr size="1" />
 		<?php _e('Spreading the word gives the plugin a wider audience and that in-effect helps to pool more resources to test/support/develop and participate to improve the plugin.  By getting the word out the Duplicator will continue to improve at a faster rate, and harness the power of the open community to push the plugin further.', 'wpduplicator'); ?>		
 
+		<?php
+			$title = __("Duplicate Your WordPress", 'wpduplicator');
+			$summary = __("Rapid WordPress Duplication by LifeInTheGrid.com", 'wpduplicator');
+			$share_this_data = "st_url='" . DUPLICATOR_HOMEPAGE . "' st_title='{$title}' st_summary='{$summary}'";
+		?>
+
 		<div style="width:100%; padding:10px 10px 0px 10px" align="center">
-			<span class='st_facebook_vcount' displayText='Facebook' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-			<span class='st_twitter_vcount' displayText='Tweet' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-			<span class='st_googleplus_vcount' displayText='Google +' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-			<span class='st_linkedin_vcount' displayText='LinkedIn' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-			<span class='st_email_vcount' displayText='Email' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
+			<span class='st_facebook_vcount' displayText='Facebook' <?php echo $share_this_data; ?> ></span>
+			<span class='st_twitter_vcount' displayText='Tweet' <?php echo $share_this_data; ?> ></span>
+			<span class='st_googleplus_vcount' displayText='Google +' <?php echo $share_this_data; ?> ></span>
+			<span class='st_linkedin_vcount' displayText='LinkedIn' <?php echo $share_this_data; ?> ></span>
+			<span class='st_email_vcount' displayText='Email' <?php echo $share_this_data; ?> ></span>
 		</div>
 		
 		<div style="width:100%; padding:10px 10px 0px 10px" align="center">
@@ -120,24 +126,24 @@
 				<tr style="text-align:center">
 					<td>
 						<b style="font-size:16px">Social News</b><br/>
-						<span class='st_reddit_large' displayText='Reddit' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_slashdot_large' displayText='Slashdot' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_stumbleupon_large' displayText='StumbleUpon' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_technorati_large' displayText='Technorati' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_digg_large' displayText='Digg' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_blogger_large' displayText='Blogger' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span> 
-						<span class='st_wordpress_large' displayText='WordPress' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>		
-						<span class='st_dzone_large' displayText='DZone' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>					
+						<span class='st_reddit_large' displayText='Reddit' <?php echo $share_this_data; ?> ></span>
+						<span class='st_slashdot_large' displayText='Slashdot' <?php echo $share_this_data; ?> ></span>
+						<span class='st_stumbleupon_large' displayText='StumbleUpon' <?php echo $share_this_data; ?> ></span>
+						<span class='st_technorati_large' displayText='Technorati' <?php echo $share_this_data; ?> ></span>
+						<span class='st_digg_large' displayText='Digg' <?php echo $share_this_data; ?> ></span>
+						<span class='st_blogger_large' displayText='Blogger' <?php echo $share_this_data; ?> ></span> 
+						<span class='st_wordpress_large' displayText='WordPress' <?php echo $share_this_data; ?> ></span>		
+						<span class='st_dzone_large' displayText='DZone' <?php echo $share_this_data; ?> ></span>					
 					</td>
 					<td><br/> &nbsp; <img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/hdivider.png" class="toolbar-divider" /> &nbsp; </td>
 					<td>
 						<b style="font-size:16px">Bookmarks</b><br/>
-						<span class='st_evernote_large' displayText='Evernote' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_delicious_large' displayText='Delicious' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_blogmarks_large' displayText='Blogmarks' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_connotea_large' displayText='Connotea' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_google_bmarks_large' displayText='Bookmarks' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>
-						<span class='st_email_large' displayText='Email' st_url="<?php echo DUPLICATOR_HOMEPAGE ?>"></span>					
+						<span class='st_evernote_large' displayText='Evernote' <?php echo $share_this_data; ?> ></span>
+						<span class='st_delicious_large' displayText='Delicious' <?php echo $share_this_data; ?> ></span>
+						<span class='st_blogmarks_large' displayText='Blogmarks' <?php echo $share_this_data; ?> ></span>
+						<span class='st_connotea_large' displayText='Connotea' <?php echo $share_this_data; ?> ></span>
+						<span class='st_google_bmarks_large' displayText='Bookmarks' <?php echo $share_this_data; ?> ></span>
+						<span class='st_email_large' displayText='Email' <?php echo $share_this_data; ?> ></span>					
 					</td>
 				</tr>
 			</table>
