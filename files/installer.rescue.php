@@ -567,7 +567,7 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
 		dinstaller_log("document root 755: " . var_export($chown_root_path, true));
 		dinstaller_log("log file 644: "      . var_export($chown_log_path, true));
-		dinstaller_log("secure build name: 503a4fd509bcc9661_package");
+		dinstaller_log("secure build name: 503a68509e4d54016_package");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
 		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
@@ -605,8 +605,8 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
-		if ('503a4fd509bcc9661_package_package.zip' != $zip_name) {
-			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   503a4fd509bcc9661_package_package.zip  \nprocessed with: {$zip_name}  \n");
+		if ('503a68509e4d54016_package_package.zip' != $zip_name) {
+			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   503a68509e4d54016_package_package.zip  \nprocessed with: {$zip_name}  \n");
 			$package_set_warning = true;
 		}
 		
@@ -838,8 +838,8 @@ if ($action == 'dbconnect-test') {
 						}
 					} 
 				
-					//The url will only be in a string so string is all that needs to be found
-					if (strpos($row[$col_val], 's:') !== false) {
+					//The url will only be in a string so string types are all that need to be searched.
+					if (strpos($row[$col_val], 's:') !== false && stristr($row[$col_val], $new_url)) {
 						$old_val	= $row[$col_val];
 						$index 		= $row[$col_id];
 						$new_val	= dinstaller_set_serialized_string($old_val);

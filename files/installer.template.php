@@ -838,8 +838,8 @@ if ($action == 'dbconnect-test') {
 						}
 					} 
 				
-					//The url will only be in a string so string is all that needs to be found
-					if (strpos($row[$col_val], 's:') !== false) {
+					//The url will only be in a string so string types are all that need to be searched.
+					if (strpos($row[$col_val], 's:') !== false && stristr($row[$col_val], $new_url)) {
 						$old_val	= $row[$col_val];
 						$index 		= $row[$col_id];
 						$new_val	= dinstaller_set_serialized_string($old_val);
