@@ -9,18 +9,20 @@
 
 <div class="wrap dup-wrap">
 
-		<div class="dup-header widget">
-			<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 
-			<div style='float:left;height:45px; text-align:center;'>
-				<h2 style='margin:-12px 0px -7px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:18px"> <?php _e("About", 'wpduplicator') ?></span> </h2>
-				<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
-			</div> 
-			<div style='float:right; padding:5px 0px 0px 0px'>
-				<input type="button" id="btn-contribute-dialog"  onclick="window.open('<?php echo DUPLICATOR_GIVELINK ?>', '_blank')" title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
-			</div>
-			<br style='clear:both' />
+	<!-- h2 requred here for general system messages -->
+	<h2 style='display:none'></h2>
+	<div class="dup-header widget">
+		<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 
+		<div style='float:left;height:45px; text-align:center;'>
+			<h2 style='margin:-12px 0px -7px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:18px"> <?php _e("About", 'wpduplicator') ?></span> </h2>
+			<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
+		</div> 
+		<div style='float:right; padding:5px 0px 0px 0px'>
+			<input type="button" id="btn-contribute-dialog"  onclick="window.open('<?php echo DUPLICATOR_GIVELINK ?>', '_blank')" title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
 		</div>
-		
+		<br style='clear:both' />
+	</div>
+	
 
 
 	<div style="width:850px; margin:auto">
