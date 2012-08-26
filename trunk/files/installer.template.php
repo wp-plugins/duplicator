@@ -682,7 +682,7 @@ if ($action == 'dbconnect-test') {
 		//DATABASE SCRIPT
 		@chmod(dinstaller_set_safe_path(dirname(__FILE__) . "/database.sql"), 0777);
 		$sql_file = file_get_contents('database.sql', true);
-		if ($sql_file == false) {
+		if ($sql_file == false || strlen($sql_file) < 10) {
 			$parent_path = dirname(__FILE__);
 			dinstaller_log("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$parent_path}'\n");
 		}
