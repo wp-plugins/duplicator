@@ -93,9 +93,9 @@ DIALOG: SYSTEM CHECK -->
 					<div class='dup-sys-check-title'><a> SYS-100: <?php _e('File Permissions', 'wpduplicator');?></a></div> <span id='SYS-100'></span>
 					<div class='dup-sys-check-data-details'>
 						<?php 
-							_e("The following directories should have permissions of 755 and files 644.  Keep in mind that PHP may be accessing the paths/files as the user id that the web server runs as.", 'wpduplicator');
-							echo "<br/><br/>";
-							
+							echo "<b>";  _e("Required permissions", 'wpduplicator'); echo ":</b>";
+							echo "<br/>";
+
 							$test = is_readable(DUPLICATOR_WPROOTPATH) ? 'Pass' : 'Fail';
 							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_WPROOTPATH);
 							
@@ -107,6 +107,13 @@ DIALOG: SYSTEM CHECK -->
 							
 							$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php') ? 'Pass' : 'Fail';
 							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php');
+							
+							echo "<br/>";	
+							
+							_e("The above paths should have permissions of 755 for directories and 644 for files. On some hosts the permission set requires 777.  Setting items to 777 is a security issue and should only be set temporarily.  Please avoid any hosting company that requires this kind of setup.  See the 'Duplicator Approved' link at the bottom of this dialog for a list of approved hosting providers.", 'wpduplicator');
+							echo "<br/><br/>";
+							
+							_e("Also be sure to check the Owner/Group settings and validate they are correct and match other successful directories/files that are accessible.  For more details contact your host or visit their help pages for more how they implement permission and group settings.", 'wpduplicator');		
 							
 							echo "<br/>";
 						?>

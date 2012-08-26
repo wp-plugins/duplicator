@@ -111,6 +111,7 @@ class Duplicator_Zip
 				$this->zipArchive->close();
 				$this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE);
 				$this->limitItems = 0;
+				duplicator_fcgi_flush();
 			}
 			
 			closedir($dh);

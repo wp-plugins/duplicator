@@ -129,7 +129,7 @@
 					<legend><b><?php _e("Uninstall Options", 'wpduplicator') ?></b></legend>
 					
 						<input type="checkbox" name="rm_snapshot" id="rm_snapshot" <?php echo ($rm_snapshot) ? 'checked="checked"' : ''; ?> /> 
-						<label for="rm_snapshot"><?php _e("Delete Entire Snapshot Directory", 'wpduplicator') ?></label><br/>
+						<label for="rm_snapshot"><?php _e("Delete entire snapshot directory when removing plugin", 'wpduplicator') ?></label><br/>
 						<i style='font-size:11px'><?php _e("Snapshot Directory", 'wpduplicator'); ?>: <?php echo duplicator_safe_path(DUPLICATOR_SSDIR_PATH); ?></i><br/>
 					
 				</fieldset>

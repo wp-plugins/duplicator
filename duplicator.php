@@ -238,6 +238,10 @@ if (is_admin() == true) {
 		include 'inc/page.diag.php';
 	}
 
+	//About Page
+	function duplicator_about_page() {
+		include 'inc/page.about.php';
+	}
 	/**
 	 *  DUPLICATOR_MENU
 	 *  Loads the menu item into the WP tools section and queues the actions for only this plugin */
@@ -246,12 +250,14 @@ if (is_admin() == true) {
 		$page_main = add_menu_page('Duplicator', 'Duplicator', "import", basename(__FILE__), 'duplicator_main_page', plugins_url('duplicator/img/create.png'));
 		add_submenu_page(basename(__FILE__), __('Dashboard', 'wpduplicator'),  __('Dashboard', 'wpduplicator'), "import" , basename(__FILE__), 'duplicator_main_page');
 		//Sub Menus
-		$page_diag = add_submenu_page(basename(__FILE__), __('Diagnostics', 'wpduplicator'), __('Diagnostics', 'wpduplicator'), 'import', 'duplicator_diag_page', 'duplicator_diag_page');
+		$page_diag  = add_submenu_page(basename(__FILE__), __('Diagnostics', 'wpduplicator'), __('Diagnostics', 'wpduplicator'), 'import', 'duplicator_diag_page', 'duplicator_diag_page');
+		$page_about = add_submenu_page(basename(__FILE__), __('All About', 'wpduplicator'), __('All About', 'wpduplicator'), 'import', 'duplicator_about_page', 'duplicator_about_page');
 
 		//Apply scripts and styles
 		add_action('admin_print_scripts-' . $page_main, 'duplicator_scripts');
 		add_action('admin_print_styles-'  . $page_main, 'duplicator_styles' );
 		add_action('admin_print_styles-'  . $page_diag, 'duplicator_styles' );
+		add_action('admin_print_styles-'  . $page_about, 'duplicator_styles' );
 	}
 
 	/**
