@@ -24,7 +24,8 @@
 MAIN FORM: Lists all the backups 			-->
 <div class="wrap">
 	<form id="form-duplicator" method="post">
-
+		<!-- h2 requred here for general system messages -->
+		<h2 style='display:none'></h2>
 		<div class="dup-header widget">
 			<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 
 			<div style='float:left;height:45px; text-align:center;'>
