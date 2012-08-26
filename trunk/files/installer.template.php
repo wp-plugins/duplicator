@@ -702,7 +702,16 @@ if ($action == 'dbconnect-test') {
 
 		$sql_result_file = explode(";\n", $sql_file);
 		$sql_result_file_length = count($sql_result_file);
-		file_put_contents($GLOBALS["SQL_FILE_NAME"], $sql_file);
+		$sql_file_path = dinstaller_set_safe_path(dirname(__FILE__) . "/{$GLOBALS['SQL_FILE_NAME']}");
+		
+		@chmod($sql_file_path, 0777);
+		$sql_file_result = file_put_contents($GLOBALS["SQL_FILE_NAME"], $sql_file);
+		if (is_readable($sql_file_path) && filesize($sql_file_path) > 0) {
+			dinstaller_log("New sql file generated from database.sql to {$sql_file_path} \n");
+		} else {
+			$parent_path = dirname(__FILE__);
+			dinstaller_log("ERROR: Unable to create new sql file {$GLOBALS['SQL_FILE_NAME']}.\nValidate the permissions and/or group-owner rights on directory '{$parent_path}' and file '{$GLOBALS['SQL_FILE_NAME']}'\n");
+		}
 		
 		dinstaller_log("new url is: {$new_url}");
 		dinstaller_log("scrubbed old url(s) in {$GLOBALS['SQL_FILE_NAME']}:\n" . $log);

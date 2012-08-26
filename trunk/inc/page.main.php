@@ -25,12 +25,18 @@ MAIN FORM: Lists all the backups 			-->
 <div class="wrap">
 	<form id="form-duplicator" method="post">
 
-		<h2 style='margin-top:-3px'>
+		<div class="dup-header widget">
 			<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 
-			<div style='float:left;height:35px; padding-top:7px'>
-				Duplicator <i style='font-size:11px'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
-			</div> <br style='clear:both' />
-		</h2>
+			<div style='float:left;height:45px; text-align:center;'>
+				<h2 style='margin:-12px 0px -7px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:18px"> <?php _e("Dashboard", 'wpduplicator') ?></span> </h2>
+				<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
+			</div> 
+			<div style='float:right; padding:5px 0px 0px 0px'>
+				<input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
+				<input type="button" id="dup-btn-about" onclick='window.location.href="?page=duplicator_about_page"' title="<?php _e("About Duplicator", 'wpduplicator') ?>" />
+			</div>
+			<br style='clear:both' />
+		</div>
 		
 		<!-- TOOLBAR -->
 		<table border="0" id="toolbar-table" cellspacing="0">
@@ -45,18 +51,15 @@ MAIN FORM: Lists all the backups 			-->
 				<td align="center"><input type="button" id="btn-opts-dialog" class="btn-opts-dialog" title="<?php _e("Options", 'wpduplicator') ?>..." onclick="Duplicator.optionsOpen()" /></td>	
 				<td align="center"><input type="button" id="btn-sys-dialog"  class="btn-sys-dialog" onclick="Duplicator.getSystemCheck()" title="<?php _e("System Check", 'wpduplicator') ?>..." /></td>
 				<td align="center"><input type="button" id="btn-logs-dialog" class="btn-log-dialog" onclick="Duplicator.openLog()" title="<?php _e("Show Create Log", 'wpduplicator') ?>..." /></td>
-				<!-- Help -->
-				<td><img src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/hdivider.png" class="toolbar-divider" /></td>
-				<td><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="<?php _e("Help", 'wpduplicator') ?>..." /></td>
-				<td><input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="<?php _e("Partner with us", 'wpduplicator') ?>..." /></td>
+				<td align="center"><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="<?php _e("Help", 'wpduplicator') ?>..." /></td>
 			</tr>
 		</table>
 
 		<!-- STATUS BAR
 		id comes from wp-themes: major-publishing-actions  keeps themeing correct -->
-		<table width="100%"  class="widefat dup-pack-table" cellspacing="0" border="1">
+		<table width="100%"  class="widefat" cellspacing="0">
 			<tr>
-				<td width="100%" style="font-size:14px; vertical-align:middle">
+				<td width="100%" style="font-size:14px; vertical-align:middle; height:26px">
 					<b><?php _e("Status", 'wpduplicator') ?>:</b>
 					<span id="span-status"><?php _e("Ready to create new package", 'wpduplicator' ) ?>.</span>
 					<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />

@@ -23,6 +23,7 @@
 	
 	$handle   = fopen($logpath , "c+");	
 	$file     = ($handle) ? fread($handle, filesize($logpath)) : "";
+	@fclose($handle);
 	
 	$plugins_url = plugins_url();
 	$admin_url   = admin_url();
