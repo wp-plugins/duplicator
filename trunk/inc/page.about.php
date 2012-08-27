@@ -22,19 +22,14 @@
 		</div>
 		<br style='clear:both' />
 	</div>
-	
-
 
 	<div style="width:850px; margin:auto">
-
 		<table>
 			<tr>
 				<td valign="top" class="dup-drop-cap">
 				<?php 
 					_e("Your LifeInTheGrid should be about working smarter not harder.  With the Duplicator you can streamline your workflows and quickly clone a WordPress site in minutes.  From Novice to Guru this plugin is designed for Bloggers, Admins, Developers, Designers, Entrepreneurs and anyone who uses WordPress.", 'wpduplicator');
 					echo '<br/><br/>';
-				
-					
 					_e("If you run into an issue feel free to submit a support ticket and visit our" , 'wpduplicator');
 					
 					printf(" <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a>.",
@@ -107,7 +102,7 @@
 		<!--  ========================
 		SPREAD THE WORD -->
 		<h2><?php _e('Spread the Word', 'wpduplicator') ?></h2><hr size="1" />
-		<?php _e('Spreading the word gives the plugin a wider audience and that in-effect helps to pool more resources to test/support/develop and participate to improve the plugin.  By getting the word out the Duplicator will continue to improve at a faster rate, and harness the power of the open community to push the plugin further.', 'wpduplicator'); ?>		
+		<?php _e('Spreading the word gives the plugin a wider audience which helps to pool more resources to test/support/develop and participate to improve the plugin.  By getting the word out the Duplicator will continue to improve at a faster rate and harness the power of the open community to push the plugin further.', 'wpduplicator'); ?>		
 
 		<?php
 			$title = __("Duplicate Your WordPress", 'wpduplicator');
@@ -151,16 +146,14 @@
 			</table>
 		</div><br/>
 
-
-
 		<!--  ========================
 		VISIT US -->
 		<hr size="1" />
 		<div style="width:100%; padding:10px 10px 0px 10px" align="center">
-			<a href="http://lifeinthegrid.com/duplicator-docs" target="_blank">Knowledge Base</a> &nbsp; | &nbsp; 
-			<a href="http://lifeinthegrid.com/duplicator-faq" target="_blank">FAQ</a> &nbsp; | &nbsp; 
-			<a href="http://lifeinthegrid.com" target="_blank">Blog</a> &nbsp; | &nbsp;
-			<a href="http://lifeinthegrid.com/labs" target="_blank">Labs</a> &nbsp; | &nbsp; 
+			<a href="http://lifeinthegrid.com/duplicator-docs" target="_blank"><?php _e('Knowledge Base', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
+			<a href="http://lifeinthegrid.com/duplicator-faq" target="_blank"><?php _e('FAQ', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
+			<a href="http://lifeinthegrid.com" target="_blank"><?php _e('Blog', 'wpduplicator') ?></a> &nbsp; | &nbsp;
+			<a href="http://lifeinthegrid.com/labs" target="_blank"><?php _e('Labs', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
 			<a href="http://www.youtube.com/lifeinthegridtv" target="_blank">YouTube</a>
 		</div>
 		
