@@ -17,8 +17,8 @@
 			<h2 style='margin:-12px 0px -7px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:18px"> <?php _e("About", 'wpduplicator') ?></span> </h2>
 			<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
 		</div> 
-		<div style='float:right; padding:5px 0px 0px 0px'>
-			<input type="button" id="btn-contribute-dialog"  onclick="window.open('<?php echo DUPLICATOR_GIVELINK ?>', '_blank')" title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
+		<div style='float:right; padding:5px 0px 0px 0px; white-space:nowrap'>
+			<input type="button" id="btn-help-dialog" onclick='window.location.href="?page=duplicator_support_page"' title="<?php _e("Support", 'wpduplicator') ?>" />
 		</div>
 		<br style='clear:both' />
 	</div>
@@ -82,20 +82,7 @@
 		<div style="clear:both; height:15px"></div>
 
 
-		<!-- APPROVED QA -->
-		<div class="dup-support-cell no-select"  onclick="window.open('<?php echo DUPLICATOR_CERTIFIED  ?>', '_blank')">
-			<img id="dup-about-approved" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/approved.png" style='text-align:top; margin:2px 0px 0px 25px' />
-		</div>
-		<div class="dup-support-txts">		
-			<?php 
-				_e('Not all hosting companies are created equal and to get the most out of the plugin we recommend using hosting providers that we do our own testing on.  Please visit our', 'wpduplicator');
-					
-				printf(" <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>%s</a> %s.",
-					__("Approved Affiliate Hosting Program", 'wpduplicator'),
-					__("and consider making a switch to hosts that we trust and have experienced good success with when testing and using the plugin", 'wpduplicator')); 			
-			?>
-		</div>
-		<div style="clear:both; height:15px"></div>
+
 
 
 		

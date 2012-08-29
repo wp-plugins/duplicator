@@ -32,9 +32,9 @@ MAIN FORM: Lists all the backups 			-->
 				<h2 style='margin:-12px 0px -7px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:18px"> <?php _e("Dashboard", 'wpduplicator') ?></span> </h2>
 				<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
 			</div> 
-			<div style='float:right; padding:5px 0px 0px 0px'>
-				<input type="button" id="btn-contribute-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_GIVELINK ?>")' title="<?php _e("Partner with us", 'wpduplicator') ?>..." />
-				<input type="button" id="dup-btn-about" onclick='window.location.href="?page=duplicator_about_page"' title="<?php _e("About Duplicator", 'wpduplicator') ?>" />
+			<div style='float:right; padding:5px 0px 0px 0px; white-space:nowrap'>
+				<input type="button" id="btn-help-dialog" onclick='window.location.href="?page=duplicator_support_page"' title="<?php _e("Support", 'wpduplicator') ?>" />
+				<input type="button" id="dup-btn-about" onclick='window.location.href="?page=duplicator_about_page"' title="<?php _e("All About", 'wpduplicator') ?>" />
 			</div>
 			<br style='clear:both' />
 		</div>
@@ -52,7 +52,7 @@ MAIN FORM: Lists all the backups 			-->
 				<td align="center"><input type="button" id="btn-opts-dialog" class="btn-opts-dialog" title="<?php _e("Options", 'wpduplicator') ?>..." onclick="Duplicator.optionsOpen()" /></td>	
 				<td align="center"><input type="button" id="btn-sys-dialog"  class="btn-sys-dialog" onclick="Duplicator.getSystemCheck()" title="<?php _e("System Check", 'wpduplicator') ?>..." /></td>
 				<td align="center"><input type="button" id="btn-logs-dialog" class="btn-log-dialog" onclick="Duplicator.openLog()" title="<?php _e("Show Create Log", 'wpduplicator') ?>..." /></td>
-				<td align="center"><input type="button" id="btn-help-dialog" onclick='Duplicator.newWindow("<?php echo DUPLICATOR_HELPLINK ?>")' title="<?php _e("Help", 'wpduplicator') ?>..." /></td>
+				<td align="center"></td>
 			</tr>
 		</table>
 
@@ -102,7 +102,7 @@ MAIN FORM: Lists all the backups 			-->
 					$packname  = empty($row['packname']) ? $row['zipname'] : $row['packname'];
 					$total_size = $total_size + $row['zipsize'];
 					$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
-					$plugin_compat  = version_compare($plugin_version, DUPLICATOR_VERSION);
+					$plugin_compat  = version_compare($plugin_version, '0.3.1');
 					?>
 					
 					

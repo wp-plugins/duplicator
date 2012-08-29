@@ -104,7 +104,7 @@ END ADVANCED FEATURES: Do not edit below here.
 =================================================================================================== */
 
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.3.1';
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.3.2';
 $GLOBALS["SERIAL_TABLES"]["wpplug_options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
 $GLOBALS["SERIAL_TABLES"]["wpplug_postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');													 
 $GLOBALS["SERIAL_TABLES"]["wpplug_usermeta"] = array('column_id' => 'umeta_id',    'column_value' => 'meta_value');
@@ -567,7 +567,7 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
 		dinstaller_log("document root 755: " . var_export($chown_root_path, true));
 		dinstaller_log("log file 644: "      . var_export($chown_log_path, true));
-		dinstaller_log("secure build name: 503a68509e4d54016_package");
+		dinstaller_log("secure build name: 503e342675b524411_20120829_duplicatorplugin");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
 		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
@@ -605,8 +605,8 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
-		if ('503a68509e4d54016_package_package.zip' != $zip_name) {
-			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   503a68509e4d54016_package_package.zip  \nprocessed with: {$zip_name}  \n");
+		if ('503e342675b524411_20120829_duplicatorplugin_package.zip' != $zip_name) {
+			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   503e342675b524411_20120829_duplicatorplugin_package.zip  \nprocessed with: {$zip_name}  \n");
 			$package_set_warning = true;
 		}
 		
@@ -682,7 +682,7 @@ if ($action == 'dbconnect-test') {
 		//DATABASE SCRIPT
 		@chmod(dinstaller_set_safe_path(dirname(__FILE__) . "/database.sql"), 0777);
 		$sql_file = file_get_contents('database.sql', true);
-		if ($sql_file == false) {
+		if ($sql_file == false || strlen($sql_file) < 10) {
 			$parent_path = dirname(__FILE__);
 			dinstaller_log("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$parent_path}'\n");
 		}
