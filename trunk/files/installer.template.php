@@ -104,7 +104,7 @@ END ADVANCED FEATURES: Do not edit below here.
 =================================================================================================== */
 
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.3.1';
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.3.2';
 $GLOBALS["SERIAL_TABLES"]["%fwrite_wp_tableprefix%options"]  = array('column_id' => 'option_id',  'column_value' => 'option_value');
 $GLOBALS["SERIAL_TABLES"]["%fwrite_wp_tableprefix%postmeta"] = array('column_id' => 'meta_id',    'column_value' => 'meta_value');													 
 $GLOBALS["SERIAL_TABLES"]["%fwrite_wp_tableprefix%usermeta"] = array('column_id' => 'umeta_id',    'column_value' => 'meta_value');

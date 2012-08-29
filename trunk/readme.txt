@@ -29,10 +29,12 @@ For complete details see:
 [lifeinthegrid.com](http://lifeinthegrid.com/) 
 
 Special contributor thanks to:
+<li>Robert Riley from www.taminglife.com</li>
 <li>Aaron Crawford</li>
 <li>Rami from www.wp-tricks.co.il</li>
 <li>Paal Joachim Romdahl</li>
 <li>Vincent G from www.Host1Free.com</li>
+<li>Hans-M. Herbrand</li>
 
 
 == Installation ==
