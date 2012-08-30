@@ -48,14 +48,9 @@ The Duplicator requires php 5.3 and WordPress 3.2 or higher.
 
 == Frequently Asked Questions ==
 
-= I'm having trouble creating the package what should I do? =
+= I'm having issues getting the plugin to work what should I do? =
 
-Click on the 'Show Create Log' button. This log will give you details as to what is happening.
-
-
-= When I reinstall my package I get errors on the site. =
-
-Be sure to read through all the post install instructions and carefully follow all instructions.  You can also view the install-log.txt file for a detail of the process.
+See the [FAQs](http://lifeinthegrid.com/duplicator-faq) page for a detailed rundown of common issues
 
 
 = Where can I get more information and support for this plugin? =
@@ -65,7 +60,7 @@ Visit the [Duplicator Page](http://lifeinthegrid.com/duplicator) at lifeinthegri
 
 = How can I test this in a non production environment? =
 
-Put WordPress on [your computer](http://lifeinthegrid.com/xampp). See video below.
+Yes. Put WordPress on [your computer](http://lifeinthegrid.com/xampp) by watching the video below.
 
 http://www.youtube.com/watch?v=-hF7FbTQIkk
 

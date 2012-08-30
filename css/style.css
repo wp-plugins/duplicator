@@ -50,7 +50,7 @@ div.dup-support-txts {padding:10px 0px 0px 0px}
     from {-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
     to {-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(30deg);}
 }
-img#dup-about-approved { -webkit-animation:approve-keyframe 22s 2s infinite alternate backwards   }
+img#dup-about-approved { -webkit-animation:approve-keyframe 19s 1s infinite alternate backwards   }
 
 
 /*DIALOG: Options view*/
