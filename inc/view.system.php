@@ -113,7 +113,7 @@ DIALOG: SYSTEM CHECK -->
 							_e("The above paths should have permissions of 755 for directories and 644 for files. On some hosts the permission set requires 777.  Setting items to 777 is a security issue and should only be set temporarily.  Please avoid any hosting company that requires this kind of setup.  See the 'Duplicator Approved' link at the bottom of this dialog for a list of approved hosting providers.", 'wpduplicator');
 							echo "<br/><br/>";
 							
-							_e("Also be sure to check the Owner/Group settings and validate they are correct and match other successful directories/files that are accessible.  For more details contact your host or visit their help pages for more how they implement permission and group settings.", 'wpduplicator');		
+							_e("Also be sure to check the Owner/Group settings and validate they are correct and match other successful directories/files that are accessible.  For more details contact your host or visit their help pages for more information on how they implement permissions and group settings.", 'wpduplicator');		
 							
 							echo "<br/>";
 						?>
