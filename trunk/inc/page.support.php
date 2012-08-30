@@ -32,7 +32,7 @@
 			<a href="http://lifeinthegrid.com/duplicator-quick" target="_blank"><?php _e('Quick Start', 'wpduplicator') ?></a> &nbsp; | &nbsp;
 			<a href="http://lifeinthegrid.com/duplicator-guide" target="_blank"><?php _e('User Guide', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
 			<a href="http://lifeinthegrid.com/duplicator-faq" target="_blank"><?php _e('FAQs', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
-			<a href="http://lifeinthegrid.com/duplicator-log" target="_blank"><?php _e('Change Log', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
+			<a href="http://lifeinthegrid.com/duplicator-log" target="_blank"><?php _e('Changelog', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
 			<a href="http://lifeinthegrid.com/labs/duplicator" target="_blank">Product Page</a>
 		</div>		
 		<div style="clear:both; height:35px"></div>
