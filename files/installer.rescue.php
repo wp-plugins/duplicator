@@ -567,7 +567,7 @@ if ($action == 'dbconnect-test') {
 		dinstaller_log("document root: {$GLOBALS['CURRENT_ROOT_PATH']}");
 		dinstaller_log("document root 755: " . var_export($chown_root_path, true));
 		dinstaller_log("log file 644: "      . var_export($chown_log_path, true));
-		dinstaller_log("secure build name: 503f654c6a4f12760_20120830_duplicatorplugin");
+		dinstaller_log("secure build name: 5044b7cd9f4a77594_nichesite_4");
 		dinstaller_log("----------------------------------");
 		dinstaller_log("SETTINGS:");
 		dinstaller_log("database connection => host:{$dbhost} | database:{$dbname} ");
@@ -605,8 +605,8 @@ if ($action == 'dbconnect-test') {
 		if($filename == null) {
 			die(MSG_ERR_ZIPNOTFOUND  . $tryagain_html);
 		}
-		if ('503f654c6a4f12760_20120830_duplicatorplugin_package.zip' != $zip_name) {
-			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   503f654c6a4f12760_20120830_duplicatorplugin_package.zip  \nprocessed with: {$zip_name}  \n");
+		if ('5044b7cd9f4a77594_nichesite_4_package.zip' != $zip_name) {
+			dinstaller_log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   5044b7cd9f4a77594_nichesite_4_package.zip  \nprocessed with: {$zip_name}  \n");
 			$package_set_warning = true;
 		}
 		

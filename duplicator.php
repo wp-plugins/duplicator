@@ -53,7 +53,7 @@ if (is_admin() == true) {
 	$GLOBALS['duplicator_opts']['email_others']	= isset($GLOBALS['duplicator_opts']['email_others']) 	? $GLOBALS['duplicator_opts']['email_others']	: '';
 	$GLOBALS['duplicator_opts']['skip_ext']		= isset($GLOBALS['duplicator_opts']['skip_ext'])  		? $GLOBALS['duplicator_opts']['skip_ext'] 		: '';
 	$GLOBALS['duplicator_opts']['dir_bypass']	= isset($GLOBALS['duplicator_opts']['dir_bypass'])		? $GLOBALS['duplicator_opts']['dir_bypass']		: '';
-	$GLOBALS['duplicator_opts']['rm_snapshot']  = isset($GLOBALS['duplicator_opts']['rm_snapshot']) 	? $GLOBALS['duplicator_opts']['rm_snapshot'] 	: '1';
+	$GLOBALS['duplicator_opts']['rm_snapshot']  = isset($GLOBALS['duplicator_opts']['rm_snapshot']) 	? $GLOBALS['duplicator_opts']['rm_snapshot'] 	: '0';
 	
 	//Default Arrays
 	$GLOBALS['duplicator_bypass-array']	  = explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
