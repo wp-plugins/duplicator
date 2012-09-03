@@ -58,7 +58,7 @@ See the [FAQs](http://lifeinthegrid.com/duplicator-faq) page for a detailed rund
 Visit the [Duplicator Page](http://lifeinthegrid.com/duplicator) at lifeinthegrid.com
 
 
-= How can I test this in a non production environment? =
+= Can I test this in a non production environment? =
 
 Yes. Put WordPress on [your computer](http://lifeinthegrid.com/xampp) by watching the video below.
 
