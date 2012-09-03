@@ -34,7 +34,7 @@ Special contributor thanks to:
 <li>Rami from www.wp-tricks.co.il</li>
 <li>Paal Joachim Romdahl</li>
 <li>Vincent G from www.Host1Free.com</li>
-<li>Hans-M. Herbrand</li>
+<li>Hans-M. Herbrand www.web266.de</li>
 
 
 == Installation ==
