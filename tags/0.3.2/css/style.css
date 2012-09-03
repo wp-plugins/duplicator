@@ -1,0 +1,91 @@
+
+input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
+input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
+fieldset {border:1px solid gray; padding:0px 5px 10px 10px; }
+label {font-size:13px !important}
+
+.no-select {user-select: none; -o-user-select:none;  -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none;}
+div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); opacity:0.6;}
+
+/*PAGE-MAIN: Toolbar*/
+div.dup-header {padding:5px 10px 0px 0px;border:1px solid #efefef; margin:10px 0px 18px 0px; border-radius:5px;box-shadow: 0 8px 6px -6px #C7C7C7;}
+table#toolbar-table td {padding:0px; white-space:nowrap;}
+td.toolbar-label label {font-size:14px !important; margin-top:7px; display:inline-block; font-weight:bold}
+td.toolbar-textbox {white-space:nowrap;width:100%; vertical-align:middle}
+img.toolbar-divider {height:26px; padding:0px 5px 0px 5px}
+input#dup-btn-about {width:28px; height:27px;background:url(../img/about.png) no-repeat 4px 4px; margin-left:-1px}
+input.btn-create-pack{width:28px; height:27px;background:url(../img/create.png) no-repeat 4px 3px;}
+input#btn-delete-pack{width:28px; height:27px;background:url(../img/delete.png) no-repeat 5px 4px;}
+input.btn-opts-dialog {width:28px;height:27px;background:url(../img/options.png) no-repeat 5px 4px;}
+input.btn-sys-dialog {width:28px; height:27px;background:url(../img/sys-check.png) no-repeat 5px 4px;}
+input.btn-log-dialog {width:28px; height:27px;background:url(../img/debug.png) no-repeat 5px 4px;}
+input#btn-help-dialog {width:28px;height:27px; background:url(../img/help.png) no-repeat 5px 4px; }
+input.btn-setup-link {width:28px;  background:url(../img/setup.png) no-repeat 5px 4px;}
+input#btn-contribute-dialog {width:28px; height:27px; background:url(../img/partner.png) no-repeat 3px 3px;}
+img.btn-delete-all {height:16px; width:16px;margin-left:2px}
+
+
+/*PAGE-MAIN: Table package details */
+table.dup-pack-table {word-break:break-all;}
+table.dup-pack-table th {white-space:nowrap !important;}
+table.dup-pack-table td.pack-name {text-overflow:ellipsis; white-space:nowrap}
+tr.dup-pack-info td {white-space:nowrap; padding:12px 30px 0px 7px;}
+tr.dup-pack-info td.get-btns {text-align:right; padding:3px 5px 6px 0px !important;}
+td.dup-pack-details {display:none; padding-left:10px; line-height:22px;background-color:#fff;}
+div.dup-details-area {margin:5px 0px 15px 0px; padding:4px; border:1px solid #dfdfdf; border-radius:2px;  box-shadow: 0 8px 6px -6px #999;}
+button.dup-button-selected {border:1px solid #777;}
+button.dup-dlg-quick-path-database-link {white-space:nowrap}
+button.dup-dlg-quick-path-download-link {white-space:nowrap}
+
+/*PAGE-ABOUT: */
+.dup-drop-cap:first-child:first-letter { float: left; color: #777; font-size:40px; line-height: 30px; padding-top: 4px; padding-right: 8px; padding-left: 3px; font-family: Georgia; }
+div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
+div.dup-spread-word-arrow {display:inline-block; font-size:40px; font-weight:bold; }
+div.dup-wrap {line-height:20px}
+table.dup-support-table {border-spacing:8px;}
+div.dup-support-cell {border:1px solid silver; box-shadow:inset 0 0 10px #C7C7C7, 0 8px 6px -6px #999; border-radius:10px; height:70px; width:150px; float:left; margin:0px 20px 0px 10px; padding:4px}
+div.dup-support-cell:hover {background-color:#efefef; cursor:pointer}
+div.dup-support-txts {padding:10px 0px 0px 0px}
+@-webkit-keyframes approve-keyframe  { 
+    from {-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+    to {-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(30deg);}
+}
+img#dup-about-approved { -webkit-animation:approve-keyframe 19s 1s infinite alternate backwards   }
+
+
+/*DIALOG: Options view*/
+form#form-duplicator-opts input[type=checkbox] {margin-top:3px}
+form#form-duplicator-opts fieldset {border-radius:4px; border:1px solid silver;  line-height:23px}
+div#dup-tabs-opts {height:500px}
+input.txt-settings {width:450px}
+input.btn-save-opts {width:80px}
+
+/*DIALOG: system check*/
+div#dup-sys-check-data {width:99%; height:90%; font-size:11px; padding:5px; line-height:20px; }
+ul#dup-sys-check-data-reqs {line-height:16px}
+div#dup-sys-check-data li {margin:0px}
+div#dup-system-err-msg1 {width:99%; height:125px; font-size:11px; border:1px solid silver; border-radius:5px; overflow-y:scroll; padding:8px;}
+div#dup-system-err-msg2 {width:99%; height:175px; font-size:11px; border:1px solid silver; border-radius:5px; overflow-y:scroll; padding:8px;}
+div.dup-sys-check-data-details {display:none; padding:5px; border:1px dotted silver; border-radius:4px; line-height:16px; background-color:#efefef; font-weight:normal}
+div.dup-sys-check-title {display:inline-block; width:250px; padding:1px; }
+div.dup-sys-pass {display:inline-block; color:green;}
+div.dup-sys-ok {display:inline-block; color:#5860C7;}
+div.dup-sys-fail {display:inline-block; color:#AF0000;}
+span.dup-toggle {float:left; margin:0 2px 2px 0; }
+hr.dup-dots { border:none; border-top: 1px dotted silver; height: 1px; width:100%;}
+
+/*DIALOG: server info (diagnostics) */
+div#dup-server-info-area { padding:10px 5px;  }
+div#dup-server-info-area table { padding: 1px; background: #dfdfdf;  -webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px; width:100% !important; box-shadow: 0 8px 6px -6px #777; }
+div#dup-server-info-area td, th {padding:3px; background:#fff; -webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
+div#dup-server-info-area tr.h img { display:none; }
+div#dup-server-info-area tr.h td{ background:none; }
+div#dup-server-info-area tr.h th{ text-align:center; background-color:#efefef;  }
+div#dup-server-info-area td.e{ font-weight:bold }
+
+/*JQUERY UI OVERIDES */
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text { padding: .2em 1em .2em 2.1em; }
+
+
+
+
