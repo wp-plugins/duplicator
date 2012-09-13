@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright 2011  Cory Lamle  (email : admin@lifeinthegrid.com)
-	Copyright 2011  Gaurav Aggarwal  (email : admin@logiclord.com)
+	Copyright 2011  Gaurav Aggarwal 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
     published by the Free Software Foundation.

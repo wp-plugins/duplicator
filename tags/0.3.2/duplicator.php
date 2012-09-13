@@ -27,8 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	
 Contributors:
  Many thanks go out to Gaurav Aggarwal for starting the Backup and Move Plugin.
- This project is a fork of that project
- See http://www.logiclord.com/backup-and-move/ for more details.		
+ This project is a fork of that project see backup-and-move for more details.		
 
 ================================================================================ */
 
