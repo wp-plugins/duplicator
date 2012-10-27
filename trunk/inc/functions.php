@@ -9,14 +9,15 @@ function duplicator_create_dbscript($destination) {
 	try {
 
 		global $wpdb;
-		$dbiconv = ($GLOBALS['duplicator_opts']['dbiconv'] == "0" && function_exists("iconv")) ? false : true;
+		//$dbiconv = ($GLOBALS['duplicator_opts']['dbiconv'] == "0" && function_exists("iconv")) ? false : true;
+		
 		$handle  = fopen($destination,'w+');
 		$tables  = $wpdb->get_col('SHOW TABLES');
 		
 		duplicator_log("log:fun__create_dbscript=>started");
-		if ($dbiconv) {
-			duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
-		}
+		//if ($dbiconv) {
+			//duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
+		//}
 		
 		foreach ($tables as $table) {
 		
@@ -40,7 +41,7 @@ function duplicator_create_dbscript($destination) {
 			
 			//PERFORM ICONV ROUTINE
 			//Chunck the query results to avoid memory issues
-			if ($dbiconv) {
+			/*if ($dbiconv) {
 			
 				for ($i = 0; $i < $row_count; $i++) {
 					$sql   = "";
@@ -67,7 +68,7 @@ function duplicator_create_dbscript($destination) {
 				}
 				
 			//DO NOT PERFORM ICONV
-			} else {
+			} else {*/
 
 				for ($i = 0; $i < $row_count; $i++) {
 					$sql   = "";
@@ -92,7 +93,7 @@ function duplicator_create_dbscript($destination) {
 					}
 				}
 			
-			}
+			//}
 			
 			@fwrite($handle, "\n\n");
 			duplicator_log("done:  {$table}");
@@ -107,6 +108,55 @@ function duplicator_create_dbscript($destination) {
 		duplicator_log("log:fun__create_dbscript=>runtime error: " . $e);
 	}
 }
+
+/**
+ *  DUPLICATOR_BUILD_INSTALLERFILE
+ *  Builds the Installer file from the contents of the files/installer directory
+ */
+function duplicator_build_installerFile() {
+
+	duplicator_log("log:fun__build_installerFile=>start");
+
+	$template_path = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH  . 'files/installer.template.php');
+	$main_path	   = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH  . 'files/installer/main.installer.php');
+	@chmod($template_path, 0777);
+	@chmod($main_path, 0777);
+	
+	$main_data  = file_get_contents("{$main_path}");
+	$template_result = file_put_contents($template_path, $main_data);
+	if ($main_data === false || $template_result == false) {
+		duplicator_log("log:fun__build_installerFile=>install generation failed to copy {$main_path}");
+	}
+	
+	$embeded_files = array (
+		"inc.utils.php"		    => "@@INC.UTILS.PHP@@", 
+		"ajax.step1.php"		=> "@@AJAX.STEP1.PHP@@", 
+		"ajax.step2.php"		=> "@@AJAX.STEP2.PHP@@", 
+		"inc.style.css"  		=> "@@INC.STYLE.CSS@@",
+		"inc.scripts.js"		=> "@@INC.SCRIPTS.JS@@",
+		"view.step1.php"		=> "@@VIEW.STEP1.PHP@@",
+		"view.step2.php"		=> "@@VIEW.STEP2.PHP@@",
+		"view.step3.php"		=> "@@VIEW.STEP3.PHP@@"); 
+	
+	foreach ($embeded_files as $name=>$token) { 
+		$file_path    = DUPLICATOR_PLUGIN_PATH  . "files/installer/${name}";
+		@chmod($file_path, 0777);
+		
+		$search_data     = @file_get_contents($template_path);
+		$insert_data  	 = @file_get_contents($file_path);
+		file_put_contents($template_path, str_replace("${token}", "{$insert_data}", $search_data));
+		if ($search_data === false || $insert_data == false) {
+			duplicator_log("log:fun__build_installerFile=>install generation failed at {$token}");
+		}
+		@chmod($file_path, 0644);
+	} 
+	
+	@chmod($template_path, 0644);
+	@chmod($main_path, 0644);
+	
+	duplicator_log("log:fun__build_installerFile=>end");
+}
+
 
 /**
  *  DUPLICATOR_CREATE_INSTALLERFILE
@@ -126,15 +176,16 @@ function duplicator_create_installerFile($uniquename) {
 	
 	get_option('duplicator_options') == ""  ? "" : $duplicator_opts = unserialize(get_option('duplicator_options'));
 	$replace_items = Array(
-		"fwrite_current_url" 		=> get_option('siteurl'),
+		"fwrite_url_old" 			=> get_option('siteurl'),
 		"fwrite_package_name"  	 	=> "{$uniquename}_package.zip",
 		"fwrite_secure_name"	 	=> "{$uniquename}",
-		"fwrite_nurl" 				=> $duplicator_opts['nurl'],
+		"fwrite_url_new" 			=> $duplicator_opts['url_new'],
 		"fwrite_dbhost" 			=> $duplicator_opts['dbhost'],
 		"fwrite_dbname" 			=> $duplicator_opts['dbname'],
 		"fwrite_dbuser" 			=> $duplicator_opts['dbuser'],
 		"fwrite_wp_tableprefix" 	=> $wpdb->prefix,
-		"fwrite_site_title"			=> get_option('blogname'),
+		"fwrite_blogname"			=> get_option('blogname'),
+		"fwrite_wproot"			    => DUPLICATOR_WPROOTPATH,
 		"fwrite_rescue_flag"		=> "");
 		
 	if( file_exists($template) && is_readable($template)) {
@@ -342,7 +393,7 @@ function duplicator_safe_path($path) {
  *  bytes every 40 seconds or else it forces a script hault
  */
 function duplicator_fcgi_flush() {
-	echo(str_repeat(' ',256));
+	echo(str_repeat(' ',264));
 	@flush();
 }
 

@@ -56,7 +56,7 @@
 						
 						<label for="dir_bypass"><?php _e("Directories", 'wpduplicator') ?>: </label> 
 						<textarea name="dir_bypass" id="dir_bypass" style="width:625px;height:50px;font-size:11px" /><?php echo $GLOBALS['duplicator_opts']['dir_bypass'] ?></textarea><br/>
-						<div style='font-size:11px; margin:-6px 0px 5px 0px'><i><?php printf("%s: %s",__("Root Path", 'wpduplicator'), rtrim(DUPLICATOR_WPROOTPATH, '/'));	?></i></div>
+						<div style='font-size:11px; margin:-6px 0px 5px 0px'><i><?php printf("%s: <a href='javascript:void(0)' onclick='Duplicator.optionsAddRootPath(this)'>%s</a>",__("Root Path", 'wpduplicator'), rtrim(DUPLICATOR_WPROOTPATH, '/'));	?></i></div>
 						
 						<label class="no-select"><?php _e("File extensions", 'wpduplicator') ?>:</label><br/>
 						<input type="text" name="skip_ext" id="skip_ext"  value="<?php echo $GLOBALS['duplicator_opts']['skip_ext'] ?>" style="width:95%" /> <br/>
@@ -64,7 +64,7 @@
 						<i style="font-size:11px;"><?php printf("%s (/path1;/path2 or exe;txt;)", __("Separate all filters by semicolon", 'wpduplicator')); ?></i>
 					</fieldset><br/>
 					
-					<!-- ENCODEING OPTIONS -->
+					<!-- ENCODEING OPTIONS 
 					<fieldset style="width:97%; line-height: 17px"  class='no-select'>
 						<legend><b><?php _e("Database Encoding", 'wpduplicator') ?></b></legend>
 						
@@ -81,7 +81,7 @@
 								?>
 							</i><br/><br/>					
 							
-					</fieldset>
+					</fieldset>-->
 					<!--div style='position:absolute; bottom:5px'>	
 						<i style='font-size:10px'><?php _e("Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)", 'wpduplicator') ?>.</i>
 					</div-->
@@ -97,7 +97,7 @@
 					<table width="100%" border="0" cellspacing="5" cellpadding="5">
 						<tr>
 							<td style="width:130px"><?php _e("Install URL", 'wpduplicator') ?></td>
-							<td><input type="text" name="nurl" id="nurl" class="txt-settings" value="<?php echo $GLOBALS['duplicator_opts']['nurl'] ?>" /></td>
+							<td><input type="text" name="url_new" id="url_new" class="txt-settings" value="<?php echo $GLOBALS['duplicator_opts']['url_new'] ?>" /></td>
 						</tr>
 					</table>
 				</fieldset><br/>

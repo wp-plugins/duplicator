@@ -11,13 +11,14 @@ DIALOG: PACKAGE CONFIRMATION-->
 		<span id='dup-dlg-package-confirm-scannow-data'>
 			<a href="javascript:void(0)" onclick="Duplicator.getSystemDirectory()"><?php _e("Perform Scan", 'wpduplicator') ?></a> 
 		</span><br/>
+		<i style='font-size:11px'><?php _e("Scan sizes over 1GB may not finish processing on some hosting providers.", 'wpduplicator') ?></i>
 		
 		<div style='font-size:11px; line-height:15px'>
 			<i>
 				<?php printf("%s <a href='javascript:void(0)'  onclick='Duplicator.optionsOpen()'>%s</a>. %s",
 						__('Note: A scan will provide an estimate on the size of your file system.  The scan will exclude items in the', 'wpduplicator'),
 						__('directory filter list', 'wpduplicator'),
-						__('Files that are not readable by the plugin will not be included in the overview.  Directories that are empty will not be included in the final package. ', 'wpduplicator'));
+						__('Files that are not readable by the plugin will not be included in the overview.', 'wpduplicator'));
 				?>
 			</i>
 		</div>
@@ -76,7 +77,7 @@ DIALOG: SYSTEM ERROR -->
 
 <!-- ==========================================
 DIALOG: SYSTEM CHECK -->
-<div id="dup-dlg-system-check" title="<?php _e('System Checks', 'wpduplicator'); ?>">
+<div id="dup-dlg-system-check" title="<?php _e('System Status', 'wpduplicator'); ?>">
 	
 	<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
 	<?php _e("Please validate your system configuration.", 'wpduplicator'); ?>
@@ -144,10 +145,29 @@ DIALOG: SYSTEM CHECK -->
 					</div>
 				</li>	
 				<li>
-					<div class='dup-sys-check-title'><a>SYS-104: <?php _e('MySQLi Support', 'wpduplicator');?></a></div> <span id='SYS-104'></span>
+					<div class='dup-sys-check-title'><a>SYS-104: <?php _e('MySQL Support', 'wpduplicator');?></a></div> <span id='SYS-104'></span>
 					<div class='dup-sys-check-data-details'>
 						<?php 
-							_e("In order to complete an install the mysqli extension for PHP is required. If you are on a hosted server please contact your host and request that mysqli extension be enabled. For more information visit: http://php.net/manual/en/mysqli.installation.php", 'wpduplicator');
+						
+							printf("%s <b>[%s]</b>. %s",
+								__("The version of MySQL on this server is ", 'wpduplicator'),
+								$wpdb->db_version(),
+								__("The Duplicator requires MySQL version 4.1+ or better.", 'wpduplicator')
+							);				
+							echo '  ';
+							_e("If the MySQL server version is valid and this requirement fails then the mysqli extension is not installed. If you are on a hosted server please contact your host and request that mysqli extension and MySQL Server 4.1+ be installed. For more info visit: http://php.net/manual/en/mysqli.installation.php", 'wpduplicator');
+						?>
+					</div>
+				</li>
+				<li>
+					<div class='dup-sys-check-title'><a>SYS-105: <?php _e('PHP Support', 'wpduplicator');?></a></div> <span id='SYS-105'></span>
+					<div class='dup-sys-check-data-details'>
+						<?php 
+							printf("%s <b>[%s]</b>. %s",
+								__("The version of PHP on this server is ", 'wpduplicator'),
+								phpversion(),
+								__("The Duplicator requires at least PHP version 5.2.17+ on this server.  Please contact your host and have them upgrade to this stable secure version if the test fails.", 'wpduplicator')
+							);
 						?>
 					</div>
 				</li>	
@@ -157,17 +177,6 @@ DIALOG: SYSTEM CHECK -->
 			<!-- =========================================
 			SYSTEM CHECKS -->
 			<b><?php _e("SYSTEM CHECKS", 'wpduplicator') ?></b><hr style='margin-top:-2px' size="1"/>
-			
-			<!-- PHP SERVER -->
-			<div class='dup-sys-check-title'><b><?php _e("PHP Version", 'wpduplicator');  echo ":</b> " . phpversion(); ?></div> 
-			<?php if (phpversion() >= 5.3): ?>
-				<div class='dup-sys-pass'><?php _e('Good', 'wpduplicator'); ?></div>
-			<?php elseif (phpversion() >= 5.2): ?>
-				<div class='dup-sys-ok'><?php _e('OK', 'wpduplicator'); ?></div>
-				<i style="font-size:11px; font-weight:normal"> &nbsp; (<?php _e("PHP 5.2.17+ is required", 'wpduplicator') ?>)</i>
-			<?php else: ?> 
-				<div class='dup-sys-fail'><?php _e('Fail', 'wpduplicator'); ?></div>
-			<?php endif; ?>	<br />
 			
 			
 			<!-- WEB SERVER -->

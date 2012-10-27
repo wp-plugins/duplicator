@@ -86,9 +86,11 @@ class Duplicator_Zip
 				}
 			}
 			
+			/* Legacy: Excludes empty diretories and files with no extention
 			while (false !== ($file = @readdir($dh))) { 
 				if ($file != '.' && $file != '..') { 
 					$fullpath = "{$folderPath}/{$file}";
+					
 					if(is_dir($fullpath)) {
 						duplicator_fcgi_flush();
 						$this->resursiveZip($fullpath);
@@ -103,7 +105,31 @@ class Duplicator_Zip
 					} 
 					$this->limitItems++;
 				}
-			} 
+			} */
+			
+			
+			while (false !== ($file = @readdir($dh))) {
+                 if ($file != '.' && $file != '..') {
+                    $fullpath = "{$folderPath}/{$file}";
+					$localpath = str_replace($this->rootFolder, '', $folderPath);
+					$localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
+                     if(is_dir($fullpath)) {
+                         duplicator_fcgi_flush();
+ 						 $this->zipArchive->addEmptyDir("{$localname}{$file}");
+                         $this->resursiveZip($fullpath);
+                     }
+                     else if(is_file($fullpath) && is_readable($fullpath)) {
+                         //Check filter extensions
+                        $ext = @pathinfo($fullpath, PATHINFO_EXTENSION);
+                        if($ext == '' || !in_array($ext, $this->skipNames)) {
+							$this->zipArchive->addFile("{$folderPath}/{$file}", "{$localname}{$file}");
+                        }
+                     }
+					 $this->limitItems++;
+				}
+			}
+			
+			
 			
 			//Check if were over our count
 			if($this->limitItems > $this->limit) {

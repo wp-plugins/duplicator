@@ -116,7 +116,7 @@ jQuery.noConflict()(function($) {
 				'dbhost' 		: $("input#dbhost").val(),
 				'dbname'  		: $("input#dbname").val(),
 				'dbuser'  		: $("input#dbuser").val(),
-				'nurl'  		: $("input#nurl").val(),
+				'url_new'  		: $("input#url_new").val(),
 				'dbiconv'  		: dbiconv,
 				'email-me'  	: email_me,
 				'email_others'  : email_others,
@@ -277,7 +277,7 @@ jQuery.noConflict()(function($) {
 	$("#dup-dlg-system-error").dialog({autoOpen:false, height:550, width:650, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });	
 	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:355, width:800, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });	
 	$("#dup-dlg-package-confirm").dialog(
-		{autoOpen:false, height:285, width:625, create:Duplicator._dlgCreate, close:Duplicator._dlgClose,
+		{autoOpen:false, height:300, width:625, create:Duplicator._dlgCreate, close:Duplicator._dlgClose,
 		buttons: {
 				"<?php _e('Create Package Set', 'wpduplicator') ?>" : function() {
 					$(this).dialog("close");
@@ -305,6 +305,12 @@ jQuery.noConflict()(function($) {
 	}
 	Duplicator.optionsOpen  = function() {$("div#dialog-options").dialog("open");}
 	Duplicator.optionsClose = function() {$('div#dialog-options').dialog('close');}
+	Duplicator.optionsAddRootPath = function(obj) {
+		var path = $(obj).text();
+		var text = $("#dir_bypass").val() + path + ';';
+		$("#dir_bypass").val(text);
+	}
+	
 
 
 	/*  ============================================================================
