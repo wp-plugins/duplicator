@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WPDuplicator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-16 06:20-0700\n"
-"PO-Revision-Date: 2012-08-16 06:22-0700\n"
+"POT-Creation-Date: 2012-09-13 21:16-0700\n"
+"PO-Revision-Date: 2012-09-13 21:16-0700\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,61 +11,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: ./\n"
+"X-Generator: Poedit 1.5.3\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../duplicator.php:195
+#: ../duplicator.php:198 ../inc/page.about.php:141
 msgid "FAQ"
 msgstr ""
 
-#: ../duplicator.php:196
+#: ../duplicator.php:199
 msgid "Partner"
 msgstr ""
 
-#: ../duplicator.php:197
+#: ../duplicator.php:200
 msgid "Approved Hosts"
 msgstr ""
 
-#: ../duplicator.php:248
+#: ../duplicator.php:250 ../inc/page.main.php:32
 msgid "Dashboard"
 msgstr ""
 
-#: ../duplicator.php:250
+#: ../duplicator.php:252 ../inc/page.diag.php:21
 msgid "Diagnostics"
 msgstr ""
 
-#: ../duplicator.php:281
+#: ../duplicator.php:253 ../inc/page.about.php:21 ../inc/page.diag.php:25
+#: ../inc/page.main.php:36 ../inc/page.support.php:10
+msgid "Support"
+msgstr ""
+
+#: ../duplicator.php:254 ../inc/page.diag.php:26 ../inc/page.main.php:37
+#: ../inc/page.support.php:14
+msgid "All About"
+msgstr ""
+
+#: ../duplicator.php:288
 msgid "Manage"
 msgstr ""
 
-#: ../files/log-read.php:42
+#: ../files/log-read.php:45
 msgid "Log file not found or unreadable"
 msgstr ""
 
-#: ../files/log-read.php:44
+#: ../files/log-read.php:47
 msgid ""
 "The log file for the Duplicator Plugin can be found in the snapshots "
 "directory with the extension *.log"
 msgstr ""
 
-#: ../files/log-read.php:45
+#: ../files/log-read.php:48
 msgid "If no log file is present the try to create a package"
 msgstr ""
 
-#: ../files/log-read.php:47
+#: ../files/log-read.php:50
 msgid "Reasons for log file not showing"
 msgstr ""
 
-#: ../files/log-read.php:48
+#: ../files/log-read.php:51
 msgid "The web server does not support returning .log file extentions"
 msgstr ""
 
-#: ../files/log-read.php:49
+#: ../files/log-read.php:52
 msgid ""
 "The snapshots directory does not have the correct permissions to write "
 "files.  Try setting the permissions to 755"
 msgstr ""
 
-#: ../files/log-read.php:50
+#: ../files/log-read.php:53
 msgid ""
 "The process that PHP runs under does not have enough permissions to create "
 "files.  Please contact your hosting provider for more details"
@@ -190,162 +201,330 @@ msgstr ""
 msgid "Preview Log"
 msgstr ""
 
-#: ../inc/page.main.php:31
+#: ../inc/page.about.php:17
+msgid "About"
+msgstr ""
+
+#: ../inc/page.about.php:18 ../inc/page.diag.php:22 ../inc/page.main.php:33
+#: ../inc/page.support.php:11
 msgid "By"
 msgstr ""
 
-#: ../inc/page.main.php:38 ../inc/page.main.php:82
+#: ../inc/page.about.php:31
+msgid ""
+"Your LifeInTheGrid should be about working smarter not harder.  With the "
+"Duplicator you can streamline your workflows and quickly clone a WordPress "
+"site in minutes.  From Novice to Guru this plugin is designed for Bloggers, "
+"Admins, Developers, Designers, Entrepreneurs and anyone who uses WordPress."
+msgstr ""
+
+#: ../inc/page.about.php:33
+msgid ""
+"If you run into an issue feel free to submit a support ticket and visit our"
+msgstr ""
+
+#: ../inc/page.about.php:36
+msgid "knowledgebase"
+msgstr ""
+
+#: ../inc/page.about.php:39
+msgid ""
+"We also offer premium priority support for those who need feedback within "
+"24-48hrs.  Please visit our "
+msgstr ""
+
+#: ../inc/page.about.php:40 ../inc/page.support.php:70
+msgid "service page"
+msgstr ""
+
+#: ../inc/page.about.php:41
+msgid "for more details."
+msgstr ""
+
+#: ../inc/page.about.php:50
+msgid "Support Duplicator"
+msgstr ""
+
+#: ../inc/page.about.php:62
+msgid ""
+"Consider a donation of any amount; it will take less than 60 seconds or "
+"about as fast as you can duplicate a site.  These proceeds help to cover "
+"development and support costs.  Thanks for your generosity!!"
+msgstr ""
+
+#: ../inc/page.about.php:74
+msgid "Help out by leaving a 5 star review on the"
+msgstr ""
+
+#: ../inc/page.about.php:75
+msgid "WordPress plugins directory"
+msgstr ""
+
+#: ../inc/page.about.php:76
+msgid "and by giving your opinion on the survey below."
+msgstr ""
+
+#: ../inc/page.about.php:79
+msgid "Give us your Opinion?"
+msgstr ""
+
+#: ../inc/page.about.php:91
+msgid "Spread the Word"
+msgstr ""
+
+#: ../inc/page.about.php:92
+msgid ""
+"Spreading the word gives the plugin a wider audience which helps to pool "
+"more resources to test/support/develop and participate to improve the "
+"plugin.  By getting the word out the Duplicator will continue to improve at "
+"a faster rate and harness the power of the open community to push the plugin "
+"further."
+msgstr ""
+
+#: ../inc/page.about.php:95
+msgid "Duplicate Your WordPress"
+msgstr ""
+
+#: ../inc/page.about.php:96
+msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
+msgstr ""
+
+#: ../inc/page.about.php:140 ../inc/page.support.php:23
+msgid "Knowledge Base"
+msgstr ""
+
+#: ../inc/page.about.php:142
+msgid "Blog"
+msgstr ""
+
+#: ../inc/page.about.php:143
+msgid "Labs"
+msgstr ""
+
+#: ../inc/page.main.php:45 ../inc/page.main.php:86
 msgid "Package Name"
 msgstr ""
 
-#: ../inc/page.main.php:41
+#: ../inc/page.main.php:48
 msgid "Create Package"
 msgstr ""
 
-#: ../inc/page.main.php:42
+#: ../inc/page.main.php:49
 msgid "Delete selected package(s)"
 msgstr ""
 
-#: ../inc/page.main.php:45
+#: ../inc/page.main.php:52
 msgid "Options"
 msgstr ""
 
-#: ../inc/page.main.php:46
+#: ../inc/page.main.php:53
 msgid "System Check"
 msgstr ""
 
-#: ../inc/page.main.php:47
+#: ../inc/page.main.php:54
 msgid "Show Create Log"
 msgstr ""
 
-#: ../inc/page.main.php:50
-msgid "Help"
-msgstr ""
-
-#: ../inc/page.main.php:51
-msgid "Partner with us"
-msgstr ""
-
-#: ../inc/page.main.php:60
+#: ../inc/page.main.php:64
 msgid "Status"
 msgstr ""
 
-#: ../inc/page.main.php:61
+#: ../inc/page.main.php:65
 msgid "Ready to create new package"
 msgstr ""
 
-#: ../inc/page.main.php:77
+#: ../inc/page.main.php:81
 msgid "Select all packages"
 msgstr ""
 
-#: ../inc/page.main.php:78
+#: ../inc/page.main.php:82
 msgid "Information"
 msgstr ""
 
-#: ../inc/page.main.php:79
+#: ../inc/page.main.php:83
 msgid "Owner"
 msgstr ""
 
-#: ../inc/page.main.php:80
+#: ../inc/page.main.php:84
 msgid "Created"
 msgstr ""
 
-#: ../inc/page.main.php:81
+#: ../inc/page.main.php:85
 msgid "Size"
 msgstr ""
 
-#: ../inc/page.main.php:84
+#: ../inc/page.main.php:88
 msgid "Package Set"
 msgstr ""
 
-#: ../inc/page.main.php:85
+#: ../inc/page.main.php:89
 msgid "(Download Both)"
 msgstr ""
 
-#: ../inc/page.main.php:116 ../inc/page.main.php:144
+#: ../inc/page.main.php:120 ../inc/page.main.php:148
 msgid "View"
 msgstr ""
 
-#: ../inc/page.main.php:122 ../inc/view.options.php:10
+#: ../inc/page.main.php:126 ../inc/view.options.php:10
 msgid "Installer"
 msgstr ""
 
-#: ../inc/page.main.php:123 ../inc/page.main.php:152 ../inc/view.options.php:9
+#: ../inc/page.main.php:127 ../inc/page.main.php:156 ../inc/view.options.php:9
 msgid "Package"
 msgstr ""
 
-#: ../inc/page.main.php:129
+#: ../inc/page.main.php:133
 msgid "Version"
 msgstr ""
 
-#: ../inc/page.main.php:130
+#: ../inc/page.main.php:134
 msgid "Secure Name"
 msgstr ""
 
-#: ../inc/page.main.php:131
+#: ../inc/page.main.php:135
 msgid "Download SQL File"
 msgstr ""
 
-#: ../inc/page.main.php:132
+#: ../inc/page.main.php:136
 msgid "Show Download Links"
 msgstr ""
 
-#: ../inc/page.main.php:158
+#: ../inc/page.main.php:162
 msgid "Legacy Version"
 msgstr ""
 
-#: ../inc/page.main.php:161
+#: ../inc/page.main.php:165
 msgid ""
 "This package was built with a version that is no longer supported.  It is "
 "highly recommended that this package be deleted.  For more details see the"
 msgstr ""
 
-#: ../inc/page.main.php:162
+#: ../inc/page.main.php:166
 msgid "Online FAQs"
 msgstr ""
 
-#: ../inc/page.main.php:174
+#: ../inc/page.main.php:178
 msgid "No packages found"
 msgstr ""
 
-#: ../inc/page.main.php:175
+#: ../inc/page.main.php:179
 msgid "To create a new package, enter a name and click the create button "
 msgstr ""
 
-#: ../inc/page.main.php:177
-msgid "Check Your"
-msgstr ""
-
-#: ../inc/page.main.php:178
-msgid "servers compatability"
-msgstr ""
-
-#: ../inc/page.main.php:179
-msgid "with the duplicator"
-msgstr ""
-
-#: ../inc/page.main.php:180
-msgid "This process will backup all your files and database"
-msgstr ""
-
 #: ../inc/page.main.php:181
-msgid "Creating a package may take several minutes if you have a large site"
+msgid "Check your"
 msgstr ""
 
 #: ../inc/page.main.php:182
-msgid "This window should remain open for the process to complete"
+msgid "server's compatibility"
 msgstr ""
 
 #: ../inc/page.main.php:183
-msgid "Please be patient while we work through this Beta version"
+msgid "with the duplicator"
 msgstr ""
 
 #: ../inc/page.main.php:184
+msgid "This process will backup all your files and database"
+msgstr ""
+
+#: ../inc/page.main.php:185
+msgid "Creating a package may take several minutes if you have a large site"
+msgstr ""
+
+#: ../inc/page.main.php:186
+msgid "This window should remain open for the process to complete"
+msgstr ""
+
+#: ../inc/page.main.php:187
+msgid "Please be patient while we work through this Beta version"
+msgstr ""
+
+#: ../inc/page.main.php:188
 msgid "Please report any issues to"
 msgstr ""
 
-#: ../inc/page.main.php:201
+#: ../inc/page.main.php:205
 msgid "Total Storage Used"
+msgstr ""
+
+#: ../inc/page.support.php:28
+msgid ""
+"For a complete rundown of the Duplicator see the online knowledgebase by "
+"clicking the question button or any link below.   If you experience issues "
+"with creating or installing a package check out the FAQ page first."
+msgstr ""
+
+#: ../inc/page.support.php:32
+msgid "Quick Start"
+msgstr ""
+
+#: ../inc/page.support.php:33
+msgid "User Guide"
+msgstr ""
+
+#: ../inc/page.support.php:34
+msgid "FAQs"
+msgstr ""
+
+#: ../inc/page.support.php:35
+msgid "Changelog"
+msgstr ""
+
+#: ../inc/page.support.php:42
+msgid "Approved Hosting"
+msgstr ""
+
+#: ../inc/page.support.php:48
+msgid ""
+"Not all hosting companies are created equal and to get the most out of the "
+"plugin we recommend using hosting providers that we do our own testing on.  "
+"Please visit our"
+msgstr ""
+
+#: ../inc/page.support.php:51
+msgid "Approved Affiliate Hosting Program"
+msgstr ""
+
+#: ../inc/page.support.php:52
+msgid ""
+"and consider making a switch to hosts that we trust and have experienced "
+"good success with when using the Duplicator"
+msgstr ""
+
+#: ../inc/page.support.php:59
+msgid "Online Support"
+msgstr ""
+
+#: ../inc/page.support.php:66
+msgid ""
+"If you run into an issue and have already read the FAQs feel free to submit "
+"a support ticket and we will try our best to respond within 5-10 business "
+"days or sooner if possible."
+msgstr ""
+
+#: ../inc/page.support.php:69
+msgid "If you need priority support within 24-48hrs please visit our "
+msgstr ""
+
+#: ../inc/page.support.php:71
+msgid ""
+"for more details.  Premium support is 100% refundable if we are unable to "
+"resolve your issue."
+msgstr ""
+
+#: ../inc/page.support.php:77
+msgid ""
+"Most issues that occur with the Duplicator revolve around how a server is "
+"configured.  In order to diagnose your issues we will require temporary "
+"admin accounts to your cPanel and WordPress Admin.  Please fill out the "
+msgstr ""
+
+#: ../inc/page.support.php:79
+msgid "Request Quote"
+msgstr ""
+
+#: ../inc/page.support.php:80
+msgid "form and explain your issue in detail."
 msgstr ""
 
 #: ../inc/view.options.php:4
@@ -465,7 +644,7 @@ msgid "Uninstall Options"
 msgstr ""
 
 #: ../inc/view.options.php:132
-msgid "Delete Entire Snapshot Directory"
+msgid "Delete entire snapshot directory when removing plugin"
 msgstr ""
 
 #: ../inc/view.options.php:133
@@ -488,7 +667,7 @@ msgstr ""
 msgid "Create a new Package Set?"
 msgstr ""
 
-#: ../inc/view.system.php:10 ../inc/view.system.php:205
+#: ../inc/view.system.php:10 ../inc/view.system.php:212
 msgid "Pre-Zip Overview"
 msgstr ""
 
@@ -587,7 +766,7 @@ msgid "See online help for more details at"
 msgstr ""
 
 #: ../inc/view.system.php:79
-msgid "System Checks"
+msgid "System Status"
 msgstr ""
 
 #: ../inc/view.system.php:82
@@ -607,17 +786,32 @@ msgid "File Permissions"
 msgstr ""
 
 #: ../inc/view.system.php:96
+msgid "Required permissions"
+msgstr ""
+
+#: ../inc/view.system.php:113
 msgid ""
-"The following directories should have permissions of 755 and files 644.  "
-"Keep in mind that PHP may be accessing the paths/files as the user id that "
-"the web server runs as."
+"The above paths should have permissions of 755 for directories and 644 for "
+"files. On some hosts the permission set requires 777.  Setting items to 777 "
+"is a security issue and should only be set temporarily.  Please avoid any "
+"hosting company that requires this kind of setup.  See the 'Duplicator "
+"Approved' link at the bottom of this dialog for a list of approved hosting "
+"providers."
 msgstr ""
 
 #: ../inc/view.system.php:116
+msgid ""
+"Also be sure to check the Owner/Group settings and validate they are correct "
+"and match other successful directories/files that are accessible.  For more "
+"details contact your host or visit their help pages for more information on "
+"how they implement permissions and group settings."
+msgstr ""
+
+#: ../inc/view.system.php:123
 msgid "Reserved Files"
 msgstr ""
 
-#: ../inc/view.system.php:119
+#: ../inc/view.system.php:126
 msgid ""
 "If this check fails then a reserved file was found in the WordPress root "
 "directory. The following are reserved file names installer.php, installer-"
@@ -626,22 +820,22 @@ msgid ""
 "try creating your package again."
 msgstr ""
 
-#: ../inc/view.system.php:124
+#: ../inc/view.system.php:131
 msgid "Zip Archive Enabled"
 msgstr ""
 
-#: ../inc/view.system.php:127
+#: ../inc/view.system.php:134
 msgid ""
 "The ZipArchive extension for PHP is required for compression.  Please "
 "contact your hosting provider if you're on a hosted server.  For additional "
 "information see our online documentation."
 msgstr ""
 
-#: ../inc/view.system.php:132
+#: ../inc/view.system.php:139
 msgid "Safe Mode Off"
 msgstr ""
 
-#: ../inc/view.system.php:135
+#: ../inc/view.system.php:142
 msgid ""
 "Safe Mode needs to be disabled in order for the Duplicator to operate "
 "correctly.  Please set safe_mode = Off in you php.ini file.  If you're on a "
@@ -651,11 +845,11 @@ msgid ""
 "then consider a higher reputable hosting provider."
 msgstr ""
 
-#: ../inc/view.system.php:140
+#: ../inc/view.system.php:147
 msgid "MySQLi Support"
 msgstr ""
 
-#: ../inc/view.system.php:143
+#: ../inc/view.system.php:150
 msgid ""
 "In order to complete an install the mysqli extension for PHP is required. If "
 "you are on a hosted server please contact your host and request that mysqli "
@@ -663,109 +857,109 @@ msgid ""
 "mysqli.installation.php"
 msgstr ""
 
-#: ../inc/view.system.php:152
+#: ../inc/view.system.php:159
 msgid "SYSTEM CHECKS"
 msgstr ""
 
-#: ../inc/view.system.php:155
+#: ../inc/view.system.php:162
 msgid "PHP Version"
 msgstr ""
 
-#: ../inc/view.system.php:157 ../inc/view.system.php:169
-#: ../inc/view.system.php:193
+#: ../inc/view.system.php:164 ../inc/view.system.php:176
+#: ../inc/view.system.php:200
 msgid "Good"
 msgstr ""
 
-#: ../inc/view.system.php:159 ../inc/view.system.php:172
-#: ../inc/view.system.php:175 ../inc/view.system.php:178
-#: ../inc/view.system.php:181
+#: ../inc/view.system.php:166 ../inc/view.system.php:179
+#: ../inc/view.system.php:182 ../inc/view.system.php:185
+#: ../inc/view.system.php:188
 msgid "OK"
 msgstr ""
 
-#: ../inc/view.system.php:160
+#: ../inc/view.system.php:167
 msgid "PHP 5.2.17+ is required"
 msgstr ""
 
-#: ../inc/view.system.php:162 ../inc/view.system.php:184
-#: ../inc/view.system.php:196
+#: ../inc/view.system.php:169 ../inc/view.system.php:191
+#: ../inc/view.system.php:203
 msgid "Fail"
 msgstr ""
 
-#: ../inc/view.system.php:168 ../inc/view.system.php:171
-#: ../inc/view.system.php:174 ../inc/view.system.php:177
-#: ../inc/view.system.php:180 ../inc/view.system.php:183
+#: ../inc/view.system.php:175 ../inc/view.system.php:178
+#: ../inc/view.system.php:181 ../inc/view.system.php:184
+#: ../inc/view.system.php:187 ../inc/view.system.php:190
 msgid "Web Server"
 msgstr ""
 
-#: ../inc/view.system.php:183
+#: ../inc/view.system.php:190
 msgid "Not detected"
 msgstr ""
 
-#: ../inc/view.system.php:192 ../inc/view.system.php:195
+#: ../inc/view.system.php:199 ../inc/view.system.php:202
 msgid "Open Base Dir"
 msgstr ""
 
-#: ../inc/view.system.php:192
+#: ../inc/view.system.php:199
 msgid "Off"
 msgstr ""
 
-#: ../inc/view.system.php:195
+#: ../inc/view.system.php:202
 msgid "On"
 msgstr ""
 
-#: ../inc/view.system.php:202
+#: ../inc/view.system.php:209
 msgid "PHP SAPI"
 msgstr ""
 
-#: ../inc/view.system.php:207
+#: ../inc/view.system.php:214
 msgid "Scan Now"
 msgstr ""
 
-#: ../inc/view.system.php:216
+#: ../inc/view.system.php:223
 msgid "Cache Directory Found"
 msgstr ""
 
-#: ../inc/view.system.php:217
+#: ../inc/view.system.php:224
 msgid "Add to exclusion path now"
 msgstr ""
 
-#: ../inc/view.system.php:219
+#: ../inc/view.system.php:226
 msgid "Directory excluded"
 msgstr ""
 
-#: ../inc/view.system.php:220
+#: ../inc/view.system.php:227
 msgid "Path"
 msgstr ""
 
-#: ../inc/view.system.php:222
+#: ../inc/view.system.php:229
 msgid "Cache Directory Not Found"
 msgstr ""
 
-#: ../inc/view.system.php:228
+#: ../inc/view.system.php:235
 msgid "ONLINE RESOURCES"
 msgstr ""
 
-#: ../inc/view.system.php:233
+#: ../inc/view.system.php:240
 msgid "For additional online help please visit"
 msgstr ""
 
-#: ../inc/view.system.php:239
+#: ../inc/view.system.php:246
 msgid "Need a hosting provider that is"
 msgstr ""
 
-#: ../inc/view.system.php:241
+#: ../inc/view.system.php:248
 msgid "Duplicator Approved"
 msgstr ""
 
-#: ../inc/view.system.php:252
+#: ../inc/view.system.php:259
 msgid "Download Links"
 msgstr ""
 
-#: ../inc/view.system.php:255
+#: ../inc/view.system.php:262
 msgid "The following links contain sensitive data.  Please share with caution!"
 msgstr ""
 
-#: ../inc/view.system.php:261
+#: ../inc/view.system.php:268
 msgid ""
 "The database SQL script is a quick link to your database backup script.  An "
 "exact copy is also stored in the package."

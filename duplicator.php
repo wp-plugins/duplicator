@@ -3,7 +3,7 @@
 Plugin Name: Duplicator
 Plugin URI: http://www.lifeinthegrid.com/duplicator/
 Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-Version: 0.3.2
+Version: 0.4.0
 Author: LifeInTheGrid
 Author URI: http://www.lifeinthegrid.com
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 /* ================================================================================ 
 Copyright 2011-2012  Cory Lamle 
-Copyright 2011  Gaurav Aggarwal  
+
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as 
 published by the Free Software Foundation.
@@ -25,9 +25,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	
-Contributors:
- Many thanks go out to Gaurav Aggarwal for starting the Backup and Move Plugin.
- This project is a fork of that project backup-and-move	
+SOURCE CONTRIBUTORS:
+Gaurav Aggarwal
 
 ================================================================================ */
 
@@ -44,15 +43,20 @@ if (is_admin() == true) {
 	$GLOBALS['duplicator_opts']['dbuser']		= isset($GLOBALS['duplicator_opts']['dbuser'])			? $GLOBALS['duplicator_opts']['dbuser'] 		: '';
 	$GLOBALS['duplicator_opts']['dbiconv']		= isset($GLOBALS['duplicator_opts']['dbiconv'])			? $GLOBALS['duplicator_opts']['dbiconv']		: '1';
 	$GLOBALS['duplicator_opts']['dbadd_drop']	= isset($GLOBALS['duplicator_opts']['dbadd_drop'])		? $GLOBALS['duplicator_opts']['dbadd_drop']     : '0';
-	$GLOBALS['duplicator_opts']['nurl']  		= isset($GLOBALS['duplicator_opts']['nurl'] ) 			? $GLOBALS['duplicator_opts']['nurl']  			: '';
+	$GLOBALS['duplicator_opts']['url_new']  	= isset($GLOBALS['duplicator_opts']['url_new'] ) 		? $GLOBALS['duplicator_opts']['url_new']  		: '';
 	$GLOBALS['duplicator_opts']['email-me']		= isset($GLOBALS['duplicator_opts']['email-me'])		? $GLOBALS['duplicator_opts']['email-me']		: '0';
 	$GLOBALS['duplicator_opts']['log_level'] 	= isset($GLOBALS['duplicator_opts']['log_level'])		? $GLOBALS['duplicator_opts']['log_level']  	: '0';
-	$GLOBALS['duplicator_opts']['max_time']		= is_numeric($GLOBALS['duplicator_opts']['max_time'])	? $GLOBALS['duplicator_opts']['max_time']   	: 1000;
 	$GLOBALS['duplicator_opts']['max_memory']	= isset($GLOBALS['duplicator_opts']['max_memory'])  	? $GLOBALS['duplicator_opts']['max_memory'] 	: '1000M';
 	$GLOBALS['duplicator_opts']['email_others']	= isset($GLOBALS['duplicator_opts']['email_others']) 	? $GLOBALS['duplicator_opts']['email_others']	: '';
 	$GLOBALS['duplicator_opts']['skip_ext']		= isset($GLOBALS['duplicator_opts']['skip_ext'])  		? $GLOBALS['duplicator_opts']['skip_ext'] 		: '';
 	$GLOBALS['duplicator_opts']['dir_bypass']	= isset($GLOBALS['duplicator_opts']['dir_bypass'])		? $GLOBALS['duplicator_opts']['dir_bypass']		: '';
 	$GLOBALS['duplicator_opts']['rm_snapshot']  = isset($GLOBALS['duplicator_opts']['rm_snapshot']) 	? $GLOBALS['duplicator_opts']['rm_snapshot'] 	: '1';
+	//max_time needs to be numeric
+	if (isset($GLOBALS['duplicator_opts']['max_time'])) {
+		$GLOBALS['duplicator_opts']['max_time']		= is_numeric($GLOBALS['duplicator_opts']['max_time'])	? $GLOBALS['duplicator_opts']['max_time']   	: 1000;
+	} else {
+		$GLOBALS['duplicator_opts']['max_time'] = 1000;
+	}
 	
 	//Default Arrays
 	$GLOBALS['duplicator_bypass-array']	  = explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
@@ -88,7 +92,7 @@ if (is_admin() == true) {
 			'dbhost'		=>'localhost',
 			'dbname'		=>'',
 			'dbuser'		=>'',
-			'nurl'			=>'',
+			'url_new'			=>'',
 			'email-me'		=>"{$GLOBALS['duplicator_opts']['email-me']}",
 			'email_others'	=>"{$GLOBALS['duplicator_opts']['email_others']}",
 			'max_time'		=>$GLOBALS['duplicator_opts']['max_time'],
@@ -199,7 +203,7 @@ if (is_admin() == true) {
 	}
 	
 	//HOOKS & ACTIONS
-	load_plugin_textdomain('wpduplicator' , FALSE, basename( dirname( __FILE__ ) ) . '/lang/' );
+	load_plugin_textdomain('wpduplicator' , FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang/' ,'duplicator/lang' );
 	register_activation_hook(__FILE__ ,	    'duplicator_activate');
 	register_deactivation_hook(__FILE__ ,	'duplicator_deactivate');
 	register_uninstall_hook(__FILE__ , 		'duplicator_uninstall');

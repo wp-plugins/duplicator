@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Duplicator v0.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-29 07:53-0700\n"
-"PO-Revision-Date: 2012-08-29 08:03-0700\n"
+"POT-Creation-Date: 2012-09-13 21:17-0700\n"
+"PO-Revision-Date: 2012-09-13 21:17-0700\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,48 +15,49 @@ msgstr ""
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.5.3\n"
 "X-Poedit-SearchPath-0: .\n"
 
 # @ wpduplicator
-#: duplicator.php:194 inc/page.about.php:141
+#: duplicator.php:198 inc/page.about.php:141
 msgid "FAQ"
 msgstr "Häufig gestellte Fragen"
 
 # @ wpduplicator
-#: duplicator.php:195
+#: duplicator.php:199
 msgid "Partner"
 msgstr "Partner"
 
 # @ wpduplicator
-#: duplicator.php:196
+#: duplicator.php:200
 #, fuzzy
 msgid "Approved Hosts"
 msgstr "Zertifizierte Hosts"
 
 # @ wpduplicator
-#: duplicator.php:246 inc/page.main.php:32
+#: duplicator.php:250 inc/page.main.php:32
 msgid "Dashboard"
 msgstr "Dashboard"
 
 # @ wpduplicator
-#: duplicator.php:248 inc/page.diag.php:21
+#: duplicator.php:252 inc/page.diag.php:21
 msgid "Diagnostics"
 msgstr "Diagnose"
 
 # @ wpduplicator
-#: duplicator.php:249 inc/page.about.php:21 inc/page.diag.php:25
+#: duplicator.php:253 inc/page.about.php:21 inc/page.diag.php:25
 #: inc/page.main.php:36 inc/page.support.php:10
 msgid "Support"
 msgstr "unterstützen"
 
 # @ wpduplicator
-#: duplicator.php:250 inc/page.diag.php:26 inc/page.main.php:37
+#: duplicator.php:254 inc/page.diag.php:26 inc/page.main.php:37
 #: inc/page.support.php:14
 msgid "All About"
 msgstr ""
 
 # @ wpduplicator
-#: duplicator.php:284
+#: duplicator.php:288
 msgid "Manage"
 msgstr "Verwalten"
 
@@ -541,12 +542,14 @@ msgstr ""
 
 # @ wpduplicator
 #: inc/page.main.php:181
-msgid "Check Your"
+#, fuzzy
+msgid "Check your"
 msgstr "Überprüfe die"
 
 # @ wpduplicator
 #: inc/page.main.php:182
-msgid "servers compatibility"
+#, fuzzy
+msgid "server's compatibility"
 msgstr "Server-Kompatibilität"
 
 # @ wpduplicator
@@ -614,7 +617,8 @@ msgstr ""
 
 # @ wpduplicator
 #: inc/page.support.php:35
-msgid "Change Log"
+#, fuzzy
+msgid "Changelog"
 msgstr "Änderung der Registrierung"
 
 # @ wpduplicator
@@ -681,7 +685,7 @@ msgstr ""
 "nicht in der Lage, um Ihr Problem zu lösen sind."
 
 # @ default
-#: inc/page.support.php:79
+#: inc/page.support.php:77
 msgid ""
 "Most issues that occur with the Duplicator revolve around how a server is "
 "configured.  In order to diagnose your issues we will require temporary "
@@ -693,12 +697,12 @@ msgstr ""
 "das"
 
 # @ wpduplicator
-#: inc/page.support.php:81
+#: inc/page.support.php:79
 msgid "Request Quote"
 msgstr "Angebotsanforderung"
 
 # @ wpduplicator
-#: inc/page.support.php:82
+#: inc/page.support.php:80
 msgid "form and explain your issue in detail."
 msgstr "bilden und erklären Ihr Problem im Detail."
 
@@ -1016,8 +1020,9 @@ msgstr "Siehe Online-Hilfe für weitere Informationen unter"
 
 # @ wpduplicator
 #: inc/view.system.php:79
-msgid "System Checks"
-msgstr ""
+#, fuzzy
+msgid "System Status"
+msgstr "System-Beschränkung"
 
 # @ wpduplicator
 #: inc/view.system.php:82
@@ -1064,11 +1069,12 @@ msgstr ""
 
 # @ wpduplicator
 #: inc/view.system.php:116
+#, fuzzy
 msgid ""
 "Also be sure to check the Owner/Group settings and validate they are correct "
 "and match other successful directories/files that are accessible.  For more "
-"details contact your host or visit their help pages for more how they "
-"implement permission and group settings."
+"details contact your host or visit their help pages for more information on "
+"how they implement permissions and group settings."
 msgstr ""
 "Auch sicher sein, um die Besitzer / Gruppe Einstellungen zu überprüfen und "
 "zu validieren sie korrekt sind und passen andere erfolgreiche "

@@ -107,6 +107,7 @@ function duplicator_create() {
 		duplicator_log("*********************************************************");
 		duplicator_log("UPDATE INSTALLER FILE");
 		duplicator_log("*********************************************************");
+		duplicator_build_installerFile();
 		duplicator_create_installerFile($uniquename);
 
 		//SEND EMAIL
@@ -204,9 +205,14 @@ function duplicator_system_check() {
 	$test = ini_get('safe_mode');;
 	$json['SYS-103'] = ! ($test) ? 'Pass' : 'Fail';
 	
-	//SYS-104 MYSQLI SUPPORT
-	$test = function_exists('mysqli_connect');
-	$json['SYS-104'] = ($test) ? 'Pass' : 'Fail';
+	//SYS-104 MYSQL SUPPORT
+	$mysql_test1 = function_exists('mysqli_connect');
+	$mysql_test2 = version_compare($wpdb->db_version(), '4.1', '>=' );
+	$json['SYS-104'] = ($mysql_test1 && $mysql_test2) ? 'Pass' : 'Fail'; 
+	
+	//SYS-105 PHP VERSION
+	$test  = version_compare(phpversion(), '5.2.17');
+	$json['SYS-105'] = ($test >= 0) ? 'Pass' : 'Fail';
 
 	$result = in_array('Fail', $json);
 	$json['Success'] = ! $result;
@@ -320,7 +326,7 @@ function duplicator_settings(){
 		'dbname'		=>$_POST['dbname'],
 		'dbuser'		=>$_POST['dbuser'],
 		'dbiconv'		=>$_POST['dbiconv'],
-		'nurl'			=>rtrim($_POST['nurl'], '/'),
+		'url_new'			=>rtrim($_POST['url_new'], '/'),
 		'email-me'		=>$_POST['email-me'],
 		'email_others'	=>$_POST['email_others'],
 		'max_time'		=>$_POST['max_time'],
