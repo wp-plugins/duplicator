@@ -27,6 +27,9 @@ MAIN FORM: Lists all the backups 			-->
 		<!-- h2 requred here for general system messages -->
 		<h2 style='display:none'></h2>
 		<div class="dup-header widget">
+			<!-- !!DO NOT CHANGE OR EDIT PRODUCT NAME!!
+			If your interested in Private Label Rights please contact us at the URL below to discuss
+			customizations to product labeling: http://lifeinthegrid.com/services/	-->
 			<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 
 			<div style='float:left;height:45px; text-align:center;'>
 				<h2 style='margin:-12px 0px -7px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:18px"> <?php _e("Dashboard", 'wpduplicator') ?></span> </h2>
