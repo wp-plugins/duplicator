@@ -40,6 +40,9 @@ table.header-wizard {border-top-left-radius:5px; border-top-right-radius:5px; wi
 .wizard-steps .active-step a:before {border-top:12px solid #999; border-bottom:12px solid #999;}
 .wizard-steps .active-step a:after {border-left:12px solid #999;}
 .wizard-steps .active-step span {color:#000; border:2px solid #555;}
+div.dup-help-page {padding:5px 0px 0px 5px}
+div.dup-help-page fieldset {margin-bottom:25px}
+div#dup-main-help h3 {background-color:#dfdfdf; border:1px solid silver; border-radius:5px; padding:3px; margin-bottom:8px}
 
 
 /* ============================

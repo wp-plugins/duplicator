@@ -169,6 +169,14 @@ e||(e=b.text()||"",e=jQuery.template(s,"{{ko_with $item.koBindingContext}}"+e+"{
 		}
 	}
 	
+	Duplicator.dlgHelp = function() {
+		$("#dup-main-help").dialog({
+			height:650, width:750, modal: true,
+			position:['center', 150],
+			buttons: {Close: function() {$(this).dialog( "close" );}}
+		});
+	}
+	
 	$(document).ready(function() {
 		//ATTACHED EVENTS
 		$('#dup-hlp-lnk').change(function() {
