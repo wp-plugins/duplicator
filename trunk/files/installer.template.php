@@ -3131,7 +3131,7 @@ DIALOG: TROUBLSHOOTING DIALOG -->
 			<fieldset>
 				<legend><b>Advanced Options</b></legend>
 				<b>Site URL:</b><br/>
-				For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.
+				For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.  If you're not sure about this value then leave it the same as the new settings URL.
 				<br/><br/>
 
 				<b>Scan Tables:</b><br/>

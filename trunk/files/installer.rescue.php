@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
 $GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '508e8e06751384188_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] 	= '508e8e06751384188_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '508ffa52e52517251_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] 	= '508ffa52e52517251_package';
 $GLOBALS['FW_DBHOST'] 		= 'localhost';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
@@ -3131,7 +3131,7 @@ DIALOG: TROUBLSHOOTING DIALOG -->
 			<fieldset>
 				<legend><b>Advanced Options</b></legend>
 				<b>Site URL:</b><br/>
-				For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.
+				For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.  If you're not sure about this value then leave it the same as the new settings URL.
 				<br/><br/>
 
 				<b>Scan Tables:</b><br/>
