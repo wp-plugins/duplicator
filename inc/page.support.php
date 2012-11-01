@@ -74,7 +74,7 @@
 			?>
 			<i>
 				<?php 
-					_e("Most issues that occur with the Duplicator revolve around how a server is configured.  In order to diagnose your issues we will require temporary admin accounts to your cPanel and WordPress Admin.  Please fill out the "); 
+					_e("Most issues that occur with the Duplicator revolve around how a server is configured.  In order to diagnose your issues we will require temporary admin accounts to your cPanel and WordPress Admin.  Please fill out the ", 'wpduplicator'); 
 					printf(" <a href='http://lifeinthegrid.com/services' target='_blank'>%s</a> %s",
 						__("Request Quote", 'wpduplicator'),
 						__("form and explain your issue in detail.", 'wpduplicator')); 	
