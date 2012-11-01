@@ -203,7 +203,7 @@ if (is_admin() == true) {
 	}
 	
 	//HOOKS & ACTIONS
-	load_plugin_textdomain('wpduplicator' , FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang/' ,'duplicator/lang' );
+	load_plugin_textdomain('wpduplicator' , FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang/');
 	register_activation_hook(__FILE__ ,	    'duplicator_activate');
 	register_deactivation_hook(__FILE__ ,	'duplicator_deactivate');
 	register_uninstall_hook(__FILE__ , 		'duplicator_uninstall');
