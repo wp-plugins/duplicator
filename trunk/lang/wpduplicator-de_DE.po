@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.4.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-13 21:17-0700\n"
-"PO-Revision-Date: 2012-11-01 11:14:47+0000\n"
+"PO-Revision-Date: 2012-11-02 16:03:43+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -617,7 +617,7 @@ msgid "for more details.  Premium support is 100% refundable if we are unable to
 msgstr "für weitere Details. Premium-Support wird zu 100% zurückerstattet, wenn wir nicht in der Lage sind, das Problem zu lösen."
 
 #: inc/page.support.php:77
-#@ default
+#@ wpduplicator
 msgid "Most issues that occur with the Duplicator revolve around how a server is configured.  In order to diagnose your issues we will require temporary admin accounts to your cPanel and WordPress Admin.  Please fill out the "
 msgstr "Die meisten Probleme, die mit dem Kopierer auftreten kreisen um, wie ein Server konfiguriert ist. Um Ihre Probleme zu diagnostizieren wir temporäre Admin-Konten zu Ihrem cPanel und WordPress Admin erfordern. Bitte füllen Sie das"
 
