@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.4.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-13 21:17-0700\n"
-"PO-Revision-Date: 2012-11-02 16:03:43+0000\n"
+"PO-Revision-Date: 2012-11-07 14:28:14+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -269,7 +269,7 @@ msgstr "von"
 #: inc/page.about.php:34
 #@ wpduplicator
 msgid "Your LifeInTheGrid should be about working smarter not harder.  With the Duplicator you can streamline your workflows and quickly clone a WordPress site in minutes.  From Novice to Guru this plugin is designed for Bloggers, Admins, Developers, Designers, Entrepreneurs and anyone who uses WordPress."
-msgstr "LifeInTheGrid will das Arbeiten vereinfachen. Mit dem Duplikator kannst du deine Arbeitsabläufe optimieren und in wenigen Minuten eine WordPress-Website klonen.  Vom Anfänger bis zum Guru wurde dieses Plugin für Blogger, Administratoren, Entwickler, Designer, Unternehmer und für alle, die WordPress nutzen, entwickelt."
+msgstr "LifeInTheGrid will das Arbeiten vereinfachen. Mit dem Duplicator kannst du deine Arbeitsabläufe optimieren und in wenigen Minuten eine WordPress-Website klonen.  Vom Anfänger bis zum Guru wurde dieses Plugin für Blogger, Administratoren, Entwickler, Designer, Unternehmer und für alle, die WordPress nutzen, entwickelt."
 
 #: inc/page.about.php:36
 #@ wpduplicator
@@ -594,7 +594,7 @@ msgstr "empfohlene Hosting Provider"
 #: inc/page.support.php:52
 #@ wpduplicator
 msgid "and consider making a switch to hosts that we trust and have experienced good success with when using the Duplicator"
-msgstr "und ziehe einen Host in Erwägung ziehen, dem wir vertrauen und mit welchem wir gute Erfahrungen bei der Nutzung von Duplicator gemacht haben."
+msgstr "und ziehe einen Host in Erwägung ziehen, dem wir vertrauen und mit welchem wir gute Erfahrungen bei der Nutzung von Duplicator gemacht haben"
 
 #: inc/page.support.php:59
 #@ wpduplicator
@@ -619,17 +619,17 @@ msgstr "für weitere Details. Premium-Support wird zu 100% zurückerstattet, wen
 #: inc/page.support.php:77
 #@ wpduplicator
 msgid "Most issues that occur with the Duplicator revolve around how a server is configured.  In order to diagnose your issues we will require temporary admin accounts to your cPanel and WordPress Admin.  Please fill out the "
-msgstr "Die meisten Probleme, die mit dem Kopierer auftreten kreisen um, wie ein Server konfiguriert ist. Um Ihre Probleme zu diagnostizieren wir temporäre Admin-Konten zu Ihrem cPanel und WordPress Admin erfordern. Bitte füllen Sie das"
+msgstr "Die meisten Probleme, welche mit dem Duplicator auftreten, drehen sich um die Konfiguration des Servers. Um solche Probleme zu diagnostizieren benötigen wir temporär ein Admin-Konto deiner WordPress-Installation. Bitte fülle das"
 
 #: inc/page.support.php:79
 #@ wpduplicator
 msgid "Request Quote"
-msgstr "Angebotsanforderung"
+msgstr "Anfrageformular"
 
 #: inc/page.support.php:80
 #@ wpduplicator
 msgid "form and explain your issue in detail."
-msgstr "bilden und erkläre dein Problem im Detail."
+msgstr "aus und erkläre dein Problem im Detail."
 
 #: inc/view.options.php:4
 #@ wpduplicator
@@ -1153,4 +1153,9 @@ msgstr "Die Version von PHP auf diesem Server ist "
 #@ wpduplicator
 msgid "The Duplicator requires at least PHP version 5.2.17+ on this server.  Please contact your host and have them upgrade to this stable secure version if the test fails."
 msgstr "Die Duplicator benötigt mindestens PHP Version 5.2.17 + auf diesem Server. Bitte wende dich an deinen Provider, falls der Test fehlschlägt."
+
+#: inc/page.support.php:36
+#@ wpduplicator
+msgid "Product Page"
+msgstr "Produkt Seite"
 
