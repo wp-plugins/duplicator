@@ -185,7 +185,7 @@ if ($_POST['action_step'] == 1) {
 			<tr>
 				<td style="width:100%;">
 					<div style="font-size:19px; text-shadow:1px 1px 1px #777;">
-						<!-- !!DO NOT CHANGE OR EDIT PRODUCT NAME!!
+						<!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
 						If your interested in Private Label Rights please contact us at the URL below to discuss
 						customizations to product labeling: http://lifeinthegrid.com/services/	-->
 						&nbsp; Duplicator - Installer

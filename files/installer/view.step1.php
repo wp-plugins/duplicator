@@ -192,6 +192,7 @@ VIEW: STEP 1- INPUT -->
 						<tr>
 							<td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
 							<td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
+
 						</tr>						
 					</table>	
 				</td>
@@ -199,6 +200,18 @@ VIEW: STEP 1- INPUT -->
 		</table>
 		<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
 		<br/>
+		
+		<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
+		If your interested in Private Label Rights please contact us at the URL below to discuss
+		customizations to product labeling: http://lifeinthegrid.com/services/	-->
+		<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
+		<div id='dup-step1-cpanel' style="display:none">
+			<div style="padding:10px 0px 0px 10px;line-height:22px">
+				<b>Need cPanel Database Help?</b> <br/>
+				&raquo; See the video tutorial <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">cPanel Database Setup</a> <br/>
+				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
+			</div>
+		</div><br/><br/>
 		
 		<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
 		<div id='dup-step1-adv-opts' style="display:none">
@@ -212,7 +225,7 @@ VIEW: STEP 1- INPUT -->
 		</div>
 
 		<!-- NOTICES  -->
-		<div class="warning-info" style="margin-top:100px">
+		<div class="warning-info" style="margin-top:50px">
 			<b>WARNINGS &AMP; NOTICES</b> 
 			<p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
 			
