@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
 $GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '508ffa52e52517251_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] 	= '508ffa52e52517251_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '50b3828414d0e2993_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] 	= '50b3828414d0e2993_package';
 $GLOBALS['FW_DBHOST'] 		= 'localhost';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
@@ -1363,6 +1363,7 @@ div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-
 select#logging {font-size:11px}
 table.table-inputs td{white-space:nowrap;}
 table.dbtable-opts td{font-size:12px;}
+div#dup-step1-cpanel {}
 input#dup-step1-dbconn-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}
 div.dup-step1-warning-area {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
 div.tryagain{padding-top:50px; text-align:center; width:100%; font-size:14px}
@@ -1744,7 +1745,7 @@ e||(e=b.text()||"",e=jQuery.template(s,"{{ko_with $item.koBindingContext}}"+e+"{
 			<tr>
 				<td style="width:100%;">
 					<div style="font-size:19px; text-shadow:1px 1px 1px #777;">
-						<!-- !!DO NOT CHANGE OR EDIT PRODUCT NAME!!
+						<!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
 						If your interested in Private Label Rights please contact us at the URL below to discuss
 						customizations to product labeling: http://lifeinthegrid.com/services/	-->
 						&nbsp; Duplicator - Installer
@@ -1984,6 +1985,7 @@ VIEW: STEP 1- INPUT -->
 						<tr>
 							<td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
 							<td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
+
 						</tr>						
 					</table>	
 				</td>
@@ -1991,6 +1993,18 @@ VIEW: STEP 1- INPUT -->
 		</table>
 		<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
 		<br/>
+		
+		<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
+		If your interested in Private Label Rights please contact us at the URL below to discuss
+		customizations to product labeling: http://lifeinthegrid.com/services/	-->
+		<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
+		<div id='dup-step1-cpanel' style="display:none">
+			<div style="padding:10px 0px 0px 10px;line-height:22px">
+				<b>Need cPanel Database Help?</b> <br/>
+				&raquo; See the video tutorial <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">cPanel Database Setup</a> <br/>
+				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
+			</div>
+		</div><br/><br/>
 		
 		<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
 		<div id='dup-step1-adv-opts' style="display:none">
@@ -2004,7 +2018,7 @@ VIEW: STEP 1- INPUT -->
 		</div>
 
 		<!-- NOTICES  -->
-		<div class="warning-info" style="margin-top:100px">
+		<div class="warning-info" style="margin-top:50px">
 			<b>WARNINGS &AMP; NOTICES</b> 
 			<p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
 			
@@ -2362,6 +2376,7 @@ VIEW: STEP 1- INPUT -->
 						<tr>
 							<td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
 							<td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
+
 						</tr>						
 					</table>	
 				</td>
@@ -2369,6 +2384,18 @@ VIEW: STEP 1- INPUT -->
 		</table>
 		<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
 		<br/>
+		
+		<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
+		If your interested in Private Label Rights please contact us at the URL below to discuss
+		customizations to product labeling: http://lifeinthegrid.com/services/	-->
+		<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
+		<div id='dup-step1-cpanel' style="display:none">
+			<div style="padding:10px 0px 0px 10px;line-height:22px">
+				<b>Need cPanel Database Help?</b> <br/>
+				&raquo; See the video tutorial <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">cPanel Database Setup</a> <br/>
+				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
+			</div>
+		</div><br/><br/>
 		
 		<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
 		<div id='dup-step1-adv-opts' style="display:none">
@@ -2382,7 +2409,7 @@ VIEW: STEP 1- INPUT -->
 		</div>
 
 		<!-- NOTICES  -->
-		<div class="warning-info" style="margin-top:100px">
+		<div class="warning-info" style="margin-top:50px">
 			<b>WARNINGS &AMP; NOTICES</b> 
 			<p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
 			

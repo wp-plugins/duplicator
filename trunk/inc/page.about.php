@@ -12,7 +12,7 @@
 	<!-- h2 requred here for general system messages -->
 	<h2 style='display:none'></h2>
 	<div class="dup-header widget">
-		<!-- !!DO NOT CHANGE OR EDIT PRODUCT NAME!!
+		<!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
 		If your interested in Private Label Rights please contact us at the URL below to discuss
 		customizations to product labeling: http://lifeinthegrid.com/services/	-->
 		<div style='float:left;height:45px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 

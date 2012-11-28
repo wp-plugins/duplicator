@@ -61,6 +61,7 @@ div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-
 select#logging {font-size:11px}
 table.table-inputs td{white-space:nowrap;}
 table.dbtable-opts td{font-size:12px;}
+div#dup-step1-cpanel {}
 input#dup-step1-dbconn-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}
 div.dup-step1-warning-area {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
 div.tryagain{padding-top:50px; text-align:center; width:100%; font-size:14px}
