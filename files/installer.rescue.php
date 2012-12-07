@@ -82,16 +82,16 @@ if (file_exists('dtoken.php')) {
 ================================================================================================= */
 
 $GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
-$GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
+$GLOBALS['FW_URL_OLD'] 		= '';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '50b3828414d0e2993_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] 	= '50b3828414d0e2993_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '';
+$GLOBALS['FW_SECURE_NAME'] 	= '';
 $GLOBALS['FW_DBHOST'] 		= 'localhost';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
 $GLOBALS['FW_BLOGNAME'] 	= 'Duplicator Plugin';
 $GLOBALS['FW_RESCUE_FLAG'] 	= '(rescue file)';
-$GLOBALS['FW_WPROOT'] 		= 'E:/WEB/projects/wpplug_duplicator/';
+$GLOBALS['FW_WPROOT'] 		= '';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME']    = 4000;
@@ -2001,7 +2001,7 @@ VIEW: STEP 1- INPUT -->
 		<div id='dup-step1-cpanel' style="display:none">
 			<div style="padding:10px 0px 0px 10px;line-height:22px">
 				<b>Need cPanel Database Help?</b> <br/>
-				&raquo; See the video tutorial <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">cPanel Database Setup</a> <br/>
+				&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
 				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
 			</div>
 		</div><br/><br/>
@@ -2392,7 +2392,7 @@ VIEW: STEP 1- INPUT -->
 		<div id='dup-step1-cpanel' style="display:none">
 			<div style="padding:10px 0px 0px 10px;line-height:22px">
 				<b>Need cPanel Database Help?</b> <br/>
-				&raquo; See the video tutorial <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">cPanel Database Setup</a> <br/>
+				&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
 				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
 			</div>
 		</div><br/><br/>

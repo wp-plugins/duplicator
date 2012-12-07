@@ -2001,7 +2001,7 @@ VIEW: STEP 1- INPUT -->
 		<div id='dup-step1-cpanel' style="display:none">
 			<div style="padding:10px 0px 0px 10px;line-height:22px">
 				<b>Need cPanel Database Help?</b> <br/>
-				&raquo; See the video tutorial <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">cPanel Database Setup</a> <br/>
+				&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
 				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
 			</div>
 		</div><br/><br/>
@@ -2392,7 +2392,7 @@ VIEW: STEP 1- INPUT -->
 		<div id='dup-step1-cpanel' style="display:none">
 			<div style="padding:10px 0px 0px 10px;line-height:22px">
 				<b>Need cPanel Database Help?</b> <br/>
-				&raquo; See the video tutorial <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">cPanel Database Setup</a> <br/>
+				&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
 				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
 			</div>
 		</div><br/><br/>
