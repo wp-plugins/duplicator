@@ -3,8 +3,8 @@ Contributors: Cory Lamle
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.2
-Tested up to: 3.3
-Stable tag: 0.3.2 
+Tested up to: 3.4
+Stable tag: 0.4.0 
 License: GPLv2
 
 Duplicate, clone, backup, move and transfer an entire site from one location to another in 3 easy steps.
