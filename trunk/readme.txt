@@ -2,8 +2,8 @@
 Contributors: Cory Lamle
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
-Requires at least: 3.2
-Tested up to: 3.4.2
+Requires at least: 3.3
+Tested up to: 3.5
 Stable tag: 0.4.0 
 License: GPLv2
 
@@ -28,13 +28,16 @@ NOTE: This project is currently in Beta, the underlying logic to perform all the
 For complete details see: 
 [lifeinthegrid.com](http://lifeinthegrid.com/) 
 
-Special contributor thanks to:
-<li>Robert Riley from www.taminglife.com</li>
+Contributors:
 <li>Aaron Crawford</li>
-<li>Rami from www.wp-tricks.co.il</li>
+<li>Tomáš Gurný</li>
 <li>Paal Joachim Romdahl</li>
-<li>Vincent G from www.Host1Free.com</li>
-<li>Hans-M. Herbrand www.web266.de</li>
+
+Localization:
+<li>Hans-M. Herbrand (German) www.web266.de</li>
+<li>Rami (Hebrew) www.wp-tricks.co.il</li>
+<li>Vincent G from (Lietuva) www.Host1Free.com</li>
+
 
 
 == Installation ==
@@ -68,7 +71,7 @@ http://www.youtube.com/watch?v=-hF7FbTQIkk
 == Screenshots ==
  
 1. The main interface used to create and manage packages
-2. The options dialog is used to configure and setup the Duplicator
+2. The systems check dialog, used to validate a server
 3. The installer screen used to install a packaged instance
  
 
