@@ -30,7 +30,7 @@ For complete details see:
 
 Contributors:
 <li>Aaron Crawford</li>
-<li>Tomáš Gurný</li>
+<li>Tomas Gurny</li>
 <li>Paal Joachim Romdahl</li>
 
 Localization:
