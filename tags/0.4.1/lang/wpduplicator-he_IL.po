@@ -1,0 +1,974 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Duplicator v0.3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-16 06:56-0700\n"
+"PO-Revision-Date: 2012-08-16 14:01:55+0000\n"
+"Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
+"Language-Team: רמי יושובייב <www.wp-tricks.co.il>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ./\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Textdomain-Support: yes"
+
+#: duplicator.php:195
+#@ wpduplicator
+msgid "FAQ"
+msgstr "שאלות נפוצות"
+
+#: duplicator.php:196
+#, fuzzy
+#@ wpduplicator
+msgid "Partner"
+msgstr "עזרו לנו"
+
+#: duplicator.php:197
+#, fuzzy
+#@ wpduplicator
+msgid "Approved Hosts"
+msgstr "רואי צבאות"
+
+#: duplicator.php:248
+#@ wpduplicator
+msgid "Dashboard"
+msgstr "לוח מחוונים"
+
+#: duplicator.php:250
+#@ wpduplicator
+msgid "Diagnostics"
+msgstr "אבחון"
+
+#: duplicator.php:281
+#@ wpduplicator
+msgid "Manage"
+msgstr "ניהול"
+
+#: files/log-read.php:42
+#@ wpduplicator
+msgid "Log file not found or unreadable"
+msgstr ""
+
+#: files/log-read.php:44
+#, fuzzy
+#@ wpduplicator
+msgid "The log file for the Duplicator Plugin can be found in the snapshots directory with the extension *.log"
+msgstr "קובץ היומן עבור Plugin מעתק ניתן למצוא במדריך WP-* תמונות עם סיומת. יומן"
+
+#: files/log-read.php:45
+#@ wpduplicator
+msgid "If no log file is present the try to create a package"
+msgstr "אם אין קובץ היומן קיים ניסיון ליצור חבילה"
+
+#: files/log-read.php:47
+#@ wpduplicator
+msgid "Reasons for log file not showing"
+msgstr "הסיבות יומן הקובץ לא מראה"
+
+#: files/log-read.php:48
+#@ wpduplicator
+msgid "The web server does not support returning .log file extentions"
+msgstr ""
+
+#: files/log-read.php:49
+#@ wpduplicator
+msgid "The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755"
+msgstr "מדריך תמונות אין את ההרשאות הנכונות כדי לכתוב קבצים. נסה להגדיר את הרשאות 755"
+
+#: files/log-read.php:50
+#@ wpduplicator
+msgid "The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details"
+msgstr "תהליך PHP פועל תחת אין הרשאות מספיק כדי ליצור קבצים. אנא צור קשר עם ספק האירוח שלך לקבלת פרטים נוספים"
+
+#: files/log-view.php:100
+#, fuzzy
+#@ wpduplicator
+msgid "Duplicator: Create Package Log"
+msgstr "צור חבילה"
+
+#: files/log-view.php:103
+#@ wpduplicator
+msgid "Processing may take several minutes, please wait for progress bar to complete on the main status bar"
+msgstr "עיבוד עשוי להימשך מספר דקות, אנא המתן מד ההתקדמות כדי להשלים את בשורת המצב המרכזי"
+
+#: files/log-view.php:108
+#@ wpduplicator
+msgid "Auto Refresh"
+msgstr "Auto Refresh"
+
+#: files/log-view.php:109
+#@ wpduplicator
+msgid "Refresh"
+msgstr "לרענן"
+
+#: files/log-view.php:117
+#, fuzzy
+#@ wpduplicator
+msgid "Support Center"
+msgstr "מרכז תמיכה"
+
+#: files/log-view.php:118
+#@ wpduplicator
+msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
+msgstr "נא לא לפרסם נתונים אלה באתרים ציבוריים כמו פורומים WordPress.org שכן הוא מכיל מידע רגיש."
+
+#: inc/javascript.php:133
+#@ wpduplicator
+msgid "Saving"
+msgstr "שומר"
+
+#: inc/javascript.php:154
+#@ wpduplicator
+msgid "Please select at least one package to delete."
+msgstr "לא נבחרו חבילות למחיקה."
+
+#: inc/javascript.php:158
+#@ wpduplicator
+msgid "Are you sure, you want to delete the selected package(s)?"
+msgstr "אתה בטוח שאתה רוצה למחוק את חבילות אלה?"
+
+#: inc/javascript.php:174
+#: inc/javascript.php:213
+#: inc/javascript.php:322
+#: inc/javascript.php:422
+#: inc/javascript.php:441
+#@ wpduplicator
+msgid "Ready to create new package."
+msgstr "מוכן ליצור חבילה חדשה."
+
+#: inc/javascript.php:189
+#@ wpduplicator
+msgid "Please enter a backup name."
+msgstr "יש להזין שם."
+
+#: inc/javascript.php:197
+#@ wpduplicator
+msgid "Alpanumeric characters only on package name"
+msgstr "ניתן להשתמש רק בתווים אלפאנומריים"
+
+#: inc/javascript.php:210
+#@ wpduplicator
+msgid "Evaluating WordPress Setup. Please Wait"
+msgstr "אנא המתן בזמן שביצוע הערכה של התקנת וורדפרס."
+
+#: inc/javascript.php:276
+#@ wpduplicator
+msgid "Cancel"
+msgstr "לבטל"
+
+#: inc/javascript.php:282
+#, fuzzy
+#@ wpduplicator
+msgid "Create Package Set"
+msgstr "צור חבילה"
+
+#: inc/javascript.php:327
+#@ wpduplicator
+msgid "Checking System Status.  Please Wait!"
+msgstr "בדיקת מצב המערכת. אנא המתן!"
+
+#: inc/javascript.php:353
+#@ wpduplicator
+msgid "Scanning Please Wait"
+msgstr "סריקה אנא המתן"
+
+#: inc/javascript.php:358
+#: inc/javascript.php:359
+#: inc/javascript.php:360
+#@ wpduplicator
+msgid "unreadable"
+msgstr "קריא"
+
+#: inc/javascript.php:361
+#, fuzzy
+#@ wpduplicator
+msgid "*Scan Error"
+msgstr "סרוק כעת"
+
+#: inc/javascript.php:362
+#, fuzzy
+#@ wpduplicator
+msgid "Files"
+msgstr "להיכשל"
+
+#: inc/javascript.php:362
+#@ wpduplicator
+msgid "Folders"
+msgstr "תיקיות"
+
+#: inc/javascript.php:367
+#@ wpduplicator
+msgid "error scanning directory"
+msgstr "סריקה טעות במדריך"
+
+#: inc/javascript.php:397
+#@ wpduplicator
+msgid "DATABASE"
+msgstr "מאגר"
+
+#: inc/javascript.php:398
+#@ wpduplicator
+msgid "PACKAGE"
+msgstr "חבילת"
+
+#: inc/javascript.php:399
+#@ wpduplicator
+msgid "INSTALLER"
+msgstr ""
+
+#: inc/javascript.php:418
+#, fuzzy
+#@ wpduplicator
+msgid "AJAX Response"
+msgstr "AJAX טקסט תגובה:"
+
+#: inc/javascript.php:436
+#, fuzzy
+#@ wpduplicator
+msgid "Creating package may take several minutes. Please Wait... "
+msgstr "הפעולה עשויה להמשך מספר דקות"
+
+#: inc/javascript.php:437
+#@ wpduplicator
+msgid "Preview Log"
+msgstr ""
+
+#: inc/page.main.php:31
+#@ wpduplicator
+msgid "By"
+msgstr "על ידי"
+
+#: inc/page.main.php:38
+#: inc/page.main.php:82
+#@ wpduplicator
+msgid "Package Name"
+msgstr "שם חבילה"
+
+#: inc/page.main.php:41
+#@ wpduplicator
+msgid "Create Package"
+msgstr "צור חבילה"
+
+#: inc/page.main.php:42
+#@ wpduplicator
+msgid "Delete selected package(s)"
+msgstr "מחק חבילות מסומנות"
+
+#: inc/page.main.php:45
+#@ wpduplicator
+msgid "Options"
+msgstr "אפשרויות"
+
+#: inc/page.main.php:46
+#, fuzzy
+#@ wpduplicator
+msgid "System Check"
+msgstr "מערכת"
+
+#: inc/page.main.php:47
+#@ wpduplicator
+msgid "Show Create Log"
+msgstr "הצג יצירת התחבר"
+
+#: inc/page.main.php:50
+#@ wpduplicator
+msgid "Help"
+msgstr "עזרה"
+
+#: inc/page.main.php:51
+#@ wpduplicator
+msgid "Partner with us"
+msgstr "עזרו לנו"
+
+#: inc/page.main.php:60
+#@ wpduplicator
+msgid "Status"
+msgstr "סטטוס"
+
+#: inc/page.main.php:61
+#@ wpduplicator
+msgid "Ready to create new package"
+msgstr "מוכן ליצור חבילה חדשה"
+
+#: inc/page.main.php:77
+#@ wpduplicator
+msgid "Select all packages"
+msgstr "בחר את כל החבילות"
+
+#: inc/page.main.php:78
+#@ wpduplicator
+msgid "Information"
+msgstr "מידע"
+
+#: inc/page.main.php:79
+#@ wpduplicator
+msgid "Owner"
+msgstr "בעלים"
+
+#: inc/page.main.php:80
+#@ wpduplicator
+msgid "Created"
+msgstr "תאריך"
+
+#: inc/page.main.php:81
+#@ wpduplicator
+msgid "Size"
+msgstr "גודל"
+
+#: inc/page.main.php:84
+#, fuzzy
+#@ wpduplicator
+msgid "Package Set"
+msgstr "שם חבילה"
+
+#: inc/page.main.php:85
+#, fuzzy
+#@ wpduplicator
+msgid "(Download Both)"
+msgstr "הורד קובץ התקנה"
+
+#: inc/page.main.php:116
+#: inc/page.main.php:144
+#@ wpduplicator
+msgid "View"
+msgstr "לראות"
+
+#: inc/page.main.php:122
+#: inc/view.options.php:10
+#@ wpduplicator
+msgid "Installer"
+msgstr "קובץ התקנה"
+
+#: inc/page.main.php:123
+#: inc/page.main.php:152
+#: inc/view.options.php:9
+#@ wpduplicator
+msgid "Package"
+msgstr "חבילה"
+
+#: inc/page.main.php:129
+#, fuzzy
+#@ wpduplicator
+msgid "Version"
+msgstr "גרסה"
+
+#: inc/page.main.php:130
+#, fuzzy
+#@ wpduplicator
+msgid "Secure Name"
+msgstr "שם חבילה"
+
+#: inc/page.main.php:131
+#, fuzzy
+#@ wpduplicator
+msgid "Download SQL File"
+msgstr "הורד קובץ התקנה"
+
+#: inc/page.main.php:132
+#@ wpduplicator
+msgid "Show Download Links"
+msgstr "הצג קישורים להורדה"
+
+#: inc/page.main.php:158
+#, fuzzy
+#@ wpduplicator
+msgid "Legacy Version"
+msgstr "גרסת תוסף"
+
+#: inc/page.main.php:161
+#@ wpduplicator
+msgid "This package was built with a version that is no longer supported.  It is highly recommended that this package be deleted.  For more details see the"
+msgstr "חבילה זו נבנתה עם הגרסה כי אינו נתמך עוד. מומלץ מאוד כי החבילה הזו תימחק. לפרטים נוספים ראה"
+
+#: inc/page.main.php:162
+#@ wpduplicator
+msgid "Online FAQs"
+msgstr "שאלות נפוצות באינטרנט"
+
+#: inc/page.main.php:174
+#@ wpduplicator
+msgid "No packages found"
+msgstr "לא נמצאו חבילות"
+
+#: inc/page.main.php:175
+#@ wpduplicator
+msgid "To create a new package, enter a name and click the create button "
+msgstr "ליצירת חבילה חדשה, הזן שם ולחץ על כפתור ההפעלה"
+
+#: inc/page.main.php:177
+#@ wpduplicator
+msgid "Check Your"
+msgstr "בדוק "
+
+#: inc/page.main.php:178
+#@ wpduplicator
+msgid "servers compatability"
+msgstr "תאימות שרת"
+
+#: inc/page.main.php:179
+#@ wpduplicator
+msgid "with the duplicator"
+msgstr "עם התוסף"
+
+#: inc/page.main.php:180
+#@ wpduplicator
+msgid "This process will backup all your files and database"
+msgstr "התהליך יגבה את הקבצים ומסד הנתונים"
+
+#: inc/page.main.php:181
+#@ wpduplicator
+msgid "Creating a package may take several minutes if you have a large site"
+msgstr "יצירת חבילה עשוי להמשך מספר דקות, אם מדובר באתר גדול."
+
+#: inc/page.main.php:182
+#@ wpduplicator
+msgid "This window should remain open for the process to complete"
+msgstr "אין לסגור את החלון עד סיום הפעולה"
+
+#: inc/page.main.php:183
+#@ wpduplicator
+msgid "Please be patient while we work through this Beta version"
+msgstr "יש להמתין בסבלנות בזמן שאנו עובדים עם גרסת בטא זה"
+
+#: inc/page.main.php:184
+#@ wpduplicator
+msgid "Please report any issues to"
+msgstr "אנא דווחו על תקלות ל"
+
+#: inc/page.main.php:201
+#@ wpduplicator
+msgid "Total Storage Used"
+msgstr "אחסון סה\"כ משומשים"
+
+#: inc/view.options.php:4
+#@ wpduplicator
+msgid "Duplicator Options"
+msgstr "מעתק אפשרויות"
+
+#: inc/view.options.php:11
+#, fuzzy
+#@ wpduplicator
+msgid "System"
+msgstr "מערכת"
+
+#: inc/view.options.php:12
+#@ wpduplicator
+msgid "FTP"
+msgstr "FTP"
+
+#: inc/view.options.php:22
+#@ wpduplicator
+msgid "Processing"
+msgstr "עיבוד נתונים"
+
+#: inc/view.options.php:36
+#@ wpduplicator
+msgid "Max Time"
+msgstr "זמן מירבי"
+
+#: inc/view.options.php:36
+#@ wpduplicator
+msgid "seconds"
+msgstr "שניות"
+
+#: inc/view.options.php:37
+#@ wpduplicator
+msgid "Max Memory"
+msgstr "זיכרון מירבי"
+
+#: inc/view.options.php:45
+#, fuzzy
+#@ wpduplicator
+msgid "Email when completed"
+msgstr "שלח דוא\"K בסיום התהליך"
+
+#: inc/view.options.php:46
+#@ wpduplicator
+msgid "WP-Admin email is included.  Add extra emails semicolon separated."
+msgstr "WP-Admin דוא\"ל כלול. הוסף הודעות דוא\"ל נוספות פסיק מופרדים."
+
+#: inc/view.options.php:55
+#@ wpduplicator
+msgid "Exclusion Filters"
+msgstr "הוצאת המסננים"
+
+#: inc/view.options.php:57
+#, fuzzy
+#@ wpduplicator
+msgid "Directories"
+msgstr "הסרת ספריות"
+
+#: inc/view.options.php:59
+#, fuzzy
+#@ wpduplicator
+msgid "Root Path"
+msgstr "כתובת"
+
+#: inc/view.options.php:61
+#, fuzzy
+#@ wpduplicator
+msgid "File extensions"
+msgstr "הרשאות הקובץ"
+
+#: inc/view.options.php:64
+#, fuzzy
+#@ wpduplicator
+msgid "Separate all filters by semicolon"
+msgstr "הנתיבים מופרדים על ידי נקודה-פסיק"
+
+#: inc/view.options.php:69
+#, fuzzy
+#@ wpduplicator
+msgid "Database Encoding"
+msgstr "מסד נתונים ברירת מחדל"
+
+#: inc/view.options.php:72
+#, fuzzy
+#@ wpduplicator
+msgid "Enable character conversion encoding"
+msgstr "אפשר קידוד מסד נתונים"
+
+#: inc/view.options.php:77
+#@ wpduplicator
+msgid "From"
+msgstr "מן"
+
+#: inc/view.options.php:78
+#@ wpduplicator
+msgid "to"
+msgstr "אל"
+
+#: inc/view.options.php:79
+#, fuzzy
+#@ wpduplicator
+msgid "Disable this option for extended or double byte character sets"
+msgstr "נא לבטל אפשרות זו על ערכות תווים בינלאומיים"
+
+#: inc/view.options.php:86
+#@ wpduplicator
+msgid "Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)"
+msgstr "בעיותבעת  שמירת האפשרויות? השבת באופן זמני את כל תוספי מטמון-אובייקטים (דוגמת W3C Total Object Cache)"
+
+#: inc/view.options.php:96
+#@ wpduplicator
+msgid "Settings Defaults"
+msgstr "הגדרות ברירת מחדל"
+
+#: inc/view.options.php:99
+#@ wpduplicator
+msgid "Install URL"
+msgstr "כתובת התקנה"
+
+#: inc/view.options.php:106
+#@ wpduplicator
+msgid "Database Defaults"
+msgstr "מסד נתונים ברירת מחדל"
+
+#: inc/view.options.php:109
+#@ wpduplicator
+msgid "Host"
+msgstr "שרת"
+
+#: inc/view.options.php:113
+#: inc/view.system.php:8
+#@ wpduplicator
+msgid "Name"
+msgstr "שם"
+
+#: inc/view.options.php:117
+#@ wpduplicator
+msgid "User"
+msgstr "משתמש"
+
+#: inc/view.options.php:122
+#@ wpduplicator
+msgid "The installer can have these fields pre-filled at install time.  These values are optional."
+msgstr "אין חובה למלא שדות אלא, אולם ניתן להזין נתונים ברירת מחדל שיוזנו מראש בקובץ ההתקנה."
+
+#: inc/view.options.php:129
+#@ wpduplicator
+msgid "Uninstall Options"
+msgstr ""
+
+#: inc/view.options.php:132
+#, fuzzy
+#@ wpduplicator
+msgid "Delete Entire Snapshot Directory"
+msgstr "נמצא ספריית מטמון"
+
+#: inc/view.options.php:133
+#, fuzzy
+#@ wpduplicator
+msgid "Snapshot Directory"
+msgstr "נמצא ספריית מטמון"
+
+#: inc/view.options.php:161
+#@ wpduplicator
+msgid "Save"
+msgstr "שמור"
+
+#: inc/view.options.php:162
+#@ wpduplicator
+msgid "Close"
+msgstr "סגור"
+
+#: inc/view.system.php:3
+#, fuzzy
+#@ wpduplicator
+msgid "Package Creation"
+msgstr "שם חבילה"
+
+#: inc/view.system.php:5
+#, fuzzy
+#@ wpduplicator
+msgid "Create a new Package Set?"
+msgstr "ליצור חבילה חדשה?"
+
+#: inc/view.system.php:10
+#: inc/view.system.php:205
+#@ wpduplicator
+msgid "Pre-Zip Overview"
+msgstr "Pre-Zip סקירה כללית"
+
+#: inc/view.system.php:12
+#@ wpduplicator
+msgid "Perform Scan"
+msgstr "בצע סריקה"
+
+#: inc/view.system.php:18
+#@ wpduplicator
+msgid "Note: A scan will provide an estimate on the size of your file system.  The scan will exclude items in the"
+msgstr "הערה: סריקה יספק אומדן על גודל של מערכת הקבצים שלך. סריקה יהיה לכלול פריטים"
+
+#: inc/view.system.php:19
+#, fuzzy
+#@ wpduplicator
+msgid "directory filter list"
+msgstr "הסרת ספריות"
+
+#: inc/view.system.php:20
+#@ wpduplicator
+msgid "Files that are not readable by the plugin will not be included in the overview.  Directories that are empty will not be included in the final package. "
+msgstr "קבצים שאינם לקריאה על ידי תוסף לא יכללו סקירה. מדריכים כי הם ריקים לא ייכללו בחבילה הסופית."
+
+#: inc/view.system.php:29
+#, fuzzy
+#@ wpduplicator
+msgid "System Constraint"
+msgstr "מערכת"
+
+#: inc/view.system.php:32
+#@ wpduplicator
+msgid "Please try again! An issue has occurred."
+msgstr "אנא נסה שוב! הבעיה התרחשה."
+
+#: inc/view.system.php:36
+#@ wpduplicator
+msgid "Recommendations"
+msgstr "המלצות"
+
+#: inc/view.system.php:41
+#@ wpduplicator
+msgid "Validate"
+msgstr "לאמת"
+
+#: inc/view.system.php:42
+#, fuzzy
+#@ wpduplicator
+msgid "your system"
+msgstr "אמת המערכת"
+
+#: inc/view.system.php:43
+#, fuzzy
+#@ wpduplicator
+msgid "refresh"
+msgstr "לרענן"
+
+#: inc/view.system.php:44
+#@ wpduplicator
+msgid "the dashboard."
+msgstr "לוח המחוונים."
+
+#: inc/view.system.php:48
+#, fuzzy
+#@ wpduplicator
+msgid "Monitor"
+msgstr "הצג"
+
+#: inc/view.system.php:49
+#, fuzzy
+#@ wpduplicator
+msgid "your log file a few more minutes as processing may continue on some systems"
+msgstr "עוד כמה דקות כמו עיבוד יכול להמשיך על כמה מערכות"
+
+#: inc/view.system.php:52
+#@ wpduplicator
+msgid "Contact your server admin to have the page timeout increased (see duration below)"
+msgstr "צור קשר עם מנהל השרת שלך כדי לקבל את פסק הזמן הדף גדל (ראה המשך למטה)"
+
+#: inc/view.system.php:53
+#@ wpduplicator
+msgid "Consider adding a directory filter in the options dialog if the process continues to timeout"
+msgstr "לשקול להוסיף פילטר הספרייה שיח אפשרויות אם התהליך ממשיך פסק זמן"
+
+#: inc/view.system.php:54
+#@ wpduplicator
+msgid "Check your disk space.  For hosted sites review your providers help."
+msgstr "יש לבדוק את שטח הדיסק שלך. עבור מתארח אתרים ביקורת לסייע לספקי שלך."
+
+#: inc/view.system.php:57
+#, fuzzy
+#@ wpduplicator
+msgid "Consider using an"
+msgstr "שקול להשתמש"
+
+#: inc/view.system.php:59
+#@ wpduplicator
+msgid "approved"
+msgstr ""
+
+#: inc/view.system.php:60
+#, fuzzy
+#@ wpduplicator
+msgid "hosting provider."
+msgstr "צריך ספקית אירוח זה"
+
+#: inc/view.system.php:64
+#@ wpduplicator
+msgid "Server Response"
+msgstr "שרת תגובה"
+
+#: inc/view.system.php:69
+#, fuzzy
+#@ wpduplicator
+msgid "See online help for more details at"
+msgstr "ראה את העזרה המקוונת לקבלת פרטים נוספים על"
+
+#: inc/view.system.php:79
+#, fuzzy
+#@ wpduplicator
+msgid "System Checks"
+msgstr "מערכת"
+
+#: inc/view.system.php:82
+#@ wpduplicator
+msgid "Please validate your system configuration."
+msgstr "אנא בדוק את תצורת המערכת שלך."
+
+#: inc/view.system.php:83
+#@ wpduplicator
+msgid "Click link for details"
+msgstr "לחץ על הקישור לפרטים"
+
+#: inc/view.system.php:92
+#@ wpduplicator
+msgid "SYSTEM REQUIRMENTS"
+msgstr "מערכת requirments"
+
+#: inc/view.system.php:93
+#@ wpduplicator
+msgid "File Permissions"
+msgstr "הרשאות הקובץ"
+
+#: inc/view.system.php:96
+#@ wpduplicator
+msgid "The following directories should have permissions of 755 and files 644.  Keep in mind that PHP may be accessing the paths/files as the user id that the web server runs as."
+msgstr "את הספריות הבאות צריך להיות בעל הרשאות של 755 ו 644 קבצים. זכור כי PHP ניתן לגשת השבילים / קבצים, מזהה את המשתמש ששרת האינטרנט פועל בשם."
+
+#: inc/view.system.php:116
+#@ wpduplicator
+msgid "Reserved Files"
+msgstr "שמורות קבצים"
+
+#: inc/view.system.php:119
+#, fuzzy
+#@ wpduplicator
+msgid "If this check fails then a reserved file was found in the WordPress root directory. The following are reserved file names installer.php, installer-data.sql and installer-log.txt.  In order to archive your data correctly please remove any of these files from your WordPress root directory. Then try creating your package again."
+msgstr "אם בדיקה זו נכשלת ואז הקובץ שמור נמצא בספרייה הראשית וורדפרס. להלן שמות שמורות הקובץ install.php, התקנה data.sql, install-log.txt. על מנת ארכיון הנתונים בצורה נכונה בבקשה להסיר את כל הקבצים האלה מספריית השורש שלך WordPress. לאחר מכן נסה ליצור החבילה שלך שוב."
+
+#: inc/view.system.php:124
+#, fuzzy
+#@ wpduplicator
+msgid "Zip Archive Enabled"
+msgstr "Zip ארכיון"
+
+#: inc/view.system.php:127
+#@ wpduplicator
+msgid "The ZipArchive extension for PHP is required for compression.  Please contact your hosting provider if you're on a hosted server.  For additional information see our online documentation."
+msgstr "הארכת ZipArchive עבור PHP נדרש דחיסה. אנא צור קשר עם ספק האירוח שלך אם אתה מתארח על שרת. לקבלת מידע נוסף עיין בתיעוד המקוון שלנו."
+
+#: inc/view.system.php:132
+#, fuzzy
+#@ wpduplicator
+msgid "Safe Mode Off"
+msgstr "מצב בטוח"
+
+#: inc/view.system.php:135
+#, fuzzy
+#@ wpduplicator
+msgid "Safe Mode needs to be disabled in order for the Duplicator to operate correctly.  Please set safe_mode = Off in you php.ini file.  If you're on a hosted server and don't have access to the php.ini file then you will need to request this setting be updated. Safe Mode is no longer in future versions of PHP.  If your host will not work with you to resolve the issue then consider a higher reputable hosting provider."
+msgstr "במצב בטוח צריך להיות מבוטל על מנת מעתק לפעול כראוי. נא לקבוע safe_mode = off בקובץ php.ini לך. אם אתה על שרת אירוח אין גישה לקובץ php.ini ואז תצטרך לבקש הגדרה זו להתעדכן."
+
+#: inc/view.system.php:140
+#@ wpduplicator
+msgid "MySQLi Support"
+msgstr "MySQLi תמיכה"
+
+#: inc/view.system.php:143
+#@ wpduplicator
+msgid "In order to complete an install the mysqli extension for PHP is required. If you are on a hosted server please contact your host and request that mysqli extension be enabled. For more information visit: http://php.net/manual/en/mysqli.installation.php"
+msgstr "על מנת להשלים את התקנת ההרחבה mysqli עבור PHP נדרש. אם אתה על שרת אירוח צור קשר עם המארח שלך ולבקש הארכה mysqli להיות מופעלת. לביקור מידע נוסף: http://php.net/manual/en/mysqli.installation.php"
+
+#: inc/view.system.php:152
+#, fuzzy
+#@ wpduplicator
+msgid "SYSTEM CHECKS"
+msgstr "בדיקות שרת"
+
+#: inc/view.system.php:155
+#@ wpduplicator
+msgid "PHP Version"
+msgstr "גרסה"
+
+#: inc/view.system.php:157
+#: inc/view.system.php:169
+#: inc/view.system.php:193
+#@ wpduplicator
+msgid "Good"
+msgstr "טוב"
+
+#: inc/view.system.php:159
+#: inc/view.system.php:172
+#: inc/view.system.php:175
+#: inc/view.system.php:178
+#: inc/view.system.php:181
+#@ wpduplicator
+msgid "OK"
+msgstr "בסדר"
+
+#: inc/view.system.php:160
+#@ wpduplicator
+msgid "PHP 5.2.17+ is required"
+msgstr "נדרש"
+
+#: inc/view.system.php:162
+#: inc/view.system.php:184
+#: inc/view.system.php:196
+#@ wpduplicator
+msgid "Fail"
+msgstr "להיכשל"
+
+#: inc/view.system.php:168
+#: inc/view.system.php:171
+#: inc/view.system.php:174
+#: inc/view.system.php:177
+#: inc/view.system.php:180
+#: inc/view.system.php:183
+#@ wpduplicator
+msgid "Web Server"
+msgstr "שרת"
+
+#: inc/view.system.php:183
+#@ wpduplicator
+msgid "Not detected"
+msgstr "לא נמצא"
+
+#: inc/view.system.php:192
+#: inc/view.system.php:195
+#@ wpduplicator
+msgid "Open Base Dir"
+msgstr "פתח ספריית בסיס"
+
+#: inc/view.system.php:192
+#@ wpduplicator
+msgid "Off"
+msgstr "כבוי"
+
+#: inc/view.system.php:195
+#@ wpduplicator
+msgid "On"
+msgstr "פעיל"
+
+#: inc/view.system.php:202
+#@ wpduplicator
+msgid "PHP SAPI"
+msgstr "PHP SAPI"
+
+#: inc/view.system.php:207
+#@ wpduplicator
+msgid "Scan Now"
+msgstr "סרוק כעת"
+
+#: inc/view.system.php:216
+#@ wpduplicator
+msgid "Cache Directory Found"
+msgstr "נמצא ספריית מטמון"
+
+#: inc/view.system.php:217
+#, fuzzy
+#@ wpduplicator
+msgid "Add to exclusion path now"
+msgstr "הוסף לרשימת הספריות להסרה"
+
+#: inc/view.system.php:219
+#, fuzzy
+#@ wpduplicator
+msgid "Directory excluded"
+msgstr "הסרת ספריות"
+
+#: inc/view.system.php:220
+#, fuzzy
+#@ wpduplicator
+msgid "Path"
+msgstr "כתובת"
+
+#: inc/view.system.php:222
+#@ wpduplicator
+msgid "Cache Directory Not Found"
+msgstr "לא נמצאה ספריית מטמון"
+
+#: inc/view.system.php:228
+#@ wpduplicator
+msgid "ONLINE RESOURCES"
+msgstr "משאבים מקוונים"
+
+#: inc/view.system.php:233
+#@ wpduplicator
+msgid "For additional online help please visit"
+msgstr "לקבלת עזרה מקוונת נוסף ניתן למצוא באתר"
+
+#: inc/view.system.php:239
+#@ wpduplicator
+msgid "Need a hosting provider that is"
+msgstr "צריך ספקית אירוח זה"
+
+#: inc/view.system.php:241
+#, fuzzy
+#@ wpduplicator
+msgid "Duplicator Approved"
+msgstr "מעתק אפשרויות"
+
+#: inc/view.system.php:252
+#, fuzzy
+#@ wpduplicator
+msgid "Download Links"
+msgstr "הורד קובץ התקנה"
+
+#: inc/view.system.php:255
+#, fuzzy
+#@ wpduplicator
+msgid "The following links contain sensitive data.  Please share with caution!"
+msgstr "הקישורים הבאים מכילים מידע רגיש. אנא נתח בזהירות!"
+
+#: inc/view.system.php:261
+#@ wpduplicator
+msgid "The database SQL script is a quick link to your database backup script.  An exact copy is also stored in the package."
+msgstr "התסריט מסד הנתונים SQL הוא קישור מהיר התסריט שלך באתר הגיבוי. העתק מדויק מאוחסן גם בחבילה."
+
