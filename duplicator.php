@@ -225,7 +225,7 @@ if (is_admin() == true) {
 	 *  Init routines  */
 	function duplicator_init() {
 	   /* Register our stylesheet. */
-	   wp_register_style('jquery-ui', 		  DUPLICATOR_PLUGIN_URL . 'css/jquery-ui.css', null , "1.8.21" );
+	   wp_register_style('jquery-ui', 		  DUPLICATOR_PLUGIN_URL . 'css/jquery-ui.css', null , "1.9.2" );
 	   wp_register_style('duplicator_style',  DUPLICATOR_PLUGIN_URL . 'css/style.css' );
 	}
 
@@ -262,10 +262,14 @@ if (is_admin() == true) {
 	}
 
 	/**
-	 *  DUPLICATOR_SCRIPTS
-	 *  Loads the required javascript libs only for this plugin  */
+	*  DUPLICATOR_SCRIPTS
+	*  Loads the required javascript libs only for this plugin  */
 	function duplicator_scripts() {
-		wp_enqueue_script("jquery-ui", DUPLICATOR_PLUGIN_URL . "js/jquery-ui.min.js", array( 'jquery' ), "1.8.21");
+		wp_enqueue_script('jquery');
+		wp_enqueue_script('jquery-ui-core');
+		wp_enqueue_script('jquery-ui-dialog');
+		wp_enqueue_script('jquery-ui-button');
+		wp_enqueue_script('jquery-ui-tabs');
 	}
 
 	/**
