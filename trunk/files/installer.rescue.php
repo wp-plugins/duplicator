@@ -82,16 +82,16 @@ if (file_exists('dtoken.php')) {
 ================================================================================================= */
 
 $GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
-$GLOBALS['FW_URL_OLD'] 		= '';
+$GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '';
-$GLOBALS['FW_SECURE_NAME'] 	= '';
+$GLOBALS['FW_PACKAGE_NAME'] = '50c7fa561b0523367_20121212_duplicatorplugin_package.zip';
+$GLOBALS['FW_SECURE_NAME'] 	= '50c7fa561b0523367_20121212_duplicatorplugin';
 $GLOBALS['FW_DBHOST'] 		= 'localhost';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
 $GLOBALS['FW_BLOGNAME'] 	= 'Duplicator Plugin';
 $GLOBALS['FW_RESCUE_FLAG'] 	= '(rescue file)';
-$GLOBALS['FW_WPROOT'] 		= '';
+$GLOBALS['FW_WPROOT'] 		= 'E:/WEB/projects/wpplug_duplicator/';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME']    = 4000;
@@ -1061,10 +1061,10 @@ class DupDBTextSwap {
 				$serial_string = preg_match( '/^s:[0-9]+:"(.*$)/s', trim($data), $matches);
 				//Nested serial string
 				if ($serial_string) {
-					$inner = preg_replace_callback($regex, 'self::fix_string_callback', rtrim($matches[1], '";')); 
+					$inner = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', rtrim($matches[1], '";')); 
 					$serialized_fixed =  's:' . strlen($inner) . ':"' . $inner . '";' ;
 				} else {
-					$serialized_fixed = preg_replace_callback($regex, 'self::fix_string_callback', $data); 
+					$serialized_fixed = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', $data); 
 				}
 				
 				if (self::is_serialized($serialized_fixed) ) {

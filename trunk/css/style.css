@@ -9,7 +9,12 @@ div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); op
 
 /*PAGE-MAIN: Toolbar*/
 div.dup-header {padding:5px 10px 0px 0px;border:1px solid #efefef; margin:10px 0px 18px 0px; border-radius:5px;box-shadow: 0 8px 6px -6px #C7C7C7;}
+div.dup-header input {border:1px solid silver; border-radius:4px}
+div.dup-header input:hover {border:1px solid black;}
 table#toolbar-table td {padding:0px; white-space:nowrap;}
+table#toolbar-table input {border:1px solid silver; border-radius:4px}
+table#toolbar-table input:hover {border:1px solid black;}
+
 td.toolbar-label label {font-size:14px !important; margin-top:7px; display:inline-block; font-weight:bold}
 td.toolbar-textbox {white-space:nowrap;width:100%; vertical-align:middle}
 img.toolbar-divider {height:26px; padding:0px 5px 0px 5px}
