@@ -184,7 +184,7 @@ function duplicator_system_check() {
 	$json = array();
 		
 	//SYS-100: FILE PERMS
-	$test = is_readable(DUPLICATOR_WPROOTPATH)
+	$test = is_writeable(DUPLICATOR_WPROOTPATH)
 			&& is_writeable(DUPLICATOR_SSDIR_PATH)
 			&& is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/')
 			&& is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php');

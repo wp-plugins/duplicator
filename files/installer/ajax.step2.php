@@ -239,7 +239,7 @@ class DupDBTextSwap {
 				return serialize($data);
 
 		} catch(Exception $error) {
-			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n". $data, 2);	
+			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR:\n". $error, 2);	
 		}
 		return $data;
 	}
