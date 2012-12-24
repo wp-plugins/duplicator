@@ -97,7 +97,7 @@ DIALOG: SYSTEM CHECK -->
 							echo "<b>";  _e("Required permissions", 'wpduplicator'); echo ":</b>";
 							echo "<br/>";
 
-							$test = is_readable(DUPLICATOR_WPROOTPATH) ? 'Pass' : 'Fail';
+							$test = is_writeable(DUPLICATOR_WPROOTPATH) ? 'Pass' : 'Fail';
 							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_WPROOTPATH);
 							
 							$test = is_writeable(DUPLICATOR_SSDIR_PATH) ? 'Pass' : 'Fail';

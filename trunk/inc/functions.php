@@ -38,62 +38,32 @@ function duplicator_create_dbscript($destination) {
 			} else if ($row_count > 0) {
 				$row_count = 1;  
 			}
-			
-			//PERFORM ICONV ROUTINE
-			//Chunck the query results to avoid memory issues
-			/*if ($dbiconv) {
-			
-				for ($i = 0; $i < $row_count; $i++) {
-					$sql   = "";
-					$limit = $i * 100;
-					$query = "SELECT * FROM `{$table}` LIMIT {$limit}, 100";
-					$rows  = $wpdb->get_results($query, ARRAY_A);
-					if (is_array($rows)) {
-						foreach ($rows as $row) {
-							$sql .= "INSERT INTO `{$table}` VALUES(";
-							$num_values  = count($row);
-							$num_counter = 1;
-							foreach ($row as $value) {
-								$value = @iconv(DUPLICATOR_DB_ICONV_IN, DUPLICATOR_DB_ICONV_OUT, $value);
-								($num_values == $num_counter) 
-									? $sql .= '"' . @mysql_real_escape_string($value) . '"'
-									: $sql .= '"' . @mysql_real_escape_string($value) . '", ';
-								$num_counter++;
-							}
-							$sql .= ");\n";
-						}
-						@fwrite($handle, $sql);
-						duplicator_fcgi_flush();
-					}
-				}
-				
-			//DO NOT PERFORM ICONV
-			} else {*/
 
-				for ($i = 0; $i < $row_count; $i++) {
-					$sql   = "";
-					$limit = $i * 100;
-					$query = "SELECT * FROM `{$table}` LIMIT {$limit}, 100";
-					$rows  = $wpdb->get_results($query, ARRAY_A);
-					if (is_array($rows)) {
-						foreach ($rows as $row) {
-							$sql .= "INSERT INTO `{$table}` VALUES(";
-							$num_values  = count($row);
-							$num_counter = 1;
-							foreach ($row as $value) {
-								($num_values == $num_counter) 
-									? $sql .= '"' . @mysql_real_escape_string($value) . '"'
-									: $sql .= '"' . @mysql_real_escape_string($value) . '", ';
-								$num_counter++;
-							}
-							$sql .= ");\n";
+			//Build Table Query
+			for ($i = 0; $i < $row_count; $i++) {
+				$sql   = "";
+				$limit = $i * 100;
+				$query = "SELECT * FROM `{$table}` LIMIT {$limit}, 100";
+				$rows  = $wpdb->get_results($query, ARRAY_A);
+				if (is_array($rows)) {
+					foreach ($rows as $row) {
+						$sql .= "INSERT INTO `{$table}` VALUES(";
+						$num_values  = count($row);
+						$num_counter = 1;
+						foreach ($row as $value) {
+							($num_values == $num_counter) 
+								? $sql .= '"' . @mysql_real_escape_string($value) . '"'
+								: $sql .= '"' . @mysql_real_escape_string($value) . '", ';
+							$num_counter++;
 						}
-						@fwrite($handle, $sql);
-						duplicator_fcgi_flush();
+						$sql .= ");\n";
 					}
+					@fwrite($handle, $sql);
+					duplicator_fcgi_flush();
 				}
+			}
 			
-			//}
+
 			
 			@fwrite($handle, "\n\n");
 			duplicator_log("done:  {$table}");

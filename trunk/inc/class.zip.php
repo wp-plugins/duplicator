@@ -61,7 +61,6 @@ class Duplicator_Zip
 		}
 	}
 	
-	
 	function resursiveZip($directory)
 	{
 		try 
@@ -86,50 +85,27 @@ class Duplicator_Zip
 				}
 			}
 			
-			/* Legacy: Excludes empty diretories and files with no extention
-			while (false !== ($file = @readdir($dh))) { 
-				if ($file != '.' && $file != '..') { 
-					$fullpath = "{$folderPath}/{$file}";
-					
-					if(is_dir($fullpath)) {
-						duplicator_fcgi_flush();
-						$this->resursiveZip($fullpath);
-					}
-					else if(is_file($fullpath) && is_readable($fullpath)) {
-						//Check filter extensions
-						if(!in_array(@pathinfo($fullpath, PATHINFO_EXTENSION), $this->skipNames)) {
-							$localpath = str_replace($this->rootFolder, '', $folderPath);
-							$localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
-							$this->zipArchive->addFile("{$folderPath}/{$file}", "{$localname}{$file}");
-						}
-					} 
-					$this->limitItems++;
-				}
-			} */
-			
-			
 			while (false !== ($file = @readdir($dh))) {
                  if ($file != '.' && $file != '..') {
                     $fullpath = "{$folderPath}/{$file}";
 					$localpath = str_replace($this->rootFolder, '', $folderPath);
 					$localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
-                     if(is_dir($fullpath)) {
-                         duplicator_fcgi_flush();
- 						 $this->zipArchive->addEmptyDir("{$localname}{$file}");
-                         $this->resursiveZip($fullpath);
-                     }
-                     else if(is_file($fullpath) && is_readable($fullpath)) {
+					if(is_file($fullpath) && is_readable($fullpath)) {
                          //Check filter extensions
                         $ext = @pathinfo($fullpath, PATHINFO_EXTENSION);
                         if($ext == '' || !in_array($ext, $this->skipNames)) {
 							$this->zipArchive->addFile("{$folderPath}/{$file}", "{$localname}{$file}");
                         }
+                    } else if(is_dir($fullpath)) {
+						if(! in_array($fullpath, $GLOBALS['duplicator_bypass-array'])) {
+							$this->zipArchive->addEmptyDir("{$localname}{$file}");
+							duplicator_fcgi_flush();
+						}
+						$this->resursiveZip($fullpath);
                      }
 					 $this->limitItems++;
 				}
 			}
-			
-			
 			
 			//Check if were over our count
 			if($this->limitItems > $this->limit) {
