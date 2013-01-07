@@ -64,24 +64,6 @@
 						<i style="font-size:11px;"><?php printf("%s (/path1;/path2 or exe;txt;)", __("Separate all filters by semicolon", 'wpduplicator')); ?></i>
 					</fieldset><br/>
 					
-					<!-- ENCODEING OPTIONS 
-					<fieldset style="width:97%; line-height: 17px"  class='no-select'>
-						<legend><b><?php _e("Database Encoding", 'wpduplicator') ?></b></legend>
-						
-							<input type="checkbox" name="dbiconv" id="dbiconv" <?php echo ($duplicator_dbiconv) ? 'checked="checked"' : ''; ?> /> 
-							<label for="dbiconv"><?php _e("Enable character conversion encoding", 'wpduplicator') ?></label><br/>
-					
-							<i style='font-size:11px;'>
-								<?php 
-									printf("%s %s %s %s <br/> %s",
-										__("From", 'wpduplicator'), DUPLICATOR_DB_ICONV_IN,
-										__("to", 'wpduplicator'), DUPLICATOR_DB_ICONV_OUT,
-										__("Disable this option for extended or double byte character sets", 'wpduplicator')) ;
-										
-								?>
-							</i><br/><br/>					
-							
-					</fieldset>-->
 					<!--div style='position:absolute; bottom:5px'>	
 						<i style='font-size:10px'><?php _e("Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)", 'wpduplicator') ?>.</i>
 					</div-->

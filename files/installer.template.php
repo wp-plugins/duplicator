@@ -1031,7 +1031,7 @@ class DupDBTextSwap {
 				return serialize($data);
 
 		} catch(Exception $error) {
-			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n". $data, 2);	
+			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR:\n". $error, 2);	
 		}
 		return $data;
 	}
@@ -2101,7 +2101,7 @@ DIALOG: SERVER CHECKS  -->
 					<?php 
 						echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
 						printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one Zip file. <div style='padding-left:55px'>Result = {$zip_file_name}</div>");
+						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
 					?>
 				</td>
 			</tr>
@@ -2492,7 +2492,7 @@ DIALOG: SERVER CHECKS  -->
 					<?php 
 						echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
 						printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one Zip file. <div style='padding-left:55px'>Result = {$zip_file_name}</div>");
+						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
 					?>
 				</td>
 			</tr>

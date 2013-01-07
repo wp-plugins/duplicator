@@ -9,16 +9,10 @@ function duplicator_create_dbscript($destination) {
 	try {
 
 		global $wpdb;
-		//$dbiconv = ($GLOBALS['duplicator_opts']['dbiconv'] == "0" && function_exists("iconv")) ? false : true;
 		
 		$handle  = fopen($destination,'w+');
 		$tables  = $wpdb->get_col('SHOW TABLES');
-		
 		duplicator_log("log:fun__create_dbscript=>started");
-		//if ($dbiconv) {
-			//duplicator_log("log:fun__create_dbscript=>dbiconv enabled");
-		//}
-		
 		foreach ($tables as $table) {
 		
 			//Generate Drop Statement
@@ -27,7 +21,7 @@ function duplicator_create_dbscript($destination) {
 			
 			//Generate Create Statement
 			$row_count  = $wpdb->get_var("SELECT Count(*) FROM `{$table}`");
-			duplicator_log("start: {$table} ({$row_count})");	
+			duplicator_log("{$table} ({$row_count})");	
 		
 			$create  = $wpdb->get_row("SHOW CREATE TABLE `{$table}`", ARRAY_N);
 			$sql_crt = "{$create[1]};\n\n";
@@ -62,11 +56,9 @@ function duplicator_create_dbscript($destination) {
 					duplicator_fcgi_flush();
 				}
 			}
-			
 
-			
 			@fwrite($handle, "\n\n");
-			duplicator_log("done:  {$table}");
+
 		}		
 	
 		duplicator_log("log:fun__create_dbscript=>sql file written to {$destination}");
@@ -381,8 +373,7 @@ function duplicator_snapshot_urlpath() {
  *  @param string $msg		The message to log
  */
 function duplicator_log($msg, $level = 0) {
-	$stamp = date('h:i:s');
-	@fwrite($GLOBALS['duplicator_package_log_handle'], "{$stamp} {$msg} \n");
+	@fwrite($GLOBALS['duplicator_package_log_handle'], "{$msg} \n");
 }
 
 ?>

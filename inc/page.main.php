@@ -9,7 +9,6 @@
 	
 	//Settings
 	$email_me_enabled    = $GLOBALS['duplicator_opts']['email-me'] == "0" 	 	 ? false : true;
-	$duplicator_dbiconv	 = $GLOBALS['duplicator_opts']['dbiconv'] == "0" 		 ? false : true;
 	$rm_snapshot		 = $GLOBALS['duplicator_opts']['rm_snapshot'] == "0" 	 ? false : true;
 	
 	//INLINE DIALOG WINDOWS

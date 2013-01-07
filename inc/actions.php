@@ -25,7 +25,7 @@ function duplicator_create() {
 	$GLOBALS['duplicator_package_log_handle'] = @fopen(DUPLICATOR_SSDIR_PATH . "/{$logfilename}", "c+");
 	
 	duplicator_log("*********************************************************");
-	duplicator_log("PACKAGE-LOG: ");
+	duplicator_log("PACKAGE-LOG: " . @date('h:i:s') );
 	duplicator_log("*********************************************************");
 	duplicator_log("duplicator: " . DUPLICATOR_VERSION);
 	duplicator_log("wordpress: {$wp_version}");
@@ -60,14 +60,14 @@ function duplicator_create() {
 		
 
 		duplicator_log("*********************************************************");
-		duplicator_log("SQL SCRIPT");
+		duplicator_log("SQL SCRIPT: " . @date('h:i:s') );
 		duplicator_log("*********************************************************");
 		duplicator_create_dbscript($sqlfilepath);		
 		
 		
 		//CREATE ZIP ARCHIVE
 		duplicator_log("*********************************************************");
-		duplicator_log("ZIP ARCHIVE");
+		duplicator_log("ZIP ARCHIVE: " . @date('h:i:s') );
 		duplicator_log("*********************************************************");
 		
 		$zip = new Duplicator_Zip($zipfilepath, rtrim(DUPLICATOR_WPROOTPATH, '/'), $sqlfilepath);
@@ -105,7 +105,7 @@ function duplicator_create() {
 	
 		//UPDATE INSTALL FILE
 		duplicator_log("*********************************************************");
-		duplicator_log("UPDATE INSTALLER FILE");
+		duplicator_log("UPDATE INSTALLER FILE: " .@date('h:i:s') );
 		duplicator_log("*********************************************************");
 		duplicator_build_installerFile();
 		duplicator_create_installerFile($uniquename);
@@ -132,7 +132,7 @@ function duplicator_create() {
 	} 
 	
 	duplicator_log("*********************************************************");
-	duplicator_log("DONE PROCESSING => {$packname}");
+	duplicator_log("DONE PROCESSING => {$packname} " . @date('h:i:s'));
 	duplicator_log("*********************************************************");
 	@fclose($GLOBALS['duplicator_package_log_handle']);
 	die();
@@ -325,7 +325,6 @@ function duplicator_settings(){
 		'dbhost'		=>$_POST['dbhost'],
 		'dbname'		=>$_POST['dbname'],
 		'dbuser'		=>$_POST['dbuser'],
-		'dbiconv'		=>$_POST['dbiconv'],
 		'url_new'			=>rtrim($_POST['url_new'], '/'),
 		'email-me'		=>$_POST['email-me'],
 		'email_others'	=>$_POST['email_others'],

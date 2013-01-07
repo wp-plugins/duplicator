@@ -28,6 +28,7 @@
 		define("DUPLICATOR_INSTALL_SQL",	'installer-data.sql');
 		define("DUPLICATOR_INSTALL_LOG",	'installer-log.txt');
 		define("DUPLICATOR_ZIP_FILE_POOL",	5000);
+		$GLOBALS['DUPLICATOR_SEPERATOR1']	= str_repeat("********", 5);
 	} else {
 		error_reporting(0); 
 		$port = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != "off") ? "https://" : "http://"; 

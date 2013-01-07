@@ -21,7 +21,7 @@ class Duplicator_Zip
 		try 
 		{
 		
-			duplicator_log("log:class.zip=>started");
+			duplicator_log("log:class.zip=>started " . @date('h:i:s') );
 			duplicator_log("archive this folder: {$folderPath}");
 			duplicator_log("archive file name:   {$zipFilePath}");
 			
@@ -45,15 +45,26 @@ class Duplicator_Zip
 				throw new Exception($err);
 			}
 			
-			//Recursive Call
+			//ADD SQL File
+			$sql_in_zip = $this->zipArchive->addFile($sqlfilepath, "/database.sql");
+			if ($sql_in_zip) {
+				duplicator_log("Added database.sql to zip package from file: {$sqlfilepath}");
+			} else {
+				duplicator_log("{$GLOBALS['DUPLICATOR_SEPERATOR1']}\nERROR: Unable to add database.sql file to package from {$sqlfilepath} \n{$GLOBALS['DUPLICATOR_SEPERATOR1']}");
+			}
+			
+			//RECURSIVE CALL TO ALL FILES
 			$this->resursiveZip($this->rootFolder);
 			
-			//ADD SQL File
-			$this->zipArchive->addFile($sqlfilepath, "database.sql");
-
+			//LOG FINAL RESULTS
 			duplicator_log("archive info: " . print_r($this->zipArchive, true));
-			duplicator_log("close returned: " . $this->zipArchive->close() . " (if null check your disk quota)" );
-			duplicator_log("log:class.zip=>ended");
+			$zip_close_result = $this->zipArchive->close();
+			$status_msg = ($zip_close_result) 
+				? "close returned: '{$zip_close_result}'"
+				: "{$GLOBALS['DUPLICATOR_SEPERATOR1']}\nWARNING: ZipArchive Class did not close successfully.  This means you most likely have a disk quota issue on your server.\nPlease check your disk space usage to make sure you can store this zip file successfully.\n{$GLOBALS['DUPLICATOR_SEPERATOR1']}";
+			
+			duplicator_log($status_msg);
+			duplicator_log("log:class.zip=>ended " . @date('h:i:s') );
 		} 
 		catch(Exception $e) 
 		{
