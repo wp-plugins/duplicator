@@ -81,17 +81,17 @@ if (file_exists('dtoken.php')) {
 		Example: array(array('search'=> '/html/oldpath/images',  'replace'=> '/html/newpath/images'));		
 ================================================================================================= */
 
-$GLOBALS['FW_TABLEPREFIX'] 	= '';
-$GLOBALS['FW_URL_OLD'] 		= '';
+$GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
+$GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '';
-$GLOBALS['FW_SECURE_NAME'] 	= '';
+$GLOBALS['FW_PACKAGE_NAME'] = '50ea1462987de9791_20130107_duplicatorplugin_package.zip';
+$GLOBALS['FW_SECURE_NAME'] 	= '50ea1462987de9791_20130107_duplicatorplugin';
 $GLOBALS['FW_DBHOST'] 		= 'localhost';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
-$GLOBALS['FW_BLOGNAME'] 	= '';
+$GLOBALS['FW_BLOGNAME'] 	= 'Duplicator Plugin';
 $GLOBALS['FW_RESCUE_FLAG'] 	= '(rescue file)';
-$GLOBALS['FW_WPROOT'] 		= '';
+$GLOBALS['FW_WPROOT'] 		= 'E:/WEB/projects/wpplug_duplicator/';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME']    = 4000;
@@ -1031,7 +1031,7 @@ class DupDBTextSwap {
 				return serialize($data);
 
 		} catch(Exception $error) {
-			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n". $data, 2);	
+			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR:\n". $error, 2);	
 		}
 		return $data;
 	}
@@ -2101,7 +2101,7 @@ DIALOG: SERVER CHECKS  -->
 					<?php 
 						echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
 						printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one Zip file. <div style='padding-left:55px'>Result = {$zip_file_name}</div>");
+						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
 					?>
 				</td>
 			</tr>
@@ -2492,7 +2492,7 @@ DIALOG: SERVER CHECKS  -->
 					<?php 
 						echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
 						printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one Zip file. <div style='padding-left:55px'>Result = {$zip_file_name}</div>");
+						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
 					?>
 				</td>
 			</tr>

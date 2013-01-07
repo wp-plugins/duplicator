@@ -41,7 +41,6 @@ if (is_admin() == true) {
 	$GLOBALS['duplicator_opts']['dbhost']		= isset($GLOBALS['duplicator_opts']['dbhost'])			? $GLOBALS['duplicator_opts']['dbhost']			: '';
 	$GLOBALS['duplicator_opts']['dbname']		= isset($GLOBALS['duplicator_opts']['dbname'])			? $GLOBALS['duplicator_opts']['dbname']			: '';
 	$GLOBALS['duplicator_opts']['dbuser']		= isset($GLOBALS['duplicator_opts']['dbuser'])			? $GLOBALS['duplicator_opts']['dbuser'] 		: '';
-	$GLOBALS['duplicator_opts']['dbiconv']		= isset($GLOBALS['duplicator_opts']['dbiconv'])			? $GLOBALS['duplicator_opts']['dbiconv']		: '1';
 	$GLOBALS['duplicator_opts']['dbadd_drop']	= isset($GLOBALS['duplicator_opts']['dbadd_drop'])		? $GLOBALS['duplicator_opts']['dbadd_drop']     : '0';
 	$GLOBALS['duplicator_opts']['url_new']  	= isset($GLOBALS['duplicator_opts']['url_new'] ) 		? $GLOBALS['duplicator_opts']['url_new']  		: '';
 	$GLOBALS['duplicator_opts']['email-me']		= isset($GLOBALS['duplicator_opts']['email-me'])		? $GLOBALS['duplicator_opts']['email-me']		: '0';
@@ -99,7 +98,6 @@ if (is_admin() == true) {
 			'max_memory'	=>$GLOBALS['duplicator_opts']['max_memory'],
 			'dir_bypass'	=>"{$GLOBALS['duplicator_opts']['dir_bypass']}",
 			'log_level'		=>'0',
-			'dbiconv'		=>"{$GLOBALS['duplicator_opts']['dbiconv']}",
 			'skip_ext'		=>"{$GLOBALS['duplicator_opts']['skip_ext']}",
 			'rm_snapshot'	=>"{$GLOBALS['duplicator_opts']['rm_snapshot']}");
 				

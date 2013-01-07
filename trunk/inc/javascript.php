@@ -93,7 +93,6 @@ jQuery.noConflict()(function($) {
 	Duplicator.saveSettings = function() {
 		var q;
 		var email_me   		= $('#email-me').is(':checked') ? 1 : 0;
-		var dbiconv    		= $('#dbiconv').is(':checked')  ? 1 : 0;
 		var log_level  		= $("select#log_level").val() ? $("select#log_level").val() : 0;
 		var email_others	= $("input#email_others").val();
 		var dir_bypass 		= $("textarea#dir_bypass").val();
@@ -117,7 +116,6 @@ jQuery.noConflict()(function($) {
 				'dbname'  		: $("input#dbname").val(),
 				'dbuser'  		: $("input#dbuser").val(),
 				'url_new'  		: $("input#url_new").val(),
-				'dbiconv'  		: dbiconv,
 				'email-me'  	: email_me,
 				'email_others'  : email_others,
 				'max_time'  	: $("input#max_time").val(),
