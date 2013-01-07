@@ -32,7 +32,7 @@ if ( isset($_GET['get']) && file_exists($_GET['file'])) {
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
 		header('Content-Length: ' . filesize($_GET['file']));
-		ob_clean();
+		@ob_clean();
 		@flush();
 		if (@readfile($_GET['file']) == false) {
 			$data = file_get_contents($_GET['file']);
