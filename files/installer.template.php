@@ -32,7 +32,7 @@ if ( isset($_GET['get']) && file_exists($_GET['file'])) {
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
 		header('Content-Length: ' . filesize($_GET['file']));
-		ob_clean();
+		@ob_clean();
 		@flush();
 		if (@readfile($_GET['file']) == false) {
 			$data = file_get_contents($_GET['file']);
@@ -571,7 +571,7 @@ class DupUtil {
 		$target = $root_path;
 		$zip = new ZipArchive();
 		if ($zip->open($_POST['package_name']) === TRUE)	{
-			$zip->extractTo($target);
+			@$zip->extractTo($target);
 			DupUtil::log("INFORMATION:\t" . print_r($zip, true));
 			$close_response = $zip->close();
 			DupUtil::log("ZIP CLOSE: " . var_export($close_response, true));

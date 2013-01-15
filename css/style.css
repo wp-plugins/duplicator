@@ -28,6 +28,7 @@ input#btn-help-dialog {width:28px;height:27px; background:url(../img/help.png) n
 input.btn-setup-link {width:28px;  background:url(../img/setup.png) no-repeat 5px 4px;}
 input#btn-contribute-dialog {width:28px; height:27px; background:url(../img/partner.png) no-repeat 3px 3px;}
 img.btn-delete-all {height:16px; width:16px;margin-left:2px}
+select.dup-select {padding:1px; font-size:12px; height:21px}
 
 
 /*PAGE-MAIN: Table package details */
