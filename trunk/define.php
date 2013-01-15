@@ -28,6 +28,12 @@
 		define("DUPLICATOR_INSTALL_SQL",	'installer-data.sql');
 		define("DUPLICATOR_INSTALL_LOG",	'installer-log.txt');
 		define("DUPLICATOR_ZIP_FILE_POOL",	5000);
+		
+		//Max_Time = 0 means no limit, this is for PHP processor
+		define("DUPLICATOR_MAX_MEMORY",	'5000M');
+		define("DUPLICATOR_MAX_TIME",	0);
+		define("DUPLICATOR_MYSQL_WAIT_TIMEOUT",	5000);
+		
 		$GLOBALS['DUPLICATOR_SEPERATOR1']	= str_repeat("********", 5);
 	} else {
 		error_reporting(0); 

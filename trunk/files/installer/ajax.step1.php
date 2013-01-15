@@ -145,7 +145,7 @@
 		$target = $root_path;
 		$zip = new ZipArchive();
 		if ($zip->open($_POST['package_name']) === TRUE)	{
-			$zip->extractTo($target);
+			@$zip->extractTo($target);
 			DupUtil::log("INFORMATION:\t" . print_r($zip, true));
 			$close_response = $zip->close();
 			DupUtil::log("ZIP CLOSE: " . var_export($close_response, true));

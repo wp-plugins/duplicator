@@ -32,7 +32,7 @@ if ( isset($_GET['get']) && file_exists($_GET['file'])) {
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
 		header('Content-Length: ' . filesize($_GET['file']));
-		ob_clean();
+		@ob_clean();
 		@flush();
 		if (@readfile($_GET['file']) == false) {
 			$data = file_get_contents($_GET['file']);
@@ -84,9 +84,9 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
 $GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '50ea1462987de9791_20130107_duplicatorplugin_package.zip';
-$GLOBALS['FW_SECURE_NAME'] 	= '50ea1462987de9791_20130107_duplicatorplugin';
-$GLOBALS['FW_DBHOST'] 		= 'localhost';
+$GLOBALS['FW_PACKAGE_NAME'] = '50f56b69258247725_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] 	= '50f56b69258247725_package';
+$GLOBALS['FW_DBHOST'] 		= '';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
 $GLOBALS['FW_BLOGNAME'] 	= 'Duplicator Plugin';
@@ -571,7 +571,7 @@ class DupUtil {
 		$target = $root_path;
 		$zip = new ZipArchive();
 		if ($zip->open($_POST['package_name']) === TRUE)	{
-			$zip->extractTo($target);
+			@$zip->extractTo($target);
 			DupUtil::log("INFORMATION:\t" . print_r($zip, true));
 			$close_response = $zip->close();
 			DupUtil::log("ZIP CLOSE: " . var_export($close_response, true));
