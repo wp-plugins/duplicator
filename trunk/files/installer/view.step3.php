@@ -63,7 +63,7 @@ VIEW: STEP 3- INPUT -->
 		<tr>
 			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)"><b>View Install Report</b></a></td>
 			<td>
-				<i style='font-size:11px'>
+				<i style='font-size:11px; color:#BE2323'>
 					<span data-bind="with: status.step2">Errors (<span data-bind="text: err_all"></span>)</span>
 					<span data-bind="with: status.step2">Warnings (<span data-bind="text: warn_all"></span>)</span>
 				</i>
@@ -112,7 +112,7 @@ VIEW: STEP 3- INPUT -->
 		</table>
 		
 		<table class='dup-step3-report-errs' style="width:100%; border-top:none">
-			<tr><th colspan="4">Errors &amp; Warnings</th></tr>
+			<tr><th colspan="4">Errors &amp; Warnings <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
 			<tr>
 				<td data-bind="with: status.step1">
 					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Deploy Database Errors (<span data-bind="text: query_errs"></span>)</a><br/>

@@ -75,6 +75,7 @@ td.dup-step1-dialog-data-details b {width:50px;display:inline-block}
 .dup-fail {display:inline-block; color:#AF0000;}
 hr.dup-dots { border:none; border-top:1px dotted silver; height:1px; width:100%;}
 div.error {padding-top:2px;}
+div.help {color:#555; font-style:italic; font-size:11px}
 
 /* ============================
 STEP 2 VIEW */

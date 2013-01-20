@@ -1,4 +1,4 @@
- <?php
+<?php
 	/** WordPress Administration Bootstrap 
 	see: http://codex.wordpress.org/Roles_and_Capabilities#export
 	Must be logged in from the WordPress Admin */

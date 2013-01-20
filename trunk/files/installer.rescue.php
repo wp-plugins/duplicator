@@ -84,26 +84,26 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
 $GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '50f56b69258247725_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] 	= '50f56b69258247725_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '50fb33fe5b14a9699_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] 	= '50fb33fe5b14a9699_package';
 $GLOBALS['FW_DBHOST'] 		= '';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
-$GLOBALS['FW_BLOGNAME'] 	= 'Duplicator Plugin';
+$GLOBALS['FW_BLOGNAME'] 	= 'Duplicator Plugin&#039;s';
 $GLOBALS['FW_RESCUE_FLAG'] 	= '(rescue file)';
 $GLOBALS['FW_WPROOT'] 		= 'E:/WEB/projects/wpplug_duplicator/';
 
 //DATABASE SETUP: all time in seconds	
-$GLOBALS['DB_MAX_TIME']    = 4000;
+$GLOBALS['DB_MAX_TIME']    = 5000;
 $GLOBALS['DB_MAX_PACKETS'] = 268435456;
-ini_set('mysql.connect_timeout', '4000');
+ini_set('mysql.connect_timeout', '5000');
 
 //PHP SETUP: all time in seconds
-ini_set('memory_limit',		  '2048M');
+ini_set('memory_limit',		  '5000M');
 ini_set("max_execution_time", '5000'); 
 ini_set("max_input_time",	  '5000');
 ini_set('default_socket_timeout', '5000');
-set_time_limit(0);
+@set_time_limit(0);
 
 $GLOBALS['DBCHARSET_DEFAULT'] = 'utf8';
 $GLOBALS['DBCOLLATE_DEFAULT'] = 'utf8_general_ci';
@@ -121,7 +121,7 @@ END ADVANCED FEATURES: Do not edit below here.
 define("DUPLICATOR_SSDIR_NAME", 	'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.4.1';
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.4.2';
 $GLOBALS["SQL_FILE_NAME"] 	= "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
 $GLOBALS['SEPERATOR1']		= str_repeat("********", 10);
@@ -565,7 +565,7 @@ class DupUtil {
 		DupUtil::log("\n-package extraction is in manual mode-\n");
 	} else {
 		if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
-			DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
+			DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
 		}
 		
 		$target = $root_path;
@@ -1031,7 +1031,7 @@ class DupDBTextSwap {
 				return serialize($data);
 
 		} catch(Exception $error) {
-			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR:\n". $error, 2);	
+			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n". $error, 2);	
 		}
 		return $data;
 	}
@@ -1246,7 +1246,7 @@ HTACCESS;
 DupUtil::log("\n--------------------------------------");
 DupUtil::log("WARNINGS");
 DupUtil::log("--------------------------------------");	
-$config_vars  = array('WP_CONTENT_DIR', 'WP_CONTENT_URL');
+$config_vars  = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME');
 $config_found = DupUtil::string_has_value($config_vars, $config_file);
 
 //Files
@@ -1377,6 +1377,7 @@ td.dup-step1-dialog-data-details b {width:50px;display:inline-block}
 .dup-fail {display:inline-block; color:#AF0000;}
 hr.dup-dots { border:none; border-top:1px dotted silver; height:1px; width:100%;}
 div.error {padding-top:2px;}
+div.help {color:#555; font-style:italic; font-size:11px}
 
 /* ============================
 STEP 2 VIEW */
@@ -2176,12 +2177,21 @@ DIALOG: SERVER CHECKS  -->
 DIALOG: DB CONNECTION CHECK  -->
 <div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
 	<div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-		<div id="dbconn-test-msg"></div>
+		<div id="dbconn-test-msg" style="height:50px"></div>
+		<br/><hr size="1" />
+		<div class="help">
+		<b>Common Connection Issues:</b><br/>
+		- Double check case sensitive values user, password &amp; the database name <br/>
+		- The database or database user has not been created <br/>
+		- The database user has not been assigned to the database <br/>
+		- The database user does not have the correct permission levels <br/>
+		- The host 'localhost' may not work on all hosting providers <br/>
+		- Contact your hosting provider for the exact required parameters <br/>
+		- See the "Database Setup Help" section on step 1 for more details<br/>
+		- Visit the Online Resources 'Common FAQ page' <br/>
+		</div>
 	</div>
-</div>
-		
-
- <?php break; 
+</div> <?php break; 
 					case "1" :  ?> <?php
 
 	//DETECT ARCHIVE FILES
@@ -2567,12 +2577,21 @@ DIALOG: SERVER CHECKS  -->
 DIALOG: DB CONNECTION CHECK  -->
 <div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
 	<div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-		<div id="dbconn-test-msg"></div>
+		<div id="dbconn-test-msg" style="height:50px"></div>
+		<br/><hr size="1" />
+		<div class="help">
+		<b>Common Connection Issues:</b><br/>
+		- Double check case sensitive values user, password &amp; the database name <br/>
+		- The database or database user has not been created <br/>
+		- The database user has not been assigned to the database <br/>
+		- The database user does not have the correct permission levels <br/>
+		- The host 'localhost' may not work on all hosting providers <br/>
+		- Contact your hosting provider for the exact required parameters <br/>
+		- See the "Database Setup Help" section on step 1 for more details<br/>
+		- Visit the Online Resources 'Common FAQ page' <br/>
+		</div>
 	</div>
-</div>
-		
-
- <?php break; 
+</div> <?php break; 
 					case "2" :	?> <?php
 	$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
 
@@ -2883,7 +2902,7 @@ VIEW: STEP 3- INPUT -->
 		<tr>
 			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)"><b>View Install Report</b></a></td>
 			<td>
-				<i style='font-size:11px'>
+				<i style='font-size:11px; color:#BE2323'>
 					<span data-bind="with: status.step2">Errors (<span data-bind="text: err_all"></span>)</span>
 					<span data-bind="with: status.step2">Warnings (<span data-bind="text: warn_all"></span>)</span>
 				</i>
@@ -2932,7 +2951,7 @@ VIEW: STEP 3- INPUT -->
 		</table>
 		
 		<table class='dup-step3-report-errs' style="width:100%; border-top:none">
-			<tr><th colspan="4">Errors &amp; Warnings</th></tr>
+			<tr><th colspan="4">Errors &amp; Warnings <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
 			<tr>
 				<td data-bind="with: status.step1">
 					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Deploy Database Errors (<span data-bind="text: query_errs"></span>)</a><br/>

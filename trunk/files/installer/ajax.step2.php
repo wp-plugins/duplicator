@@ -239,7 +239,7 @@ class DupDBTextSwap {
 				return serialize($data);
 
 		} catch(Exception $error) {
-			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR:\n". $error, 2);	
+			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n". $error, 2);	
 		}
 		return $data;
 	}
@@ -454,7 +454,7 @@ HTACCESS;
 DupUtil::log("\n--------------------------------------");
 DupUtil::log("WARNINGS");
 DupUtil::log("--------------------------------------");	
-$config_vars  = array('WP_CONTENT_DIR', 'WP_CONTENT_URL');
+$config_vars  = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME');
 $config_found = DupUtil::string_has_value($config_vars, $config_file);
 
 //Files

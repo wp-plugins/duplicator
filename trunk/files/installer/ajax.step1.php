@@ -139,7 +139,7 @@
 		DupUtil::log("\n-package extraction is in manual mode-\n");
 	} else {
 		if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
-			DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. To guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
+			DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
 		}
 		
 		$target = $root_path;
