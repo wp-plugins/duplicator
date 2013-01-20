@@ -94,16 +94,16 @@ $GLOBALS['FW_RESCUE_FLAG'] 	= '%fwrite_rescue_flag%';
 $GLOBALS['FW_WPROOT'] 		= '%fwrite_wproot%';
 
 //DATABASE SETUP: all time in seconds	
-$GLOBALS['DB_MAX_TIME']    = 4000;
+$GLOBALS['DB_MAX_TIME']    = 5000;
 $GLOBALS['DB_MAX_PACKETS'] = 268435456;
-ini_set('mysql.connect_timeout', '4000');
+ini_set('mysql.connect_timeout', '5000');
 
 //PHP SETUP: all time in seconds
-ini_set('memory_limit',		  '2048M');
+ini_set('memory_limit',		  '5000M');
 ini_set("max_execution_time", '5000'); 
 ini_set("max_input_time",	  '5000');
 ini_set('default_socket_timeout', '5000');
-set_time_limit(0);
+@set_time_limit(0);
 
 $GLOBALS['DBCHARSET_DEFAULT'] = 'utf8';
 $GLOBALS['DBCOLLATE_DEFAULT'] = 'utf8_general_ci';
@@ -121,7 +121,7 @@ END ADVANCED FEATURES: Do not edit below here.
 define("DUPLICATOR_SSDIR_NAME", 	'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.4.1';
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] =  '0.4.2';
 $GLOBALS["SQL_FILE_NAME"] 	= "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] 	= "installer-log.txt";
 $GLOBALS['SEPERATOR1']		= str_repeat("********", 10);

@@ -32,11 +32,13 @@ Contributors:
 <li>Aaron Crawford</li>
 <li>Tomas Gurny</li>
 <li>Paal Joachim Romdahl</li>
+<li>Emilio De Fez www.canaryas.com/duplicator</li>
 
 Localization:
 <li>Hans-M. Herbrand (German) www.web266.de</li>
+<li>Emilio De Fez (Spanish) www.canaryas.com</li>
 <li>Rami (Hebrew) www.wp-tricks.co.il</li>
-<li>Vincent G from (Lietuva) www.Host1Free.com</li>
+
 
 
 
