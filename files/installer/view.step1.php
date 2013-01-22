@@ -387,14 +387,13 @@ DIALOG: DB CONNECTION CHECK  -->
 		<br/><hr size="1" />
 		<div class="help">
 		<b>Common Connection Issues:</b><br/>
-		- Double check case sensitive values user, password &amp; the database name <br/>
-		- The database or database user has not been created <br/>
-		- The database user has not been assigned to the database <br/>
-		- The database user does not have the correct permission levels <br/>
+		- Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
+		- Validate the database and database user exist on this server <br/>
+		- Check if the database user has the correct permission levels to this database <br/>
 		- The host 'localhost' may not work on all hosting providers <br/>
 		- Contact your hosting provider for the exact required parameters <br/>
-		- See the "Database Setup Help" section on step 1 for more details<br/>
-		- Visit the Online Resources 'Common FAQ page' <br/>
+		- See the 'Database Setup Help' section on step 1 for more details<br/>
+		- Visit the online resources 'Common FAQ page' <br/>
 		</div>
 	</div>
 </div>

@@ -64,8 +64,9 @@ VIEW: STEP 3- INPUT -->
 			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)"><b>View Install Report</b></a></td>
 			<td>
 				<i style='font-size:11px; color:#BE2323'>
-					<span data-bind="with: status.step2">Errors (<span data-bind="text: err_all"></span>)</span>
-					<span data-bind="with: status.step2">Warnings (<span data-bind="text: warn_all"></span>)</span>
+					<span data-bind="with: status.step1">Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
+					<span data-bind="with: status.step2">Update Errors: <span data-bind="text: err_all"></span></span> &nbsp; &nbsp;
+					<span data-bind="with: status.step2">Warnings: <span data-bind="text: warn_all"></span></span>
 				</i>
 			</td>
 		</tr>	
@@ -115,10 +116,10 @@ VIEW: STEP 3- INPUT -->
 			<tr><th colspan="4">Errors &amp; Warnings <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
 			<tr>
 				<td data-bind="with: status.step1">
-					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Deploy Database Errors (<span data-bind="text: query_errs"></span>)</a><br/>
+					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Deploy Errors (<span data-bind="text: query_errs"></span>)</a><br/>
 				</td>
 				<td data-bind="with: status.step2">
-					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Update Database Errors (<span data-bind="text: err_all"></span>)</a>
+					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Update Errors (<span data-bind="text: err_all"></span>)</a>
 				</td>
 				<td data-bind="with: status.step2">
 					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
@@ -129,7 +130,7 @@ VIEW: STEP 3- INPUT -->
 		
 		<div id="dup-step3-errs-create" class="dup-step3-err-msg">
 		
-			<b data-bind="with: status.step1">DEPLOY DATABASE ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
+			<b data-bind="with: status.step1">STEP 1: DEPLOY ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
 			<div class="info">Queries that error during the deploy process are logged to the <a href="installer-log.txt" target="_blank">install-log.txt</a> file.  
 			To view the error result look under the section titled 'DATABASE RESULTS'.  If errors are present they will be marked with '**ERROR**'. <br/><br/>  For errors titled
 			'Query size limit' you will need to manually post the values or update your mysql server with the max_allowed_packet setting to handle larger payloads.
@@ -142,7 +143,7 @@ VIEW: STEP 3- INPUT -->
 		<div id="dup-step3-errs-upd" class="dup-step3-err-msg">
 		
 			<!-- MYSQL QUERY ERRORS -->
-			<b data-bind="with: status.step2">UPDATE QUERY ERRORS (<span data-bind="text: errsql_sum"></span>) </b><br/>
+			<b data-bind="with: status.step2">STEP2: UPDATE ERRORS (<span data-bind="text: errsql_sum"></span>) </b><br/>
 			<div class="info">Errors that show here are the result of queries that could not be performed.</div>
 			<div class="content">
 				<div data-bind="foreach: status.step2.errsql"><div data-bind="text: $data"></div></div>

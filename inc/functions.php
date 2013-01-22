@@ -9,31 +9,36 @@ function duplicator_create_dbscript($destination) {
 	try {
 
 		global $wpdb;
-		
 		$handle  = fopen($destination,'w+');
 		$tables  = $wpdb->get_col('SHOW TABLES');
 		duplicator_log("log:fun__create_dbscript=>started");
-		foreach ($tables as $table) {
 		
-			//Generate Drop Statement
+		//BUILD CREATES:
+		//All creates must be created before inserts do to foreign key constraints
+		foreach ($tables as $table) {
 			//$sql_del = ($GLOBALS['duplicator_opts']['dbadd_drop']) ? "DROP TABLE IF EXISTS {$table};\n\n" : "";
 			//@fwrite($handle, $sql_del);
-			
-			//Generate Create Statement
+			$create  = $wpdb->get_row("SHOW CREATE TABLE `{$table}`", ARRAY_N);
+			@fwrite($handle, "{$create[1]};\n\n");
+		}		
+		
+		//BUILD INSERTS: 
+		//Create Insert in 100 row increments to better handle memory
+		foreach ($tables as $table) {
+					
 			$row_count  = $wpdb->get_var("SELECT Count(*) FROM `{$table}`");
 			duplicator_log("{$table} ({$row_count})");	
 		
-			$create  = $wpdb->get_row("SHOW CREATE TABLE `{$table}`", ARRAY_N);
-			$sql_crt = "{$create[1]};\n\n";
-			@fwrite($handle, $sql_crt);
-			
 			if ($row_count > 100) {
 				$row_count = ceil($row_count / 100);
 			} else if ($row_count > 0) {
 				$row_count = 1;  
+			} 
+			
+			if ($row_count >= 1) {
+				@fwrite($handle, "\n/* INSERT TABLE DATA: {$table} */\n");
 			}
 
-			//Build Table Query
 			for ($i = 0; $i < $row_count; $i++) {
 				$sql   = "";
 				$limit = $i * 100;
@@ -56,16 +61,13 @@ function duplicator_create_dbscript($destination) {
 					duplicator_fcgi_flush();
 				}
 			}
-
-			@fwrite($handle, "\n\n");
-
-		}		
-	
+		}	
+		
 		duplicator_log("log:fun__create_dbscript=>sql file written to {$destination}");
 		fclose($handle);
 		$wpdb->flush();
 		duplicator_log("log:fun__create_dbscript=>ended");
-	
+		
 	} catch(Exception $e) {
 		duplicator_log("log:fun__create_dbscript=>runtime error: " . $e);
 	}
