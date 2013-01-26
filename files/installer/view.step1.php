@@ -116,7 +116,7 @@
 		});
 		
 		$("#dup-step1-dialog-db").dialog({
-			height:400, width:500, modal: true,
+			height:400, width:550, modal: true,
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});
@@ -383,7 +383,7 @@ DIALOG: SERVER CHECKS  -->
 DIALOG: DB CONNECTION CHECK  -->
 <div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
 	<div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-		<div id="dbconn-test-msg" style="height:50px"></div>
+		<div id="dbconn-test-msg" style="min-height:50px"></div>
 		<br/><hr size="1" />
 		<div class="help">
 		<b>Common Connection Issues:</b><br/>
