@@ -13,6 +13,10 @@ function duplicator_create_dbscript($destination) {
 		$tables  = $wpdb->get_col('SHOW TABLES');
 		duplicator_log("log:fun__create_dbscript=>started");
 		
+		$sql_header  =  "/* DUPLICATOR SQL SCRIPT CREATED ON : " . @date("F j, Y, g:i a") . " */\n\n";
+		$sql_header .=  "SET FOREIGN_KEY_CHECKS = 0;\n\n";
+		@fwrite($handle, $sql_header);
+		
 		//BUILD CREATES:
 		//All creates must be created before inserts do to foreign key constraints
 		foreach ($tables as $table) {
@@ -62,6 +66,9 @@ function duplicator_create_dbscript($destination) {
 				}
 			}
 		}	
+		
+		$sql_footer =  "\nSET FOREIGN_KEY_CHECKS = 1;";
+		@fwrite($handle, $sql_footer);
 		
 		duplicator_log("log:fun__create_dbscript=>sql file written to {$destination}");
 		fclose($handle);
