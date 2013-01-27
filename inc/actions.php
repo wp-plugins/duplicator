@@ -314,13 +314,11 @@ function duplicator_settings(){
 		}
 	}
 
-
-	
 	$duplicator_opts = array(
 		'dbhost'		=>$_POST['dbhost'],
 		'dbname'		=>$_POST['dbname'],
 		'dbuser'		=>$_POST['dbuser'],
-		'url_new'			=>rtrim($_POST['url_new'], '/'),
+		'url_new'		=>rtrim($_POST['url_new'], '/'),
 		'email-me'		=>$_POST['email-me'],
 		'email_others'	=>$_POST['email_others'],
 		'skip_ext'		=>str_replace(",", ";", $skip_ext),

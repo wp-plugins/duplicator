@@ -118,8 +118,8 @@ jQuery.noConflict()(function($) {
 				'url_new'  		: $("input#url_new").val(),
 				'email-me'  	: email_me,
 				'email_others'  : email_others,
-				'skip_ext'  	: $("input#skip_ext").val(),
-				'dir_bypass'  	: $("textarea#dir_bypass").val(),
+				'skip_ext'  	: $("#skip_ext").val(),
+				'dir_bypass'  	: $("#dir_bypass").val(),
 				'log_level'  	: log_level,
 				'rm_snapshot'  	: rm_snapshot
 			},
