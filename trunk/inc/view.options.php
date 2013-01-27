@@ -47,7 +47,7 @@
 							<a href="javascript:void(0)" onclick="Duplicator.optionsAddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php _e("archive", 'wpduplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="jQuery('#skip_ext').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
 						</div>
-						<textarea type="text" name="skip_ext" id="skip_ext" style="height:60px;" value="<?php echo $GLOBALS['duplicator_opts']['skip_ext'] ?>" placeholder="ext1;ext2;ext3"></textarea>
+						<textarea type="text" name="skip_ext" id="skip_ext" style="height:60px;" placeholder="ext1;ext2;ext3"><?php echo $GLOBALS['duplicator_opts']['skip_ext'] ?></textarea>
 
 						<p class="help"><?php _e("All directory paths and extensions in this section will be excluded from the package file.", 'wpduplicator'); ?></p>
 					</fieldset><br/>

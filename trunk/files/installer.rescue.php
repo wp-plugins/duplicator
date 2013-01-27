@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
 $GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '50fe9d3c8dffa3621_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] 	= '50fe9d3c8dffa3621_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '51059e27846e65022_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] 	= '51059e27846e65022_package';
 $GLOBALS['FW_DBHOST'] 		= 'localhost';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
@@ -1910,7 +1910,7 @@ e||(e=b.text()||"",e=jQuery.template(s,"{{ko_with $item.koBindingContext}}"+e+"{
 		});
 		
 		$("#dup-step1-dialog-db").dialog({
-			height:400, width:500, modal: true,
+			height:400, width:550, modal: true,
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});
@@ -2177,7 +2177,7 @@ DIALOG: SERVER CHECKS  -->
 DIALOG: DB CONNECTION CHECK  -->
 <div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
 	<div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-		<div id="dbconn-test-msg" style="height:50px"></div>
+		<div id="dbconn-test-msg" style="min-height:50px"></div>
 		<br/><hr size="1" />
 		<div class="help">
 		<b>Common Connection Issues:</b><br/>
@@ -2309,7 +2309,7 @@ DIALOG: DB CONNECTION CHECK  -->
 		});
 		
 		$("#dup-step1-dialog-db").dialog({
-			height:400, width:500, modal: true,
+			height:400, width:550, modal: true,
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});
@@ -2576,7 +2576,7 @@ DIALOG: SERVER CHECKS  -->
 DIALOG: DB CONNECTION CHECK  -->
 <div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
 	<div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-		<div id="dbconn-test-msg" style="height:50px"></div>
+		<div id="dbconn-test-msg" style="min-height:50px"></div>
 		<br/><hr size="1" />
 		<div class="help">
 		<b>Common Connection Issues:</b><br/>

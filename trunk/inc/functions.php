@@ -13,7 +13,7 @@ function duplicator_create_dbscript($destination) {
 		$tables  = $wpdb->get_col('SHOW TABLES');
 		duplicator_log("log:fun__create_dbscript=>started");
 		
-		$sql_header  =  "/* DUPLICATOR SQL SCRIPT CREATED ON : " . @date("F j, Y, g:i a") . " */\n\n";
+		$sql_header  =  "/* DUPLICATOR MYSQL SCRIPT CREATED ON : " . @date("F j, Y, g:i a") . " */\n\n";
 		$sql_header .=  "SET FOREIGN_KEY_CHECKS = 0;\n\n";
 		@fwrite($handle, $sql_header);
 		
