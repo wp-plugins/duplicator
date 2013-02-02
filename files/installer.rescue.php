@@ -81,17 +81,17 @@ if (file_exists('dtoken.php')) {
 		Example: array(array('search'=> '/html/oldpath/images',  'replace'=> '/html/newpath/images'));		
 ================================================================================================= */
 
-$GLOBALS['FW_TABLEPREFIX'] 	= 'wpplug_';
-$GLOBALS['FW_URL_OLD'] 		= 'http://localhost/projects/wpplug_duplicator';
+$GLOBALS['FW_TABLEPREFIX'] 	= '';
+$GLOBALS['FW_URL_OLD'] 		= '';
 $GLOBALS['FW_URL_NEW'] 		= '';
-$GLOBALS['FW_PACKAGE_NAME'] = '51059e27846e65022_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] 	= '51059e27846e65022_package';
-$GLOBALS['FW_DBHOST'] 		= 'localhost';
+$GLOBALS['FW_PACKAGE_NAME'] = '';
+$GLOBALS['FW_SECURE_NAME'] 	= '';
+$GLOBALS['FW_DBHOST'] 		= '';
 $GLOBALS['FW_DBNAME'] 		= '';
 $GLOBALS['FW_DBUSER'] 		= '';
-$GLOBALS['FW_BLOGNAME'] 	= 'Duplicator Plugin&#039;s';
+$GLOBALS['FW_BLOGNAME'] 	= '';
 $GLOBALS['FW_RESCUE_FLAG'] 	= '(rescue file)';
-$GLOBALS['FW_WPROOT'] 		= 'E:/WEB/projects/wpplug_duplicator/';
+$GLOBALS['FW_WPROOT'] 		= '';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME']    = 5000;
