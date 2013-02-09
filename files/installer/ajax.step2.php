@@ -345,12 +345,9 @@ DupUtil::log("--------------------------------------");
 $msg = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ?  print_r($_POST['plugins'], true) : 'No plugins selected for activation';
 DupUtil::log($msg);
 
-
 //UPDATE SETTINGS
 $serial_plugin_list = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? @serialize($_POST['plugins']) : '';
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['blogname']}' WHERE option_name = 'blogname' ");	
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");	
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 
 DupUtil::log("--------------------------------------");
@@ -386,6 +383,10 @@ if ($_POST['postguid']) {
 	DupUtil::log("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
 
+/*FINAL UPDATES: Must happen after the global replace to prevent double pathing
+http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
+mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");	
+mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 
 //====================================================================================================
 //FINAL CLEANUP
