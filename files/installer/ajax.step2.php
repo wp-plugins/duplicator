@@ -10,39 +10,45 @@ class DupDBTextSwap {
 	 * LOG ERRORS
 	 */
 	static public function log_errors($report) {
-		if ( ! empty($report['errsql']) ) {
-			DupUtil::log("====================================");
-			DupUtil::log("DATA-REPLACE ERRORS (MySQL)");
-			foreach( $report['errsql'] as $error ) {DupUtil::log($error);}
-			DupUtil::log("");
+	    if (!empty($report['errsql'])) {
+		DupUtil::log("====================================");
+		DupUtil::log("DATA-REPLACE ERRORS (MySQL)");
+		foreach ($report['errsql'] as $error) {
+		    DupUtil::log($error);
 		}
-		if ( ! empty($report['errser']) ) {
-			DupUtil::log("====================================");
-			DupUtil::log("DATA-REPLACE ERRORS (Serialization):");
-			foreach( $report['errser'] as $error ) {DupUtil::log($error);}
-			DupUtil::log("");
-		}	
-		if ( ! empty($report['errkey']) ) {
-			DupUtil::log("====================================");
-			DupUtil::log("DATA-REPLACE ERRORS (Key):");
-			DupUtil::log('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
-			foreach( $report['errkey'] as $error ) {DupUtil::log($error);}
-			DupUtil::log("");
-		}		
+		DupUtil::log("");
+	    }
+	    if (!empty($report['errser'])) {
+		DupUtil::log("====================================");
+		DupUtil::log("DATA-REPLACE ERRORS (Serialization):");
+		foreach ($report['errser'] as $error) {
+		    DupUtil::log($error);
+		}
+		DupUtil::log("");
+	    }
+	    if (!empty($report['errkey'])) {
+		DupUtil::log("====================================");
+		DupUtil::log("DATA-REPLACE ERRORS (Key):");
+		DupUtil::log('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
+		foreach ($report['errkey'] as $error) {
+		    DupUtil::log($error);
+		}
+		DupUtil::log("");
+	    }
 	}
 	
 	/**
 	 * LOG STATS
 	 */
 	static public function log_stats($report) {
-		if ( ! empty( $report ) && is_array( $report ) ) {
-			$stats  = sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
-			$stats .= sprintf("SEARCH2:\t'%s' \nREPLACE2:\t'%s' \n", $_POST['path_old'], $_POST['path_new']);
-			$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", 	$report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
-			$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n",	$report['updt_tables'], $report['updt_rows'], $report['updt_cells']);		
-			$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec",  $report['err_all'], $report['time'] );			
-			DupUtil::log($stats);
-		}
+	    if (!empty($report) && is_array($report)) {
+		$stats = sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
+		$stats .= sprintf("SEARCH2:\t'%s' \nREPLACE2:\t'%s' \n", $_POST['path_old'], $_POST['path_new']);
+		$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
+		$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
+		$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
+		DupUtil::log($stats);
+	    }
 	}
 	
 	/**
