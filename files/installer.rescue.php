@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '512ad360203e05477_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '512ad360203e05477_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '512b83a74b3f96534_20130225_duplicatorplugins_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '512b83a74b3f96534_20130225_duplicatorplugins';
 $GLOBALS['FW_DBHOST'] = 'localhost';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';
@@ -298,7 +298,7 @@ class DupUtil {
     static public function get_active_plugins($dbh) {
         $query = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name = 'active_plugins' ");
         if ($query) {
-            $row = mysqli_fetch_array($query);
+            $row = @mysqli_fetch_array($query);
             $all_plugins = unserialize($row[0]);
             if (is_array($all_plugins)) {
                 return $all_plugins;
@@ -315,7 +315,7 @@ class DupUtil {
     static public function get_database_tables($dbh) {
         $query = @mysqli_query($dbh, 'SHOW TABLES');
         if ($query) {
-            while ($table = mysqli_fetch_array($query)) {
+            while ($table = @mysqli_fetch_array($query)) {
                 $all_tables[] = $table[0];
             }
             if (is_array($all_tables)) {
@@ -345,7 +345,7 @@ class DupUtil {
      */
     static public function mysql_variable_value($dbh, $variable) {
         $result = @mysqli_query($dbh, "SHOW VARIABLES LIKE '{$variable}'");
-        $row = mysqli_fetch_array($result);
+        $row = @mysqli_fetch_array($result);
         @mysqli_free_result($result);
         return isset($row[1]) ? $row[1] : null;
     }

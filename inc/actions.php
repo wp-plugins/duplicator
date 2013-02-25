@@ -92,7 +92,7 @@ function duplicator_create() {
             'settings' => "{$serialized_settings}")
         );
         if ($wpdb->insert_id) {
-            duplicator_log("RECORDED ARCHIEVE ID: " . $wpdb->insert_id);
+            duplicator_log("RECORDED ARCHIVE ID: " . $wpdb->insert_id);
         } else {
             duplicator_log("WARNING: UNABLE TO RECORD TO DATABASE");
         }

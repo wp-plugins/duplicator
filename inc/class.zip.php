@@ -77,7 +77,7 @@ class Duplicator_Zip {
             $folderPath = duplicator_safe_path($directory);
 
             //EXCLUDE: Snapshot directory
-            if (strstr($folderPath, DUPLICATOR_SSDIR_PATH)) {
+            if (strstr($folderPath, DUPLICATOR_SSDIR_PATH) || empty($folderPath)) {
                 return;
             }
 
