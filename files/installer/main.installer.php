@@ -228,19 +228,22 @@ if (isset($_POST['action_ajax'])) {
             <!-- =========================================
             FORM DATA: Data Steps -->
             <div id="content-inner">
-                <?php
-                switch ($_POST['action_step']) {
-                    case "0" :
-                        ?> @@VIEW.STEP1.PHP@@ <?php break;
-            case "1" :
-                        ?> @@VIEW.STEP1.PHP@@ <?php break;
-            case "2" :
-                        ?> @@VIEW.STEP2.PHP@@ <?php break;
-            case "3" :
-                        ?> @@VIEW.STEP3.PHP@@ <?php
-                break;
-        }
-                ?>
+		<?php
+		switch ($_POST['action_step']) {
+		    case "0" :
+			?> @@VIEW.STEP1.PHP@@ <?php
+		    break;
+		    case "1" :
+			?> @@VIEW.STEP1.PHP@@ <?php
+		    break;
+		    case "2" :
+			?> @@VIEW.STEP2.PHP@@ <?php
+		    break;
+		    case "3" :
+			?> @@VIEW.STEP3.PHP@@ <?php
+		    break;
+		}
+		?>
             </div>
         </div><br/>
 

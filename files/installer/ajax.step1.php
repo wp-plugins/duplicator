@@ -40,32 +40,35 @@ $JSON = array();
 $JSON['pass'] = 0;
 
 
+
 //===============================
 //DATABASE TEST CONNECTION
 //===============================
 if (isset($_GET['dbtest'])) {
 
-    if (!is_null($_POST['dbname'])) {
-        $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
-    } else {
-        $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
-    }
+	$db_port = parse_url($_POST['dbhost'], PHP_URL_PORT);
 
-    if (!$dbh) {
-        die(MSG_FAIL_DBCONNECT . mysqli_connect_error());
-    }
+	if (!is_null($_POST['dbname'])) {
+		$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $db_port);
+	} else {
+		$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $db_port);
+	}
 
-    if (!$_POST['dbmake']) {
-        mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']));
-    }
+	if (!$dbh) {
+		die(MSG_FAIL_DBCONNECT . mysqli_connect_error());
+	}
 
-    if (!$_POST['dbclean']) {
-        $tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
-        if ($tblcount > 0) {
-            die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount));
-        }
-    }
-    die(MSG_OK_DBPASS);
+	if (!$_POST['dbmake']) {
+		mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']));
+	}
+
+	if (!$_POST['dbclean']) {
+		$tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
+		if ($tblcount > 0) {
+			die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount));
+		}
+	}
+	die(MSG_OK_DBPASS);
 }
 
 //===============================
@@ -82,26 +85,26 @@ function_exists('mysqli_connect') or die(MSG_FAIL_MYSQLI_SUPPORT);
 $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
 ($dbh) or die(MSG_FAIL_DBCONNECT . mysqli_connect_error() . $back_link);
 if (!$_POST['dbmake']) {
-    mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']) . $back_link);
+	mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']) . $back_link);
 }
 //MSG_ERR_DBCLEANCHECK
 if (!$_POST['dbclean']) {
-    $tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
-    if ($tblcount > 0) {
-        die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount) . $back_link);
-    }
+	$tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
+	if ($tblcount > 0) {
+		die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount) . $back_link);
+	}
 }
 
 //MSG_ERR_ZIPMANUAL
 if ($_POST['zip_manual']) {
-    if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
-        die(MSG_ERR_ZIPMANUAL . $back_link);
-    }
+	if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
+		die(MSG_ERR_ZIPMANUAL . $back_link);
+	}
 } else {
-    //MSG_ERR_CONFIG_FOUND
-    (!file_exists('wp-config.php')) or die(MSG_ERR_CONFIG_FOUND . $back_link);
-    //MSG_ERR_ZIPNOTFOUND
-    (is_readable("{$package_path}")) or die(MSG_ERR_ZIPNOTFOUND . $back_link);
+	//MSG_ERR_CONFIG_FOUND
+	(!file_exists('wp-config.php')) or die(MSG_ERR_CONFIG_FOUND . $back_link);
+	//MSG_ERR_ZIPNOTFOUND
+	(is_readable("{$package_path}")) or die(MSG_ERR_ZIPNOTFOUND . $back_link);
 }
 
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
@@ -137,23 +140,23 @@ DupUtil::log("SIZE:\t\t" . DupUtil::readable_bytesize(@filesize($_POST['package_
 $zip_start = DupUtil::get_microtime();
 
 if ($_POST['zip_manual']) {
-    DupUtil::log("\n-package extraction is in manual mode-\n");
+	DupUtil::log("\n-package extraction is in manual mode-\n");
 } else {
-    if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
-        DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
-    }
+	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
+		DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
+	}
 
-    $target = $root_path;
-    $zip = new ZipArchive();
-    if ($zip->open($_POST['package_name']) === TRUE) {
-        @$zip->extractTo($target);
-        DupUtil::log("INFORMATION:\t" . print_r($zip, true));
-        $close_response = $zip->close();
-        DupUtil::log("ZIP CLOSE: " . var_export($close_response, true));
-    } else {
-        die(MSG_ERR_ZIPEXTRACTION . $back_link);
-    }
-    $zip = null;
+	$target = $root_path;
+	$zip = new ZipArchive();
+	if ($zip->open($_POST['package_name']) === TRUE) {
+		@$zip->extractTo($target);
+		DupUtil::log("INFORMATION:\t" . print_r($zip, true));
+		$close_response = $zip->close();
+		DupUtil::log("ZIP CLOSE: " . var_export($close_response, true));
+	} else {
+		die(MSG_ERR_ZIPEXTRACTION . $back_link);
+	}
+	$zip = null;
 }
 
 //===============================
@@ -161,18 +164,18 @@ if ($_POST['zip_manual']) {
 //===============================
 //WP-CONFIG
 $patterns = array("/'DB_NAME',\s*'.*?'/",
-    "/'DB_USER',\s*'.*?'/",
-    "/'DB_PASSWORD',\s*'.*?'/",
-    "/'DB_HOST',\s*'.*?'/");
+	"/'DB_USER',\s*'.*?'/",
+	"/'DB_PASSWORD',\s*'.*?'/",
+	"/'DB_HOST',\s*'.*?'/");
 
 $replace = array("'DB_NAME', " . '\'' . $_POST['dbname'] . '\'',
-    "'DB_USER', " . '\'' . $_POST['dbuser'] . '\'',
-    "'DB_PASSWORD', " . '\'' . $_POST['dbpass'] . '\'',
-    "'DB_HOST', " . '\'' . $_POST['dbhost'] . '\'');
+	"'DB_USER', " . '\'' . $_POST['dbuser'] . '\'',
+	"'DB_PASSWORD', " . '\'' . $_POST['dbpass'] . '\'',
+	"'DB_HOST', " . '\'' . $_POST['dbhost'] . '\'');
 
 if ($_POST['no_ssl']) {
-    array_push($patterns, "/'FORCE_SSL_ADMIN',\s*true/");
-    array_push($replace, "'FORCE_SSL_ADMIN', false");
+	array_push($patterns, "/'FORCE_SSL_ADMIN',\s*true/");
+	array_push($replace, "'FORCE_SSL_ADMIN', false");
 }
 
 $wpconfig = @file_get_contents('wp-config.php', true);
@@ -185,17 +188,17 @@ $wpconfig = null;
 @chmod("{$root_path}/database.sql", 0777);
 $sql_file = @file_get_contents('database.sql', true);
 if ($sql_file == false || strlen($sql_file) < 10) {
-    $sql_file = file_get_contents('installer-data.sql', true);
-    if ($sql_file == false || strlen($sql_file) < 10) {
-        DupUtil::log("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$root_path}'\n");
-    }
+	$sql_file = file_get_contents('installer-data.sql', true);
+	if ($sql_file == false || strlen($sql_file) < 10) {
+		DupUtil::log("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$root_path}'\n");
+	}
 }
 
 //Complex Subject See: http://webcollab.sourceforge.net/unicode.html
 //Removes invalid space characters
 if ($_POST['dbnbsp']) {
-    DupUtil::log("ran fix non-breaking space characters\n");
-    $sql_file = preg_replace('/\xC2\xA0/', ' ', $sql_file);
+	DupUtil::log("ran fix non-breaking space characters\n");
+	$sql_file = preg_replace('/\xC2\xA0/', ' ', $sql_file);
 }
 
 //Write new contents to install-data.sql
@@ -208,7 +211,7 @@ $sql_result_file_path = "{$root_path}/{$GLOBALS['SQL_FILE_NAME']}";
 $sql_file = null;
 
 if (!is_readable($sql_result_file_path) || filesize($sql_result_file_path) == 0) {
-    DupUtil::log("ERROR: Unable to create new sql file {$GLOBALS['SQL_FILE_NAME']}.\nValidate the permissions and/or group-owner rights on directory '{$root_path}' and file '{$GLOBALS['SQL_FILE_NAME']}'\n");
+	DupUtil::log("ERROR: Unable to create new sql file {$GLOBALS['SQL_FILE_NAME']}.\nValidate the permissions and/or group-owner rights on directory '{$root_path}' and file '{$GLOBALS['SQL_FILE_NAME']}'\n");
 }
 
 DupUtil::log("UPDATED SCRIPTS:");
@@ -247,30 +250,30 @@ DupUtil::log("MAXPACK:\t{$dbvar_maxpacks}");
 
 //CREATE DB
 if ($_POST['dbmake']) {
-    mysqli_query($dbh, "CREATE DATABASE IF NOT EXISTS `{$_POST['dbname']}`");
-    mysqli_select_db($dbh, $_POST['dbname'])
-            or die(sprintf(MSG_FAIL_DBCONNECT_CREATE, $_POST['dbname']) . $back_link);
+	mysqli_query($dbh, "CREATE DATABASE IF NOT EXISTS `{$_POST['dbname']}`");
+	mysqli_select_db($dbh, $_POST['dbname'])
+			or die(sprintf(MSG_FAIL_DBCONNECT_CREATE, $_POST['dbname']) . $back_link);
 }
 
 //DROP DB TABLES
 $drop_log = "Database already empty. Ready for install.";
 if ($_POST['dbclean']) {
-    $sql = "SHOW TABLES FROM `{$_POST['dbname']}`";
-    $found_tables = null;
-    if ($result = mysqli_query($dbh, $sql)) {
-        while ($row = mysqli_fetch_row($result)) {
-            $found_tables[] = $row[0];
-        }
-        if (count($found_tables) > 0) {
-            foreach ($found_tables as $table_name) {
-                $sql = "DROP TABLE `{$_POST['dbname']}`.{$table_name}";
-                if (!$result = mysqli_query($dbh, $sql)) {
-                    die(sprintf(MSG_FAIL_DBTRYCLEAN, $_POST['dbname']) . $back_link);
-                }
-            }
-        }
-        $drop_log = 'removed (' . count($found_tables) . ') tables';
-    }
+	$sql = "SHOW TABLES FROM `{$_POST['dbname']}`";
+	$found_tables = null;
+	if ($result = mysqli_query($dbh, $sql)) {
+		while ($row = mysqli_fetch_row($result)) {
+			$found_tables[] = $row[0];
+		}
+		if (count($found_tables) > 0) {
+			foreach ($found_tables as $table_name) {
+				$sql = "DROP TABLE `{$_POST['dbname']}`.{$table_name}";
+				if (!$result = mysqli_query($dbh, $sql)) {
+					die(sprintf(MSG_FAIL_DBTRYCLEAN, $_POST['dbname']) . $back_link);
+				}
+			}
+		}
+		$drop_log = 'removed (' . count($found_tables) . ') tables';
+	}
 }
 
 //WRITE DATA
@@ -286,33 +289,33 @@ $counter = 0;
 @mysqli_autocommit($dbh, false);
 while ($counter < $sql_result_file_length) {
 
-    $query_strlen = strlen(trim($sql_result_file_data[$counter]));
-    if ($dbvar_maxpacks < $query_strlen) {
-        DupUtil::log("**ERROR** Query size limit [length={$query_strlen}] [sql=" . substr($sql_result_file_data[$counter], 75) . "...]");
-        $dbquery_errs++;
-    } elseif ($query_strlen > 0) {
-        @mysqli_free_result(@mysqli_query($dbh, ($sql_result_file_data[$counter])));
-        $err = mysqli_error($dbh);
-        //Check to make sure the connection is alive
-        if (!empty($err)) {
+	$query_strlen = strlen(trim($sql_result_file_data[$counter]));
+	if ($dbvar_maxpacks < $query_strlen) {
+		DupUtil::log("**ERROR** Query size limit [length={$query_strlen}] [sql=" . substr($sql_result_file_data[$counter], 75) . "...]");
+		$dbquery_errs++;
+	} elseif ($query_strlen > 0) {
+		@mysqli_free_result(@mysqli_query($dbh, ($sql_result_file_data[$counter])));
+		$err = mysqli_error($dbh);
+		//Check to make sure the connection is alive
+		if (!empty($err)) {
 
-            if (!mysqli_ping($dbh)) {
-                mysqli_close($dbh);
-                $dbh = mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
-            }
-            DupUtil::log("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
-            $dbquery_errs++;
+			if (!mysqli_ping($dbh)) {
+				mysqli_close($dbh);
+				$dbh = mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
+			}
+			DupUtil::log("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
+			$dbquery_errs++;
 
-            //Buffer data to browser to keep connection open				
-        } else {
-            if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
-                $fcgi_buffer_count = 0;
-                DupUtil::fcgi_flush();
-            }
-            $dbquery_rows++;
-        }
-    }
-    $counter++;
+			//Buffer data to browser to keep connection open				
+		} else {
+			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
+				$fcgi_buffer_count = 0;
+				DupUtil::fcgi_flush();
+			}
+			$dbquery_rows++;
+		}
+	}
+	$counter++;
 }
 @mysqli_commit($dbh);
 @mysqli_autocommit($dbh, true);
@@ -323,16 +326,16 @@ DupUtil::log("QUERIES RAN:\t{$dbquery_rows}\n");
 
 $dbtable_count = 0;
 if ($result = mysqli_query($dbh, "SHOW TABLES")) {
-    while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
-        $table_rows = DupUtil::table_row_count($dbh, $row[0]);
-        DupUtil::log("{$row[0]}: ({$table_rows})");
-        $dbtable_count++;
-    }
-    @mysqli_free_result($result);
+	while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
+		$table_rows = DupUtil::table_row_count($dbh, $row[0]);
+		DupUtil::log("{$row[0]}: ({$table_rows})");
+		$dbtable_count++;
+	}
+	@mysqli_free_result($result);
 }
 
 if ($dbtable_count == 0) {
-    DupUtil::log("NOTICE: You may have to manually run the installer-data.sql to validate data input. Also check to make sure your installer file is correct and the
+	DupUtil::log("NOTICE: You may have to manually run the installer-data.sql to validate data input. Also check to make sure your installer file is correct and the
 		table prefix '{$GLOBALS['FW_TABLEPREFIX']}' is correct for this particular version of WordPress. \n");
 }
 

@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '512b83a74b3f96534_20130225_duplicatorplugins_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '512b83a74b3f96534_20130225_duplicatorplugins';
+$GLOBALS['FW_PACKAGE_NAME'] = '512cd5a988f652236_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '512cd5a988f652236_package';
 $GLOBALS['FW_DBHOST'] = 'localhost';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';
@@ -460,32 +460,35 @@ $JSON = array();
 $JSON['pass'] = 0;
 
 
+
 //===============================
 //DATABASE TEST CONNECTION
 //===============================
 if (isset($_GET['dbtest'])) {
 
-    if (!is_null($_POST['dbname'])) {
-        $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
-    } else {
-        $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
-    }
+	$db_port = parse_url($_POST['dbhost'], PHP_URL_PORT);
 
-    if (!$dbh) {
-        die(MSG_FAIL_DBCONNECT . mysqli_connect_error());
-    }
+	if (!is_null($_POST['dbname'])) {
+		$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $db_port);
+	} else {
+		$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $db_port);
+	}
 
-    if (!$_POST['dbmake']) {
-        mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']));
-    }
+	if (!$dbh) {
+		die(MSG_FAIL_DBCONNECT . mysqli_connect_error());
+	}
 
-    if (!$_POST['dbclean']) {
-        $tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
-        if ($tblcount > 0) {
-            die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount));
-        }
-    }
-    die(MSG_OK_DBPASS);
+	if (!$_POST['dbmake']) {
+		mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']));
+	}
+
+	if (!$_POST['dbclean']) {
+		$tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
+		if ($tblcount > 0) {
+			die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount));
+		}
+	}
+	die(MSG_OK_DBPASS);
 }
 
 //===============================
@@ -502,26 +505,26 @@ function_exists('mysqli_connect') or die(MSG_FAIL_MYSQLI_SUPPORT);
 $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
 ($dbh) or die(MSG_FAIL_DBCONNECT . mysqli_connect_error() . $back_link);
 if (!$_POST['dbmake']) {
-    mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']) . $back_link);
+	mysqli_select_db($dbh, $_POST['dbname']) or die(sprintf(MSG_ERR_DBCREATE, $_POST['dbname']) . $back_link);
 }
 //MSG_ERR_DBCLEANCHECK
 if (!$_POST['dbclean']) {
-    $tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
-    if ($tblcount > 0) {
-        die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount) . $back_link);
-    }
+	$tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
+	if ($tblcount > 0) {
+		die(sprintf(MSG_ERR_DBCLEANCHECK, $_POST['dbname'], $tblcount) . $back_link);
+	}
 }
 
 //MSG_ERR_ZIPMANUAL
 if ($_POST['zip_manual']) {
-    if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
-        die(MSG_ERR_ZIPMANUAL . $back_link);
-    }
+	if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
+		die(MSG_ERR_ZIPMANUAL . $back_link);
+	}
 } else {
-    //MSG_ERR_CONFIG_FOUND
-    (!file_exists('wp-config.php')) or die(MSG_ERR_CONFIG_FOUND . $back_link);
-    //MSG_ERR_ZIPNOTFOUND
-    (is_readable("{$package_path}")) or die(MSG_ERR_ZIPNOTFOUND . $back_link);
+	//MSG_ERR_CONFIG_FOUND
+	(!file_exists('wp-config.php')) or die(MSG_ERR_CONFIG_FOUND . $back_link);
+	//MSG_ERR_ZIPNOTFOUND
+	(is_readable("{$package_path}")) or die(MSG_ERR_ZIPNOTFOUND . $back_link);
 }
 
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
@@ -557,23 +560,23 @@ DupUtil::log("SIZE:\t\t" . DupUtil::readable_bytesize(@filesize($_POST['package_
 $zip_start = DupUtil::get_microtime();
 
 if ($_POST['zip_manual']) {
-    DupUtil::log("\n-package extraction is in manual mode-\n");
+	DupUtil::log("\n-package extraction is in manual mode-\n");
 } else {
-    if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
-        DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
-    }
+	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
+		DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
+	}
 
-    $target = $root_path;
-    $zip = new ZipArchive();
-    if ($zip->open($_POST['package_name']) === TRUE) {
-        @$zip->extractTo($target);
-        DupUtil::log("INFORMATION:\t" . print_r($zip, true));
-        $close_response = $zip->close();
-        DupUtil::log("ZIP CLOSE: " . var_export($close_response, true));
-    } else {
-        die(MSG_ERR_ZIPEXTRACTION . $back_link);
-    }
-    $zip = null;
+	$target = $root_path;
+	$zip = new ZipArchive();
+	if ($zip->open($_POST['package_name']) === TRUE) {
+		@$zip->extractTo($target);
+		DupUtil::log("INFORMATION:\t" . print_r($zip, true));
+		$close_response = $zip->close();
+		DupUtil::log("ZIP CLOSE: " . var_export($close_response, true));
+	} else {
+		die(MSG_ERR_ZIPEXTRACTION . $back_link);
+	}
+	$zip = null;
 }
 
 //===============================
@@ -581,18 +584,18 @@ if ($_POST['zip_manual']) {
 //===============================
 //WP-CONFIG
 $patterns = array("/'DB_NAME',\s*'.*?'/",
-    "/'DB_USER',\s*'.*?'/",
-    "/'DB_PASSWORD',\s*'.*?'/",
-    "/'DB_HOST',\s*'.*?'/");
+	"/'DB_USER',\s*'.*?'/",
+	"/'DB_PASSWORD',\s*'.*?'/",
+	"/'DB_HOST',\s*'.*?'/");
 
 $replace = array("'DB_NAME', " . '\'' . $_POST['dbname'] . '\'',
-    "'DB_USER', " . '\'' . $_POST['dbuser'] . '\'',
-    "'DB_PASSWORD', " . '\'' . $_POST['dbpass'] . '\'',
-    "'DB_HOST', " . '\'' . $_POST['dbhost'] . '\'');
+	"'DB_USER', " . '\'' . $_POST['dbuser'] . '\'',
+	"'DB_PASSWORD', " . '\'' . $_POST['dbpass'] . '\'',
+	"'DB_HOST', " . '\'' . $_POST['dbhost'] . '\'');
 
 if ($_POST['no_ssl']) {
-    array_push($patterns, "/'FORCE_SSL_ADMIN',\s*true/");
-    array_push($replace, "'FORCE_SSL_ADMIN', false");
+	array_push($patterns, "/'FORCE_SSL_ADMIN',\s*true/");
+	array_push($replace, "'FORCE_SSL_ADMIN', false");
 }
 
 $wpconfig = @file_get_contents('wp-config.php', true);
@@ -605,17 +608,17 @@ $wpconfig = null;
 @chmod("{$root_path}/database.sql", 0777);
 $sql_file = @file_get_contents('database.sql', true);
 if ($sql_file == false || strlen($sql_file) < 10) {
-    $sql_file = file_get_contents('installer-data.sql', true);
-    if ($sql_file == false || strlen($sql_file) < 10) {
-        DupUtil::log("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$root_path}'\n");
-    }
+	$sql_file = file_get_contents('installer-data.sql', true);
+	if ($sql_file == false || strlen($sql_file) < 10) {
+		DupUtil::log("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$root_path}'\n");
+	}
 }
 
 //Complex Subject See: http://webcollab.sourceforge.net/unicode.html
 //Removes invalid space characters
 if ($_POST['dbnbsp']) {
-    DupUtil::log("ran fix non-breaking space characters\n");
-    $sql_file = preg_replace('/\xC2\xA0/', ' ', $sql_file);
+	DupUtil::log("ran fix non-breaking space characters\n");
+	$sql_file = preg_replace('/\xC2\xA0/', ' ', $sql_file);
 }
 
 //Write new contents to install-data.sql
@@ -628,7 +631,7 @@ $sql_result_file_path = "{$root_path}/{$GLOBALS['SQL_FILE_NAME']}";
 $sql_file = null;
 
 if (!is_readable($sql_result_file_path) || filesize($sql_result_file_path) == 0) {
-    DupUtil::log("ERROR: Unable to create new sql file {$GLOBALS['SQL_FILE_NAME']}.\nValidate the permissions and/or group-owner rights on directory '{$root_path}' and file '{$GLOBALS['SQL_FILE_NAME']}'\n");
+	DupUtil::log("ERROR: Unable to create new sql file {$GLOBALS['SQL_FILE_NAME']}.\nValidate the permissions and/or group-owner rights on directory '{$root_path}' and file '{$GLOBALS['SQL_FILE_NAME']}'\n");
 }
 
 DupUtil::log("UPDATED SCRIPTS:");
@@ -667,30 +670,30 @@ DupUtil::log("MAXPACK:\t{$dbvar_maxpacks}");
 
 //CREATE DB
 if ($_POST['dbmake']) {
-    mysqli_query($dbh, "CREATE DATABASE IF NOT EXISTS `{$_POST['dbname']}`");
-    mysqli_select_db($dbh, $_POST['dbname'])
-            or die(sprintf(MSG_FAIL_DBCONNECT_CREATE, $_POST['dbname']) . $back_link);
+	mysqli_query($dbh, "CREATE DATABASE IF NOT EXISTS `{$_POST['dbname']}`");
+	mysqli_select_db($dbh, $_POST['dbname'])
+			or die(sprintf(MSG_FAIL_DBCONNECT_CREATE, $_POST['dbname']) . $back_link);
 }
 
 //DROP DB TABLES
 $drop_log = "Database already empty. Ready for install.";
 if ($_POST['dbclean']) {
-    $sql = "SHOW TABLES FROM `{$_POST['dbname']}`";
-    $found_tables = null;
-    if ($result = mysqli_query($dbh, $sql)) {
-        while ($row = mysqli_fetch_row($result)) {
-            $found_tables[] = $row[0];
-        }
-        if (count($found_tables) > 0) {
-            foreach ($found_tables as $table_name) {
-                $sql = "DROP TABLE `{$_POST['dbname']}`.{$table_name}";
-                if (!$result = mysqli_query($dbh, $sql)) {
-                    die(sprintf(MSG_FAIL_DBTRYCLEAN, $_POST['dbname']) . $back_link);
-                }
-            }
-        }
-        $drop_log = 'removed (' . count($found_tables) . ') tables';
-    }
+	$sql = "SHOW TABLES FROM `{$_POST['dbname']}`";
+	$found_tables = null;
+	if ($result = mysqli_query($dbh, $sql)) {
+		while ($row = mysqli_fetch_row($result)) {
+			$found_tables[] = $row[0];
+		}
+		if (count($found_tables) > 0) {
+			foreach ($found_tables as $table_name) {
+				$sql = "DROP TABLE `{$_POST['dbname']}`.{$table_name}";
+				if (!$result = mysqli_query($dbh, $sql)) {
+					die(sprintf(MSG_FAIL_DBTRYCLEAN, $_POST['dbname']) . $back_link);
+				}
+			}
+		}
+		$drop_log = 'removed (' . count($found_tables) . ') tables';
+	}
 }
 
 //WRITE DATA
@@ -706,33 +709,33 @@ $counter = 0;
 @mysqli_autocommit($dbh, false);
 while ($counter < $sql_result_file_length) {
 
-    $query_strlen = strlen(trim($sql_result_file_data[$counter]));
-    if ($dbvar_maxpacks < $query_strlen) {
-        DupUtil::log("**ERROR** Query size limit [length={$query_strlen}] [sql=" . substr($sql_result_file_data[$counter], 75) . "...]");
-        $dbquery_errs++;
-    } elseif ($query_strlen > 0) {
-        @mysqli_free_result(@mysqli_query($dbh, ($sql_result_file_data[$counter])));
-        $err = mysqli_error($dbh);
-        //Check to make sure the connection is alive
-        if (!empty($err)) {
+	$query_strlen = strlen(trim($sql_result_file_data[$counter]));
+	if ($dbvar_maxpacks < $query_strlen) {
+		DupUtil::log("**ERROR** Query size limit [length={$query_strlen}] [sql=" . substr($sql_result_file_data[$counter], 75) . "...]");
+		$dbquery_errs++;
+	} elseif ($query_strlen > 0) {
+		@mysqli_free_result(@mysqli_query($dbh, ($sql_result_file_data[$counter])));
+		$err = mysqli_error($dbh);
+		//Check to make sure the connection is alive
+		if (!empty($err)) {
 
-            if (!mysqli_ping($dbh)) {
-                mysqli_close($dbh);
-                $dbh = mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
-            }
-            DupUtil::log("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
-            $dbquery_errs++;
+			if (!mysqli_ping($dbh)) {
+				mysqli_close($dbh);
+				$dbh = mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
+			}
+			DupUtil::log("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
+			$dbquery_errs++;
 
-            //Buffer data to browser to keep connection open				
-        } else {
-            if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
-                $fcgi_buffer_count = 0;
-                DupUtil::fcgi_flush();
-            }
-            $dbquery_rows++;
-        }
-    }
-    $counter++;
+			//Buffer data to browser to keep connection open				
+		} else {
+			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
+				$fcgi_buffer_count = 0;
+				DupUtil::fcgi_flush();
+			}
+			$dbquery_rows++;
+		}
+	}
+	$counter++;
 }
 @mysqli_commit($dbh);
 @mysqli_autocommit($dbh, true);
@@ -743,16 +746,16 @@ DupUtil::log("QUERIES RAN:\t{$dbquery_rows}\n");
 
 $dbtable_count = 0;
 if ($result = mysqli_query($dbh, "SHOW TABLES")) {
-    while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
-        $table_rows = DupUtil::table_row_count($dbh, $row[0]);
-        DupUtil::log("{$row[0]}: ({$table_rows})");
-        $dbtable_count++;
-    }
-    @mysqli_free_result($result);
+	while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
+		$table_rows = DupUtil::table_row_count($dbh, $row[0]);
+		DupUtil::log("{$row[0]}: ({$table_rows})");
+		$dbtable_count++;
+	}
+	@mysqli_free_result($result);
 }
 
 if ($dbtable_count == 0) {
-    DupUtil::log("NOTICE: You may have to manually run the installer-data.sql to validate data input. Also check to make sure your installer file is correct and the
+	DupUtil::log("NOTICE: You may have to manually run the installer-data.sql to validate data input. Also check to make sure your installer file is correct and the
 		table prefix '{$GLOBALS['FW_TABLEPREFIX']}' is correct for this particular version of WordPress. \n");
 }
 
@@ -786,7 +789,7 @@ die('');
         case "2" :
             ?> <?php
 
-/** ******************************************************
+/** * *****************************************************
  * CLASS::DUPDBTEXTSWAP
  * Walks every table in db that then walks every row and column replacing searches with replaces
  * large tables are split into 50k row blocks to save on memory. */
@@ -796,47 +799,47 @@ class DupDBTextSwap {
 	 * LOG ERRORS
 	 */
 	static public function log_errors($report) {
-	    if (!empty($report['errsql'])) {
-		DupUtil::log("====================================");
-		DupUtil::log("DATA-REPLACE ERRORS (MySQL)");
-		foreach ($report['errsql'] as $error) {
-		    DupUtil::log($error);
+		if (!empty($report['errsql'])) {
+			DupUtil::log("====================================");
+			DupUtil::log("DATA-REPLACE ERRORS (MySQL)");
+			foreach ($report['errsql'] as $error) {
+				DupUtil::log($error);
+			}
+			DupUtil::log("");
 		}
-		DupUtil::log("");
-	    }
-	    if (!empty($report['errser'])) {
-		DupUtil::log("====================================");
-		DupUtil::log("DATA-REPLACE ERRORS (Serialization):");
-		foreach ($report['errser'] as $error) {
-		    DupUtil::log($error);
+		if (!empty($report['errser'])) {
+			DupUtil::log("====================================");
+			DupUtil::log("DATA-REPLACE ERRORS (Serialization):");
+			foreach ($report['errser'] as $error) {
+				DupUtil::log($error);
+			}
+			DupUtil::log("");
 		}
-		DupUtil::log("");
-	    }
-	    if (!empty($report['errkey'])) {
-		DupUtil::log("====================================");
-		DupUtil::log("DATA-REPLACE ERRORS (Key):");
-		DupUtil::log('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
-		foreach ($report['errkey'] as $error) {
-		    DupUtil::log($error);
+		if (!empty($report['errkey'])) {
+			DupUtil::log("====================================");
+			DupUtil::log("DATA-REPLACE ERRORS (Key):");
+			DupUtil::log('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
+			foreach ($report['errkey'] as $error) {
+				DupUtil::log($error);
+			}
+			DupUtil::log("");
 		}
-		DupUtil::log("");
-	    }
 	}
-	
+
 	/**
 	 * LOG STATS
 	 */
 	static public function log_stats($report) {
-	    if (!empty($report) && is_array($report)) {
-		$stats = sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
-		$stats .= sprintf("SEARCH2:\t'%s' \nREPLACE2:\t'%s' \n", $_POST['path_old'], $_POST['path_new']);
-		$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
-		$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
-		$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
-		DupUtil::log($stats);
-	    }
+		if (!empty($report) && is_array($report)) {
+			$stats = sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
+			$stats .= sprintf("SEARCH2:\t'%s' \nREPLACE2:\t'%s' \n", $_POST['path_old'], $_POST['path_new']);
+			$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
+			$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
+			$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
+			DupUtil::log($stats);
+		}
 	}
-	
+
 	/**
 	 * LOAD
 	 * Begins the processing for replace logic
@@ -845,34 +848,34 @@ class DupDBTextSwap {
 	 * @param array  $tables     The tables we want to look at.
 	 * @return array Collection of information gathered during the run.
 	 */
-	static public function load($conn, $list=array(), $tables=array(), $cols=array()) {
+	static public function load($conn, $list = array(), $tables = array(), $cols = array()) {
 		$exclude_cols = $cols;
-		
-		$report = array('scan_tables'=>0, 	'scan_rows'=>0, 	'scan_cells'=>0,
-						'updt_tables'=>0, 	'updt_rows'=>0, 	'updt_cells'=>0, 
-						'errsql'=>array(),  'errser'=>array(),  'errkey'=>array(),
-						'errsql_sum'=>0, 	'errser_sum'=>0,	'errkey_sum'=>0,
-						'time'=>'', 	  	'err_all'=>0);
-		
+
+		$report = array('scan_tables' => 0, 'scan_rows' => 0, 'scan_cells' => 0,
+			'updt_tables' => 0, 'updt_rows' => 0, 'updt_cells' => 0,
+			'errsql' => array(), 'errser' => array(), 'errkey' => array(),
+			'errsql_sum' => 0, 'errser_sum' => 0, 'errkey_sum' => 0,
+			'time' => '', 'err_all' => 0);
+
 		$profile_start = DupUtil::get_microtime();
-		if ( is_array( $tables ) && ! empty( $tables ) ) {
-		
+		if (is_array($tables) && !empty($tables)) {
+
 			foreach ($tables as $table) {
 				$report['scan_tables']++;
-				$columns = array( );
+				$columns = array();
 
 				// Get a list of columns in this table
-				$fields = mysqli_query($conn,  'DESCRIBE ' . $table);
-				while ($column = mysqli_fetch_array( $fields )) {
-					$columns[ $column[ 'Field' ] ] = $column[ 'Key' ] == 'PRI' ? true : false;
+				$fields = mysqli_query($conn, 'DESCRIBE ' . $table);
+				while ($column = mysqli_fetch_array($fields)) {
+					$columns[$column['Field']] = $column['Key'] == 'PRI' ? true : false;
 				}
 
 				// Count the number of rows we have in the table if large we'll split into blocks, This is a mod from Simon Wheatley
-				$row_count   = mysqli_query($conn, 'SELECT COUNT(*) FROM ' . $table);
-				$rows_result = mysqli_fetch_array( $row_count );
+				$row_count = mysqli_query($conn, 'SELECT COUNT(*) FROM ' . $table);
+				$rows_result = mysqli_fetch_array($row_count);
 				@mysqli_free_result($row_count);
-				$row_count   = $rows_result[ 0 ];
-				if ( $row_count == 0 )
+				$row_count = $rows_result[0];
+				if ($row_count == 0)
 					continue;
 
 				$page_size = 25000;
@@ -884,14 +887,14 @@ class DupDBTextSwap {
 					$start = $page * $page_size;
 					$end = $start + $page_size;
 					// Grab the content of the table
-					$data = mysqli_query($conn, sprintf( 'SELECT * FROM %s LIMIT %d, %d', $table, $start, $end ) );
+					$data = mysqli_query($conn, sprintf('SELECT * FROM %s LIMIT %d, %d', $table, $start, $end));
 
-					if (! $data)
+					if (!$data)
 						$report['errsql'][] = mysqli_error($conn);
 
 					//Loops every row
 					while ($row = mysqli_fetch_array($data)) {
-						$report['scan_rows']++; 
+						$report['scan_rows']++;
 						$current_row++;
 						$upd_col = array();
 						$upd_sql = array();
@@ -900,29 +903,29 @@ class DupDBTextSwap {
 						$serial_err = 0;
 
 						//Loops every cell
-						foreach( $columns as $column => $primary_key ) {
-							if (in_array( $column, $exclude_cols ) ) {
+						foreach ($columns as $column => $primary_key) {
+							if (in_array($column, $exclude_cols)) {
 								continue;
 							}
-							
-							$report['scan_cells']++; 
+
+							$report['scan_cells']++;
 							$edited_data = $data_to_fix = $row[$column];
 							$base64coverted = false;
-							
+
 							//Only replacing string values
-							if (! is_numeric($row[$column])) {
-								
+							if (!is_numeric($row[$column])) {
+
 								//Base 64 detection
 								if (base64_decode($row[$column], true)) {
 									$decoded = base64_decode($row[$column], true);
-									if(self::is_serialized($decoded)) {
+									if (self::is_serialized($decoded)) {
 										$edited_data = $decoded;
 										$base64coverted = true;
 									}
 								}
 
 								//Replace logic - level 1: simple check on basic serilized strings
-								foreach($list as $item) {
+								foreach ($list as $item) {
 									$edited_data = self::recursive_unserialize_replace($item['search'], $item['replace'], $edited_data);
 								}
 
@@ -930,41 +933,39 @@ class DupDBTextSwap {
 								$serial_check = self::fix_serial_string($edited_data);
 								if ($serial_check['fixed']) {
 									$edited_data = $serial_check['data'];
-								} 
-								elseif ($serial_check['tried'] && ! $serial_check['fixed']) {
+								} elseif ($serial_check['tried'] && !$serial_check['fixed']) {
 									$serial_err++;
-								} 
+								}
 							}
-							
+
 							//Change was made
-							if ( $edited_data != $data_to_fix || $serial_err > 0) {
+							if ($edited_data != $data_to_fix || $serial_err > 0) {
 								$report['updt_cells']++;
 								//Base 64 encode
 								if ($base64coverted) {
 									$edited_data = base64_encode($edited_data);
 								}
 								$upd_col[] = $column;
-								$upd_sql[] = $column . ' = "' . mysqli_real_escape_string($conn,  $edited_data) . '"';
+								$upd_sql[] = $column . ' = "' . mysqli_real_escape_string($conn, $edited_data) . '"';
 								$upd = true;
 							}
 
 							if ($primary_key) {
 								$where_sql[] = $column . ' = "' . mysqli_real_escape_string($conn, $data_to_fix) . '"';
-							} 
+							}
 						}
-						
+
 						//PERFORM ROW UPDATE
-						if ($upd && ! empty($where_sql)) {
-							
-							$sql = "UPDATE `{$table}` SET " . implode( ', ', $upd_sql ) . ' WHERE ' . implode( ' AND ', array_filter( $where_sql ) );
+						if ($upd && !empty($where_sql)) {
+
+							$sql = "UPDATE `{$table}` SET " . implode(', ', $upd_sql) . ' WHERE ' . implode(' AND ', array_filter($where_sql));
 							$result = mysqli_query($conn, $sql) or $report['errsql'][] = mysqli_error($conn);
 							if ($result) {
 								if ($serial_err > 0) {
-									$report['errser'][] = "SELECT " . implode( ', ', $upd_col ) ." FROM `{$table}`  WHERE " . implode(' AND ', array_filter( $where_sql )) . ';';
-								} 
+									$report['errser'][] = "SELECT " . implode(', ', $upd_col) . " FROM `{$table}`  WHERE " . implode(' AND ', array_filter($where_sql)) . ';';
+								}
 								$report['updt_rows']++;
-							} 
-												
+							}
 						} elseif ($upd) {
 							$report['errkey'][] = sprintf("Row [%s] on Table [%s] requires a manual update.", $current_row, $table);
 						}
@@ -972,7 +973,7 @@ class DupDBTextSwap {
 					}
 					@mysqli_free_result($data);
 				}
-				
+
 				if ($upd) {
 					$report['updt_tables']++;
 				}
@@ -983,10 +984,10 @@ class DupDBTextSwap {
 		$report['errsql_sum'] = empty($report['errsql']) ? 0 : count($report['errsql']);
 		$report['errser_sum'] = empty($report['errser']) ? 0 : count($report['errser']);
 		$report['errkey_sum'] = empty($report['errkey']) ? 0 : count($report['errkey']);
-		$report['err_all'] 	  = $report['errsql_sum'] + $report['errser_sum'] + $report['errkey_sum'];
+		$report['err_all'] = $report['errsql_sum'] + $report['errser_sum'] + $report['errkey_sum'];
 		return $report;
-	} 
-	
+	}
+
 	/**
 	 * Take a serialised array and unserialise it replacing elements and
 	 * unserialising any subordinate arrays and performing the replace.
@@ -1001,18 +1002,16 @@ class DupDBTextSwap {
 		// some unseriliased data cannot be re-serialised eg. SimpleXMLElements
 		try {
 
-			if (is_string($data) && ($unserialized = @unserialize( $data )) !== false) {
+			if (is_string($data) && ($unserialized = @unserialize($data)) !== false) {
 				$data = self::recursive_unserialize_replace($from, $to, $unserialized, true);
-			} 
-			elseif (is_array($data)) {
+			} elseif (is_array($data)) {
 				$_tmp = array();
 				foreach ($data as $key => $value) {
 					$_tmp[$key] = self::recursive_unserialize_replace($from, $to, $value, false);
 				}
 				$data = $_tmp;
 				unset($_tmp);
-			} 
-			elseif (is_object($data)) {
+			} elseif (is_object($data)) {
 				$dataClass = get_class($data);
 				$_tmp = new $dataClass();
 				foreach ($data as $key => $value) {
@@ -1020,8 +1019,7 @@ class DupDBTextSwap {
 				}
 				$data = $_tmp;
 				unset($_tmp);
-			} 
-			else {
+			} else {
 				if (is_string($data)) {
 					$data = str_replace($from, $to, $data);
 				}
@@ -1029,14 +1027,12 @@ class DupDBTextSwap {
 
 			if ($serialised)
 				return serialize($data);
-
-		} catch(Exception $error) {
-			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n". $error, 2);	
+		} catch (Exception $error) {
+			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n" . $error, 2);
 		}
 		return $data;
 	}
-	
-	
+
 	/**
 	 *  IS_SERIALIZED
 	 *  Test if a string in properly serialized */
@@ -1050,60 +1046,61 @@ class DupDBTextSwap {
 	 *  Fixes the string length of a string object that has been serialized but the length is broken
 	 *  @param string $data	The string ojbect to recalculate the size on.
 	 *  @return 
-	*/
+	 */
 	static private function fix_serial_string($data) {
-	
-		$result = array('data'=>$data, 	'fixed'=>false, 'tried'=>false);
-		
+
+		$result = array('data' => $data, 'fixed' => false, 'tried' => false);
+
 		if (preg_match("/s:[0-9]+:/", $data)) {
-			if (! self::is_serialized($data) ) {
+			if (!self::is_serialized($data)) {
 				$regex = '!(?<=^|;)s:(\d+)(?=:"(.*?)";(?:}|a:|s:|b:|d:|i:|o:|N;))!s';
-				$serial_string = preg_match( '/^s:[0-9]+:"(.*$)/s', trim($data), $matches);
+				$serial_string = preg_match('/^s:[0-9]+:"(.*$)/s', trim($data), $matches);
 				//Nested serial string
 				if ($serial_string) {
-					$inner = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', rtrim($matches[1], '";')); 
-					$serialized_fixed =  's:' . strlen($inner) . ':"' . $inner . '";' ;
+					$inner = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', rtrim($matches[1], '";'));
+					$serialized_fixed = 's:' . strlen($inner) . ':"' . $inner . '";';
 				} else {
-					$serialized_fixed = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', $data); 
+					$serialized_fixed = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', $data);
 				}
-				
-				if (self::is_serialized($serialized_fixed) ) {
-					$result['data']  = $serialized_fixed;
+
+				if (self::is_serialized($serialized_fixed)) {
+					$result['data'] = $serialized_fixed;
 					$result['fixed'] = true;
-				} 
+				}
 				$result['tried'] = true;
 			}
 		}
 		return $result;
 	}
-	
-	static private function fix_string_callback($matches) { 
-		return 's:' . strlen(($matches[2])); 
-	} 	
-			
+
+	static private function fix_string_callback($matches) {
+		return 's:' . strlen(($matches[2]));
+	}
+
 }
 
 //====================================================================================================
 //DATABASE UPDATES
 //====================================================================================================
 
-$ajax2_start = DupUtil::get_microtime();	
+$ajax2_start = DupUtil::get_microtime();
 
 //MYSQL CONNECTION
-$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
+$db_port = parse_url($_POST['dbhost'], PHP_URL_PORT);
+$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $db_port);
 $charset_server = @mysqli_character_set_name($dbh);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 DupUtil::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 //POST PARAMS
 $_POST['blogname'] = mysqli_real_escape_string($dbh, $_POST['blogname']);
-$_POST['postguid'] = isset($_POST['postguid'])  && $_POST['postguid'] == 1 ? 1 : 0;
-$_POST['path_old'] = isset($_POST['path_old'])	? trim($_POST['path_old'])				: null;
-$_POST['path_new'] = isset($_POST['path_new'])	? trim($_POST['path_new'])				: null;
-$_POST['siteurl']  = isset($_POST['siteurl'])	? rtrim(trim($_POST['siteurl']), '/')	: null;
-$_POST['tables']   = isset($_POST['tables'])    && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
-$_POST['url_old']  = isset($_POST['url_old'])	? trim($_POST['url_old'])				: null;
-$_POST['url_new']  = isset($_POST['url_new'])	? rtrim(trim($_POST['url_new']), '/')	: null;
+$_POST['postguid'] = isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
+$_POST['path_old'] = isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
+$_POST['path_new'] = isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
+$_POST['siteurl'] = isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
+$_POST['tables'] = isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
+$_POST['url_old'] = isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
+$_POST['url_new'] = isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -1115,45 +1112,45 @@ ksort($POST_LOG);
 //GLOBAL DB-REPLACE
 DupUtil::log("\n\n\n{$GLOBALS['SEPERATOR1']}");
 DupUtil::log('DUPLICATOR INSTALL-LOG');
-DupUtil::log('STEP2 START @ ' . @date('h:i:s') );
+DupUtil::log('STEP2 START @ ' . @date('h:i:s'));
 DupUtil::log('NOTICE: NOTICE: Do not post to public sites or forums');
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
-DupUtil::log("CHARSET SERVER:\t{$charset_server}"); 
-DupUtil::log("CHARSET CLIENT:\t" . @mysqli_character_set_name($dbh)); 
-DupUtil::log("--------------------------------------");	
-DupUtil::log("POST DATA");	
-DupUtil::log("--------------------------------------");	
+DupUtil::log("CHARSET SERVER:\t{$charset_server}");
+DupUtil::log("CHARSET CLIENT:\t" . @mysqli_character_set_name($dbh));
+DupUtil::log("--------------------------------------");
+DupUtil::log("POST DATA");
+DupUtil::log("--------------------------------------");
 DupUtil::log(print_r($POST_LOG, true));
 
 DupUtil::log("--------------------------------------");
 DupUtil::log("SCANNED TABLES");
-DupUtil::log("--------------------------------------");	
-$msg = (isset($_POST['tables']) && count($_POST['tables'] > 0)) ?  print_r($_POST['tables'], true) : 'No tables selected to update';
+DupUtil::log("--------------------------------------");
+$msg = (isset($_POST['tables']) && count($_POST['tables'] > 0)) ? print_r($_POST['tables'], true) : 'No tables selected to update';
 DupUtil::log($msg);
 
 DupUtil::log("--------------------------------------");
 DupUtil::log("KEEP PLUGINS ACTIVE");
-DupUtil::log("--------------------------------------");	
-$msg = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ?  print_r($_POST['plugins'], true) : 'No plugins selected for activation';
+DupUtil::log("--------------------------------------");
+$msg = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? print_r($_POST['plugins'], true) : 'No plugins selected for activation';
 DupUtil::log($msg);
 
 //UPDATE SETTINGS
 $serial_plugin_list = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? @serialize($_POST['plugins']) : '';
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['blogname']}' WHERE option_name = 'blogname' ");	
+mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['blogname']}' WHERE option_name = 'blogname' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 
 DupUtil::log("--------------------------------------");
 DupUtil::log("GLOBAL DB-REPLACE");
-DupUtil::log("--------------------------------------");	
+DupUtil::log("--------------------------------------");
 
 array_push($GLOBALS['REPLACE_LIST'], 
-	array('search' =>$_POST['url_old'],  'replace'=>$_POST['url_new']),
-	array('search' =>$_POST['path_old'], 'replace'=>$_POST['path_new']),
-	array('search' =>rtrim(DupUtil::unset_safe_path($_POST['path_old']), '\\'), 'replace'=>rtrim($_POST['path_new'], '/'))
-); 
+		array('search' => $_POST['url_old'], 'replace' => $_POST['url_new']), 
+		array('search' => $_POST['path_old'], 'replace' => $_POST['path_new']), 
+		array('search' => rtrim(DupUtil::unset_safe_path($_POST['path_old']), '\\'), 'replace' => rtrim($_POST['path_new'], '/'))
+);
 
-@mysqli_autocommit($dbh, false);	
-$report = DupDBTextSwap::load( $dbh, $GLOBALS['REPLACE_LIST'],  $_POST['tables'], $GLOBALS['TABLES_SKIP_COLS']);
+@mysqli_autocommit($dbh, false);
+$report = DupDBTextSwap::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $GLOBALS['TABLES_SKIP_COLS']);
 @mysqli_commit($dbh);
 @mysqli_autocommit($dbh, true);
 
@@ -1175,31 +1172,30 @@ if ($_POST['postguid']) {
 	DupUtil::log("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
 
-/*FINAL UPDATES: Must happen after the global replace to prevent double pathing
-http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");	
+/* FINAL UPDATES: Must happen after the global replace to prevent double pathing
+  http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
+mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
 DupUtil::log("\n{$GLOBALS['SEPERATOR1']}");
-DupUtil::log('START FINAL CLEANUP: ' . @date('h:i:s') );
+DupUtil::log('START FINAL CLEANUP: ' . @date('h:i:s'));
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
 
-$patterns = array("/'WP_HOME',\s*'.*?'/",
-				  "/'WP_SITEURL',\s*'.*?'/");
-				   
-$replace = array("'WP_HOME', "		. '\''.$_POST['url_new'].'\'',
-				 "'WP_SITEURL', "  .  '\''.$_POST['url_new'].'\'');	
-				  
+$patterns = array("/'WP_HOME',\s*'.*?'/", "/'WP_SITEURL',\s*'.*?'/");
+
+$replace = array("'WP_HOME', " . '\'' . $_POST['url_new'] . '\'',
+	"'WP_SITEURL', " . '\'' . $_POST['url_new'] . '\'');
+
 $config_file = @file_get_contents('wp-config.php', true);
 $config_file = preg_replace($patterns, $replace, $config_file);
 file_put_contents('wp-config.php', $config_file);
 
 
 //Create Snapshots directory
-if(!file_exists(DUPLICATOR_SSDIR_NAME)) {
+if (!file_exists(DUPLICATOR_SSDIR_NAME)) {
 	mkdir(DUPLICATOR_SSDIR_NAME, 0755);
 }
 $fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
@@ -1207,10 +1203,10 @@ fclose($fp);
 
 
 //WEB CONFIG FILE
-$currdata = parse_url($_POST['url_old']); 
-$newdata  = parse_url($_POST['url_new']);
+$currdata = parse_url($_POST['url_old']);
+$newdata = parse_url($_POST['url_new']);
 $currpath = DupUtil::add_slash(isset($currdata['path']) ? $currdata['path'] : "");
-$newpath  = DupUtil::add_slash(isset($newdata['path'])  ? $newdata['path']  : "");
+$newpath = DupUtil::add_slash(isset($newdata['path']) ? $newdata['path'] : "");
 
 if ($currpath != $newpath) {
 	DupUtil::log("HTACCESS CHANGES:");
@@ -1219,7 +1215,7 @@ if ($currpath != $newpath) {
 	@unlink('.htaccess');
 	@unlink('web.config');
 	DupUtil::log("created backup of original .htaccess to htaccess.orig and web.config to web.config.orig");
-	
+
 	$tmp_htaccess = <<<HTACCESS
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
@@ -1236,7 +1232,7 @@ HTACCESS;
 	file_put_contents('.htaccess', $tmp_htaccess);
 	DupUtil::log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
 	DupUtil::log("updated .htaccess file.");
-}  else {
+} else {
 	DupUtil::log("web configuration file was not renamed because the paths did not change.");
 }
 
@@ -1246,8 +1242,8 @@ HTACCESS;
 //===============================
 DupUtil::log("\n--------------------------------------");
 DupUtil::log("WARNINGS");
-DupUtil::log("--------------------------------------");	
-$config_vars  = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME');
+DupUtil::log("--------------------------------------");
+$config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME');
 $config_found = DupUtil::string_has_value($config_vars, $config_file);
 
 //Files
@@ -1258,7 +1254,7 @@ if ($config_found) {
 }
 
 //Database
-$result = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name IN ('upload_url_path','upload_path')");	
+$result = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name IN ('upload_url_path','upload_path')");
 if ($result) {
 	while ($row = mysqli_fetch_row($result)) {
 		if (strlen($row[0])) {
@@ -1282,12 +1278,11 @@ mysqli_close($dbh);
 $ajax2_end = DupUtil::get_microtime();
 $ajax2_sum = DupUtil::elapsed_time($ajax2_end, $ajax2_start);
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
-DupUtil::log('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}" );
+DupUtil::log('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}");
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
 
 $JSON['step2']['pass'] = 1;
 die(json_encode($JSON));
-
 ?> <?php
             break;
     }
@@ -1792,10 +1787,10 @@ e||(e=b.text()||"",e=jQuery.template(s,"{{ko_with $item.koBindingContext}}"+e+"{
             <!-- =========================================
             FORM DATA: Data Steps -->
             <div id="content-inner">
-                <?php
-                switch ($_POST['action_step']) {
-                    case "0" :
-                        ?> <?php
+		<?php
+		switch ($_POST['action_step']) {
+		    case "0" :
+			?> <?php
 
 	//DETECT ARCHIVE FILES
 	$zip_file_name  = "No package file found";
@@ -1936,113 +1931,114 @@ VIEW: STEP 1- INPUT -->
 	<input type="hidden" name="package_name"  value="<?php echo $zip_file_name ?>" />
 	
 	<h3 style="margin-bottom:5px">
-		Step 1: Files &amp; Database
-		<div class="dup-logfile-link">
-			<select name="logging" id="logging">
-				<option value="1" selected="selected">Light Logging</option>
-				<option value="2">Detailed Logging</option>
-			</select>
-		</div>
+	    Step 1: Files &amp; Database
+	    <div class="dup-logfile-link">
+		<select name="logging" id="logging">
+		    <option value="1" selected="selected">Light Logging</option>
+		    <option value="2">Detailed Logging</option>
+		</select>
+	    </div>
 	</h3>
 	<hr size="1"/>
 	
 	<!-- CHECKS: FAIL -->
 	<?php if ( $total_req == 'Fail')  :	?>
-	
-		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-			<div id="system-circle" class="circle-fail"></div> &nbsp; System Requirements: Fail...
-		</div><br/>
-		
-		<i id="dup-step1-sys-req-msg">This installation will not be able to proceed until the system requirements pass. Please validate your system requirements by clicking on the button above. 
-		In order to get these values to pass please contact your server administrator, hosting provider or visit the online FAQ.</i><br/>
-		
-		<div style="line-height:28px; font-size:14px; padding:0px 0px 0px 30px; font-weight:normal">
-			<b>Helpful Resources:</b><br/>
-			&raquo; <a href="http://lifeinthegrid.com/duplicator-faq" target="_blank">Common FAQs</a> <br/>
-			&raquo; <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">User Guide</a> <br/>
-			&raquo; <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">Approved Hosts</a> <br/>
-		</div><br/>
+	    
+    	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
+    	    <div id="system-circle" class="circle-fail"></div> &nbsp; System Requirements: Fail...
+    	</div><br/>
+    		    
+    	<i id="dup-step1-sys-req-msg">This installation will not be able to proceed until the system requirements pass. Please validate your system requirements by clicking on the button above. 
+    	In order to get these values to pass please contact your server administrator, hosting provider or visit the online FAQ.</i><br/>
+    		    
+    	<div style="line-height:28px; font-size:14px; padding:0px 0px 0px 30px; font-weight:normal">
+    	    <b>Helpful Resources:</b><br/>
+    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-faq" target="_blank">Common FAQs</a> <br/>
+    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">User Guide</a> <br/>
+    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">Approved Hosts</a> <br/>
+    	</div><br/>
 	
 	<!-- CHECKS: PASS -->
 	<?php else : ?>	
 
-		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-			<div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
-		</div>
-		<div style='color:#999; font-size:11px; text-align:center; margin:3px 0px 0px 0px'><i>Package Name:<?php echo $zip_file_name; ?> </i></div><br/>
+	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
+    	    <div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
+    	</div>
+    	<div style='color:#999; font-size:11px; text-align:center; margin:3px 0px 0px 0px'><i>Package Name:<?php echo $zip_file_name; ?> </i></div><br/>
+    		    
+    	<div class="title-header">
+    	    MySQL Server
+    	</div>
+    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    	    <tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo $GLOBALS['FW_DBHOST'] ?>" /></td></tr>
+    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo $GLOBALS['FW_DBUSER'] ?>" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" /></td></tr>
+    	</table>
+    		    
+    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    	    <tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo $GLOBALS['FW_DBNAME'] ?>" /></td></tr>
+    	    <tr>
+    		<td>Allow Options</td>
+    		<td>
+    		    <table cellpadding="2" class="dbtable-opts">
+    			<tr>
+    			    <td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
+    			    <td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
+    							    
+    			</tr>						
+    		    </table>	
+    		</td>
+    	    </tr>
+    	</table>
+	<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
+    	<br/>
+	
+    		    
+    	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
+    	If your interested in Private Label Rights please contact us at the URL below to discuss
+    	customizations to product labeling: http://lifeinthegrid.com/services/	-->
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
+    	<div id='dup-step1-cpanel' style="display:none">
+    	    <div style="padding:10px 0px 0px 10px;line-height:22px">
+    		<b>Need cPanel Database Help?</b> <br/>
+    		&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
+    		&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
+    	    </div>
+    	</div><br/><br/>
+    		    
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
+    	<div id='dup-step1-adv-opts' style="display:none">
+    	    <table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    		<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual"   value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
+    		<tr><td colspan="2"><input type="checkbox" name="no_ssl" id="no_ssl" value="1" /> <label for="no_ssl">Turn off wp-admin SSL</label></td></tr>
+    		<tr><td colspan="2"><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
+    		<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
+    		<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+    	    </table>
+    	</div>
 
-		<div class="title-header">
-			MySQL Server
-		</div>
-		<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-			<tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo $GLOBALS['FW_DBHOST'] ?>" /></td></tr>
-			<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo $GLOBALS['FW_DBUSER'] ?>" /></td></tr>
-			<tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" /></td></tr>
-		</table>
-		
-		<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-			<tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo $GLOBALS['FW_DBNAME'] ?>" /></td></tr>
-			<tr>
-				<td>Allow Options</td>
-				<td>
-					<table cellpadding="2" class="dbtable-opts">
-						<tr>
-							<td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
-							<td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
-
-						</tr>						
-					</table>	
-				</td>
-			</tr>
-		</table>
-		<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
-		<br/>
-		
-		<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
-		If your interested in Private Label Rights please contact us at the URL below to discuss
-		customizations to product labeling: http://lifeinthegrid.com/services/	-->
-		<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
-		<div id='dup-step1-cpanel' style="display:none">
-			<div style="padding:10px 0px 0px 10px;line-height:22px">
-				<b>Need cPanel Database Help?</b> <br/>
-				&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
-				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
-			</div>
-		</div><br/><br/>
-		
-		<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
-		<div id='dup-step1-adv-opts' style="display:none">
-			<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-				<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual"   value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
-				<tr><td colspan="2"><input type="checkbox" name="no_ssl" id="no_ssl" value="1" /> <label for="no_ssl">Turn off wp-admin SSL</label></td></tr>
-				<tr><td colspan="2"><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
-				<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-				<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
-			</table>
-		</div>
-
-		<!-- NOTICES  -->
-		<div class="warning-info" style="margin-top:50px">
-			<b>WARNINGS &AMP; NOTICES</b> 
-			<p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
-			
-			<p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
-			
-			<p><b>Setup:</b> Only the package (zip file) and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.</p>
-			
-			<p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
-			
-			<p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
-			These files contain sensitive information and should not remain on a production system.</p><br/>
-		</div>
-		
-		<div class="dup-step1-warning-area">
-			<input id="accept-warnings"   type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
-		</div><br/><br/><br/>
-
-		<div class="dup-footer-buttons">
-			<input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.runDeployment()" />
-		</div>				
+	<!-- NOTICES  -->
+    	<div class="warning-info" style="margin-top:50px">
+    	    <b>WARNINGS &AMP; NOTICES</b> 
+    	    <p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
+    			    
+    	    <p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
+    			    
+    	    <p><b>Setup:</b> Only the package (zip file) and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.</p>
+    			    
+    	    <p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
+    			    
+    	    <p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
+    		These files contain sensitive information and should not remain on a production system.</p><br/>
+    	</div>
+    		    
+    	<div class="dup-step1-warning-area">
+    	    <input id="accept-warnings"   type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
+    	</div><br/><br/><br/>
+    		    
+    	<div class="dup-footer-buttons">
+    	    <input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.runDeployment()" />
+    	</div>				
 	<?php endif; ?>	
 </form>
 
@@ -2064,25 +2060,25 @@ Auto Posts to view.step2.php  -->
 	<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 	
 	<h3>Step 1: Files &amp; Database 
-		<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	    <div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
 	</h3><hr size="1"/>
-	
+	    
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
-		<div style="width:500px; margin:auto">
-			<h3>Processing Files &amp; Database Please Wait...</h3>
-			<div id="progress-bar"></div>
-			<i>This may take several minutes</i>
-		</div>
+	    <div style="width:500px; margin:auto">
+		<h3>Processing Files &amp; Database Please Wait...</h3>
+		<div id="progress-bar"></div>
+		<i>This may take several minutes</i>
+	    </div>
 	</div>
-	
+	    
 	<!--  AJAX SYSTEM ERROR -->
 	<div id="ajaxerr-area" style="display:none">
-		<p>Please try again an issue has occurred.</p>
-		<div style="padding: 0px 10px 10px 10px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
-			<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
-		</div>
+	    <p>Please try again an issue has occurred.</p>
+	    <div style="padding: 0px 10px 10px 10px;">
+		<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
+		<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+	    </div>
 	</div>
 </form>
 
@@ -2092,86 +2088,87 @@ DIALOG: SERVER CHECKS  -->
 <div id="dup-step1-dialog" title="System Status" style="display:none">
 	<div id="dup-step1-dialog-data" style="padding: 0px 10px 10px 10px;">
 					
-		<!-- SYSTEM REQUIRMENTS -->
-		<b>REQUIRMENTS</b> &nbsp; <i style='font-size:11px'>click links for details</i>
-		<hr size="1"/>
-		<table style="width:100%">
-			<tr>
-				<td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</td>
-				<td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
-					<?php 
-						echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
-						printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
-					?>
-				</td>
-			</tr>
-			<tr>
-				<td>Safe Mode Off</td>
-				<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
-			</tr>
-			<tr>
-				<td>MySQL Support</td>
-				<td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
-			</tr>
-			<tr>
-				<td valign="top">
-					PHP Version: <?php echo phpversion(); ?><br/>
-					<i style="font-size:10px">(PHP 5.2.17+ is required)</i>
-				</td>
-				<td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
-			</tr>
-		</table><br/>
+	    <!-- SYSTEM REQUIREMENTS -->
+	    <b>REQUIREMENTS</b> &nbsp; <i style='font-size:11px'>click links for details</i>
+	    <hr size="1"/>
+	    <table style="width:100%">
+		<tr>
+		    <td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</td>
+		    <td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
+		</tr>
+		<tr>
+		    <td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
+			<?php
+			echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
+			printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
+			printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
+			?>
+		    </td>
+		</tr>
+		<tr>
+		    <td>Safe Mode Off</td>
+		    <td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
+		</tr>
+		<tr>
+		    <td>MySQL Support</td>
+		    <td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
+		</tr>
+		<tr>
+		    <td valign="top">
+			PHP Version: <?php echo phpversion(); ?><br/>
+			<i style="font-size:10px">(PHP 5.2.17+ is required)</i>
+		    </td>
+		    <td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
+		</tr>
+	    </table><br/>
 		
 
-		<!-- SYSTEM CHECKS -->
-		<b>CHECKS</b><hr style='margin-top:-2px' size="1"/>
-		<table style="width:100%">
-			<tr>
-				<td style="width:300px"></td>
-				<td></td>
-			</tr>
-			<tr>
-				<?php if (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') !== false): ?>
-					<td><b>Web Server:</b> Apache</td>
-					<td><div class='dup-pass'>Good</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false): ?> 
-					<td><b>Web Server:</b> LiteSpeed</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false): ?> 
-					<td><b>Web Server:</b> Nginx</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'lighttpd') !== false): ?> 
-					<td><b>Web Server:</b> Lighthttpd</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') !== false): ?> 
-					<td><b>Web Server:</b> Microsoft IIS</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php else: ?>
-					<td><b>Web Server:</b> Not detected</td>
-					<td><div class='dup-fail'>Caution</div></td>
-				<?php endif; ?>				
-			</tr>
-			<tr>
-				<?php
-				$open_basedir_set = ini_get("open_basedir");
-				if (empty($open_basedir_set)): ?>
-					<td><b>Open Base Dir:</b> Off
-					<td><div class='dup-pass'>Good</div>
-				<?php else: ?>
-					<td><b>Open Base Dir:</b> On</td>
-					<td><div class='dup-fail'>Caution</div></td>
-				<?php endif; ?>
-			</tr>
-		</table>
-		
-		<hr class='dup-dots' />
-		<!-- SAPI -->
-		<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
-		<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> 
+	    <!-- SYSTEM CHECKS -->
+	    <b>CHECKS</b><hr style='margin-top:-2px' size="1"/>
+	    <table style="width:100%">
+		<tr>
+		    <td style="width:300px"></td>
+		    <td></td>
+		</tr>
+		<tr>
+		    <?php if (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') !== false): ?>
+    		    <td><b>Web Server:</b> Apache</td>
+    		    <td><div class='dup-pass'>Good</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false): ?> 
+    		    <td><b>Web Server:</b> LiteSpeed</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false): ?> 
+    		    <td><b>Web Server:</b> Nginx</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'lighttpd') !== false): ?> 
+    		    <td><b>Web Server:</b> Lighthttpd</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') !== false): ?> 
+    		    <td><b>Web Server:</b> Microsoft IIS</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php else: ?>
+    		    <td><b>Web Server:</b> Not detected</td>
+    		    <td><div class='dup-fail'>Caution</div></td>
+		    <?php endif; ?>				
+		</tr>
+		<tr>
+		    <?php
+		    $open_basedir_set = ini_get("open_basedir");
+		    if (empty($open_basedir_set)):
+			?>
+    		    <td><b>Open Base Dir:</b> Off
+    		    <td><div class='dup-pass'>Good</div>
+		    <?php else: ?>
+    		    <td><b>Open Base Dir:</b> On</td>
+    		    <td><div class='dup-fail'>Caution</div></td>
+		    <?php endif; ?>
+		</tr>
+	    </table>
+		    
+	    <hr class='dup-dots' />
+	    <!-- SAPI -->
+	    <b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
+	    <b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> 
 	</div>
 </div>
 
@@ -2179,23 +2176,24 @@ DIALOG: SERVER CHECKS  -->
 <!-- =========================================
 DIALOG: DB CONNECTION CHECK  -->
 <div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
-	<div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-		<div id="dbconn-test-msg" style="min-height:50px"></div>
-		<br/><hr size="1" />
-		<div class="help">
-		<b>Common Connection Issues:</b><br/>
-		- Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
-		- Validate the database and database user exist on this server <br/>
-		- Check if the database user has the correct permission levels to this database <br/>
-		- The host 'localhost' may not work on all hosting providers <br/>
-		- Contact your hosting provider for the exact required parameters <br/>
-		- See the 'Database Setup Help' section on step 1 for more details<br/>
-		- Visit the online resources 'Common FAQ page' <br/>
-		</div>
+    <div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
+	<div id="dbconn-test-msg" style="min-height:50px"></div>
+	<br/><hr size="1" />
+	<div class="help">
+	    <b>Common Connection Issues:</b><br/>
+	    - Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
+	    - Validate the database and database user exist on this server <br/>
+	    - Check if the database user has the correct permission levels to this database <br/>
+	    - The host 'localhost' may not work on all hosting providers <br/>
+	    - Contact your hosting provider for the exact required parameters <br/>
+	    - See the 'Database Setup Help' section on step 1 for more details<br/>
+	    - Visit the online resources 'Common FAQ page' <br/>
 	</div>
-</div> <?php break;
-            case "1" :
-                        ?> <?php
+    </div>
+</div> <?php
+		    break;
+		    case "1" :
+			?> <?php
 
 	//DETECT ARCHIVE FILES
 	$zip_file_name  = "No package file found";
@@ -2336,113 +2334,114 @@ VIEW: STEP 1- INPUT -->
 	<input type="hidden" name="package_name"  value="<?php echo $zip_file_name ?>" />
 	
 	<h3 style="margin-bottom:5px">
-		Step 1: Files &amp; Database
-		<div class="dup-logfile-link">
-			<select name="logging" id="logging">
-				<option value="1" selected="selected">Light Logging</option>
-				<option value="2">Detailed Logging</option>
-			</select>
-		</div>
+	    Step 1: Files &amp; Database
+	    <div class="dup-logfile-link">
+		<select name="logging" id="logging">
+		    <option value="1" selected="selected">Light Logging</option>
+		    <option value="2">Detailed Logging</option>
+		</select>
+	    </div>
 	</h3>
 	<hr size="1"/>
 	
 	<!-- CHECKS: FAIL -->
 	<?php if ( $total_req == 'Fail')  :	?>
-	
-		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-			<div id="system-circle" class="circle-fail"></div> &nbsp; System Requirements: Fail...
-		</div><br/>
-		
-		<i id="dup-step1-sys-req-msg">This installation will not be able to proceed until the system requirements pass. Please validate your system requirements by clicking on the button above. 
-		In order to get these values to pass please contact your server administrator, hosting provider or visit the online FAQ.</i><br/>
-		
-		<div style="line-height:28px; font-size:14px; padding:0px 0px 0px 30px; font-weight:normal">
-			<b>Helpful Resources:</b><br/>
-			&raquo; <a href="http://lifeinthegrid.com/duplicator-faq" target="_blank">Common FAQs</a> <br/>
-			&raquo; <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">User Guide</a> <br/>
-			&raquo; <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">Approved Hosts</a> <br/>
-		</div><br/>
+	    
+    	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
+    	    <div id="system-circle" class="circle-fail"></div> &nbsp; System Requirements: Fail...
+    	</div><br/>
+    		    
+    	<i id="dup-step1-sys-req-msg">This installation will not be able to proceed until the system requirements pass. Please validate your system requirements by clicking on the button above. 
+    	In order to get these values to pass please contact your server administrator, hosting provider or visit the online FAQ.</i><br/>
+    		    
+    	<div style="line-height:28px; font-size:14px; padding:0px 0px 0px 30px; font-weight:normal">
+    	    <b>Helpful Resources:</b><br/>
+    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-faq" target="_blank">Common FAQs</a> <br/>
+    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">User Guide</a> <br/>
+    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">Approved Hosts</a> <br/>
+    	</div><br/>
 	
 	<!-- CHECKS: PASS -->
 	<?php else : ?>	
 
-		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-			<div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
-		</div>
-		<div style='color:#999; font-size:11px; text-align:center; margin:3px 0px 0px 0px'><i>Package Name:<?php echo $zip_file_name; ?> </i></div><br/>
+	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
+    	    <div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
+    	</div>
+    	<div style='color:#999; font-size:11px; text-align:center; margin:3px 0px 0px 0px'><i>Package Name:<?php echo $zip_file_name; ?> </i></div><br/>
+    		    
+    	<div class="title-header">
+    	    MySQL Server
+    	</div>
+    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    	    <tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo $GLOBALS['FW_DBHOST'] ?>" /></td></tr>
+    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo $GLOBALS['FW_DBUSER'] ?>" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" /></td></tr>
+    	</table>
+    		    
+    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    	    <tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo $GLOBALS['FW_DBNAME'] ?>" /></td></tr>
+    	    <tr>
+    		<td>Allow Options</td>
+    		<td>
+    		    <table cellpadding="2" class="dbtable-opts">
+    			<tr>
+    			    <td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
+    			    <td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
+    							    
+    			</tr>						
+    		    </table>	
+    		</td>
+    	    </tr>
+    	</table>
+	<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
+    	<br/>
+	
+    		    
+    	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
+    	If your interested in Private Label Rights please contact us at the URL below to discuss
+    	customizations to product labeling: http://lifeinthegrid.com/services/	-->
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
+    	<div id='dup-step1-cpanel' style="display:none">
+    	    <div style="padding:10px 0px 0px 10px;line-height:22px">
+    		<b>Need cPanel Database Help?</b> <br/>
+    		&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
+    		&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
+    	    </div>
+    	</div><br/><br/>
+    		    
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
+    	<div id='dup-step1-adv-opts' style="display:none">
+    	    <table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    		<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual"   value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
+    		<tr><td colspan="2"><input type="checkbox" name="no_ssl" id="no_ssl" value="1" /> <label for="no_ssl">Turn off wp-admin SSL</label></td></tr>
+    		<tr><td colspan="2"><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
+    		<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
+    		<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+    	    </table>
+    	</div>
 
-		<div class="title-header">
-			MySQL Server
-		</div>
-		<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-			<tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo $GLOBALS['FW_DBHOST'] ?>" /></td></tr>
-			<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo $GLOBALS['FW_DBUSER'] ?>" /></td></tr>
-			<tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" /></td></tr>
-		</table>
-		
-		<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-			<tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo $GLOBALS['FW_DBNAME'] ?>" /></td></tr>
-			<tr>
-				<td>Allow Options</td>
-				<td>
-					<table cellpadding="2" class="dbtable-opts">
-						<tr>
-							<td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
-							<td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
-
-						</tr>						
-					</table>	
-				</td>
-			</tr>
-		</table>
-		<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
-		<br/>
-		
-		<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
-		If your interested in Private Label Rights please contact us at the URL below to discuss
-		customizations to product labeling: http://lifeinthegrid.com/services/	-->
-		<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
-		<div id='dup-step1-cpanel' style="display:none">
-			<div style="padding:10px 0px 0px 10px;line-height:22px">
-				<b>Need cPanel Database Help?</b> <br/>
-				&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
-				&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
-			</div>
-		</div><br/><br/>
-		
-		<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
-		<div id='dup-step1-adv-opts' style="display:none">
-			<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-				<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual"   value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
-				<tr><td colspan="2"><input type="checkbox" name="no_ssl" id="no_ssl" value="1" /> <label for="no_ssl">Turn off wp-admin SSL</label></td></tr>
-				<tr><td colspan="2"><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
-				<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-				<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
-			</table>
-		</div>
-
-		<!-- NOTICES  -->
-		<div class="warning-info" style="margin-top:50px">
-			<b>WARNINGS &AMP; NOTICES</b> 
-			<p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
-			
-			<p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
-			
-			<p><b>Setup:</b> Only the package (zip file) and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.</p>
-			
-			<p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
-			
-			<p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
-			These files contain sensitive information and should not remain on a production system.</p><br/>
-		</div>
-		
-		<div class="dup-step1-warning-area">
-			<input id="accept-warnings"   type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
-		</div><br/><br/><br/>
-
-		<div class="dup-footer-buttons">
-			<input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.runDeployment()" />
-		</div>				
+	<!-- NOTICES  -->
+    	<div class="warning-info" style="margin-top:50px">
+    	    <b>WARNINGS &AMP; NOTICES</b> 
+    	    <p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
+    			    
+    	    <p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
+    			    
+    	    <p><b>Setup:</b> Only the package (zip file) and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.</p>
+    			    
+    	    <p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
+    			    
+    	    <p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
+    		These files contain sensitive information and should not remain on a production system.</p><br/>
+    	</div>
+    		    
+    	<div class="dup-step1-warning-area">
+    	    <input id="accept-warnings"   type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
+    	</div><br/><br/><br/>
+    		    
+    	<div class="dup-footer-buttons">
+    	    <input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.runDeployment()" />
+    	</div>				
 	<?php endif; ?>	
 </form>
 
@@ -2464,25 +2463,25 @@ Auto Posts to view.step2.php  -->
 	<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 	
 	<h3>Step 1: Files &amp; Database 
-		<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	    <div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
 	</h3><hr size="1"/>
-	
+	    
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
-		<div style="width:500px; margin:auto">
-			<h3>Processing Files &amp; Database Please Wait...</h3>
-			<div id="progress-bar"></div>
-			<i>This may take several minutes</i>
-		</div>
+	    <div style="width:500px; margin:auto">
+		<h3>Processing Files &amp; Database Please Wait...</h3>
+		<div id="progress-bar"></div>
+		<i>This may take several minutes</i>
+	    </div>
 	</div>
-	
+	    
 	<!--  AJAX SYSTEM ERROR -->
 	<div id="ajaxerr-area" style="display:none">
-		<p>Please try again an issue has occurred.</p>
-		<div style="padding: 0px 10px 10px 10px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
-			<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
-		</div>
+	    <p>Please try again an issue has occurred.</p>
+	    <div style="padding: 0px 10px 10px 10px;">
+		<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
+		<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+	    </div>
 	</div>
 </form>
 
@@ -2492,86 +2491,87 @@ DIALOG: SERVER CHECKS  -->
 <div id="dup-step1-dialog" title="System Status" style="display:none">
 	<div id="dup-step1-dialog-data" style="padding: 0px 10px 10px 10px;">
 					
-		<!-- SYSTEM REQUIRMENTS -->
-		<b>REQUIRMENTS</b> &nbsp; <i style='font-size:11px'>click links for details</i>
-		<hr size="1"/>
-		<table style="width:100%">
-			<tr>
-				<td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</td>
-				<td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
-					<?php 
-						echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
-						printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-						printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
-					?>
-				</td>
-			</tr>
-			<tr>
-				<td>Safe Mode Off</td>
-				<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
-			</tr>
-			<tr>
-				<td>MySQL Support</td>
-				<td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
-			</tr>
-			<tr>
-				<td valign="top">
-					PHP Version: <?php echo phpversion(); ?><br/>
-					<i style="font-size:10px">(PHP 5.2.17+ is required)</i>
-				</td>
-				<td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
-			</tr>
-		</table><br/>
+	    <!-- SYSTEM REQUIREMENTS -->
+	    <b>REQUIREMENTS</b> &nbsp; <i style='font-size:11px'>click links for details</i>
+	    <hr size="1"/>
+	    <table style="width:100%">
+		<tr>
+		    <td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</td>
+		    <td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
+		</tr>
+		<tr>
+		    <td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
+			<?php
+			echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
+			printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
+			printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
+			?>
+		    </td>
+		</tr>
+		<tr>
+		    <td>Safe Mode Off</td>
+		    <td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
+		</tr>
+		<tr>
+		    <td>MySQL Support</td>
+		    <td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
+		</tr>
+		<tr>
+		    <td valign="top">
+			PHP Version: <?php echo phpversion(); ?><br/>
+			<i style="font-size:10px">(PHP 5.2.17+ is required)</i>
+		    </td>
+		    <td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
+		</tr>
+	    </table><br/>
 		
 
-		<!-- SYSTEM CHECKS -->
-		<b>CHECKS</b><hr style='margin-top:-2px' size="1"/>
-		<table style="width:100%">
-			<tr>
-				<td style="width:300px"></td>
-				<td></td>
-			</tr>
-			<tr>
-				<?php if (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') !== false): ?>
-					<td><b>Web Server:</b> Apache</td>
-					<td><div class='dup-pass'>Good</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false): ?> 
-					<td><b>Web Server:</b> LiteSpeed</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false): ?> 
-					<td><b>Web Server:</b> Nginx</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'lighttpd') !== false): ?> 
-					<td><b>Web Server:</b> Lighthttpd</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') !== false): ?> 
-					<td><b>Web Server:</b> Microsoft IIS</td>
-					<td><div class='dup-ok'>OK</div></td>
-				<?php else: ?>
-					<td><b>Web Server:</b> Not detected</td>
-					<td><div class='dup-fail'>Caution</div></td>
-				<?php endif; ?>				
-			</tr>
-			<tr>
-				<?php
-				$open_basedir_set = ini_get("open_basedir");
-				if (empty($open_basedir_set)): ?>
-					<td><b>Open Base Dir:</b> Off
-					<td><div class='dup-pass'>Good</div>
-				<?php else: ?>
-					<td><b>Open Base Dir:</b> On</td>
-					<td><div class='dup-fail'>Caution</div></td>
-				<?php endif; ?>
-			</tr>
-		</table>
-		
-		<hr class='dup-dots' />
-		<!-- SAPI -->
-		<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
-		<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> 
+	    <!-- SYSTEM CHECKS -->
+	    <b>CHECKS</b><hr style='margin-top:-2px' size="1"/>
+	    <table style="width:100%">
+		<tr>
+		    <td style="width:300px"></td>
+		    <td></td>
+		</tr>
+		<tr>
+		    <?php if (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') !== false): ?>
+    		    <td><b>Web Server:</b> Apache</td>
+    		    <td><div class='dup-pass'>Good</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false): ?> 
+    		    <td><b>Web Server:</b> LiteSpeed</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false): ?> 
+    		    <td><b>Web Server:</b> Nginx</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'lighttpd') !== false): ?> 
+    		    <td><b>Web Server:</b> Lighthttpd</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') !== false): ?> 
+    		    <td><b>Web Server:</b> Microsoft IIS</td>
+    		    <td><div class='dup-ok'>OK</div></td>
+		    <?php else: ?>
+    		    <td><b>Web Server:</b> Not detected</td>
+    		    <td><div class='dup-fail'>Caution</div></td>
+		    <?php endif; ?>				
+		</tr>
+		<tr>
+		    <?php
+		    $open_basedir_set = ini_get("open_basedir");
+		    if (empty($open_basedir_set)):
+			?>
+    		    <td><b>Open Base Dir:</b> Off
+    		    <td><div class='dup-pass'>Good</div>
+		    <?php else: ?>
+    		    <td><b>Open Base Dir:</b> On</td>
+    		    <td><div class='dup-fail'>Caution</div></td>
+		    <?php endif; ?>
+		</tr>
+	    </table>
+		    
+	    <hr class='dup-dots' />
+	    <!-- SAPI -->
+	    <b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
+	    <b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> 
 	</div>
 </div>
 
@@ -2579,23 +2579,24 @@ DIALOG: SERVER CHECKS  -->
 <!-- =========================================
 DIALOG: DB CONNECTION CHECK  -->
 <div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
-	<div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-		<div id="dbconn-test-msg" style="min-height:50px"></div>
-		<br/><hr size="1" />
-		<div class="help">
-		<b>Common Connection Issues:</b><br/>
-		- Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
-		- Validate the database and database user exist on this server <br/>
-		- Check if the database user has the correct permission levels to this database <br/>
-		- The host 'localhost' may not work on all hosting providers <br/>
-		- Contact your hosting provider for the exact required parameters <br/>
-		- See the 'Database Setup Help' section on step 1 for more details<br/>
-		- Visit the online resources 'Common FAQ page' <br/>
-		</div>
+    <div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
+	<div id="dbconn-test-msg" style="min-height:50px"></div>
+	<br/><hr size="1" />
+	<div class="help">
+	    <b>Common Connection Issues:</b><br/>
+	    - Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
+	    - Validate the database and database user exist on this server <br/>
+	    - Check if the database user has the correct permission levels to this database <br/>
+	    - The host 'localhost' may not work on all hosting providers <br/>
+	    - Contact your hosting provider for the exact required parameters <br/>
+	    - See the 'Database Setup Help' section on step 1 for more details<br/>
+	    - Visit the online resources 'Common FAQ page' <br/>
 	</div>
-</div> <?php break;
-            case "2" :
-                        ?> <?php
+    </div>
+</div> <?php
+		    break;
+		    case "2" :
+			?> <?php
 	$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
 
 	$all_tables     = DupUtil::get_database_tables($dbh);
@@ -2839,9 +2840,10 @@ VIEW: STEP 2 - AJAX RESULT  -->
 	</div>
 </form>
 
- <?php break;
-            case "3" :
-                        ?> 
+ <?php
+		    break;
+		    case "3" :
+			?> 
 <script type="text/javascript">
 	/** **********************************************
 	* METHOD: Auto posts to admin page on success */	
@@ -3099,9 +3101,9 @@ DIALOG: TROUBLSHOOTING DIALOG -->
 </script>
  
   <?php
-                break;
-        }
-                ?>
+		    break;
+		}
+		?>
             </div>
         </div><br/>
 
