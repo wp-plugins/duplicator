@@ -3,7 +3,6 @@
 cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
 $ajax2_error_level = error_reporting();
 error_reporting(E_ERROR);
-header("Content-Type: application/json");
 
 /** * *****************************************************
  * CLASS::DUPDBTEXTSWAP

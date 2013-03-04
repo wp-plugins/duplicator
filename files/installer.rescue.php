@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '5134de32e04f13421_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '5134de32e04f13421_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '5134efefb74a02724_20130304_duplicatorplugins_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '5134efefb74a02724_20130304_duplicatorplugins';
 $GLOBALS['FW_DBHOST'] = 'localhost';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';
@@ -464,7 +464,7 @@ $JSON['pass'] = 0;
 cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
 $ajax1_error_level = error_reporting();
 error_reporting(E_ERROR);
-header("Content-Type: application/json");
+//header("Content-Type: application/json");
 
 //===============================
 //DATABASE TEST CONNECTION
@@ -803,7 +803,7 @@ die('');
 cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
 $ajax2_error_level = error_reporting();
 error_reporting(E_ERROR);
-header("Content-Type: application/json");
+//header("Content-Type: application/json");
 
 /** * *****************************************************
  * CLASS::DUPDBTEXTSWAP
