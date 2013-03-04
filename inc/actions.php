@@ -204,9 +204,11 @@ function duplicator_system_check() {
     $mysql_test2 = version_compare($wpdb->db_version(), '4.1', '>=');
     $json['SYS-104'] = ($mysql_test1 && $mysql_test2) ? 'Pass' : 'Fail';
 
-    //SYS-105 PHP VERSION
-    $test = version_compare(phpversion(), '5.2.17');
-    $json['SYS-105'] = ($test >= 0) ? 'Pass' : 'Fail';
+    //SYS-105 PHP TESTS
+    $php_test1 = version_compare(phpversion(), '5.2.17');
+	$php_test2 =  function_exists("file_get_contents");
+	$php_test3 =  function_exists("file_put_contents");
+    $json['SYS-105'] = ($php_test1 >= 0 && $php_test2 && $php_test3) ? 'Pass' : 'Fail';
 
     $result = in_array('Fail', $json);
     $json['Success'] = !$result;

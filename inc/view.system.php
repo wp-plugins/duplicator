@@ -1,31 +1,4 @@
 <!-- ==========================================
-DIALOG: PACKAGE CONFIRMATION-->
-<div id="dup-dlg-package-confirm" title="<?php _e('Package Creation', 'wpduplicator'); ?>">
-	<span class="ui-icon ui-icon-disk" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
-	<b><?php _e("Create a new Package Set?", 'wpduplicator');	?></b>
-	
-	<p style="padding:10px 20px 10px 20px; line-height:26px; text-align:left; border:1px solid #efefef; border-radius:5px">
-		<b><?php _e('Name', 'wpduplicator') ?>:</b> <span id="dup-dlg-package-confirm-msg"></span><br/>
-
-		<b><?php _e('Pre-Zip Overview', 'wpduplicator'); ?>:</b>
-		<span id='dup-dlg-package-confirm-scannow-data'>
-			<a href="javascript:void(0)" onclick="Duplicator.getSystemDirectory()"><?php _e("Perform Scan", 'wpduplicator') ?></a> 
-		</span><br/>
-		<i style='font-size:11px'><?php _e("Scan sizes over 1GB may not finish processing on some hosting providers.", 'wpduplicator') ?></i>
-		
-		<div style='font-size:11px; line-height:15px'>
-			<i>
-				<?php printf("%s <a href='javascript:void(0)'  onclick='Duplicator.optionsOpen()'>%s</a>. %s",
-						__('Note: A scan will provide an estimate on the size of your file system.  The scan will exclude items in the', 'wpduplicator'),
-						__('directory filter list', 'wpduplicator'),
-						__('Files that are not readable by the plugin will not be included in the overview.', 'wpduplicator'));
-				?>
-			</i>
-		</div>
-	</p>
-</div>
-
-<!-- ==========================================
 DIALOG: SYSTEM ERROR -->
 <div id="dup-dlg-system-error" title="<?php _e('System Constraint', 'wpduplicator'); ?>">
 	<p>
@@ -166,8 +139,15 @@ DIALOG: SYSTEM CHECK -->
 							printf("%s <b>[%s]</b>. %s",
 								__("The version of PHP on this server is ", 'wpduplicator'),
 								phpversion(),
-								__("The Duplicator requires at least PHP version 5.2.17+ on this server.  Please contact your host and have them upgrade to this stable secure version if the test fails.", 'wpduplicator')
+								__("The Duplicator requires PHP version 5.2.17+ or higher.  Please contact your host and have them upgrade to this stable secure version.", 'wpduplicator')
 							);
+							
+							printf("<br/><b>%s</b>:<br/>", __("Requried PHP functions", 'wpduplicator'));
+							
+							$php_test2 = function_exists("file_get_contents") ? 'Pass' : 'Fail';
+							printf("<b>%s</b> [file_get_contents] <br/>", $php_test2);
+							$php_test3 = function_exists("file_put_contents") ? 'Pass' : 'Fail';
+							printf("<b>%s</b> [file_put_contents] <br/>", $php_test3);
 						?>
 					</div>
 				</li>	

@@ -142,6 +142,12 @@ jQuery.noConflict()(function($) {
 	Duplicator.deletePackage = function (event) {
 		var arr = new Array;
 		var count = 0;
+		
+		if ($("#dup-pack-bulk-actions").val() != "delete") {
+			alert("<?php _e('Please select an action from the bulk action drop down menu to perform a specific action.', 'wpduplicator') ?>");
+			return;
+		}
+		
 		$("input[name=delete_confirm]").each(function() {
 			 if (this.checked) { arr[count++] = this.id; }
 		});
@@ -179,20 +185,6 @@ jQuery.noConflict()(function($) {
 	 *  Process Package and Installer */
 	$("#form-duplicator").submit(function (event) {
 		event.preventDefault();   
-		
-		//Validate length test
-		if ($("input[name=package_name]").val().length <= 0) 	{
-			Duplicator.setStatus("<?php _e('Please enter a backup name.', 'wpduplicator') ?>", "error");
-			return;
-		}
-		
-		//Vatlidate alphanumeric test
-		var newstring = $("input[name=package_name]").val().replace(/ /g, "");
-		$("input[name=package_name]").val(newstring)
-		if ( ! /^[0-9A-Za-z|_]+$/.test($("input[name=package_name]").val())) {
-			Duplicator.setStatus("<?php _e('Alpanumeric characters only on package name', 'wpduplicator') ?>", "error");
-			return;
-		}
 		
 		var packname = $("input[name=package_name]").val();
 		
@@ -273,11 +265,13 @@ jQuery.noConflict()(function($) {
 	$("#dup-dlg-system-error").dialog({autoOpen:false, height:550, width:650, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });	
 	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:355, width:800, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });	
 	$("#dup-dlg-package-confirm").dialog(
-		{autoOpen:false, height:300, width:625, create:Duplicator._dlgCreate, close:Duplicator._dlgClose,
+		{autoOpen:false, height:350, width:650, create:Duplicator._dlgCreate, close:Duplicator._dlgClose,
 		buttons: {
 				"<?php _e('Create Package Set', 'wpduplicator') ?>" : function() {
-					$(this).dialog("close");
-					Duplicator.processCreateConfirmation(true);
+					if (Duplicator.validateCreateConfirmation()) {
+						$(this).dialog("close");
+						Duplicator.processCreateConfirmation(true);
+					}
 				},
 				Cancel: function() {
 					$(this).dialog("close");
@@ -431,12 +425,32 @@ jQuery.noConflict()(function($) {
 	DIALOG: CREATE PACKAGE CONFIRMATION
 	Show the Create package dialog */
 	Duplicator.showCreateConfirmation = function(packname) {
-		$("#dup-dlg-package-confirm-msg").html(packname);
+		$("#dup-create-message").hide();
 		$("#dup-dlg-package-confirm").dialog('open');
+	}
+	
+	Duplicator.validateCreateConfirmation = function() {
+			//Validate length test
+			if ($("input[name=package_name]").val().length <= 0) 	{
+				$("#dup-create-message").fadeIn().html('<?php _e('Please enter a backup name.', 'wpduplicator') ?>');
+				return false;
+			}
+
+			//Vatlidate alphanumeric test
+			var newstring = $("input[name=package_name]").val().replace(/ /g, "");
+			$("input[name=package_name]").val(newstring)
+			if ( ! /^[0-9A-Za-z|_]+$/.test($("input[name=package_name]").val())) {
+				$("#dup-create-message").fadeIn().html('<?php _e('Alpanumeric characters only on package name.', 'wpduplicator') ?>');
+				return false;
+			}
+			
+			return true;
+
 	}
 	
 	Duplicator.processCreateConfirmation = function(result) {
 		if (result) {
+		
 			var msg = "<?php _e('Creating package may take several minutes. Please Wait... ', 'wpduplicator'); ?>";
 			var postmsg = "<?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.openLog()'>[%s]</a>", 	__('Preview Log', 'wpduplicator'));?>";
 			Duplicator.setStatus(msg, 'progress', postmsg);

@@ -1,4 +1,9 @@
 <?php
+/* JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
+cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
+$ajax2_error_level = error_reporting();
+error_reporting(E_ERROR);
+header("Content-Type: application/json");
 
 /** * *****************************************************
  * CLASS::DUPDBTEXTSWAP
@@ -493,5 +498,6 @@ DupUtil::log('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
 
 $JSON['step2']['pass'] = 1;
+error_reporting($ajax2_error_level);
 die(json_encode($JSON));
 ?>

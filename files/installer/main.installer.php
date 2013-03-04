@@ -22,7 +22,7 @@
  */
 
 //DOWNLOAD ONLY: 
-if (isset($_GET['get']) && file_exists($_GET['file'])) {
+if (isset($_GET['get']) && isset($_GET['file']) && file_exists($_GET['file'])) {
     if (strstr($_GET['file'], '_installer.php') || strstr($_GET['file'], 'installer.rescue.php')) {
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');

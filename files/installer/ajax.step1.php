@@ -8,6 +8,7 @@ define('MSG_ERR_ZIPNOTFOUND', '<div class="error"><b style="color:#C16C1D;">INST
 define('MSG_ERR_ZIPEXTRACTION', '<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> Failed in extracting zip file. Please be sure the archive is completely downloaded. Try to extract the archive manually to make sure the file is not corrupted.  </div>');
 define('MSG_ERR_ZIPMANUAL', '<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> When choosing manual package extraction, the contents of the package must already be extracted and the wp-config.php and database.sql files must be present in the same directory as the installer.php for the process to continue.  Please manually extract the package into the current directory before continuing in manual extraction mode.  Also validate that the wp-config.php and database.sql files are present.  </div>');
 define('MSG_ERR_MAKELOG', '<div class="error"><b style="color:#C16C1D;">INSTALL ERROR!</b><br/> PHP is having issues writing to the log file <b>' . DupUtil::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']) . '\installer-log.txt .</b> In order for the Duplicator to proceed validate your owner/group and permission settings for PHP on this path. Try temporarily setting you permissions to 777 to see if the issue gets resolved.  If you are on a shared hosting environment please contact your hosting company and tell them you are getting errors writing files to the path above when using PHP. </div>');
+define('MSG_FAIL_ZIPARCHIVE', '<div class="error"><b style="color:#C16C1D;">ZIPARCHIVE NOT INSTALLED!</b><br/> In order to extract the package.zip file the PHP ZipArchive module must be installed.  Please read the FAQ for more details.  You can still install this package but you will need to check the Manual package extraction checkbox found in the Advanced Options.  Please read the online user guide for details in performing a manual package extraction.</div>');
 define('MSG_FAIL_MYSQLI_SUPPORT', '<div class="error"><b style="color:#B80000;">PHP MYSQLI NOT ENABLED!</b><br/>In order to complete an install the mysqli extension for PHP is required. If you are on a hosted server please contact your host and request that mysqli be enabled.  For more information visit: http://php.net/manual/en/mysqli.installation.php</div>');
 define('MSG_FAIL_DBCONNECT', '<div class="error"><b style="color:#B80000;">DATABASE CONNECTION FAILED!</b><br/></div>');
 define('MSG_FAIL_DBCONNECT_CREATE', '<div class="error"><b style="color:#B80000;">DATABASE CREATION FAILURE!</b><br/> Unable to create database "%s".<br/>  Please try creating the database manually to proceed with installation</div>');
@@ -39,7 +40,11 @@ $ajax1_start = DupUtil::get_microtime();
 $JSON = array();
 $JSON['pass'] = 0;
 
-
+/* JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
+cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
+$ajax1_error_level = error_reporting();
+error_reporting(E_ERROR);
+header("Content-Type: application/json");
 
 //===============================
 //DATABASE TEST CONNECTION
@@ -144,6 +149,11 @@ if ($_POST['zip_manual']) {
 } else {
 	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
 		DupUtil::log("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
+	}
+	
+	if (! class_exists('ZipArchive')) {
+		DupUtil::log("ERROR: Stopping install process.  Trying to extract without ZipArchive module installed.  Please use the 'Manual Package extraction' mode to extract zip file.");
+		die(MSG_FAIL_ZIPARCHIVE . $back_link);
 	}
 
 	$target = $root_path;
@@ -364,5 +374,6 @@ $JSON['table_count'] = $dbtable_count;
 $JSON['table_rows'] = ($dbquery_rows - ($dbtable_count + $dbdelete_count + $dbquery_errs));
 $JSON['query_errs'] = $dbquery_errs;
 echo json_encode($JSON);
+error_reporting($ajax1_error_level);
 die('');
 ?>

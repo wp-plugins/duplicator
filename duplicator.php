@@ -270,14 +270,12 @@ if (is_admin() == true) {
         //Sub Menus
         $page_diag = add_submenu_page(basename(__FILE__), __('Diagnostics', 'wpduplicator'), __('Diagnostics', 'wpduplicator'), 'import', 'duplicator_diag_page', 'duplicator_diag_page');
         $page_support = add_submenu_page(basename(__FILE__), __('Support', 'wpduplicator'), __('Support', 'wpduplicator'), 'import', 'duplicator_support_page', 'duplicator_support_page');
-        $page_about = add_submenu_page(basename(__FILE__), __('All About', 'wpduplicator'), __('All About', 'wpduplicator'), 'import', 'duplicator_about_page', 'duplicator_about_page');
 
 
         //Apply scripts and styles
         add_action('admin_print_scripts-' . $page_main, 'duplicator_scripts');
         add_action('admin_print_styles-' . $page_main, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_diag, 'duplicator_styles');
-        add_action('admin_print_styles-' . $page_about, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_support, 'duplicator_styles');
     }
 

@@ -24,10 +24,6 @@
 				<h2 style='margin:-12px 0px -7px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:18px"> <?php _e("Diagnostics", 'wpduplicator') ?></span> </h2>
 				<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
 			</div> 
-			<div style='float:right; padding:5px 0px 0px 0px; white-space:nowrap'>
-				<input type="button" id="btn-help-dialog" onclick='window.location.href="?page=duplicator_support_page"' title="<?php _e("Support", 'wpduplicator') ?>" />
-				<input type="button" id="dup-btn-about" onclick='window.location.href="?page=duplicator_about_page"' title="<?php _e("All About", 'wpduplicator') ?>" />
-			</div>
 			<br style='clear:both' />
 		</div>
 		
