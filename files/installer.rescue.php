@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '5134efefb74a02724_20130304_duplicatorplugins_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '5134efefb74a02724_20130304_duplicatorplugins';
+$GLOBALS['FW_PACKAGE_NAME'] = '5138c38b6a6397479_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '5138c38b6a6397479_package';
 $GLOBALS['FW_DBHOST'] = 'localhost';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';
@@ -464,7 +464,6 @@ $JSON['pass'] = 0;
 cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
 $ajax1_error_level = error_reporting();
 error_reporting(E_ERROR);
-//header("Content-Type: application/json");
 
 //===============================
 //DATABASE TEST CONNECTION
@@ -736,7 +735,7 @@ while ($counter < $sql_result_file_length) {
 			DupUtil::log("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
 			$dbquery_errs++;
 
-			//Buffer data to browser to keep connection open				
+		//Buffer data to browser to keep connection open				
 		} else {
 			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
 				$fcgi_buffer_count = 0;
@@ -803,7 +802,6 @@ die('');
 cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
 $ajax2_error_level = error_reporting();
 error_reporting(E_ERROR);
-//header("Content-Type: application/json");
 
 /** * *****************************************************
  * CLASS::DUPDBTEXTSWAP
@@ -1193,6 +1191,31 @@ if ($_POST['postguid']) {
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 
+
+/*CREATE NEW USER LOGIC */
+if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
+	
+	$newuser_datetime =	@date("Y-m-d H:i:s");
+	$newuser_security = mysqli_real_escape_string($dbh, 'a:1:{s:13:"administrator";s:1:"1";}');
+	
+
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}users` 
+		(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) 
+		VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '', '', '{$newuser_datetime}', '', '0', '')");
+
+	$newuser_insert_id = mysqli_insert_id($dbh);
+
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$user_insert_id}', 'wp_capabilities', '{$newuser_security}')");
+			
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wpplug_capabilities', '{$newuser_security}')");
+
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wp_user_level', '10')");
+}
+
+
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
@@ -1322,7 +1345,7 @@ fieldset {border:1px solid silver; border-radius:5px; padding:10px}
 h3 {margin:1px; padding:1px; font-size:14px;}
 a {color:#222}
 a:hover{color:gray}
-input[type=text] { width:520px; border-radius:3px; height:17px; font-size:12px; border:1px solid silver;}
+input[type=text] { width:500px; border-radius:3px; height:17px; font-size:12px; border:1px solid silver;}
 
 div#content {border:1px solid #CDCDCD;  width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow: 3px 3px 5px 6px #ccc;}
 div#content-inner {padding:10px 30px; min-height:550px}
@@ -2631,8 +2654,14 @@ DIALOG: DB CONNECTION CHECK  -->
 	* Timeout (10000000 = 166 minutes) */
 	Duplicator.runUpdate = function() {
 		
+		//Validation
+		var wp_username = $.trim($("#wp_username").val()).length || 0;
+		var wp_password = $.trim($("#wp_password").val()).length || 0;
+		
 		if ( $.trim($("#url_new").val()) == "" )  {alert("The 'New URL' field is required!"); return false;}
 		if ( $.trim($("#siteurl").val()) == "" )  {alert("The 'Site URL' field is required!"); return false;}
+		if (wp_username >= 1 && wp_username < 4) {alert("The New Admin Account 'Username' must be four or more characters"); return false;}
+		if (wp_username >= 4 && wp_password < 8) {alert("The New Admin Account 'Password' must be eight or more characters"); return false;}
 
 		$.ajax({
 			type: "POST",
@@ -2766,7 +2795,28 @@ VIEW: STEP 2- INPUT -->
 		</tr>
 	</table><br/>
 	
-	<!-- ADVANCED OPTIONS -->
+	<!-- ==========================
+    CREATE NEW USER -->
+	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(250)"><b>New Admin Account...</b></a>
+	<div id='dup-step2-user-opts' style="display:none;">
+	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
+		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates a new WordPress administrator account where the username can not be changed.</i></td></tr>
+		<tr>
+			<td>Username </td>
+			<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>
+		</tr>	
+		<tr>
+			<td>Password</td>
+			<td>
+				<input type="text" name="wp_password" id="wp_password" value="" title="8 characters minimum"  placeholder="(8 or more characters)" />
+			</td>
+		</tr>
+	</table>
+	</div><br/><br/>
+	
+	
+	<!-- ==========================
+    ADVANCED OPTIONS -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
 	<div id='dup-step2-adv-opts' style="display:none;">
 		<table width="100%" border="0" cellspacing="1" cellpadding="1" >
@@ -3195,6 +3245,18 @@ DIALOG: TROUBLSHOOTING DIALOG -->
 
                     <b>New Settings:</b><br/>
                     These are the new values (URL, Path and Title) you can update for the new location at which your site will be installed at.
+                    <br/>		
+                </fieldset>
+				
+				<!-- NEW ADMIN ACCOUNT-->
+                <fieldset>
+                    <legend><b>New Admin Account</b></legend>
+                    <b>Username:</b><br/>
+                    The new username to create.  This will create a new WordPress administrator account.
+                    <br/><br/>
+
+                    <b>Password:</b><br/>
+                    The new password for the user. 
                     <br/>		
                 </fieldset>
 

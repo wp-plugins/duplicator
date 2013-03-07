@@ -320,6 +320,18 @@ if (isset($_POST['action_ajax'])) {
                     These are the new values (URL, Path and Title) you can update for the new location at which your site will be installed at.
                     <br/>		
                 </fieldset>
+				
+				<!-- NEW ADMIN ACCOUNT-->
+                <fieldset>
+                    <legend><b>New Admin Account</b></legend>
+                    <b>Username:</b><br/>
+                    The new username to create.  This will create a new WordPress administrator account.
+                    <br/><br/>
+
+                    <b>Password:</b><br/>
+                    The new password for the user. 
+                    <br/>		
+                </fieldset>
 
                 <!-- ADVANCED OPTS -->
                 <fieldset>

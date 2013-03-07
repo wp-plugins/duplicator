@@ -315,7 +315,7 @@ while ($counter < $sql_result_file_length) {
 			DupUtil::log("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
 			$dbquery_errs++;
 
-			//Buffer data to browser to keep connection open				
+		//Buffer data to browser to keep connection open				
 		} else {
 			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
 				$fcgi_buffer_count = 0;

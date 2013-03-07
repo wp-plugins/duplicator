@@ -16,8 +16,14 @@
 	* Timeout (10000000 = 166 minutes) */
 	Duplicator.runUpdate = function() {
 		
+		//Validation
+		var wp_username = $.trim($("#wp_username").val()).length || 0;
+		var wp_password = $.trim($("#wp_password").val()).length || 0;
+		
 		if ( $.trim($("#url_new").val()) == "" )  {alert("The 'New URL' field is required!"); return false;}
 		if ( $.trim($("#siteurl").val()) == "" )  {alert("The 'Site URL' field is required!"); return false;}
+		if (wp_username >= 1 && wp_username < 4) {alert("The New Admin Account 'Username' must be four or more characters"); return false;}
+		if (wp_username >= 4 && wp_password < 8) {alert("The New Admin Account 'Password' must be eight or more characters"); return false;}
 
 		$.ajax({
 			type: "POST",
@@ -151,7 +157,28 @@ VIEW: STEP 2- INPUT -->
 		</tr>
 	</table><br/>
 	
-	<!-- ADVANCED OPTIONS -->
+	<!-- ==========================
+    CREATE NEW USER -->
+	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(250)"><b>New Admin Account...</b></a>
+	<div id='dup-step2-user-opts' style="display:none;">
+	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
+		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates a new WordPress administrator account where the username can not be changed.</i></td></tr>
+		<tr>
+			<td>Username </td>
+			<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>
+		</tr>	
+		<tr>
+			<td>Password</td>
+			<td>
+				<input type="text" name="wp_password" id="wp_password" value="" title="8 characters minimum"  placeholder="(8 or more characters)" />
+			</td>
+		</tr>
+	</table>
+	</div><br/><br/>
+	
+	
+	<!-- ==========================
+    ADVANCED OPTIONS -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
 	<div id='dup-step2-adv-opts' style="display:none;">
 		<table width="100%" border="0" cellspacing="1" cellpadding="1" >

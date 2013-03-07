@@ -6,7 +6,7 @@ fieldset {border:1px solid silver; border-radius:5px; padding:10px}
 h3 {margin:1px; padding:1px; font-size:14px;}
 a {color:#222}
 a:hover{color:gray}
-input[type=text] { width:520px; border-radius:3px; height:17px; font-size:12px; border:1px solid silver;}
+input[type=text] { width:500px; border-radius:3px; height:17px; font-size:12px; border:1px solid silver;}
 
 div#content {border:1px solid #CDCDCD;  width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow: 3px 3px 5px 6px #ccc;}
 div#content-inner {padding:10px 30px; min-height:550px}

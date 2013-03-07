@@ -392,6 +392,31 @@ if ($_POST['postguid']) {
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 
+
+/*CREATE NEW USER LOGIC */
+if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
+	
+	$newuser_datetime =	@date("Y-m-d H:i:s");
+	$newuser_security = mysqli_real_escape_string($dbh, 'a:1:{s:13:"administrator";s:1:"1";}');
+	
+
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}users` 
+		(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) 
+		VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '', '', '{$newuser_datetime}', '', '0', '')");
+
+	$newuser_insert_id = mysqli_insert_id($dbh);
+
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$user_insert_id}', 'wp_capabilities', '{$newuser_security}')");
+			
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wpplug_capabilities', '{$newuser_security}')");
+
+	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wp_user_level', '10')");
+}
+
+
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
