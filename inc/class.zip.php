@@ -82,7 +82,7 @@ class Duplicator_Zip {
             }
 
             //EXCLUDE: Directory Exclusions List
-            if ($GLOBALS['duplicator_bypass-array'] != null) {
+            if (is_array($GLOBALS['duplicator_bypass-array'])) {
                 foreach ($GLOBALS['duplicator_bypass-array'] as $val) {
                     if (duplicator_safe_path($val) == $folderPath) {
                         duplicator_log("path filter found: {$val}", 2);
@@ -114,6 +114,9 @@ class Duplicator_Zip {
                         if ($ext == '' || !in_array($ext, $this->skipNames)) {
                             $this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
                         }
+						/*if ( ! isset($this->skipNames["{$ext}"])) {
+                            $this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
+                        }*/
                     }
                     $this->limitItems++;
                 }

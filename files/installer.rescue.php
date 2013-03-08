@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '5138c38b6a6397479_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '5138c38b6a6397479_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '513a1196f2b543784_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '513a1196f2b543784_package';
 $GLOBALS['FW_DBHOST'] = 'localhost';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';
@@ -2800,7 +2800,7 @@ VIEW: STEP 2- INPUT -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(250)"><b>New Admin Account...</b></a>
 	<div id='dup-step2-user-opts' style="display:none;">
 	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
-		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates a new WordPress administrator account where the username can not be changed.</i></td></tr>
+		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates an new optional WordPress administrator. Usernames are not changeable from the within the UI.</i></td></tr>
 		<tr>
 			<td>Username </td>
 			<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>

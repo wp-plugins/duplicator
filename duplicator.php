@@ -54,7 +54,7 @@ if (is_admin() == true) {
 
     //Default Arrays
     $GLOBALS['duplicator_bypass-array'] = explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
-    $GLOBALS['duplicator_bypass-array'] = count($GLOBALS['duplicator_bypass-array']) ? $GLOBALS['duplicator_bypass-array'] : null;
+    $GLOBALS['duplicator_bypass-array'] = count($GLOBALS['duplicator_bypass-array']) ? $GLOBALS['duplicator_bypass-array'] : array();
     $GLOBALS['duplicator_skip_ext-array'] = explode(";", $GLOBALS['duplicator_opts']['skip_ext']) ? explode(";", $GLOBALS['duplicator_opts']['skip_ext']) : array();
 
     require_once 'inc/functions.php';
