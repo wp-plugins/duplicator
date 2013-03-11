@@ -128,15 +128,7 @@
 					   <tr>
 						   <td><?php _e("Memory Limit Max", 'wpduplicator'); ?></td>
 						   <td><?php echo WP_MAX_MEMORY_LIMIT ?></td>
-					   </tr>		
-					   <tr>
-						   <td><?php _e("fs_chmod_dir", 'wpduplicator'); ?></td>
-						   <td><?php echo (defined('FS_CHMOD_DIR')) ? FS_CHMOD_DIR : "unknown"; ?></td>
-					   </tr>		
-					   <tr>
-						   <td><?php _e("fs_chmod_file", 'wpduplicator'); ?></td>
-						   <td><?php echo (defined('FS_CHMOD_FILE')) ? FS_CHMOD_FILE : "unknown"; ?></td>
-					   </tr>	
+					   </tr>			
 					   <tr>
 						   <td class='dup-settings-diag-header' colspan="2">PHP</td>
 					   </tr>
