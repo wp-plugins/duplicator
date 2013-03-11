@@ -26,8 +26,8 @@
 	<meta name="robots" content="noindex,nofollow">
 	<link rel="stylesheet" href="<?php echo $admin_url; ?>/load-styles.php?c=0&amp;dir=ltr&amp;load=admin-bar,wp-jquery-ui-dialog,wp-admin&amp;ver=63e8d12bee407fb9bdf078f542ef8b29" type="text/css" media="all">
 	<link rel="stylesheet" id="colors-css" href="<?php echo $admin_url; ?>/css/colors-fresh.css?ver=20111206" type="text/css" media="all">
-	<link rel="stylesheet" id="jquery-ui-css" href="<?php echo $plugins_url; ?>/duplicator/css/jquery-ui.css?ver=3.3.2" type="text/css" media="all">
-	<link rel="stylesheet" id="duplicator_style-css" href="<?php echo $plugins_url; ?>/duplicator/css/style.css?ver=3.3.2" type="text/css" media="all">
+	<link rel="stylesheet" id="jquery-ui-css" href="<?php echo $plugins_url; ?>/duplicator/assets/css/jquery-ui.css?ver=3.3.2" type="text/css" media="all">
+	<link rel="stylesheet" id="duplicator_style-css" href="<?php echo $plugins_url; ?>/duplicator/assets/css/style.css?ver=3.3.2" type="text/css" media="all">
 	<style type="text/css">
 		iframe#log-data {
 			background-color:#efefef;
@@ -39,7 +39,6 @@
 		span#spanCount {display:inline-block !important; padding:0px 3px 0px 3px; width:15px; white-space:nowrap;}
 	</style>
 	<script type="text/javascript" src="<?php echo $admin_url; ?>/load-scripts.php?c=0&amp;load=jquery,utils&amp;ver=edec3fab0cb6297ea474806db1895fa7"></script>
-	<script type="text/javascript" src="<?php echo $plugins_url; ?>/duplicator/js/jquery-ui.min.js?ver=1.8.21"></script>
 	<script type="text/javascript">
 	jQuery.noConflict()(function($) {
 		jQuery(document).ready(function() {

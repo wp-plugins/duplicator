@@ -13,8 +13,11 @@ function duplicator_create() {
     global $wp_version;
     global $wpdb;
     global $current_user;
+	
+	$error_level = error_reporting();
+	error_reporting(E_ERROR);
 
-    $fulltime_start = DuplicatorUtils::get_microtime();
+    $fulltime_start = DuplicatorUtils::GetMicrotime();
     $packname = isset($_POST['package_name']) ? trim($_POST['package_name']) : null;
 
     $secure_token = uniqid() . mt_rand(1000, 9999);
@@ -126,14 +129,15 @@ function duplicator_create() {
         }
     }
     
-    $fulltime_end = DuplicatorUtils::get_microtime();
-    $fulltime_sum = DuplicatorUtils::elapsed_time($fulltime_end, $fulltime_start);
+    $fulltime_end = DuplicatorUtils::GetMicrotime();
+    $fulltime_sum = DuplicatorUtils::ElapsedTime($fulltime_end, $fulltime_start);
     duplicator_log("COMPLETE PACKAGE RUNTIME: {$fulltime_sum}");
 
     duplicator_log("********************************************************************************");
     duplicator_log("DONE PROCESSING => {$packname} " . @date('h:i:s'));
     duplicator_log("********************************************************************************");
     @fclose($GLOBALS['duplicator_package_log_handle']);
+	error_reporting($error_level);
     die();
 }
 
@@ -284,13 +288,13 @@ function duplicator_unlink($uniqueid) {
 }
 
 /**
- *  DUPLICATOR_SETTINGS
- *  Saves plugin settings
+ *  DUPLICATOR_TASK_SAVE
+ *  Saves options associted with a packages tasks
  *  
  *  @return string   A message about the action
  * 		- log:act__settings=>saved
  */
-function duplicator_settings() {
+function duplicator_task_save() {
 
     //defaults
     add_option('duplicator_options', '');
@@ -314,14 +318,14 @@ function duplicator_settings() {
         'email_others' => $_POST['email_others'],
         'skip_ext' => str_replace(",", ";", $skip_ext),
         'dir_bypass' => $by_pass_clean,
-        'log_level' => $_POST['log_level'],
-        'rm_snapshot' => $_POST['rm_snapshot']);
+        'log_level' => $_POST['log_level']);
 
 
     update_option('duplicator_options', serialize($duplicator_opts));
 
-    die("log:act__settings=>saved");
+    die("log:act__task_save=>saved");
 }
+
 
 //DO NOT ADD A CARRIAGE RETURN BEYOND THIS POINT (headers issue)!!
 ?>

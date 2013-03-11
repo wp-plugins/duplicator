@@ -139,6 +139,26 @@ e||(e=b.text()||"",e=jQuery.template(s,"{{ko_with $item.koBindingContext}}"+e+"{
 </script>
 
 
+<script type="text/javascript">
+/**
+ * password_strength_plugin.js
+ * Copyright (c) 20010 myPocket technologies (www.mypocket-technologies.com)
+
+ * @author Darren Mason (djmason9@gmail.com)
+ * @date 3/13/2009
+ * @projectDescription Password Strength Meter is a jQuery plug-in provide you smart algorithm to detect a password strength. 
+ * Based on Firas Kassem orginal plugin - http://phiras.wordpress.com/2007/04/08/password-strength-meter-a-jquery-plugin/
+ * @version 1.0.1
+*/
+(function(a){a.fn.shortPass="Too short";a.fn.badPass="Weak";a.fn.goodPass="Good";a.fn.strongPass="Strong";a.fn.samePassword="Username and Password identical.";a.fn.resultStyle="";a.fn.passStrength=function(b){var d={shortPass:"shortPass",badPass:"badPass",goodPass:"goodPass",strongPass:"strongPass",baseStyle:"testresult",userid:"",messageloc:1};
+var c=a.extend(d,b);return this.each(function(){var e=a(this);a(e).unbind().keyup(function(){var f=a.fn.teststrength(a(this).val(),a(c.userid).val(),c);if(c.messageloc===1){a(this).next("."+c.baseStyle).remove();a(this).after('<span class="'+c.baseStyle+'"><span></span></span>');a(this).next("."+c.baseStyle).addClass(a(this).resultStyle).find("span").text(f)
+}else{a(this).prev("."+c.baseStyle).remove();a(this).before('<span class="'+c.baseStyle+'"><span></span></span>');a(this).prev("."+c.baseStyle).addClass(a(this).resultStyle).find("span").text(f)}});a.fn.teststrength=function(f,i,g){var h=0;if(f.length<4){this.resultStyle=g.shortPass;return a(this).shortPass
+}if(f.toLowerCase()==i.toLowerCase()){this.resultStyle=g.badPass;return a(this).samePassword}h+=f.length*4;h+=(a.fn.checkRepetition(1,f).length-f.length)*1;h+=(a.fn.checkRepetition(2,f).length-f.length)*1;h+=(a.fn.checkRepetition(3,f).length-f.length)*1;h+=(a.fn.checkRepetition(4,f).length-f.length)*1;
+if(f.match(/(.*[0-9].*[0-9].*[0-9])/)){h+=5}if(f.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/)){h+=5}if(f.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)){h+=10}if(f.match(/([a-zA-Z])/)&&f.match(/([0-9])/)){h+=15}if(f.match(/([!,@,#,$,%,^,&,*,?,_,~])/)&&f.match(/([0-9])/)){h+=15}if(f.match(/([!,@,#,$,%,^,&,*,?,_,~])/)&&f.match(/([a-zA-Z])/)){h+=15
+}if(f.match(/^\w+$/)||f.match(/^\d+$/)){h-=10}if(h<0){h=0}if(h>100){h=100}if(h<34){this.resultStyle=g.badPass;return a(this).badPass}if(h<68){this.resultStyle=g.goodPass;return a(this).goodPass}this.resultStyle=g.strongPass;return a(this).strongPass}})}})(jQuery);$.fn.checkRepetition=function(a,f){var d="";
+for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=e&&(f.charAt(b+c)==f.charAt(b+c+a))}if(b<a){e=false}if(e){c+=a-1;e=false}else{d+=f.charAt(c)}}return d};
+</script>
+
 
 <script type="text/javascript">
 	//Unique namespace

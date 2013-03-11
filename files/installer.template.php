@@ -1577,13 +1577,22 @@ div.dup-footer-buttons  input, button, div#dup-step1-sys-req-btn:hover {cursor:p
 .ui-progressbar { height:2em; text-align: left; overflow: hidden; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
 
+/*!
+ * password indicator
+ */
+.top_testresult{font-weight: bold;	font-size:11px; color:#222;	padding:1px 1px 1px 4px; margin:4px 0px 0px 0px; width:495px; dislay:inline-block}
+.top_testresult span{margin:0;}
+.top_shortPass{background:#edabab; border:1px solid #bc0000;display:block;}
+.top_badPass{background:#edabab;border:1px solid #bc0000;display:block;}
+.top_goodPass{background:#ffffe0; border:1px solid #e6db55;	display:block;}
+.top_strongPass{background:#d3edab;	border:1px solid #73bc00; display:block;}
+
 
 
 /* ============================
 CUSTOME OVERIDE */
 .ui-textclose {display:inline-block; padding:0px 0px 0px 3px; line-height:15px;}
 a.ui-dialog-titlebar-close {text-decoration:none}
-
 
 </style>
         <script type="text/javascript">
@@ -1726,6 +1735,26 @@ e||(e=b.text()||"",e=jQuery.template(s,"{{ko_with $item.koBindingContext}}"+e+"{
 })(window,document,navigator);
 </script>
 
+
+<script type="text/javascript">
+/**
+ * password_strength_plugin.js
+ * Copyright (c) 20010 myPocket technologies (www.mypocket-technologies.com)
+
+ * @author Darren Mason (djmason9@gmail.com)
+ * @date 3/13/2009
+ * @projectDescription Password Strength Meter is a jQuery plug-in provide you smart algorithm to detect a password strength. 
+ * Based on Firas Kassem orginal plugin - http://phiras.wordpress.com/2007/04/08/password-strength-meter-a-jquery-plugin/
+ * @version 1.0.1
+*/
+(function(a){a.fn.shortPass="Too short";a.fn.badPass="Weak";a.fn.goodPass="Good";a.fn.strongPass="Strong";a.fn.samePassword="Username and Password identical.";a.fn.resultStyle="";a.fn.passStrength=function(b){var d={shortPass:"shortPass",badPass:"badPass",goodPass:"goodPass",strongPass:"strongPass",baseStyle:"testresult",userid:"",messageloc:1};
+var c=a.extend(d,b);return this.each(function(){var e=a(this);a(e).unbind().keyup(function(){var f=a.fn.teststrength(a(this).val(),a(c.userid).val(),c);if(c.messageloc===1){a(this).next("."+c.baseStyle).remove();a(this).after('<span class="'+c.baseStyle+'"><span></span></span>');a(this).next("."+c.baseStyle).addClass(a(this).resultStyle).find("span").text(f)
+}else{a(this).prev("."+c.baseStyle).remove();a(this).before('<span class="'+c.baseStyle+'"><span></span></span>');a(this).prev("."+c.baseStyle).addClass(a(this).resultStyle).find("span").text(f)}});a.fn.teststrength=function(f,i,g){var h=0;if(f.length<4){this.resultStyle=g.shortPass;return a(this).shortPass
+}if(f.toLowerCase()==i.toLowerCase()){this.resultStyle=g.badPass;return a(this).samePassword}h+=f.length*4;h+=(a.fn.checkRepetition(1,f).length-f.length)*1;h+=(a.fn.checkRepetition(2,f).length-f.length)*1;h+=(a.fn.checkRepetition(3,f).length-f.length)*1;h+=(a.fn.checkRepetition(4,f).length-f.length)*1;
+if(f.match(/(.*[0-9].*[0-9].*[0-9])/)){h+=5}if(f.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/)){h+=5}if(f.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)){h+=10}if(f.match(/([a-zA-Z])/)&&f.match(/([0-9])/)){h+=15}if(f.match(/([!,@,#,$,%,^,&,*,?,_,~])/)&&f.match(/([0-9])/)){h+=15}if(f.match(/([!,@,#,$,%,^,&,*,?,_,~])/)&&f.match(/([a-zA-Z])/)){h+=15
+}if(f.match(/^\w+$/)||f.match(/^\d+$/)){h-=10}if(h<0){h=0}if(h>100){h=100}if(h<34){this.resultStyle=g.badPass;return a(this).badPass}if(h<68){this.resultStyle=g.goodPass;return a(this).goodPass}this.resultStyle=g.strongPass;return a(this).strongPass}})}})(jQuery);$.fn.checkRepetition=function(a,f){var d="";
+for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=e&&(f.charAt(b+c)==f.charAt(b+c+a))}if(b<a){e=false}if(e){c+=a-1;e=false}else{d+=f.charAt(c)}}return d};
+</script>
 
 
 <script type="text/javascript">
@@ -2661,7 +2690,7 @@ DIALOG: DB CONNECTION CHECK  -->
 		if ( $.trim($("#url_new").val()) == "" )  {alert("The 'New URL' field is required!"); return false;}
 		if ( $.trim($("#siteurl").val()) == "" )  {alert("The 'Site URL' field is required!"); return false;}
 		if (wp_username >= 1 && wp_username < 4) {alert("The New Admin Account 'Username' must be four or more characters"); return false;}
-		if (wp_username >= 4 && wp_password < 8) {alert("The New Admin Account 'Password' must be eight or more characters"); return false;}
+		if (wp_username >= 4 && wp_password < 6) {alert("The New Admin Account 'Password' must be six or more characters"); return false;}
 
 		$.ajax({
 			type: "POST",
@@ -2734,6 +2763,15 @@ DIALOG: DB CONNECTION CHECK  -->
 	$(document).ready(function() {
 		Duplicator.getNewURL('url_new');
 		Duplicator.getNewURL('siteurl');
+		
+		$("#wp_password").passStrength({
+				shortPass: 		"top_shortPass",
+				badPass:		"top_badPass",
+				goodPass:		"top_goodPass",
+				strongPass:		"top_strongPass",
+				baseStyle:		"top_testresult",
+				userid:			"#wp_username",
+				messageloc:		1	});
 	});
 </script>
 
@@ -2797,18 +2835,18 @@ VIEW: STEP 2- INPUT -->
 	
 	<!-- ==========================
     CREATE NEW USER -->
-	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(250)"><b>New Admin Account...</b></a>
+	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(0)"><b>New Admin Account...</b></a>
 	<div id='dup-step2-user-opts' style="display:none;">
 	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
-		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates an new optional WordPress administrator. Usernames are not changeable from the within the UI.</i></td></tr>
+		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates an new optional WordPress administrator.</i></td></tr>
 		<tr>
 			<td>Username </td>
 			<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>
 		</tr>	
 		<tr>
-			<td>Password</td>
+			<td valign="top">Password</td>
 			<td>
-				<input type="text" name="wp_password" id="wp_password" value="" title="8 characters minimum"  placeholder="(8 or more characters)" />
+				<input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" />
 			</td>
 		</tr>
 	</table>
@@ -2817,7 +2855,7 @@ VIEW: STEP 2- INPUT -->
 	
 	<!-- ==========================
     ADVANCED OPTIONS -->
-	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
+	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(0)"><b>Advanced Options...</b></a>
 	<div id='dup-step2-adv-opts' style="display:none;">
 		<table width="100%" border="0" cellspacing="1" cellpadding="1" >
 			<tr>
@@ -3252,7 +3290,7 @@ DIALOG: TROUBLSHOOTING DIALOG -->
                 <fieldset>
                     <legend><b>New Admin Account</b></legend>
                     <b>Username:</b><br/>
-                    The new username to create.  This will create a new WordPress administrator account.
+                    The new username to create.  This will create a new WordPress administrator account.  Please note that usernames are not changeable from the within the UI.
                     <br/><br/>
 
                     <b>Password:</b><br/>

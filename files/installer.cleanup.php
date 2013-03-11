@@ -16,9 +16,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="robots" content="noindex,nofollow">
 	<link rel="stylesheet" href="<?php echo $admin_url; ?>/load-styles.php?c=0&amp;dir=ltr&amp;load=admin-bar,wp-jquery-ui-dialog,wp-admin&amp;ver=63e8d12bee407fb9bdf078f542ef8b29" type="text/css" media="all">
-	<link rel="stylesheet" id="colors-css" href="<?php echo $admin_url; ?>/css/colors-fresh.css?ver=20111206" type="text/css" media="all">
-	<link rel="stylesheet" id="jquery-ui-css" href="<?php echo $plugins_url; ?>/duplicator/css/jquery-ui.css?ver=3.3.2" type="text/css" media="all">
-	<link rel="stylesheet" id="duplicator_style-css" href="<?php echo $plugins_url; ?>/duplicator/css/style.css?ver=3.3.2" type="text/css" media="all">
+	<link rel="stylesheet" id="colors-css" href="<?php echo $admin_url; ?>/assets/css/colors-fresh.css?ver=20111206" type="text/css" media="all">
+	<link rel="stylesheet" id="jquery-ui-css" href="<?php echo $plugins_url; ?>/duplicator/assets/css/jquery-ui.css?ver=3.3.2" type="text/css" media="all">
+	<link rel="stylesheet" id="duplicator_style-css" href="<?php echo $plugins_url; ?>/duplicator/assets/css/style.css?ver=3.3.2" type="text/css" media="all">
 	<style type="text/css">
 		div.success {color:#4A8254}
 		div.failed {color:red}
@@ -48,12 +48,14 @@
 			$html .= (@unlink($installer_sql))  ?  "<div class='success'>Successfully removed {$installer_sql}</div>"  	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_sql}</div>";
 			$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_log}</div>";
 			
+			
 			$path_parts = pathinfo($package_name);
 			if ($path_parts['extension'] == "zip"  && ! is_dir($package_name)) {
 				$html .= (@unlink($package_name))   ?  "<div class='success'>Successfully removed {$package_name}</div>"   :  "<div class='failed'>Does not exsist or unable to remove file: {$package_name}</div>";
 			} else {
-				$html .= "<div class='failed'>Unable to remove invlaid zip file {$package_name}</div>";
+				$html .= "<div class='failed'>Unable to remove zip file from {$package_name}.  Validate that a package file exists.</div>";
 			}
+			
 			
 		} else {
 			$html .= "<div class='failed'>Unable to remove the installer files.</div>";

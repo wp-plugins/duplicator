@@ -20,7 +20,7 @@ class Duplicator_Zip {
     function __construct($zipFilePath, $folderPath, $sqlfilepath) {
         try {
             
-            $time_start = DuplicatorUtils::get_microtime();
+            $time_start = DuplicatorUtils::GetMicrotime();
             duplicator_log("ARCHIVE FOLDER: {$folderPath}");
             duplicator_log("ARCHIVE FILE:   {$zipFilePath}");
 
@@ -62,8 +62,8 @@ class Duplicator_Zip {
 
             duplicator_log($status_msg);
             
-            $time_end = DuplicatorUtils::get_microtime();
-            $time_sum = DuplicatorUtils::elapsed_time($time_end, $time_start);
+            $time_end = DuplicatorUtils::GetMicrotime();
+            $time_sum = DuplicatorUtils::ElapsedTime($time_end, $time_start);
             duplicator_log("ZIP TOTAL RUNTIME: {$time_sum}");
             
         } 
@@ -114,9 +114,6 @@ class Duplicator_Zip {
                         if ($ext == '' || !in_array($ext, $this->skipNames)) {
                             $this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
                         }
-						/*if ( ! isset($this->skipNames["{$ext}"])) {
-                            $this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
-                        }*/
                     }
                     $this->limitItems++;
                 }
@@ -131,7 +128,7 @@ class Duplicator_Zip {
                 duplicator_fcgi_flush();
             }
 
-            closedir($dh);
+            @closedir($dh);
         } catch (Exception $e) {
             duplicator_log("log:class.zip=>runtime error: " . $e);
         }

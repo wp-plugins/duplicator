@@ -9,13 +9,14 @@
 	
 	//Settings
 	$email_me_enabled    = $GLOBALS['duplicator_opts']['email-me'] == "0" 	 	 ? false : true;
-	$rm_snapshot		 = $GLOBALS['duplicator_opts']['rm_snapshot'] == "0" 	 ? false : true;
+
 	
 	//INLINE DIALOG WINDOWS
 	require_once('javascript.php'); 
 	require_once('view.package.php');
 	require_once('view.options.php');
 	require_once('view.system.php');
+	require_once('inc.header.php'); 
 
 ?>
 
@@ -26,20 +27,10 @@ MAIN FORM: Lists all the backups 			-->
 	<!-- h2 required here for general system messages -->
 	<h2 style='display:none'></h2>
 
-	<div class="dup-header ">
-		<!-- !!DO NOT CHANGE OR EDIT PRODUCT NAME!!
-		If your interested in Private Label Rights please contact us at the URL below to discuss
-		customizations to product labeling: lifeinthegrid.com/services	-->
-		<div style='float:left;height:47px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/logo.png" style='text-align:top'  /></div> 
-		<div style='float:left;text-align:center;'>
-			<h2 style='margin:-8px 0px -8px 0px; text-align:center; width:100%;'>Duplicator &raquo;<span style="font-size:20px"> <?php _e("Dashboard", 'wpduplicator') ?></span> </h2>
-			<i style='font-size:0.8em'><?php _e("By", 'wpduplicator') ?> <a href='http://lifeinthegrid.com/duplicator' target='_blank'>lifeinthegrid.com</a></i>
-		</div> 
-		<br style='clear:both' />
-	</div>
+	<?php duplicator_header(__("Packages", 'wpduplicator') ) ?>
 
 	<!-- TOOLBAR -->
-	<table border="0" id="toolbar-table" cellspacing="0">
+	<table border="0" id="toolbar-table" cellspacing="0" style="margin-top:15px">
 		<tr valign="top">
 			<td style="width:100%">
 				<div class="alignleft actions">
@@ -54,7 +45,7 @@ MAIN FORM: Lists all the backups 			-->
 			<!-- Create/Delete -->
 			<td><input type="submit" id="btn-create-pack" class="btn-create-pack" value="" name="submit" title="<?php _e("Create Package", 'wpduplicator') ?>" ondblclick="javascript:return void(0);" /></td>	
 			<!-- Options/Logs -->
-			<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>img/hdivider.png" class="toolbar-divider" /></td>
+			<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/hdivider.png" class="toolbar-divider" /></td>
 			<td align="center"><input type="button" id="btn-opts-dialog" class="btn-opts-dialog" title="<?php _e("Options", 'wpduplicator') ?>..." onclick="Duplicator.optionsOpen()" /></td>	
 			<td align="center"><input type="button" id="btn-sys-dialog"  class="btn-sys-dialog" onclick="Duplicator.getSystemCheck()" title="<?php _e("System Check", 'wpduplicator') ?>..." /></td>
 			<td align="center"><input type="button" id="btn-logs-dialog" class="btn-log-dialog" onclick="Duplicator.openLog()" title="<?php _e("Show Create Log", 'wpduplicator') ?>..." /></td>
@@ -66,8 +57,8 @@ MAIN FORM: Lists all the backups 			-->
 	<div class="widget" style="padding:6px; margin: 2px 0px 0px 0px; border-bottom: none; font-size:13px">
 		<b><?php _e("Status", 'wpduplicator') ?>:</b>
 		<span id="span-status"><?php _e("Ready to create new package", 'wpduplicator' ) ?>.</span>
-		<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
-		<img id="img-status-progress" src="<?php echo DUPLICATOR_PLUGIN_URL ?>img/progress.gif" style="height:10px; width:46px; display:none" />
+		<img id="img-status-error" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/error.png" style="height:16px; width:16px; display:none; margin-top:3px; margin:0px" valign="bottom" />
+		<img id="img-status-progress" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/progress.gif" style="height:10px; width:46px; display:none" />
 		<span id="span-status-post" style="display:inline-block"></span>
 	</div>
 
@@ -79,8 +70,8 @@ MAIN FORM: Lists all the backups 			-->
 					<th colspan="7">&nbsp;</th>
 				<?php else : ?>	
 					<th><input type="checkbox" id="select-all"  title="<?php _e("Select all packages", 'wpduplicator') ?>" style="margin:0px;padding:0px 0px 0px 5px;" /></th>
-					<th><?php _e("Information", 'wpduplicator') ?></th>
-					<th><?php _e("Owner", 'wpduplicator') ?></th>
+					<th><?php _e("Details", 'wpduplicator') ?></th>
+					<th><?php _e("User", 'wpduplicator') ?></th>
 					<th><?php _e("Created", 'wpduplicator') ?></th>
 					<th><?php _e("Size", 'wpduplicator') ?></th>
 					<th><?php _e("Package Name", 'wpduplicator') ?></th>

@@ -325,7 +325,7 @@ if (isset($_POST['action_ajax'])) {
                 <fieldset>
                     <legend><b>New Admin Account</b></legend>
                     <b>Username:</b><br/>
-                    The new username to create.  This will create a new WordPress administrator account.
+                    The new username to create.  This will create a new WordPress administrator account.  Please note that usernames are not changeable from the within the UI.
                     <br/><br/>
 
                     <b>Password:</b><br/>

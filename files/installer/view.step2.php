@@ -23,7 +23,7 @@
 		if ( $.trim($("#url_new").val()) == "" )  {alert("The 'New URL' field is required!"); return false;}
 		if ( $.trim($("#siteurl").val()) == "" )  {alert("The 'Site URL' field is required!"); return false;}
 		if (wp_username >= 1 && wp_username < 4) {alert("The New Admin Account 'Username' must be four or more characters"); return false;}
-		if (wp_username >= 4 && wp_password < 8) {alert("The New Admin Account 'Password' must be eight or more characters"); return false;}
+		if (wp_username >= 4 && wp_password < 6) {alert("The New Admin Account 'Password' must be six or more characters"); return false;}
 
 		$.ajax({
 			type: "POST",
@@ -96,6 +96,15 @@
 	$(document).ready(function() {
 		Duplicator.getNewURL('url_new');
 		Duplicator.getNewURL('siteurl');
+		
+		$("#wp_password").passStrength({
+				shortPass: 		"top_shortPass",
+				badPass:		"top_badPass",
+				goodPass:		"top_goodPass",
+				strongPass:		"top_strongPass",
+				baseStyle:		"top_testresult",
+				userid:			"#wp_username",
+				messageloc:		1	});
 	});
 </script>
 
@@ -116,7 +125,7 @@ VIEW: STEP 2- INPUT -->
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
 	
 	
-	<h3>Step 2: Table Data 
+	<h3>Step 2: Data 
 		<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
 	</h3><hr size="1"/><br/>
 
@@ -159,18 +168,18 @@ VIEW: STEP 2- INPUT -->
 	
 	<!-- ==========================
     CREATE NEW USER -->
-	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(250)"><b>New Admin Account...</b></a>
+	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(0)"><b>New Admin Account...</b></a>
 	<div id='dup-step2-user-opts' style="display:none;">
 	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
-		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates an new optional WordPress administrator. Usernames are not changeable from the within the UI.</i></td></tr>
+		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates an new optional WordPress administrator.</i></td></tr>
 		<tr>
 			<td>Username </td>
 			<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>
 		</tr>	
 		<tr>
-			<td>Password</td>
+			<td valign="top">Password</td>
 			<td>
-				<input type="text" name="wp_password" id="wp_password" value="" title="8 characters minimum"  placeholder="(8 or more characters)" />
+				<input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" />
 			</td>
 		</tr>
 	</table>
@@ -179,7 +188,7 @@ VIEW: STEP 2- INPUT -->
 	
 	<!-- ==========================
     ADVANCED OPTIONS -->
-	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
+	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(0)"><b>Advanced Options...</b></a>
 	<div id='dup-step2-adv-opts' style="display:none;">
 		<table width="100%" border="0" cellspacing="1" cellpadding="1" >
 			<tr>

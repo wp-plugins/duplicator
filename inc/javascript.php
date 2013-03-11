@@ -96,7 +96,7 @@ jQuery.noConflict()(function($) {
 		var log_level  		= $("select#log_level").val() ? $("select#log_level").val() : 0;
 		var email_others	= $("input#email_others").val();
 		var dir_bypass 		= $("textarea#dir_bypass").val();
-		var rm_snapshot   	= $('#rm_snapshot').is(':checked') ? 1 : 0;
+
 
 		//append semicolon if user forgot
 		if (dir_bypass.length > 1) {
@@ -111,7 +111,7 @@ jQuery.noConflict()(function($) {
 			timeout: 10000000,
 			data: 
 			{
-				'action'  		: 'duplicator_settings',
+				'action'  		: 'duplicator_task_save',
 				'dbhost' 		: $("input#dbhost").val(),
 				'dbname'  		: $("input#dbname").val(),
 				'dbuser'  		: $("input#dbuser").val(),
@@ -120,8 +120,7 @@ jQuery.noConflict()(function($) {
 				'email_others'  : email_others,
 				'skip_ext'  	: $("#skip_ext").val(),
 				'dir_bypass'  	: $("#dir_bypass").val(),
-				'log_level'  	: log_level,
-				'rm_snapshot'  	: rm_snapshot
+				'log_level'  	: log_level
 			},
 			beforeSend: function() {Duplicator.startAjaxTimer(); },
 			complete: function() {Duplicator.endAjaxTimer(); },
@@ -348,7 +347,7 @@ jQuery.noConflict()(function($) {
 			data: "action=duplicator_system_directory",
 			beforeSend: function() { 
 				Duplicator.startAjaxTimer(); 
-				var html = "<?php _e('Scanning Please Wait', 'wpduplicator'); ?>... " + "<img src='<?php echo DUPLICATOR_PLUGIN_URL  ?>img/progress.gif' style='height:7px; width:46px;'  />" ;
+				var html = "<?php _e('Scanning Please Wait', 'wpduplicator'); ?>... " + "<img src='<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/progress.gif' style='height:7px; width:46px;'  />" ;
 				$('#dup-sys-scannow-data, #dup-dlg-package-confirm-scannow-data').html(html);	
 			},
 			complete: function() {Duplicator.endAjaxTimer(); },
@@ -470,8 +469,46 @@ jQuery.noConflict()(function($) {
 	Duplicator.openLog = function() { 				
 		window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php'; ?>', 'duplicator_logs');
 	}
+	
+	
 
+	/* WP DYNAMIC TABS
+	 * Use these methods to create a dynamic tab interface
+	 * Currently used in the Settings section
+	 */
+	Duplicator.dynamicWPTabsClick = function(obj) { 		
+		if ( ! obj.hasClass('nav-tab-active')) {
+			var id =  obj.attr('href').replace("#", "");
 
+			//Tab Label
+			jQuery('.nav-tab-active').removeClass('nav-tab-active');
+			obj.addClass( 'nav-tab-active' );
+			
+			//Tab Panel
+			jQuery('.dup-nav-tab-contents .ui-tabs').addClass('ui-tabs-hide');			
+			jQuery("#" + id).removeClass('ui-tabs-hide');
+		}
+	};
+	
+	Duplicator.dynamicWPTabsInit = function() {
+		
+		var defaultLabel = location.hash || $('.nav-tab-wrapper a').first().attr("href");
+		var $defaultAnchor = null;
+		jQuery('.nav-tab').click(function() { Duplicator.dynamicWPTabsClick($(this))});
+		
+		$(".nav-tab-wrapper a").each(function() {
+			if ($(this).attr('href') == defaultLabel) {
+				$defaultAnchor = $(this);
+				return;
+			}
+		});
+	    Duplicator.dynamicWPTabsClick( $defaultAnchor);
+	}
+	
+	if ($('.dup-nav-tab-contents').length) {
+		Duplicator.dynamicWPTabsInit();
+	}
+	
 
 	});
 });

@@ -97,7 +97,13 @@ DIALOG: SYSTEM CHECK -->
 					<div class='dup-sys-check-title'><a>SYS-101: <?php _e('Reserved Files', 'wpduplicator');?></a></div> <span id='SYS-101'></span>
 					<div class='dup-sys-check-data-details'>
 						<?php 
-							_e('If this check fails then a reserved file was found in the WordPress root directory. The following are reserved file names installer.php, installer-data.sql and installer-log.txt.  In order to archive your data correctly please remove any of these files from your WordPress root directory. Then try creating your package again.', 'wpduplicator');
+							_e('A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  
+								To archive your data correctly please remove any of these files from your WordPress root directory. 
+								Then try creating your package again.', 'wpduplicator');
+							echo "<br/>";
+							printf("<input type='button' class='button action' onclick=\"window.open('%s')\" value='%s' style='font-size:10px; margin-top:5px;' />", 
+									DUPLICATOR_PLUGIN_URL . 'files/installer.cleanup.php?remove=1',  
+									__('Remove Files Now', 'wpduplicator'));
 						?>
 					</div>
 				</li>

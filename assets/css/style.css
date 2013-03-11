@@ -4,6 +4,7 @@ input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
 input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
 fieldset {border:1px solid gray; padding:0px 5px 5px 5px; }
 label {font-size:13px !important}
+div.dup-nav-tab-contents {padding:1px 0px 0px 10px}
 
 .no-select {user-select:none; -o-user-select:none;  -moz-user-select:none; -khtml-user-select:none; -webkit-user-select:none;}
 div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); opacity:0.6;}
@@ -11,14 +12,13 @@ div.ie-simulated-overlay {background-color:#dfdfdf; filter:alpha(opacity=60); op
 /*================================================
 PAGE-MAIN:*/
 div.dup-header {
-	padding:2px 0px 0px 0px; margin:10px 0px 10px 0px; border:1px solid #DFDFDF; border-radius:4px;box-shadow:0 7px 5px -5px #ccc;
+	padding:4px 0px 0px 0px; margin:10px 0px 10px 0px; border:1px solid #DFDFDF; border-radius:4px;box-shadow:0 7px 5px -5px #ccc;
 	background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #DFDFDF 100%);
 	background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #DFDFDF 100%);
 	background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #DFDFDF 100%);
 	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #DFDFDF));
 	background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #DFDFDF 100%);
 	background-image: linear-gradient(to top, #FFFFFF 0%, #DFDFDF 100%);
-
 }
 div.dup-header input {border:1px solid silver; border-radius:4px}
 div.dup-header input:hover {border:1px solid black;}
@@ -30,7 +30,6 @@ td.toolbar-label label {font-size:14px !important; margin-top:7px; display:inlin
 td.toolbar-textbox {white-space:nowrap;width:100%; vertical-align:middle}
 img.toolbar-divider {height:26px; padding:0px 5px 0px 5px}
 input.btn-create-pack{width:28px; height:27px;background:url(../img/create.png) no-repeat 4px 3px;}
-/*input#btn-delete-pack{width:28px; height:27px;background:url(../img/delete.png) no-repeat 5px 4px;}*/
 input.btn-opts-dialog {width:28px;height:27px;background:url(../img/options.png) no-repeat 5px 4px;}
 input.btn-sys-dialog {width:28px; height:27px;background:url(../img/sys-check.png) no-repeat 5px 4px;}
 input.btn-log-dialog {width:28px; height:27px;background:url(../img/debug.png) no-repeat 5px 4px;}
@@ -88,6 +87,7 @@ div#dup-server-info-area tr.h img { display:none; }
 div#dup-server-info-area tr.h td{ background:none; }
 div#dup-server-info-area tr.h th{ text-align:center; background-color:#efefef;  }
 div#dup-server-info-area td.e{ font-weight:bold }
+td.dup-settings-diag-header {background-color:#D8D8D8; font-weight: bold; border-style: none; color:black}
 
 /*================================================
 PAGE-SUPPORT:*/
@@ -108,7 +108,7 @@ table.dup-support-hlp-hdrs td {
 }
 table.dup-support-hlp-hdrs td img{margin-left:7px}
 div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
-div.dup-support-give-area {width:400px; height:200px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+div.dup-support-give-area {width:400px; height:170px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
 @-webkit-keyframes approve-keyframe  { 
     from {-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);}

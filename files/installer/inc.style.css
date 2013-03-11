@@ -238,12 +238,21 @@ div.dup-footer-buttons  input, button, div#dup-step1-sys-req-btn:hover {cursor:p
 .ui-progressbar { height:2em; text-align: left; overflow: hidden; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
 
+/*!
+ * password indicator
+ */
+.top_testresult{font-weight: bold;	font-size:11px; color:#222;	padding:1px 1px 1px 4px; margin:4px 0px 0px 0px; width:495px; dislay:inline-block}
+.top_testresult span{margin:0;}
+.top_shortPass{background:#edabab; border:1px solid #bc0000;display:block;}
+.top_badPass{background:#edabab;border:1px solid #bc0000;display:block;}
+.top_goodPass{background:#ffffe0; border:1px solid #e6db55;	display:block;}
+.top_strongPass{background:#d3edab;	border:1px solid #73bc00; display:block;}
+
 
 
 /* ============================
 CUSTOME OVERIDE */
 .ui-textclose {display:inline-block; padding:0px 0px 0px 3px; line-height:15px;}
 a.ui-dialog-titlebar-close {text-decoration:none}
-
 
 </style>

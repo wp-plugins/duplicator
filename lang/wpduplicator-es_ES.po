@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.4.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-01-21 19:09:04+0000\n"
+"PO-Revision-Date: 2013-01-29 02:54:24+0000\n"
 "Last-Translator: basicos <emiliodefez@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgstr "Hosts aprobados"
 #: inc/page.main.php:34
 #@ wpduplicator
 msgid "Dashboard"
-msgstr "Escritorio"
+msgstr "Duplicar"
 
 #: duplicator.php:241
 #: inc/page.diag.php:24
@@ -543,7 +543,7 @@ msgstr "Por favor, comunique cualquier problema"
 #: inc/page.main.php:207
 #@ wpduplicator
 msgid "Total Storage Used"
-msgstr "Almacenamiento Usado Total."
+msgstr "Total de Almacenamiento usado."
 
 #: inc/page.support.php:28
 #@ wpduplicator
@@ -653,7 +653,7 @@ msgstr "Procesando"
 #: inc/view.options.php:24
 #@ wpduplicator
 msgid "Email when completed"
-msgstr "Email al terminar el Duplicado"
+msgstr "Email al terminar el Duplicado. Incluido Admin."
 
 #: inc/view.options.php:34
 #@ wpduplicator
@@ -750,13 +750,13 @@ msgstr "Creación de duplicado"
 #: inc/view.system.php:5
 #@ wpduplicator
 msgid "Create a new Package Set?"
-msgstr "Crear un nuevo conjunto de duplicación. (Instalado y Zip)"
+msgstr "Crear un nuevo conjunto de duplicación. (Installer.php y Myduplicado.Zip)"
 
 #: inc/view.system.php:10
 #: inc/view.system.php:221
 #@ wpduplicator
 msgid "Pre-Zip Overview"
-msgstr "Previsión de dimensión del Duplicado (Zip):"
+msgstr "Precálculo antes del ZIP"
 
 #: inc/view.system.php:12
 #@ wpduplicator
@@ -766,22 +766,22 @@ msgstr "Escanear"
 #: inc/view.system.php:14
 #@ wpduplicator
 msgid "Scan sizes over 1GB may not finish processing on some hosting providers."
-msgstr "Escanear tamaños por encima de 1GB puede parar el proceso en algunos hosting con limitación."
+msgstr "Escanear tamaños de más de 1GB puede parar el proceso en algún hosting con limitación."
 
 #: inc/view.system.php:19
 #@ wpduplicator
 msgid "Note: A scan will provide an estimate on the size of your file system.  The scan will exclude items in the"
-msgstr "Nota: Un escaneo dará un tamaño estimado de su sistema de duplicación. No incluye elementos en la"
+msgstr "Nota: Un escaneo dará un tamaño estimado de su duplicado. No incluye elementos en la"
 
 #: inc/view.system.php:20
 #@ wpduplicator
 msgid "directory filter list"
-msgstr "Lista de filtros de excluidos."
+msgstr "Lista de ficheros Excluidos."
 
 #: inc/view.system.php:21
 #@ wpduplicator
 msgid "Files that are not readable by the plugin will not be included in the overview."
-msgstr "Ficheros que no se puedan leer por el plugin, no serán incluidos en la sesión."
+msgstr "Ficheros de \\\"no lectura\\\" o protegidos para el plugin, no se incluiran."
 
 #: inc/view.system.php:30
 #@ wpduplicator
@@ -1123,7 +1123,7 @@ msgstr "(limpiar)"
 #: inc/view.options.php:46
 #@ wpduplicator
 msgid "media"
-msgstr "multimedia"
+msgstr "video-multimedia"
 
 #: inc/view.options.php:47
 #@ wpduplicator

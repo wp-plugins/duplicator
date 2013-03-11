@@ -9,7 +9,7 @@ function duplicator_create_dbscript($destination) {
     try {
 
         global $wpdb;
-        $time_start = DuplicatorUtils::get_microtime();
+        $time_start = DuplicatorUtils::GetMicrotime();
         $handle = fopen($destination, 'w+');
         $tables = $wpdb->get_col('SHOW TABLES');
         
@@ -73,8 +73,8 @@ function duplicator_create_dbscript($destination) {
         fclose($handle);
         $wpdb->flush();
         
-        $time_end = DuplicatorUtils::get_microtime();
-        $time_sum = DuplicatorUtils::elapsed_time($time_end, $time_start);
+        $time_end = DuplicatorUtils::GetMicrotime();
+        $time_sum = DuplicatorUtils::ElapsedTime($time_end, $time_start);
         duplicator_log("SQL TOTAL RUNTIME: {$time_sum}");
         
     } catch (Exception $e) {
