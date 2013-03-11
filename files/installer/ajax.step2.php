@@ -407,7 +407,7 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 	$newuser_insert_id = mysqli_insert_id($dbh);
 
 	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$user_insert_id}', 'wp_capabilities', '{$newuser_security}')");
+			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wp_capabilities', '{$newuser_security}')");
 			
 	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
 			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wpplug_capabilities', '{$newuser_security}')");
