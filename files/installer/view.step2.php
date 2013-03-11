@@ -125,7 +125,7 @@ VIEW: STEP 2- INPUT -->
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
 	
 	
-	<h3>Step 2: Data 
+	<h3>Step 2: Files &amp; Database 
 		<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
 	</h3><hr size="1"/><br/>
 
@@ -171,16 +171,14 @@ VIEW: STEP 2- INPUT -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(0)"><b>New Admin Account...</b></a>
 	<div id='dup-step2-user-opts' style="display:none;">
 	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
-		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates an new optional WordPress administrator.</i></td></tr>
+		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i></td></tr>
 		<tr>
 			<td>Username </td>
 			<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>
 		</tr>	
 		<tr>
 			<td valign="top">Password</td>
-			<td>
-				<input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" />
-			</td>
+			<td><input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" /></td>
 		</tr>
 	</table>
 	</div><br/><br/>
@@ -241,7 +239,7 @@ VIEW: STEP 2- INPUT -->
 	</div>
 
 	<div class="dup-footer-buttons">
-		<input id="dup-step2-next" type="button" value=" Update Tables " onclick="Duplicator.runUpdate()"  />
+		<input id="dup-step2-next" type="button" value=" Run Update " onclick="Duplicator.runUpdate()"  />
 	</div>	
 </form>
 

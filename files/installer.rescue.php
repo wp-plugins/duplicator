@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '513e1b7cab8b05066_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '513e1b7cab8b05066_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '513e487e5c4227233_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '513e487e5c4227233_package';
 $GLOBALS['FW_DBHOST'] = '';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';
@@ -1192,30 +1192,6 @@ mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_valu
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 
 
-/*CREATE NEW USER LOGIC */
-if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
-	
-	$newuser_datetime =	@date("Y-m-d H:i:s");
-	$newuser_security = mysqli_real_escape_string($dbh, 'a:1:{s:13:"administrator";s:1:"1";}');
-	
-
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}users` 
-		(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) 
-		VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '', '', '{$newuser_datetime}', '', '0', '')");
-
-	$newuser_insert_id = mysqli_insert_id($dbh);
-
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$user_insert_id}', 'wp_capabilities', '{$newuser_security}')");
-			
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wpplug_capabilities', '{$newuser_security}')");
-
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wp_user_level', '10')");
-}
-
-
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
@@ -1223,6 +1199,46 @@ DupUtil::log("\n{$GLOBALS['SEPERATOR1']}");
 DupUtil::log('START FINAL CLEANUP: ' . @date('h:i:s'));
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
 
+/*CREATE NEW USER LOGIC */
+if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
+	
+	$newuser_check = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `{$GLOBALS['FW_TABLEPREFIX']}users` WHERE user_login = '{$_POST['wp_username']}' ");
+	$newuser_row   = mysqli_fetch_row($newuser_check);
+    $newuser_count = is_null($newuser_row) ? 0 : $newuser_row[0];
+	
+	if ($newuser_count == 0) {
+	
+		$newuser_datetime =	@date("Y-m-d H:i:s");
+		$newuser_security = mysqli_real_escape_string($dbh, 'a:1:{s:13:"administrator";s:1:"1";}');
+
+		$newuser_test1 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}users` 
+			(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) 
+			VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '', '', '{$newuser_datetime}', '', '0', '')");
+
+		$newuser_insert_id = mysqli_insert_id($dbh);
+
+		$newuser_test2 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '{$GLOBALS['FW_TABLEPREFIX']}capabilities', '{$newuser_security}')");
+
+		$newuser_test3 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '{$GLOBALS['FW_TABLEPREFIX']}user_level', '10')");
+
+		if ($newuser_test1 && $newuser_test2 && $newuser_test3) {
+			DupUtil::log("NEW WP-ADMIN USER: New username '{$_POST['wp_username']}' was created successfully \n ");
+		} else {
+			$newuser_warnmsg = "NEW WP-ADMIN USER: Failed to create the user '{$_POST['wp_username']}' \n ";
+			$JSON['step2']['warnlist'][] = $newuser_warnmsg;
+			DupUtil::log($newuser_warnmsg);
+		}			
+	} 
+	else {
+		$newuser_warnmsg = "NEW WP-ADMIN USER: Username '{$_POST['wp_username']}' already exists in the database.  Unable to create admin username \n";
+		$JSON['step2']['warnlist'][] = $newuser_warnmsg;
+		DupUtil::log($newuser_warnmsg);
+	}
+}
+
+/*UPDATE WP-CONFIG FILE */
 $patterns = array("/'WP_HOME',\s*'.*?'/", "/'WP_SITEURL',\s*'.*?'/");
 
 $replace = array("'WP_HOME', " . '\'' . $_POST['url_new'] . '\'',
@@ -1241,7 +1257,7 @@ $fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 fclose($fp);
 
 
-//WEB CONFIG FILE
+//WEB CONFIG FILE(S)
 $currdata = parse_url($_POST['url_old']);
 $newdata = parse_url($_POST['url_new']);
 $currpath = DupUtil::add_slash(isset($currdata['path']) ? $currdata['path'] : "");
@@ -1282,7 +1298,7 @@ HTACCESS;
 DupUtil::log("\n--------------------------------------");
 DupUtil::log("WARNINGS");
 DupUtil::log("--------------------------------------");
-$config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME');
+$config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
 $config_found = DupUtil::string_has_value($config_vars, $config_file);
 
 //Files
@@ -2792,7 +2808,7 @@ VIEW: STEP 2- INPUT -->
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
 	
 	
-	<h3>Step 2: Table Data 
+	<h3>Step 2: Files &amp; Database 
 		<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
 	</h3><hr size="1"/><br/>
 
@@ -2838,16 +2854,14 @@ VIEW: STEP 2- INPUT -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(0)"><b>New Admin Account...</b></a>
 	<div id='dup-step2-user-opts' style="display:none;">
 	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
-		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This creates an new optional WordPress administrator.</i></td></tr>
+		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i></td></tr>
 		<tr>
 			<td>Username </td>
 			<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>
 		</tr>	
 		<tr>
 			<td valign="top">Password</td>
-			<td>
-				<input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" />
-			</td>
+			<td><input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" /></td>
 		</tr>
 	</table>
 	</div><br/><br/>
@@ -2908,7 +2922,7 @@ VIEW: STEP 2- INPUT -->
 	</div>
 
 	<div class="dup-footer-buttons">
-		<input id="dup-step2-next" type="button" value=" Update Tables " onclick="Duplicator.runUpdate()"  />
+		<input id="dup-step2-next" type="button" value=" Run Update " onclick="Duplicator.runUpdate()"  />
 	</div>	
 </form>
 
@@ -3074,7 +3088,8 @@ VIEW: STEP 3- INPUT -->
 				<td data-bind="with: status.step2">
 					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
 				</td>
-			</tr>			
+			</tr>
+			<tr><td colspan="4"><i style="font-size:10px; font-weight:normal">Notice: Your root .htaccess file was reset.  Resave all plugins that write to this file.</i></td></tr>
 		</table>
 		
 		

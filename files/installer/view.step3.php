@@ -124,7 +124,8 @@ VIEW: STEP 3- INPUT -->
 				<td data-bind="with: status.step2">
 					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
 				</td>
-			</tr>			
+			</tr>
+			<tr><td colspan="4"><i style="font-size:10px; font-weight:normal">Notice: Your root .htaccess file was reset.  Resave all plugins that write to this file.</i></td></tr>
 		</table>
 		
 		

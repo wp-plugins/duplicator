@@ -393,30 +393,6 @@ mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_valu
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 
 
-/*CREATE NEW USER LOGIC */
-if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
-	
-	$newuser_datetime =	@date("Y-m-d H:i:s");
-	$newuser_security = mysqli_real_escape_string($dbh, 'a:1:{s:13:"administrator";s:1:"1";}');
-	
-
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}users` 
-		(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) 
-		VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '', '', '{$newuser_datetime}', '', '0', '')");
-
-	$newuser_insert_id = mysqli_insert_id($dbh);
-
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wp_capabilities', '{$newuser_security}')");
-			
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wpplug_capabilities', '{$newuser_security}')");
-
-	@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-			(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'wp_user_level', '10')");
-}
-
-
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
@@ -424,6 +400,46 @@ DupUtil::log("\n{$GLOBALS['SEPERATOR1']}");
 DupUtil::log('START FINAL CLEANUP: ' . @date('h:i:s'));
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
 
+/*CREATE NEW USER LOGIC */
+if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
+	
+	$newuser_check = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `{$GLOBALS['FW_TABLEPREFIX']}users` WHERE user_login = '{$_POST['wp_username']}' ");
+	$newuser_row   = mysqli_fetch_row($newuser_check);
+    $newuser_count = is_null($newuser_row) ? 0 : $newuser_row[0];
+	
+	if ($newuser_count == 0) {
+	
+		$newuser_datetime =	@date("Y-m-d H:i:s");
+		$newuser_security = mysqli_real_escape_string($dbh, 'a:1:{s:13:"administrator";s:1:"1";}');
+
+		$newuser_test1 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}users` 
+			(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) 
+			VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '', '', '{$newuser_datetime}', '', '0', '')");
+
+		$newuser_insert_id = mysqli_insert_id($dbh);
+
+		$newuser_test2 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '{$GLOBALS['FW_TABLEPREFIX']}capabilities', '{$newuser_security}')");
+
+		$newuser_test3 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
+				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '{$GLOBALS['FW_TABLEPREFIX']}user_level', '10')");
+
+		if ($newuser_test1 && $newuser_test2 && $newuser_test3) {
+			DupUtil::log("NEW WP-ADMIN USER: New username '{$_POST['wp_username']}' was created successfully \n ");
+		} else {
+			$newuser_warnmsg = "NEW WP-ADMIN USER: Failed to create the user '{$_POST['wp_username']}' \n ";
+			$JSON['step2']['warnlist'][] = $newuser_warnmsg;
+			DupUtil::log($newuser_warnmsg);
+		}			
+	} 
+	else {
+		$newuser_warnmsg = "NEW WP-ADMIN USER: Username '{$_POST['wp_username']}' already exists in the database.  Unable to create admin username \n";
+		$JSON['step2']['warnlist'][] = $newuser_warnmsg;
+		DupUtil::log($newuser_warnmsg);
+	}
+}
+
+/*UPDATE WP-CONFIG FILE */
 $patterns = array("/'WP_HOME',\s*'.*?'/", "/'WP_SITEURL',\s*'.*?'/");
 
 $replace = array("'WP_HOME', " . '\'' . $_POST['url_new'] . '\'',
@@ -442,7 +458,7 @@ $fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 fclose($fp);
 
 
-//WEB CONFIG FILE
+//WEB CONFIG FILE(S)
 $currdata = parse_url($_POST['url_old']);
 $newdata = parse_url($_POST['url_new']);
 $currpath = DupUtil::add_slash(isset($currdata['path']) ? $currdata['path'] : "");
@@ -483,7 +499,7 @@ HTACCESS;
 DupUtil::log("\n--------------------------------------");
 DupUtil::log("WARNINGS");
 DupUtil::log("--------------------------------------");
-$config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME');
+$config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
 $config_found = DupUtil::string_has_value($config_vars, $config_file);
 
 //Files
