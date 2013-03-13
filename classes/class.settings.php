@@ -20,8 +20,7 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		}
 		
 		/**
-		*  GET
-		*  Find the setting value
+		*  GET: Find the setting value
 		*
 		*  @param string $key	The name of the key to find
 		*  @return The value stored in the key returns null if key does not exist
@@ -30,6 +29,13 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 			return isset($this->Data[$key]) ? $this->Data[$key] : null;
 		}
 		
+		/**
+		*  SET: Set the settings value in memory only
+		*
+		*  @param string $key		The name of the key to find
+		*  @param string $value		The value to set
+		*  remarks:	 The Save() method must be called to write the Settings object to the DB
+		*/
 		function Set($key = '', $value) {
 			if (isset($this->Data[$key]) && $value != null) {
 				$this->Data[$key] = $value;
@@ -37,8 +43,7 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		}
 
 		/**
-		*  SAVE
-		*  sAVE the setting value
+		*  SAVE: Save all the setting values
 		*
 		*  @return True if option value has changed, false if not or if update failed.
 		*/
@@ -54,7 +59,7 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		*/
 		public function SetDefaults() {
 			$default['version'] = $this->Version;
-			$default['uninstall_files']  = isset($this->Data['uninstall_files'])  ? $this->Data['uninstall_files']  : false;
+			$default['uninstall_files']  = isset($this->Data['uninstall_files'])  ? $this->Data['uninstall_files']  : true;
 			$default['uninstall_tables'] = isset($this->Data['uninstall_tables']) ? $this->Data['uninstall_tables'] : true;
 
 			$this->Data = $default;
@@ -64,5 +69,4 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		
 	}
 }
-
 ?>

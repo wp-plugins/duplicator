@@ -1,0 +1,123 @@
+<!-- ==========================================
+DIALOG: NEW PACKAGE -->
+<div id="dup-dlg-package-confirm" title="<?php _e('New Package', 'wpduplicator'); ?>" style="display:none">
+	
+	<div id="dup-create-message" class="updated below-h2" style="padding:4px; display: none"></div>
+	
+	<fieldset style="padding:5px 20px 10px 20px; line-height:28px; text-align:left; border:1px solid #efefef; border-radius:5px">
+		<legend><b><?php _e("Settings", 'wpduplicator');	?></b></legend>
+		
+		<table style="width:100%">
+			<tr>
+				<td style="white-space:nowrap"><b><?php _e('Package Name', 'wpduplicator') ?>: </b></td>
+				<td style="width:100%"><input name="package_name" type="text" style="width:97%" value="<?php echo $package_name ?>" maxlength="40" /></td>
+			</tr>
+			<tr>
+				<td><b><?php _e('Pre-Zip Size', 'wpduplicator'); ?>:</b></td>
+				<td>
+					<span id='dup-dlg-package-confirm-scannow-data'>
+						<a href="javascript:void(0)" onclick="Duplicator.Pack.ScanRootDirectory()"><?php _e("Check Application Size", 'wpduplicator') ?></a> 
+					</span>
+				</td>
+			</tr>			
+		</table>
+		
+		<div style='font-size:11px; line-height:15px; position: absolute; bottom:5px; left:15px; padding: 0px 15px 5px 0px'>
+			<i>
+				<?php 
+				printf("%s <a href='javascript:void(0)'  onclick='Duplicator.Pack.ShowOptionsDialog()'>%s</a>.",
+						__('Pre-Zip provides the size of your application and will exclude items in the', 'wpduplicator'),
+						__('directory filter', 'wpduplicator'));
+				echo '  ';
+				printf("%s <a href='http://lifeinthegrid.com/duplicator-faq'  target='_blank'>%s</a>.",
+						__('Please note that some hosts will kill any process after 45-60 seconds.  If your hosting provider performs this practice then you
+							will need to ask them how to extend the PHP timeout.  For more details see the', 'wpduplicator'),
+						__('Online FAQs', 'wpduplicator'));
+				?>
+			</i>
+		</div>
+	</fieldset>
+</div>
+
+<script type="text/javascript">
+jQuery.noConflict()(function($) {
+jQuery(document).ready(function() {
+
+	/*	----------------------------------------
+	*	METHOD: Validate the Package New inputs */ 
+	Duplicator.Pack.CreateValidation = function() {
+		//Validate length test
+		if ($("input[name=package_name]").val().length <= 0) 	{
+			$("#dup-create-message").fadeIn().html('<?php _e('Please enter a backup name.', 'wpduplicator') ?>');
+			return false;
+		}
+
+		//Vatlidate alphanumeric test
+		var newstring = $("input[name=package_name]").val().replace(/ /g, "");
+		$("input[name=package_name]").val(newstring)
+		if ( ! /^[0-9A-Za-z|_]+$/.test($("input[name=package_name]").val())) {
+			$("#dup-create-message").fadeIn().html('<?php _e('Alpanumeric characters only on package name.', 'wpduplicator') ?>');
+			return false;
+		}
+		return true;
+	}
+	
+	/*	----------------------------------------
+	*	METHOD: Performs Ajax post to create a new package
+	*	Timeout (10000000 = 166 minutes) */
+	Duplicator.Pack.Create = function(packname) {
+		Duplicator.Pack.SetToolbar("DISABLED");
+
+		$.ajax({
+			type: "POST",
+			url: ajaxurl,
+			timeout: 10000000,
+			data: "package_name=" + packname +"&action=duplicator_create",
+			beforeSend: function() {Duplicator.startAjaxTimer(); },
+			complete: function() {Duplicator.endAjaxTimer(); },
+			success:    function(data) { 
+				Duplicator.reload(data);
+			},
+			error: function(data) { 
+				Duplicator.Pack.ShowError('Duplicator.Pack.Create', data);
+				Duplicator.Pack.SetToolbar("ENABLED");
+			}
+		});
+	}
+	
+	/*	----------------------------------------
+	*	METHOD: Set StatusBar and Call create */ 
+	Duplicator.Pack.StartCreate = function() {
+		var msg = "<?php _e('Creating package may take several minutes. Please Wait... ', 'wpduplicator'); ?>";
+		var postmsg = "<?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.openLog()'>[%s]</a>", 	__('Preview Log', 'wpduplicator'));?>";
+		Duplicator.Pack.SetStatus(msg, 'progress', postmsg);
+		Duplicator.Pack.Create($("input[name=package_name]").val());
+	}
+	
+	//LOAD: 'New Package' Dialog
+	$("#dup-dlg-package-confirm").dialog(
+		{autoOpen:false, height:350, width:650, create:Duplicator._dlgCreate, close:Duplicator._dlgClose,
+		buttons: {
+				'create' : { 
+						'text': "<?php _e('Create Package Set', 'wpduplicator') ?>",
+						'class': "button action",
+						'click': function() {
+						if (Duplicator.Pack.CreateValidation()) {
+							$(this).dialog("close");
+							Duplicator.Pack.StartCreate();
+						}
+					}
+				},
+				'cancel' : {
+					'text' : "<?php _e('Cancel', 'wpduplicator') ?>",
+					'class': "button action",
+					'click': function() {$(this).dialog("close");}
+				}
+			}
+		}
+	);	
+		
+
+});
+});
+</script>

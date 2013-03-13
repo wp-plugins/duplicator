@@ -124,6 +124,7 @@ img#dup-img-5stars:hover {opacity:1.0;}
 JQUERY UI OVERIDES */
 .ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text { padding:.2em 1em .2em 2.1em; }
 .ui-tabs-hide {display:none !important} /*fix for WP 3.5 setting */
+.ui-button-text-only .ui-button-text {padding:0px}
 
 /*================================================
 WORDPRESS OVERIDES */

@@ -1232,7 +1232,7 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		}			
 	} 
 	else {
-		$newuser_warnmsg = "NEW WP-ADMIN USER: Username '{$_POST['wp_username']}' already exists in the database.  Unable to create admin username \n";
+		$newuser_warnmsg = "NEW WP-ADMIN USER: Username '{$_POST['wp_username']}' already exists in the database.  Unable to create new account \n";
 		$JSON['step2']['warnlist'][] = $newuser_warnmsg;
 		DupUtil::log($newuser_warnmsg);
 	}

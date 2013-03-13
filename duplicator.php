@@ -248,18 +248,18 @@ if (is_admin() == true) {
     /**
      *  DUPLICATOR_VIEWS
      *  Inlcude all visual elements  */
-    function duplicator_main_page() {
-        include 'inc/page.main.php';
+    function duplicator_package_main() {
+        include 'inc/pack.main.php';
     }
 
     //Settings Page
     function duplicator_settings_page() {
-        include 'inc/page.settings.php';
+        include 'inc/settings.php';
     }
 
     //Support Page
     function duplicator_support_page() {
-        include 'inc/page.support.php';
+        include 'inc/support.php';
     }
 
     /**
@@ -267,8 +267,8 @@ if (is_admin() == true) {
      *  Loads the menu item into the WP tools section and queues the actions for only this plugin */
     function duplicator_menu() {
         //Main Menu
-        $page_main = add_menu_page('Duplicator', 'Duplicator', "import", basename(__FILE__), 'duplicator_main_page', plugins_url('duplicator/assets/img/create.png'));
-        add_submenu_page(basename(__FILE__), __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), "import", basename(__FILE__), 'duplicator_main_page');
+        $page_main = add_menu_page('Duplicator', 'Duplicator', "import", basename(__FILE__), 'duplicator_package_main', plugins_url('duplicator/assets/img/create.png'));
+        add_submenu_page(basename(__FILE__), __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), "import", basename(__FILE__), 'duplicator_package_main');
         //Sub Menus
         $page_settings = add_submenu_page(basename(__FILE__), __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), 'import', 'duplicator_settings_page', 'duplicator_settings_page');
         $page_support  = add_submenu_page(basename(__FILE__), __('Support', 'wpduplicator'), __('Support', 'wpduplicator'), 'import', 'duplicator_support_page', 'duplicator_support_page');
