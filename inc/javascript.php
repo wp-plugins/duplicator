@@ -1,47 +1,61 @@
 <script type="text/javascript">
+/* DESCRIPTION: Methods and Objects in this file are global and common in 
+ * nature use this file to place all shared methods and varibles */	
+
+//UNIQUE NAMESPACE
+Duplicator      = new Object();
+Duplicator.Pack = new Object();
+Duplicator.UI	= new Object();
+
+//GLOBAL CONSTANTS
+Duplicator.DEBUG_AJAX_RESPONSE = false;
+Duplicator.AJAX_TIMER = null;
+
 jQuery.noConflict()(function($) {
-jQuery(document).ready(function() {
 	
-	
-	//Unique namespace
-	Duplicator      = new Object();
-	Duplicator.Pack = new Object();
-	Duplicator.DEBUG_AJAX_RESPONSE = false;
-	Duplicator.AJAX_TIMER = null;
-	
-	Duplicator.startAjaxTimer = function() {
+	/* ============================================================================
+	*  BASE NAMESPACE: All methods at the top of the Duplicator Namespace  
+	*  ============================================================================	*/
+
+	/*	----------------------------------------
+	*	METHOD: Starts a timer for Ajax calls */ 
+	Duplicator.StartAjaxTimer = function() {
 		Duplicator.AJAX_TIMER = new Date();
 	}
 	
-	Duplicator.endAjaxTimer = function() {
+	/*	----------------------------------------
+	*	METHOD: Ends a timer for Ajax calls */ 
+	Duplicator.EndAjaxTimer = function() {
 		var endTime = new Date();
 		Duplicator.AJAX_TIMER =  (endTime.getTime()  - Duplicator.AJAX_TIMER) /1000;
 	}
-
-	/*  ============================================================================
-	MISC ROUTINES */
-	Duplicator.newWindow = function(url) {window.open(url);}
-
-	Duplicator.openLog = function() { 				
-		window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php'; ?>', 'duplicator_logs');
-	}
 	
-		/*	METHOD: Duplicator.reload  
-	*  Performs reloading the page and diagnotic handleing */
-	Duplicator.reload = function(data) {
+	/*	----------------------------------------
+	*	METHOD: Reloads the current window
+	*	@param data		An xhr object  */ 
+	Duplicator.ReloadWindow = function(data) {
 		if (Duplicator.DEBUG_AJAX_RESPONSE) {
 			Duplicator.Pack.ShowError('debug on', data);
 		} else {
 			Duplicator.Pack.SetToolbar("ENABLED");
-			window.location.reload();
+			window.location.reload(true);
 		}
 	}
 	
-		
-	/*  ============================================================================
-	DIALOG: WINDOWS
-	Browser Specific. IE9 does not support modal correctly this is a workaround  */
-	Duplicator._dlgCreate = function(evt, ui) {
+	//Basic Util Methods here:
+	Duplicator.OpenLogWindow = function() {window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php'; ?>', 'duplicator_logs');}
+	
+	
+	
+	/* ============================================================================
+	*  UI NAMESPACE: All methods at the top of the Duplicator Namespace  
+	*  ============================================================================	*/
+
+	/*	----------------------------------------
+	*	METHOD: Dynamically sets the base options for a dialog winodw
+	*	@param evt		The event object
+	*	remarks: Browser Specific. IE9 does not support modal correctly this is a workaround   */ 
+	Duplicator.UI.CreateDialog = function(evt) {
 		if (! $.browser.msie) {
 			$('#' + this.id).dialog('option', 'modal',  	true);
 			$('#' + this.id).dialog('option', 'draggable',  true);
@@ -50,17 +64,15 @@ jQuery(document).ready(function() {
 			$('#' + this.id).dialog('option', 'open',  function() {$("div#wpwrap").addClass('ie-simulated-overlay');} );
 		}
 	}
-	Duplicator._dlgClose = function(evt, ui) {
+	//Cleanup method for IE 9
+	Duplicator.UI.CloseDialog = function(evt) {
 		if ($.browser.msie) {$("div#wpwrap").removeClass('ie-simulated-overlay');}
 	}
 	
-	
-	
-	/* WP DYNAMIC TABS
-	 * Use these methods to create a dynamic tab interface
-	 * Currently used in the Settings section
-	 */
-	Duplicator.dynamicWPTabsClick = function(obj) { 		
+	/*	----------------------------------------
+	*	METHOD: Create a dynamic tab (no postback) interface using wordpress style tabs
+	*	@param obj		A valid tab label object  */ 
+	Duplicator.UI.WPTabsClick = function(obj) { 		
 		if ( ! obj.hasClass('nav-tab-active')) {
 			var id =  obj.attr('href').replace("#", "");
 
@@ -72,13 +84,14 @@ jQuery(document).ready(function() {
 			jQuery('.dup-nav-tab-contents .ui-tabs').addClass('ui-tabs-hide');			
 			jQuery("#" + id).removeClass('ui-tabs-hide');
 		}
-	};
+	}
 	
-	Duplicator.dynamicWPTabsInit = function() {
-		
+	/*	----------------------------------------
+	*	METHOD: Initilize the tabs for dyanmic use  */ 
+	Duplicator.UI.WPTabsInit = function() {
 		var defaultLabel = location.hash || $('.nav-tab-wrapper a').first().attr("href");
 		var $defaultAnchor = null;
-		jQuery('.nav-tab').click(function() { Duplicator.dynamicWPTabsClick($(this))});
+		jQuery('.nav-tab').click(function() { Duplicator.UI.WPTabsClick($(this))});
 		
 		$(".nav-tab-wrapper a").each(function() {
 			if ($(this).attr('href') == defaultLabel) {
@@ -86,14 +99,16 @@ jQuery(document).ready(function() {
 				return;
 			}
 		});
-	    Duplicator.dynamicWPTabsClick( $defaultAnchor);
+	    Duplicator.UI.WPTabsClick( $defaultAnchor);
 	}
 	
-	if ($('.dup-nav-tab-contents').length) {
-		Duplicator.dynamicWPTabsInit();
-	}
 	
+	//Document load stuff
+	jQuery(document).ready(function() {
+		if ($('.dup-nav-tab-contents').length) {
+			Duplicator.UI.WPTabsInit();
+		}
+	});
 
-});
 });
 </script>

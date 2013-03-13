@@ -49,7 +49,7 @@ MAIN FORM: Lists all the backups 			-->
 			<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/hdivider.png" class="toolbar-divider" /></td>
 			<td align="center"><input type="button" id="btn-opts-dialog" class="btn-opts-dialog" title="<?php _e("Options", 'wpduplicator') ?>..." onclick="Duplicator.Pack.ShowOptionsDialog()" /></td>	
 			<td align="center"><input type="button" id="btn-sys-dialog"  class="btn-sys-dialog" onclick="Duplicator.Pack.RunSystemCheck()" title="<?php _e("System Check", 'wpduplicator') ?>..." /></td>
-			<td align="center"><input type="button" id="btn-logs-dialog" class="btn-log-dialog" onclick="Duplicator.openLog()" title="<?php _e("Show Create Log", 'wpduplicator') ?>..." /></td>
+			<td align="center"><input type="button" id="btn-logs-dialog" class="btn-log-dialog" onclick="Duplicator.OpenLogWindow()" title="<?php _e("Show Create Log", 'wpduplicator') ?>..." /></td>
 			<td align="center"></td>
 		</tr>
 	</table>
@@ -311,10 +311,10 @@ jQuery(document).ready(function() {
 				type: "POST",
 				url: ajaxurl,
 				data: "duplicator_delid="+list+"&action=duplicator_delete",
-				beforeSend: function() {Duplicator.startAjaxTimer(); },
-				complete: function() {Duplicator.endAjaxTimer(); },
+				beforeSend: function() {Duplicator.StartAjaxTimer(); },
+				complete: function() {Duplicator.EndAjaxTimer(); },
 				success: function(data) { 
-					Duplicator.reload(data); 
+					Duplicator.ReloadWindow(data); 
 				},
 				error: function(data) { 
 					Duplicator.Pack.ShowError('Duplicator.Pack.Delete', data);

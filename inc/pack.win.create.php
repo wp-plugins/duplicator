@@ -73,10 +73,10 @@ jQuery(document).ready(function() {
 			url: ajaxurl,
 			timeout: 10000000,
 			data: "package_name=" + packname +"&action=duplicator_create",
-			beforeSend: function() {Duplicator.startAjaxTimer(); },
-			complete: function() {Duplicator.endAjaxTimer(); },
+			beforeSend: function() {Duplicator.StartAjaxTimer(); },
+			complete: function() {Duplicator.EndAjaxTimer(); },
 			success:    function(data) { 
-				Duplicator.reload(data);
+				Duplicator.ReloadWindow(data);
 			},
 			error: function(data) { 
 				Duplicator.Pack.ShowError('Duplicator.Pack.Create', data);
@@ -89,14 +89,14 @@ jQuery(document).ready(function() {
 	*	METHOD: Set StatusBar and Call create */ 
 	Duplicator.Pack.StartCreate = function() {
 		var msg = "<?php _e('Creating package may take several minutes. Please Wait... ', 'wpduplicator'); ?>";
-		var postmsg = "<?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.openLog()'>[%s]</a>", 	__('Preview Log', 'wpduplicator'));?>";
+		var postmsg = "<?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'>[%s]</a>", 	__('Preview Log', 'wpduplicator'));?>";
 		Duplicator.Pack.SetStatus(msg, 'progress', postmsg);
 		Duplicator.Pack.Create($("input[name=package_name]").val());
 	}
 	
 	//LOAD: 'New Package' Dialog
 	$("#dup-dlg-package-confirm").dialog(
-		{autoOpen:false, height:350, width:650, create:Duplicator._dlgCreate, close:Duplicator._dlgClose,
+		{autoOpen:false, height:350, width:650, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog,
 		buttons: {
 				'create' : { 
 						'text': "<?php _e('Create Package Set', 'wpduplicator') ?>",

@@ -134,20 +134,21 @@
 							<form id="dup-donate-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" > 
 								<input name="cmd" type="hidden" value="_s-xclick" /> 
 								<input name="hosted_button_id" type="hidden" value="EYJ7AV43RTZJL" /> 
-								<input alt="PayPal - The safer, easier way to pay online!" name="submit" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/paypal.png" type="image" /> <br/>
-								<?php _e('Keep Duplicator Active', 'wpduplicator') ?>
+								<input alt="PayPal - The safer, easier way to pay online!" name="submit" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/paypal.png" type="image" />
+								<div style="margin-top:-5px"><?php _e('Keep Active and Online', 'wpduplicator') ?></div>
 								<img src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /> 
 							</form>
 						</div>
 					</td>
-					<td  style="padding-right:40px">
-						<a href="http://wordpress.org/extend/plugins/duplicator" target="_blank"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/5star.png" /></a><br/>
-						<?php _e('Leave 5 Stars', 'wpduplicator') ?>
+					<td style="padding-right:40px;" valign="top">
+						<a href="http://wordpress.org/extend/plugins/duplicator" target="_blank"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/5star.png" /></a>
+						<div  style="margin-top:-4px"><?php _e('Leave 5 Stars', 'wpduplicator') ?></div></a>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<a href="http://lifeinthegrid.com/duplicator-survey" target="_blank"><?php _e('Take A Quick 60 Second Survey', 'wpduplicator') ?></a>
+						<a href="http://lifeinthegrid.com/duplicator-survey" target="_blank">
+						<?php _e('Take A Quick 60 Second Survey', 'wpduplicator') ?></a>
 					</td>
 				</tr>
 			</table>

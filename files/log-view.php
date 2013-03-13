@@ -24,8 +24,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="robots" content="noindex,nofollow">
-	<link rel="stylesheet" href="<?php echo $admin_url; ?>/load-styles.php?c=0&amp;dir=ltr&amp;load=admin-bar,wp-jquery-ui-dialog,wp-admin&amp;ver=63e8d12bee407fb9bdf078f542ef8b29" type="text/css" media="all">
-	<link rel="stylesheet" id="colors-css" href="<?php echo $admin_url; ?>/css/colors-fresh.css?ver=20111206" type="text/css" media="all">
+	<link rel="stylesheet" href="<?php echo $admin_url; ?>/load-styles.php?c=1&dir=ltr&load=admin-bar,wp-jquery-ui-dialog,wp-admin,buttons&ver=3.5.1" type="text/css" media="all">
+	<link rel="stylesheet" id="colors-css" href="<?php echo $admin_url; ?>/css/colors-fresh.min.css?ver=3.5.1" type="text/css" media="all">
 	<link rel="stylesheet" id="jquery-ui-css" href="<?php echo $plugins_url; ?>/duplicator/assets/css/jquery-ui.css?ver=3.3.2" type="text/css" media="all">
 	<link rel="stylesheet" id="duplicator_style-css" href="<?php echo $plugins_url; ?>/duplicator/assets/css/style.css?ver=3.3.2" type="text/css" media="all">
 	<style type="text/css">
@@ -91,7 +91,7 @@
 </head>
 <body style="overflow:hidden">
 
-	<div style="padding:0px 20px 10px 20px;">
+	<div class="wp-core-ui" style="padding:0px 20px 10px 20px;">
 		<table style="width:99%" border="0">
 			<tr>
 				<td><div id="icon-tools" class="icon32" style="height:34px; width:34px">&nbsp;</div></td>
@@ -105,7 +105,7 @@
 				</td>
 				<td style='width:100%; text-align:right; padding-right:20px; white-space:nowrap'>
 					<input type='checkbox' id="AutoRefresh" /> <label for="AutoRefresh" style='white-space:nowrap'><?php _e("Auto Refresh", 'wpduplicator') ?> [<span id="spanCount"></span>]</label> <br/>
-					<button id="Refresh" style="margin: 8px 5px 0px 0px"><?php _e("Refresh", 'wpduplicator') ?></button>
+					<input type="button" id="Refresh" style="margin: 8px 5px 0px 0px" class="button action" value="<?php _e("Refresh", 'wpduplicator') ?>" />
 				</td>
 			</tr>
 			<tr><td colspan='3'><hr size='1' /></td></tr>

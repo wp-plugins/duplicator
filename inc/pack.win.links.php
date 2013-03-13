@@ -1,6 +1,6 @@
 <!-- ==========================================
 DIALOG: QUICK PATH -->
-<div id="dup-dlg-quick-path" title="<?php _e('Download Links', 'wpduplicator'); ?>">
+<div id="dup-dlg-quick-path" title="<?php _e('Download Links', 'wpduplicator'); ?>" style="display:none">
 	<p>
 		<span class="ui-icon ui-icon-locked" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
 		<?php _e("The following links contain sensitive data.  Please share with caution!", 'wpduplicator');	?>
@@ -36,7 +36,7 @@ jQuery(document).ready(function() {
 	
 	//LOAD: 'Download Links' Dialog and other misc setup
 	Duplicator.Pack.GetLinksText = function() {$('#dup-dlg-quick-path-data').select();}
-	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:365, width:800, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });
+	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:365, width:800, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
 	$(".dup-dlg-quick-path-download-link").button({ icons: {primary: "ui-icon-locked"} });
 	$(".dup-dlg-quick-path-database-link").button({ icons: {primary: "ui-icon-script"} });
 	$(".dup-installer-btn").button({ icons: {primary: "ui-icon-disk"} });

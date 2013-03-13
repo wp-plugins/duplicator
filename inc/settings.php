@@ -76,6 +76,14 @@
 						</td>
 					</tr>
 				</table>
+				
+			
+			<p class="submit" style="margin: 20px 0px 0xp 5px;">
+				<div style="border-top: 1px solid #efefef"></div><br/>
+				<input type="submit" name="submit" id="submit" class="button-primary" value="<?php _e("Save Settings", 'wpduplicator') ?>" style="display: inline-block;"/>
+			</p>
+				
+				
 		   </div>
 
 			<!-- =============================================================================
@@ -194,11 +202,6 @@
 		   </div>
 
 		</div>
-		
-		<p class="submit" style="margin: 20px 0px 0xp 5px; border-top: 1px solid #efefef">
-			<input type="submit" name="submit" id="submit" class="button-primary" value="<?php _e("Save Settings", 'wpduplicator') ?>" style="display: inline-block;"/>
-		</p>
-
-		
+				
 	</form>
 </div>

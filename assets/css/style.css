@@ -24,7 +24,7 @@ div.dup-header input {border:1px solid silver; border-radius:4px}
 div.dup-header input:hover {border:1px solid black;}
 table#toolbar-table td {padding:0px; white-space:nowrap;}
 table#toolbar-table input {border:1px solid silver; border-radius:4px}
-table#toolbar-table input:hover {border:1px solid black;}
+table#toolbar-table input:hover {border:1px solid gray;}
 
 td.toolbar-label label {font-size:14px !important; margin-top:7px; display:inline-block; font-weight:bold}
 td.toolbar-textbox {white-space:nowrap;width:100%; vertical-align:middle}
@@ -96,6 +96,7 @@ h2.dup-support-headers {margin:-20px 0px -5px 0px; font-weight:bold; font-size:1
 div.dup-support-txts-links {width:100%;font-size:14px; padding-left:10px; font-weight:bold; line-height:26px; text-align:center}
 div.dup-support-hlp-area {width:265px; height:175px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:6px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
+table.dup-support-hlp-hdrs {background-color:#efefef;}
 table.dup-support-hlp-hdrs td {
 	padding:2px; height:52px;
 	font-weight:bold; font-size:17px;

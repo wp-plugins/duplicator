@@ -135,8 +135,8 @@ jQuery(document).ready(function() {
 				'log_level'  	: log_level
 			},
 			beforeSend: function() {
-				Duplicator.startAjaxTimer(); },
-			complete: function() {Duplicator.endAjaxTimer(); },
+				Duplicator.StartAjaxTimer(); },
+			complete: function() {Duplicator.EndAjaxTimer(); },
 			success: function(data) { 
 				$('#opts-save-btn').val("<?php _e('Saving', 'wpduplicator') ?>...");
 				window.location.reload();
@@ -150,7 +150,7 @@ jQuery(document).ready(function() {
 	/*	----------------------------------------
 	*	OBJECT: Create the package options dialog */ 
 	Duplicator.Pack.OptionsDialog = $("#dialog-options").dialog({
-		autoOpen:false, height:625, width:750, create:Duplicator._dlgCreate, close:Duplicator._dlgClose, 
+		autoOpen:false, height:625, width:750, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog, 
 		buttons: {
 			'save' : {
 				'text' : "<?php _e("Save", 'wpduplicator') ?>",

@@ -18,7 +18,7 @@ DIALOG: SYSTEM ERROR -->
 						__("the dashboard.", 'wpduplicator')); ?>
 			</li>
 			<li>
-				<?php printf("<a href='javascript:void(0)' onclick='Duplicator.openLog()'>%s</a> %s.",
+				<?php printf("<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'>%s</a> %s.",
 						__("Monitor", 'wpduplicator'),
 						__("your log file a few more minutes as processing may continue on some systems", 'wpduplicator')); 
 				?>
@@ -54,12 +54,12 @@ jQuery(document).ready(function() {
 	//To validate this dialog just place the code below into an $ajax:success callback
 	//Duplicator.Pack.ShowError('Testing Error UI', data);
 
-	$("#dup-dlg-system-error").dialog({autoOpen:false, height:550, width:650, create:Duplicator._dlgCreate, close:Duplicator._dlgClose });	
+	$("#dup-dlg-system-error").dialog({autoOpen:false, height:550, width:650, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });	
 	
 	/*	----------------------------------------
 	*	METHOD: Show the Sytem Error Dialog */ 
 	Duplicator.Pack.ShowError = function(action, xhrData) {
-		Duplicator.endAjaxTimer();
+		Duplicator.EndAjaxTimer();
 		var time = Duplicator.AJAX_TIMER || 'not set';
 		var msg  = '<?php _e('AJAX Response', 'wpduplicator') ?>' + ' ' + action + '<br/>';
 		msg += "duration: " + time + " secs<br/>code: " + xhrData.status + "<br/>status: " + xhrData.statusText + "<br/>response: " +  xhrData.responseText;

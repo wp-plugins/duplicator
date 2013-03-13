@@ -227,8 +227,8 @@ jQuery(document).ready(function() {
 			dataType: "json",
 			timeout: 10000000,
 			data: "action=duplicator_system_check",
-			beforeSend: function() {Duplicator.startAjaxTimer(); },
-			complete: function() {Duplicator.endAjaxTimer(); },			
+			beforeSend: function() {Duplicator.StartAjaxTimer(); },
+			complete: function() {Duplicator.EndAjaxTimer(); },			
 			success: function(data) {Duplicator.Pack.ShowSystemDialog(data);},
 			error: function(data)   {
 				Duplicator.Pack.ShowError('Duplicator.Pack.RunSystemCheck', data);
@@ -246,11 +246,11 @@ jQuery(document).ready(function() {
 			timeout: 10000000,
 			data: "action=duplicator_system_directory",
 			beforeSend: function() { 
-				Duplicator.startAjaxTimer(); 
+				Duplicator.StartAjaxTimer(); 
 				var html = "<?php _e('Scanning Please Wait', 'wpduplicator'); ?>... " + "<img src='<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/progress.gif' style='height:7px; width:46px;'  />" ;
 				$('#dup-sys-scannow-data, #dup-dlg-package-confirm-scannow-data').html(html);	
 			},
-			complete: function() {Duplicator.endAjaxTimer(); },
+			complete: function() {Duplicator.EndAjaxTimer(); },
 			success: function(data) {
 				var size    =  data.size 	|| "<?php _e('unreadable', 'wpduplicator'); ?>";
 				var count   =  data.count 	|| "<?php _e('unreadable', 'wpduplicator'); ?>";
@@ -282,7 +282,7 @@ jQuery(document).ready(function() {
 
 	//LOAD: 'System Status' Dialog
 	$("#dup-dlg-system-check").dialog({
-		autoOpen:false, height:600, width:700, create:Duplicator._dlgCreate, close:Duplicator._dlgClose, modal: true, 
+		autoOpen:false, height:600, width:700, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog, modal: true, 
 		buttons: {
 			'close' : {
 					'text' : "<?php _e("Close", 'wpduplicator') ?>",
