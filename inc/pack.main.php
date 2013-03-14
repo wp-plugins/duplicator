@@ -36,10 +36,10 @@ MAIN FORM: Lists all the backups 			-->
 			<td style="width:100%">
 				<div class="alignleft actions">
 					<select id="dup-pack-bulk-actions">
-						<option value="-1" selected="selected">Bulk Actions</option>
-						<option value="delete" title="<?php _e("Delete selected package(s)", 'wpduplicator') ?>">Delete</option>
+						<option value="-1" selected="selected"><?php _e("Bulk Actions", 'wpduplicator') ?></option>
+						<option value="delete" title="<?php _e("Delete selected package(s)", 'wpduplicator') ?>"><?php _e("Delete", 'wpduplicator') ?></option>
 					</select>
-					<input type="button" name="" id="dup-pack-bulk-apply" class="button action" value="Apply" onclick="Duplicator.Pack.Delete()">
+					<input type="button" name="" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'wpduplicator') ?>" onclick="Duplicator.Pack.Delete()">
 				</div>
 				<br class="clear">
 			</td>
@@ -182,7 +182,7 @@ MAIN FORM: Lists all the backups 			-->
 			echo "<tr>
 					<td colspan='7'>
 						<div style='padding:60px 20px;text-align:center'>
-							<b style='font-size:14px'>{$msg1}.<br/> {$msg2} <input type='submit' class='btn-create-pack'  ondblclick='javascript:return void(0);' value=''  /><br/> {$msg3}.</b><br/><br/>
+							<b style='font-size:14px'>{$msg1}.<br/> {$msg2} <input type='button' id='dup-create-pack-zero-view' onclick='Duplicator.Pack.ShowCreateDialog()'  ondblclick='javascript:return void(0);' value=''  /><br/> {$msg3}.</b><br/><br/>
 							<i>{$msg4}.<br/> {$msg5}.<br/> {$msg6}. <br/><br/> {$msg7}.<br/> {$msg8} <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a></i>
 						</div>
 						</td>

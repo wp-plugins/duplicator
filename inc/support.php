@@ -27,11 +27,9 @@
 			<tr>
 				<td valign="top" class="dup-drop-cap">
 				<?php 
-				
-					_e("Created for Admins, Developers and Designers the Duplicator will streamline your workflows and help you quickly clone a WordPress application.  
-						If you run into an issue please read through the", 'wpduplicator');
-						printf(" <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a> ", __("knowledgebase", 'wpduplicator'));
-						_e('in detail as it will have answers to most of your questions and issues.', 'wpduplicator')
+					_e("Created for Admins, Developers and Designers the Duplicator will streamline your workflows and help you quickly clone a WordPress application.  If you run into an issue please read through the", 'wpduplicator');
+					printf(" <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a> ", __("knowledgebase", 'wpduplicator'));
+					_e('in detail as it will have answers to most of your questions and issues.', 'wpduplicator')
 				?>
 				</td>
 				<td>
@@ -171,7 +169,7 @@
 					$summary = __("Rapid WordPress Duplication by LifeInTheGrid.com", 'wpduplicator');
 					$share_this_data = "st_url='" . DUPLICATOR_HOMEPAGE . "' st_title='{$title}' st_summary='{$summary}'";
 				?>
-				<div style="width:100%; padding:10px 10px 0px 10px" align="center">
+				<div style="width:100%; padding:20px 10px 0px 10px" align="center">
 					<span class='st_facebook_vcount' displayText='Facebook' <?php echo $share_this_data; ?> ></span>
 					<span class='st_twitter_vcount' displayText='Tweet' <?php echo $share_this_data; ?> ></span>
 					<span class='st_googleplus_vcount' displayText='Google +' <?php echo $share_this_data; ?> ></span>

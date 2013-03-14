@@ -29,9 +29,9 @@ DIALOG: NEW PACKAGE -->
 						__('Pre-Zip provides the size of your application and will exclude items in the', 'wpduplicator'),
 						__('directory filter', 'wpduplicator'));
 				echo '  ';
-				printf("%s <a href='http://lifeinthegrid.com/duplicator-faq'  target='_blank'>%s</a>.",
-						__('Please note that some hosts will kill any process after 45-60 seconds.  If your hosting provider performs this practice then you
-							will need to ask them how to extend the PHP timeout.  For more details see the', 'wpduplicator'),
+				printf("%s %s <a href='http://lifeinthegrid.com/duplicator-faq'  target='_blank'>%s</a>.",
+						__('Please note that some hosts will kill any process after 45-60 seconds.', 'wpduplicator'),
+						__('If your hosting provider performs this practice ask them how to extend the PHP timeout.  For more details see the', 'wpduplicator'),
 						__('Online FAQs', 'wpduplicator'));
 				?>
 			</i>

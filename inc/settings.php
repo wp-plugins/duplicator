@@ -46,8 +46,8 @@
 		<input type="hidden" name="anchor" value="#dup-tab-general">
 		
 		<h2 class="nav-tab-wrapper">
-			<a href="#dup-tab-general" class="nav-tab">General</a>
-			<a href="#dup-tab-diagnostics" class="nav-tab">Diagnostics</a>
+			<a href="#dup-tab-general" class="nav-tab"><?php _e("General", 'wpduplicator'); ?></a>
+			<a href="#dup-tab-diagnostics" class="nav-tab"><?php _e("Diagnostics", 'wpduplicator'); ?></a>
 		</h2>
 		
 		<?php if($action_updated)  :	?>
