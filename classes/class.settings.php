@@ -21,7 +21,6 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		
 		/**
 		*  GET: Find the setting value
-		*
 		*  @param string $key	The name of the key to find
 		*  @return The value stored in the key returns null if key does not exist
 		*/
@@ -31,7 +30,6 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		
 		/**
 		*  SET: Set the settings value in memory only
-		*
 		*  @param string $key		The name of the key to find
 		*  @param string $value		The value to set
 		*  remarks:	 The Save() method must be called to write the Settings object to the DB
@@ -43,8 +41,7 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		}
 
 		/**
-		*  SAVE: Save all the setting values
-		*
+		*  SAVE: Save all the setting values to the database
 		*  @return True if option value has changed, false if not or if update failed.
 		*/
 		public function Save() {
@@ -52,9 +49,16 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		}
 		
 		/**
+		*  DELETE: Delete all the setting values to the database
+		*  @return True if option value has changed, false if not or if update failed.
+		*/
+		public function Delete() {
+			return delete_option($this->OptionName);
+		}
+		
+		/**
 		*  SETDEFAULTS
 		*  Sets the defaults if they have not been set
-		*
 		*  @return True if option value has changed, false if not or if update failed.
 		*/
 		public function SetDefaults() {

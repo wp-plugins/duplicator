@@ -51,7 +51,7 @@
 					$('#dup-step1-result-form').show();
 				},			
 				success: function(data, textStatus, xhr){ 
-					if (data.pass == 1) {
+					if (typeof(data) != 'undefined' && data.pass == 1) {
 						$("#ajax-dbhost").val($("#dbhost").val());
 						$("#ajax-dbuser").val($("#dbuser").val());
 						$("#ajax-dbpass").val($("#dbpass").val());

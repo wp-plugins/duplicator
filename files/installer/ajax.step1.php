@@ -275,7 +275,7 @@ if ($_POST['dbclean']) {
 		}
 		if (count($found_tables) > 0) {
 			foreach ($found_tables as $table_name) {
-				$sql = "DROP TABLE `{$_POST['dbname']}`.{$table_name}";
+				$sql = "DROP TABLE `{$_POST['dbname']}`.`{$table_name}`";
 				if (!$result = mysqli_query($dbh, $sql)) {
 					die(sprintf(MSG_FAIL_DBTRYCLEAN, $_POST['dbname']) . $back_link);
 				}

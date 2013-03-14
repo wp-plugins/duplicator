@@ -144,6 +144,7 @@ if (is_admin() == true) {
 
         delete_option('duplicator_version_plugin');
         delete_option('duplicator_options');
+		$DuplicatorSettings->Delete();
 
         if ($DuplicatorSettings->Get('uninstall_files')) {
 

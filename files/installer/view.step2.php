@@ -37,7 +37,7 @@
 				$('#dup-step2-result-form').show();
 			},			
 			success: function(data){ 
-				if (data.step2.pass == 1) {
+				if (typeof(data) != 'undefined' && data.step2.pass == 1) {
 					$("#ajax-url_new").val($("#url_new").val());
 					$("#ajax-json").val(escape(JSON.stringify(data)));
 					setTimeout(function(){$('#dup-step2-result-form').submit();}, 100);
