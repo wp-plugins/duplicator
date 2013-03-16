@@ -198,8 +198,7 @@ DIALOG: SYSTEM CHECK -->
 
 
 <script type="text/javascript">
-jQuery.noConflict()(function($) {
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 	
 	/*	----------------------------------------
 	*	METHOD: Sets up and diplays the System Status dialog */ 
@@ -297,6 +296,5 @@ jQuery(document).ready(function() {
 		$(this).prepend("<span class='ui-icon ui-icon-triangle-1-e dup-toggle' />");
 	});
 		
-});
 });
 </script>

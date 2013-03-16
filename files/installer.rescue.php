@@ -84,8 +84,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '51423e227fad59672_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '51423e227fad59672_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '51450100b246f4443_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '51450100b246f4443_package';
 $GLOBALS['FW_DBHOST'] = '';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';

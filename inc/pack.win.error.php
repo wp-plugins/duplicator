@@ -48,8 +48,7 @@ DIALOG: SYSTEM ERROR -->
 </div>
 
 <script type="text/javascript">
-jQuery.noConflict()(function($) {
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 
 	//To validate this dialog just place the code below into an $ajax:success callback
 	//Duplicator.Pack.ShowError('Testing Error UI', data);
@@ -68,6 +67,5 @@ jQuery(document).ready(function() {
 		Duplicator.Pack.SetStatus("<?php _e('Ready to create new package.', 'wpduplicator'); ?>");
 	}
 	
-});
 });
 </script>

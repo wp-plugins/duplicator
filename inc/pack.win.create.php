@@ -40,8 +40,7 @@ DIALOG: NEW PACKAGE -->
 </div>
 
 <script type="text/javascript">
-jQuery.noConflict()(function($) {
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 
 	/*	----------------------------------------
 	*	METHOD: Validate the Package New inputs */ 
@@ -117,7 +116,5 @@ jQuery(document).ready(function() {
 		}
 	);	
 		
-
-});
 });
 </script>

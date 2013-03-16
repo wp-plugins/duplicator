@@ -94,8 +94,7 @@
 </div>
 	
 <script type="text/javascript">
-jQuery.noConflict()(function($) {
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 	
 	/*	----------------------------------------
 	*	METHOD: Saves the Package settings */ 
@@ -196,7 +195,5 @@ jQuery(document).ready(function() {
 	$("#div-render-blanket").show();
 	$("#dup-tabs-opts").tabs();
 
-
-});
 });
 </script>

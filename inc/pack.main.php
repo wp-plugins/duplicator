@@ -1,4 +1,5 @@
 <?php
+
 	$package_name = date('Ymd') . '_' . sanitize_title(get_bloginfo( 'name', 'display' ));
 	$package_name = substr(str_replace('-', '', $package_name), 0 , 40);
 	$package_name = sanitize_file_name($package_name);
@@ -10,15 +11,9 @@
 	//Settings
 	$email_me_enabled    = $GLOBALS['duplicator_opts']['email-me'] == "0" 	 	 ? false : true;
 
-	
-	//INLINE DIALOG WINDOWS
+	//COMMON HEADER DISPLAY
 	require_once('javascript.php'); 
 	require_once('inc.header.php'); 
-	require_once('pack.win.create.php');
-	require_once('pack.win.links.php');
-	require_once('pack.win.options.php');
-	require_once('pack.win.system.php');
-	require_once('pack.win.error.php');
 ?>
 
 <!-- ==========================================
@@ -202,9 +197,17 @@ MAIN FORM: Lists all the backups 			-->
 </form>
 </div>
 
+<?php
+	//INLINE DIALOG WINDOWS
+	require_once('pack.win.create.php');
+	require_once('pack.win.links.php');
+	require_once('pack.win.options.php');
+	require_once('pack.win.system.php');
+	require_once('pack.win.error.php');
+?>
+
 <script type="text/javascript">
-jQuery.noConflict()(function($) {
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 		
 	/*	----------------------------------------
 	 *	METHOD: Sets the status of the Duplicator status bar */
@@ -336,7 +339,6 @@ jQuery(document).ready(function() {
 		});
 	}
 	
-});
 });
 </script>
 

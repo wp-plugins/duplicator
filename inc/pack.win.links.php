@@ -15,8 +15,7 @@ DIALOG: QUICK PATH -->
 
 
 <script type="text/javascript">
-jQuery.noConflict()(function($) {
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 	
 	/*	----------------------------------------
 	 *	METHOD: Shows the 'Download Links' dialog
@@ -41,7 +40,5 @@ jQuery(document).ready(function() {
 	$(".dup-dlg-quick-path-database-link").button({ icons: {primary: "ui-icon-script"} });
 	$(".dup-installer-btn").button({ icons: {primary: "ui-icon-disk"} });
 
-	
-});
 });
 </script>
