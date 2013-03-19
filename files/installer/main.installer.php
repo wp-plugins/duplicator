@@ -120,7 +120,7 @@ $GLOBALS['REPLACE_LIST'] = array();
 //CONSTANTS
 define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] = '0.4.2';
+$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] = '0.4.3';
 $GLOBALS["SQL_FILE_NAME"] = "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] = "installer-log.txt";
 $GLOBALS['SEPERATOR1'] = str_repeat("********", 10);
