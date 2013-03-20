@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Duplicator v0.4.2\n"
+"Project-Id-Version: Duplicator v0.4.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-03-17 12:04:55+0000\n"
+"PO-Revision-Date: 2013-03-20 11:12:55-0500\n"
 "Last-Translator: basicos <emiliodefez@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgid "Diagnostics"
 msgstr "Diagnósticos"
 
 #: duplicator.php:275
-#: inc/support.php:23
+#: inc/support.php:14
 #@ wpduplicator
 msgid "Support"
 msgstr "Ayuda y soporte"
@@ -122,18 +122,18 @@ msgstr "No publique estos datos en sitios públicos como foros Wordpress.org por
 msgid "Saving"
 msgstr "Guardando"
 
-#: inc/pack.main.php:307
+#: inc/pack.main.php:306
 #@ wpduplicator
 msgid "Please select at least one package to delete."
 msgstr "Por favor, seleccione al menos un duplicado para borrar"
 
-#: inc/pack.main.php:311
+#: inc/pack.main.php:310
 #@ wpduplicator
 msgid "Are you sure, you want to delete the selected package(s)?"
 msgstr "Esta seguro de que quiere borrar lo/s duplicado/s seleccionados"
 
-#: inc/pack.main.php:276
-#: inc/pack.main.php:327
+#: inc/pack.main.php:275
+#: inc/pack.main.php:326
 #: inc/pack.win.error.php:67
 #: inc/pack.win.system.php:214
 #@ wpduplicator
@@ -145,7 +145,7 @@ msgstr "Listo para crear un nuevo paquete"
 msgid "Please enter a backup name."
 msgstr "Por favor, introduzca un nombre de backup"
 
-#: inc/pack.main.php:273
+#: inc/pack.main.php:272
 #@ wpduplicator
 msgid "Evaluating WordPress Setup. Please Wait"
 msgstr "Evaluando el setup de Wordpress. Por favor, espere"
@@ -233,32 +233,32 @@ msgstr "Ver Log"
 msgid "By"
 msgstr "Por"
 
-#: inc/support.php:31
+#: inc/support.php:22
 #@ wpduplicator
 msgid "knowledgebase"
 msgstr "Página de Ayuda y Documentación"
 
-#: inc/support.php:115
+#: inc/support.php:106
 #@ wpduplicator
 msgid "Support Duplicator"
 msgstr "Soporte Duplicator"
 
-#: inc/support.php:162
+#: inc/support.php:153
 #@ wpduplicator
 msgid "Spread the Word"
 msgstr "Corra la voz"
 
-#: inc/support.php:168
+#: inc/support.php:159
 #@ wpduplicator
 msgid "Duplicate Your WordPress"
 msgstr "Duplicar su WordPress"
 
-#: inc/support.php:169
+#: inc/support.php:160
 #@ wpduplicator
 msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
 msgstr "Duplicación rápida de WordPress por LifeInTheGrid.com"
 
-#: inc/support.php:204
+#: inc/support.php:195
 #@ wpduplicator
 msgid "Labs"
 msgstr "Laboratorio"
@@ -407,11 +407,6 @@ msgstr "Compatibilidad del servidor"
 msgid "This process will backup all your files and database"
 msgstr "Este proceso hará un backup COMPLETO (Ficheros, datos, configuraciones)"
 
-#: inc/pack.main.php:172
-#@ wpduplicator
-msgid "Creating a package may take several minutes if you have a large site"
-msgstr "Crear un duplicado puede tomar bastantes minutos, si tiene un sitio pesado."
-
 #: inc/pack.main.php:173
 #@ wpduplicator
 msgid "This window should remain open for the process to complete"
@@ -422,42 +417,37 @@ msgstr "Deje esta ventana ABIERTA para dejar que acabe el proceso. Gracias."
 msgid "Please be patient while we work through this Beta version"
 msgstr "Por favor, sea paciente mientras mejoramos esta versión beta"
 
-#: inc/pack.main.php:175
-#@ wpduplicator
-msgid "Please report any issues to"
-msgstr "Por favor, comunique cualquier problema"
-
-#: inc/pack.main.php:192
+#: inc/pack.main.php:191
 #@ wpduplicator
 msgid "Total Storage Used"
 msgstr "Total de Almacenamiento usado."
 
-#: inc/support.php:61
+#: inc/support.php:52
 #@ wpduplicator
 msgid "Quick Start"
 msgstr "Comienzo rápido"
 
-#: inc/support.php:62
+#: inc/support.php:53
 #@ wpduplicator
 msgid "User Guide"
 msgstr "Guia de usuario"
 
-#: inc/support.php:63
+#: inc/support.php:54
 #@ wpduplicator
 msgid "FAQs"
 msgstr "FAQs"
 
-#: inc/support.php:65
+#: inc/support.php:56
 #@ wpduplicator
 msgid "Product Page"
 msgstr "Página de producto"
 
-#: inc/support.php:76
+#: inc/support.php:67
 #@ wpduplicator
 msgid "Approved Hosting"
 msgstr "Hosting aprobado"
 
-#: inc/support.php:93
+#: inc/support.php:84
 #@ wpduplicator
 msgid "Online Support"
 msgstr "Soporte Online Profesional"
@@ -953,7 +943,7 @@ msgstr "Para crear un paquete nuevo cliquee el botón crear"
 msgid "with the Duplicator"
 msgstr "con el Duplicator"
 
-#: inc/pack.main.php:298
+#: inc/pack.main.php:297
 #@ wpduplicator
 msgid "Please select an action from the bulk action drop down menu to perform a specific action."
 msgstr "Por favor seleccione una acción en bloque del menú para ejecutarla"
@@ -1037,7 +1027,7 @@ msgstr "desconocido"
 #: inc/settings.php:49
 #@ wpduplicator
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: inc/settings.php:63
 #@ wpduplicator
@@ -1136,93 +1126,148 @@ msgstr ""
 msgid "Show/Hide All PHP Information"
 msgstr "Mostrar/Esconder PHP Info"
 
-#: inc/support.php:30
+#: inc/support.php:21
 #@ wpduplicator
 msgid "Created for Admins, Developers and Designers the Duplicator will streamline your workflows and help you quickly clone a WordPress application.  If you run into an issue please read through the"
 msgstr "Creado para Admin, Desarrolladores y Diseñadores, Duplicator facilitará sus flujos de trabajo y ayudará a clonar rápidamente una instalación Wordpress. Si tiene algún problema por favor contacte "
 
-#: inc/support.php:32
+#: inc/support.php:23
 #@ wpduplicator
 msgid "in detail as it will have answers to most of your questions and issues."
 msgstr "en detalle,  tendrá respuestas a la mayoría de sus preguntas y problemas."
 
-#: inc/support.php:47
+#: inc/support.php:38
 #@ wpduplicator
 msgid "Need Help?"
 msgstr "¿Necesita Ayuda?"
 
-#: inc/support.php:54
+#: inc/support.php:45
 #@ wpduplicator
 msgid "Knowledgebase"
 msgstr "Base de Conocimientos"
 
-#: inc/support.php:58
+#: inc/support.php:49
 #@ wpduplicator
 msgid "Please review the online documentation for complete usage of the plugin."
 msgstr "Por favor, revise la documentaicón online para un uso avanzado"
 
-#: inc/support.php:60
+#: inc/support.php:51
 #@ wpduplicator
 msgid "Choose A Section"
 msgstr "Elija una sección"
 
-#: inc/support.php:64
+#: inc/support.php:55
 #@ wpduplicator
 msgid "Change Log"
 msgstr "Cambiar Log"
 
-#: inc/support.php:80
+#: inc/support.php:71
 #@ wpduplicator
 msgid "Need a solid hosting provider that will work well with the Duplicator?"
 msgstr "¿Necesita un proveedor de hosting que trabaje con Duplicator?"
 
-#: inc/support.php:82
+#: inc/support.php:73
 #@ wpduplicator
 msgid "Approved Hosting Program"
 msgstr "Programa Aprobado de Hosting"
 
-#: inc/support.php:97
+#: inc/support.php:88
 #@ wpduplicator
 msgid "Online support  is available for issues not covered in the knowledgebase."
 msgstr "Soporte online para problemas no cubiertos por la base de conocimientos"
 
-#: inc/support.php:99
+#: inc/support.php:90
 #@ wpduplicator
 msgid "Basic"
 msgstr "Básico"
 
-#: inc/support.php:100
+#: inc/support.php:91
 #@ wpduplicator
 msgid "Premium"
 msgstr ""
 
-#: inc/support.php:103
+#: inc/support.php:94
 #@ wpduplicator
 msgid "Basic: 2-5 business days"
 msgstr "Básico: 2-5 dias laborales"
 
-#: inc/support.php:104
+#: inc/support.php:95
 #@ wpduplicator
 msgid "Premium: 24-48hrs"
 msgstr ""
 
-#: inc/support.php:124
+#: inc/support.php:115
 #@ wpduplicator
 msgid "Partner with Us"
 msgstr "Cuente con nosotros"
 
-#: inc/support.php:136
+#: inc/support.php:127
 #@ wpduplicator
 msgid "Keep Active and Online"
 msgstr "Quedarse Activo y Online"
 
-#: inc/support.php:143
+#: inc/support.php:134
 #@ wpduplicator
 msgid "Leave 5 Stars"
 msgstr "Deje 5 estrellas"
 
-#: inc/support.php:149
+#: inc/support.php:140
 #@ wpduplicator
 msgid "Take A Quick 60 Second Survey"
 msgstr "Tome un cursito de 60 segundos"
+
+#: inc/pack.main.php:172
+#@ wpduplicator
+msgid "Creating a package may take several minutes"
+msgstr "Crear un paquete puede tardar varios minutos"
+
+#: inc/support.php:204
+#@ wpduplicator
+msgid "Basic Support"
+msgstr "Soporte básico"
+
+#: inc/support.php:206
+#@ wpduplicator
+msgid "Overview"
+msgstr "Resumen"
+
+#: inc/support.php:207
+#@ wpduplicator
+msgid "This is a courtesy we offer to the WordPress community, but it is clear that some people abuse this service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find the answer."
+msgstr "Esto es una cortesía que le ofrecemos a la comunidad de WordPress, pero está claro que algunas personas abusen de este servicio. Por favor poner tiempo y pensamiento en lo que estás preguntando y no hacer cada pregunta viene a la mente sin tratar de encontrar la respuesta."
+
+#: inc/support.php:209
+#@ wpduplicator
+msgid "Support Tips"
+msgstr "Consejos de apoyo"
+
+#: inc/support.php:211
+#@ wpduplicator
+msgid "Read all knowledgebase articles before asking a question"
+msgstr "Lea todos los artículos de base de datos antes de hacer una pregunta"
+
+#: inc/support.php:212
+#@ wpduplicator
+msgid "Check the WordPress forums for similar issues"
+msgstr "Compruebe los foros de WordPress para problemas similares"
+
+#: inc/support.php:213
+#@ wpduplicator
+msgid "Do a Google search including things like your hosts name"
+msgstr "Hacer una búsqueda de Google, incluyendo cosas como su nombre de host"
+
+#: inc/support.php:214
+#@ wpduplicator
+msgid "Read the Duplicator log files"
+msgstr "Leer los archivos de registro de la duplicadora"
+
+#: inc/support.php:215
+#@ wpduplicator
+msgid "Contact your hosting provider for timeout and permission issues"
+msgstr "Póngase en contacto con su proveedor de hosting por cuestiones de tiempo de espera y permiso"
+
+#: inc/support.php:219
+#@ wpduplicator
+msgid "Continue with Basic Support"
+msgstr "Continuar con el soporte básico"
 
