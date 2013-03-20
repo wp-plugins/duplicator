@@ -209,7 +209,7 @@ DIALOG: QUICK PATH -->
 	<br/><br/><b><?php _e("Support Tips", 'wpduplicator');	?></b><br/>
 
 	- <?php _e("Read all knowledgebase articles before asking a question", 'wpduplicator');	?> <br/>
-	- <?php _e("Check the WordPress forums for simular issues", 'wpduplicator');	?> <br/>
+	- <?php _e("Check the WordPress forums for similar issues", 'wpduplicator');	?> <br/>
 	- <?php _e("Do a Google search including things like your hosts name", 'wpduplicator');	?> <br/>
 	- <?php _e("Read the Duplicator log files", 'wpduplicator');	?> <br/>
 	- <?php _e("Contact your hosting provider for timeout and permission issues", 'wpduplicator');	?> <br/>
