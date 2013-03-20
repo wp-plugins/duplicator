@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Duplicator v0.4.2\n"
+"Project-Id-Version: Duplicator v0.4.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-13 21:17-0700\n"
-"PO-Revision-Date: 2013-03-14 17:40:05+0000\n"
+"PO-Revision-Date: 2013-03-20 10:03:20-0500\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,29 +20,29 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: duplicator.php:211
+#: duplicator.php:212
 #@ wpduplicator
 msgid "FAQ"
 msgstr "Häufig gestellte Fragen"
 
-#: duplicator.php:212
+#: duplicator.php:213
 #@ wpduplicator
 msgid "Partner"
 msgstr "Partner"
 
-#: duplicator.php:213
+#: duplicator.php:214
 #, fuzzy
 #@ wpduplicator
 msgid "Approved Hosts"
 msgstr "Zertifizierte Hosts"
 
-#: duplicator.php:274
-#: inc/support.php:23
+#: duplicator.php:275
+#: inc/support.php:14
 #@ wpduplicator
 msgid "Support"
 msgstr "Unterstützen"
 
-#: duplicator.php:312
+#: duplicator.php:313
 #@ wpduplicator
 msgid "Manage"
 msgstr "Verwalten"
@@ -113,115 +113,115 @@ msgstr "Support-Center"
 msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
 msgstr "Diesen Inhalt NICHT an öffentlichen Stellen wie die WordPress.org Foren eingeben, da er sensible Daten enthält."
 
-#: inc/pack.win.options.php:117
-#: inc/pack.win.options.php:141
+#: inc/pack.win.options.php:116
+#: inc/pack.win.options.php:140
 #@ wpduplicator
 msgid "Saving"
 msgstr "Sichern"
 
-#: inc/pack.main.php:304
+#: inc/pack.main.php:307
 #@ wpduplicator
 msgid "Please select at least one package to delete."
 msgstr "Bitte wähle mindestens ein Archiv zum Löschen."
 
-#: inc/pack.main.php:308
+#: inc/pack.main.php:311
 #@ wpduplicator
 msgid "Are you sure, you want to delete the selected package(s)?"
 msgstr "Ausgewählte Archive wirklich löschen?"
 
-#: inc/pack.main.php:273
-#: inc/pack.main.php:324
-#: inc/pack.win.error.php:68
-#: inc/pack.win.system.php:215
+#: inc/pack.main.php:276
+#: inc/pack.main.php:327
+#: inc/pack.win.error.php:67
+#: inc/pack.win.system.php:214
 #@ wpduplicator
 msgid "Ready to create new package."
 msgstr "Bereit zum Erstellen eines neuen Archivs"
 
-#: inc/pack.win.create.php:51
+#: inc/pack.win.create.php:50
 #@ wpduplicator
 msgid "Please enter a backup name."
 msgstr "Bitte einen Namen für die Sicherungskopie eingeben."
 
-#: inc/pack.main.php:270
+#: inc/pack.main.php:273
 #@ wpduplicator
 msgid "Evaluating WordPress Setup. Please Wait"
 msgstr "Auswerten der WordPress-Einstellungen. Bitte warten"
 
-#: inc/pack.win.create.php:112
-#: inc/pack.win.options.php:161
+#: inc/pack.win.create.php:111
+#: inc/pack.win.options.php:160
 #@ wpduplicator
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: inc/pack.win.create.php:102
+#: inc/pack.win.create.php:101
 #@ wpduplicator
 msgid "Create Package Set"
 msgstr "Erzeuge Archiv Set"
 
-#: inc/pack.win.system.php:221
+#: inc/pack.win.system.php:220
 #@ wpduplicator
 msgid "Checking System Status.  Please Wait!"
 msgstr "Prüfen des System-Status. Bitte warten!"
 
-#: inc/pack.win.system.php:248
+#: inc/pack.win.system.php:247
 #@ wpduplicator
 msgid "Scanning Please Wait"
 msgstr "Scannen. Bitte warten"
 
+#: inc/pack.win.system.php:252
 #: inc/pack.win.system.php:253
 #: inc/pack.win.system.php:254
-#: inc/pack.win.system.php:255
 #@ wpduplicator
 msgid "unreadable"
 msgstr "unleserlich"
 
-#: inc/pack.win.system.php:256
+#: inc/pack.win.system.php:255
 #@ wpduplicator
 msgid "*Scan Error"
 msgstr "* Scan-Fehler"
 
-#: inc/pack.win.system.php:257
+#: inc/pack.win.system.php:256
 #@ wpduplicator
 msgid "Files"
 msgstr "Dateien"
 
-#: inc/pack.win.system.php:257
+#: inc/pack.win.system.php:256
 #@ wpduplicator
 msgid "Folders"
 msgstr "Verzeichnisse"
 
-#: inc/pack.win.system.php:262
+#: inc/pack.win.system.php:261
 #@ wpduplicator
 msgid "error scanning directory"
 msgstr "Fehler beim Scannen des Verzeichnisses"
 
-#: inc/pack.win.links.php:29
+#: inc/pack.win.links.php:28
 #@ wpduplicator
 msgid "DATABASE"
 msgstr "Datenbank"
 
-#: inc/pack.win.links.php:30
+#: inc/pack.win.links.php:29
 #@ wpduplicator
 msgid "PACKAGE"
 msgstr "Archive"
 
-#: inc/pack.win.links.php:31
+#: inc/pack.win.links.php:30
 #@ wpduplicator
 msgid "INSTALLER"
 msgstr "INSTALLER"
 
-#: inc/pack.win.error.php:64
+#: inc/pack.win.error.php:63
 #@ wpduplicator
 msgid "AJAX Response"
 msgstr "AJAX-Antwort"
 
-#: inc/pack.win.create.php:91
+#: inc/pack.win.create.php:90
 #, fuzzy
 #@ wpduplicator
 msgid "Creating package may take several minutes. Please Wait... "
 msgstr "Dies kann einige Minuten dauern. Bitte warten ... "
 
-#: inc/pack.win.create.php:92
+#: inc/pack.win.create.php:91
 #@ wpduplicator
 msgid "Preview Log"
 msgstr "Vorschau Log-Datei"
@@ -231,122 +231,122 @@ msgstr "Vorschau Log-Datei"
 msgid "By"
 msgstr "von"
 
-#: inc/support.php:31
+#: inc/support.php:22
 #@ wpduplicator
 msgid "knowledgebase"
 msgstr "Wissens-Datenbank"
 
-#: inc/support.php:115
+#: inc/support.php:106
 #@ wpduplicator
 msgid "Support Duplicator"
 msgstr "Unterstützung Duplicator"
 
-#: inc/support.php:162
+#: inc/support.php:153
 #@ wpduplicator
 msgid "Spread the Word"
 msgstr "Verbreitung des Inhaltes"
 
-#: inc/support.php:168
+#: inc/support.php:159
 #@ wpduplicator
 msgid "Duplicate Your WordPress"
 msgstr "Duplizieren dein WordPress"
 
-#: inc/support.php:169
+#: inc/support.php:160
 #@ wpduplicator
 msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
 msgstr "Schnelle WordPress Vervielfältigung von LifeInTheGrid.com"
 
-#: inc/support.php:204
+#: inc/support.php:195
 #@ wpduplicator
 msgid "Labs"
 msgstr "Alle Produkte"
 
-#: inc/pack.main.php:78
+#: inc/pack.main.php:73
 #: inc/pack.win.create.php:12
 #@ wpduplicator
 msgid "Package Name"
 msgstr "Archiv-Name"
 
-#: inc/pack.main.php:47
+#: inc/pack.main.php:42
 #@ wpduplicator
 msgid "Create Package"
 msgstr "Archiv erstellen"
 
-#: inc/pack.main.php:40
+#: inc/pack.main.php:35
 #@ wpduplicator
 msgid "Delete selected package(s)"
 msgstr "Ausgewählte Archive löschen"
 
-#: inc/pack.main.php:50
+#: inc/pack.main.php:45
 #@ wpduplicator
 msgid "Options"
 msgstr "Optionen"
 
-#: inc/pack.main.php:51
+#: inc/pack.main.php:46
 #@ wpduplicator
 msgid "System Check"
 msgstr "System-Check"
 
-#: inc/pack.main.php:52
+#: inc/pack.main.php:47
 #@ wpduplicator
 msgid "Show Create Log"
 msgstr "Log-Datei ansehen"
 
-#: inc/pack.main.php:59
+#: inc/pack.main.php:54
 #@ wpduplicator
 msgid "Status"
 msgstr "Status"
 
-#: inc/pack.main.php:60
+#: inc/pack.main.php:55
 #@ wpduplicator
 msgid "Ready to create new package"
 msgstr "Bereit zum Erstellen eines neuen Archivs"
 
-#: inc/pack.main.php:73
+#: inc/pack.main.php:68
 #@ wpduplicator
 msgid "Select all packages"
 msgstr "Alle Archive auswählen"
 
-#: inc/pack.main.php:76
+#: inc/pack.main.php:71
 #@ wpduplicator
 msgid "Created"
 msgstr "Erstellt"
 
-#: inc/pack.main.php:77
+#: inc/pack.main.php:72
 #@ wpduplicator
 msgid "Size"
 msgstr "Größe"
 
-#: inc/pack.main.php:80
+#: inc/pack.main.php:75
 #@ wpduplicator
 msgid "Package Set"
 msgstr "Archiv Set"
 
-#: inc/pack.main.php:81
+#: inc/pack.main.php:76
 #@ wpduplicator
 msgid "(Download Both)"
 msgstr "(Archiv u. Installer herunterladen)"
 
-#: inc/pack.main.php:112
-#: inc/pack.main.php:140
+#: inc/pack.main.php:107
+#: inc/pack.main.php:135
 #@ wpduplicator
 msgid "View"
 msgstr "Ansicht"
 
-#: inc/pack.main.php:118
+#: inc/pack.main.php:113
 #: inc/pack.win.options.php:10
 #@ wpduplicator
 msgid "Installer"
 msgstr "Installer"
 
-#: inc/pack.main.php:119
-#: inc/pack.main.php:148
+#: inc/pack.main.php:114
+#: inc/pack.main.php:143
 #: inc/pack.win.options.php:9
 #@ wpduplicator
 msgid "Package"
 msgstr "Archiv"
 
-#: inc/pack.main.php:125
+#: inc/pack.main.php:120
 #: inc/settings.php:125
 #: inc/settings.php:148
 #: inc/settings.php:179
@@ -354,105 +354,105 @@ msgstr "Archiv"
 msgid "Version"
 msgstr "Version"
 
-#: inc/pack.main.php:126
+#: inc/pack.main.php:121
 #@ wpduplicator
 msgid "Secure Name"
 msgstr "Sicherer Dateiname"
 
-#: inc/pack.main.php:127
+#: inc/pack.main.php:122
 #@ wpduplicator
 msgid "Download SQL File"
 msgstr "SQL-Datei herunterladen"
 
-#: inc/pack.main.php:128
+#: inc/pack.main.php:123
 #@ wpduplicator
 msgid "Show Download Links"
 msgstr "Download-Links"
 
-#: inc/pack.main.php:154
+#: inc/pack.main.php:149
 #@ wpduplicator
 msgid "Legacy Version"
 msgstr "Veraltete Version"
 
-#: inc/pack.main.php:157
+#: inc/pack.main.php:152
 #@ wpduplicator
 msgid "This package was built with a version that is no longer supported.  It is highly recommended that this package be deleted.  For more details see the"
 msgstr "Dieses Archiv wurde mit einer früheren Version erstellt, welche nicht mehr unterstützt wird. Es wird dringend empfohlen, dieses Archiv zu löschen. Für weitere Details siehe die"
 
-#: inc/pack.main.php:158
+#: inc/pack.main.php:153
 #: inc/pack.win.create.php:35
 #@ wpduplicator
 msgid "Online FAQs"
 msgstr "Häufig gestellten Fragen (Online)"
 
-#: inc/pack.main.php:170
+#: inc/pack.main.php:165
 #@ wpduplicator
 msgid "No packages found"
 msgstr "Keine Archive gefunden"
 
-#: inc/pack.main.php:173
+#: inc/pack.main.php:168
 #, fuzzy
 #@ wpduplicator
 msgid "Check your"
 msgstr "Überprüfe die"
 
-#: inc/pack.main.php:174
+#: inc/pack.main.php:169
 #, fuzzy
 #@ wpduplicator
 msgid "server's compatibility"
 msgstr "Server-Kompatibilität"
 
-#: inc/pack.main.php:176
+#: inc/pack.main.php:171
 #@ wpduplicator
 msgid "This process will backup all your files and database"
 msgstr "Dieser Prozess erstellt ein Backup aller Dateien und der Datenbank"
 
-#: inc/pack.main.php:177
+#: inc/pack.main.php:172
 #@ wpduplicator
 msgid "Creating a package may take several minutes if you have a large site"
 msgstr "Bei großen Websites kann das Erstellen eines Archivs einige Minuten dauern"
 
-#: inc/pack.main.php:178
+#: inc/pack.main.php:173
 #@ wpduplicator
 msgid "This window should remain open for the process to complete"
 msgstr "Dieses Fenster sollte bis zum Abschluss des Prozesses offen bleiben"
 
-#: inc/pack.main.php:179
+#: inc/pack.main.php:174
 #@ wpduplicator
 msgid "Please be patient while we work through this Beta version"
 msgstr "Bitte etwas Geduld; dies ist eine Beta-Version"
 
-#: inc/pack.main.php:180
+#: inc/pack.main.php:175
 #@ wpduplicator
 msgid "Please report any issues to"
 msgstr "Bitte berichte alle Probleme an"
 
-#: inc/pack.main.php:197
+#: inc/pack.main.php:192
 #@ wpduplicator
 msgid "Total Storage Used"
 msgstr "Belegter Speicherplatz"
 
-#: inc/support.php:61
+#: inc/support.php:52
 #@ wpduplicator
 msgid "Quick Start"
 msgstr "Schnell-Start"
 
-#: inc/support.php:62
+#: inc/support.php:53
 #@ wpduplicator
 msgid "User Guide"
 msgstr "Benutzerhandbuch"
 
-#: inc/support.php:63
+#: inc/support.php:54
 #@ wpduplicator
 msgid "FAQs"
 msgstr "Häufig gestellte Fragen"
 
-#: inc/support.php:76
+#: inc/support.php:67
 #@ wpduplicator
 msgid "Approved Hosting"
 msgstr "Empfohlene Hosting-Provider"
 
-#: inc/support.php:93
+#: inc/support.php:84
 #@ wpduplicator
 msgid "Online Support"
 msgstr "Online Support"
@@ -518,7 +518,7 @@ msgstr "Host"
 msgid "Name"
 msgstr "Name"
 
-#: inc/pack.main.php:75
+#: inc/pack.main.php:70
 #: inc/pack.win.options.php:85
 #: inc/settings.php:156
 #@ wpduplicator
@@ -546,12 +546,12 @@ msgstr "Löschen des gesamten Snapshot-Verzeichnises beim Entfernen des Plugins"
 msgid "Snapshot Directory"
 msgstr "Cache-Verzeichnis gefunden"
 
-#: inc/pack.win.options.php:156
+#: inc/pack.win.options.php:155
 #@ wpduplicator
 msgid "Save"
 msgstr "Sichern"
 
-#: inc/pack.win.system.php:286
+#: inc/pack.win.system.php:285
 #@ wpduplicator
 msgid "Close"
 msgstr "Schließen"
@@ -874,7 +874,7 @@ msgstr "PHP Unterstützung"
 msgid "The version of PHP on this server is "
 msgstr "Die Version von PHP auf diesem Server ist "
 
-#: inc/support.php:65
+#: inc/support.php:56
 #@ wpduplicator
 msgid "Product Page"
 msgstr "Produkt Seite"
@@ -915,35 +915,35 @@ msgstr "Archive"
 msgid "All directory paths and extensions in this section will be excluded from the package file."
 msgstr "Alle Verzeichnisse und alle Dateien mit diesen Erweiterungen sind von der Archiv-Datei ausgeschlossen."
 
-#: duplicator.php:271
-#: inc/pack.main.php:31
+#: duplicator.php:272
+#: inc/pack.main.php:26
 #@ wpduplicator
 msgid "Packages"
 msgstr "Archive"
 
-#: duplicator.php:273
+#: duplicator.php:274
 #: inc/pack.win.create.php:8
 #: inc/settings.php:40
 #@ wpduplicator
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: inc/pack.main.php:74
+#: inc/pack.main.php:69
 #@ wpduplicator
 msgid "Details"
 msgstr "Details"
 
-#: inc/pack.main.php:171
+#: inc/pack.main.php:166
 #@ wpduplicator
 msgid "To create a new package click the create button "
 msgstr "Zum Erstellen eines neuen Archives auf den Button klicken "
 
-#: inc/pack.main.php:175
+#: inc/pack.main.php:170
 #@ wpduplicator
 msgid "with the Duplicator"
 msgstr "mit dem Duplicator"
 
-#: inc/pack.main.php:295
+#: inc/pack.main.php:298
 #@ wpduplicator
 msgid "Please select an action from the bulk action drop down menu to perform a specific action."
 msgstr "Bitte wähle eine Aktion aus dem Dropdown-Menü aus."
@@ -973,7 +973,7 @@ msgstr "Die ungepackten Dateien/Ordner enthalten keine ausgeschlossenen Elemente
 msgid "directory filter"
 msgstr "Verzeichis-Filter"
 
-#: inc/pack.win.create.php:59
+#: inc/pack.win.create.php:58
 #@ wpduplicator
 msgid "Alpanumeric characters only on package name."
 msgstr "Alphanumerische Zeichen nur im Archiv-Namen."
@@ -1106,102 +1106,102 @@ msgstr "maximal erlaubte Archive"
 msgid "Show/Hide All PHP Information"
 msgstr "Zeigen/Verbergen aller PHP-Informationen"
 
-#: inc/support.php:32
+#: inc/support.php:23
 #@ wpduplicator
 msgid "in detail as it will have answers to most of your questions and issues."
 msgstr "im Detail, wir haben Antworten auf die meisten Fragen und Probleme."
 
-#: inc/support.php:47
+#: inc/support.php:38
 #@ wpduplicator
 msgid "Need Help?"
 msgstr "Benötigst du Hilfe?"
 
-#: inc/support.php:54
+#: inc/support.php:45
 #@ wpduplicator
 msgid "Knowledgebase"
 msgstr "Wissens-Datenbank"
 
-#: inc/support.php:58
+#: inc/support.php:49
 #@ wpduplicator
 msgid "Please review the online documentation for complete usage of the plugin."
 msgstr "Bitte überprüfe die Online-Dokumentation für die vollständige Nutzung des Plugins."
 
-#: inc/support.php:60
+#: inc/support.php:51
 #@ wpduplicator
 msgid "Choose A Section"
 msgstr "Wähle eine Rubrik"
 
-#: inc/support.php:64
+#: inc/support.php:55
 #@ wpduplicator
 msgid "Change Log"
 msgstr "Liste der Änderungen"
 
-#: inc/support.php:80
+#: inc/support.php:71
 #@ wpduplicator
 msgid "Need a solid hosting provider that will work well with the Duplicator?"
 msgstr "Benötigst du einen soliden Hosting-Provider, bei dem der Duplicator gut funktioniert?"
 
-#: inc/support.php:82
+#: inc/support.php:73
 #@ wpduplicator
 msgid "Approved Hosting Program"
 msgstr "Geeignete Hosting-Provider"
 
-#: inc/support.php:97
+#: inc/support.php:88
 #@ wpduplicator
 msgid "Online support  is available for issues not covered in the knowledgebase."
 msgstr "Online-Unterstützung für Fragen, die nicht in der Wissensdatenbank enthalten sind."
 
-#: inc/support.php:99
+#: inc/support.php:90
 #@ wpduplicator
 msgid "Basic"
 msgstr "Basis"
 
-#: inc/support.php:100
+#: inc/support.php:91
 #@ wpduplicator
 msgid "Premium"
 msgstr "Premium"
 
-#: inc/support.php:103
+#: inc/support.php:94
 #@ wpduplicator
 msgid "Basic: 2-5 business days"
 msgstr "Basis: 2-5 Arbeitstage"
 
-#: inc/support.php:104
+#: inc/support.php:95
 #@ wpduplicator
 msgid "Premium: 24-48hrs"
 msgstr "Premium: 24-48 Stunden"
 
-#: inc/support.php:124
+#: inc/support.php:115
 #@ wpduplicator
 msgid "Partner with Us"
 msgstr "Unsere Partner"
 
-#: inc/support.php:136
+#: inc/support.php:127
 #@ wpduplicator
 msgid "Keep Active and Online"
 msgstr "Bitte unterstütze den Duplicator mit einer Spende"
 
-#: inc/support.php:143
+#: inc/support.php:134
 #@ wpduplicator
 msgid "Leave 5 Stars"
 msgstr "Vergebe 5 Sterne"
 
-#: inc/support.php:149
+#: inc/support.php:140
 #@ wpduplicator
 msgid "Take A Quick 60 Second Survey"
 msgstr "Nimm an einer kurzen 60-Sekunden-Umfrage teil"
 
-#: inc/pack.main.php:39
+#: inc/pack.main.php:34
 #@ wpduplicator
 msgid "Bulk Actions"
 msgstr "Auswahl"
 
-#: inc/pack.main.php:40
+#: inc/pack.main.php:35
 #@ wpduplicator
 msgid "Delete"
 msgstr "Löschen"
 
-#: inc/pack.main.php:42
+#: inc/pack.main.php:37
 #@ wpduplicator
 msgid "Apply"
 msgstr "Anwenden"
@@ -1231,8 +1231,58 @@ msgstr "Allgemein"
 msgid "Diagnostics"
 msgstr "Diagnose"
 
-#: inc/support.php:30
+#: inc/support.php:21
 #@ wpduplicator
 msgid "Created for Admins, Developers and Designers the Duplicator will streamline your workflows and help you quickly clone a WordPress application.  If you run into an issue please read through the"
 msgstr "Erstellt für Admins, Entwickler und Designer, welche mit dem Duplicator ihre Arbeitsabläufe optimieren und eine WordPress-Anwendung schnell klonen wollen. Bei Problemen lies bitte die"
+
+#: inc/support.php:204
+#@ wpduplicator
+msgid "Basic Support"
+msgstr ""
+
+#: inc/support.php:206
+#@ wpduplicator
+msgid "Overview"
+msgstr "Überblick"
+
+#: inc/support.php:207
+#@ wpduplicator
+msgid "This is a courtesy we offer to the WordPress community, but it is clear that some people abuse this service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find the answer."
+msgstr "Dies ist eine Höflichkeit bieten wir der WordPress-Community, aber es ist klar, dass einige Leute diesen Dienst missbrauchen. Bitte Zeit und Gedanken was Sie Fragen und verlangen Sie nicht jede Frage, die in den Sinn kommt, ohne zu versuchen, die Antwort zu finden."
+
+#: inc/support.php:209
+#@ wpduplicator
+msgid "Support Tips"
+msgstr "Support-Tipps"
+
+#: inc/support.php:211
+#@ wpduplicator
+msgid "Read all knowledgebase articles before asking a question"
+msgstr "Alle Knowledgebase-Artikel zu lesen, bevor Sie eine Frage"
+
+#: inc/support.php:212
+#@ wpduplicator
+msgid "Check the WordPress forums for simular issues"
+msgstr "Überprüfen Sie die WordPress-Foren für Simular-Probleme"
+
+#: inc/support.php:213
+#@ wpduplicator
+msgid "Do a Google search including things like your hosts name"
+msgstr "Eine Google Suche auch Dinge wie Ihr Gastgeber-Name"
+
+#: inc/support.php:214
+#@ wpduplicator
+msgid "Read the Duplicator log files"
+msgstr "Die Duplikator-Log-Dateien zu lesen"
+
+#: inc/support.php:215
+#@ wpduplicator
+msgid "Contact your hosting provider for timeout and permission issues"
+msgstr "Kontaktieren Sie Ihren hosting-Provider für Timeout und Erlaubnis Fragen"
+
+#: inc/support.php:219
+#@ wpduplicator
+msgid "Continue with Basic Support"
+msgstr "Fahren Sie mit dem Basic Support"
 

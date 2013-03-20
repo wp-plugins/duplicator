@@ -1,19 +1,10 @@
 <?php
+	require_once('javascript.php'); 
 	require_once('inc.header.php');
 ?>
 <script type="text/javascript">var switchTo5x=true;</script>
 <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
 <script type="text/javascript">stLight.options({publisher: "1a44d92e-2a78-42c3-a32e-414f78f9f484"}); </script> 
-<script>
-	jQuery(document).ready(function() {
-		//ATTACHED EVENTS
-		jQuery('#dup-support-kb-lnks').change(function() {
-			if (jQuery(this).val() != "null") 
-				window.open(jQuery(this).val())
-		});
-	});
-</script>
-
 
 <div class="wrap dup-wrap dup-support-all">
 
@@ -96,7 +87,7 @@
 			<div class="dup-support-hlp-txt">
 				<?php _e("Online support  is available for issues not covered in the knowledgebase." , 'wpduplicator');	?>
 				<div class="dup-support-txts-links">
-					<a href="https://support.lifeinthegrid.com" target="_blank"><?php _e('Basic', 'wpduplicator') ?></a> &nbsp; | &nbsp;
+					<a href="javascript:void(0)" onclick="Duplicator.ShowSupportDialog()"><?php _e('Basic', 'wpduplicator') ?></a> &nbsp; | &nbsp;
 					<a href="http://lifeinthegrid.com/services/" target="_blank"><?php _e('Premium', 'wpduplicator') ?></a>
 				</div>	
 				<i style="font-size:11px">
@@ -208,3 +199,45 @@
 	</div>
 </div><br/><br/><br/><br/>
 
+<!-- ==========================================
+DIALOG: QUICK PATH -->
+<div id="dup-dlg-basic-support" title="<?php _e('Basic Support', 'wpduplicator'); ?>" style="display:none; width:500; height:300px; line-height: 18px">
+	
+	<b><?php _e("Overview", 'wpduplicator');	?></b><br/>
+	<?php _e("This is a courtesy we offer to the WordPress community, but it is clear that some people abuse this service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find the answer.", 'wpduplicator');	?>
+
+	<br/><br/><b><?php _e("Support Tips", 'wpduplicator');	?></b><br/>
+
+	- <?php _e("Read all knowledgebase articles before asking a question", 'wpduplicator');	?> <br/>
+	- <?php _e("Check the WordPress forums for simular issues", 'wpduplicator');	?> <br/>
+	- <?php _e("Do a Google search including things like your hosts name", 'wpduplicator');	?> <br/>
+	- <?php _e("Read the Duplicator log files", 'wpduplicator');	?> <br/>
+	- <?php _e("Contact your hosting provider for timeout and permission issues", 'wpduplicator');	?> <br/>
+
+	
+	<div style="padding: 20px 0px 0px 0px; text-align: right">
+		<a href="https://support.lifeinthegrid.com" target="_blank"><?php _e('Continue with Basic Support', 'wpduplicator') ?></a>
+	</div>
+</div>
+
+
+<script>
+	jQuery(document).ready(function($) {
+		
+		/*	----------------------------------------
+		 *	METHOD: Shows the 'Basic Support' dialog */
+		Duplicator.ShowSupportDialog = function() {
+			$("#dup-dlg-basic-support").dialog("open");
+			return false;
+		}
+
+		//ATTACHED EVENTS
+		jQuery('#dup-support-kb-lnks').change(function() {
+			if (jQuery(this).val() != "null") 
+				window.open(jQuery(this).val())
+		});
+		
+		//INIT CALLS
+		$("#dup-dlg-basic-support").dialog({autoOpen:false, height:350, width:550, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
+	});
+</script>
