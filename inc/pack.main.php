@@ -169,16 +169,15 @@ MAIN FORM: Lists all the backups 			-->
 						__("server's compatibility", 'wpduplicator'),
 						__("with the Duplicator", 'wpduplicator'));
 			$msg4 = __("This process will backup all your files and database", 'wpduplicator');
-			$msg5 = __("Creating a package may take several minutes if you have a large site", 'wpduplicator');
+			$msg5 = __("Creating a package may take several minutes", 'wpduplicator');
 			$msg6 = __("This window should remain open for the process to complete", 'wpduplicator');
 			$msg7 = __("Please be patient while we work through this Beta version", 'wpduplicator');
-			$msg8 = __("Please report any issues to", 'wpduplicator');
 
 			echo "<tr>
 					<td colspan='7'>
-						<div style='padding:60px 20px;text-align:center'>
+						<div style='padding:100px 20px;text-align:center'>
 							<b style='font-size:14px'>{$msg1}.<br/> {$msg2} <input type='button' id='dup-create-pack-zero-view' onclick='Duplicator.Pack.ShowCreateDialog()'  ondblclick='javascript:return void(0);' value=''  /><br/> {$msg3}.</b><br/><br/>
-							<i>{$msg4}.<br/> {$msg5}.<br/> {$msg6}. <br/><br/> {$msg7}.<br/> {$msg8} <a href='http://support.lifeinthegrid.com' target='_blank'>support.lifeinthegrid.com</a></i>
+							<i> {$msg5}.<br/> {$msg6}. <br/>{$msg7}.</i>
 						</div>
 						</td>
 					</tr>";

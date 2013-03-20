@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.4.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-13 21:17-0700\n"
-"PO-Revision-Date: 2013-03-20 10:03:20-0500\n"
+"PO-Revision-Date: 2013-03-20 11:04:41-0500\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -119,18 +119,18 @@ msgstr "Diesen Inhalt NICHT an öffentlichen Stellen wie die WordPress.org Foren
 msgid "Saving"
 msgstr "Sichern"
 
-#: inc/pack.main.php:307
+#: inc/pack.main.php:306
 #@ wpduplicator
 msgid "Please select at least one package to delete."
 msgstr "Bitte wähle mindestens ein Archiv zum Löschen."
 
-#: inc/pack.main.php:311
+#: inc/pack.main.php:310
 #@ wpduplicator
 msgid "Are you sure, you want to delete the selected package(s)?"
 msgstr "Ausgewählte Archive wirklich löschen?"
 
-#: inc/pack.main.php:276
-#: inc/pack.main.php:327
+#: inc/pack.main.php:275
+#: inc/pack.main.php:326
 #: inc/pack.win.error.php:67
 #: inc/pack.win.system.php:214
 #@ wpduplicator
@@ -142,7 +142,7 @@ msgstr "Bereit zum Erstellen eines neuen Archivs"
 msgid "Please enter a backup name."
 msgstr "Bitte einen Namen für die Sicherungskopie eingeben."
 
-#: inc/pack.main.php:273
+#: inc/pack.main.php:272
 #@ wpduplicator
 msgid "Evaluating WordPress Setup. Please Wait"
 msgstr "Auswerten der WordPress-Einstellungen. Bitte warten"
@@ -407,11 +407,6 @@ msgstr "Server-Kompatibilität"
 msgid "This process will backup all your files and database"
 msgstr "Dieser Prozess erstellt ein Backup aller Dateien und der Datenbank"
 
-#: inc/pack.main.php:172
-#@ wpduplicator
-msgid "Creating a package may take several minutes if you have a large site"
-msgstr "Bei großen Websites kann das Erstellen eines Archivs einige Minuten dauern"
-
 #: inc/pack.main.php:173
 #@ wpduplicator
 msgid "This window should remain open for the process to complete"
@@ -422,12 +417,7 @@ msgstr "Dieses Fenster sollte bis zum Abschluss des Prozesses offen bleiben"
 msgid "Please be patient while we work through this Beta version"
 msgstr "Bitte etwas Geduld; dies ist eine Beta-Version"
 
-#: inc/pack.main.php:175
-#@ wpduplicator
-msgid "Please report any issues to"
-msgstr "Bitte berichte alle Probleme an"
-
-#: inc/pack.main.php:192
+#: inc/pack.main.php:191
 #@ wpduplicator
 msgid "Total Storage Used"
 msgstr "Belegter Speicherplatz"
@@ -943,7 +933,7 @@ msgstr "Zum Erstellen eines neuen Archives auf den Button klicken "
 msgid "with the Duplicator"
 msgstr "mit dem Duplicator"
 
-#: inc/pack.main.php:298
+#: inc/pack.main.php:297
 #@ wpduplicator
 msgid "Please select an action from the bulk action drop down menu to perform a specific action."
 msgstr "Bitte wähle eine Aktion aus dem Dropdown-Menü aus."
@@ -1239,7 +1229,7 @@ msgstr "Erstellt für Admins, Entwickler und Designer, welche mit dem Duplicator
 #: inc/support.php:204
 #@ wpduplicator
 msgid "Basic Support"
-msgstr ""
+msgstr "Grundlegende Unterstützung"
 
 #: inc/support.php:206
 #@ wpduplicator
@@ -1261,11 +1251,6 @@ msgstr "Support-Tipps"
 msgid "Read all knowledgebase articles before asking a question"
 msgstr "Alle Knowledgebase-Artikel zu lesen, bevor Sie eine Frage"
 
-#: inc/support.php:212
-#@ wpduplicator
-msgid "Check the WordPress forums for simular issues"
-msgstr "Überprüfen Sie die WordPress-Foren für Simular-Probleme"
-
 #: inc/support.php:213
 #@ wpduplicator
 msgid "Do a Google search including things like your hosts name"
@@ -1285,4 +1270,14 @@ msgstr "Kontaktieren Sie Ihren hosting-Provider für Timeout und Erlaubnis Frage
 #@ wpduplicator
 msgid "Continue with Basic Support"
 msgstr "Fahren Sie mit dem Basic Support"
+
+#: inc/pack.main.php:172
+#@ wpduplicator
+msgid "Creating a package may take several minutes"
+msgstr "Erstellen eines Pakets kann mehrere Minuten dauern."
+
+#: inc/support.php:212
+#@ wpduplicator
+msgid "Check the WordPress forums for similar issues"
+msgstr "Überprüfen Sie die WordPress-Foren nach ähnlichen Problemen"
 
