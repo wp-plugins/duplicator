@@ -203,16 +203,16 @@
 DIALOG: QUICK PATH -->
 <div id="dup-dlg-basic-support" title="<?php _e('Basic Support', 'wpduplicator'); ?>" style="display:none; width:500; height:300px; line-height: 18px">
 	
-	<b><?php _e("Overview", 'wpduplicator');	?></b><br/>
-	<?php _e("This is a courtesy we offer to the WordPress community, but it is clear that some people abuse this service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find the answer.", 'wpduplicator');	?>
+
+	<?php _e("This is a free courtesy we offer to the WordPress community, but it is clear that some people do abuse the service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find an answer first.  Thank you for being thoughtful of this free service!", 'wpduplicator');	?>
 
 	<br/><br/><b><?php _e("Support Tips", 'wpduplicator');	?></b><br/>
 
 	- <?php _e("Read all knowledgebase articles before asking a question", 'wpduplicator');	?> <br/>
 	- <?php _e("Check the WordPress forums for similar issues", 'wpduplicator');	?> <br/>
-	- <?php _e("Do a Google search including things like your hosts name", 'wpduplicator');	?> <br/>
-	- <?php _e("Read the Duplicator log files", 'wpduplicator');	?> <br/>
-	- <?php _e("Contact your hosting provider for timeout and permission issues", 'wpduplicator');	?> <br/>
+	- <?php _e("Read the Duplicator log files for clues", 'wpduplicator');	?> <br/>
+	- <?php _e("Do a Google search including errors from the log files", 'wpduplicator');	?> <br/>
+	- <?php _e("Contact your hosting provider for permission and timeout issues", 'wpduplicator');	?> <br/>
 
 	
 	<div style="padding: 20px 0px 0px 0px; text-align: right">
@@ -238,6 +238,6 @@ DIALOG: QUICK PATH -->
 		});
 		
 		//INIT CALLS
-		$("#dup-dlg-basic-support").dialog({autoOpen:false, height:350, width:550, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
+		$("#dup-dlg-basic-support").dialog({autoOpen:false, height:350, width:500, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
 	});
 </script>

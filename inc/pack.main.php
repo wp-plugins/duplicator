@@ -168,7 +168,7 @@ MAIN FORM: Lists all the backups 			-->
 						__("Check your", 'wpduplicator'), 
 						__("server's compatibility", 'wpduplicator'),
 						__("with the Duplicator", 'wpduplicator'));
-			$msg4 = __("This process will backup all your files and database", 'wpduplicator');
+			//$msg4 = __("This process will backup all your files and database", 'wpduplicator');
 			$msg5 = __("Creating a package may take several minutes", 'wpduplicator');
 			$msg6 = __("This window should remain open for the process to complete", 'wpduplicator');
 			$msg7 = __("Please be patient while we work through this Beta version", 'wpduplicator');

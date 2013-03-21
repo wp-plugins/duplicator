@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.4.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-03-20 11:12:55-0500\n"
+"PO-Revision-Date: 2013-03-21 11:12:32-0500\n"
 "Last-Translator: basicos <emiliodefez@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -401,11 +401,6 @@ msgstr "Chequee su"
 #@ wpduplicator
 msgid "server's compatibility"
 msgstr "Compatibilidad del servidor"
-
-#: inc/pack.main.php:171
-#@ wpduplicator
-msgid "This process will backup all your files and database"
-msgstr "Este proceso hará un backup COMPLETO (Ficheros, datos, configuraciones)"
 
 #: inc/pack.main.php:173
 #@ wpduplicator
@@ -1038,7 +1033,7 @@ msgstr "Opciones de Plugin"
 #: inc/settings.php:106
 #@ wpduplicator
 msgid "Duplicator Version"
-msgstr ""
+msgstr "Duplicadora Version"
 
 #: inc/settings.php:83
 #@ wpduplicator
@@ -1226,16 +1221,6 @@ msgstr "Crear un paquete puede tardar varios minutos"
 msgid "Basic Support"
 msgstr "Soporte básico"
 
-#: inc/support.php:206
-#@ wpduplicator
-msgid "Overview"
-msgstr "Resumen"
-
-#: inc/support.php:207
-#@ wpduplicator
-msgid "This is a courtesy we offer to the WordPress community, but it is clear that some people abuse this service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find the answer."
-msgstr "Esto es una cortesía que le ofrecemos a la comunidad de WordPress, pero está claro que algunas personas abusen de este servicio. Por favor poner tiempo y pensamiento en lo que estás preguntando y no hacer cada pregunta viene a la mente sin tratar de encontrar la respuesta."
-
 #: inc/support.php:209
 #@ wpduplicator
 msgid "Support Tips"
@@ -1251,23 +1236,28 @@ msgstr "Lea todos los artículos de base de datos antes de hacer una pregunta"
 msgid "Check the WordPress forums for similar issues"
 msgstr "Compruebe los foros de WordPress para problemas similares"
 
-#: inc/support.php:213
-#@ wpduplicator
-msgid "Do a Google search including things like your hosts name"
-msgstr "Hacer una búsqueda de Google, incluyendo cosas como su nombre de host"
-
-#: inc/support.php:214
-#@ wpduplicator
-msgid "Read the Duplicator log files"
-msgstr "Leer los archivos de registro de la duplicadora"
-
-#: inc/support.php:215
-#@ wpduplicator
-msgid "Contact your hosting provider for timeout and permission issues"
-msgstr "Póngase en contacto con su proveedor de hosting por cuestiones de tiempo de espera y permiso"
-
 #: inc/support.php:219
 #@ wpduplicator
 msgid "Continue with Basic Support"
 msgstr "Continuar con el soporte básico"
+
+#: inc/support.php:207
+#@ wpduplicator
+msgid "This is a free courtesy we offer to the WordPress community, but it is clear that some people do abuse the service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find an answer first.  Thank you for being thoughtful of this free service!"
+msgstr "Esta es una cortesía gratuito que ofrecemos a la comunidad de WordPress, pero está claro que algunas personas abusen del servicio. Por favor, ponga el tiempo y el pensamiento en lo que estás pidiendo y no hacer todas las preguntas que se le ocurra, sin tratar de encontrar una primera respuesta. Gracias por estar atento de este servicio gratuito!"
+
+#: inc/support.php:213
+#@ wpduplicator
+msgid "Read the Duplicator log files for clues"
+msgstr "Lea los archivos de registro en busca de pistas duplicadora"
+
+#: inc/support.php:214
+#@ wpduplicator
+msgid "Do a Google search including errors from the log files"
+msgstr "Haga una búsqueda en Google, incluidos los errores de los archivos de registro"
+
+#: inc/support.php:215
+#@ wpduplicator
+msgid "Contact your hosting provider for permission and timeout issues"
+msgstr "Póngase en contacto con su proveedor de alojamiento para el permiso y los problemas de tiempo de espera"
 

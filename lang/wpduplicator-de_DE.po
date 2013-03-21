@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.4.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-13 21:17-0700\n"
-"PO-Revision-Date: 2013-03-20 11:04:41-0500\n"
+"PO-Revision-Date: 2013-03-21 11:10:03-0500\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -401,11 +401,6 @@ msgstr "Überprüfe die"
 #@ wpduplicator
 msgid "server's compatibility"
 msgstr "Server-Kompatibilität"
-
-#: inc/pack.main.php:171
-#@ wpduplicator
-msgid "This process will backup all your files and database"
-msgstr "Dieser Prozess erstellt ein Backup aller Dateien und der Datenbank"
 
 #: inc/pack.main.php:173
 #@ wpduplicator
@@ -1231,16 +1226,6 @@ msgstr "Erstellt für Admins, Entwickler und Designer, welche mit dem Duplicator
 msgid "Basic Support"
 msgstr "Grundlegende Unterstützung"
 
-#: inc/support.php:206
-#@ wpduplicator
-msgid "Overview"
-msgstr "Überblick"
-
-#: inc/support.php:207
-#@ wpduplicator
-msgid "This is a courtesy we offer to the WordPress community, but it is clear that some people abuse this service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find the answer."
-msgstr "Dies ist eine Höflichkeit bieten wir der WordPress-Community, aber es ist klar, dass einige Leute diesen Dienst missbrauchen. Bitte Zeit und Gedanken was Sie Fragen und verlangen Sie nicht jede Frage, die in den Sinn kommt, ohne zu versuchen, die Antwort zu finden."
-
 #: inc/support.php:209
 #@ wpduplicator
 msgid "Support Tips"
@@ -1250,21 +1235,6 @@ msgstr "Support-Tipps"
 #@ wpduplicator
 msgid "Read all knowledgebase articles before asking a question"
 msgstr "Alle Knowledgebase-Artikel zu lesen, bevor Sie eine Frage"
-
-#: inc/support.php:213
-#@ wpduplicator
-msgid "Do a Google search including things like your hosts name"
-msgstr "Eine Google Suche auch Dinge wie Ihr Gastgeber-Name"
-
-#: inc/support.php:214
-#@ wpduplicator
-msgid "Read the Duplicator log files"
-msgstr "Die Duplikator-Log-Dateien zu lesen"
-
-#: inc/support.php:215
-#@ wpduplicator
-msgid "Contact your hosting provider for timeout and permission issues"
-msgstr "Kontaktieren Sie Ihren hosting-Provider für Timeout und Erlaubnis Fragen"
 
 #: inc/support.php:219
 #@ wpduplicator
@@ -1280,4 +1250,24 @@ msgstr "Erstellen eines Pakets kann mehrere Minuten dauern."
 #@ wpduplicator
 msgid "Check the WordPress forums for similar issues"
 msgstr "Überprüfen Sie die WordPress-Foren nach ähnlichen Problemen"
+
+#: inc/support.php:207
+#@ wpduplicator
+msgid "This is a free courtesy we offer to the WordPress community, but it is clear that some people do abuse the service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find an answer first.  Thank you for being thoughtful of this free service!"
+msgstr "Dies ist eine kostenlose Zusatzleistung bieten wir dem WordPress-Community, aber es ist klar, dass einige Leute den Service missbrauchen. Bitte setzen Sie Zeit und Gedanken in das, was Sie fragen und fragen nicht jede Frage, die, ohne zu versuchen, eine Antwort zu finden, erste Sinn kommt. Vielen Dank für nachdenkliche diesen kostenlosen Service!"
+
+#: inc/support.php:213
+#@ wpduplicator
+msgid "Read the Duplicator log files for clues"
+msgstr "Lesen Sie die Duplicator Protokolldateien nach Hinweisen"
+
+#: inc/support.php:214
+#@ wpduplicator
+msgid "Do a Google search including errors from the log files"
+msgstr "Führen Sie eine Google-Suche, einschließlich Fehler aus den Log-Dateien"
+
+#: inc/support.php:215
+#@ wpduplicator
+msgid "Contact your hosting provider for permission and timeout issues"
+msgstr "Kontaktieren Sie Ihren Hosting-Provider für die Erlaubnis und Timeout Probleme"
 
