@@ -274,12 +274,15 @@ if (is_admin() == true) {
         $page_settings = add_submenu_page(basename(__FILE__), __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), 'import', 'duplicator_settings_page', 'duplicator_settings_page');
         $page_support  = add_submenu_page(basename(__FILE__), __('Support', 'wpduplicator'), __('Support', 'wpduplicator'), 'import', 'duplicator_support_page', 'duplicator_support_page');
 
-
-        //Apply scripts and styles
+        //Apply Scripts
         add_action('admin_print_scripts-' . $page_main, 'duplicator_scripts');
-        add_action('admin_print_styles-' . $page_main, 'duplicator_styles');
-        add_action('admin_print_styles-' . $page_settings, 'duplicator_styles');
-        add_action('admin_print_styles-' . $page_support, 'duplicator_styles');
+		add_action('admin_print_scripts-' . $page_settings, 'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_support, 'duplicator_scripts');
+		
+		//Apply Styles
+        add_action('admin_print_styles-'  . $page_main, 'duplicator_styles');
+        add_action('admin_print_styles-'  . $page_settings, 'duplicator_styles');
+        add_action('admin_print_styles-'  . $page_support, 'duplicator_styles');
     }
 
     /**

@@ -221,13 +221,13 @@ DIALOG: QUICK PATH -->
 </div>
 
 
-<script>
-	jQuery(document).ready(function($) {
+<script type="text/javascript">
+jQuery(document).ready(function($) {
 		
 		/*	----------------------------------------
 		 *	METHOD: Shows the 'Basic Support' dialog */
 		Duplicator.ShowSupportDialog = function() {
-			$("#dup-dlg-basic-support").dialog("open");
+			jQuery("#dup-dlg-basic-support").dialog("open");
 			return false;
 		}
 
@@ -238,6 +238,6 @@ DIALOG: QUICK PATH -->
 		});
 		
 		//INIT CALLS
-		$("#dup-dlg-basic-support").dialog({autoOpen:false, height:350, width:500, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
-	});
+		jQuery("#dup-dlg-basic-support").dialog({autoOpen:false, height:350, width:500, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
+});
 </script>
