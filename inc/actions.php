@@ -200,7 +200,10 @@ function duplicator_system_check() {
     $json['SYS-102'] = ($test) ? 'Pass' : 'Fail';
 
     //SYS-103 SAFE MODE
-    $test = ini_get('safe_mode');
+    $test = (((strtolower(@ini_get('safe_mode'))   == 'on')   
+			||  (strtolower(@ini_get('safe_mode')) == 'yes') 
+			||  (strtolower(@ini_get('safe_mode')) == 'true') 
+			||  (ini_get("safe_mode") == 1 )));
     $json['SYS-103'] = !($test) ? 'Pass' : 'Fail';
 
     //SYS-104 MYSQL SUPPORT
