@@ -21,36 +21,49 @@
   https://github.com/interconnectit/Search-Replace-DB/
  */
 
-//DOWNLOAD ONLY: 
-if (isset($_GET['get']) && isset($_GET['file']) && file_exists($_GET['file'])) {
-    if (strstr($_GET['file'], '_installer.php') || strstr($_GET['file'], 'installer.rescue.php')) {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=installer.php');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($_GET['file']));
-        @ob_clean();
-        @flush();
-        if (@readfile($_GET['file']) == false) {
-            $data = file_get_contents($_GET['file']);
-            if ($data == false) {
-                die("Unable to read installer file.  The server currently has readfile and file_get_contents disabled on this server.  Please contact your server admin to remove this restriction");
-            } else {
-                print $data;
-            }
-        }
-        exit;
-    } else {
-        header("HTML/1.1 404 Not Found", true, 404);
-        header("Status: 404 Not Found");
-    }
-}
-
-//Prevent Access from rovers or direct browsing in snapshop directory
 if (file_exists('dtoken.php')) {
+    //This is most likely inside the snapshot folder.
+    
+    //DOWNLOAD ONLY: (Only enable download from within the snapshot directory)
+    if (isset($_GET['get']) && isset($_GET['file'])) {
+        //Clean the input, strip out anything not alpha-numeric or "_.", so restricts
+        //only downloading files in same folder, and removes risk of allowing directory
+        //separators in other charsets (vulnerability in older IIS servers), also
+        //strips out anything that might cause it to use an alternate stream since
+        //that would require :// near the front.
+    	$filename = preg_replace('/[^a-zA-Z0-9_.]*/','',$_GET['file']);
+    	if (strlen($filename) && file_exists($filename) && (strstr($filename, '_installer.php') || strstr($filename, 'installer.rescue.php'))) {
+            //Attempt to push the file to the browser
+    	    header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=installer.php');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($filename));
+            //FIXME: We should consider removing all error supression like this
+            //as it makes troubleshooting a wild goose chase for times that the
+            //script failes on such a line.  The same can and should be accomplished
+            //at the server level by turning off displaying errors in PHP.
+            @ob_clean();
+            @flush();
+            if (@readfile($filename) == false) {
+                $data = file_get_contents($filename);
+                if ($data == false) {
+                    die("Unable to read installer file.  The server currently has readfile and file_get_contents disabled on this server.  Please contact your server admin to remove this restriction");
+                } else {
+                    print $data;
+                }
+            }
+        } else {
+            header("HTML/1.1 404 Not Found", true, 404);
+            header("Status: 404 Not Found");
+        }
+    }
+
+	//Prevent Access from rovers or direct browsing in snapshop directory, or when
+    //requesting to download a file, should not go past this point.
     exit;
 }
 ?>
@@ -84,8 +97,8 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '514dcc8d924f39348_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '514dcc8d924f39348_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '5164267b7ec266013_package_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '5164267b7ec266013_package';
 $GLOBALS['FW_DBHOST'] = 'localhost';
 $GLOBALS['FW_DBNAME'] = '';
 $GLOBALS['FW_DBUSER'] = '';
@@ -1895,7 +1908,10 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
 	$req01a = @is_writeable($GLOBALS["CURRENT_ROOT_PATH"]) 	? 'Pass' : 'Fail';
 	$req01b = ($zip_file_count == 1) ? 'Pass' : 'Fail';
 	$req01  = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
-	$req02  = (! ini_get('safe_mode')) ? 'Pass' : 'Fail';
+	$req02 = (((strtolower(@ini_get('safe_mode'))   == 'on')   
+				||  (strtolower(@ini_get('safe_mode')) == 'yes') 
+				||  (strtolower(@ini_get('safe_mode')) == 'true') 
+				||  (ini_get("safe_mode") == 1 ))) ? 'Fail' : 'Pass';
 	$req03  = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
 	$php_compare  = version_compare(phpversion(), '5.2.17');
 	$req04 = $php_compare >= 0 ? 'Pass' : 'Fail';
@@ -2298,7 +2314,10 @@ DIALOG: DB CONNECTION CHECK  -->
 	$req01a = @is_writeable($GLOBALS["CURRENT_ROOT_PATH"]) 	? 'Pass' : 'Fail';
 	$req01b = ($zip_file_count == 1) ? 'Pass' : 'Fail';
 	$req01  = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
-	$req02  = (! ini_get('safe_mode')) ? 'Pass' : 'Fail';
+	$req02 = (((strtolower(@ini_get('safe_mode'))   == 'on')   
+				||  (strtolower(@ini_get('safe_mode')) == 'yes') 
+				||  (strtolower(@ini_get('safe_mode')) == 'true') 
+				||  (ini_get("safe_mode") == 1 ))) ? 'Fail' : 'Pass';
 	$req03  = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
 	$php_compare  = version_compare(phpversion(), '5.2.17');
 	$req04 = $php_compare >= 0 ? 'Pass' : 'Fail';

@@ -158,7 +158,12 @@
 					   </tr>
 					   <tr>
 						   <td><?php _e("Safe Mode", 'wpduplicator'); ?></td>
-						   <td><?php echo (bool) @ini_get('safe_mode') ? __('On', 'wpduplicator') : __('Off', 'wpduplicator'); ?></td>
+						   <td>
+						   <?php echo (((strtolower(@ini_get('safe_mode')) == 'on')	  ||  (strtolower(@ini_get('safe_mode')) == 'yes') || 
+									    (strtolower(@ini_get('safe_mode')) == 'true') ||  (ini_get("safe_mode") == 1 )))  
+										? __('On', 'wpduplicator') : __('Off', 'wpduplicator'); 
+						   ?>
+						   </td>
 					   </tr>
 					   <tr>
 						   <td><?php _e("Memory Limit", 'wpduplicator'); ?></td>

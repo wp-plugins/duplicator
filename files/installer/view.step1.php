@@ -14,7 +14,10 @@
 	$req01a = @is_writeable($GLOBALS["CURRENT_ROOT_PATH"]) 	? 'Pass' : 'Fail';
 	$req01b = ($zip_file_count == 1) ? 'Pass' : 'Fail';
 	$req01  = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
-	$req02  = (! ini_get('safe_mode')) ? 'Pass' : 'Fail';
+	$req02 = (((strtolower(@ini_get('safe_mode'))   == 'on')   
+				||  (strtolower(@ini_get('safe_mode')) == 'yes') 
+				||  (strtolower(@ini_get('safe_mode')) == 'true') 
+				||  (ini_get("safe_mode") == 1 ))) ? 'Fail' : 'Pass';
 	$req03  = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
 	$php_compare  = version_compare(phpversion(), '5.2.17');
 	$req04 = $php_compare >= 0 ? 'Pass' : 'Fail';
