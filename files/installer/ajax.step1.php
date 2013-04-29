@@ -119,7 +119,7 @@ DupUtil::log('DUPLICATOR INSTALL-LOG');
 DupUtil::log('STEP1 START @ ' . @date('h:i:s'));
 DupUtil::log('NOTICE: Do not post to public sites or forums');
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
-DupUtil::log("VERSION:\t{$GLOBALS['DUPLICATOR_INSTALLER_VERSION']}");
+DupUtil::log("VERSION:\t{$GLOBALS['FW_DUPLICATOR_VERSION']}");
 DupUtil::log("PHP:\t\t" . phpversion());
 DupUtil::log("PHP SAPI:\t" . php_sapi_name());
 DupUtil::log("ZIPARCHIVE:\t" . var_export(class_exists('ZipArchive'), true));

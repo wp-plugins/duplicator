@@ -163,6 +163,7 @@ function duplicator_create_installerFile($uniquename) {
         "fwrite_wp_tableprefix" => $wpdb->prefix,
         "fwrite_blogname" => @addslashes(get_option('blogname')),
         "fwrite_wproot" => DUPLICATOR_WPROOTPATH,
+		"fwrite_duplicator_version" => DUPLICATOR_VERSION,				
         "fwrite_rescue_flag" => "");
 	unset($dbpass);
     if (file_exists($template) && is_readable($template)) {

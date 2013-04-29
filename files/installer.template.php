@@ -110,6 +110,7 @@ $GLOBALS['FW_CACHE_PATH'] = '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME'] = '%fwrite_blogname%';
 $GLOBALS['FW_RESCUE_FLAG'] = '%fwrite_rescue_flag%';
 $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
+$GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME'] = 5000;
@@ -138,7 +139,6 @@ $GLOBALS['REPLACE_LIST'] = array();
 //CONSTANTS
 define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] = '0.4.3';
 $GLOBALS["SQL_FILE_NAME"] = "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] = "installer-log.txt";
 $GLOBALS['SEPERATOR1'] = str_repeat("********", 10);
@@ -557,7 +557,7 @@ DupUtil::log('DUPLICATOR INSTALL-LOG');
 DupUtil::log('STEP1 START @ ' . @date('h:i:s'));
 DupUtil::log('NOTICE: Do not post to public sites or forums');
 DupUtil::log("{$GLOBALS['SEPERATOR1']}");
-DupUtil::log("VERSION:\t{$GLOBALS['DUPLICATOR_INSTALLER_VERSION']}");
+DupUtil::log("VERSION:\t{$GLOBALS['FW_DUPLICATOR_VERSION']}");
 DupUtil::log("PHP:\t\t" . phpversion());
 DupUtil::log("PHP SAPI:\t" . php_sapi_name());
 DupUtil::log("ZIPARCHIVE:\t" . var_export(class_exists('ZipArchive'), true));
@@ -1920,7 +1920,7 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
                             <div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
                         </div>
                         <div style="float:right; padding-right:8px">
-                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['DUPLICATOR_INSTALLER_VERSION'] . $GLOBALS['FW_RESCUE_FLAG'] ?></i> &nbsp;
+                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] . $GLOBALS['FW_RESCUE_FLAG'] ?></i> &nbsp;
                             <a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
                         </div>
                     </td>

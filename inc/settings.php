@@ -15,12 +15,11 @@
 	$dbvar_maxtime  = is_null($dbvar_maxtime)  ? __("unknow", 'wpduplicator') : $dbvar_maxtime;
 	$dbvar_maxpacks = is_null($dbvar_maxpacks) ? __("unknow", 'wpduplicator') : $dbvar_maxpacks;	
 
-	
-
 	global $DuplicatorSettings;
 	global $wp_version;
 	global $wpdb;
 	
+	$action_updated = null;
 	if ($_POST['action'] == 'save') {
 		//General Tab
 		$DuplicatorSettings->Set('uninstall_files',  isset($_POST['uninstall_files'])  ? "1" : "0");
@@ -31,6 +30,10 @@
 
 	$uninstall_files  = $DuplicatorSettings->Get('uninstall_files');
 	$uninstall_tables = $DuplicatorSettings->Get('uninstall_tables');
+	
+	$space = @disk_total_space(DUPLICATOR_WPROOTPATH);
+	$space_free = @disk_free_space(DUPLICATOR_WPROOTPATH);
+	$perc = @round((100/$space)*$space_free,2);
 
 ?>
 
@@ -89,6 +92,7 @@
 			<!-- =============================================================================
 			TAB DIAGNOSTICS -->
 		   <div class="ui-tabs ui-tabs-hide" id="dup-tab-diagnostics">
+
 			   <h3 class="title"><?php _e("Server Settings", 'wpduplicator') ?> </h3>				
 			   
 			   <table class="wp-list-table widefat fixed" cellspacing="0" style="width: 95%; margin-left: 10px">
@@ -98,9 +102,9 @@
 						   <th><?php _e("Value", 'wpduplicator'); ?></th>
 					   </tr>
 				   </thead>
-				   <tbody>
+				   <tbody>				   
 					   <tr>
-						   <td class='dup-settings-diag-header' colspan="2">General</td>
+						   <td class='dup-settings-diag-header' colspan="2"><?php _e("General", 'wpduplicator'); ?></td>
 					   </tr>
 					   <tr>
 						   <td><?php _e("Duplicator Version", 'wpduplicator'); ?></td>
@@ -196,6 +200,19 @@
 						   <td><?php _e("max_allowed_packet", 'wpduplicator'); ?></td>
 						   <td><?php echo $dbvar_maxpacks ?></td>
 					   </tr>
+						<tr>
+							<td class='dup-settings-diag-header' colspan="2"><?php _e("Server Disk", 'wpduplicator'); ?></td>
+						</tr>
+						<tr valign="top">
+							<td><?php _e('Free space', 'hyper-cache'); ?></td>
+							<td><?php echo $perc;?>% -- <?php echo duplicator_bytesize($space_free);?> from <?php echo duplicator_bytesize($space);?><br/>
+								 <small>
+									 <?php _e("Note: This value is the physical servers hard-drive allocation.", 'wpduplicator'); ?> <br/>
+									 <?php _e("On shared hosts check your control panel for the 'TRUE' disk space quota value.", 'wpduplicator'); ?>
+									  
+								 </small>
+							</td>
+						</tr>						   
 				   </tbody>
 			   </table><br/>
 			   

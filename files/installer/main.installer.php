@@ -110,6 +110,7 @@ $GLOBALS['FW_CACHE_PATH'] = '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME'] = '%fwrite_blogname%';
 $GLOBALS['FW_RESCUE_FLAG'] = '%fwrite_rescue_flag%';
 $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
+$GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME'] = 5000;
@@ -138,7 +139,6 @@ $GLOBALS['REPLACE_LIST'] = array();
 //CONSTANTS
 define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 //GLOBALS
-$GLOBALS['DUPLICATOR_INSTALLER_VERSION'] = '0.4.3';
 $GLOBALS["SQL_FILE_NAME"] = "installer-data.sql";
 $GLOBALS["LOG_FILE_NAME"] = "installer-log.txt";
 $GLOBALS['SEPERATOR1'] = str_repeat("********", 10);
@@ -236,7 +236,7 @@ if (isset($_POST['action_ajax'])) {
                             <div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
                         </div>
                         <div style="float:right; padding-right:8px">
-                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['DUPLICATOR_INSTALLER_VERSION'] . $GLOBALS['FW_RESCUE_FLAG'] ?></i> &nbsp;
+                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] . $GLOBALS['FW_RESCUE_FLAG'] ?></i> &nbsp;
                             <a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
                         </div>
                     </td>
@@ -310,10 +310,22 @@ if (isset($_POST['action_ajax'])) {
                     This allows you to manually extract the zip archive on your own. This can be useful if your system does not have the ZipArchive support enabled.
                     <br/><br/>		
 
-                    <b>Turn off wp-admin SSL:</b><br/>
-                    Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false.
+                    <b>Enforce SSL on Admin:</b><br/>
+                    Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.
                     <br/><br/>	
-
+					
+                    <b>Enforce SSL on Login:</b><br/>
+                    Turn off SSL support for WordPress Logins. This sets FORCE_SSL_LOGIN in your wp-config file to false if true, otherwise it will create the setting if not set.
+                    <br/><br/>			
+					
+					<b>Keep Cache Enabled:</b><br/>
+                    Turn off Cache support for WordPress. This sets WP_CACHE in your wp-config file to false if true, otherwise it will create the setting if not set.
+                    <br/><br/>	
+					
+					<b>Keep Cache Home Path:</b><br/>
+                    This sets WPCACHEHOME in your wp-config file to nothing if true, otherwise nothing is changed.
+                    <br/><br/>	
+					
                     <b>Fix non-breaking space characters:</b><br/>
                     The process will remove utf8 characters represented as 'xC2' 'xA0' and replace with a uniform space.  Use this option if you find strange question marks in you posts
                     <br/><br/>	
