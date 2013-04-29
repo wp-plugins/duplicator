@@ -54,15 +54,20 @@ button.dup-dlg-quick-path-download-link {white-space:nowrap}
 
 /*================================================
 DIALOG:OPTIONS VIEW */
+b.dup-header-line {display:block; border-bottom: 1px solid #dfdfdf; width:100%; margin-bottom: 5px}
 form#form-duplicator-opts input[type=checkbox] {margin-top:3px}
 form#form-duplicator-opts fieldset {border-radius:4px; border:1px solid silver;  line-height:20px}
-div#dup-tabs-opts {height:500px}
+div#dup-tabs-opts {height:530px}
 div#dup-tabs-opts fieldset{width:97%;padding:10px 15px 15px 15px;}
-input.txt-settings {width:450px}
+input.txt-settings {width:90%}
 input.btn-save-opts {width:80px}
+label.chk-labels {display: inline-block; margin-top:1px}
 div#dup-tabs-opts-1 textarea {width:100%}
 div#dup-tabs-opts-1 input[type="text"] {width:100%}
 div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
+div#dup-accordion-resizer {width: 705px; height: 415px;}
+div.dup-tabs-opts-header-1 {font-weight: bold; border-bottom: 1px solid #AAAAAA; padding-bottom: 2px}
+div.dup-tabs-opts-header-2 {font-weight: bold; border-bottom: 1px solid #dfdfdf; padding-bottom: 2px}
 
 
 /*================================================

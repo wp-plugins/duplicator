@@ -59,7 +59,8 @@ div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-ra
 div.circle-fail {background:#9A0D1D !important;}
 div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:75px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
 select#logging {font-size:11px}
-table.table-inputs td{white-space:nowrap;}
+table.table-inputs{width: 100%; border: 0px;}
+table.table-inputs td{white-space:nowrap; padding:2px;}
 table.dbtable-opts td{font-size:12px;}
 div#dup-step1-cpanel {}
 input#dup-step1-dbconn-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}

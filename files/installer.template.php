@@ -102,6 +102,11 @@ $GLOBALS['FW_SECURE_NAME'] = '%fwrite_secure_name%';
 $GLOBALS['FW_DBHOST'] = '%fwrite_dbhost%';
 $GLOBALS['FW_DBNAME'] = '%fwrite_dbname%';
 $GLOBALS['FW_DBUSER'] = '%fwrite_dbuser%';
+$GLOBALS['FW_DBPASS'] = '%fwrite_dbpass%';
+$GLOBALS['FW_SSL_ADMIN'] = '%fwrite_ssl_admin%';
+$GLOBALS['FW_SSL_LOGIN'] = '%fwrite_ssl_login%';
+$GLOBALS['FW_CACHE_WP'] = '%fwrite_cache_wp%';
+$GLOBALS['FW_CACHE_PATH'] = '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME'] = '%fwrite_blogname%';
 $GLOBALS['FW_RESCUE_FLAG'] = '%fwrite_rescue_flag%';
 $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
@@ -455,7 +460,10 @@ define('MSG_OK_DBPASS', '<div class="error"><b style="color:#006E32;">CONNECTION
 $_POST['dbmake'] = (isset($_POST['dbmake']) && $_POST['dbmake'] == '1') ? true : false;
 $_POST['dbclean'] = (isset($_POST['dbclean']) && $_POST['dbclean'] == '1') ? true : false;
 $_POST['dbnbsp'] = (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
-$_POST['no_ssl'] = (isset($_POST['no_ssl']) && $_POST['no_ssl'] == '1') ? true : false;
+$_POST['ssl_admin'] = (isset($_POST['ssl_admin'])) ? true : false;
+$_POST['ssl_login'] = (isset($_POST['ssl_login'])) ? true : false;
+$_POST['cache_wp'] = (isset($_POST['cache_wp'])) ? true : false;
+$_POST['cache_path'] = (isset($_POST['cache_path'])) ? true : false;
 $_POST['package_name'] = isset($_POST['package_name']) ? $_POST['package_name'] : null;
 $_POST['zip_manual'] = (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
 
@@ -605,22 +613,54 @@ if ($_POST['zip_manual']) {
 //SCRIPTS: wp-config/database.sql
 //===============================
 //WP-CONFIG
-$patterns = array("/'DB_NAME',\s*'.*?'/",
+
+$wpconfig = @file_get_contents('wp-config.php', true);
+
+$patterns = array(
+	"/'DB_NAME',\s*'.*?'/",
 	"/'DB_USER',\s*'.*?'/",
 	"/'DB_PASSWORD',\s*'.*?'/",
 	"/'DB_HOST',\s*'.*?'/");
 
-$replace = array("'DB_NAME', " . '\'' . $_POST['dbname'] . '\'',
+$replace = array(
+	"'DB_NAME', " . '\'' . $_POST['dbname'] . '\'',
 	"'DB_USER', " . '\'' . $_POST['dbuser'] . '\'',
 	"'DB_PASSWORD', " . '\'' . $_POST['dbpass'] . '\'',
 	"'DB_HOST', " . '\'' . $_POST['dbhost'] . '\'');
 
-if ($_POST['no_ssl']) {
+//SSL CHECKS
+if ($_POST['ssl_admin']) {
+	if (! strstr($wpconfig, 'FORCE_SSL_ADMIN')) {
+		$wpconfig = $wpconfig . PHP_EOL . "define('FORCE_SSL_ADMIN', true);";
+	}
+} else {
 	array_push($patterns, "/'FORCE_SSL_ADMIN',\s*true/");
-	array_push($replace, "'FORCE_SSL_ADMIN', false");
+	array_push($replace,  "'FORCE_SSL_ADMIN', false");
 }
 
-$wpconfig = @file_get_contents('wp-config.php', true);
+if ($_POST['ssl_login']) {
+	if (! strstr($wpconfig, 'FORCE_SSL_LOGIN')) {
+		$wpconfig = $wpconfig . PHP_EOL . "define('FORCE_SSL_LOGIN', true);";
+	}
+} else {
+	array_push($patterns, "/'FORCE_SSL_LOGIN',\s*true/");
+	array_push($replace, "'FORCE_SSL_LOGIN', false");
+}
+
+//CACHE CHECKS
+if ($_POST['cache_wp']) {
+	if (! strstr($wpconfig, 'WP_CACHE')) {
+		$wpconfig = $wpconfig . PHP_EOL . "define('WP_CACHE', true);";
+	}
+} else {
+	array_push($patterns, "/'WP_CACHE',\s*true/");
+	array_push($replace,  "'WP_CACHE', false");
+}
+if (! $_POST['cache_path']) {
+	array_push($patterns, "/'WPCACHEHOME',\s*'.*?'/");
+	array_push($replace,  "'WPCACHEHOME', ''");
+}
+
 $wpconfig = preg_replace($patterns, $replace, $wpconfig);
 file_put_contents('wp-config.php', $wpconfig);
 $wpconfig = null;
@@ -1432,7 +1472,8 @@ div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-ra
 div.circle-fail {background:#9A0D1D !important;}
 div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:75px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
 select#logging {font-size:11px}
-table.table-inputs td{white-space:nowrap;}
+table.table-inputs{width: 100%; border: 0px;}
+table.table-inputs td{white-space:nowrap; padding:2px;}
 table.dbtable-opts td{font-size:12px;}
 div#dup-step1-cpanel {}
 input#dup-step1-dbconn-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}
@@ -1970,7 +2011,7 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
 				}
 			});	
 		} 
-	}
+	};
 
 	/** **********************************************
 	* METHOD: Accetps Useage Warning */
@@ -1980,14 +2021,14 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
 		} else {
 			$("#dup-step1-deploy-btn").attr("disabled", "true");
 		}
-	}	
+	};
 
 	/** **********************************************
 	* METHOD: Go back on AJAX result view */
 	Duplicator.hideErrorResult = function() {
 		$('#dup-step1-result-form').hide();			
 		$('#dup-step1-input-form').show(200);
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Go back on AJAX result view */
@@ -1997,7 +2038,7 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});
-	}	
+	};
 	
 	/** **********************************************
 	* METHOD: Shows results of database connection 
@@ -2009,7 +2050,7 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
 			url: window.location.href + '?' + 'dbtest=1',
 			data: $('#dup-step1-input-form').serialize(),
 			success: function(data){ $('#dbconn-test-msg').html(data); },
-			error:   function(data){ alert('An error occurred while testing the database connection!  Be sure the install file and package are both in the same directory.')}
+			error:   function(data){ alert('An error occurred while testing the database connection!  Be sure the install file and package are both in the same directory.'); }
 		});
 		
 		$("#dup-step1-dialog-db").dialog({
@@ -2019,7 +2060,7 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
 		});
 	
 		$('#dbconn-test-msg').html("Attempting Connection.  Please wait...");
-	}	
+	};
 	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
@@ -2035,16 +2076,16 @@ VIEW: STEP 1- INPUT -->
 	<input type="hidden" name="action_step" value="1" />
 	<input type="hidden" name="package_name"  value="<?php echo $zip_file_name ?>" />
 	
-	<h3 style="margin-bottom:5px">
-	    Step 1: Files &amp; Database
-	    <div class="dup-logfile-link">
+	<div class="dup-logfile-link">
 		<select name="logging" id="logging">
 		    <option value="1" selected="selected">Light Logging</option>
 		    <option value="2">Detailed Logging</option>
 		</select>
-	    </div>
+	</div>
+	<h3 style="margin-bottom:5px">
+	    Step 1: Files &amp; Database
 	</h3>
-	<hr size="1"/>
+	<hr size="1" />
 	
 	<!-- CHECKS: FAIL -->
 	<?php if ( $total_req == 'Fail')  :	?>
@@ -2074,23 +2115,22 @@ VIEW: STEP 1- INPUT -->
     	<div class="title-header">
     	    MySQL Server
     	</div>
-    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-    	    <tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo $GLOBALS['FW_DBHOST'] ?>" /></td></tr>
-    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo $GLOBALS['FW_DBUSER'] ?>" /></td></tr>
-    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" /></td></tr>
+    	<table class="table-inputs">
+    	    <tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" /></td></tr>
+    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>" /></td></tr>
     	</table>
     		    
-    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-    	    <tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo $GLOBALS['FW_DBNAME'] ?>" /></td></tr>
+    	<table class="table-inputs">
+    	    <tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>" /></td></tr>
     	    <tr>
     		<td>Allow Options</td>
     		<td>
-    		    <table cellpadding="2" class="dbtable-opts">
-    			<tr>
-    			    <td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
-    			    <td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
-    							    
-    			</tr>						
+    		    <table class="dbtable-opts">
+	    			<tr>
+	    			    <td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
+	    			    <td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
+	    			</tr>						
     		    </table>	
     		</td>
     	    </tr>
@@ -2113,9 +2153,12 @@ VIEW: STEP 1- INPUT -->
     		    
     	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
     	<div id='dup-step1-adv-opts' style="display:none">
-    	    <table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    	    <table class="table-inputs">
     		<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual"   value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
-    		<tr><td colspan="2"><input type="checkbox" name="no_ssl" id="no_ssl" value="1" /> <label for="no_ssl">Turn off wp-admin SSL</label></td></tr>
+    		<tr><td colspan="2"><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce SSL on Admin</label></td></tr>
+			<tr><td colspan="2"><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce SSL on Login</label></td></tr>
+			<tr><td colspan="2"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Cache Enabled</label></td></tr>
+			<tr><td colspan="2"><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Cache Home Path</label></td></tr>
     		<tr><td colspan="2"><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
     		<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
     		<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
@@ -2124,7 +2167,7 @@ VIEW: STEP 1- INPUT -->
 
 	<!-- NOTICES  -->
     	<div class="warning-info" style="margin-top:50px">
-    	    <b>WARNINGS &AMP; NOTICES</b> 
+    	    <b>WARNINGS &amp; NOTICES</b> 
     	    <p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
     			    
     	    <p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
@@ -2164,9 +2207,9 @@ Auto Posts to view.step2.php  -->
 	<input type="hidden" name="dbcharset" id="ajax-dbcharset" />
 	<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 	
-	<h3>Step 1: Files &amp; Database 
-	    <div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	</h3><hr size="1"/>
+    <div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	<h3>Step 1: Files &amp; Database</h3>
+	<hr size="1" />
 	    
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
@@ -2198,7 +2241,7 @@ DIALOG: SERVER CHECKS  -->
 	    <hr size="1"/>
 	    <table style="width:100%">
 		<tr>
-		    <td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</td>
+		    <td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</a></td>
 		    <td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
 		</tr>
 		<tr>
@@ -2376,7 +2419,7 @@ DIALOG: DB CONNECTION CHECK  -->
 				}
 			});	
 		} 
-	}
+	};
 
 	/** **********************************************
 	* METHOD: Accetps Useage Warning */
@@ -2386,14 +2429,14 @@ DIALOG: DB CONNECTION CHECK  -->
 		} else {
 			$("#dup-step1-deploy-btn").attr("disabled", "true");
 		}
-	}	
+	};
 
 	/** **********************************************
 	* METHOD: Go back on AJAX result view */
 	Duplicator.hideErrorResult = function() {
 		$('#dup-step1-result-form').hide();			
 		$('#dup-step1-input-form').show(200);
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Go back on AJAX result view */
@@ -2403,7 +2446,7 @@ DIALOG: DB CONNECTION CHECK  -->
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});
-	}	
+	};
 	
 	/** **********************************************
 	* METHOD: Shows results of database connection 
@@ -2415,7 +2458,7 @@ DIALOG: DB CONNECTION CHECK  -->
 			url: window.location.href + '?' + 'dbtest=1',
 			data: $('#dup-step1-input-form').serialize(),
 			success: function(data){ $('#dbconn-test-msg').html(data); },
-			error:   function(data){ alert('An error occurred while testing the database connection!  Be sure the install file and package are both in the same directory.')}
+			error:   function(data){ alert('An error occurred while testing the database connection!  Be sure the install file and package are both in the same directory.'); }
 		});
 		
 		$("#dup-step1-dialog-db").dialog({
@@ -2425,7 +2468,7 @@ DIALOG: DB CONNECTION CHECK  -->
 		});
 	
 		$('#dbconn-test-msg').html("Attempting Connection.  Please wait...");
-	}	
+	};
 	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
@@ -2441,16 +2484,16 @@ VIEW: STEP 1- INPUT -->
 	<input type="hidden" name="action_step" value="1" />
 	<input type="hidden" name="package_name"  value="<?php echo $zip_file_name ?>" />
 	
-	<h3 style="margin-bottom:5px">
-	    Step 1: Files &amp; Database
-	    <div class="dup-logfile-link">
+	<div class="dup-logfile-link">
 		<select name="logging" id="logging">
 		    <option value="1" selected="selected">Light Logging</option>
 		    <option value="2">Detailed Logging</option>
 		</select>
-	    </div>
+	</div>
+	<h3 style="margin-bottom:5px">
+	    Step 1: Files &amp; Database
 	</h3>
-	<hr size="1"/>
+	<hr size="1" />
 	
 	<!-- CHECKS: FAIL -->
 	<?php if ( $total_req == 'Fail')  :	?>
@@ -2480,23 +2523,22 @@ VIEW: STEP 1- INPUT -->
     	<div class="title-header">
     	    MySQL Server
     	</div>
-    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-    	    <tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo $GLOBALS['FW_DBHOST'] ?>" /></td></tr>
-    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo $GLOBALS['FW_DBUSER'] ?>" /></td></tr>
-    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" /></td></tr>
+    	<table class="table-inputs">
+    	    <tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" /></td></tr>
+    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>" /></td></tr>
     	</table>
     		    
-    	<table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
-    	    <tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo $GLOBALS['FW_DBNAME'] ?>" /></td></tr>
+    	<table class="table-inputs">
+    	    <tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>" /></td></tr>
     	    <tr>
     		<td>Allow Options</td>
     		<td>
-    		    <table cellpadding="2" class="dbtable-opts">
-    			<tr>
-    			    <td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
-    			    <td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
-    							    
-    			</tr>						
+    		    <table class="dbtable-opts">
+	    			<tr>
+	    			    <td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
+	    			    <td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
+	    			</tr>						
     		    </table>	
     		</td>
     	    </tr>
@@ -2519,9 +2561,12 @@ VIEW: STEP 1- INPUT -->
     		    
     	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
     	<div id='dup-step1-adv-opts' style="display:none">
-    	    <table width="100%" border="0" cellspacing="2" cellpadding="2"  class="table-inputs">
+    	    <table class="table-inputs">
     		<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual"   value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
-    		<tr><td colspan="2"><input type="checkbox" name="no_ssl" id="no_ssl" value="1" /> <label for="no_ssl">Turn off wp-admin SSL</label></td></tr>
+    		<tr><td colspan="2"><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce SSL on Admin</label></td></tr>
+			<tr><td colspan="2"><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce SSL on Login</label></td></tr>
+			<tr><td colspan="2"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Cache Enabled</label></td></tr>
+			<tr><td colspan="2"><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Cache Home Path</label></td></tr>
     		<tr><td colspan="2"><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
     		<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
     		<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
@@ -2530,7 +2575,7 @@ VIEW: STEP 1- INPUT -->
 
 	<!-- NOTICES  -->
     	<div class="warning-info" style="margin-top:50px">
-    	    <b>WARNINGS &AMP; NOTICES</b> 
+    	    <b>WARNINGS &amp; NOTICES</b> 
     	    <p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
     			    
     	    <p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
@@ -2570,9 +2615,9 @@ Auto Posts to view.step2.php  -->
 	<input type="hidden" name="dbcharset" id="ajax-dbcharset" />
 	<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 	
-	<h3>Step 1: Files &amp; Database 
-	    <div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	</h3><hr size="1"/>
+    <div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	<h3>Step 1: Files &amp; Database</h3>
+	<hr size="1" />
 	    
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
@@ -2604,7 +2649,7 @@ DIALOG: SERVER CHECKS  -->
 	    <hr size="1"/>
 	    <table style="width:100%">
 		<tr>
-		    <td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</td>
+		    <td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</a></td>
 		    <td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
 		</tr>
 		<tr>
@@ -2758,19 +2803,19 @@ DIALOG: DB CONNECTION CHECK  -->
 				Duplicator.hideProgressBar();
 			}
 		});
-	}
+	};
 
 	/** **********************************************
 	* METHOD: Returns the windows active url */
 	Duplicator.getNewURL = function(id) {
 		var filename= window.location.pathname.split('/').pop() || 'installer.php' ;
 		$("#" + id).val(window.location.href.replace(filename, ''));
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Allows user to edit the package url  */
 	Duplicator.editOldURL = function() {
-		var msg = 'This is the URL that was generated when the package was created.\n'
+		var msg = 'This is the URL that was generated when the package was created.\n';
 		msg += 'Changing this value may cause issues with the install process.\n\n';
 		msg += 'Only modify  this value if you know exactly what the value should be.\n';
 		msg += 'See "General Settings" in the WordPress Administrator for more details.\n\n';
@@ -2781,12 +2826,12 @@ DIALOG: DB CONNECTION CHECK  -->
 			$("#url_old").removeClass('readonly');
 			$('#edit_url_old').hide('slow');
 		}
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Allows user to edit the package path  */
 	Duplicator.editOldPath = function() {
-		var msg = 'This is the SERVER URL that was generated when the package was created.\n'
+		var msg = 'This is the SERVER URL that was generated when the package was created.\n';
 		msg += 'Changing this value may cause issues with the install process.\n\n';
 		msg += 'Only modify  this value if you know exactly what the value should be.\n';
 		msg += 'Are you sure you want to continue?';
@@ -2796,7 +2841,7 @@ DIALOG: DB CONNECTION CHECK  -->
 			$("#path_old").removeClass('readonly');
 			$('#edit_path_old').hide('slow');
 		}
-	}	
+	};
 	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
@@ -2831,30 +2876,30 @@ VIEW: STEP 2- INPUT -->
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
 	
 	
-	<h3>Step 2: Files &amp; Database 
-		<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	</h3><hr size="1"/><br/>
+	<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	<h3>Step 2: Files &amp; Database</h3>
+	<hr size="1" /><br />
 
 	<div class="title-header">Old Settings</div>
-	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs">
+	<table class="table-inputs">
 		<tr valign="top">
 			<td style="width:80px">URL</td>
 			<td>
-				<input type="text" name="url_old" id="url_old" value="<?php echo $GLOBALS['FW_URL_OLD'] ?>" readonly="true"  class="readonly" />
+				<input type="text" name="url_old" id="url_old" value="<?php echo $GLOBALS['FW_URL_OLD'] ?>" readonly="readonly"  class="readonly" />
 				<a href="javascript:Duplicator.editOldURL()" id="edit_url_old" style="font-size:12px">edit</a>		
 			</td>
 		</tr>
 		<tr valign="top">
 			<td>Path</td>
 			<td>
-				<input type="text" name="path_old" id="path_old" value="<?php echo $old_path ?>" readonly="true"  class="readonly" />
+				<input type="text" name="path_old" id="path_old" value="<?php echo $old_path ?>" readonly="readonly"  class="readonly" />
 				<a href="javascript:Duplicator.editOldPath()" id="edit_path_old" style="font-size:12px">edit</a>		
 			</td>
 		</tr>
 	</table>
 
 	<div class="title-header" style="margin-top:8px">New Settings</div>
-	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs">		
+	<table class="table-inputs">		
 		<tr>
 			<td style="width:80px">URL</td>
 			<td>
@@ -2876,7 +2921,7 @@ VIEW: STEP 2- INPUT -->
     CREATE NEW USER -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(0)"><b>New Admin Account...</b></a>
 	<div id='dup-step2-user-opts' style="display:none;">
-	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table-inputs" style="margin-top:7px">
+	<table class="table-inputs" style="margin-top:7px">
 		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i></td></tr>
 		<tr>
 			<td>Username </td>
@@ -2894,7 +2939,7 @@ VIEW: STEP 2- INPUT -->
     ADVANCED OPTIONS -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(0)"><b>Advanced Options...</b></a>
 	<div id='dup-step2-adv-opts' style="display:none;">
-		<table width="100%" border="0" cellspacing="1" cellpadding="1" >
+		<table style="width: 100%;">
 			<tr>
 				<td valign="top" style="width:80px">Site URL</td>
 				<td>
@@ -2910,8 +2955,8 @@ VIEW: STEP 2- INPUT -->
 				<td style="padding-right:10px">
 					Scan Tables
 					<div class="dup-step2-allnonelinks">
-						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',true);" />[All]</a> 
-						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',false);" />[None]</a>
+						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',true);">[All]</a> 
+						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
 					<select id="tables" name="tables[]" multiple="multiple" style="width:315px; height:100px">
 						<?php
@@ -2925,8 +2970,8 @@ VIEW: STEP 2- INPUT -->
 				<td valign="top">
 					Activate Plugins
 					<div class="dup-step2-allnonelinks">
-						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);" />[All]</a> 
-						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);" />[None]</a>
+						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a> 
+						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
 					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px">
 						<?php
@@ -2959,9 +3004,9 @@ VIEW: STEP 2 - AJAX RESULT  -->
 	<input type="hidden" name="url_new" id="ajax-url_new"  />
 	<input type="hidden" name="json"    id="ajax-json" />	
 	
-	<h3>Step 2: Update Table Data
-		<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	</h3><hr size="1"/>
+	<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	<h3>Step 2: Update Table Data</h3>
+	<hr size="1" />
 	
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
@@ -2992,7 +3037,7 @@ VIEW: STEP 2 - AJAX RESULT  -->
 	Duplicator.prepAdminPage = function() {
 		var nurl = $('#url_new').val() + '/wp-admin/';
 		$.ajax({type: "POST", url: nurl, success: function(data) {}	});
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Opens the tips dialog */	
@@ -3002,7 +3047,7 @@ VIEW: STEP 2 - AJAX RESULT  -->
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});	
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Posts to page to remove install files */	
@@ -3012,7 +3057,7 @@ VIEW: STEP 2 - AJAX RESULT  -->
 			var nurl = $('#url_new').val() + '/wp-content/plugins/duplicator/files/installer.cleanup.php?remove=1&package=' + package;
 			window.open(nurl, "_blank");
 		}
-	}	
+	};
 	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
@@ -3024,10 +3069,10 @@ VIEW: STEP 2 - AJAX RESULT  -->
 <!-- =========================================
 VIEW: STEP 3- INPUT -->
 <form id='dup-step3-input-form' method="post" class="content-form" style="line-height:20px">
-	<input type="hidden" name="url_new" id="url_new" value="<?php echo rtrim($_POST['url_new'], "/"); ?>"  />	
-	<h3>Step 3: Test Site
+	<input type="hidden" name="url_new" id="url_new" value="<?php echo rtrim($_POST['url_new'], "/"); ?>" />	
 	<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	</h3><hr size="1"/><br/>
+	<h3>Step 3: Test Site</h3>
+	<hr size="1" /><br />
 	
 
 	<div class="title-header">
@@ -3081,7 +3126,7 @@ VIEW: STEP 3- INPUT -->
 			</tr>
 			<tr data-bind="with: status.step1">
 				<td>Created</td>
-				<td><span data-bind="text: table_count"></span></td></td>
+				<td><span data-bind="text: table_count"></span></td>
 				<td><span data-bind="text: table_rows"></span></td>
 				<td>n/a</td>
 			</tr>	
@@ -3165,7 +3210,7 @@ VIEW: STEP 3- INPUT -->
 		
 		<!-- WARNINGS-->
 		<div id="dup-step3-warnlist" class="dup-step3-err-msg">
-			<a name="dup-step2-errs-warn-anchor"></a>
+			<a href="#" id="dup-step2-errs-warn-anchor"></a>
 			<b>GENERAL WARNINGS</b><br/>
 			<div class="info">
 				The following is a list of warnings that may need to be fixed in order to finalize your setup.

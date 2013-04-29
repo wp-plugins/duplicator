@@ -20,14 +20,14 @@ Duplicator.AJAX_TIMER = null;
 *	METHOD: Starts a timer for Ajax calls */ 
 Duplicator.StartAjaxTimer = function() {
 	Duplicator.AJAX_TIMER = new Date();
-}
+};
 
 /*	----------------------------------------
 *	METHOD: Ends a timer for Ajax calls */ 
 Duplicator.EndAjaxTimer = function() {
 	var endTime = new Date();
 	Duplicator.AJAX_TIMER =  (endTime.getTime()  - Duplicator.AJAX_TIMER) /1000;
-}
+};
 
 /*	----------------------------------------
 *	METHOD: Reloads the current window
@@ -39,10 +39,10 @@ Duplicator.ReloadWindow = function(data) {
 		Duplicator.Pack.SetToolbar("ENABLED");
 		window.location.reload(true);
 	}
-}
+};
 
 //Basic Util Methods here:
-Duplicator.OpenLogWindow = function() {window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php'; ?>', 'duplicator_logs');}
+Duplicator.OpenLogWindow = function() {window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php'; ?>', 'duplicator_logs');};
 
 
 
@@ -62,11 +62,11 @@ Duplicator.UI.CreateDialog = function(evt) {
 		jQuery('#' + this.id).dialog('option', 'draggable',  false);
 		jQuery('#' + this.id).dialog('option', 'open',  function() {jQuery("div#wpwrap").addClass('ie-simulated-overlay');} );
 	}
-}
+};
 //Cleanup method for IE 9
 Duplicator.UI.CloseDialog = function(evt) {
 	if (jQuery.browser.msie) {jQuery("div#wpwrap").removeClass('ie-simulated-overlay');}
-}
+};
 
 /*	----------------------------------------
 *	METHOD: Create a dynamic tab (no postback) interface using wordpress style tabs
@@ -83,14 +83,14 @@ Duplicator.UI.WPTabsClick = function(obj) {
 		jQuery('.dup-nav-tab-contents .ui-tabs').addClass('ui-tabs-hide');			
 		jQuery("#" + id).removeClass('ui-tabs-hide');
 	}
-}
+};
 
 /*	----------------------------------------
 *	METHOD: Initilize the tabs for dyanmic use  */ 
 Duplicator.UI.WPTabsInit = function() {
 	var defaultLabel = location.hash || jQuery('.nav-tab-wrapper a').first().attr("href");
 	var defaultAnchor = null;
-	jQuery('.nav-tab').click(function() { Duplicator.UI.WPTabsClick(jQuery(this))});
+	jQuery('.nav-tab').click(function() { Duplicator.UI.WPTabsClick(jQuery(this));});
 
 	jQuery(".nav-tab-wrapper a").each(function() {
 		if (jQuery(this).attr('href') == defaultLabel) {
@@ -99,7 +99,7 @@ Duplicator.UI.WPTabsInit = function() {
 		}
 	});
 	Duplicator.UI.WPTabsClick( defaultAnchor);
-}
+};
 
 
 //Document load stuff

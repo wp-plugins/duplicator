@@ -23,7 +23,7 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_INSTALL_BAK",    'installer.rescue.php');
     define("DUPLICATOR_INSTALL_SQL",    'installer-data.sql');
     define("DUPLICATOR_INSTALL_LOG",    'installer-log.txt');
-    define("DUPLICATOR_ZIP_FILE_POOL",  5000);
+    define("DUPLICATOR_ZIP_FILE_POOL",  10000);
     define("DUPLICATOR_PHP_MAX_TIME",   5000);
     define("DUPLICATOR_PHP_MAX_MEMORY", '5000M');
     define("DUPLICATOR_DB_MAX_TIME",    5000);

@@ -13,12 +13,14 @@ function duplicator_create() {
     global $wp_version;
     global $wpdb;
     global $current_user;
+    //post data un-stripped, as WP magic quotes _POST for some reason...
+    $post = stripslashes_deep($_POST);
 	
 	$error_level = error_reporting();
 	error_reporting(E_ERROR);
 
     $fulltime_start = DuplicatorUtils::GetMicrotime();
-    $packname = isset($_POST['package_name']) ? trim($_POST['package_name']) : null;
+    $packname = isset($post['package_name']) ? trim($post['package_name']) : null;
 
     $secure_token = uniqid() . mt_rand(1000, 9999);
     $uniquename = "{$secure_token}_{$packname}";
@@ -45,8 +47,8 @@ function duplicator_create() {
 
         $php_max_time = @ini_set("max_execution_time", DUPLICATOR_PHP_MAX_TIME);
         $php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-        $php_max_time = ($php_max_time === false) ? "Unabled to set php max_execution_time" : "from={$php_max_time} to=" . DUPLICATOR_PHP_MAX_TIME;
-        $php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" : "from={$php_max_memory} to=" . DUPLICATOR_PHP_MAX_MEMORY;
+        $php_max_time = ($php_max_time === false) ? "Unabled to set php max_execution_time" : "set from={$php_max_time} to=" . DUPLICATOR_PHP_MAX_TIME;
+        $php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit"   : "set from={$php_max_memory} to=" . DUPLICATOR_PHP_MAX_MEMORY;
 
         @set_time_limit(0);
         duplicator_log("php_max_time: {$php_max_time}");
@@ -83,6 +85,7 @@ function duplicator_create() {
         //Serlized settings
         $settings = array('plugin_version' => DUPLICATOR_VERSION, 'type' => 'Manual');
         $serialized_settings = serialize($settings);
+		$wpdb->flush();
 
         //Record archive info to database
         $results = $wpdb->insert($wpdb->prefix . "duplicator", array(
@@ -97,11 +100,10 @@ function duplicator_create() {
         if ($wpdb->insert_id) {
             duplicator_log("RECORDED ARCHIVE ID: " . $wpdb->insert_id);
         } else {
-            duplicator_log("WARNING: UNABLE TO RECORD TO DATABASE");
+			$error_result = $wpdb->print_error();
+            duplicator_log("WARNING: UNABLE TO RECORD TO DATABASE.  PLEASE TRY AGAIN.\n{$error_result}");
         }
-        $wpdb->flush();
-
-
+       
         //UPDATE INSTALL FILE
         duplicator_log("********************************************************************************");
         duplicator_log("FINALIZATION ROUTINES:");
@@ -150,8 +152,10 @@ function duplicator_create() {
  * 		- see: duplicator_unlink
  */
 function duplicator_delete() {
+	//post data un-stripped, as WP magic quotes _POST for some reason...
+	$post = stripslashes_deep($_POST);
     try {
-        $uniqueid = isset($_POST['duplicator_delid']) ? trim($_POST['duplicator_delid']) : null;
+		$uniqueid = isset($post['duplicator_delid']) ? trim($post['duplicator_delid']) : null;
         if ($uniqueid != null) {
             $unique_list = explode(",", $uniqueid);
             foreach ($unique_list as $id) {
@@ -301,9 +305,10 @@ function duplicator_task_save() {
 
     //defaults
     add_option('duplicator_options', '');
-
-    $skip_ext = str_replace(array(' ', '.'), "", $_POST['skip_ext']);
-    $by_pass_array = explode(";", $_POST['dir_bypass']);
+	//post data un-stripped, as WP magic quotes _POST for some reason...
+	$post = stripslashes_deep($_POST);
+    $skip_ext = str_replace(array(' ', '.'), "", $post['skip_ext']);
+    $by_pass_array = explode(";", $post['dir_bypass']);
     $by_pass_clean = "";
 
     foreach ($by_pass_array as $val) {
@@ -313,15 +318,20 @@ function duplicator_task_save() {
     }
 
     $duplicator_opts = array(
-        'dbhost' => $_POST['dbhost'],
-        'dbname' => $_POST['dbname'],
-        'dbuser' => $_POST['dbuser'],
-        'url_new' => rtrim($_POST['url_new'], '/'),
-        'email-me' => $_POST['email-me'],
-        'email_others' => $_POST['email_others'],
+        'dbhost' => $post['dbhost'],
+        'dbname' => $post['dbname'],
+        'dbuser' => $post['dbuser'],
+		'ssl_admin' => $post['ssl_admin'],
+		'ssl_login' => $post['ssl_login'],
+		'cache_wp' => $post['cache_wp'],
+		'cache_path' => $post['cache_path'],
+        'url_new' => rtrim($post['url_new'], '/'),
+        'email-me' => $post['email-me'],
+        'email_others' => $post['email_others'],
         'skip_ext' => str_replace(",", ";", $skip_ext),
         'dir_bypass' => $by_pass_clean,
-        'log_level' => $_POST['log_level']);
+        'log_level' => $post['log_level'],
+    );
 
 
     update_option('duplicator_options', serialize($duplicator_opts));

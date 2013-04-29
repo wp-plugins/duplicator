@@ -294,6 +294,7 @@ if (is_admin() == true) {
         wp_enqueue_script('jquery-ui-dialog');
         wp_enqueue_script('jquery-ui-button');
         wp_enqueue_script('jquery-ui-tabs');
+		wp_enqueue_script('jquery-ui-accordion');
     }
 
     /**

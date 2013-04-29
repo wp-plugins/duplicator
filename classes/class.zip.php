@@ -28,6 +28,9 @@ class Duplicator_Zip {
             $this->zipFilePath = duplicator_safe_path($zipFilePath);
             $this->rootFolder = rtrim(duplicator_safe_path($folderPath), '/');
             $this->skipNames = $GLOBALS['duplicator_skip_ext-array'];
+			$this->countDirs  = 0;
+			$this->countFiles = 0;
+			$this->countLinks = 0;
 
             $exts_list = implode(";", $this->skipNames);
             $path_list = implode(";", $GLOBALS['duplicator_bypass-array']);
@@ -57,8 +60,11 @@ class Duplicator_Zip {
 
             //LOG FINAL RESULTS
             duplicator_log("ARCHIVE INFO: " . print_r($this->zipArchive, true));
+			duplicator_log("STATS: Directories= {$this->countDirs} | Files = {$this->countFiles} | Links = {$this->countLinks} | hidden files may not be counted on some servers" );
             $zip_close_result = $this->zipArchive->close();
-            $status_msg = ($zip_close_result) ? "CLOSE RETURNED: '{$zip_close_result}'" : "{$GLOBALS['DUPLICATOR_SEPERATOR1']}\nWARNING: ZipArchive Class did not close successfully.  This means you most likely have a disk quota issue on your server.\nPlease check your disk space usage to make sure you can store this zip file successfully.\n{$GLOBALS['DUPLICATOR_SEPERATOR1']}";
+            $status_msg = ($zip_close_result) 
+				? "CLOSE RETURNED: '{$zip_close_result}'" 
+				: "{$GLOBALS['DUPLICATOR_SEPERATOR1']}\nWARNING: ZipArchive Class did not close successfully.  This server or hosted segement might have a disk quota limit.\nPlease check your disk space usage to make sure you can store this zip file successfully.\n{$GLOBALS['DUPLICATOR_SEPERATOR1']}";
 
             duplicator_log($status_msg);
             
@@ -92,10 +98,9 @@ class Duplicator_Zip {
             }
 
             $dh = new DirectoryIterator($folderPath);
-
+			
             foreach ($dh as $file) {
                 if (!$file->isDot()) {
-
                     $fullpath  = "{$folderPath}/{$file}";
                     $localpath = str_replace($this->rootFolder, '', $folderPath);
                     $localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
@@ -103,18 +108,30 @@ class Duplicator_Zip {
 
                     if ($file->isDir()) {
                         if (!in_array($fullpath, $GLOBALS['duplicator_bypass-array'])) {
-                            $this->zipArchive->addEmptyDir("{$localname}{$filename}");
-                            @set_time_limit(0);
-                            duplicator_fcgi_flush();
-                        }
-                        $this->resursiveZip($fullpath);
-                    } else {
+							if ($this->zipArchive->addEmptyDir("{$localname}{$filename}")) {
+								$this->countDirs++;
+								@set_time_limit(0);
+								duplicator_fcgi_flush();
+								$this->resursiveZip($fullpath);
+							} else {
+								duplicator_log("WARN: Unable to add directory: $fullpath");
+							}
+                        } 
+					} else if ($file->isFile()) {
                         //Check filter extensions
-                        $ext = @pathinfo($fullpath, PATHINFO_EXTENSION);
-                        if ($ext == '' || !in_array($ext, $this->skipNames)) {
-                            $this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
-                        }
-                    }
+						if ($this->skipNames) {
+							$ext = @pathinfo($fullpath, PATHINFO_EXTENSION);
+							if (!in_array($ext, $this->skipNames)) {
+								$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
+								$this->countFiles++;
+							}
+						} else {
+							$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
+							$this->countFiles++;
+						}
+                    } else if ($file->isLink()) {
+						$this->countLinks++;
+                    } 
                     $this->limitItems++;
                 }
             }
@@ -129,7 +146,9 @@ class Duplicator_Zip {
             }
 
             @closedir($dh);
-        } catch (Exception $e) {
+        } 
+		
+		catch (Exception $e) {
             duplicator_log("log:class.zip=>runtime error: " . $e);
         }
     }

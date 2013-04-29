@@ -1,6 +1,6 @@
 <!-- ==========================================
 DIALOG: SYSTEM CHECK -->
-<div id="dup-dlg-system-check" title="<?php _e('System Status', 'wpduplicator'); ?>">
+<div id="dup-dlg-system-check" title="<?php _e('System Status', 'wpduplicator'); ?>" style="display:none">
 	
 	<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
 	<?php _e("Please validate your system configuration.", 'wpduplicator'); ?>

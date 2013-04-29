@@ -5,7 +5,7 @@
 	Duplicator.prepAdminPage = function() {
 		var nurl = $('#url_new').val() + '/wp-admin/';
 		$.ajax({type: "POST", url: nurl, success: function(data) {}	});
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Opens the tips dialog */	
@@ -15,7 +15,7 @@
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});	
-	}
+	};
 	
 	/** **********************************************
 	* METHOD: Posts to page to remove install files */	
@@ -25,7 +25,7 @@
 			var nurl = $('#url_new').val() + '/wp-content/plugins/duplicator/files/installer.cleanup.php?remove=1&package=' + package;
 			window.open(nurl, "_blank");
 		}
-	}	
+	};
 	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
@@ -37,10 +37,10 @@
 <!-- =========================================
 VIEW: STEP 3- INPUT -->
 <form id='dup-step3-input-form' method="post" class="content-form" style="line-height:20px">
-	<input type="hidden" name="url_new" id="url_new" value="<?php echo rtrim($_POST['url_new'], "/"); ?>"  />	
-	<h3>Step 3: Test Site
+	<input type="hidden" name="url_new" id="url_new" value="<?php echo rtrim($_POST['url_new'], "/"); ?>" />	
 	<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	</h3><hr size="1"/><br/>
+	<h3>Step 3: Test Site</h3>
+	<hr size="1" /><br />
 	
 
 	<div class="title-header">
@@ -94,7 +94,7 @@ VIEW: STEP 3- INPUT -->
 			</tr>
 			<tr data-bind="with: status.step1">
 				<td>Created</td>
-				<td><span data-bind="text: table_count"></span></td></td>
+				<td><span data-bind="text: table_count"></span></td>
 				<td><span data-bind="text: table_rows"></span></td>
 				<td>n/a</td>
 			</tr>	
@@ -178,7 +178,7 @@ VIEW: STEP 3- INPUT -->
 		
 		<!-- WARNINGS-->
 		<div id="dup-step3-warnlist" class="dup-step3-err-msg">
-			<a name="dup-step2-errs-warn-anchor"></a>
+			<a href="#" id="dup-step2-errs-warn-anchor"></a>
 			<b>GENERAL WARNINGS</b><br/>
 			<div class="info">
 				The following is a list of warnings that may need to be fixed in order to finalize your setup.

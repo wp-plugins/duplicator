@@ -1,6 +1,6 @@
 <!-- ==========================================
 DIALOG: SYSTEM ERROR -->
-<div id="dup-dlg-system-error" title="<?php _e('System Constraint', 'wpduplicator'); ?>">
+<div id="dup-dlg-system-error" title="<?php _e('System Constraint', 'wpduplicator'); ?>" style="display:none">
 	<p>
 		<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0; line-height:18px;"></span>
 		<?php _e("Please try again! An issue has occurred.", 'wpduplicator');	?>

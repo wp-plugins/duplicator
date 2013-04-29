@@ -147,7 +147,7 @@ function duplicator_create_installerFile($uniquename) {
     $err_msg = "\n!!!WARNING!!! unable to read/write installer\nSee file:{$installerCore} \nPlease check permission and owner on file and parent folder.";
 
     get_option('duplicator_options') == "" ? "" : $duplicator_opts = unserialize(get_option('duplicator_options'));
-    $replace_items = Array(
+	$replace_items = Array(
         "fwrite_url_old" => get_option('siteurl'),
         "fwrite_package_name" => "{$uniquename}_package.zip",
         "fwrite_secure_name" => "{$uniquename}",
@@ -155,11 +155,16 @@ function duplicator_create_installerFile($uniquename) {
         "fwrite_dbhost" => $duplicator_opts['dbhost'],
         "fwrite_dbname" => $duplicator_opts['dbname'],
         "fwrite_dbuser" => $duplicator_opts['dbuser'],
+        "fwrite_dbpass" => '',
+		"fwrite_ssl_admin" => $duplicator_opts['ssl_admin'],
+		"fwrite_ssl_login" => $duplicator_opts['ssl_login'],
+		"fwrite_cache_wp" => $duplicator_opts['cache_wp'],
+		"fwrite_cache_path" => $duplicator_opts['cache_path'],
         "fwrite_wp_tableprefix" => $wpdb->prefix,
         "fwrite_blogname" => @addslashes(get_option('blogname')),
         "fwrite_wproot" => DUPLICATOR_WPROOTPATH,
         "fwrite_rescue_flag" => "");
-
+	unset($dbpass);
     if (file_exists($template) && is_readable($template)) {
 
         $install_str = duplicator_parse_template($template, $replace_items);
@@ -206,7 +211,16 @@ function duplicator_create_installerFile($uniquename) {
 function duplicator_parse_template($filename, $data) {
     $q = file_get_contents($filename);
     foreach ($data as $key => $value) {
-        $q = str_replace('%' . $key . '%', $value, $q);
+        //NOTE: Use var_export as it's probably best and most "thorough" way to
+        //make sure the values are set correctly in the template.  But in the template,
+        //need to make things properly formatted so that when real syntax errors
+        //exist they are easy to spot.  So the values will be surrounded by quotes
+        
+    	$find = array ("'%{$key}%'", "\"%{$key}%\"");
+    	$q = str_replace($find, var_export($value, true), $q);
+    	//now, account for places that do not surround with quotes...  these
+    	//places do NOT need to use var_export as they are not inside strings
+    	$q = str_replace('%' . $key . '%', $value, $q);
     }
     return $q;
 }
