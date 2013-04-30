@@ -3340,10 +3340,22 @@ DIALOG: TROUBLSHOOTING DIALOG -->
                     This allows you to manually extract the zip archive on your own. This can be useful if your system does not have the ZipArchive support enabled.
                     <br/><br/>		
 
-                    <b>Turn off wp-admin SSL:</b><br/>
-                    Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false.
+                    <b>Enforce SSL on Admin:</b><br/>
+                    Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.
                     <br/><br/>	
-
+					
+                    <b>Enforce SSL on Login:</b><br/>
+                    Turn off SSL support for WordPress Logins. This sets FORCE_SSL_LOGIN in your wp-config file to false if true, otherwise it will create the setting if not set.
+                    <br/><br/>			
+					
+					<b>Keep Cache Enabled:</b><br/>
+                    Turn off Cache support for WordPress. This sets WP_CACHE in your wp-config file to false if true, otherwise it will create the setting if not set.
+                    <br/><br/>	
+					
+					<b>Keep Cache Home Path:</b><br/>
+                    This sets WPCACHEHOME in your wp-config file to nothing if true, otherwise nothing is changed.
+                    <br/><br/>	
+					
                     <b>Fix non-breaking space characters:</b><br/>
                     The process will remove utf8 characters represented as 'xC2' 'xA0' and replace with a uniform space.  Use this option if you find strange question marks in you posts
                     <br/><br/>	

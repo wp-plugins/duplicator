@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.4.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-13 21:17-0700\n"
-"PO-Revision-Date: 2013-03-21 11:10:03-0500\n"
+"PO-Revision-Date: 2013-04-30 10:09:06-0500\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr "Zertifizierte Hosts"
 msgid "Support"
 msgstr "Unterstützen"
 
-#: duplicator.php:313
+#: duplicator.php:317
 #@ wpduplicator
 msgid "Manage"
 msgstr "Verwalten"
@@ -113,8 +113,8 @@ msgstr "Support-Center"
 msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
 msgstr "Diesen Inhalt NICHT an öffentlichen Stellen wie die WordPress.org Foren eingeben, da er sensible Daten enthält."
 
-#: inc/pack.win.options.php:116
-#: inc/pack.win.options.php:140
+#: inc/pack.win.options.php:147
+#: inc/pack.win.options.php:175
 #@ wpduplicator
 msgid "Saving"
 msgstr "Sichern"
@@ -148,7 +148,7 @@ msgid "Evaluating WordPress Setup. Please Wait"
 msgstr "Auswerten der WordPress-Einstellungen. Bitte warten"
 
 #: inc/pack.win.create.php:111
-#: inc/pack.win.options.php:160
+#: inc/pack.win.options.php:195
 #@ wpduplicator
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -347,9 +347,9 @@ msgid "Package"
 msgstr "Archiv"
 
 #: inc/pack.main.php:120
-#: inc/settings.php:125
-#: inc/settings.php:148
-#: inc/settings.php:179
+#: inc/settings.php:129
+#: inc/settings.php:152
+#: inc/settings.php:188
 #@ wpduplicator
 msgid "Version"
 msgstr "Version"
@@ -462,76 +462,51 @@ msgstr "Ausschlusskriterien"
 msgid "Directories"
 msgstr "Verzeichnisse"
 
-#: inc/pack.win.options.php:42
+#: inc/pack.win.options.php:40
 #@ wpduplicator
 msgid "File extensions"
 msgstr "Datei-Erweiterungen"
 
 #: inc/pack.win.options.php:33
-#: inc/pack.win.options.php:42
+#: inc/pack.win.options.php:40
 #@ wpduplicator
 msgid "Separate all filters by semicolon"
 msgstr "Trenne alle Filter durch ein Semikolon"
 
-#: inc/pack.win.options.php:54
+#: inc/pack.win.options.php:52
 #@ wpduplicator
 msgid "Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)"
 msgstr "Fragen zu diesen Optionen? Deaktiviere vorübergehend alle Cache-Tools (z. B. W3C Total Object Cache)"
 
-#: inc/pack.win.options.php:64
-#@ wpduplicator
-msgid "Settings Defaults"
-msgstr "Grundeinstellungen"
-
-#: inc/pack.win.options.php:67
-#@ wpduplicator
-msgid "Install URL"
-msgstr "Install URL"
-
-#: inc/pack.win.options.php:74
-#@ wpduplicator
-msgid "Database Defaults"
-msgstr "Datenbank-Voreinstellungen"
-
-#: inc/pack.win.options.php:77
+#: inc/pack.win.options.php:68
 #@ wpduplicator
 msgid "Host"
 msgstr "Host"
 
-#: inc/pack.win.options.php:81
-#@ wpduplicator
-msgid "Name"
-msgstr "Name"
-
 #: inc/pack.main.php:70
-#: inc/pack.win.options.php:85
-#: inc/settings.php:156
+#: inc/pack.win.options.php:76
+#: inc/settings.php:160
 #@ wpduplicator
 msgid "User"
 msgstr "Benutzer"
 
-#: inc/pack.win.options.php:90
-#@ wpduplicator
-msgid "The installer can have these fields pre-filled at install time.  These values are optional."
-msgstr "Der Installer kann diese Felder vor der Installation bereits ausgefüllt haben. Diese Werte sind optional."
-
-#: inc/settings.php:71
+#: inc/settings.php:74
 #@ wpduplicator
 msgid "Uninstall Options"
 msgstr "Deinstallations-Optionen"
 
-#: inc/settings.php:74
+#: inc/settings.php:77
 #@ wpduplicator
 msgid "Delete entire snapshot directory when removing plugin"
 msgstr "Löschen des gesamten Snapshot-Verzeichnises beim Entfernen des Plugins"
 
-#: inc/settings.php:75
+#: inc/settings.php:78
 #, fuzzy
 #@ wpduplicator
 msgid "Snapshot Directory"
 msgstr "Cache-Verzeichnis gefunden"
 
-#: inc/pack.win.options.php:155
+#: inc/pack.win.options.php:190
 #@ wpduplicator
 msgid "Save"
 msgstr "Sichern"
@@ -730,7 +705,7 @@ msgstr "Gescheitert"
 #: inc/pack.win.system.php:127
 #: inc/pack.win.system.php:130
 #: inc/pack.win.system.php:133
-#: inc/settings.php:114
+#: inc/settings.php:118
 #@ wpduplicator
 msgid "Web Server"
 msgstr "Webserver"
@@ -747,13 +722,13 @@ msgid "Open Base Dir"
 msgstr "Open Base Dir"
 
 #: inc/pack.win.system.php:142
-#: inc/settings.php:161
+#: inc/settings.php:168
 #@ wpduplicator
 msgid "Off"
 msgstr "Aus"
 
 #: inc/pack.win.system.php:145
-#: inc/settings.php:161
+#: inc/settings.php:168
 #@ wpduplicator
 msgid "On"
 msgstr "An"
@@ -880,22 +855,22 @@ msgid "wp-uploads"
 msgstr "uploads"
 
 #: inc/pack.win.options.php:37
-#: inc/pack.win.options.php:46
+#: inc/pack.win.options.php:44
 #@ wpduplicator
 msgid "(clear)"
 msgstr "(Löschen)"
 
-#: inc/pack.win.options.php:44
+#: inc/pack.win.options.php:42
 #@ wpduplicator
 msgid "media"
 msgstr "Medien"
 
-#: inc/pack.win.options.php:45
+#: inc/pack.win.options.php:43
 #@ wpduplicator
 msgid "archive"
 msgstr "Archive"
 
-#: inc/pack.win.options.php:50
+#: inc/pack.win.options.php:48
 #@ wpduplicator
 msgid "All directory paths and extensions in this section will be excluded from the package file."
 msgstr "Alle Verzeichnisse und alle Dateien mit diesen Erweiterungen sind von der Archiv-Datei ausgeschlossen."
@@ -908,7 +883,7 @@ msgstr "Archive"
 
 #: duplicator.php:274
 #: inc/pack.win.create.php:8
-#: inc/settings.php:40
+#: inc/settings.php:43
 #@ wpduplicator
 msgid "Settings"
 msgstr "Einstellungen"
@@ -994,99 +969,99 @@ msgstr "Einstellungen gespeichert"
 msgid "unknow"
 msgstr "unbekannt"
 
-#: inc/settings.php:63
+#: inc/settings.php:66
 #@ wpduplicator
 msgid "Plugin Settings"
 msgstr "Plugin-Einstellungen"
 
-#: inc/settings.php:67
-#: inc/settings.php:106
+#: inc/settings.php:70
+#: inc/settings.php:110
 #@ wpduplicator
 msgid "Duplicator Version"
 msgstr "Duplicator-Version"
 
-#: inc/settings.php:83
+#: inc/settings.php:86
 #@ wpduplicator
 msgid "Save Settings"
 msgstr "Einstellungen speichern"
 
-#: inc/settings.php:92
+#: inc/settings.php:96
 #@ wpduplicator
 msgid "Server Settings"
 msgstr "Server-Einstellungen"
 
-#: inc/settings.php:97
+#: inc/settings.php:101
 #@ wpduplicator
 msgid "Setting"
 msgstr "Einstellung"
 
-#: inc/settings.php:98
+#: inc/settings.php:102
 #@ wpduplicator
 msgid "Value"
 msgstr "Wert"
 
-#: inc/settings.php:110
+#: inc/settings.php:114
 #@ wpduplicator
 msgid "Operating System"
 msgstr "Betriebs-System"
 
-#: inc/settings.php:118
+#: inc/settings.php:122
 #@ wpduplicator
 msgid "Root Path"
 msgstr "Root Pfad"
 
-#: inc/settings.php:129
+#: inc/settings.php:133
 #@ wpduplicator
 msgid "Langugage"
 msgstr "Sprache"
 
-#: inc/settings.php:133
-#: inc/settings.php:183
+#: inc/settings.php:137
+#: inc/settings.php:192
 #@ wpduplicator
 msgid "Charset"
 msgstr "Zeichensatz"
 
-#: inc/settings.php:137
+#: inc/settings.php:141
 #@ wpduplicator
 msgid "Memory Limit "
 msgstr "Speicher-Limit "
 
-#: inc/settings.php:141
+#: inc/settings.php:145
 #@ wpduplicator
 msgid "Memory Limit Max"
 msgstr "Maximales Speicher-Limit"
 
-#: inc/settings.php:160
+#: inc/settings.php:164
 #@ wpduplicator
 msgid "Safe Mode"
 msgstr "Safe Mode"
 
-#: inc/settings.php:164
+#: inc/settings.php:173
 #@ wpduplicator
 msgid "Memory Limit"
 msgstr "Speicher-Limit"
 
-#: inc/settings.php:168
+#: inc/settings.php:177
 #@ wpduplicator
 msgid "Memory In Use"
 msgstr "Verwendeter Arbeitsspeicher"
 
-#: inc/settings.php:172
+#: inc/settings.php:181
 #@ wpduplicator
 msgid "Max Execution Time"
 msgstr "Maximale Ausführungs-Zeit"
 
-#: inc/settings.php:187
+#: inc/settings.php:196
 #@ wpduplicator
 msgid "wait_timeout"
 msgstr "auf Timeout warten"
 
-#: inc/settings.php:191
+#: inc/settings.php:200
 #@ wpduplicator
 msgid "max_allowed_packet"
 msgstr "maximal erlaubte Archive"
 
-#: inc/settings.php:198
+#: inc/settings.php:220
 #@ wpduplicator
 msgid "Show/Hide All PHP Information"
 msgstr "Zeigen/Verbergen aller PHP-Informationen"
@@ -1206,12 +1181,13 @@ msgstr "Wenn dein Hosting-Provider diese Vorgaben hat, kannst du ihn fragen, ob 
 msgid "A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again."
 msgstr "Es wurden reservierte Datei (en) im WordPress Stammverzeichnis gefunden. Reservierte Dateinamen sind installer.php, Installateur-data.sql und Installateur-log.txt. Zum korrekten Archivieren deiner Dateien entferne bitte diese Dateien aus dem WordPress Stammverzeichnis. Dann versuche erneut, das Archiv zu erstellen."
 
-#: inc/settings.php:49
+#: inc/settings.php:52
+#: inc/settings.php:107
 #@ wpduplicator
 msgid "General"
 msgstr "Allgemein"
 
-#: inc/settings.php:50
+#: inc/settings.php:53
 #@ wpduplicator
 msgid "Diagnostics"
 msgstr "Diagnose"
@@ -1270,4 +1246,94 @@ msgstr "Führen Sie eine Google-Suche, einschließlich Fehler aus den Log-Dateie
 #@ wpduplicator
 msgid "Contact your hosting provider for permission and timeout issues"
 msgstr "Kontaktieren Sie Ihren Hosting-Provider für die Erlaubnis und Timeout Probleme"
+
+#: inc/pack.win.options.php:62
+#@ default
+msgid "STEP 1 - INPUTS"
+msgstr ""
+
+#: inc/pack.win.options.php:65
+#@ wpduplicator
+msgid "MySQL Server"
+msgstr ""
+
+#: inc/pack.win.options.php:72
+#@ wpduplicator
+msgid "Database"
+msgstr "Datenbank"
+
+#: inc/pack.win.options.php:80
+#@ wpduplicator
+msgid "Advanced Options"
+msgstr "Erweiterte Optionen"
+
+#: inc/pack.win.options.php:87
+#@ wpduplicator
+msgid "SSL"
+msgstr ""
+
+#: inc/pack.win.options.php:90
+#@ wpduplicator
+msgid "Enforce on Admin"
+msgstr "Auf Admin durchsetzen"
+
+#: inc/pack.win.options.php:94
+#@ wpduplicator
+msgid "Enforce on Logins"
+msgstr "Erzwingen auf Logins"
+
+#: inc/pack.win.options.php:98
+#@ wpduplicator
+msgid "Cache"
+msgstr ""
+
+#: inc/pack.win.options.php:101
+#@ wpduplicator
+msgid "Keep Enabled"
+msgstr "Halten Aktiviert"
+
+#: inc/pack.win.options.php:105
+#@ wpduplicator
+msgid "Keep Home Path"
+msgstr "Halten Startseite Pfad"
+
+#: inc/pack.win.options.php:113
+#@ default
+msgid "STEP 2 - INPUTS"
+msgstr ""
+
+#: inc/pack.win.options.php:117
+#@ wpduplicator
+msgid "New URL"
+msgstr "Neue URL"
+
+#: inc/pack.win.options.php:123
+#@ default
+msgid "The installer can have these fields pre-filled at install time."
+msgstr ""
+
+#: inc/pack.win.options.php:123
+#@ default
+msgid "All values are optional."
+msgstr ""
+
+#: inc/settings.php:204
+#@ wpduplicator
+msgid "Server Disk"
+msgstr "Server-Festplatte"
+
+#: inc/settings.php:207
+#@ hyper-cache
+msgid "Free space"
+msgstr ""
+
+#: inc/settings.php:210
+#@ wpduplicator
+msgid "Note: This value is the physical servers hard-drive allocation."
+msgstr "Hinweis: Dieser Wert ist die physische Server-Festplatte-Verteilung."
+
+#: inc/settings.php:211
+#@ wpduplicator
+msgid "On shared hosts check your control panel for the 'TRUE' disk space quota value."
+msgstr "Überprüfen Sie auf freigegebenen Hosts Ihres Control Panels für den 'TRUE' Disk Space Quote Wert."
 

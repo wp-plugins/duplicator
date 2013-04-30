@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a full WordPress backup of your files and database with one click. Duplicate and move an entire site from one location to another in 3 easy steps. Create full snapshot of your site at any point in time.
-  Version: 0.4.3
+  Version: 0.4.4
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   License: GPLv2 or later
