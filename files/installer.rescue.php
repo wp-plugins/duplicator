@@ -97,20 +97,20 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '517fe1241c8b56780_package_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '517fe1241c8b56780_package';
+$GLOBALS['FW_PACKAGE_NAME'] = '51869bd233b035819_20130505_duplicatorplugins_package.zip';
+$GLOBALS['FW_SECURE_NAME'] = '51869bd233b035819_20130505_duplicatorplugins';
 $GLOBALS['FW_DBHOST'] = 'localhost';
 $GLOBALS['FW_DBNAME'] = 'dbtest';
 $GLOBALS['FW_DBUSER'] = 'dbroot';
 $GLOBALS['FW_DBPASS'] = '';
-$GLOBALS['FW_SSL_ADMIN'] = '1';
+$GLOBALS['FW_SSL_ADMIN'] = '0';
 $GLOBALS['FW_SSL_LOGIN'] = '0';
 $GLOBALS['FW_CACHE_WP'] = '0';
 $GLOBALS['FW_CACHE_PATH'] = '0';
 $GLOBALS['FW_BLOGNAME'] = 'Duplicator Plugin&#039;s';
 $GLOBALS['FW_RESCUE_FLAG'] = '(rescue file)';
 $GLOBALS['FW_WPROOT'] = 'E:/WEB/projects/wpplug_duplicator/';
-$GLOBALS['FW_DUPLICATOR_VERSION'] = '0.4.3';
+$GLOBALS['FW_DUPLICATOR_VERSION'] = '0.4.4';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME'] = 5000;
