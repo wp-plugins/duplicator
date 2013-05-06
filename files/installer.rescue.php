@@ -97,11 +97,11 @@ if (file_exists('dtoken.php')) {
 $GLOBALS['FW_TABLEPREFIX'] = 'wpplug_';
 $GLOBALS['FW_URL_OLD'] = 'http://localhost/projects/wpplug_duplicator';
 $GLOBALS['FW_URL_NEW'] = '';
-$GLOBALS['FW_PACKAGE_NAME'] = '51869bd233b035819_20130505_duplicatorplugins_package.zip';
-$GLOBALS['FW_SECURE_NAME'] = '51869bd233b035819_20130505_duplicatorplugins';
+$GLOBALS['FW_PACKAGE_NAME'] = '';
+$GLOBALS['FW_SECURE_NAME'] = '';
 $GLOBALS['FW_DBHOST'] = 'localhost';
-$GLOBALS['FW_DBNAME'] = 'dbtest';
-$GLOBALS['FW_DBUSER'] = 'dbroot';
+$GLOBALS['FW_DBNAME'] = '';
+$GLOBALS['FW_DBUSER'] = '';
 $GLOBALS['FW_DBPASS'] = '';
 $GLOBALS['FW_SSL_ADMIN'] = '0';
 $GLOBALS['FW_SSL_LOGIN'] = '0';
