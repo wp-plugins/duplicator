@@ -34,6 +34,8 @@ class Duplicator_Zip {
 
             $exts_list = implode(";", $this->skipNames);
             $path_list = implode(";", $GLOBALS['duplicator_bypass-array']);
+			$this->fileExtActive = strlen($exts_list);
+			
             duplicator_log("FILTER EXTENSIONS:  '{$exts_list}'");
             duplicator_log("FILTER DIRECTORIES: '{$path_list}'");
             duplicator_log($GLOBALS['DUPLICATOR_SEPERATOR2']);
@@ -119,9 +121,9 @@ class Duplicator_Zip {
                         } 
 					} else if ($file->isFile()) {
                         //Check filter extensions
-						if ($this->skipNames) {
-							$ext = @pathinfo($fullpath, PATHINFO_EXTENSION);
-							if (!in_array($ext, $this->skipNames)) {
+						if ($this->fileExtActive) {
+							$ext = $file->getExtension();//@pathinfo($fullpath, PATHINFO_EXTENSION);
+							if (!in_array($ext, $this->skipNames) || empty($ext)) {
 								$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 								$this->countFiles++;
 							}
