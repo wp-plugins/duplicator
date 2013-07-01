@@ -14,10 +14,24 @@
 	@chmod(duplicator_safe_path($logs[0]), 0644);
 	
 	if (count($logs)) {
-		@usort($logs, create_function('$a,$b', 'return filemtime($a) - filemtime($b);'));
+		@usort($logs, create_function('$a,$b', 'return filemtime($b) - filemtime($a);'));
 	} 
 	
-	$logname  = basename($logs[0]);
+	if (isset($_GET['logname'])) {
+		$logname = trim($_GET['logname']);
+		
+		//prevent escaping the folder
+		$validFiles = array_map('basename',$logs);
+		if (validate_file($logname, $validFiles)>0) {
+			//Invalid filename provided, don't use it
+			unset($logname);
+		}
+		//done with validFiles
+		unset($validFiles);
+	}
+	if (!isset($logname) || !$logname) {
+		$logname  = basename($logs[0]);
+	}
 	$logpath  = DUPLICATOR_SSDIR_PATH . '/' . $logname;
 	$logfound = (strlen($logname) > 0) ? true :false;
 	

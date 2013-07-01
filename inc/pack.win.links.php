@@ -22,19 +22,20 @@ jQuery(document).ready(function($) {
 	 *	@param db		The path to the sql file
 	 *	@param install	The path to the install file 
 	 *	@param pack		The path to the package file */
-	Duplicator.Pack.ShowLinksDialog = function(db, install, pack) {
+	Duplicator.Pack.ShowLinksDialog = function(db, install, pack, log) {
 		$("#dup-dlg-quick-path").dialog("open");
-		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + install + "\n\n%s:\n" + pack;', 
+		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + install + "\n\n%s:\n" + pack + "\n\n%s:\n" + log;', 
 			__("DATABASE",  'wpduplicator'), 
 			__("PACKAGE", 'wpduplicator'), 
-			__("INSTALLER",   'wpduplicator')); 
+			__("INSTALLER",   'wpduplicator'),
+			__("LOG", 'wpduplicator')); 
 		?>
 		$("#dup-dlg-quick-path-data").val(msg);
 		return false;
 	}
 	
 	//LOAD: 'Download Links' Dialog and other misc setup
-	Duplicator.Pack.GetLinksText = function() {$('#dup-dlg-quick-path-data').select();}
+	Duplicator.Pack.GetLinksText = function() {$('#dup-dlg-quick-path-data').select();};
 	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:365, width:800, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
 	$(".dup-dlg-quick-path-download-link").button({ icons: {primary: "ui-icon-locked"} });
 	$(".dup-dlg-quick-path-database-link").button({ icons: {primary: "ui-icon-script"} });

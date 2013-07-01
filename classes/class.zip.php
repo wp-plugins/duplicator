@@ -119,7 +119,7 @@ class Duplicator_Zip {
 								duplicator_log("WARN: Unable to add directory: $fullpath");
 							}
                         } 
-					} else if ($file->isFile()) {
+					} else if ($file->isFile() && $file->isReadable()) {
                         //Check filter extensions
 						if ($this->fileExtActive) {
 							$ext = $file->getExtension();//@pathinfo($fullpath, PATHINFO_EXTENSION);

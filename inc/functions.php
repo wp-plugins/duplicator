@@ -55,7 +55,13 @@ function duplicator_create_dbscript($destination) {
                         $num_values = count($row);
                         $num_counter = 1;
                         foreach ($row as $value) {
-                            ($num_values == $num_counter) ? $sql .= '"' . @mysql_real_escape_string($value) . '"' : $sql .= '"' . @mysql_real_escape_string($value) . '", ';
+							if ( is_null( $value ) || ! isset( $value ) ) {
+								($num_values == $num_counter) 	? $sql .= 'NULL' 	: $sql .= 'NULL, ';
+							} else {
+								($num_values == $num_counter) 
+									? $sql .= '"' . @mysql_real_escape_string($value) . '"' 
+									: $sql .= '"' . @mysql_real_escape_string($value) . '", ';
+							}
                             $num_counter++;
                         }
                         $sql .= ");\n";

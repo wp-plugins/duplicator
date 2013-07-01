@@ -101,6 +101,7 @@ MAIN FORM: Lists all the backups 			-->
 						$packagepath 		= duplicator_snapshot_urlpath() . "{$uniqueid}_package.zip";
 						$installerpath		= duplicator_snapshot_urlpath() . "{$uniqueid}_installer.php";
 						$installfilelink	= "{$installerpath}?get=1&file={$uniqueid}_installer.php";
+						$logfilelink		= duplicator_snapshot_urlpath() . "{$uniqueid}.log";
 					?>
 					<tr class="dup-pack-info">
 						<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
@@ -120,7 +121,7 @@ MAIN FORM: Lists all the backups 			-->
 								<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
 								<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo "{$row['token']}_{$row['packname']}" ;?> <br/>
 								<button class='dup-dlg-quick-path-database-link no-select' onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><?php _e("Download SQL File", 'wpduplicator')?></button>
-								<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}' " ;?>); return false;"><?php _e("Show Download Links", 'wpduplicator')?></button>
+								<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}' " ;?>); return false;"><?php _e("Show Download Links", 'wpduplicator')?></button>
 							</div>
 						</td>
 					</tr>	

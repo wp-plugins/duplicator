@@ -24,9 +24,6 @@ function duplicator_create() {
 
     $secure_token = uniqid() . mt_rand(1000, 9999);
     $uniquename = "{$secure_token}_{$packname}";
-    foreach (glob(DUPLICATOR_SSDIR_PATH . '/*.log') as $log_file) {
-        @unlink($log_file);
-    }
 
     $logfilename = "{$uniquename}.log";
     $GLOBALS['duplicator_package_log_handle'] = @fopen(DUPLICATOR_SSDIR_PATH . "/{$logfilename}", "c+");

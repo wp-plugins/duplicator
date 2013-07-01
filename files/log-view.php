@@ -10,8 +10,11 @@
 	
 	$logs 	= glob(DUPLICATOR_SSDIR_PATH . '/*.log') ;
 	if (count($logs)) {
-		usort($logs, create_function('$a,$b', 'return filemtime($a) - filemtime($b);'));
+		usort($logs, create_function('$a,$b', 'return filemtime($b) - filemtime($a);'));
 	} 
+	
+	//the maximum number of logs to show in the drop-down
+	$maxLogsToShow = 20;
 	
 	$logname = basename($logs[0]);
 	$logurl  = get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' . $logname;
@@ -37,15 +40,34 @@
 			width:98%; height:86%;
 		}
 		span#spanCount {display:inline-block !important; padding:0px 3px 0px 3px; width:15px; white-space:nowrap;}
+		select#ChooseLog {font-size:12px; margin:5px 3px 3px 0px;max-width: 300px;}
 	</style>
 	<script type="text/javascript" src="<?php echo $admin_url; ?>/load-scripts.php?c=0&amp;load=jquery,utils&amp;ver=edec3fab0cb6297ea474806db1895fa7"></script>
 	<script type="text/javascript">
 	jQuery.noConflict()(function($) {
 		jQuery(document).ready(function() {
 			
+			//Choose log to show
+			var LogViewChange = function () {
+				var logname = $('#ChooseLog').val();
+				if (!logname) {
+					//nothing to do
+					return;
+				}
+				$('#log-data').attr('src', 'log-read.php?logname='+logname);
+				//while that's going, update the location displayed next to log:
+				$('#LogNameUrl').text(logname);
+			};
+
+			$('#ChooseLog').change(LogViewChange);
+
+			//Go ahead and do it now so that it matches the filename selected when
+			//user refreshes the entire page
+			LogViewChange();
+			
 			//Refresh Button
 			$("#Refresh").click(function() { 
-				$("#log-data").attr("src", "log-read.php") ;
+				$("#log-data").attr("src", $('#log-data').attr('src')) ;
 				
 				//Scroll to Bottom
 				$("#log-data").load(function () {
@@ -100,15 +122,25 @@
 					
 					<i style='font-size:12px'>
 						<?php _e("Processing may take several minutes, please wait for progress bar to complete on the main status bar", 'wpduplicator') ?>.<br/>
-						<?php echo "log: {$logurl}" ?>
+						<?php _e('log:');?> <?php echo dirname($logurl); ?>/<span id="LogNameUrl"><?php echo basename($logurl); ?></span>
 					</i>
 				</td>
 				<td style='width:100%; text-align:right; padding-right:20px; white-space:nowrap'>
-					<input type='checkbox' id="AutoRefresh" /> <label for="AutoRefresh" style='white-space:nowrap'><?php _e("Auto Refresh", 'wpduplicator') ?> [<span id="spanCount"></span>]</label> <br/>
-					<input type="button" id="Refresh" style="margin: 8px 5px 0px 0px" class="button action" value="<?php _e("Refresh", 'wpduplicator') ?>" />
+					<input type='checkbox' id="AutoRefresh" style="margin-top:4px" /> <label for="AutoRefresh" style='white-space:nowrap'><?php _e("Auto Refresh", 'wpduplicator') ?> [<span id="spanCount"></span>]</label> &nbsp;
+					<input type="button" id="Refresh" style="margin: 8px 5px 0px 0px" class="button action" value="<?php esc_attr_e("Refresh", 'wpduplicator') ?>" /><br />
+					<label><?php printf("%s {$maxLogsToShow} %s", __("Last"), __("logs"));?>:</label>
+					<select id="ChooseLog">
+						<?php $count=0; foreach ($logs as $log) { ?>
+							<?php if (++$count > $maxLogsToShow) { break; } ?>
+							<option value="<?php echo esc_attr(basename($log));?>">
+								<?php echo date('h:i:s m/d/Y', filemtime($log));?> - 
+								<?php echo esc_html(basename($log)); ?>
+							</option>
+						<?php } ?>
+					</select>
 				</td>
 			</tr>
-			<tr><td colspan='3'><hr size='1' /></td></tr>
+			
 		</table> 
 		
 		<iframe id="log-data" name="logData" src="log-read.php"></iframe><br/><br/>
