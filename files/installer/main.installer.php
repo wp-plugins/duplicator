@@ -32,7 +32,7 @@ if (file_exists('dtoken.php')) {
         //strips out anything that might cause it to use an alternate stream since
         //that would require :// near the front.
     	$filename = preg_replace('/[^a-zA-Z0-9_.]*/','',$_GET['file']);
-    	if (strlen($filename) && file_exists($filename) && (strstr($filename, '_installer.php') || strstr($filename, 'installer.rescue.php'))) {
+    	if (strlen($filename) && file_exists($filename) && (strstr($filename, '_installer.php'))) {
             //Attempt to push the file to the browser
     	    header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');

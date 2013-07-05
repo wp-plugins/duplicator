@@ -147,7 +147,6 @@ function duplicator_create_installerFile($uniquename) {
 
     global $wpdb;
     $template = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.template.php');
-    $installerRescue = duplicator_safe_path(DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php');
     $installerCore = duplicator_safe_path(DUPLICATOR_SSDIR_PATH) . "/{$uniquename}_installer.php";
 
     $err_msg = "\n!!!WARNING!!! unable to read/write installer\nSee file:{$installerCore} \nPlease check permission and owner on file and parent folder.";
@@ -182,7 +181,6 @@ function duplicator_create_installerFile($uniquename) {
         //RESCUE FILE
         $replace_items["fwrite_rescue_flag"] = '(rescue file)';
         $rescue_str = duplicator_parse_template($template, $replace_items);
-        $fp = fopen($installerRescue, (!file_exists($installerRescue)) ? 'x+' : 'w');
         @fwrite($fp, $rescue_str, strlen($rescue_str));
         @fclose($fp);
         $rescue_str = null;
@@ -332,7 +330,6 @@ function duplicator_init_snapshotpath() {
 
     //plugins dir/files
     @chmod($path_plugin . 'files', 0755);
-    @chmod(duplicator_safe_path($path_plugin . 'files/installer.rescue.php'), 0644);
 
     //--------------------------------
     //FILE CREATION	

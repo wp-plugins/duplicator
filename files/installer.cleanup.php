@@ -33,17 +33,12 @@
 		
 		$html = "";
 		if ( isset($_GET['remove'])) {
-			$installer_rescue 	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK;
+	
 			$installer_file 	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP;
 			$installer_sql  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL;
 			$installer_log  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG;
-			$package_name   	= DUPLICATOR_WPROOTPATH . $_GET['package'];
+			$package_name   	= DUPLICATOR_WPROOTPATH . esc_html($_GET['package']);
 			
-			
-			//installer.rescue.php rarely is this file used
-			if (file_exists($installer_rescue)) {
-				$html .= (@unlink($installer_rescue)) ?  "<div class='success'>Successfully removed {$installer_rescue}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_rescue}</div>";
-			} 
 			$html .= (@unlink($installer_file)) ?  "<div class='success'>Successfully removed {$installer_file}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_file}</div>";
 			$html .= (@unlink($installer_sql))  ?  "<div class='success'>Successfully removed {$installer_sql}</div>"  	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_sql}</div>";
 			$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_log}</div>";

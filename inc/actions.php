@@ -185,8 +185,7 @@ function duplicator_system_check() {
     //SYS-100: FILE PERMS
     $test = is_writeable(DUPLICATOR_WPROOTPATH)
             && is_writeable(DUPLICATOR_SSDIR_PATH)
-            && is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/')
-            && is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php');
+            && is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/');
     $json['SYS-100'] = ($test) ? 'Pass' : 'Fail';
 
     //SYS-101 RESERVED FILE
@@ -264,26 +263,23 @@ function duplicator_unlink($uniqueid) {
         if ($uniqueid) {
             global $wpdb;
             $table_name = $wpdb->prefix . 'duplicator';
-            if ($wpdb->query("DELETE FROM {$table_name} WHERE zipname= '{$uniqueid}_package.zip'") != 0) {
+            if ($wpdb->query("DELETE FROM `{$table_name}` WHERE zipname= '{$uniqueid}_package.zip'") != 0) {
                 $msg = "log:act__unlink=>removed";
                 try {
+					//Perms
                     @chmod(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_package.zip"), 0644);
                     @chmod(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_database.sql"), 0644);
+					@chmod(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_installer.php"), 0644);
+					@chmod(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}.log"), 0644);
+					//Remove
                     @unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_package.zip"));
                     @unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_database.sql"));
                     @unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}_installer.php"));
+					@unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}.log"));
                 } catch (Exception $e) {
                     error_log(var_dump($e->getMessage()));
                 }
-                //Check for Legacy pre 0.3.1
-            } else if ($wpdb->query("DELETE FROM {$table_name} WHERE zipname= '{$uniqueid}'") != 0) {
-                try {
-                    @chmod(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}"), 0644);
-                    @unlink(duplicator_safe_path(DUPLICATOR_SSDIR_PATH . "/{$uniqueid}"));
-                } catch (Exception $e) {
-                    error_log(var_dump($e->getMessage()));
-                }
-            }
+            } 
         }
         return $msg;
     } catch (Exception $e) {

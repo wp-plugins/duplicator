@@ -172,10 +172,8 @@ if ($_POST['zip_manual']) {
 }
 
 //===============================
-//SCRIPTS: wp-config/database.sql
+//WP-CONFIG: wp-config
 //===============================
-//WP-CONFIG
-
 $wpconfig = @file_get_contents('wp-config.php', true);
 
 $patterns = array(
@@ -228,7 +226,10 @@ file_put_contents('wp-config.php', $wpconfig);
 $wpconfig = null;
 
 
+
+//===============================
 //DATABASE SCRIPT
+//===============================
 @chmod("{$root_path}/database.sql", 0777);
 $sql_file = @file_get_contents('database.sql', true);
 if ($sql_file == false || strlen($sql_file) < 10) {

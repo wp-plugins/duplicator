@@ -102,17 +102,6 @@ if (is_admin() == true) {
         update_option('duplicator_version_plugin', DUPLICATOR_VERSION);
         update_option('duplicator_options', serialize($duplicator_opts));
 
-        //CLEANUP LEGACY PRE 0.2.9
-		//Hide errors from header
-		@ob_start();
-        delete_option('duplicator_version_database');
-        $wpdb->query("ALTER TABLE `{$table_name}` CHANGE bid id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT");
-        $wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN ver_db");
-        $wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN ver_plug");
-        $wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN status");
-        $wpdb->query("ALTER TABLE `{$table_name}` DROP COLUMN type");
-		@ob_end_clean();
-
         //Setup All Directories
         duplicator_init_snapshotpath();
     }

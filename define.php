@@ -20,7 +20,6 @@ if (function_exists('plugin_dir_url')) {
     define('DUPLICATOR_WPROOTPATH',     str_replace("\\", "/", ABSPATH));
     define("DUPLICATOR_SSDIR_PATH",     str_replace("\\", "/", DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME));
     define("DUPLICATOR_INSTALL_PHP",    'installer.php');
-    define("DUPLICATOR_INSTALL_BAK",    'installer.rescue.php');
     define("DUPLICATOR_INSTALL_SQL",    'installer-data.sql');
     define("DUPLICATOR_INSTALL_LOG",    'installer-log.txt');
     define("DUPLICATOR_ZIP_FILE_POOL",  10000);

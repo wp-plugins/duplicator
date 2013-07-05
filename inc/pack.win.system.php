@@ -29,8 +29,6 @@ DIALOG: SYSTEM CHECK -->
 							$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/') ? 'Pass' : 'Fail';
 							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_PLUGIN_PATH . 'files/');
 							
-							$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php') ? 'Pass' : 'Fail';
-							printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_PLUGIN_PATH . 'files/installer.rescue.php');
 							
 							echo "<br/>";	
 							
@@ -158,16 +156,16 @@ DIALOG: SYSTEM CHECK -->
 			</span><br/>
 			
 			
-			<b>W3 Total Cache:</b>
+			<b><?php _e('Cached Data', 'wpduplicator'); ?>:</b>
 			<?php 
-				$w3tc_path = duplicator_safe_path(WP_CONTENT_DIR) .  '/w3tc';
-				if (file_exists($w3tc_path) && ! strstr($GLOBALS['duplicator_opts']['dir_bypass'], $w3tc_path)):
+				$cache_path = duplicator_safe_path(WP_CONTENT_DIR) .  '/cache';
+				if (file_exists($cache_path) && ! strstr($GLOBALS['duplicator_opts']['dir_bypass'], $cache_path)):
 			?>
 				<div class="dup-sys-fail"><?php _e("Cache Directory Found", 'wpduplicator') ?>.</div> 
-				<a href="javascript:void(0)" onclick="Duplicator.Pack.OptionsAppendCachePath('<?php echo addslashes($w3tc_path); ?>')"><?php _e("Add to exclusion path now", 'wpduplicator') ?></a>
-			<?php elseif (strstr($GLOBALS['duplicator_opts']['dir_bypass'], $w3tc_path)): ?>
+				<a href="javascript:void(0)" onclick="Duplicator.Pack.OptionsAppendCachePath('<?php echo addslashes($cache_path); ?>')"><?php _e("Add to exclusion path now", 'wpduplicator') ?></a>
+			<?php elseif (strstr($GLOBALS['duplicator_opts']['dir_bypass'], $cache_path)): ?>
 				<div class="dup-sys-pass"><?php _e("Directory excluded", 'wpduplicator') ?></div><br/>
-				<i style='font-weight:normal;font-size:11px'><?php _e("Path", 'wpduplicator') ?>: <?php echo addslashes($w3tc_path); ?></i>
+				<i style='font-weight:normal;font-size:11px'><?php _e("Path", 'wpduplicator') ?>: <?php echo addslashes($cache_path); ?></i>
 			<?php else: ?>
 				<div class="dup-sys-pass"><?php _e("Cache Directory Not Found", 'wpduplicator') ?></div>
 			<?php endif; ?><br /><br />
@@ -279,7 +277,7 @@ jQuery(document).ready(function($) {
 
 	//LOAD: 'System Status' Dialog
 	$("#dup-dlg-system-check").dialog({
-		autoOpen:false, height:600, width:700, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog, modal: true, 
+		autoOpen:false, height:575, width:550, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog, modal: true, 
 		buttons: {
 			'close' : {
 					'text' : "<?php _e("Close", 'wpduplicator') ?>",
