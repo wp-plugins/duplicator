@@ -5,8 +5,7 @@
  *  Creates the zip file, database entry, and installer file for the
  *  new culmination of a 'Package Set'  
  *
- *  @return string   A message about the action
- * 		- log:act__create=>done
+ *  @return string   A message/waring/error about the action
  */
 function duplicator_create() {
 
@@ -15,17 +14,16 @@ function duplicator_create() {
     global $current_user;
     //post data un-stripped, as WP magic quotes _POST for some reason...
     $post = stripslashes_deep($_POST);
-	
 	$error_level = error_reporting();
 	error_reporting(E_ERROR);
 
     $fulltime_start = DuplicatorUtils::GetMicrotime();
-    $packname = isset($post['package_name']) ? trim($post['package_name']) : null;
-
-    $secure_token = uniqid() . mt_rand(1000, 9999);
-    $uniquename = "{$secure_token}_{$packname}";
-
-    $logfilename = "{$uniquename}.log";
+    $packname		= isset($post['package_name']) ? trim($post['package_name'])   : 'package';
+	$packnotes		= isset($post['package_notes']) ? trim(esc_html($post['package_notes'])) : '';
+    $secure_token	= uniqid() . mt_rand(1000, 9999);
+    $uniquename		= "{$secure_token}_{$packname}";
+    $logfilename	= "{$uniquename}.log";
+	$table_id	    = null;
     $GLOBALS['duplicator_package_log_handle'] = @fopen(DUPLICATOR_SSDIR_PATH . "/{$logfilename}", "c+");
 
     duplicator_log("********************************************************************************");
@@ -40,103 +38,122 @@ function duplicator_create() {
     duplicator_log("browser: {$_SERVER['HTTP_USER_AGENT']}");
     duplicator_log("package name: {$packname}");
 
-    if ($packname) {
+	$php_max_time = @ini_set("max_execution_time", DUPLICATOR_PHP_MAX_TIME);
+	$php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
+	$php_max_time = ($php_max_time === false) ? "Unabled to set php max_execution_time" : "set from={$php_max_time} to=" . DUPLICATOR_PHP_MAX_TIME;
+	$php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit"   : "set from={$php_max_memory} to=" . DUPLICATOR_PHP_MAX_MEMORY;
 
-        $php_max_time = @ini_set("max_execution_time", DUPLICATOR_PHP_MAX_TIME);
-        $php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-        $php_max_time = ($php_max_time === false) ? "Unabled to set php max_execution_time" : "set from={$php_max_time} to=" . DUPLICATOR_PHP_MAX_TIME;
-        $php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit"   : "set from={$php_max_memory} to=" . DUPLICATOR_PHP_MAX_MEMORY;
+	duplicator_log("php_max_time: {$php_max_time}");
+	duplicator_log("php_max_memory: {$php_max_memory}");
+	duplicator_log("mysql wait_timeout:" . DUPLICATOR_PHP_MAX_TIME);
 
-        @set_time_limit(0);
-        duplicator_log("php_max_time: {$php_max_time}");
-        duplicator_log("php_max_memory: {$php_max_memory}");
-        duplicator_log("mysql wait_timeout:" . DUPLICATOR_PHP_MAX_TIME);
+	$zipfilename = "{$uniquename}_package.zip";
+	$sqlfilename = "{$uniquename}_database.sql";
+	$exefilename = "{$uniquename}_installer.php";
 
-        $zipfilename = "{$uniquename}_package.zip";
-        $sqlfilename = "{$uniquename}_database.sql";
-        $exefilename = "{$uniquename}_installer.php";
+	$zipfilepath = DUPLICATOR_SSDIR_PATH . "/{$zipfilename}";
+	$sqlfilepath = DUPLICATOR_SSDIR_PATH . "/{$sqlfilename}";
+	$exefilepath = DUPLICATOR_SSDIR_PATH . "/{$exefilename}";
 
-        $zipfilepath = DUPLICATOR_SSDIR_PATH . "/{$zipfilename}";
-        $sqlfilepath = DUPLICATOR_SSDIR_PATH . "/{$sqlfilename}";
-        $exefilepath = DUPLICATOR_SSDIR_PATH . "/{$exefilename}";
-        $zipsize = 0;
+	@set_time_limit(0);
+	$wpdb->query("SET session wait_timeout = " . DUPLICATOR_DB_MAX_TIME);
+	
+	//=====================================================
+	//START: RECORD TRANSACTION
+	$pack_settings = serialize(array(	
+		'plugin_version' => DUPLICATOR_VERSION, 
+		'type' => 'Manual',
+		'status' => 'Error',
+		'notes' => "{$packnotes}"));
+	
+	$results = $wpdb->insert($wpdb->prefix . "duplicator", array(
+		'token' => $secure_token,
+		'packname' => $packname,
+		'zipname' => $zipfilename,
+		'zipsize' => 0,
+		'created' => current_time('mysql', get_option('gmt_offset')),
+		'owner' => $current_user->user_login,
+		'settings' => "{$pack_settings}")
+	);
+		
+	if ($wpdb->insert_id) {
+		duplicator_log("recorded table id: " . $wpdb->insert_id);
+		$table_id = $wpdb->insert_id;
+	} else {
+		$error_result = $wpdb->print_error();
+		duplicator_error("ERROR: Unable to insert into database table. \nERROR INFO: '{$error_result}'");
+	}
+	
+	duplicator_log("********************************************************************************");
+	duplicator_log("BUILD SQL SCRIPT:");
+	duplicator_log("********************************************************************************");
+	duplicator_create_dbscript($sqlfilepath);
 
-        $wpdb->query("SET session wait_timeout = " . DUPLICATOR_DB_MAX_TIME);
+	duplicator_log("********************************************************************************");
+	duplicator_log("BUILD ZIP PACKAGE:");
+	duplicator_log("********************************************************************************");
+	$zip = new Duplicator_Zip($zipfilepath, rtrim(DUPLICATOR_WPROOTPATH, '/'), $sqlfilepath);
+	
+	duplicator_log("********************************************************************************");
+	duplicator_log("BUILD INSTALLER FILE:");
+	duplicator_log("********************************************************************************");
+	duplicator_build_installerFile();
+	duplicator_create_installerFile($uniquename, $table_id);
 
-        duplicator_log("********************************************************************************");
-        duplicator_log("SQL SCRIPT");
-        duplicator_log("********************************************************************************");
-        duplicator_create_dbscript($sqlfilepath);
-
-
-        //CREATE ZIP ARCHIVE
-        duplicator_log("********************************************************************************");
-        duplicator_log("ZIP ARCHIVE:");
-        duplicator_log("********************************************************************************");
-
-        $zip = new Duplicator_Zip($zipfilepath, rtrim(DUPLICATOR_WPROOTPATH, '/'), $sqlfilepath);
-        $zipsize = filesize($zipfilepath);
-
-        ($zipsize == false) ? duplicator_log("WARNING: ZIPSIZE IS UNKNOWN.") : duplicator_log("ZIP FILE SIZE: " . duplicator_bytesize($zipsize));
-
-        //Serlized settings
-        $settings = array('plugin_version' => DUPLICATOR_VERSION, 'type' => 'Manual');
-        $serialized_settings = serialize($settings);
-		$wpdb->flush();
-
-        //Record archive info to database
-        $results = $wpdb->insert($wpdb->prefix . "duplicator", array(
-            'token' => $secure_token,
-            'packname' => $packname,
-            'zipname' => $zipfilename,
-            'zipsize' => $zipsize,
-            'created' => current_time('mysql', get_option('gmt_offset')),
-            'owner' => $current_user->user_login,
-            'settings' => "{$serialized_settings}")
-        );
-        if ($wpdb->insert_id) {
-            duplicator_log("RECORDED ARCHIVE ID: " . $wpdb->insert_id);
-        } else {
-			$error_result = $wpdb->print_error();
-            duplicator_log("WARNING: UNABLE TO RECORD TO DATABASE.  PLEASE TRY AGAIN.\n{$error_result}");
-        }
-       
-        //UPDATE INSTALL FILE
-        duplicator_log("********************************************************************************");
-        duplicator_log("FINALIZATION ROUTINES:");
-        duplicator_log("********************************************************************************");
-        duplicator_build_installerFile();
-        duplicator_create_installerFile($uniquename);
-
-        //SEND EMAIL
-        //TODO: Send only SQL File via mail.  Zip files can get too large
-        if ($GLOBALS['duplicator_opts']['email-me'] == "1") {
-            duplicator_log("log:act__create=>email started");
-            $status = ($zipsize) ? 'Success' : 'Failure';
-            $attachments = ""; //array(DUPLICATOR_SSDIR_PATH . '/' . $packname .'.zip');
-            $headers = 'From: Duplicator Plugin <no-reply@lifeinthegrid.com>' . "\r\n";
-            $subject = "Package '{$packname}' completed";
-            $message = "Run Status: {$status}\n\rSite Name: " . get_bloginfo('name') . "\n\rPackage Name: {$packname} \n\rCompleted at: " . current_time('mysql', get_option('gmt_offset'));
-            wp_mail($current_user->user_email, $subject, $message, $headers, $attachments);
-            duplicator_log("log:act__create=>sent email to: {$current_user->user_email}");
-            $other_emails = @preg_split("/[,;]/", $GLOBALS['duplicator_opts']['email_others']);
-            if (count($other_emails)) {
-                wp_mail($other_emails, $subject, $message, $headers, $attachments);
-                duplicator_log("log:act__create=>other emails sent: {$GLOBALS['duplicator_opts']['email_others']}");
-            }
-            duplicator_log("log:act__create=>email finished");
-        }
-    }
-    
+	//SEND EMAIL
+	//TODO: Send only SQL File via mail.  Zip files can get too large
+	if ($GLOBALS['duplicator_opts']['email-me'] == "1") {
+		duplicator_log("SENDING EMAIL");
+		$status = ($zip->zipFileSize) ? 'Success' : 'Failure';
+		$attachments = ""; //array(DUPLICATOR_SSDIR_PATH . '/' . $packname .'.zip');
+		$headers = 'From: Duplicator Plugin <no-reply@lifeinthegrid.com>' . "\r\n";
+		$subject = "Package '{$packname}' completed";
+		$message = "Run Status: {$status}\n\rSite Name: " . get_bloginfo('name') . "\n\rPackage Name: {$packname} \n\rCompleted at: " . current_time('mysql', get_option('gmt_offset'));
+		wp_mail($current_user->user_email, $subject, $message, $headers, $attachments);
+		duplicator_log("EMAIL SENT TO: {$current_user->user_email}");
+		$other_emails = @preg_split("/[,;]/", $GLOBALS['duplicator_opts']['email_others']);
+		if (count($other_emails)) {
+			wp_mail($other_emails, $subject, $message, $headers, $attachments);
+			duplicator_log("OTHER EMAILS SENT: {$GLOBALS['duplicator_opts']['email_others']}");
+		}
+		duplicator_log("EMAIL FINISHED");
+	}
+  
     $fulltime_end = DuplicatorUtils::GetMicrotime();
     $fulltime_sum = DuplicatorUtils::ElapsedTime($fulltime_end, $fulltime_start);
-    duplicator_log("COMPLETE PACKAGE RUNTIME: {$fulltime_sum}");
-
+    
     duplicator_log("********************************************************************************");
+	duplicator_log("COMPLETE PACKAGE RUNTIME: {$fulltime_sum}");
     duplicator_log("DONE PROCESSING => {$packname} " . @date('h:i:s'));
     duplicator_log("********************************************************************************");
     @fclose($GLOBALS['duplicator_package_log_handle']);
 	error_reporting($error_level);
+	
+	//=====================================================
+	//DONE: UPDATE TRANSACTION
+	$pack_settings = serialize(array(
+		'plugin_version' => DUPLICATOR_VERSION, 
+		'type'   => 'Manual',
+		'status' => 'Pass',
+		'notes' => "{$packnotes}"));
+	$result = $wpdb->update(
+		$wpdb->prefix . "duplicator", 
+		array(
+			'zipsize' => $zip->zipFileSize,
+			'created' => current_time('mysql', get_option('gmt_offset')),
+			'owner' => $current_user->user_login,
+			'settings' => "{$pack_settings}"),
+		array('id' => $table_id)
+	);	
+	if ($result == false) {
+		$error_result = $wpdb->print_error();
+		duplicator_error("ERROR: Unable to update database table. \nERROR INFO: '{$error_result}'");
+	} else {
+		$add1_passcount = get_option('duplicator_add1_passcount', 0);
+		$pack_passcount = get_option('duplicator_pack_passcount', 0);
+		update_option('duplicator_add1_passcount', $add1_passcount + 1);
+		update_option('duplicator_pack_passcount', $pack_passcount + 1);
+	}
     die();
 }
 
@@ -263,7 +280,7 @@ function duplicator_unlink($uniqueid) {
         if ($uniqueid) {
             global $wpdb;
             $table_name = $wpdb->prefix . 'duplicator';
-            if ($wpdb->query("DELETE FROM `{$table_name}` WHERE zipname= '{$uniqueid}_package.zip'") != 0) {
+            if ($wpdb->query("DELETE FROM {$table_name} WHERE zipname= '{$uniqueid}_package.zip'") != 0) {
                 $msg = "log:act__unlink=>removed";
                 try {
 					//Perms
@@ -326,10 +343,23 @@ function duplicator_task_save() {
         'log_level' => $post['log_level'],
     );
 
-
     update_option('duplicator_options', serialize($duplicator_opts));
-
     die("log:act__task_save=>saved");
+}
+
+/**
+ *  DUPLICATOR_ADD1
+ * */
+function duplicator_add1_click() {
+	
+	$post = stripslashes_deep($_POST);
+	if ($post['click'] == 'notnow') {
+		update_option('duplicator_add1_passcount', 0);
+	} else {
+		update_option('duplicator_add1_clicked', true);
+	}
+	
+	die("log:duplicator_add1_click=>clicked");
 }
 
 

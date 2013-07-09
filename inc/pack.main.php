@@ -14,7 +14,17 @@
 	//COMMON HEADER DISPLAY
 	require_once('javascript.php'); 
 	require_once('inc.header.php'); 
+	
+	//Add logic
+	$pack_passcount = get_option('duplicator_pack_passcount', 1);
+	$add1_passcount	= get_option('duplicator_add1_passcount', 1);
+	$add1_clicked 	= get_option('duplicator_add1_clicked', false);
+	
 ?>
+<style>
+	div#dup-add1 {bottom: 2px; left:1px; width: 99%; height: 40px; background-color: #FFFFE0; z-index: 3; border-radius: 8px; border: 1px solid silver; padding:4px 8px 4px 8px}
+</style>
+
 
 <!-- ==========================================
 MAIN FORM: Lists all the backups 			-->
@@ -48,6 +58,16 @@ MAIN FORM: Lists all the backups 			-->
 			<td align="center"></td>
 		</tr>
 	</table>
+	
+	<?php if ($add1_passcount != 0 && ($add1_passcount % DUPLICATOR_ADD1_TRIPCOUNT == 0) && $add1_clicked == false) :?>
+	<!-- ADD-1 -->
+	<div id="dup-add1">
+		<?php _e("It looks like you have been enjoying the Duplicator.  Would you consider a donation to help the continued development of the plugin", 'wpduplicator') ?>? <br/>
+		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('donate'); return false;"><?php _e("Donate", 'wpduplicator') ?></button>
+		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('rate'); return false;"><?php _e("Rate it", 'wpduplicator') ?> 5&#9733;'s</button>
+		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('notnow'); return false;"><?php _e("Not Now", 'wpduplicator') ?>!</button>
+	</div>	
+	<?php endif; ?>	
 
 	<!-- STATUS BAR -->
 	<div class="widget" style="padding:6px; margin: 2px 0px 0px 0px; border-bottom: none; font-size:13px">
@@ -83,17 +103,18 @@ MAIN FORM: Lists all the backups 			-->
 			$ct = 0;
 			$total_size = 0;
 			while($ct < $total_elements) {
-				$row	   = $result[$ct];
-				$settings  = unserialize($row['settings']);
-				$detail_id = "duplicator-detail-row-{$ct}";
-				$packname  = empty($row['packname']) ? $row['zipname'] : $row['packname'];
-				$total_size = $total_size + $row['zipsize'];
+				$row			= $result[$ct];
+				$settings		= unserialize($row['settings']);
+				$detail_id		= "duplicator-detail-row-{$ct}";
+				$packname		= empty($row['packname']) ? $row['zipname'] : $row['packname'];
+				$total_size     = $total_size + $row['zipsize'];
 				$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
-				$plugin_compat  = version_compare($plugin_version, '0.3.1');
+				$plugin_compat  = version_compare($plugin_version, '0.4.0');
+				$status         = $settings['status'];
+				$notes          = empty($settings['notes']) ? __("No notes were given for this package", 'wpduplicator') : $settings['notes'];
 				?>
 
-
-				<?php if($plugin_compat >= 0)  :	?>
+				<?php if($plugin_compat >= 0)  : ?>
 					<?php
 						//Links
 						$uniqueid  			= "{$row['token']}_{$row['packname']}";
@@ -102,35 +123,65 @@ MAIN FORM: Lists all the backups 			-->
 						$installerpath		= duplicator_snapshot_urlpath() . "{$uniqueid}_installer.php";
 						$installfilelink	= "{$installerpath}?get=1&file={$uniqueid}_installer.php";
 						$logfilelink		= duplicator_snapshot_urlpath() . "{$uniqueid}.log";
+						$logfilename	    = "{$uniqueid}.log";
 					?>
-					<tr class="dup-pack-info">
-						<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
-						<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
-						<td><?php echo $row['owner'];?></td>
-						<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
-						<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
-						<td class='pack-name'><?php echo $packname ;?></td>
-						<td style="width:90%;" class="get-btns">	
-							<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="dup-installer-btn no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $installfilelink; ?>', this); return false;"><?php _e("Installer", 'wpduplicator') ?></button> &nbsp;
-							<button id="<?php echo "{$uniqueid}_package.zip" ?>" class="dup-installer-btn no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $packagepath; ?>', this); return false;"><?php _e("Package", 'wpduplicator') ?></button>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details">
-							<div class="dup-details-area">
-								<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
-								<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo "{$row['token']}_{$row['packname']}" ;?> <br/>
-								<button class='dup-dlg-quick-path-database-link no-select' onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><?php _e("Download SQL File", 'wpduplicator')?></button>
-								<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}' " ;?>); return false;"><?php _e("Show Download Links", 'wpduplicator')?></button>
-							</div>
-						</td>
-					</tr>	
-
-				<!-- LEGACY PRE 0.3.1 PACKS -->
+		
+					<?php if ($status == 'Pass') : ?>
+						<tr class="dup-pack-info">
+							<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
+							<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
+							<td><?php echo $row['owner'];?></td>
+							<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
+							<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
+							<td class='pack-name'><?php echo $packname ;?></td>
+							<td style="width:90%;" class="get-btns">	
+								<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="dup-installer-btn no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $installfilelink; ?>', this); return false;"><?php _e("Installer", 'wpduplicator') ?></button> &nbsp;
+								<button id="<?php echo "{$uniqueid}_package.zip" ?>" class="dup-installer-btn no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $packagepath; ?>', this); return false;"><?php _e("Package", 'wpduplicator') ?></button>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details">
+								<div class="dup-details-area">
+									<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
+									<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo "{$row['token']}_{$row['packname']}" ;?> <br/>
+									<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> <br/>
+									<button class='dup-dlg-quick-path-database-link no-select' onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><?php _e("SQL File", 'wpduplicator')?></button>
+									<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}' " ;?>); return false;"><?php _e("Show Links", 'wpduplicator')?></button>
+									<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
+								</div>
+							</td>
+						</tr>	
+					<?php else : ?>	
+						<tr class="dup-pack-info">
+							<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
+							<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
+							<td><?php echo $row['owner'];?></td>
+							<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
+							<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
+							<td class='pack-name'><?php echo $packname ;?></td>
+							<td style="width:90%;" class="get-btns">	
+								<span style='display:inline-block; padding:7px 40px 0px 0px'>
+									<a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');"><?php _e("View Error Details", 'wpduplicator') ?>...</a>
+								</span>									
+							</td>
+						</tr>
+						<tr>
+							<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details">
+								<div class="dup-details-area ui-state-error">
+									<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
+									<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo "{$row['token']}_{$row['packname']}" ;?> <br/>
+										<?php
+										printf("%s <u><a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a></u>",
+										__("This package has encountered errors.  Click 'View Log' for more details.  For additional support see the ", 'wpduplicator'),
+										__("online knowledgebase", 'wpduplicator')); 
+										?><br/>
+										<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
+								</div>
+							</td>
+						</tr>	
+					<?php endif; ?>
 				<?php else : ?>	
-					<?php
-						$legacy_package = duplicator_snapshot_urlpath() . "{$row['zipname']}";
-					?>
+				    <!-- LEGACY PRE 0.4.0 -->
 					<tr class="dup-pack-info">
 						<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $row['zipname'] ;?>" /></td>
 						<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?></a>]</td>
@@ -139,9 +190,9 @@ MAIN FORM: Lists all the backups 			-->
 						<td><?php echo duplicator_bytesize($row['zipsize']);?></td>
 						<td class='pack-name'><?php echo $packname ;?></td>
 						<td style="width:90%;" class="get-btns">	
-							<span style='display:inline-block; padding:7px 10px 0px 0px'>
-							<a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[Not Supported]</a></span>
-							<button id="<?php echo "{$row['zipname']}" ?>" class="dup-installer-btn no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $legacy_package; ?>', this); return false;"><?php _e("Package", 'wpduplicator') ?></button>
+							<span style='display:inline-block; padding:7px 40px 0px 0px'>
+								<a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php _e("Not Supported", 'wpduplicator') ?>]</a>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -158,7 +209,6 @@ MAIN FORM: Lists all the backups 			-->
 					</tr>	
 				<?php endif; ?>	
 
-
 				<?php
 				$ct++;
 			}
@@ -169,16 +219,18 @@ MAIN FORM: Lists all the backups 			-->
 						__("Check your", 'wpduplicator'), 
 						__("server's compatibility", 'wpduplicator'),
 						__("with the Duplicator", 'wpduplicator'));
-			//$msg4 = __("This process will backup all your files and database", 'wpduplicator');
-			$msg5 = __("Creating a package may take several minutes", 'wpduplicator');
-			$msg6 = __("This window should remain open for the process to complete", 'wpduplicator');
-			$msg7 = __("Please be patient while we work through this Beta version", 'wpduplicator');
+			$msg4 = __("Creating a package may take several minutes", 'wpduplicator');
+			$msg5 = __("This window should remain open for the process to complete", 'wpduplicator');
+			$msg6 = sprintf("%s <a href='admin.php?page=duplicator_support_page'>%s</a> %s",
+						__("Please visit the", 'wpduplicator'), 
+						__("support page", 'wpduplicator'),
+						__("for additional help topics", 'wpduplicator'));
 
 			echo "<tr>
 					<td colspan='7'>
 						<div style='padding:100px 20px;text-align:center'>
 							<b style='font-size:14px'>{$msg1}.<br/> {$msg2} <input type='button' id='dup-create-pack-zero-view' onclick='Duplicator.Pack.ShowCreateDialog()'  ondblclick='javascript:return void(0);' value=''  /><br/> {$msg3}.</b><br/><br/>
-							<i> {$msg5}.<br/> {$msg6}. <br/>{$msg7}.</i>
+							<i> {$msg4}.<br/> {$msg5}. <br/>{$msg6}.</i>
 						</div>
 						</td>
 					</tr>";
@@ -196,6 +248,12 @@ MAIN FORM: Lists all the backups 			-->
 	</table>
 </form>
 </div>
+
+<form id="dup-paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:none"> 
+	<input name="cmd" type="hidden" value="_s-xclick" /> 
+	<input name="hosted_button_id" type="hidden" value="EYJ7AV43RTZJL" /> 
+	<img src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /> 
+</form>
 
 <?php
 	//INLINE DIALOG WINDOWS
@@ -254,7 +312,7 @@ jQuery(document).ready(function($) {
 		window.open(name, '_self'); 
 		return false;
 	}
-	
+		
 	/*  ----------------------------------------
 	 *  METHOD: Starts the create process by performing a system check */
 	Duplicator.Pack.ShowCreateDialog = function (event) {
@@ -285,6 +343,33 @@ jQuery(document).ready(function($) {
 				Duplicator.Pack.ShowError('form-duplicator submit', data);
 			}
 		});
+	}
+	
+	/*  ----------------------------------------
+	 *  METHOD: Add1 Logic*/
+	Duplicator.Pack.Add1 = function (action) {
+		var message1;
+		var message2 = "<?php _e('This message will disappear after refreshing the page.', 'wpduplicator') ?>";
+
+		$.post(ajaxurl, { action: "duplicator_add1_click", click : action} );
+
+		switch (action) {
+			case "donate" :
+				message1 = "<?php _e('Thanks for donating to the Duplicator!  Your contribution really does make a difference!', 'wpduplicator') ?>";
+				$("#dup-add1").html(message1 + "<br/>" + message2).css({backgroundColor : '#A4CA92', fontWeight : 'bold'}).hide().show(600);				
+				$("#dup-paypal").submit();
+				break;
+			case "rate" :
+				message1 = "<?php _e('Thanks for giving the Duplicator 5 stars!  A huge amount of time and effort has gone into creating this plugin.', 'wpduplicator') ?>";
+				$("#dup-add1").html(message1 + "<br/>" + message2).css({backgroundColor : '#A4CA92', fontWeight : 'bold'}).hide().show(600);				
+				window.open("http://wordpress.org/plugins/duplicator/", "_blank");
+				break;
+			case "notnow" :
+				$("#dup-add1").hide(500);
+				break;				
+		}
+		
+
 	}
 	
 	/*	----------------------------------------

@@ -146,8 +146,7 @@ DIALOG: SYSTEM CHECK -->
 			
 			
 			<hr class='dup-dots' />
-			<!-- SAPI -->
-			<b><?php _e('PHP SAPI', 'wpduplicator'); ?>:</b>  <?php echo php_sapi_name(); ?><br/>
+
 			
 			<!-- PRE-ZIP OVERVIEW -->
 			<b><?php _e('Pre-Zip Overview', 'wpduplicator'); ?>:</b> 

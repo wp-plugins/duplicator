@@ -121,7 +121,16 @@
 					   <tr>
 						   <td><?php _e("Root Path", 'wpduplicator'); ?></td>
 						   <td><?php echo DUPLICATOR_WPROOTPATH ?></td>
-					   </tr>					   
+					   </tr>	
+					   <tr>
+						   <td><?php _e("Packages Built", 'wpduplicator'); ?></td>
+						   <td>
+							   <?php echo get_option('duplicator_pack_passcount', 0) ?> &nbsp;
+							    <small>
+									 <?php _e("The number of successful packages created.", 'wpduplicator'); ?> 
+								</small>
+						   </td>
+					   </tr>	
 					   <tr>
 						   <td class='dup-settings-diag-header' colspan="2">WordPress</td>
 					   </tr>
@@ -215,8 +224,7 @@
 						</tr>						   
 				   </tbody>
 			   </table><br/>
-			   
-			   
+
 			   <a href="javascript:void(0)" onclick="jQuery('#dup-phpinfo').toggle()" style="font-size:14px; font-weight: bold"><i><?php _e("Show/Hide All PHP Information", 'wpduplicator') ?></i></a>
 			   <div id="dup-phpinfo" style="display:none; width:95%">
 				   <?php 	echo "<div id='dup-server-info-area'>{$serverinfo}</div>"; ?>

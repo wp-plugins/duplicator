@@ -38,7 +38,7 @@ if (is_admin() == true) {
     $GLOBALS['duplicator_opts'] = ($_tmpDuplicatorOptions == false) ? array() : @unserialize($_tmpDuplicatorOptions);
 
     //OPTIONS
-    $GLOBALS['duplicator_opts']['dbhost'] = isset($GLOBALS['duplicator_opts']['dbhost']) ? $GLOBALS['duplicator_opts']['dbhost'] : '';
+    $GLOBALS['duplicator_opts']['dbhost'] = isset($GLOBALS['duplicator_opts']['dbhost']) ? $GLOBALS['duplicator_opts']['dbhost'] : 'localhost';
     $GLOBALS['duplicator_opts']['dbname'] = isset($GLOBALS['duplicator_opts']['dbname']) ? $GLOBALS['duplicator_opts']['dbname'] : '';
     $GLOBALS['duplicator_opts']['dbuser'] = isset($GLOBALS['duplicator_opts']['dbuser']) ? $GLOBALS['duplicator_opts']['dbuser'] : '';
     $GLOBALS['duplicator_opts']['dbadd_drop'] = isset($GLOBALS['duplicator_opts']['dbadd_drop']) ? $GLOBALS['duplicator_opts']['dbadd_drop'] : '0';
@@ -70,11 +70,10 @@ if (is_admin() == true) {
       Only called when plugin is activated */
     function duplicator_activate() {
 
-		
         global $wpdb;
         $table_name = $wpdb->prefix . "duplicator";
 
-        //PRIMARY KEY must have 2 spaces before for dbDelta
+        //PRIMARY KEY must have 2 spaces before for dbDelta to work
         $sql = "CREATE TABLE `{$table_name}` (
 		 id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 		 token 	 	 VARCHAR(25) NOT NULL, 
@@ -89,7 +88,7 @@ if (is_admin() == true) {
         @dbDelta($sql);
 
         $duplicator_opts = array(
-            'dbhost' => 'localhost',
+            'dbhost' => "{$GLOBALS['duplicator_opts']['dbhost']}",
             'dbname' => '',
             'dbuser' => '',
             'url_new' => '',
@@ -99,8 +98,13 @@ if (is_admin() == true) {
             'log_level' => '0',
             'skip_ext' => "{$GLOBALS['duplicator_opts']['skip_ext']}");
 
+		//WordPress Options Hooks
         update_option('duplicator_version_plugin', DUPLICATOR_VERSION);
         update_option('duplicator_options', serialize($duplicator_opts));
+		
+		add_option('duplicator_pack_passcount', 0);
+		add_option('duplicator_add1_passcount', 0);
+		add_option('duplicator_add1_clicked', false);
 
         //Setup All Directories
         duplicator_init_snapshotpath();
@@ -109,7 +113,6 @@ if (is_admin() == true) {
     /* UPDATE 
       register_activation_hook is not called when a plugin is updated
       so we need to use the following function */
-
     function duplicator_update() {
         if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
             duplicator_activate();
@@ -221,6 +224,7 @@ if (is_admin() == true) {
     add_action('wp_ajax_duplicator_delete',				'duplicator_delete');
     add_action('wp_ajax_duplicator_create',				'duplicator_create');
     add_action('wp_ajax_duplicator_task_save',			'duplicator_task_save');
+	add_action('wp_ajax_duplicator_add1_click',			'duplicator_add1_click');
 	
 	//FILTERS
     add_filter('plugin_action_links',					'duplicator_manage_link', 10, 2);

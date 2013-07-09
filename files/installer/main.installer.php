@@ -98,6 +98,7 @@ $GLOBALS['FW_TABLEPREFIX'] = '%fwrite_wp_tableprefix%';
 $GLOBALS['FW_URL_OLD'] = '%fwrite_url_old%';
 $GLOBALS['FW_URL_NEW'] = '%fwrite_url_new%';
 $GLOBALS['FW_PACKAGE_NAME'] = '%fwrite_package_name%';
+$GLOBALS['FW_PACKAGE_NOTES'] = '%fwrite_duplicator_pack_notes%';
 $GLOBALS['FW_SECURE_NAME'] = '%fwrite_secure_name%';
 $GLOBALS['FW_DBHOST'] = '%fwrite_dbhost%';
 $GLOBALS['FW_DBNAME'] = '%fwrite_dbname%';
@@ -108,9 +109,9 @@ $GLOBALS['FW_SSL_LOGIN'] = '%fwrite_ssl_login%';
 $GLOBALS['FW_CACHE_WP'] = '%fwrite_cache_wp%';
 $GLOBALS['FW_CACHE_PATH'] = '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME'] = '%fwrite_blogname%';
-$GLOBALS['FW_RESCUE_FLAG'] = '%fwrite_rescue_flag%';
 $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
 $GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
+
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME'] = 5000;
@@ -236,7 +237,7 @@ if (isset($_POST['action_ajax'])) {
                             <div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
                         </div>
                         <div style="float:right; padding-right:8px">
-                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] . $GLOBALS['FW_RESCUE_FLAG'] ?></i> &nbsp;
+                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?></i> &nbsp;
                             <a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
                         </div>
                     </td>

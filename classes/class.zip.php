@@ -2,11 +2,12 @@
 
 class Duplicator_Zip {
 
-    protected $limit = DUPLICATOR_ZIP_FILE_POOL;
-    protected $zipArchive;
-    protected $rootFolder;
-    protected $skipNames;
-    protected $zipFilePath;
+	public $limit = DUPLICATOR_ZIP_FILE_POOL;
+    public $zipArchive;
+    public $zipFilePath;
+	public $zipFileSize = 0;	
+    public $rootFolder;
+    public $skipNames;
     private $limitItems = 0;
 
     /**
@@ -21,13 +22,13 @@ class Duplicator_Zip {
         try {
             
             $time_start = DuplicatorUtils::GetMicrotime();
-            duplicator_log("ARCHIVE FOLDER: {$folderPath}");
-            duplicator_log("ARCHIVE FILE:   {$zipFilePath}");
+            duplicator_log("PACKAGE FOLDER: {$folderPath}");
+            duplicator_log("PACKAGE FILE:   {$zipFilePath}");
 
-            $this->zipArchive = new ZipArchive();
-            $this->zipFilePath = duplicator_safe_path($zipFilePath);
-            $this->rootFolder = rtrim(duplicator_safe_path($folderPath), '/');
-            $this->skipNames = $GLOBALS['duplicator_skip_ext-array'];
+            $this->zipArchive	= new ZipArchive();
+            $this->zipFilePath	= duplicator_safe_path($zipFilePath);
+            $this->rootFolder	= rtrim(duplicator_safe_path($folderPath), '/');
+            $this->skipNames	= $GLOBALS['duplicator_skip_ext-array'];
 			$this->countDirs  = 0;
 			$this->countFiles = 0;
 			$this->countLinks = 0;
@@ -40,43 +41,44 @@ class Duplicator_Zip {
             duplicator_log("FILTER DIRECTORIES: '{$path_list}'");
             duplicator_log($GLOBALS['DUPLICATOR_SEPERATOR2']);
 
-
+			//CREATE ZIP FILE
             if ($this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE) === TRUE) {
-                duplicator_log("ZIPARCHIVE OPENED");
+                duplicator_log("BUILDING PACKAGE FILE");
             } else {
-                $err = "CANNOT OPEN <{$this->zipFilePath}>";
-                duplicator_log($err);
-                throw new Exception($err);
+				duplicator_error("ERROR: Cannot open zip file with PHP ZipArchive.  \nERROR INFO: Path location [{$this->zipFilePath}]");
             }
 
             //ADD SQL File
             $sql_in_zip = $this->zipArchive->addFile($sqlfilepath, "/database.sql");
             if ($sql_in_zip) {
-                duplicator_log("DATABASE.SQL ADDED TO ZIP: {$sqlfilepath}");
+                duplicator_log("SQL FILE ADDED TO PACKAGE: {$sqlfilepath}");
             } else {
-                duplicator_log("{$GLOBALS['DUPLICATOR_SEPERATOR1']}\nERROR: Unable to add database.sql file to package from {$sqlfilepath} \n{$GLOBALS['DUPLICATOR_SEPERATOR1']}");
+				duplicator_error("ERROR: Unable to add database.sql file to package from.  \nERROR INFO: SQL File Path [{$sqlfilepath}]");
             }
 
             //RECURSIVE CALL TO ALL FILES
             $this->resursiveZip($this->rootFolder);
 
             //LOG FINAL RESULTS
-            duplicator_log("ARCHIVE INFO: " . print_r($this->zipArchive, true));
-			duplicator_log("STATS: Directories= {$this->countDirs} | Files = {$this->countFiles} | Links = {$this->countLinks} | hidden files may not be counted on some servers" );
+            duplicator_log("PACKAGE INFO: " . print_r($this->zipArchive, true));
+			duplicator_log("STATS: Directories={$this->countDirs} | Files={$this->countFiles} | Links={$this->countLinks} | hidden files may not be counted on some servers" );
             $zip_close_result = $this->zipArchive->close();
-            $status_msg = ($zip_close_result) 
-				? "CLOSE RETURNED: '{$zip_close_result}'" 
-				: "{$GLOBALS['DUPLICATOR_SEPERATOR1']}\nWARNING: ZipArchive Class did not close successfully.  This server or hosted segement might have a disk quota limit.\nPlease check your disk space usage to make sure you can store this zip file successfully.\n{$GLOBALS['DUPLICATOR_SEPERATOR1']}";
+			if ($zip_close_result) {
+				 duplicator_log("CLOSING PACKAGE RESULT: '{$zip_close_result}'");
+			}  else {
+				$err_info = 'This server or hosted segement might have a disk quota limit.\nPlease check your disk space usage to make sure you can store this zip file successfully.';
+				duplicator_error("ERROR: ZipArchive Class did not close successfully.   \nERROR INFO: {$err_info}");
+			}
 
-            duplicator_log($status_msg);
-            
             $time_end = DuplicatorUtils::GetMicrotime();
             $time_sum = DuplicatorUtils::ElapsedTime($time_end, $time_start);
-            duplicator_log("ZIP TOTAL RUNTIME: {$time_sum}");
-            
+			
+			$this->zipFileSize = filesize($this->zipFilePath);
+			duplicator_log("PACKAGE FILE SIZE: " . duplicator_bytesize($this->zipFileSize));
+            duplicator_log("PACKAGE RUNTIME: {$time_sum}");
         } 
         catch (Exception $e) {
-            duplicator_log("LOG:CLASS.ZIP=>RUNTIME ERROR: " . $e);
+			duplicator_error("ERROR: Runtime error in class.zip.php constructor.   \nERROR INFO: {$e}");
         }
     }
 
@@ -107,16 +109,16 @@ class Duplicator_Zip {
                     $localpath = str_replace($this->rootFolder, '', $folderPath);
                     $localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
                     $filename  = $file->getFilename();
-
+					
                     if ($file->isDir()) {
                         if (!in_array($fullpath, $GLOBALS['duplicator_bypass-array'])) {
-							if ($this->zipArchive->addEmptyDir("{$localname}{$filename}")) {
+							if ($file->isReadable() && $this->zipArchive->addEmptyDir("{$localname}{$filename}")) {
 								$this->countDirs++;
 								@set_time_limit(0);
 								duplicator_fcgi_flush();
 								$this->resursiveZip($fullpath);
 							} else {
-								duplicator_log("WARN: Unable to add directory: $fullpath");
+								duplicator_log("WARNING: Unable to add directory: $fullpath");
 							}
                         } 
 					} else if ($file->isFile() && $file->isReadable()) {
@@ -140,7 +142,7 @@ class Duplicator_Zip {
 
             //Check if were over our count
             if ($this->limitItems > $this->limit) {
-                duplicator_log("log:class.zip=>new open handle {$this->zipArchive->numFiles}");
+                duplicator_log("New open zipArchive handle {$this->zipArchive->numFiles}");
                 $this->zipArchive->close();
                 $this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE);
                 $this->limitItems = 0;
@@ -151,7 +153,7 @@ class Duplicator_Zip {
         } 
 		
 		catch (Exception $e) {
-            duplicator_log("log:class.zip=>runtime error: " . $e);
+			duplicator_error("ERROR: Runtime error in class.zip.php resursiveZip.   \nERROR INFO: {$e}");
         }
     }
 }

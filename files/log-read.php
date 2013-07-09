@@ -29,13 +29,15 @@
 		//done with validFiles
 		unset($validFiles);
 	}
+	
 	if (!isset($logname) || !$logname) {
 		$logname  = basename($logs[0]);
 	}
+	
 	$logpath  = DUPLICATOR_SSDIR_PATH . '/' . $logname;
 	$logfound = (strlen($logname) > 0) ? true :false;
 	
-	$handle   = fopen($logpath , "c+");	
+	$handle   = @fopen($logpath , "c+");	
 	$file     = ($handle) ? fread($handle, filesize($logpath)) : "";
 	@fclose($handle);
 	

@@ -98,6 +98,7 @@ $GLOBALS['FW_TABLEPREFIX'] = '%fwrite_wp_tableprefix%';
 $GLOBALS['FW_URL_OLD'] = '%fwrite_url_old%';
 $GLOBALS['FW_URL_NEW'] = '%fwrite_url_new%';
 $GLOBALS['FW_PACKAGE_NAME'] = '%fwrite_package_name%';
+$GLOBALS['FW_PACKAGE_NOTES'] = '%fwrite_duplicator_pack_notes%';
 $GLOBALS['FW_SECURE_NAME'] = '%fwrite_secure_name%';
 $GLOBALS['FW_DBHOST'] = '%fwrite_dbhost%';
 $GLOBALS['FW_DBNAME'] = '%fwrite_dbname%';
@@ -108,9 +109,9 @@ $GLOBALS['FW_SSL_LOGIN'] = '%fwrite_ssl_login%';
 $GLOBALS['FW_CACHE_WP'] = '%fwrite_cache_wp%';
 $GLOBALS['FW_CACHE_PATH'] = '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME'] = '%fwrite_blogname%';
-$GLOBALS['FW_RESCUE_FLAG'] = '%fwrite_rescue_flag%';
 $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
 $GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
+
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME'] = 5000;
@@ -1344,6 +1345,7 @@ RewriteRule . {$newpath}index.php [L]
 HTACCESS;
 
 	file_put_contents('.htaccess', $tmp_htaccess);
+	@chmod('.htaccess', 0644);
 	DupUtil::log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
 	DupUtil::log("updated .htaccess file.");
 } else {
@@ -1480,6 +1482,7 @@ div#dup-step1-cpanel {}
 input#dup-step1-dbconn-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}
 div.dup-step1-warning-area {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
 div.tryagain{padding-top:50px; text-align:center; width:100%; font-size:14px}
+div#dup-pack-details {font-size:11px; margin:auto; margin-top:2px; display:none; padding:5px; border:1px solid silver; width:600px; border-radius:4px; background-color:#efefef;}
 
 /*Dialog*/
 div#dup-step1-dialog-data {height:90%; font-size:11px; padding:5px; line-height:20px; }
@@ -1921,7 +1924,7 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
                             <div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
                         </div>
                         <div style="float:right; padding-right:8px">
-                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] . $GLOBALS['FW_RESCUE_FLAG'] ?></i> &nbsp;
+                            <i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?></i> &nbsp;
                             <a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
                         </div>
                     </td>
@@ -2108,10 +2111,14 @@ VIEW: STEP 1- INPUT -->
 	<!-- CHECKS: PASS -->
 	<?php else : ?>	
 
-	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-    	    <div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
-    	</div>
-    	<div style='color:#999; font-size:11px; text-align:center; margin:3px 0px 0px 0px'><i>Package Name:<?php echo $zip_file_name; ?> </i></div><br/>
+		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
+				<div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
+		</div>
+		<div style='color:#777; font-size:11px; text-align:center; margin:5px 0px 0px 0px'><i><a href="javascript:void(0)" onclick="jQuery('#dup-pack-details').toggle(400)">Package Details</a></i></div>
+    	<div id="dup-pack-details">
+			<i><b>Name:</b> <?php echo $zip_file_name; ?> </i><br/>
+			<i><b>Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?> </i><br/>
+		</div><br/>
     		    
     	<div class="title-header">
     	    MySQL Server
@@ -2516,10 +2523,14 @@ VIEW: STEP 1- INPUT -->
 	<!-- CHECKS: PASS -->
 	<?php else : ?>	
 
-	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-    	    <div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
-    	</div>
-    	<div style='color:#999; font-size:11px; text-align:center; margin:3px 0px 0px 0px'><i>Package Name:<?php echo $zip_file_name; ?> </i></div><br/>
+		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
+				<div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
+		</div>
+		<div style='color:#777; font-size:11px; text-align:center; margin:5px 0px 0px 0px'><i><a href="javascript:void(0)" onclick="jQuery('#dup-pack-details').toggle(400)">Package Details</a></i></div>
+    	<div id="dup-pack-details">
+			<i><b>Name:</b> <?php echo $zip_file_name; ?> </i><br/>
+			<i><b>Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?> </i><br/>
+		</div><br/>
     		    
     	<div class="title-header">
     	    MySQL Server

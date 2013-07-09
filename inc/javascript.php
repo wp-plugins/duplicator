@@ -42,7 +42,15 @@ Duplicator.ReloadWindow = function(data) {
 };
 
 //Basic Util Methods here:
-Duplicator.OpenLogWindow = function() {window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php'; ?>', 'duplicator_logs');};
+Duplicator.OpenLogWindow = function(log) {
+	var logFile = log || null;
+	if (logFile == null) {
+		window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php'; ?>', 'duplicator_logs');
+	} else {
+		window.open('<?php echo DUPLICATOR_PLUGIN_URL .'files/log-view.php?logname='; ?>' + logFile, 'duplicator_logs');
+	}
+};
+
 
 
 

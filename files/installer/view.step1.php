@@ -172,10 +172,14 @@ VIEW: STEP 1- INPUT -->
 	<!-- CHECKS: PASS -->
 	<?php else : ?>	
 
-	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-    	    <div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
-    	</div>
-    	<div style='color:#999; font-size:11px; text-align:center; margin:3px 0px 0px 0px'><i>Package Name:<?php echo $zip_file_name; ?> </i></div><br/>
+		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
+				<div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
+		</div>
+		<div style='color:#777; font-size:11px; text-align:center; margin:5px 0px 0px 0px'><i><a href="javascript:void(0)" onclick="jQuery('#dup-pack-details').toggle(400)">Package Details</a></i></div>
+    	<div id="dup-pack-details">
+			<i><b>Name:</b> <?php echo $zip_file_name; ?> </i><br/>
+			<i><b>Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?> </i><br/>
+		</div><br/>
     		    
     	<div class="title-header">
     	    MySQL Server

@@ -491,6 +491,7 @@ RewriteRule . {$newpath}index.php [L]
 HTACCESS;
 
 	file_put_contents('.htaccess', $tmp_htaccess);
+	@chmod('.htaccess', 0644);
 	DupUtil::log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
 	DupUtil::log("updated .htaccess file.");
 } else {

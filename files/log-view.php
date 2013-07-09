@@ -16,7 +16,8 @@
 	//the maximum number of logs to show in the drop-down
 	$maxLogsToShow = 20;
 	
-	$logname = basename($logs[0]);
+
+	$logname = (isset($_GET['logname'])) ? $_GET['logname'] : basename($logs[0]);
 	$logurl  = get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' . $logname;
 	
 	$plugins_url = plugins_url();
@@ -63,7 +64,7 @@
 
 			//Go ahead and do it now so that it matches the filename selected when
 			//user refreshes the entire page
-			LogViewChange();
+			<?php echo (isset($_GET['logname'])) ? '' : 'LogViewChange();'?>
 			
 			//Refresh Button
 			$("#Refresh").click(function() { 
@@ -107,6 +108,7 @@
 			}
 			
 			$("#spanCount").html(duration.toString());
+			
 		});
 	});
 	</script>
