@@ -37,18 +37,23 @@ if (is_admin() == true) {
     $_tmpDuplicatorOptions = get_option('duplicator_options', false);
     $GLOBALS['duplicator_opts'] = ($_tmpDuplicatorOptions == false) ? array() : @unserialize($_tmpDuplicatorOptions);
 
-    //OPTIONS
+    //OPTIONS - PACKAGE TAB
+	$GLOBALS['duplicator_opts']['email-me'] = isset($GLOBALS['duplicator_opts']['email-me']) ? $GLOBALS['duplicator_opts']['email-me'] : '0';
+    $GLOBALS['duplicator_opts']['email_others'] = isset($GLOBALS['duplicator_opts']['email_others']) ? $GLOBALS['duplicator_opts']['email_others'] : '';
+    $GLOBALS['duplicator_opts']['skip_ext'] = isset($GLOBALS['duplicator_opts']['skip_ext']) ? $GLOBALS['duplicator_opts']['skip_ext'] : '';
+    $GLOBALS['duplicator_opts']['dir_bypass'] = isset($GLOBALS['duplicator_opts']['dir_bypass']) ? $GLOBALS['duplicator_opts']['dir_bypass'] : '';
+	
+	//OPTIONS - INSTALLER TAB
     $GLOBALS['duplicator_opts']['dbhost'] = isset($GLOBALS['duplicator_opts']['dbhost']) ? $GLOBALS['duplicator_opts']['dbhost'] : 'localhost';
     $GLOBALS['duplicator_opts']['dbname'] = isset($GLOBALS['duplicator_opts']['dbname']) ? $GLOBALS['duplicator_opts']['dbname'] : '';
     $GLOBALS['duplicator_opts']['dbuser'] = isset($GLOBALS['duplicator_opts']['dbuser']) ? $GLOBALS['duplicator_opts']['dbuser'] : '';
     $GLOBALS['duplicator_opts']['dbadd_drop'] = isset($GLOBALS['duplicator_opts']['dbadd_drop']) ? $GLOBALS['duplicator_opts']['dbadd_drop'] : '0';
-    $GLOBALS['duplicator_opts']['url_new'] = isset($GLOBALS['duplicator_opts']['url_new']) ? $GLOBALS['duplicator_opts']['url_new'] : '';
-    $GLOBALS['duplicator_opts']['email-me'] = isset($GLOBALS['duplicator_opts']['email-me']) ? $GLOBALS['duplicator_opts']['email-me'] : '0';
-    $GLOBALS['duplicator_opts']['log_level'] = isset($GLOBALS['duplicator_opts']['log_level']) ? $GLOBALS['duplicator_opts']['log_level'] : '0';
-    $GLOBALS['duplicator_opts']['email_others'] = isset($GLOBALS['duplicator_opts']['email_others']) ? $GLOBALS['duplicator_opts']['email_others'] : '';
-    $GLOBALS['duplicator_opts']['skip_ext'] = isset($GLOBALS['duplicator_opts']['skip_ext']) ? $GLOBALS['duplicator_opts']['skip_ext'] : '';
-    $GLOBALS['duplicator_opts']['dir_bypass'] = isset($GLOBALS['duplicator_opts']['dir_bypass']) ? $GLOBALS['duplicator_opts']['dir_bypass'] : '';
-
+	//Advanced Opts
+	$GLOBALS['duplicator_opts']['ssl_admin'] = isset($GLOBALS['duplicator_opts']['ssl_admin']) ? $GLOBALS['duplicator_opts']['ssl_admin'] : '0';
+	$GLOBALS['duplicator_opts']['ssl_login'] = isset($GLOBALS['duplicator_opts']['ssl_login']) ? $GLOBALS['duplicator_opts']['ssl_login'] : '0';
+	$GLOBALS['duplicator_opts']['cache_wp'] = isset($GLOBALS['duplicator_opts']['cache_wp']) ? $GLOBALS['duplicator_opts']['cache_wp'] : '0';
+	$GLOBALS['duplicator_opts']['cache_path'] = isset($GLOBALS['duplicator_opts']['cache_path']) ? $GLOBALS['duplicator_opts']['cache_path'] : '0';
+	$GLOBALS['duplicator_opts']['url_new'] = isset($GLOBALS['duplicator_opts']['url_new']) ? $GLOBALS['duplicator_opts']['url_new'] : '';
 
     //Default Arrays
     $GLOBALS['duplicator_bypass-array'] = explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);

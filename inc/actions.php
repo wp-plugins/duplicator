@@ -354,8 +354,10 @@ function duplicator_add1_click() {
 	
 	$post = stripslashes_deep($_POST);
 	if ($post['click'] == 'notnow') {
+		//set this back 5 so that the alert only shows every 15th package
 		update_option('duplicator_add1_passcount', -5);
 	} else {
+		//Never show the alert again
 		update_option('duplicator_add1_clicked', true);
 	}
 	
