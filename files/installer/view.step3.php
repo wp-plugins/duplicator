@@ -1,12 +1,5 @@
 
-<script type="text/javascript">
-	/** **********************************************
-	* METHOD: Auto posts to admin page on success */	
-	Duplicator.prepAdminPage = function() {
-		var nurl = $('#url_new').val() + '/wp-admin/';
-		$.ajax({type: "POST", url: nurl, success: function(data) {}	});
-	};
-	
+<script type="text/javascript">	
 	/** **********************************************
 	* METHOD: Opens the tips dialog */	
 	Duplicator.dlgTips = function() {
@@ -19,18 +12,13 @@
 	
 	/** **********************************************
 	* METHOD: Posts to page to remove install files */	
-	Duplicator.removeInstallerFiles = function(package) {
+	Duplicator.removeInstallerFiles = function(package_name) {
 		var msg = "Delete all installer files now? \n\nThis will remove the page you are now viewing.\nThe page will stay active until you navigate away.";
 		if (confirm(msg)) {
-			var nurl = $('#url_new').val() + '/wp-content/plugins/duplicator/files/installer.cleanup.php?remove=1&package=' + package;
+			var nurl = '<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/admin.php?page=duplicator_cleanup_page&remove=1&package=' + package_name;
 			window.open(nurl, "_blank");
 		}
 	};
-	
-	//DOCUMENT LOAD
-	$(document).ready(function() {
-		//Duplicator.prepAdminPage();	
-	});
 </script>
 
 
@@ -42,7 +30,6 @@ VIEW: STEP 3- INPUT -->
 	<h3>Step 3: Test Site</h3>
 	<hr size="1" /><br />
 	
-
 	<div class="title-header">
 		<div class="dup-step3-final-title">IMPORTANT FINAL STEPS!</div>
 	</div>

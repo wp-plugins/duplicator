@@ -169,6 +169,7 @@ function duplicator_create_installerFile($uniquename, $table_id) {
 	$replace_items = Array(
         "fwrite_url_old" => get_option('siteurl'),
         "fwrite_package_name" => "{$uniquename}_package.zip",
+		"fwrite_package_notes" => $notes,
         "fwrite_secure_name" => "{$uniquename}",
         "fwrite_url_new" => $duplicator_opts['url_new'],
         "fwrite_dbhost" => $duplicator_opts['dbhost'],
@@ -182,8 +183,7 @@ function duplicator_create_installerFile($uniquename, $table_id) {
         "fwrite_wp_tableprefix" => $wpdb->prefix,
         "fwrite_blogname" => @addslashes(get_option('blogname')),
         "fwrite_wproot" => DUPLICATOR_WPROOTPATH,
-		"fwrite_duplicator_version" => DUPLICATOR_VERSION,
-		"fwrite_duplicator_pack_notes" => $notes);
+		"fwrite_duplicator_version" => DUPLICATOR_VERSION);
 	
     if (file_exists($template) && is_readable($template)) {
 

@@ -354,14 +354,13 @@ function duplicator_add1_click() {
 	
 	$post = stripslashes_deep($_POST);
 	if ($post['click'] == 'notnow') {
-		update_option('duplicator_add1_passcount', 0);
+		update_option('duplicator_add1_passcount', -5);
 	} else {
 		update_option('duplicator_add1_clicked', true);
 	}
 	
 	die("log:duplicator_add1_click=>clicked");
 }
-
 
 //DO NOT ADD A CARRIAGE RETURN BEYOND THIS POINT (headers issue)!!
 ?>

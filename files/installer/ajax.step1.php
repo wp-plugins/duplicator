@@ -183,10 +183,10 @@ $patterns = array(
 	"/'DB_HOST',\s*'.*?'/");
 
 $replace = array(
-	"'DB_NAME', " . '\'' . $_POST['dbname'] . '\'',
-	"'DB_USER', " . '\'' . $_POST['dbuser'] . '\'',
-	"'DB_PASSWORD', " . '\'' . $_POST['dbpass'] . '\'',
-	"'DB_HOST', " . '\'' . $_POST['dbhost'] . '\'');
+	"'DB_NAME', "	  . '\'' . $_POST['dbname']				. '\'',
+	"'DB_USER', "	  . '\'' . $_POST['dbuser']				. '\'',
+	"'DB_PASSWORD', " . '\'' . DupUtil::preg_replacement_quote($_POST['dbpass']) . '\'',
+	"'DB_HOST', "	  . '\'' . $_POST['dbhost']				. '\'');
 
 //SSL CHECKS
 if ($_POST['ssl_admin']) {

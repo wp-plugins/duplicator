@@ -123,6 +123,10 @@
 						   <td><?php echo DUPLICATOR_WPROOTPATH ?></td>
 					   </tr>	
 					   <tr>
+						   <td><?php _e("Plugins Path", 'wpduplicator'); ?></td>
+						   <td><?php echo duplicator_safe_path(WP_PLUGIN_DIR) ?></td>
+					   </tr>	
+					   <tr>
 						   <td><?php _e("Packages Built", 'wpduplicator'); ?></td>
 						   <td>
 							   <?php echo get_option('duplicator_pack_passcount', 0) ?> &nbsp;

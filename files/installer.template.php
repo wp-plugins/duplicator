@@ -98,7 +98,7 @@ $GLOBALS['FW_TABLEPREFIX'] = '%fwrite_wp_tableprefix%';
 $GLOBALS['FW_URL_OLD'] = '%fwrite_url_old%';
 $GLOBALS['FW_URL_NEW'] = '%fwrite_url_new%';
 $GLOBALS['FW_PACKAGE_NAME'] = '%fwrite_package_name%';
-$GLOBALS['FW_PACKAGE_NOTES'] = '%fwrite_duplicator_pack_notes%';
+$GLOBALS['FW_PACKAGE_NOTES'] = '%fwrite_package_notes%';
 $GLOBALS['FW_SECURE_NAME'] = '%fwrite_secure_name%';
 $GLOBALS['FW_DBHOST'] = '%fwrite_dbhost%';
 $GLOBALS['FW_DBNAME'] = '%fwrite_dbname%';
@@ -427,6 +427,16 @@ class DupUtil {
             return "n/a";
         }
     }
+	
+	/**
+     *  PREG_REPLACEMENT_QUOTE
+     *  The characters that are special in the replacement value of preg_replace are not the 
+	 *  same characters that are special in the pattern
+     *  @param string $str		The string to replace on
+     */
+	static public function preg_replacement_quote($str) {
+		return preg_replace('/(\$|\\\\)(?=\d)/', '\\\\\1', $str);
+	}
 
 }
 
@@ -622,10 +632,10 @@ $patterns = array(
 	"/'DB_HOST',\s*'.*?'/");
 
 $replace = array(
-	"'DB_NAME', " . '\'' . $_POST['dbname'] . '\'',
-	"'DB_USER', " . '\'' . $_POST['dbuser'] . '\'',
-	"'DB_PASSWORD', " . '\'' . $_POST['dbpass'] . '\'',
-	"'DB_HOST', " . '\'' . $_POST['dbhost'] . '\'');
+	"'DB_NAME', "	  . '\'' . $_POST['dbname']				. '\'',
+	"'DB_USER', "	  . '\'' . $_POST['dbuser']				. '\'',
+	"'DB_PASSWORD', " . '\'' . DupUtil::preg_replacement_quote($_POST['dbpass']) . '\'',
+	"'DB_HOST', "	  . '\'' . $_POST['dbhost']				. '\'');
 
 //SSL CHECKS
 if ($_POST['ssl_admin']) {
@@ -3043,14 +3053,7 @@ VIEW: STEP 2 - AJAX RESULT  -->
 		    break;
 		    case "3" :
 			?> 
-<script type="text/javascript">
-	/** **********************************************
-	* METHOD: Auto posts to admin page on success */	
-	Duplicator.prepAdminPage = function() {
-		var nurl = $('#url_new').val() + '/wp-admin/';
-		$.ajax({type: "POST", url: nurl, success: function(data) {}	});
-	};
-	
+<script type="text/javascript">	
 	/** **********************************************
 	* METHOD: Opens the tips dialog */	
 	Duplicator.dlgTips = function() {
@@ -3063,18 +3066,13 @@ VIEW: STEP 2 - AJAX RESULT  -->
 	
 	/** **********************************************
 	* METHOD: Posts to page to remove install files */	
-	Duplicator.removeInstallerFiles = function(package) {
+	Duplicator.removeInstallerFiles = function(package_name) {
 		var msg = "Delete all installer files now? \n\nThis will remove the page you are now viewing.\nThe page will stay active until you navigate away.";
 		if (confirm(msg)) {
-			var nurl = $('#url_new').val() + '/wp-content/plugins/duplicator/files/installer.cleanup.php?remove=1&package=' + package;
+			var nurl = '<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/admin.php?page=duplicator_cleanup_page&remove=1&package=' + package_name;
 			window.open(nurl, "_blank");
 		}
 	};
-	
-	//DOCUMENT LOAD
-	$(document).ready(function() {
-		//Duplicator.prepAdminPage();	
-	});
 </script>
 
 
@@ -3086,7 +3084,6 @@ VIEW: STEP 3- INPUT -->
 	<h3>Step 3: Test Site</h3>
 	<hr size="1" /><br />
 	
-
 	<div class="title-header">
 		<div class="dup-step3-final-title">IMPORTANT FINAL STEPS!</div>
 	</div>

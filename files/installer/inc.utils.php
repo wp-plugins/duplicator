@@ -256,6 +256,16 @@ class DupUtil {
             return "n/a";
         }
     }
+	
+	/**
+     *  PREG_REPLACEMENT_QUOTE
+     *  The characters that are special in the replacement value of preg_replace are not the 
+	 *  same characters that are special in the pattern
+     *  @param string $str		The string to replace on
+     */
+	static public function preg_replacement_quote($str) {
+		return preg_replace('/(\$|\\\\)(?=\d)/', '\\\\\1', $str);
+	}
 
 }
 
