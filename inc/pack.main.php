@@ -63,14 +63,19 @@ MAIN FORM: Lists all the backups 			-->
 	</table>
 	
 	<?php if ($add1_passcount > 0 && ($add1_passcount % DUPLICATOR_ADD1_TRIPCOUNT == 0) && $add1_clicked == false) :?>
-	<!-- ADD-1 -->
-	<div id="dup-add1">
-		<?php _e("We hope you are enjoying the Duplicator!  Would you consider helping in the continued development of the plugin", 'wpduplicator') ?>? <br/>
-		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('donate'); return false;"><?php _e("Donate", 'wpduplicator') ?></button>
-		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('rate'); return false;"><?php _e("Rate It", 'wpduplicator') ?> 5&#9733;'s</button>
-		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('share'); return false;"><?php _e("Share It", 'wpduplicator') ?></button>
-		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('notnow'); return false;"><?php _e("Not Now", 'wpduplicator') ?>!</button>
-	</div>	
+		<!-- ADD-1 -->
+		<div id="dup-add1" style="display:none">
+			<?php _e("We hope you are enjoying the Duplicator!  Would you consider helping in the continued development of the plugin", 'wpduplicator') ?>? <br/>
+			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('donate'); return false;"><?php _e("Donate", 'wpduplicator') ?></button>
+			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('rate'); return false;"><?php _e("Rate It", 'wpduplicator') ?> 5&#9733;'s</button>
+			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('share'); return false;"><?php _e("Share It", 'wpduplicator') ?></button>
+			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('notnow'); return false;"><?php _e("Not Now", 'wpduplicator') ?>!</button>
+		</div>	
+		<script>
+			jQuery(document).ready(function($) {
+				jQuery("#dup-add1").show(1500);
+			});
+		</script>
 	<?php endif; ?>	
 
 	<!-- STATUS BAR -->
@@ -378,8 +383,6 @@ jQuery(document).ready(function($) {
 				$("#dup-add1").hide(500);
 				break;				
 		}
-		
-
 	}
 	
 	/*	----------------------------------------

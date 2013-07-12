@@ -19,7 +19,7 @@
 					<fieldset>
 						<legend><b><?php _e("Processing", 'wpduplicator') ?></b></legend>
 						<input type="checkbox" name="email-me" id="email-me" <?php echo ($email_me_enabled) ? 'checked="checked"' : ''; ?>  />
-						<label for="email-me"><?php _e("Email when completed", 'wpduplicator');?></label><br/>
+						<label for="email-me"><?php _e("Email a notice when completed", 'wpduplicator');?></label><br/>
 						<input type="text" name="email_others" id="email_others"  value="<?php echo esc_html($GLOBALS['duplicator_opts']['email_others']); ?>" placeholder="mail1@mysite.com;mail2@mysite.com;" title="<?php _e("WP-admin email is included.  Add extra emails semicolon separated.", 'wpduplicator') ?>"  /> <br />
 					</fieldset><br/>
 

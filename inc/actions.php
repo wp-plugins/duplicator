@@ -109,12 +109,14 @@ function duplicator_create() {
 		$headers = 'From: Duplicator Plugin <no-reply@lifeinthegrid.com>' . "\r\n";
 		$subject = "Package '{$packname}' completed";
 		$message = "Run Status: {$status}\n\rSite Name: " . get_bloginfo('name') . "\n\rPackage Name: {$packname} \n\rCompleted at: " . current_time('mysql', get_option('gmt_offset'));
-		wp_mail($current_user->user_email, $subject, $message, $headers, $attachments);
+		$result = wp_mail($current_user->user_email, $subject, $message, $headers, $attachments);
 		duplicator_log("EMAIL SENT TO: {$current_user->user_email}");
+		duplicator_log("EMAIL SEND STATUS: {$result}");
 		$other_emails = @preg_split("/[,;]/", $GLOBALS['duplicator_opts']['email_others']);
 		if (count($other_emails)) {
-			wp_mail($other_emails, $subject, $message, $headers, $attachments);
+			$result = wp_mail($other_emails, $subject, $message, $headers, $attachments);
 			duplicator_log("OTHER EMAILS SENT: {$GLOBALS['duplicator_opts']['email_others']}");
+			duplicator_log("OTHER EMAIL SEND STATUS: {$result}");
 		}
 		duplicator_log("EMAIL FINISHED");
 	}
