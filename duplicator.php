@@ -109,7 +109,9 @@ if (is_admin() == true) {
 		
 		add_option('duplicator_pack_passcount', 0);
 		add_option('duplicator_add1_passcount', 0);
-		add_option('duplicator_add1_clicked', false);
+		if (get_option('duplicator_add1_clicked') === false) {
+			add_option('duplicator_add1_clicked', 0);
+		}
 
         //Setup All Directories
         duplicator_init_snapshotpath();

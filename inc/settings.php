@@ -20,7 +20,7 @@
 	global $wpdb;
 	
 	$action_updated = null;
-	if ($_POST['action'] == 'save') {
+	if (isset($_POST['action']) && $_POST['action'] == 'save') {
 		//General Tab
 		$DuplicatorSettings->Set('uninstall_files',  isset($_POST['uninstall_files'])  ? "1" : "0");
 		$DuplicatorSettings->Set('uninstall_tables', isset($_POST['uninstall_tables']) ? "1" : "0");

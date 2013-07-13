@@ -18,13 +18,14 @@
 	//Add logic
 	$pack_passcount = get_option('duplicator_pack_passcount', 0);
 	$add1_passcount	= get_option('duplicator_add1_passcount', 1);
-	$add1_clicked 	= get_option('duplicator_add1_clicked', false);
+	$add1_clicked 	= get_option('duplicator_add1_clicked', 0);
 ?>
 <style>
 div#dup-add1 {
 	bottom: 2px; left:1px; width: 99%; height: 40px; background-color: #FFFFE0; z-index: 3; border-radius: 8px; border: 1px solid silver; 
 	padding:4px 8px 6px 8px; line-height: 18px; font-size:13px;
 }
+button.dup-support-btn {height:26px; font-size:12px}
 </style>
 
 

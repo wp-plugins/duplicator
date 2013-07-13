@@ -376,7 +376,7 @@ function duplicator_add1_click() {
 		update_option('duplicator_add1_passcount', -2);
 	} else {
 		//Never show the alert again
-		update_option('duplicator_add1_clicked', true);
+		update_option('duplicator_add1_clicked', 1);
 	}
 	
 	die("log:duplicator_add1_click=>clicked");
