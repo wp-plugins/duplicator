@@ -99,10 +99,25 @@ function duplicator_create() {
 	duplicator_log("********************************************************************************");
 	duplicator_build_installerFile();
 	duplicator_create_installerFile($uniquename, $table_id);
-
+	
+	//VALIDATE FILE SIZE
+	$zip_filesize = @filesize($zipfilepath);
+	$sql_filesize = @filesize($sqlfilepath);
+	$exe_filesize = @filesize($exefilepath);
+	$zip_basicsize = duplicator_bytesize($zip_filesize);
+	$sql_basicsize = duplicator_bytesize($sql_filesize);
+	$exe_basicsize = duplicator_bytesize($exe_filesize);
+	
+	if ($zip_filesize && $sql_filesize && $sql_filesize) {
+		$msg_complete_stats = "FILE SIZE: Zip Size:{$zip_basicsize} | SQL Size:{$sql_basicsize} | Installer Size:{$exe_basicsize}";
+	} else {
+		duplicator_error("ERROR: A required file contains zero bytes. \nERROR INFO: Zip Size:{$zip_basicsize} | SQL Size:{$sql_basicsize} | Installer Size:{$exe_basicsize}");
+	}
+	
 	//SEND EMAIL
 	//TODO: Send only SQL File via mail.  Zip files can get too large
 	if ($GLOBALS['duplicator_opts']['email-me'] == "1") {
+		duplicator_log("---------------------------------");
 		duplicator_log("SENDING EMAIL");
 		$status = ($zip->zipFileSize) ? 'Success' : 'Failure';
 		$attachments = ""; //array(DUPLICATOR_SSDIR_PATH . '/' . $packname .'.zip');
@@ -125,6 +140,7 @@ function duplicator_create() {
     $fulltime_sum = DuplicatorUtils::ElapsedTime($fulltime_end, $fulltime_start);
     
     duplicator_log("********************************************************************************");
+	duplicator_log($msg_complete_stats);
 	duplicator_log("COMPLETE PACKAGE RUNTIME: {$fulltime_sum}");
     duplicator_log("DONE PROCESSING => {$packname} " . @date('h:i:s'));
     duplicator_log("********************************************************************************");
@@ -356,8 +372,8 @@ function duplicator_add1_click() {
 	
 	$post = stripslashes_deep($_POST);
 	if ($post['click'] == 'notnow') {
-		//set this back 5 so that the alert only shows every 15th package
-		update_option('duplicator_add1_passcount', -5);
+		//set this back 3 so that the alert only shows every 7th package
+		update_option('duplicator_add1_passcount', -2);
 	} else {
 		//Never show the alert again
 		update_option('duplicator_add1_clicked', true);

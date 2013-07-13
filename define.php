@@ -26,7 +26,7 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_PHP_MAX_TIME",   5000);
     define("DUPLICATOR_PHP_MAX_MEMORY", '5000M');
     define("DUPLICATOR_DB_MAX_TIME",    5000);
-	define("DUPLICATOR_ADD1_TRIPCOUNT", 10);
+	define("DUPLICATOR_ADD1_TRIPCOUNT", 5);
     $GLOBALS['DUPLICATOR_SEPERATOR1'] = str_repeat("********", 5);
     $GLOBALS['DUPLICATOR_SEPERATOR2'] = str_repeat("--------", 5);
 } else {

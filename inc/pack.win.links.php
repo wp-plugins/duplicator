@@ -8,7 +8,7 @@ DIALOG: QUICK PATH -->
 	
 	<div style="padding: 0px 20px 20px 20px;">
 		<a href="javascript:void(0)" style="display:inline-block; text-align:right" onclick="Duplicator.Pack.GetLinksText()">[Select All]</a> <br/>
-		<textarea id="dup-dlg-quick-path-data" style='border:1px solid silver; border-radius:5px; width:96%; height:205px; font-size:11px'></textarea><br/>
+		<textarea id="dup-dlg-quick-path-data" style='border:1px solid silver; border-radius:5px; width:98%; height:250px; font-size:11px'></textarea><br/>
 		<i style='font-size:11px'><?php _e("The database SQL script is a quick link to your database backup script.  An exact copy is also stored in the package.", 'wpduplicator'); ?></i>
 	</div>
 </div>
@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
 	
 	//LOAD: 'Download Links' Dialog and other misc setup
 	Duplicator.Pack.GetLinksText = function() {$('#dup-dlg-quick-path-data').select();};
-	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:365, width:800, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
+	$("#dup-dlg-quick-path").dialog({autoOpen:false, height:450, width:750, create:Duplicator.UI.CreateDialog, close:Duplicator.UI.CloseDialog });
 	$(".dup-dlg-quick-path-download-link").button({ icons: {primary: "ui-icon-locked"} });
 	$(".dup-dlg-quick-path-database-link").button({ icons: {primary: "ui-icon-script"} });
 	$(".dup-installer-btn").button({ icons: {primary: "ui-icon-disk"} });

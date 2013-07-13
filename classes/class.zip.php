@@ -73,7 +73,7 @@ class Duplicator_Zip {
             $time_end = DuplicatorUtils::GetMicrotime();
             $time_sum = DuplicatorUtils::ElapsedTime($time_end, $time_start);
 			
-			$this->zipFileSize = filesize($this->zipFilePath);
+			$this->zipFileSize = @filesize($this->zipFilePath);
 			duplicator_log("PACKAGE FILE SIZE: " . duplicator_bytesize($this->zipFileSize));
             duplicator_log("PACKAGE RUNTIME: {$time_sum}");
         } 

@@ -16,10 +16,9 @@
 	require_once('inc.header.php'); 
 	
 	//Add logic
-	$pack_passcount = get_option('duplicator_pack_passcount', 1);
+	$pack_passcount = get_option('duplicator_pack_passcount', 0);
 	$add1_passcount	= get_option('duplicator_add1_passcount', 1);
 	$add1_clicked 	= get_option('duplicator_add1_clicked', false);
-	
 ?>
 <style>
 div#dup-add1 {
@@ -61,22 +60,14 @@ MAIN FORM: Lists all the backups 			-->
 			<td align="center"></td>
 		</tr>
 	</table>
-	
-	<?php if ($add1_passcount > 0 && ($add1_passcount % DUPLICATOR_ADD1_TRIPCOUNT == 0) && $add1_clicked == false) :?>
-		<!-- ADD-1 -->
-		<div id="dup-add1" style="display:none">
-			<?php _e("We hope you are enjoying the Duplicator!  Would you consider helping in the continued development of the plugin", 'wpduplicator') ?>? <br/>
-			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('donate'); return false;"><?php _e("Donate", 'wpduplicator') ?></button>
-			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('rate'); return false;"><?php _e("Rate It", 'wpduplicator') ?> 5&#9733;'s</button>
-			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('share'); return false;"><?php _e("Share It", 'wpduplicator') ?></button>
-			<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('notnow'); return false;"><?php _e("Not Now", 'wpduplicator') ?>!</button>
-		</div>	
-		<script>
-			jQuery(document).ready(function($) {
-				jQuery("#dup-add1").show(1500);
-			});
-		</script>
-	<?php endif; ?>	
+
+	<div id="dup-add1" style="display:none">
+		<?php _e("We hope you are enjoying the Duplicator!  Would you consider helping in the continued development of the plugin", 'wpduplicator') ?>? <br/>
+		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('donate'); return false;"><?php _e("Donate", 'wpduplicator') ?></button>
+		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('rate'); return false;"><?php _e("Rate It", 'wpduplicator') ?> 5&#9733;'s</button>
+		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('share'); return false;"><?php _e("Share It", 'wpduplicator') ?></button>
+		<button class="dup-support-btn" onclick="Duplicator.Pack.Add1('notnow'); return false;"><?php _e("Not Now", 'wpduplicator') ?>!</button>
+	</div>	
 
 	<!-- STATUS BAR -->
 	<div class="widget" style="padding:6px; margin: 2px 0px 0px 0px; border-bottom: none; font-size:13px">
@@ -250,7 +241,10 @@ MAIN FORM: Lists all the backups 			-->
 				<?php if($total_elements == 0)  :	?>
 					<th colspan="8">&nbsp;</th>
 				<?php else : ?>	
-					<th colspan="8" style='text-align:right; font-size:12px'><?php echo _e("Total Storage Used", 'wpduplicator') . ': ' . duplicator_bytesize($total_size); ?></th>
+					<th colspan="8" style='text-align:right; font-size:12px'>
+						<?php echo _e("Packages", 'wpduplicator') . ': ' . $total_elements; ?> |
+						<?php echo _e("Total Size", 'wpduplicator') . ': ' . duplicator_bytesize($total_size); ?> 
+					</th>
 				<?php endif; ?>	
 			</tr>
 		</tfoot>
@@ -263,6 +257,14 @@ MAIN FORM: Lists all the backups 			-->
 	<input name="hosted_button_id" type="hidden" value="EYJ7AV43RTZJL" /> 
 	<img src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /> 
 </form>
+
+<?php if ($total_elements >= 3 && $add1_passcount >= DUPLICATOR_ADD1_TRIPCOUNT &&  $add1_clicked == false) :?>
+	<script>
+		jQuery(document).ready(function($) {
+			jQuery("#dup-add1").show(700);
+		});
+	</script>
+<?php endif; ?>	
 
 <?php
 	//INLINE DIALOG WINDOWS
@@ -358,7 +360,9 @@ jQuery(document).ready(function($) {
 	 *  METHOD: Add1 Logic*/
 	Duplicator.Pack.Add1 = function (action) {
 		var message1;
-		var message2 = "<?php _e('This message will disappear after refreshing the page.', 'wpduplicator') ?>";
+		var message2 = "<?php _e('Also check-out the support link for additional ways to help.', 'wpduplicator') ?>";
+		var message3 = "<?php _e('This message will disappear after refreshing the page.', 'wpduplicator') ?>";
+		
 
 		$.post(ajaxurl, { action: "duplicator_add1_click", click : action} );
 		var style = {backgroundColor : '#efefef', fontStyle : 'italic'};
@@ -366,17 +370,17 @@ jQuery(document).ready(function($) {
 		switch (action) {
 			case "donate" :
 				message1 = "<?php _e('Thanks for donating to the Duplicator!  Your contribution really does make a difference!', 'wpduplicator') ?>";
-				$("#dup-add1").html(message1 + "<br/>" + message2).css(style).hide().show(600);				
+				$("#dup-add1").html(message1 + "<br/>" + message3).css(style).hide().show(600);				
 				$("#dup-paypal").submit();
 				break;
 			case "rate" :
-				message1 = "<?php _e('Thanks for giving the 5 star rating!  A huge amount of time and effort has gone into creating this plugin.', 'wpduplicator') ?>";
-				$("#dup-add1").html(message1 + "<br/>" + message2).css(style).hide().show(600);				
+				message1 = "<?php _e('Thanks for giving a 5 star rating!  A huge amount of time and effort has gone into creating this plugin.', 'wpduplicator') ?>";
+				$("#dup-add1").html(message1 + "<br/>" + message2 + '  ' + message3).css(style).hide().show(600);				
 				window.open("http://wordpress.org/plugins/duplicator/", "_blank");
 				break;
 			case "share" :
 				message1 = "<?php _e('Thanks for sharing the Duplicator and spreading the word!  We have definitly enjoyed helping this awesome community!', 'wpduplicator') ?>";
-				$("#dup-add1").html(message1 + "<br/>" + message2).css(style).hide().show(600);				
+				$("#dup-add1").html(message1 + "<br/>" + message2 + '  ' + message3).css(style).hide().show(600);				
 				window.open("https://www.paywithatweet.com/pay/?id=71e421d43020b6c4065487377e535f4e", "_blank");
 				break;	
 			case "notnow" :
