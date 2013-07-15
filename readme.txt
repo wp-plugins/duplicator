@@ -35,7 +35,6 @@ Contributors:
 Localization:
 <li>Hans-M. Herbrand (German) www.web266.de</li>
 <li>Emilio De Fez (Spanish) www.canaryas.com</li>
-<li>Rami (Hebrew) www.wp-tricks.co.il</li>
 
 
 == Installation ==
