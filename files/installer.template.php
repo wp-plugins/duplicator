@@ -1961,6 +1961,13 @@ for(var c=0;c<f.length;c++){var e=true;for(var b=0;b<a&&(b+c+a)<f.length;b++){e=
 	}
 	
 	$req01a = @is_writeable($GLOBALS["CURRENT_ROOT_PATH"]) 	? 'Pass' : 'Fail';
+	if (is_dir($GLOBALS["CURRENT_ROOT_PATH"])) {
+		if ($dh = @opendir($GLOBALS["CURRENT_ROOT_PATH"])) {
+			closedir($dh);
+		} else {
+			$req01a = 'Fail';
+		}
+	}
 	$req01b = ($zip_file_count == 1) ? 'Pass' : 'Fail';
 	$req01  = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
 	$req02 = (((strtolower(@ini_get('safe_mode'))   == 'on')   
@@ -2266,8 +2273,8 @@ DIALOG: SERVER CHECKS  -->
 		    <td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
 			<?php
 			echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
-			printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-			printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
+			printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable by PHP");
+			printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_file_name} <br/> <i>Note: Manual extraction still requires the package.zip file</i> </div> ");
 			?>
 		    </td>
 		</tr>
@@ -2373,6 +2380,13 @@ DIALOG: DB CONNECTION CHECK  -->
 	}
 	
 	$req01a = @is_writeable($GLOBALS["CURRENT_ROOT_PATH"]) 	? 'Pass' : 'Fail';
+	if (is_dir($GLOBALS["CURRENT_ROOT_PATH"])) {
+		if ($dh = @opendir($GLOBALS["CURRENT_ROOT_PATH"])) {
+			closedir($dh);
+		} else {
+			$req01a = 'Fail';
+		}
+	}
 	$req01b = ($zip_file_count == 1) ? 'Pass' : 'Fail';
 	$req01  = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
 	$req02 = (((strtolower(@ini_get('safe_mode'))   == 'on')   
@@ -2678,8 +2692,8 @@ DIALOG: SERVER CHECKS  -->
 		    <td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
 			<?php
 			echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
-			printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable");
-			printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file.<div style='padding-left:55px'>Result = {$zip_file_name} <br/> <i>Manual extraction still requires zip file</i> </div> ");
+			printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable by PHP");
+			printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_file_name} <br/> <i>Note: Manual extraction still requires the package.zip file</i> </div> ");
 			?>
 		    </td>
 		</tr>
