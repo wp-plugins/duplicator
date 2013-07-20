@@ -26,6 +26,23 @@ class DuplicatorUtils {
         $row = $wpdb->get_row("SHOW VARIABLES LIKE '{$variable}'", ARRAY_N);
         return isset($row[1]) ? $row[1] : null;
     }
+	
+	 /**
+     * ListDirs
+     * @path path to a system directory
+     * @return array of all directories in that path
+     */
+	static public function ListDirs($path = '.') {
+		$dirs = array();
+
+		foreach (new DirectoryIterator($path) as $file) {
+			if ($file->isDir() && !$file->isDot()) {
+				$dirs[] = duplicator_safe_path($file->getPathname());
+			}
+		}
+
+		return $dirs;
+	}
     
 }
 ?>

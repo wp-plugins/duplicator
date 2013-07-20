@@ -22,8 +22,8 @@ class Duplicator_Zip {
         try {
             
             $time_start = DuplicatorUtils::GetMicrotime();
-            duplicator_log("PACKAGE FOLDER: {$folderPath}");
-            duplicator_log("PACKAGE FILE:   {$zipFilePath}");
+            duplicator_log("PACKAGE DIR:  {$folderPath}");
+            duplicator_log("PACKAGE FILE: {$zipFilePath}");
 
             $this->zipArchive	= new ZipArchive();
             $this->zipFilePath	= duplicator_safe_path($zipFilePath);
@@ -32,6 +32,8 @@ class Duplicator_Zip {
 			$this->countDirs  = 0;
 			$this->countFiles = 0;
 			$this->countLinks = 0;
+			$this->topFolders = DuplicatorUtils::ListDirs($this->rootFolder);
+			$this->topFoldersCount = 0;
 
             $exts_list = implode(";", $this->skipNames);
             $path_list = implode(";", $GLOBALS['duplicator_bypass-array']);
@@ -51,7 +53,7 @@ class Duplicator_Zip {
             //ADD SQL File
             $sql_in_zip = $this->zipArchive->addFile($sqlfilepath, "/database.sql");
             if ($sql_in_zip) {
-                duplicator_log("SQL FILE ADDED TO PACKAGE: {$sqlfilepath}");
+                duplicator_log("ADDED=>SQL: {$sqlfilepath}");
             } else {
 				duplicator_error("ERROR: Unable to add database.sql file to package from.  \nERROR INFO: SQL File Path [{$sqlfilepath}]");
             }
@@ -60,7 +62,7 @@ class Duplicator_Zip {
             $this->resursiveZip($this->rootFolder);
 
             //LOG FINAL RESULTS
-            duplicator_log("PACKAGE INFO: " . print_r($this->zipArchive, true));
+            duplicator_log("\nPACKAGE INFO: " . print_r($this->zipArchive, true));
 			duplicator_log("STATS: Directories={$this->countDirs} | Files={$this->countFiles} | Links={$this->countLinks} | hidden files may not be counted on some servers" );
             $zip_close_result = $this->zipArchive->close();
 			if ($zip_close_result) {
@@ -85,6 +87,7 @@ class Duplicator_Zip {
     function resursiveZip($directory) {
         try {
             $folderPath = duplicator_safe_path($directory);
+			
 
             //EXCLUDE: Snapshot directory
             if (strstr($folderPath, DUPLICATOR_SSDIR_PATH) || empty($folderPath)) {
@@ -101,6 +104,7 @@ class Duplicator_Zip {
                 }
             }
 
+
 			//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
 			//when a file has a permission such as 705 falling back to pathinfo is more stable
             $dh = new DirectoryIterator($folderPath);
@@ -111,6 +115,7 @@ class Duplicator_Zip {
                     $localpath = str_replace($this->rootFolder, '', $folderPath);
                     $localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
                     $filename  = $file->getFilename();
+					
 					
                     if ($file->isDir()) {
                         if (!in_array($fullpath, $GLOBALS['duplicator_bypass-array'])) {
@@ -128,10 +133,12 @@ class Duplicator_Zip {
 							if (!in_array($ext, $this->skipNames) || empty($ext)) {
 								$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 								$this->countFiles++;
+								$this->topFoldersCount++;
 							}
 						} else {
 							$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 							$this->countFiles++;
+							$this->topFoldersCount++;
 						}
                     } else if ($file->isLink()) {
 						$this->countLinks++;
@@ -142,13 +149,23 @@ class Duplicator_Zip {
 
             //Check if were over our count
             if ($this->limitItems > $this->limit) {
-                duplicator_log("New open zipArchive handle {$this->zipArchive->numFiles}");
+                duplicator_log("New zipArchive handle:  {$this->zipArchive->numFiles}");
                 $this->zipArchive->close();
                 $this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE);
                 $this->limitItems = 0;
                 duplicator_fcgi_flush();
             }
-
+			
+			if (is_array($this->topFolders)) {
+				foreach ($this->topFolders as $value) {
+					if ($value == $folderPath) {
+						duplicator_log("ADDED=>DIR: " . basename($value) . "({$this->topFoldersCount})");
+						$this->topFoldersCount = 0;
+						break;
+					}
+				}
+			}
+			
             @closedir($dh);
         } 
 		

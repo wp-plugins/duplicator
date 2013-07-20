@@ -109,7 +109,7 @@ function duplicator_create() {
 	$exe_basicsize = duplicator_bytesize($exe_filesize);
 	
 	if ($zip_filesize && $sql_filesize && $sql_filesize) {
-		$msg_complete_stats = "FILE SIZE: Zip Size:{$zip_basicsize} | SQL Size:{$sql_basicsize} | Installer Size:{$exe_basicsize}";
+		$msg_complete_stats = "FILE SIZE: Zip:{$zip_basicsize} | SQL:{$sql_basicsize} | Installer:{$exe_basicsize}";
 	} else {
 		duplicator_error("ERROR: A required file contains zero bytes. \nERROR INFO: Zip Size:{$zip_basicsize} | SQL Size:{$sql_basicsize} | Installer Size:{$exe_basicsize}");
 	}
@@ -141,7 +141,7 @@ function duplicator_create() {
     
     duplicator_log("********************************************************************************");
 	duplicator_log($msg_complete_stats);
-	duplicator_log("COMPLETE PACKAGE RUNTIME: {$fulltime_sum}");
+	duplicator_log("TOTAL PROCESS RUNTIME: {$fulltime_sum}");
     duplicator_log("DONE PROCESSING => {$packname} " . @date('h:i:s'));
     duplicator_log("********************************************************************************");
     @fclose($GLOBALS['duplicator_package_log_handle']);
