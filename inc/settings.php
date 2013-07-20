@@ -130,9 +130,7 @@
 						   <td><?php _e("Packages Built", 'wpduplicator'); ?></td>
 						   <td>
 							   <?php echo get_option('duplicator_pack_passcount', 0) ?> &nbsp;
-							    <small>
-									 <?php _e("The number of successful packages created.", 'wpduplicator'); ?> 
-								</small>
+							    <i style="font-size:11px"><?php _e("The number of successful packages created.", 'wpduplicator'); ?></i>
 						   </td>
 					   </tr>	
 					   <tr>

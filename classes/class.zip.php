@@ -81,7 +81,7 @@ class Duplicator_Zip {
 			duplicator_error("ERROR: Runtime error in class.zip.php constructor.   \nERROR INFO: {$e}");
         }
     }
-
+	
     function resursiveZip($directory) {
         try {
             $folderPath = duplicator_safe_path($directory);
@@ -101,6 +101,8 @@ class Duplicator_Zip {
                 }
             }
 
+			//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
+			//when a file has a permission such as 705 falling back to pathinfo is more stable
             $dh = new DirectoryIterator($folderPath);
 			
             foreach ($dh as $file) {
@@ -114,7 +116,6 @@ class Duplicator_Zip {
                         if (!in_array($fullpath, $GLOBALS['duplicator_bypass-array'])) {
 							if ($file->isReadable() && $this->zipArchive->addEmptyDir("{$localname}{$filename}")) {
 								$this->countDirs++;
-								@set_time_limit(0);
 								duplicator_fcgi_flush();
 								$this->resursiveZip($fullpath);
 							} else {
@@ -122,9 +123,8 @@ class Duplicator_Zip {
 							}
                         } 
 					} else if ($file->isFile() && $file->isReadable()) {
-                        //Check filter extensions
 						if ($this->fileExtActive) {
-							$ext = $file->getExtension();//@pathinfo($fullpath, PATHINFO_EXTENSION);
+							$ext = @pathinfo($fullpath, PATHINFO_EXTENSION);
 							if (!in_array($ext, $this->skipNames) || empty($ext)) {
 								$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 								$this->countFiles++;
