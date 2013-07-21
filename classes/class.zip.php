@@ -21,7 +21,7 @@ class Duplicator_Zip {
     function __construct($zipFilePath, $folderPath, $sqlfilepath) {
         try {
             
-            $time_start = DuplicatorUtils::GetMicrotime();
+            $total_time_start = DuplicatorUtils::GetMicrotime();
             duplicator_log("PACKAGE DIR:  {$folderPath}");
             duplicator_log("PACKAGE FILE: {$zipFilePath}");
 
@@ -32,23 +32,19 @@ class Duplicator_Zip {
 			$this->countDirs  = 0;
 			$this->countFiles = 0;
 			$this->countLinks = 0;
-			$this->topFoldersList = DuplicatorUtils::ListDirs($this->rootFolder);
-			$this->topFoldersCount = 0;
-			$this->topFoldersActive = "";
-			
 
             $exts_list = implode(";", $this->skipNames);
             $path_list = implode(";", $GLOBALS['duplicator_bypass-array']);
 			$this->fileExtActive = strlen($exts_list);
 			
-			//duplicator_log("ROOT DIRS: " . print_r($this->topFoldersList, true));
+
             duplicator_log("FILTER EXTENSIONS:  '{$exts_list}'");
             duplicator_log("FILTER DIRECTORIES: '{$path_list}'");
             duplicator_log($GLOBALS['DUPLICATOR_SEPERATOR2']);
 
 			//CREATE ZIP FILE
             if ($this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE) === TRUE) {
-                duplicator_log("STARTING PACKAGE FILE BUILD\n");
+                duplicator_log("STARTING PACKAGE BUILD");
             } else {
 				duplicator_error("ERROR: Cannot open zip file with PHP ZipArchive.  \nERROR INFO: Path location [{$this->zipFilePath}]");
             }
@@ -56,17 +52,26 @@ class Duplicator_Zip {
             //ADD SQL File
             $sql_in_zip = $this->zipArchive->addFile($sqlfilepath, "/database.sql");
             if ($sql_in_zip) {
-                duplicator_log("ZIPPED=>SQL: {$sqlfilepath}");
+                duplicator_log("ADDED=>SQL: {$sqlfilepath}");
             } else {
 				duplicator_error("ERROR: Unable to add database.sql file to package from.  \nERROR INFO: SQL File Path [{$sqlfilepath}]");
             }
 
             //RECURSIVE CALL TO ALL FILES
+			$list_time_start = DuplicatorUtils::GetMicrotime();
+			duplicator_log("BUILDING FILE LIST");
             $this->resursiveZip($this->rootFolder);
-
-            //LOG FINAL RESULTS
+			
+            $list_time_end = DuplicatorUtils::GetMicrotime();
+            $list_time_sum = DuplicatorUtils::ElapsedTime($list_time_end, $list_time_start);
+			duplicator_log("FILE LIST COMPLETE: {$list_time_sum}");
+			duplicator_log("FILE LIST STATS: Dirs {$this->countDirs} | Files {$this->countFiles} | Links {$this->countLinks} | " );
             duplicator_log("\nPACKAGE INFO: " . print_r($this->zipArchive, true));
-			duplicator_log("STATS: Dirs {$this->countDirs} | Files {$this->countFiles} | Links {$this->countLinks} | hidden files may not be counted on some servers" );
+			
+			//LOG FINAL RESULTS
+			duplicator_log("CREATING PACKAGE");
+			duplicator_fcgi_flush();
+			@set_time_limit(0);
             $zip_close_result = $this->zipArchive->close();
 			if ($zip_close_result) {
 				 duplicator_log("CLOSING PACKAGE RESULT: '{$zip_close_result}'");
@@ -75,12 +80,12 @@ class Duplicator_Zip {
 				duplicator_error("ERROR: ZipArchive Class did not close successfully.   \nERROR INFO: {$err_info}");
 			}
 
-            $time_end = DuplicatorUtils::GetMicrotime();
-            $time_sum = DuplicatorUtils::ElapsedTime($time_end, $time_start);
+            $total_time_end = DuplicatorUtils::GetMicrotime();
+            $total_time_sum = DuplicatorUtils::ElapsedTime($total_time_end, $total_time_start);
 			
 			$this->zipFileSize = @filesize($this->zipFilePath);
 			duplicator_log("PACKAGE FILE SIZE: " . duplicator_bytesize($this->zipFileSize));
-            duplicator_log("PACKAGE RUNTIME: {$time_sum}");
+            duplicator_log("PACKAGE RUNTIME: {$total_time_sum}");
         } 
         catch (Exception $e) {
 			duplicator_error("ERROR: Runtime error in class.zip.php constructor.   \nERROR INFO: {$e}");
@@ -105,15 +110,6 @@ class Duplicator_Zip {
                     }
                 }
             }
-			
-			//ADDING START LOG
-			foreach ($this->topFoldersList as $value) {
-				 if ($value == $folderPath) {
-					 $this->topFoldersActive = basename($value);
-					 duplicator_log("ADDING=>DIR: {$this->topFoldersActive}");
-					 break;
-				 }
-			 }
 
 			//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
 			//when a file has a permission such as 705 falling back to pathinfo is more stable
@@ -129,7 +125,6 @@ class Duplicator_Zip {
                         if (!in_array($fullpath, $GLOBALS['duplicator_bypass-array'])) {
 							if ($file->isReadable() && $this->zipArchive->addEmptyDir("{$localname}{$filename}")) {
 								$this->countDirs++;
-								duplicator_fcgi_flush();
 								$this->resursiveZip($fullpath);
 							} else {
 								duplicator_log("WARNING: Unable to add directory: $fullpath");
@@ -141,15 +136,10 @@ class Duplicator_Zip {
 							if (!in_array($ext, $this->skipNames) || empty($ext)) {
 								$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 								$this->countFiles++;
-								$this->topFoldersCount++;
 							}
 						} else {
 							$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 							$this->countFiles++;
-							$this->topFoldersCount++;
-						}
-						if ($this->topFoldersCount % 1000 == 0) {
-							duplicator_log("ADDING=>DIR: " .  "{$this->topFoldersActive} ({$this->topFoldersCount})");
 						}
                     } else if ($file->isLink()) {
 						$this->countLinks++;
@@ -159,24 +149,16 @@ class Duplicator_Zip {
             }
 
             //Check if were over our count
-            if ($this->limitItems > $this->limit) {
+			//This process seems to slow things down.
+           /* if ($this->limitItems > $this->limit) {
 				$currentfilecount = $this->countDirs + $this->countFiles;
                 duplicator_log("ADDED=>ZIP HANDLE: ({$currentfilecount})");
                 $this->zipArchive->close();
                 $this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE);
                 $this->limitItems = 0;
                 duplicator_fcgi_flush();
-            }
+            }*/
 			
-			//ADDING END LOG
-			foreach ($this->topFoldersList as $value) {
-				if ($value == $folderPath) {
-					duplicator_log("ZIPPED=>DIR: " . basename($value) . " ({$this->topFoldersCount})");
-					$this->topFoldersCount = 0;
-					break;
-				}
-			}
-
             @closedir($dh);
         } 
 		
