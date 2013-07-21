@@ -119,6 +119,10 @@
 						   <td><?php echo $_SERVER['SERVER_SOFTWARE'] ?></td>
 					   </tr>
 					   <tr>
+						   <td><?php _e("APC Enabled", 'wpduplicator'); ?></td>
+						   <td><?php echo duplicator_run_apc() ? 'Yes' : 'No'  ?></td>
+					   </tr>					   
+					   <tr>
 						   <td><?php _e("Root Path", 'wpduplicator'); ?></td>
 						   <td><?php echo DUPLICATOR_WPROOTPATH ?></td>
 					   </tr>	

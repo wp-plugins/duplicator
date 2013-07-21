@@ -34,11 +34,13 @@ class Duplicator_Zip {
 			$this->countLinks = 0;
 			$this->topFolders = DuplicatorUtils::ListDirs($this->rootFolder);
 			$this->topFoldersCount = 0;
+			
 
             $exts_list = implode(";", $this->skipNames);
             $path_list = implode(";", $GLOBALS['duplicator_bypass-array']);
 			$this->fileExtActive = strlen($exts_list);
 			
+			//duplicator_log("ROOT DIRS: " . print_r($this->topFolders, true));
             duplicator_log("FILTER EXTENSIONS:  '{$exts_list}'");
             duplicator_log("FILTER DIRECTORIES: '{$path_list}'");
             duplicator_log($GLOBALS['DUPLICATOR_SEPERATOR2']);
@@ -53,7 +55,7 @@ class Duplicator_Zip {
             //ADD SQL File
             $sql_in_zip = $this->zipArchive->addFile($sqlfilepath, "/database.sql");
             if ($sql_in_zip) {
-                duplicator_log("ADDED=>SQL: {$sqlfilepath}");
+                duplicator_log("ZIPPED=>SQL: {$sqlfilepath}");
             } else {
 				duplicator_error("ERROR: Unable to add database.sql file to package from.  \nERROR INFO: SQL File Path [{$sqlfilepath}]");
             }
@@ -88,7 +90,6 @@ class Duplicator_Zip {
         try {
             $folderPath = duplicator_safe_path($directory);
 			
-
             //EXCLUDE: Snapshot directory
             if (strstr($folderPath, DUPLICATOR_SSDIR_PATH) || empty($folderPath)) {
                 return;
@@ -104,7 +105,6 @@ class Duplicator_Zip {
                 }
             }
 
-
 			//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
 			//when a file has a permission such as 705 falling back to pathinfo is more stable
             $dh = new DirectoryIterator($folderPath);
@@ -115,8 +115,6 @@ class Duplicator_Zip {
                     $localpath = str_replace($this->rootFolder, '', $folderPath);
                     $localname = empty($localpath) ? '' : ltrim("{$localpath}/", '/');
                     $filename  = $file->getFilename();
-					
-					
                     if ($file->isDir()) {
                         if (!in_array($fullpath, $GLOBALS['duplicator_bypass-array'])) {
 							if ($file->isReadable() && $this->zipArchive->addEmptyDir("{$localname}{$filename}")) {
@@ -139,6 +137,10 @@ class Duplicator_Zip {
 							$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 							$this->countFiles++;
 							$this->topFoldersCount++;
+							if ($this->topFoldersCount % 1000 == 0) {
+								$dir_name = basename($this->topFolders[0]);
+								duplicator_log("ADDING=>DIR: " .  "{$dir_name} ({$this->topFoldersCount})");
+							}
 						}
                     } else if ($file->isLink()) {
 						$this->countLinks++;
@@ -149,7 +151,8 @@ class Duplicator_Zip {
 
             //Check if were over our count
             if ($this->limitItems > $this->limit) {
-                duplicator_log("New zipArchive handle:  {$this->zipArchive->numFiles}");
+				$currentfilecount = $this->countDirs + $this->countFiles;
+                duplicator_log("ADDED=>ZIP HANDLE: ({$currentfilecount})");
                 $this->zipArchive->close();
                 $this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE);
                 $this->limitItems = 0;
@@ -159,8 +162,9 @@ class Duplicator_Zip {
 			if (is_array($this->topFolders)) {
 				foreach ($this->topFolders as $value) {
 					if ($value == $folderPath) {
-						duplicator_log("ADDED=>DIR: " . basename($value) . "({$this->topFoldersCount})");
+						duplicator_log("ZIPPED=>DIR: " . basename($value) . " ({$this->topFoldersCount})");
 						$this->topFoldersCount = 0;
+						array_shift($this->topFolders);
 						break;
 					}
 				}

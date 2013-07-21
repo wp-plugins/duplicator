@@ -395,6 +395,20 @@ function duplicator_snapshot_urlpath() {
 }
 
 /**
+ *  DUPLICATOR_RUN_APC
+ *  Runs the APC cache to pre-cache the php files
+ *  returns true if all files where cached
+ */
+function duplicator_run_apc() {
+	if(function_exists('apc_compile_file')){
+		$file01 = @apc_compile_file(DUPLICATOR_PLUGIN_PATH . "duplicator.php");
+		return ($file01);
+	} else {
+		return false;
+	}
+}
+
+/**
  *  DUPLICATOR_LOG
  *  Centralized logging method
  *  @param string $msg		The message to log

@@ -212,8 +212,11 @@ function duplicator_delete() {
 function duplicator_system_check() {
     global $wpdb;
 
+	
     @set_time_limit(0);
     duplicator_init_snapshotpath();
+	//Does not seem to help
+	//duplicator_run_apc();
 
     $json = array();
 
