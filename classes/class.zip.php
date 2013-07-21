@@ -32,22 +32,23 @@ class Duplicator_Zip {
 			$this->countDirs  = 0;
 			$this->countFiles = 0;
 			$this->countLinks = 0;
-			$this->topFolders = DuplicatorUtils::ListDirs($this->rootFolder);
+			$this->topFoldersList = DuplicatorUtils::ListDirs($this->rootFolder);
 			$this->topFoldersCount = 0;
+			$this->topFoldersActive = "";
 			
 
             $exts_list = implode(";", $this->skipNames);
             $path_list = implode(";", $GLOBALS['duplicator_bypass-array']);
 			$this->fileExtActive = strlen($exts_list);
 			
-			//duplicator_log("ROOT DIRS: " . print_r($this->topFolders, true));
+			//duplicator_log("ROOT DIRS: " . print_r($this->topFoldersList, true));
             duplicator_log("FILTER EXTENSIONS:  '{$exts_list}'");
             duplicator_log("FILTER DIRECTORIES: '{$path_list}'");
             duplicator_log($GLOBALS['DUPLICATOR_SEPERATOR2']);
 
 			//CREATE ZIP FILE
             if ($this->zipArchive->open($this->zipFilePath, ZIPARCHIVE::CREATE) === TRUE) {
-                duplicator_log("BUILDING PACKAGE FILE");
+                duplicator_log("STARTING PACKAGE FILE BUILD\n");
             } else {
 				duplicator_error("ERROR: Cannot open zip file with PHP ZipArchive.  \nERROR INFO: Path location [{$this->zipFilePath}]");
             }
@@ -65,7 +66,7 @@ class Duplicator_Zip {
 
             //LOG FINAL RESULTS
             duplicator_log("\nPACKAGE INFO: " . print_r($this->zipArchive, true));
-			duplicator_log("STATS: Directories={$this->countDirs} | Files={$this->countFiles} | Links={$this->countLinks} | hidden files may not be counted on some servers" );
+			duplicator_log("STATS: Dirs {$this->countDirs} | Files {$this->countFiles} | Links {$this->countLinks} | hidden files may not be counted on some servers" );
             $zip_close_result = $this->zipArchive->close();
 			if ($zip_close_result) {
 				 duplicator_log("CLOSING PACKAGE RESULT: '{$zip_close_result}'");
@@ -104,6 +105,15 @@ class Duplicator_Zip {
                     }
                 }
             }
+			
+			//ADDING START LOG
+			foreach ($this->topFoldersList as $value) {
+				 if ($value == $folderPath) {
+					 $this->topFoldersActive = basename($value);
+					 duplicator_log("ADDING=>DIR: {$this->topFoldersActive}");
+					 break;
+				 }
+			 }
 
 			//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
 			//when a file has a permission such as 705 falling back to pathinfo is more stable
@@ -137,10 +147,9 @@ class Duplicator_Zip {
 							$this->zipArchive->addFile("{$folderPath}/{$filename}", "{$localname}{$filename}");
 							$this->countFiles++;
 							$this->topFoldersCount++;
-							if ($this->topFoldersCount % 1000 == 0) {
-								$dir_name = basename($this->topFolders[0]);
-								duplicator_log("ADDING=>DIR: " .  "{$dir_name} ({$this->topFoldersCount})");
-							}
+						}
+						if ($this->topFoldersCount % 1000 == 0) {
+							duplicator_log("ADDING=>DIR: " .  "{$this->topFoldersActive} ({$this->topFoldersCount})");
 						}
                     } else if ($file->isLink()) {
 						$this->countLinks++;
@@ -159,17 +168,15 @@ class Duplicator_Zip {
                 duplicator_fcgi_flush();
             }
 			
-			if (is_array($this->topFolders)) {
-				foreach ($this->topFolders as $value) {
-					if ($value == $folderPath) {
-						duplicator_log("ZIPPED=>DIR: " . basename($value) . " ({$this->topFoldersCount})");
-						$this->topFoldersCount = 0;
-						array_shift($this->topFolders);
-						break;
-					}
+			//ADDING END LOG
+			foreach ($this->topFoldersList as $value) {
+				if ($value == $folderPath) {
+					duplicator_log("ZIPPED=>DIR: " . basename($value) . " ({$this->topFoldersCount})");
+					$this->topFoldersCount = 0;
+					break;
 				}
 			}
-			
+
             @closedir($dh);
         } 
 		
