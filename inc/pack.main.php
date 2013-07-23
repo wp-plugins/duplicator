@@ -182,6 +182,7 @@ MAIN FORM: Lists all the backups 			-->
 						</tr>	
 					<?php endif; ?>
 				<?php else : ?>	
+					 <!-- LEGACY PRE 0.4.4 -->
 					<?php
 						if (isset($row['token']) && isset($row['packname'])) {
 							$uniqueid  	= "{$row['token']}_{$row['packname']}";
@@ -191,7 +192,6 @@ MAIN FORM: Lists all the backups 			-->
 							$uniqueid = $row['zipname'];
 						}
 					?>
-				    <!-- LEGACY PRE 0.4.0 -->
 					<tr class="dup-pack-info">
 						<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
 						<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?></a>]</td>
