@@ -182,9 +182,20 @@ MAIN FORM: Lists all the backups 			-->
 						</tr>	
 					<?php endif; ?>
 				<?php else : ?>	
+					<?php
+						if (isset($row['token']) && isset($row['packname'])) {
+							$uniqueid  	= "{$row['token']}_{$row['packname']}";
+						} 
+						//Pre 0.4.0
+						else {
+							$uniqueid  	=  $row['zipname'];
+						}
+					?>
 				    <!-- LEGACY PRE 0.4.0 -->
 					<tr class="dup-pack-info">
-						<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $row['zipname'] ;?>" /></td>
+						<td style="padding-right:20px !important">
+							<input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" />
+						</td>
 						<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?></a>]</td>
 						<td><?php echo $row['owner'];?></td>
 						<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
@@ -203,7 +214,10 @@ MAIN FORM: Lists all the backups 			-->
 								<i style="color:#000"><?php
 								printf("%s <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a>",
 								__("This package was built with a version that is no longer supported.  It is highly recommended that this package be deleted.  For more details see the", 'wpduplicator'),
-								__("Online FAQs", 'wpduplicator')); 
+								__("Change Log", 'wpduplicator')); 
+								echo ".<br/>";
+								_e('To recover older packages please check the wp-snapshots folder for the installer and package files.', 'wpduplicator');
+								
 								?></i>
 							</div>
 						</td>
