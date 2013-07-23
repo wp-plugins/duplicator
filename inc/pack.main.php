@@ -110,7 +110,7 @@ MAIN FORM: Lists all the backups 			-->
 				$packname		= empty($row['packname']) ? $row['zipname'] : $row['packname'];
 				$total_size     = $total_size + $row['zipsize'];
 				$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
-				$plugin_compat  = version_compare($plugin_version, '0.4.0');
+				$plugin_compat  = version_compare($plugin_version, '0.4.4');
 				$status         = $settings['status'];
 				$notes          = empty($settings['notes']) ? __("No notes were given for this package", 'wpduplicator') : $settings['notes'];
 				?>
@@ -188,14 +188,12 @@ MAIN FORM: Lists all the backups 			-->
 						} 
 						//Pre 0.4.0
 						else {
-							$uniqueid  	=  $row['zipname'];
+							$uniqueid = $row['zipname'];
 						}
 					?>
 				    <!-- LEGACY PRE 0.4.0 -->
 					<tr class="dup-pack-info">
-						<td style="padding-right:20px !important">
-							<input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" />
-						</td>
+						<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
 						<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?></a>]</td>
 						<td><?php echo $row['owner'];?></td>
 						<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
