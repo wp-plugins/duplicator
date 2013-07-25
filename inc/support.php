@@ -2,6 +2,39 @@
 	require_once('javascript.php'); 
 	require_once('inc.header.php');
 ?>
+<style>
+/*================================================
+PAGE-SUPPORT:*/
+div.dup-support-all {font-size:13px; line-height:20px}
+h2.dup-support-headers {margin:-20px 0px -5px 0px; font-weight:bold; font-size:1.5em}
+div.dup-support-txts-links {width:100%;font-size:14px; font-weight:bold; line-height:26px; text-align:center}
+div.dup-support-hlp-area {width:265px; height:175px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:6px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
+table.dup-support-hlp-hdrs {background-color:#efefef;}
+table.dup-support-hlp-hdrs td {
+	padding:2px; height:52px;
+	font-weight:bold; font-size:17px;
+	background-image:-ms-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:-moz-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:-o-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #DEDEDE));
+	background-image:-webkit-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:linear-gradient(to bottom, #FFFFFF 0%, #DEDEDE 100%);
+}
+table.dup-support-hlp-hdrs td img{margin-left:7px}
+div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
+div.dup-support-give-area {width:400px; height:185px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
+@-webkit-keyframes approve-keyframe  { 
+    from {-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+    to {-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(30deg);}
+}
+img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
+form#dup-donate-form input {opacity:0.7;}
+form#dup-donate-form input:hover {opacity:1.0;}
+img#dup-img-5stars {opacity:0.7;}
+img#dup-img-5stars:hover {opacity:1.0;}
+</style>
 <script type="text/javascript">var switchTo5x=true;</script>
 <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
 <script type="text/javascript">stLight.options({publisher: "1a44d92e-2a78-42c3-a32e-414f78f9f484"}); </script> 
@@ -70,7 +103,7 @@
 			<div class="dup-support-hlp-txt">
 				<?php _e('Need a solid hosting provider that will work well with the Duplicator?', 'wpduplicator'); ?>
 				<div class="dup-support-txts-links" style="margin-top:10px">
-					<?php printf("<a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>%s</a>", __("Approved Hosting Program", 'wpduplicator')); ?>
+					<?php printf("<a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>%s</a>", __("Approved Hosting Services", 'wpduplicator')); ?>
 				</div>
 			</div>
 		</div>
@@ -87,12 +120,14 @@
 			<div class="dup-support-hlp-txt">
 				<?php _e("Online support  is available for issues not covered in the knowledgebase." , 'wpduplicator');	?>
 				<div class="dup-support-txts-links">
-					<a href="javascript:void(0)" onclick="Duplicator.ShowSupportDialog()"><?php _e('Basic', 'wpduplicator') ?></a> &nbsp; | &nbsp;
-					<a href="http://lifeinthegrid.com/services/" target="_blank"><?php _e('Premium', 'wpduplicator') ?></a>
+					<a href="http://www.freelancer.com/affiliates/lifeinthegrid/" target="_blank"><?php _e('Professional', 'wpduplicator') ?></a> &nbsp; | &nbsp;
+					<a href="javascript:void(0)" onclick="Duplicator.ShowSupportDialog()"><?php _e('Basic', 'wpduplicator') ?></a>
+					
 				</div>	
 				<i style="font-size:11px">
-				 <?php _e('Basic: 2-5 business days', 'wpduplicator') ?> <br/>
-				 <?php _e('Premium: 24-48hrs', 'wpduplicator') ?>
+					<?php _e('Pro: Hire at Freelancer.com', 'wpduplicator') ?> <br/>
+					<?php _e('Basic: 3-5 business days', 'wpduplicator') ?> 
+				 
 				</i>
 			</div>
 		</div> <br style="clear:both" /><br/><br/><br/>
@@ -166,23 +201,7 @@
 					<span class='st_googleplus_vcount' displayText='Google +' <?php echo $share_this_data; ?> ></span>
 					<span class='st_linkedin_vcount' displayText='LinkedIn' <?php echo $share_this_data; ?> ></span>
 					<span class='st_email_vcount' displayText='Email' <?php echo $share_this_data; ?> ></span>
-				</div>
-				<!--div style="width:100%; padding:10px 10px 0px 10px" align="center">
-					<table>
-						<tr style="text-align:center">
-							<td>
-								<span class='st_reddit_large' displayText='Reddit' <?php echo $share_this_data; ?> ></span>
-								<span class='st_slashdot_large' displayText='Slashdot' <?php echo $share_this_data; ?> ></span>
-								<span class='st_stumbleupon_large' displayText='StumbleUpon' <?php echo $share_this_data; ?> ></span>
-								<span class='st_technorati_large' displayText='Technorati' <?php echo $share_this_data; ?> ></span>
-								<span class='st_digg_large' displayText='Digg' <?php echo $share_this_data; ?> ></span>
-								<span class='st_blogger_large' displayText='Blogger' <?php echo $share_this_data; ?> ></span> 
-								<span class='st_wordpress_large' displayText='WordPress' <?php echo $share_this_data; ?> ></span>		
-								<span class='st_dzone_large' displayText='DZone' <?php echo $share_this_data; ?> ></span>					
-							</td>
-						</tr>
-					</table>
-				</div--><br/>
+				</div><br/>
 			</div>
 		</div>
 		<br style="clear:both" /><br/>
@@ -201,18 +220,19 @@
 
 <!-- ==========================================
 DIALOG: QUICK PATH -->
-<div id="dup-dlg-basic-support" title="<?php _e('Basic Support', 'wpduplicator'); ?>" style="display:none; width:500; height:300px; line-height: 18px">
+<div id="dup-dlg-basic-support" title="<?php _e('Basic Support', 'wpduplicator'); ?>" style="display:none; width:535; height:300px; line-height: 18px">
 	
 
 	<?php _e("This is a free courtesy we offer to the WordPress community, but it is clear that some people do abuse the service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find an answer first.  Thank you for being thoughtful of this free service!", 'wpduplicator');	?>
 
 	<br/><br/><b><?php _e("Support Tips", 'wpduplicator');	?></b><br/>
 
+	- <?php _e("If your issue is time sensitive please use the Professional service link", 'wpduplicator');	?> <br/>
 	- <?php _e("Read all knowledgebase articles before asking a question", 'wpduplicator');	?> <br/>
-	- <?php _e("Check the WordPress forums for similar issues", 'wpduplicator');	?> <br/>
+	- <?php _e("Check the WordPress forums and Google for similar issues", 'wpduplicator');	?> <br/>
 	- <?php _e("Read the Duplicator log files for clues", 'wpduplicator');	?> <br/>
-	- <?php _e("Do a Google search including errors from the log files", 'wpduplicator');	?> <br/>
 	- <?php _e("Contact your hosting provider for permission and timeout issues", 'wpduplicator');	?> <br/>
+	
 
 	
 	<div style="padding: 20px 0px 0px 0px; text-align: right">

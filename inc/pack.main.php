@@ -110,7 +110,7 @@ MAIN FORM: Lists all the backups 			-->
 				$packname		= empty($row['packname']) ? $row['zipname'] : $row['packname'];
 				$total_size     = $total_size + $row['zipsize'];
 				$plugin_version = empty($settings['plugin_version']) ? 'unknown' : $settings['plugin_version'];
-				$plugin_compat  = version_compare($plugin_version, '0.4.4');
+				$plugin_compat  = version_compare($plugin_version, '0.4.5');
 				$status         = $settings['status'];
 				$notes          = empty($settings['notes']) ? __("No notes were given for this package", 'wpduplicator') : $settings['notes'];
 				?>
@@ -254,7 +254,7 @@ MAIN FORM: Lists all the backups 			-->
 				<?php if($total_elements == 0)  :	?>
 					<th colspan="8">&nbsp;</th>
 				<?php else : ?>	
-					<th colspan="8" style='text-align:right; font-size:12px'>
+					<th colspan="8" style='text-align:right; font-size:12px'>						
 						<?php echo _e("Packages", 'wpduplicator') . ': ' . $total_elements; ?> |
 						<?php echo _e("Total Size", 'wpduplicator') . ': ' . duplicator_bytesize($total_size); ?> 
 					</th>

@@ -144,8 +144,8 @@ if (is_admin() == true) {
 
         delete_option('duplicator_version_plugin');
         delete_option('duplicator_options');
-		$DuplicatorSettings->Delete();
-
+		
+		//Remvoe entire wp-snapshots directory
         if ($DuplicatorSettings->Get('uninstall_files')) {
 
             $ssdir = duplicator_safe_path(DUPLICATOR_SSDIR_PATH);
@@ -201,6 +201,12 @@ if (is_admin() == true) {
                 }
             }
         }
+		
+		//Remove all Settings
+		if ($DuplicatorSettings->Get('uninstall_settings')) {
+			$DuplicatorSettings->Delete();
+		}
+		
     }
 
     /* META LINK ADDONS

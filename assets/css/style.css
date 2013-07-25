@@ -96,37 +96,6 @@ div#dup-server-info-area tr.h th{ text-align:center; background-color:#efefef;  
 div#dup-server-info-area td.e{ font-weight:bold }
 td.dup-settings-diag-header {background-color:#D8D8D8; font-weight: bold; border-style: none; color:black}
 
-/*================================================
-PAGE-SUPPORT:*/
-div.dup-support-all {font-size:13px; line-height:20px}
-h2.dup-support-headers {margin:-20px 0px -5px 0px; font-weight:bold; font-size:1.5em}
-div.dup-support-txts-links {width:100%;font-size:14px; padding-left:10px; font-weight:bold; line-height:26px; text-align:center}
-div.dup-support-hlp-area {width:265px; height:175px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:6px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
-table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
-table.dup-support-hlp-hdrs {background-color:#efefef;}
-table.dup-support-hlp-hdrs td {
-	padding:2px; height:52px;
-	font-weight:bold; font-size:17px;
-	background-image:-ms-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-	background-image:-moz-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-	background-image:-o-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-	background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #DEDEDE));
-	background-image:-webkit-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-	background-image:linear-gradient(to bottom, #FFFFFF 0%, #DEDEDE 100%);
-}
-table.dup-support-hlp-hdrs td img{margin-left:7px}
-div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
-div.dup-support-give-area {width:400px; height:185px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
-div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
-@-webkit-keyframes approve-keyframe  { 
-    from {-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
-    to {-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(30deg);}
-}
-img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
-form#dup-donate-form input {opacity:0.7;}
-form#dup-donate-form input:hover {opacity:1.0;}
-img#dup-img-5stars {opacity:0.7;}
-img#dup-img-5stars:hover {opacity:1.0;}
 
 /*================================================
 JQUERY UI OVERIDES */

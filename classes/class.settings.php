@@ -37,6 +37,8 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		function Set($key = '', $value) {
 			if (isset($this->Data[$key]) && $value != null) {
 				$this->Data[$key] = $value;
+			} elseif (!empty($key) && $value != null) {
+				$this->Data[$key] = $value;
 			}
 		}
 
@@ -62,9 +64,17 @@ if ( ! class_exists( 'DuplicatorSettings' ) ) {
 		*  @return True if option value has changed, false if not or if update failed.
 		*/
 		public function SetDefaults() {
+			$default = array();
 			$default['version'] = $this->Version;
-			$default['uninstall_files']  = isset($this->Data['uninstall_files'])  ? $this->Data['uninstall_files']  : true;
-			$default['uninstall_tables'] = isset($this->Data['uninstall_tables']) ? $this->Data['uninstall_tables'] : true;
+			
+			//Flag used to remove the wp_options value duplicator_settings which are all the settings in this class
+			$default['uninstall_settings'] = isset($this->Data['uninstall_settings']) ? $this->Data['uninstall_settings'] : true;
+			
+			//Flag used to remove entire wp-snapshot directory
+			$default['uninstall_files']    = isset($this->Data['uninstall_files'])  ? $this->Data['uninstall_files']  : true;
+			
+			//Flag used to remove all tables
+			$default['uninstall_tables']   = isset($this->Data['uninstall_tables']) ? $this->Data['uninstall_tables'] : true;
 
 			$this->Data = $default;
 			return $this->Save();

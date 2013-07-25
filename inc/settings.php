@@ -22,14 +22,16 @@
 	$action_updated = null;
 	if (isset($_POST['action']) && $_POST['action'] == 'save') {
 		//General Tab
-		$DuplicatorSettings->Set('uninstall_files',  isset($_POST['uninstall_files'])  ? "1" : "0");
-		$DuplicatorSettings->Set('uninstall_tables', isset($_POST['uninstall_tables']) ? "1" : "0");
+		$DuplicatorSettings->Set('uninstall_settings',	isset($_POST['uninstall_settings']) ? "1" : "0");
+		$DuplicatorSettings->Set('uninstall_files',		isset($_POST['uninstall_files'])  ? "1" : "0");
+		$DuplicatorSettings->Set('uninstall_tables',	isset($_POST['uninstall_tables']) ? "1" : "0");
 		
 		$action_updated  = $DuplicatorSettings->Save();
 	} 
 
-	$uninstall_files  = $DuplicatorSettings->Get('uninstall_files');
-	$uninstall_tables = $DuplicatorSettings->Get('uninstall_tables');
+	$uninstall_settings	= $DuplicatorSettings->Get('uninstall_settings');
+	$uninstall_files	= $DuplicatorSettings->Get('uninstall_files');
+	$uninstall_tables	= $DuplicatorSettings->Get('uninstall_tables');
 	
 	$space = @disk_total_space(DUPLICATOR_WPROOTPATH);
 	$space_free = @disk_free_space(DUPLICATOR_WPROOTPATH);
@@ -73,9 +75,13 @@
 					<tr valign="top">
 						<th scope="row"><label><?php _e("Uninstall Options", 'wpduplicator'); ?></label></th>
 						<td>
+							<input type="checkbox" name="uninstall_settings" id="uninstall_settings" <?php echo ($uninstall_settings) ? 'checked="checked"' : ''; ?> /> 
+							<label for="uninstall_settings"><?php _e("Delete Plugin Settings", 'wpduplicator') ?></label><br/>
+							
 							<input type="checkbox" name="uninstall_files" id="uninstall_files" <?php echo ($uninstall_files) ? 'checked="checked"' : ''; ?> /> 
-							<label for="uninstall_files"><?php _e("Delete entire snapshot directory when removing plugin", 'wpduplicator') ?></label><br/>
+							<label for="uninstall_files"><?php _e("Delete Entire Snapshot Directory", 'wpduplicator') ?></label><br/>
 							<p class="description"><?php _e("Snapshot Directory", 'wpduplicator'); ?>: <?php echo duplicator_safe_path(DUPLICATOR_SSDIR_PATH); ?></p>
+							
 						</td>
 					</tr>
 				</table>
