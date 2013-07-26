@@ -266,7 +266,27 @@ class DupUtil {
 	static public function preg_replacement_quote($str) {
 		return preg_replace('/(\$|\\\\)(?=\d)/', '\\\\\1', $str);
 	}
-
+	
+	
+	/**
+     *  IS_WEB_CONNECTED
+     *  Check to see if the internet is accessable
+	 *  @param string $url		A url e.g without prefix "ajax.googleapis.com"
+	 *  @return bool
+     */
+	static public function is_url_active($url) {
+		if (function_exists('fsockopen')) {
+			$connected = @fsockopen($url, 80); //website and port
+			if ($connected){
+				$is_conn = true;
+				@fclose($connected);
+			} else {
+				$is_conn = false; 
+			}
+			return $is_conn;
+		} else {
+			return false;
+		}
+	}
 }
-
 ?>

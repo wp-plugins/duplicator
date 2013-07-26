@@ -116,15 +116,15 @@ function duplicator_build_installerFile() {
     }
 
     $embeded_files = array(
-        "inc.utils.php" => "@@INC.UTILS.PHP@@",
-        "ajax.step1.php" => "@@AJAX.STEP1.PHP@@",
-        "ajax.step2.php" => "@@AJAX.STEP2.PHP@@",
-        "inc.style.css" => "@@INC.STYLE.CSS@@",
-        "inc.scripts.js" => "@@INC.SCRIPTS.JS@@",
-        "view.step1.php" => "@@VIEW.STEP1.PHP@@",
-        "view.step2.php" => "@@VIEW.STEP2.PHP@@",
-        "view.step3.php" => "@@VIEW.STEP3.PHP@@");
-
+		"inc.assets.css.php"	=> "@@INC.ASSETS.CSS.PHP@@",
+		"inc.assets.js.php"		=> "@@INC.ASSETS.JS.PHP@@",
+        "inc.utils.php"			=> "@@INC.UTILS.PHP@@",
+        "ajax.step1.php"		=> "@@AJAX.STEP1.PHP@@",
+        "ajax.step2.php"		=> "@@AJAX.STEP2.PHP@@",
+        "view.step1.php"		=> "@@VIEW.STEP1.PHP@@",
+        "view.step2.php"		=> "@@VIEW.STEP2.PHP@@",
+        "view.step3.php"		=> "@@VIEW.STEP3.PHP@@");
+	
     foreach ($embeded_files as $name => $token) {
         $file_path = DUPLICATOR_PLUGIN_PATH . "files/installer/${name}";
         @chmod($file_path, 0777);

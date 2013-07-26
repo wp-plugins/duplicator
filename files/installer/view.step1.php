@@ -392,7 +392,9 @@ DIALOG: SERVER CHECKS  -->
 	    <hr class='dup-dots' />
 	    <!-- SAPI -->
 	    <b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
-	    <b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> 
+	    <b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
+		<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com") && DupUtil::is_url_active("ajax.googleapis.com")) ? 'Yes' : 'No'; ?> 
+
 	</div>
 </div>
 

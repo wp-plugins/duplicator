@@ -108,7 +108,7 @@
 							</table>
 						</td>
 					</tr>
-				</table><br /><br />
+				</table><br />
 				
 				<div class="dup-tabs-opts-header-1"><?php echo _e('STEP 2 - INPUTS'); ?></div><br/>
 				

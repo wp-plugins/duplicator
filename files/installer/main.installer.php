@@ -191,8 +191,8 @@ if (isset($_POST['action_ajax'])) {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex,nofollow">
 	<title>Wordpress Duplicator</title>
-	@@INC.STYLE.CSS@@
-	@@INC.SCRIPTS.JS@@
+	@@INC.ASSETS.CSS.PHP@@	
+	@@INC.ASSETS.JS.PHP@@
 </head>
 <body>
 
