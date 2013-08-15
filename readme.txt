@@ -27,10 +27,10 @@ For complete details see:
 [lifeinthegrid.com](http://lifeinthegrid.com/) 
 
 Contributors:
+<li>Paal Joachim Romdahl</li>
 <li>Aaron Crawford</li>
 <li>Tomas Gurny</li>
-<li>Paal Joachim Romdahl</li>
-<li>Emilio De Fez www.canaryas.com/duplicator</li>
+
 
 Localization:
 <li>Hans-M. Herbrand (German) www.web266.de</li>
