@@ -27,14 +27,15 @@ For complete details see:
 [lifeinthegrid.com](http://lifeinthegrid.com/) 
 
 Contributors:
-<li>Paal Joachim Romdahl</li>
-<li>Aaron Crawford</li>
+<li>[Paal Joachim Romdahl](http://www.easywebdesigntutorials.com)</li>
+<li>Jonathan Foote</li>
 <li>Tomas Gurny</li>
+<li>Aaron Crawford</li>
 
 
 Localization:
-<li>Hans-M. Herbrand (German) www.web266.de</li>
-<li>Emilio De Fez (Spanish) www.canaryas.com</li>
+<li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
+<li>[Emilio De Fez](http://www.canaryas.com) (Spanish) </li>
 
 
 == Installation ==
