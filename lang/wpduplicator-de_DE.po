@@ -47,68 +47,68 @@ msgstr "Unterstützen"
 msgid "Manage"
 msgstr "Verwalten"
 
-#: files/log-read.php:61
+#: installer/log-read.php:61
 #@ wpduplicator
 msgid "Log file not found or unreadable"
 msgstr "Log-Datei nicht gefunden oder nicht lesbar"
 
-#: files/log-read.php:63
+#: installer/log-read.php:63
 #, fuzzy
 #@ wpduplicator
 msgid "The log file for the Duplicator Plugin can be found in the snapshots directory with the extension *.log"
 msgstr "Die Log-Datei für das Plugin Duplicator befindet sich im Verzeichnis wp-snapshots mit der Endung *.log"
 
-#: files/log-read.php:64
+#: installer/log-read.php:64
 #@ wpduplicator
 msgid "If no log file is present the try to create a package"
 msgstr "Wenn keine Log-Datei vorhanden ist, erstelle zuerst ein Archiv"
 
-#: files/log-read.php:66
+#: installer/log-read.php:66
 #@ wpduplicator
 msgid "Reasons for log file not showing"
 msgstr "Die Gründe für die Log-Datei werden nicht angezeigt"
 
-#: files/log-read.php:67
+#: installer/log-read.php:67
 #@ wpduplicator
 msgid "The web server does not support returning .log file extentions"
 msgstr "Der Webserver unterstützt keine .log-Datei-Erweiterungen"
 
-#: files/log-read.php:68
+#: installer/log-read.php:68
 #@ wpduplicator
 msgid "The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755"
 msgstr "In das Verzeichnis wp-snapshots kann nicht geschrieben werden. Bitte setze die Berechtigung auf 755"
 
-#: files/log-read.php:69
+#: installer/log-read.php:69
 #@ wpduplicator
 msgid "The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details"
 msgstr "Der Prozess hat nicht genügend Berechtigungen, um Dateien zu erstellen. Bitte kontaktiere deinen Hosting-Provider für weitere Informationen"
 
-#: files/log-view.php:123
+#: installer/log-view.php:123
 #@ wpduplicator
 msgid "Duplicator: Create Package Log"
 msgstr "Duplicator: Erstellen eines Archiv Log"
 
-#: files/log-view.php:126
+#: installer/log-view.php:126
 #@ wpduplicator
 msgid "Processing may take several minutes, please wait for progress bar to complete on the main status bar"
 msgstr "Die Verarbeitung kann einige Minuten dauern. Bitte warten, bis der Fortschrittsbalken die Beendigung anzeigt."
 
-#: files/log-view.php:131
+#: installer/log-view.php:131
 #@ wpduplicator
 msgid "Auto Refresh"
 msgstr "Automatisch neu laden"
 
-#: files/log-view.php:132
+#: installer/log-view.php:132
 #@ wpduplicator
 msgid "Refresh"
 msgstr "Neu laden"
 
-#: files/log-view.php:150
+#: installer/log-view.php:150
 #@ wpduplicator
 msgid "Support Center"
 msgstr "Support-Center"
 
-#: files/log-view.php:151
+#: installer/log-view.php:151
 #@ wpduplicator
 msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
 msgstr "Diesen Inhalt NICHT an öffentlichen Stellen wie die WordPress.org Foren eingeben, da er sensible Daten enthält."
@@ -1269,17 +1269,17 @@ msgstr "Überprüfen Sie auf freigegebenen Hosts Ihres Control Panels für den '
 msgid "Cleanup"
 msgstr "Löschen"
 
-#: files/log-view.php:127
+#: installer/log-view.php:127
 #@ default
 msgid "log:"
 msgstr ""
 
-#: files/log-view.php:133
+#: installer/log-view.php:133
 #@ default
 msgid "Last"
 msgstr ""
 
-#: files/log-view.php:133
+#: installer/log-view.php:133
 #@ default
 msgid "logs"
 msgstr ""

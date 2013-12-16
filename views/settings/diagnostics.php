@@ -1,0 +1,192 @@
+<?php
+	require_once(DUPLICATOR_PLUGIN_PATH . '/views/javascript.php'); 
+	require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
+
+	ob_start();
+	phpinfo();
+	$serverinfo = ob_get_contents();
+	ob_end_clean();
+	
+	$serverinfo = preg_replace( '%^.*<body>(.*)</body>.*$%ms',  '$1',  $serverinfo);
+	$serverinfo = preg_replace( '%^.*<title>(.*)</title>.*$%ms','$1',  $serverinfo);
+	$action_response = __("Settings Saved", 'wpduplicator');
+	$dbvar_maxtime  = DUP_Util::MysqlVariableValue('wait_timeout');
+	$dbvar_maxpacks = DUP_Util::MysqlVariableValue('max_allowed_packet');
+	$dbvar_maxtime  = is_null($dbvar_maxtime)  ? __("unknow", 'wpduplicator') : $dbvar_maxtime;
+	$dbvar_maxpacks = is_null($dbvar_maxpacks) ? __("unknow", 'wpduplicator') : $dbvar_maxpacks;	
+
+	global $wp_version;
+	global $wpdb;
+	
+	$action_updated = null;
+	if (isset($_POST['action']) && $_POST['action'] == 'save') {
+		
+	} 
+
+	$space = @disk_total_space(DUPLICATOR_WPROOTPATH);
+	$space_free = @disk_free_space(DUPLICATOR_WPROOTPATH);
+	$perc = @round((100/$space)*$space_free,2);
+?>
+
+<style>
+	div#dup-server-info-area { padding:10px 5px;  }
+	div#dup-server-info-area table { padding:1px; background:#dfdfdf;  -webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px; width:100% !important; box-shadow:0 8px 6px -6px #777; }
+	div#dup-server-info-area td, th {padding:3px; background:#fff; -webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
+	div#dup-server-info-area tr.h img { display:none; }
+	div#dup-server-info-area tr.h td{ background:none; }
+	div#dup-server-info-area tr.h th{ text-align:center; background-color:#efefef;  }
+	div#dup-server-info-area td.e{ font-weight:bold }
+	td.dup-settings-diag-header {background-color:#D8D8D8; font-weight: bold; border-style: none; color:black}
+	.widefat td {padding:2px 2px 2px 8px}
+	.widefat td:nth-child(1) {width:10px;}
+	.widefat td:nth-child(2) {padding-left: 20px; width:100% !important}
+</style>
+
+<form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-settings&tab=diagnostics' ); ?>" method="post">
+	<?php wp_nonce_field( 'duplicator_settings_page' ); ?>
+	<input type="hidden" name="action" value="save">
+
+	<?php if($action_updated)  :	?>
+		<div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
+	<?php endif; ?>	
+
+	<h3 class="title"><?php _e("Server Settings", 'wpduplicator') ?> </h3>				
+
+	<table class="widefat" cellspacing="0" style="max-width: 700px; margin-left: 10px">		   
+		<tr>
+			<td class='dup-settings-diag-header' colspan="2"><?php _e("General", 'wpduplicator'); ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Duplicator Version", 'wpduplicator'); ?></td>
+			<td><?php echo DUPLICATOR_VERSION ?></td>
+		</tr>	
+		<tr>
+			<td><?php _e("Operating System", 'wpduplicator'); ?></td>
+			<td><?php echo PHP_OS ?></td>
+		</tr>					   
+		<tr>
+			<td><?php _e("Web Server", 'wpduplicator'); ?></td>
+			<td><?php echo $_SERVER['SERVER_SOFTWARE'] ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("APC Enabled", 'wpduplicator'); ?></td>
+			<td><?php echo DUP_Util::RunAPC() ? 'Yes' : 'No'  ?></td>
+		</tr>					   
+		<tr>
+			<td><?php _e("Root Path", 'wpduplicator'); ?></td>
+			<td><?php echo DUPLICATOR_WPROOTPATH ?></td>
+		</tr>	
+		<tr>
+			<td><?php _e("Plugins Path", 'wpduplicator'); ?></td>
+			<td><?php echo DUP_Util::SafePath(WP_PLUGIN_DIR) ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Loaded PHP INI", 'wpduplicator'); ?></td>
+			<td><?php echo php_ini_loaded_file () ;?></td>
+		</tr>	
+		<tr>
+			<td class='dup-settings-diag-header' colspan="2">WordPress</td>
+		</tr>
+		<tr>
+			<td><?php _e("Version", 'wpduplicator'); ?></td>
+			<td><?php echo $wp_version ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Langugage", 'wpduplicator'); ?></td>
+			<td><?php echo get_bloginfo('language') ?></td>
+		</tr>	
+		<tr>
+			<td><?php _e("Charset", 'wpduplicator'); ?></td>
+			<td><?php echo get_bloginfo('charset') ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Memory Limit ", 'wpduplicator'); ?></td>
+			<td><?php echo WP_MEMORY_LIMIT ?> (<?php _e("Max", 'wpduplicator'); echo '&nbsp;' . WP_MAX_MEMORY_LIMIT; ?>)</td>
+		</tr>
+		<tr>
+			<td class='dup-settings-diag-header' colspan="2">PHP</td>
+		</tr>
+		<tr>
+			<td><?php _e("Version", 'wpduplicator'); ?></td>
+			<td><?php echo phpversion() ?></td>
+		</tr>	
+		<tr>
+			<td>SAPI</td>
+			<td><?php echo PHP_SAPI ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("User", 'wpduplicator'); ?></td>
+			<td><?php echo get_current_user(); ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Safe Mode", 'wpduplicator'); ?></td>
+			<td>
+			<?php echo (((strtolower(@ini_get('safe_mode')) == 'on')	  ||  (strtolower(@ini_get('safe_mode')) == 'yes') || 
+						 (strtolower(@ini_get('safe_mode')) == 'true') ||  (ini_get("safe_mode") == 1 )))  
+						 ? __('On', 'wpduplicator') : __('Off', 'wpduplicator'); 
+			?>
+			</td>
+		</tr>
+		<tr>
+			<td><?php _e("Memory Limit", 'wpduplicator'); ?></td>
+			<td><?php echo @ini_get('memory_limit') ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Memory In Use", 'wpduplicator'); ?></td>
+			<td><?php echo size_format(@memory_get_usage(TRUE), 2) ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Max Execution Time", 'wpduplicator'); ?></td>
+			<td><?php echo @ini_get( 'max_execution_time' ); ?></td>
+		</tr>
+		<tr>
+			<td class='dup-settings-diag-header' colspan="2">MySQL</td>
+		</tr>					   
+		<tr>
+			<td><?php _e("Version", 'wpduplicator'); ?></td>
+			<td><?php echo $wpdb->db_version() ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("Charset", 'wpduplicator'); ?></td>
+			<td><?php echo DB_CHARSET ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("wait_timeout", 'wpduplicator'); ?></td>
+			<td><?php echo $dbvar_maxtime ?></td>
+		</tr>
+		<tr>
+			<td><?php _e("max_allowed_packet", 'wpduplicator'); ?></td>
+			<td><?php echo $dbvar_maxpacks ?></td>
+		</tr>
+		 <tr>
+			 <td class='dup-settings-diag-header' colspan="2"><?php _e("Server Disk", 'wpduplicator'); ?></td>
+		 </tr>
+		 <tr valign="top">
+			 <td><?php _e('Free space', 'hyper-cache'); ?></td>
+			 <td><?php echo $perc;?>% -- <?php echo DUP_Util::ByteSize($space_free);?> from <?php echo DUP_Util::ByteSize($space);?><br/>
+				  <small>
+					  <?php _e("Note: This value is the physical servers hard-drive allocation.", 'wpduplicator'); ?> <br/>
+					  <?php _e("On shared hosts check your control panel for the 'TRUE' disk space quota value.", 'wpduplicator'); ?>
+				  </small>
+			 </td>
+		 </tr>	
+
+	</table><br/>
+	
+	<?php _e("All PHP Information", 'wpduplicator'); ?>
+					<a href="javascript:void(0)" onclick="jQuery('#dup-phpinfo').toggle()" style="font-size:14px; font-weight: bold"><i><?php _e("Toggle All PHP Information", 'wpduplicator') ?></i></a>
+				<div id="dup-phpinfo" style="display:none; width:95%">
+					<?php 	echo "<div id='dup-server-info-area'>{$serverinfo}</div>"; ?>
+				</div><br/>	
+
+	<h3 class="title"><?php _e("Reset Options", 'wpduplicator') ?> </h3>	
+	<div style="padding:0px 0px 0px 20px">
+		<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteOption('duplicator_ui_view_state', true, true)"><?php _e("Clear View State", 'wpduplicator'); ?></a></b> &nbsp; 	
+		<small><?php _e("This will enable all notice messages again and reset any view state.", 'wpduplicator'); ?></small> <br/><br/>
+		
+		<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteLegacy()"><?php _e("Clear Legacy Data", 'wpduplicator'); ?></a></b> &nbsp; 	
+		<small><?php _e("This will remove all legacy plugin settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</small> <br/><br/>
+	</div>
+
+</form>
+

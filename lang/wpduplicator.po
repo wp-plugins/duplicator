@@ -37,63 +37,63 @@ msgstr ""
 msgid "Manage"
 msgstr ""
 
-#: ../files/log-read.php:42
+#: ../installer/log-read.php:42
 msgid "Log file not found or unreadable"
 msgstr ""
 
-#: ../files/log-read.php:44
+#: ../installer/log-read.php:44
 msgid ""
 "The log file for the Duplicator Plugin can be found in the snapshots "
 "directory with the extension *.log"
 msgstr ""
 
-#: ../files/log-read.php:45
+#: ../installer/log-read.php:45
 msgid "If no log file is present the try to create a package"
 msgstr ""
 
-#: ../files/log-read.php:47
+#: ../installer/log-read.php:47
 msgid "Reasons for log file not showing"
 msgstr ""
 
-#: ../files/log-read.php:48
+#: ../installer/log-read.php:48
 msgid "The web server does not support returning .log file extentions"
 msgstr ""
 
-#: ../files/log-read.php:49
+#: ../installer/log-read.php:49
 msgid ""
 "The snapshots directory does not have the correct permissions to write "
 "files.  Try setting the permissions to 755"
 msgstr ""
 
-#: ../files/log-read.php:50
+#: ../installer/log-read.php:50
 msgid ""
 "The process that PHP runs under does not have enough permissions to create "
 "files.  Please contact your hosting provider for more details"
 msgstr ""
 
-#: ../files/log-view.php:100
+#: ../installer/log-view.php:100
 msgid "Duplicator: Create Package Log"
 msgstr ""
 
-#: ../files/log-view.php:103
+#: ../installer/log-view.php:103
 msgid ""
 "Processing may take several minutes, please wait for progress bar to "
 "complete on the main status bar"
 msgstr ""
 
-#: ../files/log-view.php:108
+#: ../installer/log-view.php:108
 msgid "Auto Refresh"
 msgstr ""
 
-#: ../files/log-view.php:109
+#: ../installer/log-view.php:109
 msgid "Refresh"
 msgstr ""
 
-#: ../files/log-view.php:117
+#: ../installer/log-view.php:117
 msgid "Support Center"
 msgstr ""
 
-#: ../files/log-view.php:118
+#: ../installer/log-view.php:118
 msgid ""
 "Do NOT post this data to public sites like the WordPress.org forums as it "
 "contains sensitive data."

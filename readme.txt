@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== WordPress Duplicator by LifeInTheGrid ===
 Contributors: Cory Lamle
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  

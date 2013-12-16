@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 0.4.6
+  Version: 0.5.0
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   License: GPLv2 or later
@@ -28,95 +28,48 @@
   SOURCE CONTRIBUTORS:
   Gaurav Aggarwal
   Jonathan Foote
-
-  ================================================================================ */
+ ================================================================================ */
 
 require_once("define.php");
 
 if (is_admin() == true) {
-
-    $_tmpDuplicatorOptions = get_option('duplicator_options', false);
-    $GLOBALS['duplicator_opts'] = ($_tmpDuplicatorOptions == false) ? array() : @unserialize($_tmpDuplicatorOptions);
-
-    //OPTIONS - PACKAGE TAB
-	$GLOBALS['duplicator_opts']['email-me'] = isset($GLOBALS['duplicator_opts']['email-me']) ? $GLOBALS['duplicator_opts']['email-me'] : '0';
-    $GLOBALS['duplicator_opts']['email_others'] = isset($GLOBALS['duplicator_opts']['email_others']) ? $GLOBALS['duplicator_opts']['email_others'] : '';
-    $GLOBALS['duplicator_opts']['skip_ext'] = isset($GLOBALS['duplicator_opts']['skip_ext']) ? $GLOBALS['duplicator_opts']['skip_ext'] : '';
-    $GLOBALS['duplicator_opts']['dir_bypass'] = isset($GLOBALS['duplicator_opts']['dir_bypass']) ? $GLOBALS['duplicator_opts']['dir_bypass'] : '';
 	
-	//OPTIONS - INSTALLER TAB
-    $GLOBALS['duplicator_opts']['dbhost'] = isset($GLOBALS['duplicator_opts']['dbhost']) ? $GLOBALS['duplicator_opts']['dbhost'] : 'localhost';
-    $GLOBALS['duplicator_opts']['dbname'] = isset($GLOBALS['duplicator_opts']['dbname']) ? $GLOBALS['duplicator_opts']['dbname'] : '';
-    $GLOBALS['duplicator_opts']['dbuser'] = isset($GLOBALS['duplicator_opts']['dbuser']) ? $GLOBALS['duplicator_opts']['dbuser'] : '';
-    $GLOBALS['duplicator_opts']['dbadd_drop'] = isset($GLOBALS['duplicator_opts']['dbadd_drop']) ? $GLOBALS['duplicator_opts']['dbadd_drop'] : '0';
-	//Advanced Opts
-	$GLOBALS['duplicator_opts']['ssl_admin'] = isset($GLOBALS['duplicator_opts']['ssl_admin']) ? $GLOBALS['duplicator_opts']['ssl_admin'] : '0';
-	$GLOBALS['duplicator_opts']['ssl_login'] = isset($GLOBALS['duplicator_opts']['ssl_login']) ? $GLOBALS['duplicator_opts']['ssl_login'] : '0';
-	$GLOBALS['duplicator_opts']['cache_wp'] = isset($GLOBALS['duplicator_opts']['cache_wp']) ? $GLOBALS['duplicator_opts']['cache_wp'] : '0';
-	$GLOBALS['duplicator_opts']['cache_path'] = isset($GLOBALS['duplicator_opts']['cache_path']) ? $GLOBALS['duplicator_opts']['cache_path'] : '0';
-	$GLOBALS['duplicator_opts']['url_new'] = isset($GLOBALS['duplicator_opts']['url_new']) ? $GLOBALS['duplicator_opts']['url_new'] : '';
-
-    //Default Arrays
-    $GLOBALS['duplicator_bypass-array'] = explode(";", $GLOBALS['duplicator_opts']['dir_bypass'], -1);
-    $GLOBALS['duplicator_bypass-array'] = count($GLOBALS['duplicator_bypass-array']) ? $GLOBALS['duplicator_bypass-array'] : array();
-    $GLOBALS['duplicator_skip_ext-array'] = explode(";", $GLOBALS['duplicator_opts']['skip_ext']) ? explode(";", $GLOBALS['duplicator_opts']['skip_ext']) : array();
-
-	require_once 'classes/class.util.php';
-	require_once 'classes/class.settings.php';
-    require_once 'classes/class.zip.php';
-	require_once 'inc/functions.php';
-    require_once 'inc/actions.php';
-    
-	//SETTINGS
-	global $DuplicatorSettings;
-	$DuplicatorSettings = new DuplicatorSettings();
+	require_once 'classes/logging.php';
+	require_once 'classes/utility.php';
+	require_once 'classes/ui.php';
+	require_once 'classes/settings.php';
+	require_once 'classes/package.php';
+	require_once 'classes/package.archive.zip.php';
+    require_once 'views/actions.php';
 	
-
     /* ACTIVATION 
       Only called when plugin is activated */
     function duplicator_activate() {
 
         global $wpdb;
-        $table_name = $wpdb->prefix . "duplicator";
-
-        //PRIMARY KEY must have 2 spaces before for dbDelta to work
-        $sql = "CREATE TABLE `{$table_name}` (
-		 id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-		 token 	 	 VARCHAR(25) NOT NULL, 
-		 packname 	 VARCHAR(250) NOT NULL, 
-		 zipname 	 VARCHAR(250) NOT NULL, 
-		 zipsize 	 INT (11),
-		 created 	 DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-		 owner 		 VARCHAR(60) NOT NULL,
-		 settings 	 LONGTEXT NOT NULL)";
+        $table_name = $wpdb->prefix . "duplicator_packages";
+		
+		 //PRIMARY KEY must have 2 spaces before for dbDelta to work
+		$sql = "CREATE TABLE `{$table_name}` (
+			`id`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+			`name`		VARCHAR(250)	NOT NULL,
+			`hash`		VARCHAR(50)		NOT NULL,
+			`status`	VARCHAR(25)		NOT NULL,
+			`type`		VARCHAR(25)		NOT NULL,
+			`created`	DATETIME		NOT NULL DEFAULT '0000-00-00 00:00:00',
+			`owner`		VARCHAR(60)		NOT NULL,
+			`package`	MEDIUMBLOB		NOT NULL )";
 
         require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
         @dbDelta($sql);
 
-        $duplicator_opts = array(
-            'dbhost' => "{$GLOBALS['duplicator_opts']['dbhost']}",
-            'dbname' => '',
-            'dbuser' => '',
-            'url_new' => '',
-            'email-me' => "{$GLOBALS['duplicator_opts']['email-me']}",
-            'email_others' => "{$GLOBALS['duplicator_opts']['email_others']}",
-            'dir_bypass' => "{$GLOBALS['duplicator_opts']['dir_bypass']}",
-            'log_level' => '0',
-            'skip_ext' => "{$GLOBALS['duplicator_opts']['skip_ext']}");
-
 		//WordPress Options Hooks
-        update_option('duplicator_version_plugin', DUPLICATOR_VERSION);
-        update_option('duplicator_options', serialize($duplicator_opts));
-		
-		add_option('duplicator_pack_passcount', 0);
-		add_option('duplicator_add1_passcount', 0);
-		if (get_option('duplicator_add1_clicked') === false) {
-			add_option('duplicator_add1_clicked', 0);
-		}
+        update_option('duplicator_version_plugin',  DUPLICATOR_VERSION);
 
         //Setup All Directories
-        duplicator_init_snapshotpath();
+        DUP_Util::InitSnapshotDirectory();
     }
+	
 
     /* UPDATE 
       register_activation_hook is not called when a plugin is updated
@@ -127,86 +80,11 @@ if (is_admin() == true) {
         }
     }
 
-    /* DEACTIVATION 
-      Only called when plugin is deactivated */
+    /* DEACTIVATION / UNINSTALL 
+	 * Only called when plugin is deactivated.
+	 * For uninstall see uninstall.php */
     function duplicator_deactivate() {
         //No actions needed yet
-    }
-
-    /* UNINSTALL 
-      Uninstall all duplicator logic */
-    function duplicator_uninstall() {
-        global $wpdb;
-		global $DuplicatorSettings;
-		
-        $table_name = $wpdb->prefix . "duplicator";
-        $wpdb->query("DROP TABLE `{$table_name}`");
-
-        delete_option('duplicator_version_plugin');
-        delete_option('duplicator_options');
-		
-		//Remvoe entire wp-snapshots directory
-        if ($DuplicatorSettings->Get('uninstall_files')) {
-
-            $ssdir = duplicator_safe_path(DUPLICATOR_SSDIR_PATH);
-
-            //Sanity check for strange setup
-            $check = glob("{$ssdir}/wp-config.php");
-            if (count($check) == 0) {
-
-                //PHP is sometimes flaky so lets do a sanity check
-                foreach (glob("{$ssdir}/*_database.sql") as $file) {
-                    if (strstr($file, '_database.sql')) {
-                        @unlink("{$file}");
-                    }
-                }
-                foreach (glob("{$ssdir}/*_installer.php") as $file) {
-                    if (strstr($file, '_installer.php')) {
-                        @unlink("{$file}");
-                    }
-                }
-                foreach (glob("{$ssdir}/*_package.zip") as $file) {
-                    if (strstr($file, '_package.zip')) {
-                        @unlink("{$file}");
-                    }
-                }
-                foreach (glob("{$ssdir}/*.log") as $file) {
-                    if (strstr($file, '.log')) {
-                        @unlink("{$file}");
-                    }
-                }
-
-                //Check for core files and only continue removing data if the snapshots directory
-                //has not been edited by 3rd party sources, this helps to keep the system stable
-                $files = glob("{$ssdir}/*");
-                if (is_array($files) && count($files) == 3) {
-                    $defaults = array("{$ssdir}/index.php", "{$ssdir}/robots.txt", "{$ssdir}/dtoken.php");
-                    $compare = array_diff($defaults, $files);
-
-                    if (count($compare) == 0) {
-                        foreach ($defaults as $file) {
-                            @unlink("{$file}");
-                        }
-                        @unlink("{$ssdir}/.htaccess");
-                        @rmdir($ssdir);
-                    }
-                    //No packages have ever been created
-                } else if (is_array($files) && count($files) == 1) {
-                    $defaults = array("{$ssdir}/index.php");
-                    $compare = array_diff($defaults, $files);
-                    if (count($compare) == 0) {
-                        @unlink("{$ssdir}/index.php");
-                        @rmdir($ssdir);
-                    }
-                }
-            }
-        }
-		
-		//Remove all Settings
-		if ($DuplicatorSettings->Get('uninstall_settings')) {
-			$DuplicatorSettings->Delete();
-		}
-		
     }
 
     /* META LINK ADDONS
@@ -227,18 +105,17 @@ if (is_admin() == true) {
     load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
     register_activation_hook(__FILE__, 'duplicator_activate');
     register_deactivation_hook(__FILE__, 'duplicator_deactivate');
-    register_uninstall_hook(__FILE__, 'duplicator_uninstall');
 
 	//ACTIONS
     add_action('plugins_loaded',						'duplicator_update');
     add_action('admin_init',							'duplicator_init');
     add_action('admin_menu',							'duplicator_menu');
-    add_action('wp_ajax_duplicator_system_check',		'duplicator_system_check');
-    add_action('wp_ajax_duplicator_system_directory',	'duplicator_system_directory');
-    add_action('wp_ajax_duplicator_delete',				'duplicator_delete');
-    add_action('wp_ajax_duplicator_create',				'duplicator_create');
-    add_action('wp_ajax_duplicator_task_save',			'duplicator_task_save');
-	add_action('wp_ajax_duplicator_add1_click',			'duplicator_add1_click');
+    add_action('wp_ajax_duplicator_package_scan',		'duplicator_package_scan');
+    add_action('wp_ajax_duplicator_package_create',		'duplicator_package_create');
+	add_action('wp_ajax_duplicator_package_delete',		'duplicator_package_delete');
+	add_action('wp_ajax_duplicator_util_delete_option',	'duplicator_util_delete_option');
+	add_action('wp_ajax_duplicator_util_delete_legacy',	'duplicator_util_delete_legacy');
+	add_action('wp_ajax_DUP_UI_SaveViewState',			array('DUP_UI', 'SaveViewState'));
 	
 	//FILTERS
     add_filter('plugin_action_links',					'duplicator_manage_link', 10, 2);
@@ -248,53 +125,47 @@ if (is_admin() == true) {
      *  DUPLICATOR_INIT
      *  Init routines  */
     function duplicator_init() {
-        /* Register our stylesheet. */
+        /* CSS */
         wp_register_style('jquery-ui', DUPLICATOR_PLUGIN_URL . 'assets/css/jquery-ui.css', null, "1.9.2");
-        wp_register_style('duplicator_style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css');
-    }
-
-    /**
-     *  DUPLICATOR_VIEWS
-     *  Inlcude all visual elements  */
-    function duplicator_package_main() {
-        include 'inc/pack.main.php';
-    }
-
-    //Settings Page
-    function duplicator_settings_page() {
-        include 'inc/settings.php';
-    }
-
-    //Support Page
-    function duplicator_support_page() {
-        include 'inc/support.php';
+		wp_register_style('font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.0.3' );
+        wp_register_style('duplicator_style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
+		/* JS */
+		wp_register_script('parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley-standalone.min.js', array('jquery'), '1.1.18');
     }
 	
-	//Cleanup Page
-    function duplicator_cleanup_page() {
-        include 'inc/cleanup.php';
-    }
+	//PAGE VIEWS
+    function duplicator_get_menu()	{
+		$current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : 'duplicator';
+		switch ($current_page) {
+			case 'duplicator':			 include('views/packages/controller.php');	break;
+			case 'duplicator-settings':	 include('views/settings/controller.php');	break;
+			case 'duplicator-support':	 include('views/support.php');				break;
+			case 'duplicator-cleanup':	 include('views/tools/cleanup.php');		break;
+		}	
+	}
 
     /**
      *  DUPLICATOR_MENU
      *  Loads the menu item into the WP tools section and queues the actions for only this plugin */
     function duplicator_menu() {
+		
+		$perms = 'import';
+		
         //Main Menu
-        $page_main = add_menu_page('Duplicator', 'Duplicator', "import", basename(__FILE__), 'duplicator_package_main', plugins_url('duplicator/assets/img/create.png'));
-        add_submenu_page(basename(__FILE__), __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), "import", basename(__FILE__), 'duplicator_package_main');
-        //Sub Menus
-        $page_settings = add_submenu_page(basename(__FILE__), __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), 'import', 'duplicator_settings_page', 'duplicator_settings_page');
-        $page_support  = add_submenu_page(basename(__FILE__), __('Support', 'wpduplicator'), __('Support', 'wpduplicator'), 'import', 'duplicator_support_page', 'duplicator_support_page');
-		$page_cleanup  = add_submenu_page(basename(__FILE__), __('Cleanup', 'wpduplicator'), '' , 'import', 'duplicator_cleanup_page', 'duplicator_cleanup_page');
+        add_menu_page('Duplicator Plugin', 'Duplicator', $perms, 'duplicator', 'duplicator_get_menu', plugins_url('duplicator/assets/img/create.png'));
+        $page_packages = add_submenu_page('duplicator',  __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), $perms, 'duplicator',			'duplicator_get_menu');
+        $page_settings = add_submenu_page('duplicator',  __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), $perms, 'duplicator-settings', 'duplicator_get_menu');
+        $page_support  = add_submenu_page('duplicator',  __('Support', 'wpduplicator'),  __('Support', 'wpduplicator'),	 $perms, 'duplicator-support',  'duplicator_get_menu');
+		$page_cleanup  = add_submenu_page('duplicator',  __('Cleanup', 'wpduplicator'),  '' ,							 $perms, 'duplicator-cleanup',  'duplicator_get_menu');
 
         //Apply Scripts
-        add_action('admin_print_scripts-' . $page_main, 'duplicator_scripts');
+        add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_settings, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_support, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_cleanup, 'duplicator_scripts');
-		
+
 		//Apply Styles
-        add_action('admin_print_styles-'  . $page_main, 'duplicator_styles');
+        add_action('admin_print_styles-'  . $page_packages, 'duplicator_styles');
         add_action('admin_print_styles-'  . $page_settings, 'duplicator_styles');
 		add_action('admin_print_styles-'  . $page_support, 'duplicator_styles');
         add_action('admin_print_styles-'  . $page_cleanup, 'duplicator_styles');
@@ -306,10 +177,8 @@ if (is_admin() == true) {
     function duplicator_scripts() {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-core');
-        wp_enqueue_script('jquery-ui-dialog');
-        wp_enqueue_script('jquery-ui-button');
-        wp_enqueue_script('jquery-ui-tabs');
-		wp_enqueue_script('jquery-ui-accordion');
+		wp_enqueue_script('jquery-ui-progressbar');
+		wp_enqueue_script('parsley');
     }
 
     /**
@@ -318,6 +187,7 @@ if (is_admin() == true) {
     function duplicator_styles() {
         wp_enqueue_style('jquery-ui');
         wp_enqueue_style('duplicator_style');
+		wp_enqueue_style('font-awesome');
     }
 
     /**
@@ -329,26 +199,10 @@ if (is_admin() == true) {
             $this_plugin = plugin_basename(__FILE__);
 
         if ($file == $this_plugin) {
-            $settings_link = '<a href="admin.php?page=duplicator.php">' . __("Manage", 'wpduplicator') . '</a>';
+            $settings_link = '<a href="admin.php?page=duplicator">' . __("Manage", 'wpduplicator') . '</a>';
             array_unshift($links, $settings_link);
         }
         return $links;
-    }
-
-    //Use WordPress Debugging log file. file is written to wp-content/debug.log
-    //trace with tail command to see real-time issues.
-    if (!function_exists('duplicator_debug')) {
-
-        function duplicator_debug($message) {
-            if (WP_DEBUG === true) {
-                if (is_array($message) || is_object($message)) {
-                    error_log(print_r($message, true));
-                } else {
-                    error_log($message);
-                }
-            }
-        }
-
     }
 }
 ?>
