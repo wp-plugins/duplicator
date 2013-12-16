@@ -25,8 +25,8 @@
 	div#dup-logs {text-align:center; margin:auto; padding:5px; width:350px;}
 	div#dup-logs a {font-size:15px; text-decoration:none !important; display:inline-block; margin:20px 0px 5px 0px}
 	div.dup-button-footer {text-align:right; margin:20px 10px 0px 0px}
-	button.button {font-size:16px !important; height:30px !important; font-weight:bold; padding:0px 10px 5px 10px !important;}
-	span.dup-btn-size {font-size:12px;font-weight: normal}
+	button.button {font-size:16px !important; height:30px !important; font-weight:bold; padding:0px 10px 5px 10px !important; min-width: 150px }
+	span.dup-btn-size {font-size:11px;font-weight: normal}
 </style>
 
 <!-- =========================================
@@ -142,7 +142,7 @@ jQuery(document).ready(function($) {
 				var InstallURL = Pack.StoreURL + Pack.Installer.File + "?get=1&file=" + Pack.Installer.File;
 				var ArchiveURL = Pack.StoreURL + Pack.Archive.File   + "?get=1";
 				
-				$('#dup-btn-installer-size').append('&nbsp; (' + data.ExeSize + ')')
+				//$('#dup-btn-installer-size').append('&nbsp; (' + data.ExeSize + ')')
 				$('#dup-btn-archive-size').append('&nbsp; (' + data.ZipSize + ')')
 				$('#data-name-hash').text(Pack.NameHash || 'error read');
 				$('#data-time').text(data.Runtime || 'unable to read time');

@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
+
 class DUP_UI {
 	
 	//Private

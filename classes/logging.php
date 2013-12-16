@@ -1,6 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
+if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 
 class DUP_Log {
 	

@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.archive.zip.php');
 
 class DUP_Archive {
