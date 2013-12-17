@@ -139,8 +139,9 @@ if (is_admin() == true) {
 		switch ($current_page) {
 			case 'duplicator':			 include('views/packages/controller.php');	break;
 			case 'duplicator-settings':	 include('views/settings/controller.php');	break;
+			case 'duplicator-cleanup':	 include('views/tools/cleanup.php');	break;
 			case 'duplicator-support':	 include('views/support.php');				break;
-			case 'duplicator-cleanup':	 include('views/tools/cleanup.php');		break;
+			
 		}	
 	}
 
@@ -152,11 +153,11 @@ if (is_admin() == true) {
 		$perms = 'import';
 		
         //Main Menu
-        add_menu_page('Duplicator Plugin', 'Duplicator', $perms, 'duplicator', 'duplicator_get_menu', plugins_url('duplicator/assets/img/create.png'));
+        $main_menu     = add_menu_page('Duplicator Plugin', 'Duplicator', $perms, 'duplicator', 'duplicator_get_menu', plugins_url('duplicator/assets/img/create.png'));
         $page_packages = add_submenu_page('duplicator',  __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), $perms, 'duplicator',			'duplicator_get_menu');
         $page_settings = add_submenu_page('duplicator',  __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), $perms, 'duplicator-settings', 'duplicator_get_menu');
         $page_support  = add_submenu_page('duplicator',  __('Support', 'wpduplicator'),  __('Support', 'wpduplicator'),	 $perms, 'duplicator-support',  'duplicator_get_menu');
-		$page_cleanup  = add_submenu_page('duplicator',  __('Cleanup', 'wpduplicator'),  '' ,							 $perms, 'duplicator-cleanup',  'duplicator_get_menu');
+		$page_cleanup  = add_submenu_page($main_menu,  __('Cleanup', 'wpduplicator'),  '' ,							     $perms, 'duplicator-cleanup',  'duplicator_get_menu');
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');

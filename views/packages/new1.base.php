@@ -146,8 +146,9 @@ jQuery(document).ready(function($) {
 	
 	/*	----------------------------------------
 	*	METHOD: Auto Skip Step 2*/ 
-	Duplicator.Pack.SkipStep2 = function(chkbox) {
-		if ($(chkbox).prop('checked') ) {
+	Duplicator.Pack.SkipStep2 = function() {
+		var $chkbox = jQuery('#dup-skip-step2');
+		if ($chkbox.prop('checked') ) {
 			jQuery('#dup-form-opts').attr('action', '?page=duplicator&tab=new3');
 		} else {
 			jQuery('#dup-form-opts').attr('action', '?page=duplicator&tab=new2');
@@ -169,6 +170,7 @@ jQuery(document).ready(function($) {
 	//Init: Toggle OptionTabs
 	Duplicator.Pack.ToggleFileFilters();
 	Duplicator.Pack.ToggleDBFilters();
+	<?php echo ($package_skip_scanner) ? 'Duplicator.Pack.SkipStep2();' : ''; ?>
 	
 });
 </script>

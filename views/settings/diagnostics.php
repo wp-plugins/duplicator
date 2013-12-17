@@ -60,7 +60,7 @@
 	SERVER SETTINGS -->	
 	<div class="dup-box">
 	<div class="dup-box-title">
-		<i class="fa fa-check-square-o"></i>
+		<i class="fa fa-tachometer"></i>
 		<?php _e("Server Settings", 'wpduplicator') ?>
 		<div class="dup-box-arrow"></div>
 	</div>
@@ -194,7 +194,7 @@
 	OPTIONS DATA -->
 	<div class="dup-box">
 		<div class="dup-box-title">
-			<i class="fa fa-check-square-o"></i>
+			<i class="fa fa-th-list"></i>
 			<?php _e("Options Data", 'wpduplicator'); ?>
 			<div class="dup-box-arrow"></div>
 		</div>
@@ -203,11 +203,11 @@
 
 			<h3 class="title" style="margin-left:-15px"><?php _e("Reset/Remove", 'wpduplicator') ?> </h3>	
 
-				<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteOption('duplicator_ui_view_state', true, true)"><?php _e("Clear View State", 'wpduplicator'); ?></a></b> &nbsp; 	
-				<small><?php _e("This will enable all notice messages again and reset any view state.", 'wpduplicator'); ?></small> <br/>
+			<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteOption('duplicator_ui_view_state', true, true)"><?php _e("Clear View State", 'wpduplicator'); ?></a></b> &nbsp; 	
+			<small><?php _e("This will enable all notice messages again and reset any view state.", 'wpduplicator'); ?></small> <br/>
 
-				<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteLegacy()"><?php _e("Clear Legacy Data", 'wpduplicator'); ?></a></b> &nbsp; 	
-				<small><?php _e("This will remove all legacy plugin settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</small> <br/><br/>
+			<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteLegacy()"><?php _e("Clear Legacy Data", 'wpduplicator'); ?></a></b> &nbsp; 	
+			<small><?php _e("This will remove all legacy plugin settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</small> <br/><br/>
 
 			
 			<h3 class="title" style="margin-left:-15px"><?php _e("Details", 'wpduplicator') ?> </h3>	
@@ -217,16 +217,12 @@
 					<th>Value</th>
 				</tr>		
 				<?php 
-					$sql = "SELECT * FROM `{$wpdb->prefix}options` WHERE  `option_name` LIKE  '%duplicator%' ORDER BY option_name";
+					$sql = "SELECT * FROM `{$wpdb->prefix}options` WHERE  `option_name` LIKE  '%duplicator_%' ORDER BY option_name";
 					foreach( $wpdb->get_results("{$sql}") as $key => $row) { ?>	
-
 					<tr>
 						<td><?php echo $row->option_name?></td>
-						<td>
-							<textarea class="dup-opts-read" readonly="readonly"><?php echo $row->option_value?></textarea>
-						</td>
+						<td><textarea class="dup-opts-read" readonly="readonly"><?php echo $row->option_value?></textarea></td>
 					</tr>
-
 				<?php } ?>	
 			</table>
 			</div>
@@ -239,7 +235,7 @@
 	PHP INFORMATION -->
 	<div class="dup-box">
 		<div class="dup-box-title">
-			<i class="fa fa-check-square-o"></i>
+			<i class="fa fa-info-circle"></i>
 			<?php _e("PHP Information", 'wpduplicator'); ?>
 			<div class="dup-box-arrow"></div>
 		</div>

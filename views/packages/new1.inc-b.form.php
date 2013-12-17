@@ -193,7 +193,7 @@ META-BOX2: PACKAGE OPTIONS -->
 	<!-- end meta-box: installer  -->
 	
 	<div style="padding:15px 3px 3px 3px; float:right">
-		<input type="checkbox" id="dup-skip-step2" name="dup-skip-step2" onclick="Duplicator.Pack.SkipStep2(this)" <?php echo ($package_skip_scanner) ? 'checked="checked"' : ''; ?> />
+		<input type="checkbox" id="dup-skip-step2" name="dup-skip-step2" onclick="Duplicator.Pack.SkipStep2()" <?php echo ($package_skip_scanner) ? 'checked="checked"' : ''; ?> />
 		<label for="dup-skip-step2"><b><?php _e('Skip Scan', 'wpduplicator'); ?></b> <small>(<?php _e('step 2', 'wpduplicator'); ?>)</small></label>
 	</div><br style="clear:both" /><br/>
 
