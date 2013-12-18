@@ -156,10 +156,10 @@ jQuery(document).ready(function($) {
 			},
 			error: function(data) { 
 				$('#dup-progress-bar-area').hide(); 
+				$('#dup-progress-area, #dup-msg-error').show(200);
 				var status = data.status + ' -' + data.statusText;
 				$('#dup-msg-error-response-status span.data').html(status)
 				$('#dup-msg-error-response-text span.data').html(data.responseText);
-				$('#dup-msg-error').show(200);
 				console.log(data);
 			}
 		});

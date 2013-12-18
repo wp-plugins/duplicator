@@ -384,6 +384,7 @@ if ($dbtable_count == 0) {
 		table prefix '{$GLOBALS['FW_TABLEPREFIX']}' is correct for this particular version of WordPress. \n");
 }
 
+
 //DATA CLEANUP: Perform Transient Cache Cleanup
 //Remove all duplicator entries and record this one since this is a new install.
 $dbdelete_count = 0;
@@ -398,6 +399,12 @@ DupUtil::log("Removed '{$dbdelete_count}' cache/transient rows");
 $profile_end = DupUtil::get_microtime();
 DupUtil::log("\nSECTION RUNTIME: " . DupUtil::elapsed_time($profile_end, $profile_start));
 
+//CONFIG FILE RESETS
+DupUtil::log("\nWEB SERVER CONFIG FILES");
+DUPEXE_Config::ResetHTACCESS();
+DUPEXE_Config::ResetWebConfig();
+
+//FINAL RESULTS
 $ajax1_end = DupUtil::get_microtime();
 $ajax1_sum = DupUtil::elapsed_time($ajax1_end, $ajax1_start);
 DupUtil::log("\n{$GLOBALS['SEPERATOR1']}");

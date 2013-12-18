@@ -46,7 +46,8 @@ class DUP_Installer {
 		$embeded_files = array(
 			"inc.assets.css.php"	=> "@@INC.ASSETS.CSS.PHP@@",
 			"inc.assets.js.php"		=> "@@INC.ASSETS.JS.PHP@@",
-			"inc.utils.php"			=> "@@INC.UTILS.PHP@@",
+			"class.utils.php"		=> "@@CLASS.UTILS.PHP@@",
+			"class.config.php"		=> "@@CLASS.CONFIG.PHP@@",
 			"ajax.step1.php"		=> "@@AJAX.STEP1.PHP@@",
 			"ajax.step2.php"		=> "@@AJAX.STEP2.PHP@@",
 			"view.step1.php"		=> "@@VIEW.STEP1.PHP@@",
@@ -79,10 +80,14 @@ class DUP_Installer {
 	*/
 	private function createFromTemplate() {
 		
+		global $wpdb;
+		
 		DUP_Log::Info("INSTALLER FILE: Preping for use");
 
 		$template  = DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH . 'installer/installer.template.php');
 		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH) . "/{$this->Package->NameHash}_installer.php";
+		
+		//$tablePrefix = (is_multisite()) ? $wpdb->get_blog_prefix() : $wpdb->prefix;
 
 		$replace_items = Array(
 			"fwrite_url_old"			=> get_option('siteurl'),

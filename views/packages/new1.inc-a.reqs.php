@@ -16,14 +16,14 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 			<i><?php _e("System requirments must pass for the Duplicator to work properly.  Click each link for details.", 'wpduplicator'); ?></i>
 		</div>
 
-		<!-- SYS-100 -->
+		<!-- PERMISSIONS: SYS-100 -->
 		<div class='dup-sys-req'>
 			<div class='dup-sys-title'>
 				<a><?php _e('Permissions', 'wpduplicator');?></a> <div><?php echo $dup_tests['SYS-100'];?></div>
 			</div>
 			<div class="dup-sys-info dup-info-box">
 				<?php 
-					echo "<b>";  _e("Required permissions", 'wpduplicator'); echo ":</b><br/>";
+					echo "<b>";  _e("Required Paths", 'wpduplicator'); echo ":</b><br/>";
 
 					$test = is_writeable(DUPLICATOR_WPROOTPATH) ? 'Pass' : 'Fail';
 					printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_WPROOTPATH);
@@ -31,6 +31,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 					printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_SSDIR_PATH);
 					$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'installer/') ? 'Pass' : 'Fail';
 					printf("<b>%s</b> [%s] <br/><br/>", $test, DUPLICATOR_PLUGIN_PATH . 'installer/');
+					printf("<b>%s:</b> [%s] <br/><br/>", __('PHP Script Owner', 'wpduplicator'), get_current_user());
 
 					_e("The above paths should have permissions of 755 for directories and 644 for files. You can temporarily try 777 if you continue to have issues.  Also be sure to check the owner/group settings.  For more details contact your host or server administrator.", 'wpduplicator');
 				?>

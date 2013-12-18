@@ -34,21 +34,9 @@ VIEW: STEP 3- INPUT -->
 		<div class="dup-step3-final-title">IMPORTANT FINAL STEPS!</div>
 	</div>
 		
-	<table>
+	<table class="dup-step3-final-step">
 		<tr>
-			<td style="width:170px">&raquo; <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'><b>Resave Permalinks</b></a> </td>
-			<td><i style='font-size:11px'>This will update url rewrite items like the .htaccess file (requires login)</i></td>
-		</tr>
-		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')"><b>Delete Installer Files</b></a></td>
-			<td><i style='font-size:11px'>Removes installer.php, installer-data.sql, installer-log.txt &amp; package (requires login)</i></td>
-		</tr>
-		<tr>
-			<td>&raquo; <a href='<?php echo $_POST['url_new']; ?>' target='_blank'><b>Test Entire Site</b></a> </td>
-			<td><i style='font-size:11px'>Validate all pages, links images and plugins</i></td>
-		</tr>
-		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)"><b>View Install Report</b></a></td>
+			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">1. Read Install Report</a></td>
 			<td>
 				<i style='font-size:11px; color:#BE2323'>
 					<span data-bind="with: status.step1">Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
@@ -56,6 +44,18 @@ VIEW: STEP 3- INPUT -->
 					<span data-bind="with: status.step2">Warnings: <span data-bind="text: warn_all"></span></span>
 				</i>
 			</td>
+		</tr>	
+		<tr>
+			<td style="width:170px">&raquo; <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'>2. Resave Permalinks</a> </td>
+			<td><i style='font-size:11px'>Updates URL rewrite rules in .htaccess (requires login)</i></td>
+		</tr>	
+		<tr>
+			<td>&raquo; <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>3. Test Entire Site</a> </td>
+			<td><i style='font-size:11px'>Validate all pages, links images and plugins</i></td>
+		</tr>		
+		<tr>
+			<td>&raquo; <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">4. File Cleanup</a></td>
+			<td><i style='font-size:11px'>Removes all installer files (requires login)</i></td>
 		</tr>	
 		<tr>
 			<td colspan="2" style="text-align:center">

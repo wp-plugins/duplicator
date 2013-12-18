@@ -42,7 +42,7 @@
 	/* wiz-steps numbers */
 	.wizard-steps span {display:block;float:left; font-size:11px; text-align:center; width:15px; margin:2px 5px 0px 0px; line-height:15px; color:#ccc; background:#FFF; border:2px solid #999; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; }
 	/* wiz-steps default*/
-	.wizard-steps a { position:relative; display:block; width:auto; height:24px; margin-right:18px; padding:0px 10px 0px 3px; float:left; font-size:11px; line-height:24px; color:#666; background:#F0EEE3; text-decoration:none; text-shadow:1px 1px 1px rgba(255,255,255, 0.8); }
+	.wizard-steps a { position:relative; display:block; width:auto; height:24px; margin-right:18px; padding:0px 10px 0px 3px; float:left; font-size:11px; line-height:24px; color:#666; background:#F0EEE3; text-decoration:none; }
 	.wizard-steps a:before { width:0px; height:0px; border-top:12px solid #F0EEE3; border-bottom:12px solid #F0EEE3; border-left:12px solid transparent; position:absolute; content:""; top:0px; left:-12px; }
 	.wizard-steps a:after { width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:12px solid #F0EEE3; position:absolute; content:""; top:0px; right:-12px; }
 	/* wiz-steps completed*/
@@ -70,7 +70,7 @@
 	/* ============================
 	STEP 1 VIEW */
 	i#dup-step1-sys-req-msg {font-weight:normal; display:block; padding:0px 0px 0px 20px;}
-	div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-shadow:0 1px 0 #666;text-align:center;text-decoration:none;box-shadow:1px 1px 2px #000;background:#207D1D;opacity:0.95; display:inline-block;}
+	div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-align:center;text-decoration:none;box-shadow:1px 1px 2px #000;background:#207D1D;opacity:0.95; display:inline-block;}
 	div.circle-fail {background:#9A0D1D !important;}
 	div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:75px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
 	select#logging {font-size:11px}
@@ -116,6 +116,9 @@
 	div.dup-step3-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0px 20px 0px; border-radius:5px;}
 	div.dup-step3-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
 	div.dup-step3-err-msg div.info{padding:2px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:11px; line-height:16px }
+	table.dup-step3-final-step {width:100%}
+	table.dup-step3-final-step td {padding: 5px 15px 5px 5px}
+	table.dup-step3-final-step td:first-child {white-space: nowrap; font-weight: bold}
 
 	/* ============================
 	BUTTONS */	

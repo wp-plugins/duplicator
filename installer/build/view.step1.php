@@ -217,7 +217,7 @@ VIEW: STEP 1- INPUT -->
     		    
     	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
     	If your interested in Private Label Rights please contact us at the URL below to discuss
-    	customizations to product labeling: http://lifeinthegrid.com/services/	-->
+    	customizations to product labeling: http://lifeinthegrid.com	-->
     	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
     	<div id='dup-step1-cpanel' style="display:none">
     	    <div style="padding:10px 0px 0px 10px;line-height:22px">

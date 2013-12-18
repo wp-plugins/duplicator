@@ -54,7 +54,7 @@ META-BOX2: PACKAGE OPTIONS -->
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir , '/'); ?>')">[<?php _e("wp-uploads", 'wpduplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
 						</div>
-						<textarea name="filter-dirs" id="filter-dirs" placeholder="/root/path1;/root/path2;"><?php echo esc_textarea($Package->Archive->FilterDirs); ?></textarea><br/>
+						<textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo esc_textarea($Package->Archive->FilterDirs); ?></textarea><br/>
 						<label class="no-select" title="<?php _e("Separate all filters by semicolon", 'wpduplicator'); ?>"><?php _e("File extensions", 'wpduplicator') ?>:</label>
 						<div class='dup-quick-links'>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php _e("media", 'wpduplicator') ?>]</a>
@@ -64,7 +64,8 @@ META-BOX2: PACKAGE OPTIONS -->
 						<textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
 					
 						<div class="dup-tabs-opts-help">
-							<?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'wpduplicator'); ?>
+							<?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'wpduplicator'); ?> <br/>
+							<?php _e("Use the full path for directory path filters.", 'wpduplicator'); ?>
 						</div>
 						
 					</div>

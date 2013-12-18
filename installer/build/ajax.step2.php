@@ -444,11 +444,27 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 	}
 }
 
-/*UPDATE WP-CONFIG FILE */
-$patterns = array("/'WP_HOME',\s*'.*?'/", "/'WP_SITEURL',\s*'.*?'/");
+/*MU Updates*/
+$mu_newDomain = parse_url($_POST['url_new']);
+$mu_oldDomain = parse_url($_POST['url_old']);
+$mu_newDomainHost = $mu_newDomain['host'];
+$mu_oldDomainHost = $mu_oldDomain['host'];
+$mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+if ($mu_updates) {
+	DupUtil::log("Update MU table blogs: domain {$mu_newDomainHost} ");
+} else {
+	DupUtil::log("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+}
 
-$replace = array("'WP_HOME', " . '\'' . $_POST['url_new'] . '\'',
-	"'WP_SITEURL', " . '\'' . $_POST['url_new'] . '\'');
+
+/*UPDATE WP-CONFIG FILE */
+$patterns = array("/'WP_HOME',\s*'.*?'/", 
+				  "/'WP_SITEURL',\s*'.*?'/",
+				  "/'DOMAIN_CURRENT_SITE',\s*'.*?'/");
+
+$replace = array("'WP_HOME', "    . '\''		  . $_POST['url_new'] . '\'',
+				 "'WP_SITEURL', " . '\''		  . $_POST['url_new'] . '\'',
+				 "'DOMAIN_CURRENT_SITE', " . '\'' . $mu_newDomainHost     . '\'');
 
 $config_file = @file_get_contents('wp-config.php', true);
 $config_file = preg_replace($patterns, $replace, $config_file);
@@ -461,42 +477,6 @@ if (!file_exists(DUPLICATOR_SSDIR_NAME)) {
 }
 $fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 fclose($fp);
-
-
-//WEB CONFIG FILE(S)
-$currdata = parse_url($_POST['url_old']);
-$newdata = parse_url($_POST['url_new']);
-$currpath = DupUtil::add_slash(isset($currdata['path']) ? $currdata['path'] : "");
-$newpath = DupUtil::add_slash(isset($newdata['path']) ? $newdata['path'] : "");
-
-if ($currpath != $newpath) {
-	DupUtil::log("HTACCESS CHANGES:");
-	@copy('.htaccess', '.htaccess.orig');
-	@copy('web.config', 'web.config.orig');
-	@unlink('.htaccess');
-	@unlink('web.config');
-	DupUtil::log("created backup of original .htaccess to htaccess.orig and web.config to web.config.orig");
-
-	$tmp_htaccess = <<<HTACCESS
-# BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase {$newpath}
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . {$newpath}index.php [L]
-</IfModule>
-# END WordPress
-HTACCESS;
-
-	file_put_contents('.htaccess', $tmp_htaccess);
-	@chmod('.htaccess', 0644);
-	DupUtil::log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
-	DupUtil::log("updated .htaccess file.");
-} else {
-	DupUtil::log("web configuration file was not renamed because the paths did not change.");
-}
 
 
 //===============================

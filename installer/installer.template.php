@@ -463,6 +463,77 @@ class DupUtil {
 ?>
 
 <?php
+/** * *****************************************************
+ * DUPEXE_Config 
+ * Class used to update and edit web server configuration files  */
+
+class DUPEXE_Config {
+
+    /** METHOD: ResetHTACCESS
+     *  Resetst the .htaccess file
+     */
+    static public function ResetHTACCESS() {
+		
+		if (self::isPathNew()) {
+			DupUtil::log("HTACCESS CHANGES:");
+			@copy('.htaccess', '.htaccess.orig');
+			@unlink('.htaccess');
+			DupUtil::log("created backup of original .htaccess to htaccess.orig");
+
+			$tmp_htaccess = <<<HTACCESS
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase {$newpath}
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . {$newpath}index.php [L]
+</IfModule>
+# END WordPress
+HTACCESS;
+
+			file_put_contents('.htaccess', $tmp_htaccess);
+			@chmod('.htaccess', 0644);
+			DupUtil::log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
+			DupUtil::log("updated .htaccess file.");
+		} else {
+			DupUtil::log(".htaccess file was not reset because the old url and new url paths did not change.");
+		}
+    }
+	
+	/** METHOD: ResetWebConfig
+     *  Resetst the IIS web.config file
+     */
+	static public function ResetWebConfig() {
+
+		if (self::isPathNew()) {
+			
+			DupUtil::log("WEB.CONFIG CHANGES:");
+			@copy('web.config', 'web.config.orig');
+			@unlink('web.config');
+			DupUtil::log("created backup of original web.config to web.config.orig");
+			DupUtil::log("If using IIS web.config this process will need to be done manually.");
+		} else {
+			DupUtil::log("web.config file was not reset because the old url and new url paths did not change (IIS Only).");
+		}
+	}
+	
+	static private function isPathNew() {
+		
+		$currdata = parse_url($_POST['url_old']);
+		$newdata  = parse_url($_POST['url_new']);
+		$currpath = DupUtil::add_slash(isset($currdata['path']) ? $currdata['path'] : "");
+		$newpath  = DupUtil::add_slash(isset($newdata['path'])  ? $newdata['path'] : "");
+		
+		return ($currpath != $newpath);
+	}
+	
+}
+?>
+
+
+<?php
 if (isset($_POST['action_ajax'])) {
     switch ($_POST['action_ajax']) {
         case "1" :
@@ -852,6 +923,7 @@ if ($dbtable_count == 0) {
 		table prefix '{$GLOBALS['FW_TABLEPREFIX']}' is correct for this particular version of WordPress. \n");
 }
 
+
 //DATA CLEANUP: Perform Transient Cache Cleanup
 //Remove all duplicator entries and record this one since this is a new install.
 $dbdelete_count = 0;
@@ -866,6 +938,12 @@ DupUtil::log("Removed '{$dbdelete_count}' cache/transient rows");
 $profile_end = DupUtil::get_microtime();
 DupUtil::log("\nSECTION RUNTIME: " . DupUtil::elapsed_time($profile_end, $profile_start));
 
+//CONFIG FILE RESETS
+DupUtil::log("\nWEB SERVER CONFIG FILES");
+DUPEXE_Config::ResetHTACCESS();
+DUPEXE_Config::ResetWebConfig();
+
+//FINAL RESULTS
 $ajax1_end = DupUtil::get_microtime();
 $ajax1_sum = DupUtil::elapsed_time($ajax1_end, $ajax1_start);
 DupUtil::log("\n{$GLOBALS['SEPERATOR1']}");
@@ -1327,11 +1405,27 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 	}
 }
 
-/*UPDATE WP-CONFIG FILE */
-$patterns = array("/'WP_HOME',\s*'.*?'/", "/'WP_SITEURL',\s*'.*?'/");
+/*MU Updates*/
+$mu_newDomain = parse_url($_POST['url_new']);
+$mu_oldDomain = parse_url($_POST['url_old']);
+$mu_newDomainHost = $mu_newDomain['host'];
+$mu_oldDomainHost = $mu_oldDomain['host'];
+$mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+if ($mu_updates) {
+	DupUtil::log("Update MU table blogs: domain {$mu_newDomainHost} ");
+} else {
+	DupUtil::log("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+}
 
-$replace = array("'WP_HOME', " . '\'' . $_POST['url_new'] . '\'',
-	"'WP_SITEURL', " . '\'' . $_POST['url_new'] . '\'');
+
+/*UPDATE WP-CONFIG FILE */
+$patterns = array("/'WP_HOME',\s*'.*?'/", 
+				  "/'WP_SITEURL',\s*'.*?'/",
+				  "/'DOMAIN_CURRENT_SITE',\s*'.*?'/");
+
+$replace = array("'WP_HOME', "    . '\''		  . $_POST['url_new'] . '\'',
+				 "'WP_SITEURL', " . '\''		  . $_POST['url_new'] . '\'',
+				 "'DOMAIN_CURRENT_SITE', " . '\'' . $mu_newDomainHost     . '\'');
 
 $config_file = @file_get_contents('wp-config.php', true);
 $config_file = preg_replace($patterns, $replace, $config_file);
@@ -1344,42 +1438,6 @@ if (!file_exists(DUPLICATOR_SSDIR_NAME)) {
 }
 $fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 fclose($fp);
-
-
-//WEB CONFIG FILE(S)
-$currdata = parse_url($_POST['url_old']);
-$newdata = parse_url($_POST['url_new']);
-$currpath = DupUtil::add_slash(isset($currdata['path']) ? $currdata['path'] : "");
-$newpath = DupUtil::add_slash(isset($newdata['path']) ? $newdata['path'] : "");
-
-if ($currpath != $newpath) {
-	DupUtil::log("HTACCESS CHANGES:");
-	@copy('.htaccess', '.htaccess.orig');
-	@copy('web.config', 'web.config.orig');
-	@unlink('.htaccess');
-	@unlink('web.config');
-	DupUtil::log("created backup of original .htaccess to htaccess.orig and web.config to web.config.orig");
-
-	$tmp_htaccess = <<<HTACCESS
-# BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase {$newpath}
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . {$newpath}index.php [L]
-</IfModule>
-# END WordPress
-HTACCESS;
-
-	file_put_contents('.htaccess', $tmp_htaccess);
-	@chmod('.htaccess', 0644);
-	DupUtil::log("created basic .htaccess file.  If using IIS web.config this process will need to be done manually.");
-	DupUtil::log("updated .htaccess file.");
-} else {
-	DupUtil::log("web configuration file was not renamed because the paths did not change.");
-}
 
 
 //===============================
@@ -1487,7 +1545,7 @@ die(json_encode($JSON));
 	/* wiz-steps numbers */
 	.wizard-steps span {display:block;float:left; font-size:11px; text-align:center; width:15px; margin:2px 5px 0px 0px; line-height:15px; color:#ccc; background:#FFF; border:2px solid #999; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; }
 	/* wiz-steps default*/
-	.wizard-steps a { position:relative; display:block; width:auto; height:24px; margin-right:18px; padding:0px 10px 0px 3px; float:left; font-size:11px; line-height:24px; color:#666; background:#F0EEE3; text-decoration:none; text-shadow:1px 1px 1px rgba(255,255,255, 0.8); }
+	.wizard-steps a { position:relative; display:block; width:auto; height:24px; margin-right:18px; padding:0px 10px 0px 3px; float:left; font-size:11px; line-height:24px; color:#666; background:#F0EEE3; text-decoration:none; }
 	.wizard-steps a:before { width:0px; height:0px; border-top:12px solid #F0EEE3; border-bottom:12px solid #F0EEE3; border-left:12px solid transparent; position:absolute; content:""; top:0px; left:-12px; }
 	.wizard-steps a:after { width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:12px solid #F0EEE3; position:absolute; content:""; top:0px; right:-12px; }
 	/* wiz-steps completed*/
@@ -1515,7 +1573,7 @@ die(json_encode($JSON));
 	/* ============================
 	STEP 1 VIEW */
 	i#dup-step1-sys-req-msg {font-weight:normal; display:block; padding:0px 0px 0px 20px;}
-	div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-shadow:0 1px 0 #666;text-align:center;text-decoration:none;box-shadow:1px 1px 2px #000;background:#207D1D;opacity:0.95; display:inline-block;}
+	div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-align:center;text-decoration:none;box-shadow:1px 1px 2px #000;background:#207D1D;opacity:0.95; display:inline-block;}
 	div.circle-fail {background:#9A0D1D !important;}
 	div.warning-info {padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:75px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
 	select#logging {font-size:11px}
@@ -1561,6 +1619,9 @@ die(json_encode($JSON));
 	div.dup-step3-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0px 20px 0px; border-radius:5px;}
 	div.dup-step3-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
 	div.dup-step3-err-msg div.info{padding:2px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:11px; line-height:16px }
+	table.dup-step3-final-step {width:100%}
+	table.dup-step3-final-step td {padding: 5px 15px 5px 5px}
+	table.dup-step3-final-step td:first-child {white-space: nowrap; font-weight: bold}
 
 	/* ============================
 	BUTTONS */	
@@ -1821,10 +1882,10 @@ KNOCKOUT ASSETS -->
 	<table cellspacing="0" class="header-wizard">
 		<tr>
 			<td style="width:100%;">
-				<div style="font-size:19px; text-shadow:1px 1px 1px #777;">
+				<div style="font-size:19px;">
 					<!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
 					If your interested in Private Label Rights please contact us at the URL below to discuss
-					customizations to product labeling: http://lifeinthegrid.com/services/	-->
+					customizations to product labeling: http://lifeinthegrid.com	-->
 					&nbsp; Duplicator - Installer
 				</div>
 			</td>
@@ -2088,7 +2149,7 @@ VIEW: STEP 1- INPUT -->
     		    
     	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
     	If your interested in Private Label Rights please contact us at the URL below to discuss
-    	customizations to product labeling: http://lifeinthegrid.com/services/	-->
+    	customizations to product labeling: http://lifeinthegrid.com	-->
     	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
     	<div id='dup-step1-cpanel' style="display:none">
     	    <div style="padding:10px 0px 0px 10px;line-height:22px">
@@ -2509,7 +2570,7 @@ VIEW: STEP 1- INPUT -->
     		    
     	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
     	If your interested in Private Label Rights please contact us at the URL below to discuss
-    	customizations to product labeling: http://lifeinthegrid.com/services/	-->
+    	customizations to product labeling: http://lifeinthegrid.com	-->
     	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
     	<div id='dup-step1-cpanel' style="display:none">
     	    <div style="padding:10px 0px 0px 10px;line-height:22px">
@@ -3028,21 +3089,9 @@ VIEW: STEP 3- INPUT -->
 		<div class="dup-step3-final-title">IMPORTANT FINAL STEPS!</div>
 	</div>
 		
-	<table>
+	<table class="dup-step3-final-step">
 		<tr>
-			<td style="width:170px">&raquo; <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'><b>Resave Permalinks</b></a> </td>
-			<td><i style='font-size:11px'>This will update url rewrite items like the .htaccess file (requires login)</i></td>
-		</tr>
-		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')"><b>Delete Installer Files</b></a></td>
-			<td><i style='font-size:11px'>Removes installer.php, installer-data.sql, installer-log.txt &amp; package (requires login)</i></td>
-		</tr>
-		<tr>
-			<td>&raquo; <a href='<?php echo $_POST['url_new']; ?>' target='_blank'><b>Test Entire Site</b></a> </td>
-			<td><i style='font-size:11px'>Validate all pages, links images and plugins</i></td>
-		</tr>
-		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)"><b>View Install Report</b></a></td>
+			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">1. Read Install Report</a></td>
 			<td>
 				<i style='font-size:11px; color:#BE2323'>
 					<span data-bind="with: status.step1">Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
@@ -3050,6 +3099,18 @@ VIEW: STEP 3- INPUT -->
 					<span data-bind="with: status.step2">Warnings: <span data-bind="text: warn_all"></span></span>
 				</i>
 			</td>
+		</tr>	
+		<tr>
+			<td style="width:170px">&raquo; <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'>2. Resave Permalinks</a> </td>
+			<td><i style='font-size:11px'>Updates URL rewrite rules in .htaccess (requires login)</i></td>
+		</tr>	
+		<tr>
+			<td>&raquo; <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>3. Test Entire Site</a> </td>
+			<td><i style='font-size:11px'>Validate all pages, links images and plugins</i></td>
+		</tr>		
+		<tr>
+			<td>&raquo; <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">4. File Cleanup</a></td>
+			<td><i style='font-size:11px'>Removes all installer files (requires login)</i></td>
 		</tr>	
 		<tr>
 			<td colspan="2" style="text-align:center">

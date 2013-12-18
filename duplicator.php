@@ -102,7 +102,7 @@ if (is_admin() == true) {
     }
 
     //HOOKS 
-    load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
+    //load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
     register_activation_hook(__FILE__, 'duplicator_activate');
     register_deactivation_hook(__FILE__, 'duplicator_deactivate');
 
@@ -120,6 +120,7 @@ if (is_admin() == true) {
 	//FILTERS
     add_filter('plugin_action_links',					'duplicator_manage_link', 10, 2);
     add_filter('plugin_row_meta',						'duplicator_meta_links', 10, 2);
+	
 
     /**
      *  DUPLICATOR_INIT
@@ -131,6 +132,7 @@ if (is_admin() == true) {
         wp_register_style('duplicator_style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
 		/* JS */
 		wp_register_script('parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley-standalone.min.js', array('jquery'), '1.1.18');
+		load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
     }
 	
 	//PAGE VIEWS

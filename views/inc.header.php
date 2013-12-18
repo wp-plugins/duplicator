@@ -1,7 +1,7 @@
 <?php function duplicator_header($title) { ?>
 <!-- !!DO NOT CHANGE OR EDIT PRODUCT NAME!!
 If your interested in Private Label Rights please contact us at the URL below to discuss
-customizations to product labeling: lifeinthegrid.com/services/	-->
+customizations to product labeling: lifeinthegrid.com	-->
 
 <div class="dup-header widget" style="margin-bottom:5px">
 	<div style='float:left;height:40px'><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/logo.png" style='text-align:top; height:40px; width:40px'  /></div> 
