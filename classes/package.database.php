@@ -183,11 +183,8 @@ class DUP_Database{
 			
 			$info['Size'] += $size;
 			$info['Rows'] += ($table["Rows"]);
-			$info['TableList'][$name]['Rows']		= $table["Rows"];
-			$info['TableList'][$name]['Size']		= $size;
-			$info['TableList'][$name]['SizeFormat']	= DUP_Util::ByteSize($size);
-			$info['TableList'][$name]['Engine']	    = $table["Engine"];
-			$info['TableList'][$name]['Collation']	= $table["Collation"];
+			$info['TableList'][$name]['Rows']	= empty($table["Rows"]) ? '0' : number_format($table["Rows"]);
+			$info['TableList'][$name]['Size']	= DUP_Util::ByteSize($size);
 			$tblCount++;
 		}
 		

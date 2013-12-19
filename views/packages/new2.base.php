@@ -259,6 +259,7 @@ WIZARD STEP TABS -->
 						$msg  = 'The total size and row count for all database tables are approximate values.';
 						$msg .= '  The current thresholds that trigger warnings are %1$s for the size and %2$s for the row count.';
 						$msg .= '  Large databases take time to process and can cause issues with server timeout and memory settings.';
+						$msg .= '  Running a repair and optimization on your database can also help decreas the overall size.';
 						printf(__($msg, 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), number_format(DUPLICATOR_SCAN_DBROWS));
 					?>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-DB-100</small>

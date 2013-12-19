@@ -130,11 +130,11 @@ function duplicator_package_scan() {
 	//FILES:
     $files							= $Package->Archive->DirStats();
 	$json['ARC']['Size']		= DUP_Util::ByteSize($files['Size'])  or "unknown";;
-    $json['ARC']['DirCount']	= number_format($files['DirCount'])   or "unknown";
-	$json['ARC']['FileCount']	= number_format($files['FileCount'])  or "unknown";
-	$json['ARC']['LinkCount']	= number_format($files['LinkCount'])  or "unknown";
-	$json['ARC']['LongFiles']	= $files['LongFiles']				  or "unknown";
-	$json['ARC']['BigFiles']	= $files['BigFiles']				  or "unknown";
+    $json['ARC']['DirCount']	= empty($files['DirCount']) ? '0'  : number_format($files['DirCount']);
+	$json['ARC']['FileCount']	= empty($files['FileCount']) ? '0' : number_format($files['FileCount']);
+	$json['ARC']['LinkCount']	= empty($files['LinkCount']) ? '0' : number_format($files['LinkCount']);
+	$json['ARC']['LongFiles']	= is_array($files['LongFiles']) ? $files['LongFiles'] : "unknown";
+	$json['ARC']['BigFiles']	= is_array($files['BigFiles'])  ? $files['LongFiles'] : "unknown";
 	$json['ARC']['Status']['Size']	= ($files['Size'] > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
 	$json['ARC']['Status']['Names']	= count($files['LongFiles']) ? 'Warn' : 'Good';
 	$json['ARC']['Status']['Big']	= count($files['BigFiles'])  ? 'Warn' : 'Good';
