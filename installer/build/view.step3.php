@@ -36,7 +36,8 @@ VIEW: STEP 3- INPUT -->
 		
 	<table class="dup-step3-final-step">
 		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">1. Read Install Report</a></td>
+			<td>1. <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Read Install Report</a>
+			</td>
 			<td>
 				<i style='font-size:11px; color:#BE2323'>
 					<span data-bind="with: status.step1">Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
@@ -46,26 +47,25 @@ VIEW: STEP 3- INPUT -->
 			</td>
 		</tr>	
 		<tr>
-			<td style="width:170px">&raquo; <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'>2. Resave Permalinks</a> </td>
+			<td style="width:170px">
+				2. <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Resave Permalinks</a> 
+			</td>
 			<td><i style='font-size:11px'>Updates URL rewrite rules in .htaccess (requires login)</i></td>
 		</tr>	
 		<tr>
-			<td>&raquo; <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>3. Test Entire Site</a> </td>
+			<td>3. <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>Test Entire Site</a></td>
 			<td><i style='font-size:11px'>Validate all pages, links images and plugins</i></td>
 		</tr>		
 		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">4. File Cleanup</a></td>
+			<td>4. <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">File Cleanup</a></td>
 			<td><i style='font-size:11px'>Removes all installer files (requires login)</i></td>
 		</tr>	
-		<tr>
-			<td colspan="2" style="text-align:center">
-				<div style="border-bottom: 1px dotted #dfdfdf; border-top: 1px dotted #dfdfdf;">
-					<i style='font-size:11px'>To re-install <a href="javascript:history.go(-2)">start over at step 1</a>.</i>
-				</div>
-			
-			</td>
-		</tr>
 	</table><br/>
+	
+	<div class="dup-step3-go-back">
+		<i style='font-size:11px'>To re-install <a href="javascript:history.go(-2)">start over at step 1</a>.</i><br/>
+		<i style="font-size:11px;">The .htaccess file was reset.  Resave plugins that write to this file.</i>
+	</div>
 
 
 	<!-- ========================
@@ -112,7 +112,7 @@ VIEW: STEP 3- INPUT -->
 					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
 				</td>
 			</tr>
-			<tr><td colspan="4"><i style="font-size:10px; font-weight:normal">Notice: Your root .htaccess file was reset.  Resave all plugins that write to this file.</i></td></tr>
+			<tr><td colspan="4"></td></tr>
 		</table>
 		
 		
@@ -168,7 +168,8 @@ VIEW: STEP 3- INPUT -->
 			<a href="#" id="dup-step2-errs-warn-anchor"></a>
 			<b>GENERAL WARNINGS</b><br/>
 			<div class="info">
-				The following is a list of warnings that may need to be fixed in order to finalize your setup.
+				The following is a list of warnings that may need to be fixed in order to finalize your setup.  For more details about
+				warnings see the <a href="http://codex.wordpress.org/" target="_blank">wordpress codex.</a>.
 			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step2.warnlist">

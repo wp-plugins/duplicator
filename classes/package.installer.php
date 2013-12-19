@@ -104,7 +104,7 @@ class DUP_Installer {
 			"fwrite_cache_wp"			=> $this->Package->Installer->OptsCacheWP,
 			"fwrite_cache_path"			=> $this->Package->Installer->OptsCachePath,
 			"fwrite_wp_tableprefix"		=> $wpdb->prefix,
-			"fwrite_blogname"			=> @addslashes(get_option('blogname')),
+			"fwrite_blogname"			=> esc_html(get_option('blogname')),
 			"fwrite_wproot"				=> DUPLICATOR_WPROOTPATH,
 			"fwrite_duplicator_version" => DUPLICATOR_VERSION);
 

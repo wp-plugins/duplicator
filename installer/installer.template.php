@@ -1518,7 +1518,7 @@ die(json_encode($JSON));
 
 
 <style type="text/css">
-	body {font-family:Verdana, Geneva, sans-serif;}
+	body {font-family: "Open Sans",sans-serif;}
 	body,td,th {font-size:13px;color:#000;}
 	fieldset {border:1px solid silver; border-radius:5px; padding:10px}
 	h3 {margin:1px; padding:1px; font-size:14px;}
@@ -1526,42 +1526,45 @@ die(json_encode($JSON));
 	a:hover{color:gray}
 	input[type=text] { width:500px; border-radius:3px; height:17px; font-size:12px; border:1px solid silver;}
 
-	div#content {border:1px solid #CDCDCD;  width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow: 3px 3px 5px 6px #ccc;}
+	div#content {border:1px solid #CDCDCD;  width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px;  box-shadow: 0 8px 6px -6px #333;}
 	div#content-inner {padding:10px 30px; min-height:550px}
 	form.content-form {min-height:550px; position:relative; line-height:17px}
 	input.readonly {background-color:#efefef;}
 	i.small {font-size:11px}
 	span.warning {color:#C04B40}
 	span.pass {color:#52A34E}
-
+	div.circle-base { border-radius: 999px;  behavior: url(PIE.htc); display:inline-block; text-align: center;}
+	div.circle-type1 {width:25px; height:25px; background:#ccc; border:3px solid #000} 
 
 	/* ============================
 	MAIN TEMPLATE */
 	select#dup-hlp-lnk {border-radius:3px; font-size:11px; margin:3px 5px 0px 0px; background-color:#efefef; border:1px solid silver}
 	div.dup-logfile-link {float:right; font-weight:normal; font-size:12px}
-	table.header-wizard {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 6px 4px -4px #777;	background-color:#E4E4E4}
-	.wizard-steps {margin:10px 10px 0px 20px; padding:0px; position:relative; clear:both; font-weight:bold;}
-	.wizard-steps div {position:relative;}
+	table.header-wizard {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 6px 4px -4px #777;	background-color:#F1F1F1}
+	
+	/*WIZARD TABS */
+	div#dup-wiz {padding:0px; margin:7px 0px 10px 20px; height:20px }
+	div#dup-wiz-steps {margin:0px 0px 0px 10px; padding:0px;  clear:both; font-weight:bold;font-size:12px; min-width:250px }
 	/* wiz-steps numbers */
-	.wizard-steps span {display:block;float:left; font-size:11px; text-align:center; width:15px; margin:2px 5px 0px 0px; line-height:15px; color:#ccc; background:#FFF; border:2px solid #999; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; }
+	#dup-wiz span {display:block;float:left; text-align:center; width:15px; margin:3px 4px 0px 0px; line-height:15px; color:#ccc; border:1px solid #CCCCCC; border-radius:4px;}
 	/* wiz-steps default*/
-	.wizard-steps a { position:relative; display:block; width:auto; height:24px; margin-right:18px; padding:0px 10px 0px 3px; float:left; font-size:11px; line-height:24px; color:#666; background:#F0EEE3; text-decoration:none; }
-	.wizard-steps a:before { width:0px; height:0px; border-top:12px solid #F0EEE3; border-bottom:12px solid #F0EEE3; border-left:12px solid transparent; position:absolute; content:""; top:0px; left:-12px; }
-	.wizard-steps a:after { width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:12px solid #F0EEE3; position:absolute; content:""; top:0px; right:-12px; }
-	/* wiz-steps completed*/
-	.wizard-steps .completed-step a {color:#999; background:#000;}
-	.wizard-steps .completed-step a:before {border-top:12px solid #000; border-bottom:12px solid #000;}
-	.wizard-steps .completed-step a:after {border-left:12px solid #000;}
-	.wizard-steps .completed-step span {border:2px solid #777; color:#999;}
+	#dup-wiz a { position:relative; display:block; width:auto; height:24px; margin-right:18px; padding:0px 10px 0px 3px; float:left;  line-height:24px; color:#000; background:#E4E4E4; }
+	#dup-wiz a:before { width:0px; height:0px; border-top:12px solid #E4E4E4; border-bottom:12px solid #E4E4E4; border-left:12px solid transparent; position:absolute; content:""; top:0px; left:-12px; }
+	#dup-wiz a:after { width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:12px solid #E4E4E4; position:absolute; content:""; top:0px; right:-12px; }
+	/* wiz-steps completed */
+	#dup-wiz .completed-step a {color:#ccc; background:#999;}
+	#dup-wiz .completed-step a:before {border-top:12px solid #999; border-bottom:12px solid #999;}
+	#dup-wiz .completed-step a:after {border-left:12px solid #999;}
+	#dup-wiz .completed-step span {color:#ccc;}
 	/* wiz-steps active*/
-	.wizard-steps .active-step a {color:#000; background:#999;}
-	.wizard-steps .active-step a:before {border-top:12px solid #999; border-bottom:12px solid #999;}
-	.wizard-steps .active-step a:after {border-left:12px solid #999;}
-	.wizard-steps .active-step span {color:#000; border:2px solid #555;}
+	#dup-wiz .active-step a {color:#fff; background:#999;}
+	#dup-wiz .active-step a:before {border-top:12px solid #999; border-bottom:12px solid #999;}
+	#dup-wiz .active-step a:after {border-left:12px solid #999;}
+	#dup-wiz .active-step span {color:#fff;}
+
 	div.dup-help-page {padding:5px 0px 0px 5px}
 	div.dup-help-page fieldset {margin-bottom:25px}
 	div#dup-main-help h3 {background-color:#dfdfdf; border:1px solid silver; border-radius:5px; padding:3px; margin-bottom:8px}
-
 
 	/* ============================
 	COMMON VIEW ELEMENTS*/
@@ -1619,31 +1622,23 @@ die(json_encode($JSON));
 	div.dup-step3-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0px 20px 0px; border-radius:5px;}
 	div.dup-step3-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
 	div.dup-step3-err-msg div.info{padding:2px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:11px; line-height:16px }
-	table.dup-step3-final-step {width:100%}
+	table.dup-step3-final-step {width:100%;}
 	table.dup-step3-final-step td {padding: 5px 15px 5px 5px}
 	table.dup-step3-final-step td:first-child {white-space: nowrap; font-weight: bold}
+	div.dup-step3-go-back {border-bottom: 1px dotted #dfdfdf; border-top: 1px dotted #dfdfdf; margin: auto; text-align: center}
 
 	/* ============================
 	BUTTONS */	
 	div.dup-footer-buttons {position:absolute; bottom:10px; padding:10px; width:100%; text-align:right;}
 	div.dup-footer-buttons  input, button, div#dup-step1-sys-req-btn {
-		background:#dfdfdf;
-		background:-moz-linear-gradient(top,#dfdfdf 0%,#efefef 100%);
-		background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#dfdfdf),color-stop(100%,#efefef));
-		background:-webkit-linear-gradient(top,#dfdfdf 0%,#efefef 100%);
-		background:-o-linear-gradient(top,#dfdfdf 0%,#efefef 100%);
-		background:-ms-linear-gradient(top,#dfdfdf 0%,#efefef 100%);
-		background:linear-gradient(top,#dfdfdf 0%,#efefef 100%);
-		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf',endColorstr='#efefef',GradientType=0);
-		padding:4px 8px;
-		color:#000;
-		font-size:12px;
-		border-radius:5px;
-		-moz-border-radius:5px;
-		border:1px solid #999
+		color:#000; font-size:12px; border-radius:5px;	padding:6px 8px 4px 8px; border:1px solid #999;
+		background-color: #F1F1F1;
+		background-image: -ms-linear-gradient(top, #F9F9F9, #ECECEC);
+		background-image: -moz-linear-gradient(top, #F9F9F9, #ECECEC);
+		background-image: linear-gradient(top, #F9F9F9, #ECECEC);
 	}
 	div.dup-footer-buttons input[disabled=disabled]{background-color:#F4F4F4; color:silver; border:1px solid silver;}
-	div#dup-step1-sys-req-btn{padding:2px 2px 4px 2px; box-shadow: 0 6px 4px -4px #444; width:250px; margin:auto;  font-weight:bold;}
+	div#dup-step1-sys-req-btn{ box-shadow: 0 6px 4px -4px #444; width:250px; margin:auto;  font-weight:bold;}
 	div.dup-footer-buttons  input, button, div#dup-step1-sys-req-btn:hover {cursor:pointer; border:1px solid #000; }
 
 
@@ -1882,14 +1877,14 @@ KNOCKOUT ASSETS -->
 	<table cellspacing="0" class="header-wizard">
 		<tr>
 			<td style="width:100%;">
-				<div style="font-size:19px;">
+				<div style="font-size:22px; padding:5px 0px 0px 0px">
 					<!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
 					If your interested in Private Label Rights please contact us at the URL below to discuss
 					customizations to product labeling: http://lifeinthegrid.com	-->
 					&nbsp; Duplicator - Installer
 				</div>
 			</td>
-			<td style="white-space:nowrap;padding:4px">
+			<td style="white-space:nowrap; text-align:right">
 				<select id="dup-hlp-lnk">
 					<option value="null"> - Online Resources -</option>
 					<option value="http://lifeinthegrid.com/duplicator-docs">&raquo; Knowledge Base</option>
@@ -1900,7 +1895,7 @@ KNOCKOUT ASSETS -->
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td>
 				<?php
 				$step1CSS = ($_POST['action_step'] <= 1) ? "active-step" : "complete-step";
 				$step2CSS = ($_POST['action_step'] == 2) ? "active-step" : "";
@@ -1911,15 +1906,21 @@ KNOCKOUT ASSETS -->
 					$step3CSS = "active-step";
 				}
 				?>
-				<div class="wizard-steps">
-					<div class="<?php echo $step1CSS; ?>"><a><span>1</span> Deploy</a></div>
-					<div class="<?php echo $step2CSS; ?>"><a><span>2</span> Update </a></div>
-					<div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
+				<div id="dup-wiz">
+					<div id="dup-wiz-steps">
+						<div class="<?php echo $step1CSS; ?>"><a><span>1</span> Deploy</a></div>
+						<div class="<?php echo $step2CSS; ?>"><a><span>2</span> Update </a></div>
+						<div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
+					</div>
 				</div>
-				<div style="float:right; padding-right:8px">
-					<i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?></i> &nbsp;
-					<a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
-				</div>
+
+			</td>
+			<td style="white-space:nowrap">
+
+				<i style='font-size:11px; color:#999'>
+					version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
+				</i> &nbsp;
+				
 			</td>
 		</tr>
 	</table>	
@@ -2176,16 +2177,32 @@ VIEW: STEP 1- INPUT -->
 	<!-- NOTICES  -->
     	<div class="warning-info" style="margin-top:50px">
     	    <b>WARNINGS &amp; NOTICES</b> 
-    	    <p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
-    			    
-    	    <p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
-    			    
-    	    <p><b>Setup:</b> Only the package (zip file) and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.</p>
-    			    
-    	    <p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
-    			    
-    	    <p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
-    		These files contain sensitive information and should not remain on a production system.</p><br/>
+    	    <p>
+				<b>Disclaimer:</b> 
+				This plugin require above average technical knowledge. Please use it at your own risk and always back up your database and files beforehand using another backup
+				system besides the Duplicator. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  <u>Always</u> test 
+				this installer in a sandbox environment before trying to deploy into a production setting.
+			</p>    
+    	    <p>
+				<b>Database:</b>
+				Do not connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database 
+				that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated
+				database using the SQL script in the package name above.
+			</p>    
+    	    <p>
+				<b>Setup:</b>
+				Only the archive and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 
+				'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files 
+				before continuing with an installation.</p>    
+    	    <p>
+				<b>Manual Extraction:</b> 
+				Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  
+				Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
+			</p>			    
+    	    <p>
+				<b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
+				These files contain sensitive information and should not remain on a production system.
+			</p><br/>
     	</div>
     		    
     	<div class="dup-step1-warning-area">
@@ -2597,16 +2614,32 @@ VIEW: STEP 1- INPUT -->
 	<!-- NOTICES  -->
     	<div class="warning-info" style="margin-top:50px">
     	    <b>WARNINGS &amp; NOTICES</b> 
-    	    <p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
-    			    
-    	    <p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
-    			    
-    	    <p><b>Setup:</b> Only the package (zip file) and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.</p>
-    			    
-    	    <p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
-    			    
-    	    <p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
-    		These files contain sensitive information and should not remain on a production system.</p><br/>
+    	    <p>
+				<b>Disclaimer:</b> 
+				This plugin require above average technical knowledge. Please use it at your own risk and always back up your database and files beforehand using another backup
+				system besides the Duplicator. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  <u>Always</u> test 
+				this installer in a sandbox environment before trying to deploy into a production setting.
+			</p>    
+    	    <p>
+				<b>Database:</b>
+				Do not connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database 
+				that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated
+				database using the SQL script in the package name above.
+			</p>    
+    	    <p>
+				<b>Setup:</b>
+				Only the archive and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 
+				'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files 
+				before continuing with an installation.</p>    
+    	    <p>
+				<b>Manual Extraction:</b> 
+				Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  
+				Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
+			</p>			    
+    	    <p>
+				<b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
+				These files contain sensitive information and should not remain on a production system.
+			</p><br/>
     	</div>
     		    
     	<div class="dup-step1-warning-area">
@@ -3091,7 +3124,8 @@ VIEW: STEP 3- INPUT -->
 		
 	<table class="dup-step3-final-step">
 		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">1. Read Install Report</a></td>
+			<td>1. <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Read Install Report</a>
+			</td>
 			<td>
 				<i style='font-size:11px; color:#BE2323'>
 					<span data-bind="with: status.step1">Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
@@ -3101,26 +3135,25 @@ VIEW: STEP 3- INPUT -->
 			</td>
 		</tr>	
 		<tr>
-			<td style="width:170px">&raquo; <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'>2. Resave Permalinks</a> </td>
+			<td style="width:170px">
+				2. <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Resave Permalinks</a> 
+			</td>
 			<td><i style='font-size:11px'>Updates URL rewrite rules in .htaccess (requires login)</i></td>
 		</tr>	
 		<tr>
-			<td>&raquo; <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>3. Test Entire Site</a> </td>
+			<td>3. <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>Test Entire Site</a></td>
 			<td><i style='font-size:11px'>Validate all pages, links images and plugins</i></td>
 		</tr>		
 		<tr>
-			<td>&raquo; <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">4. File Cleanup</a></td>
+			<td>4. <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">File Cleanup</a></td>
 			<td><i style='font-size:11px'>Removes all installer files (requires login)</i></td>
 		</tr>	
-		<tr>
-			<td colspan="2" style="text-align:center">
-				<div style="border-bottom: 1px dotted #dfdfdf; border-top: 1px dotted #dfdfdf;">
-					<i style='font-size:11px'>To re-install <a href="javascript:history.go(-2)">start over at step 1</a>.</i>
-				</div>
-			
-			</td>
-		</tr>
 	</table><br/>
+	
+	<div class="dup-step3-go-back">
+		<i style='font-size:11px'>To re-install <a href="javascript:history.go(-2)">start over at step 1</a>.</i><br/>
+		<i style="font-size:11px;">The .htaccess file was reset.  Resave plugins that write to this file.</i>
+	</div>
 
 
 	<!-- ========================
@@ -3167,7 +3200,7 @@ VIEW: STEP 3- INPUT -->
 					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
 				</td>
 			</tr>
-			<tr><td colspan="4"><i style="font-size:10px; font-weight:normal">Notice: Your root .htaccess file was reset.  Resave all plugins that write to this file.</i></td></tr>
+			<tr><td colspan="4"></td></tr>
 		</table>
 		
 		
@@ -3223,7 +3256,8 @@ VIEW: STEP 3- INPUT -->
 			<a href="#" id="dup-step2-errs-warn-anchor"></a>
 			<b>GENERAL WARNINGS</b><br/>
 			<div class="info">
-				The following is a list of warnings that may need to be fixed in order to finalize your setup.
+				The following is a list of warnings that may need to be fixed in order to finalize your setup.  For more details about
+				warnings see the <a href="http://codex.wordpress.org/" target="_blank">wordpress codex.</a>.
 			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step2.warnlist">

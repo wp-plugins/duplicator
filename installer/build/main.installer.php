@@ -204,14 +204,14 @@ if (isset($_POST['action_ajax'])) {
 	<table cellspacing="0" class="header-wizard">
 		<tr>
 			<td style="width:100%;">
-				<div style="font-size:19px;">
+				<div style="font-size:22px; padding:5px 0px 0px 0px">
 					<!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
 					If your interested in Private Label Rights please contact us at the URL below to discuss
 					customizations to product labeling: http://lifeinthegrid.com	-->
 					&nbsp; Duplicator - Installer
 				</div>
 			</td>
-			<td style="white-space:nowrap;padding:4px">
+			<td style="white-space:nowrap; text-align:right">
 				<select id="dup-hlp-lnk">
 					<option value="null"> - Online Resources -</option>
 					<option value="http://lifeinthegrid.com/duplicator-docs">&raquo; Knowledge Base</option>
@@ -222,7 +222,7 @@ if (isset($_POST['action_ajax'])) {
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td>
 				<?php
 				$step1CSS = ($_POST['action_step'] <= 1) ? "active-step" : "complete-step";
 				$step2CSS = ($_POST['action_step'] == 2) ? "active-step" : "";
@@ -233,15 +233,21 @@ if (isset($_POST['action_ajax'])) {
 					$step3CSS = "active-step";
 				}
 				?>
-				<div class="wizard-steps">
-					<div class="<?php echo $step1CSS; ?>"><a><span>1</span> Deploy</a></div>
-					<div class="<?php echo $step2CSS; ?>"><a><span>2</span> Update </a></div>
-					<div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
+				<div id="dup-wiz">
+					<div id="dup-wiz-steps">
+						<div class="<?php echo $step1CSS; ?>"><a><span>1</span> Deploy</a></div>
+						<div class="<?php echo $step2CSS; ?>"><a><span>2</span> Update </a></div>
+						<div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
+					</div>
 				</div>
-				<div style="float:right; padding-right:8px">
-					<i style='font-size:11px; color:#999'>installer version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?></i> &nbsp;
-					<a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
-				</div>
+
+			</td>
+			<td style="white-space:nowrap">
+
+				<i style='font-size:11px; color:#999'>
+					version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
+				</i> &nbsp;
+				
 			</td>
 		</tr>
 	</table>	

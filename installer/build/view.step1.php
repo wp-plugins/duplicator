@@ -244,16 +244,32 @@ VIEW: STEP 1- INPUT -->
 	<!-- NOTICES  -->
     	<div class="warning-info" style="margin-top:50px">
     	    <b>WARNINGS &amp; NOTICES</b> 
-    	    <p><b>Disclaimer:</b> This plugin has been heavily tested, however it does require above average technical knowledge. Please use it at your own risk and do not forget to back up your database and files beforehand. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.</p>
-    			    
-    	    <p><b>Database:</b>  Do not attempt to connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.</p>
-    			    
-    	    <p><b>Setup:</b> Only the package (zip file) and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.</p>
-    			    
-    	    <p><b>Manual Extraction:</b> Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.</p>
-    			    
-    	    <p><b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
-    		These files contain sensitive information and should not remain on a production system.</p><br/>
+    	    <p>
+				<b>Disclaimer:</b> 
+				This plugin require above average technical knowledge. Please use it at your own risk and always back up your database and files beforehand using another backup
+				system besides the Duplicator. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  <u>Always</u> test 
+				this installer in a sandbox environment before trying to deploy into a production setting.
+			</p>    
+    	    <p>
+				<b>Database:</b>
+				Do not connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database 
+				that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated
+				database using the SQL script in the package name above.
+			</p>    
+    	    <p>
+				<b>Setup:</b>
+				Only the archive and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 
+				'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files 
+				before continuing with an installation.</p>    
+    	    <p>
+				<b>Manual Extraction:</b> 
+				Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  
+				Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
+			</p>			    
+    	    <p>
+				<b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
+				These files contain sensitive information and should not remain on a production system.
+			</p><br/>
     	</div>
     		    
     	<div class="dup-step1-warning-area">
