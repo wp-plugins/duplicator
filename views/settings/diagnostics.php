@@ -2,6 +2,9 @@
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/javascript.php'); 
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
 
+	global $wp_version;
+	global $wpdb;
+	
 	ob_start();
 	phpinfo();
 	$serverinfo = ob_get_contents();
@@ -9,19 +12,11 @@
 	
 	$serverinfo = preg_replace( '%^.*<body>(.*)</body>.*$%ms',  '$1',  $serverinfo);
 	$serverinfo = preg_replace( '%^.*<title>(.*)</title>.*$%ms','$1',  $serverinfo);
-	$action_response = __("Settings Saved", 'wpduplicator');
+	$action_response = null;
 	$dbvar_maxtime  = DUP_Util::MysqlVariableValue('wait_timeout');
 	$dbvar_maxpacks = DUP_Util::MysqlVariableValue('max_allowed_packet');
 	$dbvar_maxtime  = is_null($dbvar_maxtime)  ? __("unknow", 'wpduplicator') : $dbvar_maxtime;
 	$dbvar_maxpacks = is_null($dbvar_maxpacks) ? __("unknow", 'wpduplicator') : $dbvar_maxpacks;	
-
-	global $wp_version;
-	global $wpdb;
-	
-	$action_updated = null;
-	if (isset($_POST['action']) && $_POST['action'] == 'save') {
-		
-	} 
 
 	$space = @disk_total_space(DUPLICATOR_WPROOTPATH);
 	$space_free = @disk_free_space(DUPLICATOR_WPROOTPATH);
@@ -30,9 +25,25 @@
 	$view_state = DUP_UI::GetViewStateArray();
 	$ui_css_srv_panel   = ($view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
 	$ui_css_opts_panel  = ($view_state['dup-settings-diag-opts-panel'])   ? 'display:block' : 'display:none';
+	
+	//POST BACK
+	$action_updated = null;
+	if (isset($_POST['action'])) {
+		switch ($_POST['action']) {
+			case 'clear_view_state' : 
+				DUP_Settings::DeleteWPOption('duplicator_ui_view_state');		
+				$action_response = __('View State Settings Reset', 'wpduplicator');
+				break;
+			case 'clear_legacy_data': 
+				DUP_Settings::LegacyClean();			
+				$action_response = __('Legacy Data Removed', 'wpduplicator');
+				break;
+		}
+	} 
 ?>
 
 <style>
+	div#message {margin:0px 0px 10px 0px}
 	div#dup-server-info-area { padding:10px 5px;  }
 	div#dup-server-info-area table { padding:1px; background:#dfdfdf;  -webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px; width:100% !important; box-shadow:0 8px 6px -6px #777; }
 	div#dup-server-info-area td, th {padding:3px; background:#fff; -webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
@@ -50,11 +61,12 @@
 
 <form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-settings&tab=diagnostics' ); ?>" method="post">
 	<?php wp_nonce_field( 'duplicator_settings_page' ); ?>
-	<input type="hidden" name="action" value="save">
+	<input type="hidden" id="dup-settings-form-action" name="action" value="">
+	<br/>
 
-	<?php if($action_updated)  :	?>
+	<?php if (! empty($action_response))  :	?>
 		<div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
-	<?php endif; ?>	 <br/>
+	<?php endif; ?>	
 		
 	<!-- ==============================
 	SERVER SETTINGS -->	
@@ -203,10 +215,10 @@
 
 			<h3 class="title" style="margin-left:-15px"><?php _e("Reset/Remove", 'wpduplicator') ?> </h3>	
 
-			<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteOption('duplicator_ui_view_state', true, true)"><?php _e("Clear View State", 'wpduplicator'); ?></a></b> &nbsp; 	
+			<b><a href="javascript:void(0)" onclick="Duplicator.Settings.DeleteViewState()"><?php _e("Clear View State", 'wpduplicator'); ?></a></b> &nbsp; 	
 			<small><?php _e("This will enable all notice messages again and reset any view state.", 'wpduplicator'); ?></small> <br/>
 
-			<b><a href="javascript:void(0)" onclick="Duplicator.Util.DeleteLegacy()"><?php _e("Clear Legacy Data", 'wpduplicator'); ?></a></b> &nbsp; 	
+			<b><a href="javascript:void(0)" onclick="Duplicator.Settings.DeleteLegacy()"><?php _e("Clear Legacy Data", 'wpduplicator'); ?></a></b> &nbsp; 	
 			<small><?php _e("This will remove all legacy plugin settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</small> <br/><br/>
 
 			
@@ -247,12 +259,46 @@
 
 		</div> <!-- end .dup-box-panel -->	
 	</div> <!-- end .dup-box -->	
-	
-	
-
-	
-	
-	
 
 </form>
+
+<script>	
+jQuery(document).ready(function($) {
+	
+	/*  ----------------------------------------
+	*  METHOD:   */
+   Duplicator.Settings.DeleteLegacy = function () {
+
+	   <?php
+		   $msg  = __('This action will remove all legacy settings prior to version %1$s.  ', 'wpduplicator');
+		   $msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.', 'wpduplicator'); 
+	   ?>
+	   var result = true;
+	   var result = confirm('<?php printf(__($msg, 'wpduplicator'), DUPLICATOR_VERSION) ?>');
+	   if (! result) 
+		   return;
+		
+	   jQuery('#dup-settings-form-action').val('clear_legacy_data');
+	   jQuery('#dup-settings-form').submit();
+   }
+   
+   
+   Duplicator.Settings.DeleteViewState = function () {
+
+		var result = confirm('<?php _e("Delete the view state settings?", "wpduplicator"); ?>');
+		if (! result) 
+			return;
+		
+	   jQuery('#dup-settings-form-action').val('clear_view_state');
+	   jQuery('#dup-settings-form').submit();
+			
+
+		
+	}
+   
+   
+   
+	
+});	
+</script>
 

@@ -29,10 +29,10 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_PHP_MAX_TIME",    5000);
     define("DUPLICATOR_PHP_MAX_MEMORY",  '5000M');
     define("DUPLICATOR_DB_MAX_TIME",     5000);
-	define("DUPLICATOR_SCAN_SITE",    157286400);  //150MB
-	define("DUPLICATOR_SCAN_BIGFILE", 10485760);  //10MB
-	define("DUPLICATOR_SCAN_DBSIZE",  104857600); //100MB
-	define("DUPLICATOR_SCAN_DBROWS",  1000000);   //1 million
+	define("DUPLICATOR_SCAN_SITE",    157286400);	//150MB
+	define("DUPLICATOR_SCAN_BIGFILE", 5242880);		//5MB
+	define("DUPLICATOR_SCAN_DBSIZE",  104857600);	//100MB
+	define("DUPLICATOR_SCAN_DBROWS",  500000);
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS');
 
 } else {

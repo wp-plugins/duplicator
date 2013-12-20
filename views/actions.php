@@ -108,6 +108,8 @@ function duplicator_package_create() {
  *  
  */
 function duplicator_package_scan() {
+	
+	@set_time_limit(0);
 
 	$json = array();
 	$Package = new DUP_Package();
@@ -194,55 +196,6 @@ function duplicator_package_delete() {
 	
 	$json['ids'] = "{$postIDs}";
 	$json['removed'] = $delCount;
-    die(json_encode($json));
-}
-
-
-/**
- *  DUPLICATOR_UTIL_DELETE_OPTION
- *  Deletes the option from the options table
- *
- *  @return json   A json message about the action.  
- *				   Use console.log to debug from client
- */
-function duplicator_util_delete_option() {
-	
-	$json	  = array();
-	$post	  = stripslashes_deep($_POST);
-	$name	  = $post['name'];
-	$safeOpts = array('duplicator_ui_view_state', 'duplicator_package_active');
-	
-	if ( in_array($name, $safeOpts) ) {
-		$result = delete_option('duplicator_ui_view_state'); 
-		$json['result'] = "Result for duplicator_delete_option: {$result}";
-	} else { 
-		$json['result'] = "Safe key '{$name}' not found in duplicator_delete_option";
-	}
-    die(json_encode($json));
-}
-
-
-/**
- *  DUPLICATOR_UTIL_DELETE_LEGACY
- *  Deletes the option from the options table
- *
- *  @return json   A json message about the action.  
- *				   Use console.log to debug from client
- */
-function duplicator_util_delete_legacy() {
-	
-	$json	  = array();
-
-	//PRE 5.1
-	//Next version here if needed
-
-	//PRE 5.0
-	delete_option('duplicator_pack_passcount'); 
-	delete_option('duplicator_add1_passcount'); 
-	delete_option('duplicator_add1_clicked'); 
-	delete_option('duplicator_options'); 
-	
-	$json['result'] = "Legacy options have been removed.";
     die(json_encode($json));
 }
 

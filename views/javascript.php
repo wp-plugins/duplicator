@@ -3,10 +3,10 @@
  * nature use this file to place all shared methods and varibles */	
 
 //UNIQUE NAMESPACE
-Duplicator      = new Object();
-Duplicator.Pack = new Object();
-Duplicator.UI	= new Object();
-Duplicator.Util	= new Object();
+Duplicator			= new Object();
+Duplicator.UI		= new Object();
+Duplicator.Pack		= new Object();
+Duplicator.Settings = new Object();
 
 //GLOBAL CONSTANTS
 Duplicator.DEBUG_AJAX_RESPONSE = false;
@@ -116,62 +116,5 @@ jQuery(document).ready(function($) {
 			: $arrow.html('<i class="fa fa-caret-down"></i>');
 	});
 });	
-
-/* ============================================================================
-*  UTIL NAMESPACE: All utility methods
-*  ==========================================================================	*/
-
-/*  ----------------------------------------
- *  METHOD:   */
-Duplicator.Util.DeleteOption = function (name, validate, reload) {
-	
-	var validate = validate || false;
-	var reload   = reload   || false;
-	var result = true;
-	if (name != undefined ) {
-		if (validate) {
-			var result = confirm('<?php _e("Delete the following options?", "wpduplicator"); ?>');
-			if (! result) 
-				return;
-		}
-		jQuery.ajax({
-			type: "POST",
-			url: ajaxurl,
-			dataType: "json",
-			data: {action : 'duplicator_util_delete_option', name: name},
-			success: function(data) {},
-			error: function(data) {}
-		});	
-		
-		if (reload) {
-			window.location.reload();
-		}
-	}
-}
-
-/*  ----------------------------------------
- *  METHOD:   */
-Duplicator.Util.DeleteLegacy = function () {
-	
-	<?php
-		$msg  = __('This action will remove all legacy settings prior to version %1$s.  ', 'wpduplicator');
-		$msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.', 'wpduplicator'); 
-	?>
-	var result = true;
-	var result = confirm('<?php printf(__($msg, 'wpduplicator'), DUPLICATOR_VERSION) ?>');
-	if (! result) 
-		return;
-	
-	jQuery.ajax({
-		type: "POST",
-		url: ajaxurl,
-		dataType: "json",
-		data: {action : 'duplicator_util_delete_legacy'},
-		success: function(data) {},
-		error: function(data) {}
-	});	
-
-	window.location.reload();
-}
 
 </script>

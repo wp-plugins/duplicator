@@ -84,7 +84,42 @@ class DUP_Settings
 		return self::Save();
 
 	}
+	
+	
+	/**
+	*  LegacyClean: Cleans up legacy data
+	*/
+	public static function LegacyClean() {
+		global $wpdb;
+
+		//PRE 5.0
+		$table = $wpdb->prefix."duplicator";
+		$wpdb->query("DROP TABLE IF EXISTS $table");
+		delete_option('duplicator_pack_passcount'); 
+		delete_option('duplicator_add1_passcount'); 
+		delete_option('duplicator_add1_clicked'); 
+		delete_option('duplicator_options'); 
+		
+		//PRE 5.1
+		//Next version here if needed
+	}
+	
+	/**
+	*  DeleteWPOption: Cleans up legacy data
+	*/
+	public static function DeleteWPOption($optionName) {
+		
+		$safeOpts = array('duplicator_ui_view_state', 'duplicator_package_active');
+
+		if ( in_array($optionName, $safeOpts) ) {
+			return delete_option('duplicator_ui_view_state'); 
+		}
+		return false;
+	}
 
 }
+
+//Init Class
 DUP_Settings::init();
+
 ?>

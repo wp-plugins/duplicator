@@ -253,14 +253,18 @@ WIZARD STEP TABS -->
 				</div>
 				<div class='dup-scan-info  dup-info-box'>
 					<b><?php _e('Tables', 'wpduplicator');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
-					<b><?php _e('Rows', 'wpduplicator');?>:</b> <span id="data-db-rows"></span> &nbsp; | &nbsp;
+					<b><?php _e('Records', 'wpduplicator');?>:</b> <span id="data-db-rows"></span> &nbsp; | &nbsp;
 					<b><?php _e('Size', 'wpduplicator');?>:</b> <span id="data-db-size2"></span> <br/><br/>
 					<?php 
-						$msg  = 'The total size and row count for all database tables are approximate values.';
-						$msg .= '  The current thresholds that trigger warnings are %1$s for the size and %2$s for the row count.';
+						$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'wpduplicator') . '</a>';
+						$msg  = 'Total size and row count for all database tables are approximate values.';
+						$msg .= '  The thresholds that trigger warnings are %1$s and %2$s records.';
 						$msg .= '  Large databases take time to process and can cause issues with server timeout and memory settings.';
-						$msg .= '  Running a repair and optimization on your database can also help decreas the overall size.';
-						printf(__($msg, 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), number_format(DUPLICATOR_SCAN_DBROWS));
+						$msg .= '  Running a %3$s on your database can also help improve the overall size and performance.';
+						printf(__($msg, 'wpduplicator'), 
+								DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), 
+								number_format(DUPLICATOR_SCAN_DBROWS),
+								$lnk);
 					?>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-DB-100</small>
 				</div>

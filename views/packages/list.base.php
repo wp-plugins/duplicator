@@ -15,6 +15,7 @@
 	}
 	input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
 	button.dup-button-selected {border:1px solid #000 !important; background-color:#555 !important;}
+	div.dup-details-area {padding:10px}
 	
 	table#toolbar-table td {padding:0px; white-space:nowrap;}
 	table#toolbar-table input {border:1px solid silver; border-radius:4px}
@@ -29,22 +30,10 @@
 	table.dup-pack-table td.pack-name {text-overflow:ellipsis; white-space:nowrap}
 	tr.dup-pack-info td {white-space:nowrap; padding:12px 30px 0px 7px;}
 	tr.dup-pack-info td.get-btns {text-align:right; padding:3px 5px 6px 0px !important;}
-	td.dup-pack-details {display:none; padding:5px 0px 15px 15px; line-height:22px; 
-		background: #f9f9f9;
-		background: -moz-linear-gradient(top,  #f9f9f9 0%, #ffffff 100%);
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9f9), color-stop(100%,#ffffff));
-		background: -webkit-linear-gradient(top,  #f9f9f9 0%,#ffffff 100%);
-		background: -o-linear-gradient(top,  #f9f9f9 0%,#ffffff 100%);
-		background: -ms-linear-gradient(top,  #f9f9f9 0%,#ffffff 100%);
-		background: linear-gradient(to bottom,  #f9f9f9 0%,#ffffff 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#ffffff',GradientType=0 );
-	}
+	td.dup-pack-details {display:none; padding:5px 0px 15px 15px; line-height:22px;}
 </style>
 
-
-
 <form id="form-duplicator" method="post">
-
 
 <?php if($totalElements == 0)  :	?>
 	
@@ -89,9 +78,9 @@
 				<th><?php _e("Details", 'wpduplicator') ?></th>
 				<th><?php _e("Created", 'wpduplicator') ?></th>
 				<th><?php _e("Size", 'wpduplicator') ?></th>
-				<th><?php _e("Name", 'wpduplicator') ?></th>
-				<th style="width:90%; text-align:right; padding-right:10px" colspan="2">
-					<i style='font-size:10px'><?php _e("(Download Both)",  'wpduplicator')?></i>
+				<th style="width:90%;"><?php _e("Name", 'wpduplicator') ?></th>
+				<th style="text-align:center;" colspan="2">
+					<?php _e("Package",  'wpduplicator')?>
 				</th>
 			</tr>
 		</thead>
@@ -117,27 +106,29 @@
 			$logfilelink		= $Package->StoreURL . "{$uniqueid}.log";
 			$installfilelink	= "{$installerpath}?get=1&file={$uniqueid}_installer.php";
 			$logfilename	    = "{$uniqueid}.log";
-
+			$css_alt		    = ($rowCount % 2 != 0) ? '' : 'alternate';
 			?>
 
 			<!-- COMPLETE -->
 			<?php if ($status == 3) : ?>
-				<tr class="dup-pack-info">
+				<tr class="dup-pack-info <?php echo $css_alt ?>">
 					<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
 					<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
 					<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
 					<td><?php echo DUP_Util::ByteSize($Package->Archive->Size); ?></td>
 					<td class='pack-name'><?php	echo $Package->Name ;?></td>
-					<td style="width:90%;" class="get-btns">	
+					<td class="get-btns">
 						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $installfilelink; ?>', this); return false;"><i class="fa fa-bolt"></i> <?php _e("Installer", 'wpduplicator') ?></button> &nbsp;
+					</td>
+					<td class="get-btns">	
 						<button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $packagepath; ?>', this); return false;"><i class="fa fa-bars"></i> <?php _e("Archive", 'wpduplicator') ?></button>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details">
-						<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
-						<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?>  &nbsp;
-						<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?> <br/>
+					<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details  <?php echo $css_alt ?>">
+						<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?> &nbsp; | &nbsp; 
+						<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?> &nbsp; | &nbsp;  
+						<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?> <br/>
 						<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> 
 						<div style='margin:5px 0px 0px 0px'>
 							
@@ -149,30 +140,31 @@
 				</tr>	
 			<!-- NOT COMPLETE -->				
 			<?php else : ?>	
-				<tr class="dup-pack-info">
+				<tr class="dup-pack-info  <?php echo $css_alt ?>">
 					<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
 					<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
-					<td><?php echo $row['owner'];?></td>
 					<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
 					<td><?php echo $Package->Archive->Size;?></td>
 					<td class='pack-name'><?php echo $Package->Name ;?></td>
-					<td style="width:90%;" class="get-btns">	
+					<td></td>
+					<td class="get-btns">		
 						<span style='display:inline-block; padding:7px 40px 0px 0px'>
 							<a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');"><?php _e("View Error Details", 'wpduplicator') ?>...</a>
 						</span>									
 					</td>
 				</tr>
 				<tr>
-					<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details">
+					<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details  <?php echo $css_alt ?>">
 						<div class="dup-details-area ui-state-error">
 							<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
-							<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?> <br/>
+							<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?>   &nbsp;
+														<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?>  &nbsp;<br/>
 								<?php
 								printf("%s <u><a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a></u>",
 								__("This package has encountered errors.  Click 'View Log' for more details.  For additional support see the ", 'wpduplicator'),
 								__("online knowledgebase", 'wpduplicator')); 
 								?><br/>
-								<button class='dup-dlg-quick-path-download-link no-select' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
+								<button class='button' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
 						</div>
 					</td>
 				</tr>	

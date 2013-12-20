@@ -128,7 +128,7 @@ class DUP_Database{
 		}
 	}
 	
-		/**
+	/**
 	 *  DATABASESTATS
 	 *  Get the database stats
 	 */

@@ -112,7 +112,7 @@ class DUP_Zip  extends DUP_Archive {
 	}
 	
 	//BASIC RECURSION
-	//Only called when no filters are provided
+	//Only called when no filters are provided tighter loop structer for speed
     private static function recurseDirs($directory) {
 		
 		$currentPath = DUP_Util::SafePath($directory);
