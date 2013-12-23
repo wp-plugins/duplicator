@@ -6,6 +6,7 @@ function duplicator_package_create() {
     global $wpdb;
     global $current_user;
     
+	@set_time_limit(0);
 	$timerStart = DUP_Util::GetMicrotime();
 	
 	$json	  = array();
@@ -13,7 +14,7 @@ function duplicator_package_create() {
 	$errLevel = error_reporting();
 	error_reporting(E_ERROR);
 	
-	@set_time_limit(0);
+
 	$wpdb->query("SET session wait_timeout = " . DUPLICATOR_DB_MAX_TIME);
 	
 	DUP_Util::InitSnapshotDirectory();
@@ -130,7 +131,7 @@ function duplicator_package_scan() {
 	$json['DB']['TableList']	= $db['TableList']					or "unknown";
 	
 	//FILES:
-    $files							= $Package->Archive->DirStats();
+    $files						= $Package->Archive->DirStats();
 	$json['ARC']['Size']		= DUP_Util::ByteSize($files['Size'])  or "unknown";;
     $json['ARC']['DirCount']	= empty($files['DirCount']) ? '0'  : number_format($files['DirCount']);
 	$json['ARC']['FileCount']	= empty($files['FileCount']) ? '0' : number_format($files['FileCount']);

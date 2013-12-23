@@ -208,11 +208,11 @@ VIEW: STEP 1- INPUT -->
 				<td>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-create" value="create" checked="checked" />
-						<label for="dbaction-create">Create</label>
+						<label for="dbaction-create">Create New</label>
 					</div>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-empty" value="empty" />
-						<label for="dbaction-empty">Delete</label>						
+						<label for="dbaction-empty">Remove All Tables</label>						
 					</div>
 				</td>
 			</tr>			
@@ -287,7 +287,7 @@ VIEW: STEP 1- INPUT -->
     	<div id="dup-step1-warning-check">
     	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
 			<div id="dup-step1-warning-emptydb">
-				The delete action will remove <u>all</u> tables from the selected database name!
+				The remove action will delete <u>all</u> tables from the database!
 			</div>
     	</div><br/><br/><br/>
     		    

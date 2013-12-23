@@ -184,7 +184,7 @@ define('ERR_DBCONNECT',			'DATABASE CONNECTION FAILED!<br/>');
 define('ERR_DBCONNECT_CREATE',  'DATABASE CREATION FAILURE!<br/> Unable to create database "%s". Check to make sure the user has "Create" privileges.  Some hosts will restrict creation of a database only through the cpanel.  Try creating the database manually to proceed with installation.');
 define('ERR_DBTRYCLEAN',		'DATABASE CREATION FAILURE!<br/> Unable to remove all tables from database "%s".<br/>  Please remove all tables from this database and try the installation again.');
 define('ERR_DBCREATE',			'The database "%s" does not exists.<br/>  Change mode to create in order to create a new database.');
-define('ERR_DBEMPTY',			'The database "%s" has "%s" tables.  The Duplicator only works with an EMPTY database.  Enable the action "Delete" radio button to remove all tables and or create a new database. Some hosting providers do not allow table removal from scripts.  In this case you will need to login to your hosting providers control panel and remove the tables manually.  Please contact your hosting provider for further details.  Always backup all your data before proceeding!');
+define('ERR_DBEMPTY',			'The database "%s" has "%s" tables.  The Duplicator only works with an EMPTY database.  Enable the action "Remove All Tables" radio button to remove all tables and or create a new database. Some hosting providers do not allow table removal from scripts.  In this case you will need to login to your hosting providers control panel and remove the tables manually.  Please contact your hosting provider for further details.  Always backup all your data before proceeding!');
 
 /** * *****************************************************
  * DUPX_Log 
@@ -2231,11 +2231,11 @@ VIEW: STEP 1- INPUT -->
 				<td>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-create" value="create" checked="checked" />
-						<label for="dbaction-create">Create</label>
+						<label for="dbaction-create">Create New</label>
 					</div>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-empty" value="empty" />
-						<label for="dbaction-empty">Delete</label>						
+						<label for="dbaction-empty">Remove All Tables</label>						
 					</div>
 				</td>
 			</tr>			
@@ -2310,7 +2310,7 @@ VIEW: STEP 1- INPUT -->
     	<div id="dup-step1-warning-check">
     	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
 			<div id="dup-step1-warning-emptydb">
-				The delete action will remove <u>all</u> tables from the selected database name!
+				The remove action will delete <u>all</u> tables from the database!
 			</div>
     	</div><br/><br/><br/>
     		    
@@ -2688,11 +2688,11 @@ VIEW: STEP 1- INPUT -->
 				<td>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-create" value="create" checked="checked" />
-						<label for="dbaction-create">Create</label>
+						<label for="dbaction-create">Create New</label>
 					</div>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-empty" value="empty" />
-						<label for="dbaction-empty">Delete</label>						
+						<label for="dbaction-empty">Remove All Tables</label>						
 					</div>
 				</td>
 			</tr>			
@@ -2767,7 +2767,7 @@ VIEW: STEP 1- INPUT -->
     	<div id="dup-step1-warning-check">
     	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
 			<div id="dup-step1-warning-emptydb">
-				The delete action will remove <u>all</u> tables from the selected database name!
+				The remove action will delete <u>all</u> tables from the database!
 			</div>
     	</div><br/><br/><br/>
     		    

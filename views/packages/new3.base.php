@@ -17,7 +17,7 @@
 	div#dup-progress-area span.label {font-weight:bold}
 	div#dup-msg-success {color:#18592A; padding:5px;}
 	div#dup-msg-success fieldset, 
-	div#dup-msg-error fieldset {text-align:left; width:95%; border:1px solid #dfdfdf; border-radius:5px; padding:5px 15px 5px 15px}
+	div#dup-msg-error fieldset {text-align:left; width:95%; border:1px solid #dfdfdf; border-radius:5px; padding:5px 15px 5px 15px; min-height:200px}
 	div.dup-msg-success-stats{color:#999;margin:10px 0px 0px 0px}
 	div.dup-msg-success-links {margin:20px 5px 5px 5px}
 	div#dup-msg-error {color:#A62426; padding:5px;}
@@ -97,10 +97,11 @@ WIZARD STEP TABS -->
 						<span class="data"></span>
 					</div>
 					<div id="dup-msg-error-response-text">
-						<span class="label"><?php _e("Error Message:", 'wpduplicator'); ?></span>
+						<span class="label"><?php _e("Error Message:", 'wpduplicator'); ?></span><br/>
 						<span class="data"></span>
 					</div>
 				</fieldset>
+				<small><?php _e("Open the Preview Log for more details.", 'wpduplicator') ?></small>
 			</div>
 			
 		</div>
@@ -158,8 +159,9 @@ jQuery(document).ready(function($) {
 				$('#dup-progress-bar-area').hide(); 
 				$('#dup-progress-area, #dup-msg-error').show(200);
 				var status = data.status + ' -' + data.statusText;
+				var response = (data.responseText != undefined && data.responseText.length > 1) ? data.responseText : 'Unknown Error - See Log File';
 				$('#dup-msg-error-response-status span.data').html(status)
-				$('#dup-msg-error-response-text span.data').html(data.responseText);
+				$('#dup-msg-error-response-text span.data').html(response);
 				console.log(data);
 			}
 		});
