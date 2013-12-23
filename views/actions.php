@@ -137,7 +137,7 @@ function duplicator_package_scan() {
 	$json['ARC']['FileCount']	= empty($files['FileCount']) ? '0' : number_format($files['FileCount']);
 	$json['ARC']['LinkCount']	= empty($files['LinkCount']) ? '0' : number_format($files['LinkCount']);
 	$json['ARC']['LongFiles']	= is_array($files['LongFiles']) ? $files['LongFiles'] : "unknown";
-	$json['ARC']['BigFiles']	= is_array($files['BigFiles'])  ? $files['LongFiles'] : "unknown";
+	$json['ARC']['BigFiles']	= is_array($files['BigFiles'])  ? $files['BigFiles'] : "unknown";
 	$json['ARC']['Status']['Size']	= ($files['Size'] > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
 	$json['ARC']['Status']['Names']	= count($files['LongFiles']) ? 'Warn' : 'Good';
 	$json['ARC']['Status']['Big']	= count($files['BigFiles'])  ? 'Warn' : 'Good';
