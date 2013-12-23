@@ -37,10 +37,12 @@
 	* Timeout (10000000 = 166 minutes) */
 	Duplicator.runDeployment = function() {
 		
-		if ( $.trim($("#dbhost").val()) == "" )  {alert("The database server 'Host' field is required!"); return false;}
-		if ( $.trim($("#dbuser").val()) == "" )  {alert("The database server 'User' field is required!"); return false;}
-		if ( $.trim($("#dbname").val()) == "" )  {alert("The 'Database Name' field is required!"); return false;}
-		
+		var $form = $('#dup-step1-input-form');
+		$form.parsley('validate');
+		if (! $form.parsley('isValid')) {
+			return;
+		}
+	
 		var msg =  "Continue installation with the following settings?\n\n";
 			msg += "Server: " + $("#dbhost").val() + "\nDatabase: " + $("#dbname").val() + "\n\n";
 			msg += "WARNING: Be sure these database parameters are correct!\n";
@@ -54,10 +56,10 @@
 				timeout: 10000000,
 				dataType: "json",
 				url: window.location.href,
-				data: $('#dup-step1-input-form').serialize(),
+				data: $form.serialize(),
 				beforeSend: function() {
 					Duplicator.showProgressBar();
-					$('#dup-step1-input-form').hide();
+					$form.hide();
 					$('#dup-step1-result-form').show();
 				},			
 				success: function(data, textStatus, xhr){ 
@@ -103,16 +105,6 @@
 	};
 	
 	/** **********************************************
-	* METHOD: Go back on AJAX result view */
-	Duplicator.dlgSysChecks = function() {
-		$( "#dup-step1-dialog" ).dialog({
-			height:500, width:600, modal: true,
-			position:['center', 150],
-			buttons: {Close: function() {$(this).dialog( "close" );}}
-		});
-	};
-	
-	/** **********************************************
 	* METHOD: Shows results of database connection 
 	* Timeout (45000 = 45 secs) */
 	Duplicator.dlgTestDB = function () {
@@ -126,7 +118,7 @@
 		});
 		
 		$("#dup-step1-dialog-db").dialog({
-			height:400, width:550, modal: true,
+			height:400, width:600, modal: true,
 			position:['center', 150],
 			buttons: {Close: function() {$(this).dialog( "close" );}}
 		});
@@ -134,16 +126,25 @@
 		$('#dbconn-test-msg').html("Attempting Connection.  Please wait...");
 	};
 	
+	Duplicator.showDeleteWarning = function () {
+		($('#dbaction-empty').prop('checked')) 
+			? $('#dup-step1-warning-emptydb').show(300)
+			: $('#dup-step1-warning-emptydb').hide(300);
+	};
+	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
+		$('#dup-step1-dialog-data').appendTo('#dup-step1-result-container');
+		$( "input[name='dbaction']").click(Duplicator.showDeleteWarning);
 		Duplicator.acceptWarning();
+		Duplicator.showDeleteWarning();		
 	});
 </script>
 
 
 <!-- =========================================
 VIEW: STEP 1- INPUT -->
-<form id='dup-step1-input-form' method="post" class="content-form">
+<form id='dup-step1-input-form' method="post" class="content-form"  parsley-validate>
 	<input type="hidden" name="action_ajax" value="1" />
 	<input type="hidden" name="action_step" value="1" />
 	<input type="hidden" name="package_name"  value="<?php echo $zip_file_name ?>" />
@@ -161,13 +162,21 @@ VIEW: STEP 1- INPUT -->
 	
 	<!-- CHECKS: FAIL -->
 	<?php if ( $total_req == 'Fail')  :	?>
-	    
-    	<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-    	    <div id="system-circle" class="circle-fail"></div> &nbsp; System Requirements: Fail...
-    	</div><br/>
-    		    
-    	<i id="dup-step1-sys-req-msg">This installation will not be able to proceed until the system requirements pass. Please validate your system requirements by clicking on the button above. 
-    	In order to get these values to pass please contact your server administrator, hosting provider or visit the online FAQ.</i><br/>
+	
+		<div class="dup-box">
+			<div class="dup-box-title">
+				<div id="system-circle" class="circle-fail"></div> &nbsp; Requirements: Fail
+				<div class="dup-box-arrow"></div>
+			</div>
+			<div class="dup-box-panel" style="display:none">	
+				<div id="dup-step1-result-container"></div>
+			</div> 
+		</div><br/>
+	
+    	<i id="dup-step1-sys-req-msg">
+			This installation will not be able to proceed until the system requirements pass. Please validate your system requirements by clicking on the button above. 
+			In order to get these values to pass please contact your server administrator, hosting provider or visit the online FAQ.
+		</i><br/>
     		    
     	<div style="line-height:28px; font-size:14px; padding:0px 0px 0px 30px; font-weight:normal">
     	    <b>Helpful Resources:</b><br/>
@@ -178,43 +187,46 @@ VIEW: STEP 1- INPUT -->
 	
 	<!-- CHECKS: PASS -->
 	<?php else : ?>	
-
-		<div id="dup-step1-sys-req-btn" onclick="Duplicator.dlgSysChecks()">
-				<div id="system-circle" class="circle-pass"></div>  &nbsp; System Requirements: Pass...<br/>
-		</div>
-		<div style='color:#777; font-size:11px; text-align:center; margin:5px 0px 0px 0px'><i><a href="javascript:void(0)" onclick="jQuery('#dup-pack-details').toggle(400)">Package Details</a></i></div>
-    	<div id="dup-pack-details">
-			<i><b>Name:</b> <?php echo $zip_file_name; ?> </i><br/>
-			<i><b>Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?> </i><br/>
-		</div><br/>
-    		    
-    	<div class="title-header">
-    	    MySQL Server
-    	</div>
-    	<table class="table-inputs">
-    	    <tr><td style="width:130px">Host</td><td><input type="text" name="dbhost" id="dbhost" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" /></td></tr>
-    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" /></td></tr>
-    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>" /></td></tr>
-    	</table>
-    		    
-    	<table class="table-inputs">
-    	    <tr><td style="width:130px">Database Name</td><td><input type="text" name="dbname" id="dbname" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>" /></td></tr>
-    	    <tr>
-    		<td>Allow Options</td>
-    		<td>
-    		    <table class="dbtable-opts">
-	    			<tr>
-	    			    <td><input type="checkbox" name="dbmake" id="dbmake" checked="checked" value="1" /> <label for="dbmake">Database Creation</label></td>
-	    			    <td><input type="checkbox" name="dbclean" id="dbclean" value="1" /> <label for="dbclean">Table Removal</label> </td>
-	    			</tr>						
-    		    </table>	
-    		</td>
-    	    </tr>
-    	</table>
-	<div style="margin:auto; text-align:center"><input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." /></div>
-    	<br/>
 	
-    		    
+	
+		<div class="dup-box">
+			<div class="dup-box-title">
+				<div id="system-circle" class="circle-pass"></div> &nbsp; Requirements: Pass
+				<div class="dup-box-arrow"></div>
+			</div>
+			<div class="dup-box-panel" style="display:none">	
+				<div id="dup-step1-result-container"></div>
+			</div> 
+		</div><br/>
+	
+    	<div class="title-header">
+    	    MySQL Database
+    	</div>
+    	<table class="dup-step1-inputs">
+			<tr>
+				<td>Action</td>
+				<td>
+					<div class="dup-step1-modes">
+						<input type="radio" name="dbaction" id="dbaction-create" value="create" checked="checked" />
+						<label for="dbaction-create">Create</label>
+					</div>
+					<div class="dup-step1-modes">
+						<input type="radio" name="dbaction" id="dbaction-empty" value="empty" />
+						<label for="dbaction-empty">Delete</label>						
+					</div>
+				</td>
+			</tr>			
+    	    <tr><td>Host</td><td><input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" /></td></tr>
+    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>" /></td></tr>
+			<tr><td>Name</td><td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>" /></td></tr>
+    	</table>
+		
+		<div id="dup-step1-dbconn">
+			<input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection..." />
+		</div>
+
+
     	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
     	If your interested in Private Label Rights please contact us at the URL below to discuss
     	customizations to product labeling: http://lifeinthegrid.com	-->
@@ -229,8 +241,8 @@ VIEW: STEP 1- INPUT -->
     		    
     	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
     	<div id='dup-step1-adv-opts' style="display:none">
-    	    <table class="table-inputs">
-    		<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual"   value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
+    	    <table class="dup-step1-inputs">
+    		<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
     		<tr><td colspan="2"><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce SSL on Admin</label></td></tr>
 			<tr><td colspan="2"><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce SSL on Login</label></td></tr>
 			<tr><td colspan="2"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Cache Enabled</label></td></tr>
@@ -241,8 +253,8 @@ VIEW: STEP 1- INPUT -->
     	    </table>
     	</div>
 
-	<!-- NOTICES  -->
-    	<div class="warning-info" style="margin-top:50px">
+		<!-- NOTICES  -->
+    	<div id="dup-step1-warning">
     	    <b>WARNINGS &amp; NOTICES</b> 
     	    <p>
 				<b>Disclaimer:</b> 
@@ -272,8 +284,11 @@ VIEW: STEP 1- INPUT -->
 			</p><br/>
     	</div>
     		    
-    	<div class="dup-step1-warning-area">
-    	    <input id="accept-warnings"   type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
+    	<div id="dup-step1-warning-check">
+    	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
+			<div id="dup-step1-warning-emptydb">
+				The delete action will remove <u>all</u> tables from the selected database name!
+			</div>
     	</div><br/><br/><br/>
     		    
     	<div class="dup-footer-buttons">
@@ -315,121 +330,126 @@ Auto Posts to view.step2.php  -->
 	<!--  AJAX SYSTEM ERROR -->
 	<div id="ajaxerr-area" style="display:none">
 	    <p>Please try again an issue has occurred.</p>
-	    <div style="padding: 0px 10px 10px 10px;">
-		<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
-		<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+	    <div style="padding: 0px 10px 10px 0px;">
+			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
+			<div style="text-align:center; margin:10px auto 0px auto">
+				<input type="button" onclick='Duplicator.hideErrorResult()' value="&laquo; Try Again" /><br/><br/>
+				<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+			</div>
 	    </div>
 	</div>
 </form>
 
 
 <!-- =========================================
-DIALOG: SERVER CHECKS  -->
+PANEL: SERVER CHECKS  -->
 <div id="dup-step1-dialog" title="System Status" style="display:none">
-	<div id="dup-step1-dialog-data" style="padding: 0px 10px 10px 10px;">
+<div id="dup-step1-dialog-data" style="padding: 0px 10px 10px 10px;">
+	
+	<b>Archive Name:</b> <?php echo $zip_file_name; ?> <br/>
+	<b>Pakcage Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?><br/><br/>
 					
-	    <!-- SYSTEM REQUIREMENTS -->
-	    <b>REQUIREMENTS</b> &nbsp; <i style='font-size:11px'>click links for details</i>
-	    <hr size="1"/>
-	    <table style="width:100%">
-		<tr>
-		    <td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</a></td>
-		    <td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
-		</tr>
-		<tr>
-		    <td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
-			<?php
-			echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
-			printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable by PHP");
-			printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_file_name} <br/> <i>Note: Manual extraction still requires the archive.zip file</i> </div> ");
-			?>
-		    </td>
-		</tr>
-		<tr>
-		    <td>Safe Mode Off</td>
-		    <td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
-		</tr>
-		<tr>
-		    <td>MySQL Support</td>
-		    <td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
-		</tr>
-		<tr>
-		    <td valign="top">
-			PHP Version: <?php echo phpversion(); ?><br/>
-			<i style="font-size:10px">(PHP 5.2.17+ is required)</i>
-		    </td>
-		    <td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
-		</tr>
-	    </table><br/>
-		
+	<!-- SYSTEM REQUIREMENTS -->
+	<b>REQUIREMENTS</b> &nbsp; <i style='font-size:11px'>click links for details</i>
+	<hr size="1"/>
+	<table style="width:100%">
+	<tr>
+		<td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</a></td>
+		<td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
+	</tr>
+	<tr>
+		<td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
+		<?php
+		echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
+		printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable by PHP");
+		printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_file_name} <br/> <i>Note: Manual extraction still requires the archive.zip file</i> </div> ");
+		?>
+		</td>
+	</tr>
+	<tr>
+		<td>Safe Mode Off</td>
+		<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
+	</tr>
+	<tr>
+		<td>MySQL Support</td>
+		<td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
+	</tr>
+	<tr>
+		<td valign="top">
+		PHP Version: <?php echo phpversion(); ?><br/>
+		<i style="font-size:10px">(PHP 5.2.17+ is required)</i>
+		</td>
+		<td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
+	</tr>
+	</table>
 
-	    <!-- SYSTEM CHECKS -->
-	    <b>CHECKS</b><hr style='margin-top:-2px' size="1"/>
-	    <table style="width:100%">
-		<tr>
-		    <td style="width:300px"></td>
-		    <td></td>
-		</tr>
-		<tr>
-		    <?php if (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') !== false): ?>
-    		    <td><b>Web Server:</b> Apache</td>
-    		    <td><div class='dup-pass'>Good</div></td>
-		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false): ?> 
-    		    <td><b>Web Server:</b> LiteSpeed</td>
-    		    <td><div class='dup-ok'>OK</div></td>
-		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false): ?> 
-    		    <td><b>Web Server:</b> Nginx</td>
-    		    <td><div class='dup-ok'>OK</div></td>
-		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'lighttpd') !== false): ?> 
-    		    <td><b>Web Server:</b> Lighthttpd</td>
-    		    <td><div class='dup-ok'>OK</div></td>
-		    <?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') !== false): ?> 
-    		    <td><b>Web Server:</b> Microsoft IIS</td>
-    		    <td><div class='dup-ok'>OK</div></td>
-		    <?php else: ?>
-    		    <td><b>Web Server:</b> Not detected</td>
-    		    <td><div class='dup-fail'>Caution</div></td>
-		    <?php endif; ?>				
-		</tr>
-		<tr>
-		    <?php
-		    $open_basedir_set = ini_get("open_basedir");
-		    if (empty($open_basedir_set)):
-			?>
-    		    <td><b>Open Base Dir:</b> Off
-    		    <td><div class='dup-pass'>Good</div>
-		    <?php else: ?>
-    		    <td><b>Open Base Dir:</b> On</td>
-    		    <td><div class='dup-fail'>Caution</div></td>
-		    <?php endif; ?>
-		</tr>
-	    </table>
-		    
-	    <hr class='dup-dots' />
-	    <!-- SAPI -->
-	    <b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
-	    <b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
-		<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com") && DupUtil::is_url_active("ajax.googleapis.com")) ? 'Yes' : 'No'; ?> 
+	<!-- SYSTEM CHECKS -->
+	<b>CHECKS</b><hr style='margin-top:-2px' size="1"/>
+	<table style="width:100%">
+	<tr>
+		<td style="width:300px"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<?php if (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') !== false): ?>
+			<td><b>Web Server:</b> Apache</td>
+			<td><div class='dup-pass'>Good</div></td>
+		<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false): ?> 
+			<td><b>Web Server:</b> LiteSpeed</td>
+			<td><div class='dup-ok'>OK</div></td>
+		<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false): ?> 
+			<td><b>Web Server:</b> Nginx</td>
+			<td><div class='dup-ok'>OK</div></td>
+		<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'lighttpd') !== false): ?> 
+			<td><b>Web Server:</b> Lighthttpd</td>
+			<td><div class='dup-ok'>OK</div></td>
+		<?php elseif (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') !== false): ?> 
+			<td><b>Web Server:</b> Microsoft IIS</td>
+			<td><div class='dup-ok'>OK</div></td>
+		<?php else: ?>
+			<td><b>Web Server:</b> Not detected</td>
+			<td><div class='dup-fail'>Caution</div></td>
+		<?php endif; ?>				
+	</tr>
+	<tr>
+		<?php
+		$open_basedir_set = ini_get("open_basedir");
+		if (empty($open_basedir_set)):
+		?>
+			<td><b>Open Base Dir:</b> Off
+			<td><div class='dup-pass'>Good</div>
+		<?php else: ?>
+			<td><b>Open Base Dir:</b> On</td>
+			<td><div class='dup-fail'>Caution</div></td>
+		<?php endif; ?>
+	</tr>
+	</table>
 
-	</div>
+	<hr class='dup-dots' />
+	<!-- SAPI -->
+	<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
+	<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
+	<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com") && DupUtil::is_url_active("ajax.googleapis.com")) ? 'Yes' : 'No'; ?> 
+
+</div>
 </div>
 
 
 <!-- =========================================
 DIALOG: DB CONNECTION CHECK  -->
-<div id="dup-step1-dialog-db" title="Test Database Connection" style="display:none">
+<div id="dup-step1-dialog-db" title="Connection Test" style="display:none">
     <div id="dup-step1-dialog-db-data" style="padding: 0px 10px 10px 10px;">		
-	<div id="dbconn-test-msg" style="min-height:50px"></div>
-	<br/><hr size="1" />
-	<div class="help">
-	    <b>Common Connection Issues:</b><br/>
-	    - Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
-	    - Validate the database and database user exist on this server <br/>
-	    - Check if the database user has the correct permission levels to this database <br/>
-	    - The host 'localhost' may not work on all hosting providers <br/>
-	    - Contact your hosting provider for the exact required parameters <br/>
-	    - See the 'Database Setup Help' section on step 1 for more details<br/>
-	    - Visit the online resources 'Common FAQ page' <br/>
-	</div>
+		<div id="dbconn-test-msg" style="min-height:50px"></div>
+		<br/>
+		<div class="help" style="border-top:1px solid silver">
+			<b>Common Connection Issues:</b><br/>
+			- Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
+			- Validate the database and database user exist on this server <br/>
+			- Check if the database user has the correct permission levels to this database <br/>
+			- The host 'localhost' may not work on all hosting providers <br/>
+			- Contact your hosting provider for the exact required parameters <br/>
+			- See the 'Database Setup Help' section on step 1 for more details<br/>
+			- Visit the online resources 'Common FAQ page' <br/>
+		</div>
     </div>
 </div>

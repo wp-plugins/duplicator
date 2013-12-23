@@ -130,7 +130,7 @@ VIEW: STEP 2- INPUT -->
 	<hr size="1" /><br />
 
 	<div class="title-header">Old Settings</div>
-	<table class="table-inputs">
+	<table class="table-inputs-step2">
 		<tr valign="top">
 			<td style="width:80px">URL</td>
 			<td>
@@ -148,7 +148,7 @@ VIEW: STEP 2- INPUT -->
 	</table>
 
 	<div class="title-header" style="margin-top:8px">New Settings</div>
-	<table class="table-inputs">		
+	<table class="table-inputs-step2">		
 		<tr>
 			<td style="width:80px">URL</td>
 			<td>
@@ -170,7 +170,7 @@ VIEW: STEP 2- INPUT -->
     CREATE NEW USER -->
 	<a href="javascript:void(0)" onclick="$('#dup-step2-user-opts').toggle(0)"><b>New Admin Account...</b></a>
 	<div id='dup-step2-user-opts' style="display:none;">
-	<table class="table-inputs" style="margin-top:7px">
+	<table class="table-inputs-step2" style="margin-top:7px">
 		<tr><td colspan="2"><i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i></td></tr>
 		<tr>
 			<td>Username </td>
@@ -271,7 +271,10 @@ VIEW: STEP 2 - AJAX RESULT  -->
 		<p>Please try again an issue has occurred.</p>
 		<div style="padding: 0px 10px 10px 10px;">
 			<div id="ajaxerr-data">An unknown issue has occurred with the data replacement setup process.  Please see the installer-log.txt file for more details.</div>
-			<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+			<div style="text-align:center; margin:10px auto 0px auto">
+				<input type="button" onclick='Duplicator.hideErrorResult()' value="&laquo; Try Again" /><br/><br/>
+				<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+			</div>
 		</div>
 	</div>
 </form>

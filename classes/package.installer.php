@@ -44,15 +44,18 @@ class DUP_Installer {
 		}
 
 		$embeded_files = array(
-			"inc.assets.css.php"	=> "@@INC.ASSETS.CSS.PHP@@",
-			"inc.assets.js.php"		=> "@@INC.ASSETS.JS.PHP@@",
-			"class.utils.php"		=> "@@CLASS.UTILS.PHP@@",
-			"class.config.php"		=> "@@CLASS.CONFIG.PHP@@",
-			"ajax.step1.php"		=> "@@AJAX.STEP1.PHP@@",
-			"ajax.step2.php"		=> "@@AJAX.STEP2.PHP@@",
-			"view.step1.php"		=> "@@VIEW.STEP1.PHP@@",
-			"view.step2.php"		=> "@@VIEW.STEP2.PHP@@",
-			"view.step3.php"		=> "@@VIEW.STEP3.PHP@@");
+			"assets/inc.libs.css.php"	=> "@@INC.LIBS.CSS.PHP@@",
+			"assets/inc.css.php"		=> "@@INC.CSS.PHP@@",
+			"assets/inc.libs.js.php"	=> "@@INC.LIBS.JS.PHP@@",
+			"assets/inc.js.php"			=> "@@INC.JS.PHP@@",
+			"classes/class.logging.php"	=> "@@CLASS.LOGGING.PHP@@",
+			"classes/class.utils.php"	=> "@@CLASS.UTILS.PHP@@",
+			"classes/class.config.php"	=> "@@CLASS.CONFIG.PHP@@",
+			"ajax.step1.php"			=> "@@AJAX.STEP1.PHP@@",
+			"ajax.step2.php"			=> "@@AJAX.STEP2.PHP@@",
+			"view.step1.php"			=> "@@VIEW.STEP1.PHP@@",
+			"view.step2.php"			=> "@@VIEW.STEP2.PHP@@",
+			"view.step3.php"			=> "@@VIEW.STEP3.PHP@@");
 
 		foreach ($embeded_files as $name => $token) {
 			$file_path = DUPLICATOR_PLUGIN_PATH . "installer/build/${name}";

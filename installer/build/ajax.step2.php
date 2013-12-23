@@ -15,29 +15,29 @@ class DupDBTextSwap {
 	 */
 	static public function log_errors($report) {
 		if (!empty($report['errsql'])) {
-			DupUtil::log("====================================");
-			DupUtil::log("DATA-REPLACE ERRORS (MySQL)");
+			DUPX_Log::Info("====================================");
+			DUPX_Log::Info("DATA-REPLACE ERRORS (MySQL)");
 			foreach ($report['errsql'] as $error) {
-				DupUtil::log($error);
+				DUPX_Log::Info($error);
 			}
-			DupUtil::log("");
+			DUPX_Log::Info("");
 		}
 		if (!empty($report['errser'])) {
-			DupUtil::log("====================================");
-			DupUtil::log("DATA-REPLACE ERRORS (Serialization):");
+			DUPX_Log::Info("====================================");
+			DUPX_Log::Info("DATA-REPLACE ERRORS (Serialization):");
 			foreach ($report['errser'] as $error) {
-				DupUtil::log($error);
+				DUPX_Log::Info($error);
 			}
-			DupUtil::log("");
+			DUPX_Log::Info("");
 		}
 		if (!empty($report['errkey'])) {
-			DupUtil::log("====================================");
-			DupUtil::log("DATA-REPLACE ERRORS (Key):");
-			DupUtil::log('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
+			DUPX_Log::Info("====================================");
+			DUPX_Log::Info("DATA-REPLACE ERRORS (Key):");
+			DUPX_Log::Info('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
 			foreach ($report['errkey'] as $error) {
-				DupUtil::log($error);
+				DUPX_Log::Info($error);
 			}
-			DupUtil::log("");
+			DUPX_Log::Info("");
 		}
 	}
 
@@ -51,7 +51,7 @@ class DupDBTextSwap {
 			$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
 			$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
 			$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
-			DupUtil::log($stats);
+			DUPX_Log::Info($stats);
 		}
 	}
 
@@ -243,7 +243,7 @@ class DupDBTextSwap {
 			if ($serialised)
 				return serialize($data);
 		} catch (Exception $error) {
-			DupUtil::log("\nRECURSIVE UNSERIALIZE ERROR: With string\n" . $error, 2);
+			DUPX_Log::Info("\nRECURSIVE UNSERIALIZE ERROR: With string\n" . $error, 2);
 		}
 		return $data;
 	}
@@ -301,8 +301,8 @@ class DupDBTextSwap {
 $ajax2_start = DupUtil::get_microtime();
 
 //MYSQL CONNECTION
-$db_port = parse_url($_POST['dbhost'], PHP_URL_PORT);
-$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $db_port);
+
+$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 $charset_server = @mysqli_character_set_name($dbh);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 DupUtil::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
@@ -325,38 +325,38 @@ unset($POST_LOG['dbpass']);
 ksort($POST_LOG);
 
 //GLOBAL DB-REPLACE
-DupUtil::log("\n\n\n{$GLOBALS['SEPERATOR1']}");
-DupUtil::log('DUPLICATOR INSTALL-LOG');
-DupUtil::log('STEP2 START @ ' . @date('h:i:s'));
-DupUtil::log('NOTICE: NOTICE: Do not post to public sites or forums');
-DupUtil::log("{$GLOBALS['SEPERATOR1']}");
-DupUtil::log("CHARSET SERVER:\t{$charset_server}");
-DupUtil::log("CHARSET CLIENT:\t" . @mysqli_character_set_name($dbh));
-DupUtil::log("--------------------------------------");
-DupUtil::log("POST DATA");
-DupUtil::log("--------------------------------------");
-DupUtil::log(print_r($POST_LOG, true));
+DUPX_Log::Info("\n\n\n{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info('DUPLICATOR INSTALL-LOG');
+DUPX_Log::Info('STEP2 START @ ' . @date('h:i:s'));
+DUPX_Log::Info('NOTICE: NOTICE: Do not post to public sites or forums');
+DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("CHARSET SERVER:\t{$charset_server}");
+DUPX_Log::Info("CHARSET CLIENT:\t" . @mysqli_character_set_name($dbh));
+DUPX_Log::Info("--------------------------------------");
+DUPX_Log::Info("POST DATA");
+DUPX_Log::Info("--------------------------------------");
+DUPX_Log::Info(print_r($POST_LOG, true));
 
-DupUtil::log("--------------------------------------");
-DupUtil::log("SCANNED TABLES");
-DupUtil::log("--------------------------------------");
+DUPX_Log::Info("--------------------------------------");
+DUPX_Log::Info("SCANNED TABLES");
+DUPX_Log::Info("--------------------------------------");
 $msg = (isset($_POST['tables']) && count($_POST['tables'] > 0)) ? print_r($_POST['tables'], true) : 'No tables selected to update';
-DupUtil::log($msg);
+DUPX_Log::Info($msg);
 
-DupUtil::log("--------------------------------------");
-DupUtil::log("KEEP PLUGINS ACTIVE");
-DupUtil::log("--------------------------------------");
+DUPX_Log::Info("--------------------------------------");
+DUPX_Log::Info("KEEP PLUGINS ACTIVE");
+DUPX_Log::Info("--------------------------------------");
 $msg = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? print_r($_POST['plugins'], true) : 'No plugins selected for activation';
-DupUtil::log($msg);
+DUPX_Log::Info($msg);
 
 //UPDATE SETTINGS
 $serial_plugin_list = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? @serialize($_POST['plugins']) : '';
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['blogname']}' WHERE option_name = 'blogname' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 
-DupUtil::log("--------------------------------------");
-DupUtil::log("GLOBAL DB-REPLACE");
-DupUtil::log("--------------------------------------");
+DUPX_Log::Info("--------------------------------------");
+DUPX_Log::Info("GLOBAL DB-REPLACE");
+DUPX_Log::Info("--------------------------------------");
 
 array_push($GLOBALS['REPLACE_LIST'], 
 		array('search' => $_POST['url_old'], 'replace' => $_POST['url_new']), 
@@ -384,7 +384,7 @@ DupDBTextSwap::log_errors($report);
 if ($_POST['postguid']) {
 	mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}posts` SET guid = REPLACE(guid, '{$_POST['url_new']}', '{$_POST['url_old']}')");
 	$update_guid = @mysqli_affected_rows($dbh) or 0;
-	DupUtil::log("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
+	DUPX_Log::Info("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
 
 /* FINAL UPDATES: Must happen after the global replace to prevent double pathing
@@ -396,9 +396,9 @@ mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_valu
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
-DupUtil::log("\n{$GLOBALS['SEPERATOR1']}");
-DupUtil::log('START FINAL CLEANUP: ' . @date('h:i:s'));
-DupUtil::log("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("\n{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info('START FINAL CLEANUP: ' . @date('h:i:s'));
+DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 
 /*CREATE NEW USER LOGIC */
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
@@ -430,17 +430,17 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'nickname', '{$_POST['wp_username']}')");
 
 		if ($newuser_test1 && $newuser_test2 && $newuser_test3) {
-			DupUtil::log("NEW WP-ADMIN USER: New username '{$_POST['wp_username']}' was created successfully \n ");
+			DUPX_Log::Info("NEW WP-ADMIN USER: New username '{$_POST['wp_username']}' was created successfully \n ");
 		} else {
 			$newuser_warnmsg = "NEW WP-ADMIN USER: Failed to create the user '{$_POST['wp_username']}' \n ";
 			$JSON['step2']['warnlist'][] = $newuser_warnmsg;
-			DupUtil::log($newuser_warnmsg);
+			DUPX_Log::Info($newuser_warnmsg);
 		}			
 	} 
 	else {
 		$newuser_warnmsg = "NEW WP-ADMIN USER: Username '{$_POST['wp_username']}' already exists in the database.  Unable to create new account \n";
 		$JSON['step2']['warnlist'][] = $newuser_warnmsg;
-		DupUtil::log($newuser_warnmsg);
+		DUPX_Log::Info($newuser_warnmsg);
 	}
 }
 
@@ -451,9 +451,9 @@ $mu_newDomainHost = $mu_newDomain['host'];
 $mu_oldDomainHost = $mu_oldDomain['host'];
 $mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 if ($mu_updates) {
-	DupUtil::log("Update MU table blogs: domain {$mu_newDomainHost} ");
+	DUPX_Log::Info("Update MU table blogs: domain {$mu_newDomainHost} ");
 } else {
-	DupUtil::log("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+	DUPX_Log::Info("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 }
 
 
@@ -482,9 +482,9 @@ fclose($fp);
 //===============================
 //WARNING TESTS
 //===============================
-DupUtil::log("\n--------------------------------------");
-DupUtil::log("WARNINGS");
-DupUtil::log("--------------------------------------");
+DUPX_Log::Info("\n--------------------------------------");
+DUPX_Log::Info("WARNINGS");
+DUPX_Log::Info("--------------------------------------");
 $config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
 $config_found = DupUtil::string_has_value($config_vars, $config_file);
 
@@ -492,7 +492,7 @@ $config_found = DupUtil::string_has_value($config_vars, $config_file);
 if ($config_found) {
 	$msg = 'WP-CONFIG WARNING: The wp-config.php has one or more of these values "' . implode(", ", $config_vars) . '" which may cause issues please validate these values by opening the file.';
 	$JSON['step2']['warnlist'][] = $msg;
-	DupUtil::log($msg);
+	DUPX_Log::Info($msg);
 }
 
 //Database
@@ -502,14 +502,14 @@ if ($result) {
 		if (strlen($row[0])) {
 			$msg = "MEDIA SETTINGS WARNING: The table '{$GLOBALS['FW_TABLEPREFIX']}options' has at least one the following values ['upload_url_path','upload_path'] set please validate settings. These settings can be changed in the wp-admin by going to Settings->Media area see 'Uploading Files'";
 			$JSON['step2']['warnlist'][] = $msg;
-			DupUtil::log($msg);
+			DUPX_Log::Info($msg);
 			break;
 		}
 	}
 }
 
 if (empty($JSON['step2']['warnlist'])) {
-	DupUtil::log("No Warnings Found\n");
+	DUPX_Log::Info("No Warnings Found\n");
 }
 
 $JSON['step2']['warn_all'] = empty($JSON['step2']['warnlist']) ? 0 : count($JSON['step2']['warnlist']);
@@ -519,9 +519,9 @@ mysqli_close($dbh);
 
 $ajax2_end = DupUtil::get_microtime();
 $ajax2_sum = DupUtil::elapsed_time($ajax2_end, $ajax2_start);
-DupUtil::log("{$GLOBALS['SEPERATOR1']}");
-DupUtil::log('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}");
-DupUtil::log("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}");
+DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 
 $JSON['step2']['pass'] = 1;
 error_reporting($ajax2_error_level);
