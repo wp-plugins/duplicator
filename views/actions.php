@@ -110,19 +110,17 @@ function duplicator_package_create() {
  */
 function duplicator_package_scan() {
 	
-	@set_time_limit(0);
-
 	$json = array();
 	$Package = new DUP_Package();
 	$Package = $Package->GetActive();
 	
-	//SERVER:
+	//SERVER
 	$srv = $Package->GetServerChecks();
 	$json['SRV']['OpenBase'] = $srv['CHK-SRV-100'];
 	$json['SRV']['CacheOn']  = $srv['CHK-SRV-101'];
 	$json['SRV']['TimeOuts'] = $srv['CHK-SRV-102'];
 
-	//DATABASE:
+	//DATABASE
 	$db = $Package->Database->Stats();
 	$json['DB']['Status']		= $db['Status'];
 	$json['DB']['Size']			= DUP_Util::ByteSize($db['Size'])	or "unknown";
@@ -130,18 +128,18 @@ function duplicator_package_scan() {
 	$json['DB']['TableCount']	= $db['TableCount']					or "unknown";
 	$json['DB']['TableList']	= $db['TableList']					or "unknown";
 	
-	//FILES:
-    $files						= $Package->Archive->DirStats();
-	$json['ARC']['Size']		= DUP_Util::ByteSize($files['Size'])  or "unknown";;
-    $json['ARC']['DirCount']	= empty($files['DirCount']) ? '0'  : number_format($files['DirCount']);
-	$json['ARC']['FileCount']	= empty($files['FileCount']) ? '0' : number_format($files['FileCount']);
-	$json['ARC']['LinkCount']	= empty($files['LinkCount']) ? '0' : number_format($files['LinkCount']);
-	$json['ARC']['LongFiles']	= is_array($files['LongFiles']) ? $files['LongFiles'] : "unknown";
-	$json['ARC']['BigFiles']	= is_array($files['BigFiles'])  ? $files['BigFiles'] : "unknown";
-	$json['ARC']['Status']['Size']	= ($files['Size'] > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
-	$json['ARC']['Status']['Names']	= count($files['LongFiles']) ? 'Warn' : 'Good';
-	$json['ARC']['Status']['Big']	= count($files['BigFiles'])  ? 'Warn' : 'Good';
-
+	//FILES
+	$Package->Archive->GetStats();
+	$json['ARC']['Size']		= DUP_Util::ByteSize($Package->Archive->Size)  or "unknown";
+	$json['ARC']['DirCount']	= empty($Package->Archive->DirCount)  ? '0' : number_format($Package->Archive->DirCount);
+	$json['ARC']['FileCount']	= empty($Package->Archive->FileCount) ? '0' : number_format($Package->Archive->FileCount);
+	$json['ARC']['LinkCount']	= empty($Package->Archive->LinkCount) ? '0' : number_format($Package->Archive->LinkCount);
+	$json['ARC']['LongFiles']	= is_array($Package->Archive->LongFileList) ? $Package->Archive->LongFileList : "unknown";
+	$json['ARC']['BigFiles']	= is_array($Package->Archive->BigFileList)  ? $Package->Archive->BigFileList  : "unknown";
+	$json['ARC']['Status']['Size']	= ($Package->Archive->Size > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
+	$json['ARC']['Status']['Names']	= count($Package->Archive->LongFileList) ? 'Warn' : 'Good';
+	$json['ARC']['Status']['Big']	= count($Package->Archive->BigFileList)  ? 'Warn' : 'Good';
+	
 	///die(str_repeat("To force error message uncomment this line", 200));
 	$json_response = json_encode($json);
     die($json_response);

@@ -124,14 +124,15 @@ WIZARD STEP TABS -->
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
 						$test = ini_get("max_execution_time");
+		
 						echo '<b>' . __('max_execution_time', 'wpduplicator') . ':</b> ';
 						echo (empty($test)) ? 'Off' : "{$test}";  
 						echo '<br/><br/>';
-						$msg1  = "Timeouts effect how long a process is allowed to run.  The Duplicator attempts to override this value if the enviroment allows it.  ";
+						$msg1  = 'Timeouts effect how long a process is allowed to run.  The recommended timeout is "%1$s" seconds. An attempt is made to override this value if the enviroment allows it.  ';
 						$msg1 .= "A 'Warn' status will not be an issue unless your host kills PHP processes after a certain amount of time.  ";
 						$msg2  = "Timeouts can also be set at the web server layer, please work with your host or server administrator to make sure there are not restrictions for how long a PHP process is allowed to run.  ";
 						$msg2 .= "If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.";
-						_e($msg1, 'wpduplicator'); echo '<br/><br/>';
+						printf(__($msg1, 'wpduplicator'), DUPLICATOR_SCAN_TIMEOUT); echo '<br/><br/>';
 						_e($msg2, 'wpduplicator');
 						echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
 					?>
@@ -389,9 +390,7 @@ jQuery(document).ready(function($) {
 		html = '<?php _e("No name length issues.", 'wpduplicator') ?>';
 		if (data.ARC.LongFiles != undefined && data.ARC.LongFiles.length > 0) {
 			html = '';
-			$.each(data.ARC.LongFiles, function(i) {
-				$.each(data.ARC.LongFiles[i], function(key,val) {html += '<b><?php _e("File", 'wpduplicator') ?> ' + key + ':</b><br/>' + val  + '<br/><br/>' })
-			});	
+			$.each(data.ARC.LongFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>' + val  + '<br/>';});	
 		}
 		$('#data-arc-names-data').html(html);
 		
@@ -399,9 +398,7 @@ jQuery(document).ready(function($) {
 		html = '<?php _e("No large files found.", 'wpduplicator') ?>';
 		if (data.ARC.BigFiles != undefined && data.ARC.BigFiles.length > 0) {
 			html = '';
-			$.each(data.ARC.BigFiles, function(i) {
-				$.each(data.ARC.BigFiles[i], function(key,val) {html += '<b><?php _e("File", 'wpduplicator') ?> ' + key + ':</b><br/>' + val  + '<br/><br/>' })
-			});	
+			$.each(data.ARC.BigFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>' + val  + '<br/>' ;});	
 		}
 		$('#data-arc-big-data').html(html);
 		

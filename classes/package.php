@@ -237,7 +237,7 @@ class DUP_Package {
 
 		//CHK-SRV-102
 		$test = ini_get("max_execution_time");
-		$dup_checks['CHK-SRV-102'] = ($test > 60) ? 'Good' : 'Warn';
+		$dup_checks['CHK-SRV-102'] = ($test > DUPLICATOR_SCAN_TIMEOUT) ? 'Good' : 'Warn';
 		
 		//RESULTS
 		$result = in_array('Warn', $dup_checks);

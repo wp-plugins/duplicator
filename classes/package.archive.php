@@ -11,7 +11,12 @@ class DUP_Archive {
 	public $File;
 	public $Format;
 	public $PackDir;
-	public $Size;
+	public $DirCount	 = 0;
+	public $FileCount	 = 0;
+	public $LinkCount	 = 0;		
+	public $Size		 = 0;
+	public $BigFileList  = array();
+	public $LongFileList = array();
 	
 	//PROTECTED
 	protected $Package;
@@ -19,6 +24,7 @@ class DUP_Archive {
 	//PRIVATE
 	private $filerDirsArray = array();
 	private $filerExtsArray = array();
+
 	
 	public function __construct($package) {
 		$this->Package   = $package;
@@ -64,17 +70,21 @@ class DUP_Archive {
 	 *  @param string $directory		The directory to calculate
 	 *  @returns array					An array of values for the directory stats
 	 */	
-	public function DirStats() {
+	public function GetStats() {
 		$this->filerDirsArray = $this->GetFilterDirAsArray();
 		$this->filerExtsArray = $this->GetFilterExtsAsArray();
 		$rootPath = rtrim(DUPLICATOR_WPROOTPATH, '//' );
+	
 		if ($this->FilterOn) {
 			if (! in_array($rootPath, $this->filerDirsArray) ) {
-				return $this->runDirStats($this->PackDir);
+				$this->runDirStats($this->PackDir);
+				return $this;
 			}
 		} else {
-			return $this->runDirStats($this->PackDir);
+			$this->runDirStats($this->PackDir);
+			return $this;
 		}
+		return null;
 	}
 	
 
@@ -86,58 +96,31 @@ class DUP_Archive {
 			return;
 		}
 		
-		$size    = 0;
-		$dirCount = 1;
-		$fileCount = 0;
-		$linkCount = 0;
-		$longFiles = array();
-		$bigFiles  = array();
-		
 		$dh = new DirectoryIterator($currentPath);
 		foreach ($dh as $file) {
 			if (!$file->isDot()) {
 				$nextpath	= "{$currentPath}/{$file}";
 				if ($file->isDir()) {
 					if (! in_array($nextpath, $this->filerDirsArray)) {						
-						$result      = $this->runDirStats($nextpath);
-						$size		+= $result['Size'];
-						$dirCount	+= $result['DirCount'];
-						$fileCount	+= $result['FileCount'];
-						$linkCount	+= $result['LinkCount'];
-						if (count($result['LongFiles']))
-							array_push($longFiles, $result['LongFiles']);
-						if (count($result['BigFiles']))
-							array_push($bigFiles, $result['BigFiles']);
+						$result = $this->runDirStats($nextpath);
+						$this->DirCount++;
 					}
 
 				} else if ($file->isFile() && $file->isReadable()) {
 					if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filerExtsArray)) {
-						$size += $file->getSize();
-						$fileCount++;
-						if (strlen($file) > 200) 
-							array_push($longFiles, $nextpath);
+						$this->Size += $file->getSize();
+						$this->FileCount++;
+						if (strlen($nextpath) > 200) 
+							array_push($this->LongFileList, $nextpath);
 						if ($file->getSize() > DUPLICATOR_SCAN_BIGFILE) 
-							array_push($bigFiles, $nextpath);
+							array_push($this->BigFileList, $nextpath);
 					}
 				} else if ($file->isLink()) {
-					$linkCount++;
+					$this->LinkCount++;
 				} 
 			}	 
 		}
-		$total['Size']		= $size;
-		$total['DirCount']  = $dirCount;
-		$total['FileCount']	= $fileCount;
-		$total['LinkCount'] = $linkCount;
-		$total['LongFiles'] = $longFiles;
-		$total['BigFiles']  = $bigFiles;
-		return $total;
 	}	
 	
-	
-	
-
-	
-	
-
 }
 ?>

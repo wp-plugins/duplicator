@@ -32,8 +32,9 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_DB_MAX_TIME",     5000);
 	define("DUPLICATOR_SCAN_SITE",    157286400);	//150MB
 	define("DUPLICATOR_SCAN_BIGFILE", 5242880);		//5MB
-	define("DUPLICATOR_SCAN_DBSIZE",  104857600);	//100MB
+	define("DUPLICATOR_SCAN_DBSIZE",  52428800);	//50MB
 	define("DUPLICATOR_SCAN_DBROWS",  500000);
+	define("DUPLICATOR_SCAN_TIMEOUT", 300);	//Seconds
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS');
 
 } else {
