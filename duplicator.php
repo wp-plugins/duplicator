@@ -139,7 +139,8 @@ if (is_admin() == true) {
 		switch ($current_page) {
 			case 'duplicator':			 include('views/packages/controller.php');	break;
 			case 'duplicator-settings':	 include('views/settings/controller.php');	break;
-			case 'duplicator-cleanup':	 include('views/tools/cleanup.php');	break;
+			case 'duplicator-cleanup':	 include('views/tools/cleanup.php');		break;
+			case 'duplicator-logging':	 include('views/tools/logging.php');		break;
 			case 'duplicator-support':	 include('views/support.php');				break;
 			
 		}	
@@ -156,20 +157,27 @@ if (is_admin() == true) {
         $main_menu     = add_menu_page('Duplicator Plugin', 'Duplicator', $perms, 'duplicator', 'duplicator_get_menu', plugins_url('duplicator/assets/img/create.png'));
         $page_packages = add_submenu_page('duplicator',  __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), $perms, 'duplicator',			'duplicator_get_menu');
         $page_settings = add_submenu_page('duplicator',  __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), $perms, 'duplicator-settings', 'duplicator_get_menu');
-        $page_support  = add_submenu_page('duplicator',  __('Support', 'wpduplicator'),  __('Support', 'wpduplicator'),	 $perms, 'duplicator-support',  'duplicator_get_menu');
-		$page_cleanup  = add_submenu_page($main_menu,  __('Cleanup', 'wpduplicator'),  '' ,							     $perms, 'duplicator-cleanup',  'duplicator_get_menu');
+        $page_log_list = add_submenu_page('duplicator',    __('Logs',	'wpduplicator'),  __('Logging', 'wpduplicator'), $perms, 'duplicator-logging', 'duplicator_get_menu');
+		$page_support  = add_submenu_page('duplicator',  __('Support',  'wpduplicator'),  __('Support', 'wpduplicator'), $perms, 'duplicator-support',  'duplicator_get_menu');
+		$page_cleanup  = add_submenu_page($main_menu,    __('Cleanup',  'wpduplicator'),  '' ,							 $perms, 'duplicator-cleanup',  'duplicator_get_menu');
+		
+		
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_settings, 'duplicator_scripts');
-		add_action('admin_print_scripts-' . $page_support, 'duplicator_scripts');
-		add_action('admin_print_scripts-' . $page_cleanup, 'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_support,  'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_cleanup,  'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_log_list,	'duplicator_scripts');
+		
 
 		//Apply Styles
         add_action('admin_print_styles-'  . $page_packages, 'duplicator_styles');
         add_action('admin_print_styles-'  . $page_settings, 'duplicator_styles');
-		add_action('admin_print_styles-'  . $page_support, 'duplicator_styles');
-        add_action('admin_print_styles-'  . $page_cleanup, 'duplicator_styles');
+		add_action('admin_print_styles-'  . $page_support,  'duplicator_styles');
+        add_action('admin_print_styles-'  . $page_cleanup,  'duplicator_styles');
+		add_action('admin_print_styles-'  . $page_log_list,	'duplicator_styles');
+		
     }
 
     /**

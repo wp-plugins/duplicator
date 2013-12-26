@@ -7,6 +7,7 @@ Duplicator			= new Object();
 Duplicator.UI		= new Object();
 Duplicator.Pack		= new Object();
 Duplicator.Settings = new Object();
+Duplicator.Tools	= new Object();
 
 //GLOBAL CONSTANTS
 Duplicator.DEBUG_AJAX_RESPONSE = false;
@@ -45,9 +46,9 @@ Duplicator.ReloadWindow = function(data) {
 Duplicator.OpenLogWindow = function(log) {
 	var logFile = log || null;
 	if (logFile == null) {
-		window.open('<?php echo DUPLICATOR_PLUGIN_URL .'views/tools/log-view.php'; ?>', 'DUP_Log::Infos');
+		window.open('?page=duplicator-logging', 'Log Window');
 	} else {
-		window.open('<?php echo DUPLICATOR_PLUGIN_URL .'views/tools/log-view.php?logname='; ?>' + logFile, 'DUP_Log::Infos');
+		window.open('<?php echo DUPLICATOR_SSDIR_URL; ?>' + '/' + log, 'Log Window')
 	}
 };
 
