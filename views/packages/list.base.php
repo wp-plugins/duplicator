@@ -14,7 +14,7 @@
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefcea', endColorstr='#efe5a2',GradientType=0 );
 	}
 	input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
-	button.dup-button-selected {border:1px solid #000 !important; background-color:#555 !important;}
+	button.dup-button-selected {border:1px solid #000 !important; background-color:#dfdfdf !important;}
 	div.dup-details-area {padding:10px}
 	
 	table#toolbar-table td {padding:0px; white-space:nowrap;}
