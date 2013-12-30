@@ -11,8 +11,9 @@
 </style>
 
 <div class="wrap">
-	<!-- h2 required here for general system messages -->
+	<!-- h2 required here for general system messages  -->
 	<h2 style='display:none'></h2>
+	
 	<?php duplicator_header(__("Installer Cleanup", 'wpduplicator') ) ?>
 		
 	<form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator_cleanup_page' ); ?>" method="post">
@@ -31,18 +32,22 @@
 					$installer_file 	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP;
 					$installer_sql  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL;
 					$installer_log  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG;
-					$package_name   	= DUPLICATOR_WPROOTPATH . esc_html($_GET['package']);
+					$package_name   	= (isset($_GET['package'])) 
+											? DUPLICATOR_WPROOTPATH . esc_html($_GET['package'])
+											: '';
 
 					$html .= (@unlink($installer_file)) ?  "<div class='success'>Successfully removed {$installer_file}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_file}</div>";
 					$html .= (@unlink($installer_sql))  ?  "<div class='success'>Successfully removed {$installer_sql}</div>"  	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_sql}</div>";
 					$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_log}</div>";
 
-
 					$path_parts = pathinfo($package_name);
-					if ($path_parts['extension'] == "zip"  && ! is_dir($package_name)) {
-						$html .= (@unlink($package_name))   ?  "<div class='success'>Successfully removed {$package_name}</div>"   :  "<div class='failed'>Does not exsist or unable to remove file: {$package_name}</div>";
+					$path_parts = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
+					if ($path_parts  == "zip"  && ! is_dir($package_name)) {
+						$html .= (@unlink($package_name))   
+							?  "<div class='success'>Successfully removed {$package_name}</div>"   
+							:  "<div class='failed'>Does not exsist or unable to remove file: {$package_name}</div>";
 					} else {
-						$html .= "<div class='failed'>Unable to remove zip file from {$package_name}.  Validate that a package file exists.</div>";
+						$html .= "<div class='failed'>Does not exsist or unable to remove file '{$package_name}'.  Validate that an archive file exists.</div>";
 					}
 
 

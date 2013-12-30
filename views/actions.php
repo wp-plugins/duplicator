@@ -14,27 +14,21 @@ function duplicator_package_create() {
 	$errLevel = error_reporting();
 	error_reporting(E_ERROR);
 	
-
-	$wpdb->query("SET session wait_timeout = " . DUPLICATOR_DB_MAX_TIME);
-	
 	DUP_Util::InitSnapshotDirectory();
 
 	$Package = new DUP_Package();
 	$Package = $Package->GetActive();
-	$Package->Status			 = DUP_PackageStatus::STARTED;
 	$Package->Hash				 = uniqid() . mt_rand(1000, 9999) . date("ymdHis");
 	$Package->NameHash			 = "{$Package->Name}_{$Package->Hash}";
-	$Package->Created			 = current_time('mysql', get_option('gmt_offset'));
-	$Package->Owner				 = $current_user->user_login;
 	$Package->Archive->File		 = "{$Package->NameHash}_archive.zip";
 	$Package->Installer->File    = "{$Package->NameHash}_installer.php";
 	$Package->Database->File     = "{$Package->NameHash}_database.sql";
-
+	$Package->CreateRecord();
 	
 	DUP_Log::Open($Package->NameHash);
-	$php_max_time	= @ini_set("max_execution_time", DUPLICATOR_PHP_MAX_TIME);
+	$php_max_time	= @ini_get("max_execution_time");
 	$php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-	$php_max_time	= ($php_max_time === false)   ? "Unabled to set php max_execution_time" : "set from={$php_max_time} to=" . DUPLICATOR_PHP_MAX_TIME;
+	$php_max_time	= ($php_max_time == 0)        ? "Enabled" : "NOT Enabled";
 	$php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit"       : "set from={$php_max_memory} to=" . DUPLICATOR_PHP_MAX_MEMORY;
 	
 	DUP_Log::Info("********************************************************************************");
@@ -46,23 +40,16 @@ function duplicator_package_create() {
     DUP_Log::Info("php: " . phpversion() . ' | ' . 'sapi: ' . php_sapi_name());
     DUP_Log::Info("server: {$_SERVER['SERVER_SOFTWARE']}");
     DUP_Log::Info("browser: {$_SERVER['HTTP_USER_AGENT']}");
-	DUP_Log::Info("php_max_time: {$php_max_time}");
+	DUP_Log::Info("php set_time_limit: {$php_max_time}");
 	DUP_Log::Info("php_max_memory: {$php_max_memory}");
-	DUP_Log::Info("mysql wait_timeout:" . DUPLICATOR_PHP_MAX_TIME);
+	DUP_Log::Info("mysql wait_timeout:" . DUPLICATOR_DB_MAX_TIME);
 
 	//BUILD PROCESS
-	$dbScriptStore  = DUP_Util::SafePath("{$Package->StorePath}/{$Package->Database->File}");
-	$archiveStore   = DUP_Util::SafePath("{$Package->StorePath}/{$Package->Archive->File}");
-	$installerStore = DUP_Util::SafePath("{$Package->StorePath}/{$Package->Installer->File}");
-	$Package->Database->Build($dbScriptStore);
+	$Package->Database->Build();
 	$Package->Archive->Build();
 	$Package->Installer->Build();
-	
 
 	//VALIDATE FILE SIZE
-	$Package->Database->Size  = @filesize($dbScriptStore);
-	$Package->Archive->Size   = @filesize($archiveStore);
-	$Package->Installer->Size = @filesize($installerStore);
 	$dbSizeRead	 = DUP_Util::ByteSize($Package->Database->Size);
 	$zipSizeRead = DUP_Util::ByteSize($Package->Archive->Size);
 	$exeSizeRead = DUP_Util::ByteSize($Package->Installer->Size);
@@ -70,9 +57,7 @@ function duplicator_package_create() {
 		DUP_Log::Error("A required file contains zero bytes.", "Archive Size: {$zipSizeRead} | SQL Size: {$dbSizeRead} | Installer Size: {$exeSizeRead}");
 	}
 	
-	$Package->Status = DUP_PackageStatus::COMPLETE;
-	$Package->SaveRecord();
-	
+	$Package->SetStatus(DUP_PackageStatus::COMPLETE);
 	$timerEnd = DUP_Util::GetMicrotime();
     $timerSum = DUP_Util::ElapsedTime($timerEnd, $timerStart);
 	

@@ -111,6 +111,9 @@ $GLOBALS['FW_CACHE_PATH'] = '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME'] = '%fwrite_blogname%';
 $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
 $GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
+$GLOBALS['FW_OPTS_DELETE'] = json_decode("%fwrite_opts_delete%", true);
+
+
 
 
 //DATABASE SETUP: all time in seconds	
@@ -941,12 +944,18 @@ if ($dbtable_count == 0) {
 //DATA CLEANUP: Perform Transient Cache Cleanup
 //Remove all duplicator entries and record this one since this is a new install.
 $dbdelete_count = 0;
-@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}duplicator`");
+@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}duplicator_packages`");
 $dbdelete_count1 = @mysqli_affected_rows($dbh) or 0;
 @mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE `option_name` LIKE ('_transient%') OR `option_name` LIKE ('_site_transient%')");
 $dbdelete_count2 = @mysqli_affected_rows($dbh) or 0;
 $dbdelete_count = (abs($dbdelete_count1) + abs($dbdelete_count2));
 DUPX_Log::Info("Removed '{$dbdelete_count}' cache/transient rows");
+//Reset Duplicator Options
+foreach ($GLOBALS['FW_OPTS_DELETE'] as $value) {
+	mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE `option_name` = '{$value}'");	
+}
+
+
 @mysqli_close($dbh);
 
 $profile_end = DupUtil::get_microtime();
@@ -1276,7 +1285,6 @@ class DupDBTextSwap {
 $ajax2_start = DupUtil::get_microtime();
 
 //MYSQL CONNECTION
-
 $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 $charset_server = @mysqli_character_set_name($dbh);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
@@ -1303,7 +1311,7 @@ ksort($POST_LOG);
 DUPX_Log::Info("\n\n\n{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info('DUPLICATOR INSTALL-LOG');
 DUPX_Log::Info('STEP2 START @ ' . @date('h:i:s'));
-DUPX_Log::Info('NOTICE: NOTICE: Do not post to public sites or forums');
+DUPX_Log::Info('NOTICE: Do not post to public sites or forums');
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info("CHARSET SERVER:\t{$charset_server}");
 DUPX_Log::Info("CHARSET CLIENT:\t" . @mysqli_character_set_name($dbh));

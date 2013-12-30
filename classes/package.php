@@ -8,13 +8,24 @@ require_once (DUPLICATOR_PLUGIN_PATH . 'classes/utility.php');
 
 final class DUP_PackageStatus {
    private function __construct() {}
-
-   const CREATED = 0;
-   const SAVED = 1;
-   const STARTED = 2;
-   const COMPLETE = 3;
+   const CREATED	= 10;
+   const DBSTART	= 20;
+   const DBDONE		= 30;
+   const ARCSTART	= 40;
+   const ARCDONE	= 50;
+   const COMPLETE	= 100;
 }
 
+final class DUP_PackageType {
+   private function __construct() {}
+   const MANUAL		= 0;
+   const SCHEDULED	= 1;
+}
+
+/**
+ * Class used to store and process all Package logic
+ * @package Dupicator\classes
+ */
 class DUP_Package {
 	
 	//Properties
@@ -22,11 +33,8 @@ class DUP_Package {
 	public $Name;
 	public $Hash;
 	public $NameHash;
-	public $Created;
-	public $Owner;
 	public $Version;
 	public $Type;
-	public $Status;
 	public $Notes;
 	public $StorePath;
 	public $StoreURL;
@@ -36,11 +44,9 @@ class DUP_Package {
 	public $Database;
 	
 	//Private
-	private $OptionsTableKey = 'duplicator_package_active';
+	private $optsTableKeyActive  = 'duplicator_package_active';
 
-	
 	 /**
-     *  DuplicatorPackage
      *  Manages the Package Process
      */
     function __construct() {
@@ -49,62 +55,53 @@ class DUP_Package {
 		$name = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
 
 		$this->ID			= null;
-		$this->Created		= null;
-		$this->Owner		= isset($current_user->user_login) ? $current_user->user_login : 'unknown';
 		$this->Version		= DUPLICATOR_VERSION;
-		$this->Status		= DUP_PackageStatus::CREATED;
-		$this->Type			= "Manual";
+		$this->Type			= DUP_PackageType::MANUAL;
 		$this->Name			= $name;
 		$this->Notes		= null;
 		$this->StoreURL     = DUP_Util::SSDirURL();
 		$this->StorePath    = DUPLICATOR_SSDIR_PATH;
-		$this->Database		= new DUP_Database();
+		$this->Database		= new DUP_Database($this);
 		$this->Archive		= new DUP_Archive($this);
 		$this->Installer	= new DUP_Installer($this);
-		
 	}
 	
-	public function Get($id = null) {
-		
-		//Get Detaults
-		if (!isset($id)) {
-			return $this->GetActive();
-		} 
-		else {
-			//TODO: Return Object based on id from table
-		}
-	}
-	
+	/**
+	 * Gets the active package.  The active package is defined as the package that was lasted saved.
+	 * @see DUP_Package::SaveActive
+	 * @return DUP_Package
+	 */
 	public function GetActive() {
 		
-		$_tmpOpts = get_option($this->OptionsTableKey, false);	
-		if ($_tmpOpts != false) {
-			return  @unserialize($_tmpOpts);
+		$tmpOpts = get_option($this->optsTableKeyActive, false);	
+		if ($tmpOpts != false) {
+			return  @unserialize($tmpOpts);
 		} else {
 			return $this;
 		}
 	}
 	
 	/**
-	 *  SAVE
-	 *  Saves default options associted with a package
-	 *  
+	 *  Saves the active options associted with the active(latest) package.
+	 *  @param $_POST $post The Post server object
+	 *  @see DUP_Package::GetActive
 	 *  @return void */
 	public function SaveActive($post = null) {
 
 		if (isset($post)) {
 			$post = stripslashes_deep($post);
-			$package_name  = substr(str_replace('-', '', sanitize_file_name($post['package-name'])), 0 , 40);
+			$name = ( isset($post['package-name']) && ! empty($post['package-name']))
+				? $post['package-name'] 
+				: date('Ymd') . '_' . sanitize_title(get_bloginfo( 'name', 'display' ));
+			
+			$name          = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
 			$filter_dirs   = isset($post['filter-dirs']) ? $this->ParseDirectoryFilter($post['filter-dirs']) : '';
 			$filter_exts   = isset($post['filter-exts']) ? $this->ParseExtensionFilter($post['filter-exts']) : '';
 			$tablelist     = isset($post['dbtables'])    ? implode(',', $post['dbtables']) : '';
 
 			//PACKAGE
-			$this->Created		= current_time('mysql', get_option('gmt_offset'));
 			$this->Version		= DUPLICATOR_VERSION;
-			$this->Type			= "Manual";
-			$this->Status		= DUP_PackageStatus::SAVED;			
-			$this->Name			= $package_name;
+			$this->Name			= $name;
 			$this->Notes		= esc_html($post['package-notes']);
 			//ARCHIVE
 			$this->Archive->PackDir			= rtrim(DUPLICATOR_WPROOTPATH, '/');
@@ -126,13 +123,17 @@ class DUP_Package {
 			$this->Database->FilterOn		= isset($post['dbfilter-on'])   ? 1 : 0;
 			$this->Database->FilterTables	= esc_html($tablelist);
 
-			update_option($this->OptionsTableKey, serialize($this));
+			update_option($this->optsTableKeyActive, serialize($this));
 		}
 	}
 	
-
-	public function SaveRecord() {
+	/**	
+	 * Creates a new record in the database table for this package
+	 * @return boolean Returns true if the record was inserted
+	 */
+	public function CreateRecord() {
 		global $wpdb;
+		global $current_user;
 
 		$packageObj = serialize($this);
 		if (! $packageObj) {
@@ -142,10 +143,9 @@ class DUP_Package {
 		$results = $wpdb->insert($wpdb->prefix . "duplicator_packages", array(
 			'name'    => $this->Name,
 			'hash'	  => $this->Hash,
-			'status'  => $this->Status,
-			'type'    => $this->Type,
-			'created' => $this->Created,
-			'owner'	  => $this->Owner,
+			'status'  => DUP_PackageStatus::CREATED,
+			'created' => current_time('mysql', get_option('gmt_offset', 1)),
+			'owner'	  => isset($current_user->user_login) ? $current_user->user_login : 'unknown',
 			'package' => $packageObj)
 		);
 
@@ -155,16 +155,40 @@ class DUP_Package {
 		}
 		$this->ID = $wpdb->insert_id;
 		
-		return true;
+		return (is_numeric($this->ID) ? true : false);
 	}
 	
+	public function SetStatus($status) {
+		global $wpdb;
+		
+		if ( ! isset($status)) {
+			return false;
+		}
+
+		$packageObj = serialize($this);
+		if (! $packageObj) {
+			DUP_Log::Error("Unable to serialize pacakge object while updating record.");
+		}
+		
+		$result = $wpdb->update( 
+			$wpdb->prefix . "duplicator_packages", 
+			array( 
+				'status' => $status,
+				'package' => $packageObj
+			), 
+			array( 'ID' => $this->ID )
+		);
+		
+		
+		return $result;
+	}	
 	
 	
-	/** GetSystemRequirments
+	/** 
 	* Gets the required system checks
-	*  @return array   An array of system checks
+	* @return array   An array of system checks
 	*/
-	public function GetSystemRequirments() {
+	public static function GetSystemRequirments() {
 
 		global $wpdb;
 
@@ -176,11 +200,7 @@ class DUP_Package {
 		$dup_tests['SYS-100'] = ($test) ? 'Pass' : 'Fail';
 
 		//SYS-101 RESERVED FILE
-		$phpFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP) ? DUPLICATOR_INSTALL_PHP : "";
-		$sqlFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL) ? DUPLICATOR_INSTALL_SQL : "";
-		$logFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG) ? DUPLICATOR_INSTALL_LOG : "";
-		$test	 = !(strlen($phpFile) || strlen($sqlFile) || strlen($logFile));
-		$dup_tests['SYS-101'] = ($test) ? 'Pass' : 'Fail';
+		$dup_tests['SYS-101'] = (self::RequiredFilesFound()) ? 'Fail' : 'Pass';
 
 		//SYS-102: ZIP-ARCHIVE
 		$test = class_exists('ZipArchive');
@@ -222,6 +242,18 @@ class DUP_Package {
 		return $dup_tests;
 	}		
 	
+	/** 
+	* Gets the required system checks
+	*  @return array   An array of system checks
+	*/
+	public static function RequiredFilesFound() {
+		
+		$phpFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP);
+		$sqlFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL);
+		$logFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG);
+		return  ($phpFile || $sqlFile || $logFile);
+		
+	}
 	
 
 	public function GetServerChecks() {
@@ -244,7 +276,6 @@ class DUP_Package {
 		$dup_checks['Success'] = !$result;
 
 		return $dup_checks;
-
 	}
 	
 

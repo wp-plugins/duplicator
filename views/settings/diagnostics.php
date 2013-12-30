@@ -23,20 +23,24 @@
 	$perc = @round((100/$space)*$space_free,2);
 	
 	$view_state = DUP_UI::GetViewStateArray();
-	$ui_css_srv_panel   = ($view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
-	$ui_css_opts_panel  = ($view_state['dup-settings-diag-opts-panel'])   ? 'display:block' : 'display:none';
+	$ui_css_srv_panel   = (isset($view_state['dup-settings-diag-srv-panel'])  && $view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
+	$ui_css_opts_panel  = (isset($view_state['dup-settings-diag-opts-panel']) && $view_state['dup-settings-diag-opts-panel'])  ? 'display:block' : 'display:none';
 	
 	//POST BACK
 	$action_updated = null;
 	if (isset($_POST['action'])) {
 		switch ($_POST['action']) {
-			case 'clear_view_state' : 
+			case 'duplicator_ui_view_state' : 
 				DUP_Settings::DeleteWPOption('duplicator_ui_view_state');		
-				$action_response = __('View State Settings Reset', 'wpduplicator');
+				$action_response = __('View state settings reset.', 'wpduplicator');
 				break;
+			case 'duplicator_package_active' : 
+				DUP_Settings::DeleteWPOption('duplicator_package_active');		
+				$action_response = __('Active package settings reset.', 'wpduplicator');
+				break;			
 			case 'clear_legacy_data': 
 				DUP_Settings::LegacyClean();			
-				$action_response = __('Legacy Data Removed', 'wpduplicator');
+				$action_response = __('Legacy data removed.', 'wpduplicator');
 				break;
 		}
 	} 
@@ -56,7 +60,9 @@
 	.widefat td {padding:2px 2px 2px 8px}
 	.widefat td:nth-child(1) {width:10px;}
 	.widefat td:nth-child(2) {padding-left: 20px; width:100% !important}
-	textarea.dup-opts-read {width:100%; height:65px; font-size:12px}
+	textarea.dup-opts-read {width:100%; height:40px; font-size:12px}
+	table.dup-reset-opts td:first-child {font-weight: bold}
+	table.dup-reset-opts td {padding:4px}
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-settings&tab=diagnostics' ); ?>" method="post">
@@ -207,32 +213,43 @@
 	<div class="dup-box">
 		<div class="dup-box-title">
 			<i class="fa fa-th-list"></i>
-			<?php _e("Options Data", 'wpduplicator'); ?>
+			<?php _e("Stored Data", 'wpduplicator'); ?>
 			<div class="dup-box-arrow"></div>
 		</div>
 		<div class="dup-box-panel" id="dup-settings-diag-opts-panel" style="<?php echo $ui_css_opts_panel?>">
 			<div style="padding:0px 20px 0px 25px">
 
-			<h3 class="title" style="margin-left:-15px"><?php _e("Reset/Remove", 'wpduplicator') ?> </h3>	
+			<table class="dup-reset-opts">
+				<tr>
+					<td><a href="?page=duplicator-cleanup&remove=1" target="_cleanup"><?php _e("Delete Reserved Files", 'wpduplicator'); ?></a></td>
+					<td><small><?php _e("Removes all installer files from a previous install", 'wpduplicator'); ?> </small></td>
+				</tr>
+				<tr>
+					<td><a href="javascript:void(0)" onclick="Duplicator.Settings.DeleteLegacy()"><?php _e("Delete Legacy Data", 'wpduplicator'); ?></a></td>
+					<td><small><?php _e("Removes all legacy data and settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</small></td>
+				</tr>				
+			</table>
+		
 
-			<b><a href="javascript:void(0)" onclick="Duplicator.Settings.DeleteViewState()"><?php _e("Clear View State", 'wpduplicator'); ?></a></b> &nbsp; 	
-			<small><?php _e("This will enable all notice messages again and reset any view state.", 'wpduplicator'); ?></small> <br/>
-
-			<b><a href="javascript:void(0)" onclick="Duplicator.Settings.DeleteLegacy()"><?php _e("Clear Legacy Data", 'wpduplicator'); ?></a></b> &nbsp; 	
-			<small><?php _e("This will remove all legacy plugin settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</small> <br/><br/>
-
+			<h3 class="title" style="margin-left:-15px"><?php _e("Options Values", 'wpduplicator') ?> </h3>	
 			
-			<h3 class="title" style="margin-left:-15px"><?php _e("Details", 'wpduplicator') ?> </h3>	
 			<table class="widefat" cellspacing="0">		
 				<tr>
-					<th>Name</th>
+					<th>Key</th>
 					<th>Value</th>
 				</tr>		
 				<?php 
+					$safeList = array('duplicator_package_active', 'duplicator_settings', 'duplicator_ui_view_state' );
 					$sql = "SELECT * FROM `{$wpdb->prefix}options` WHERE  `option_name` LIKE  '%duplicator_%' ORDER BY option_name";
 					foreach( $wpdb->get_results("{$sql}") as $key => $row) { ?>	
 					<tr>
-						<td><?php echo $row->option_name?></td>
+						<td>
+							<?php 
+								 echo (in_array($row->option_name, $safeList))
+									? "<a href='javascript:void(0)' onclick='Duplicator.Settings.DeleteOption(this)'>{$row->option_name}</a>"
+									: $row->option_name;
+							?>
+						</td>
 						<td><textarea class="dup-opts-read" readonly="readonly"><?php echo $row->option_value?></textarea></td>
 					</tr>
 				<?php } ?>	
@@ -283,21 +300,14 @@ jQuery(document).ready(function($) {
    }
    
    
-   Duplicator.Settings.DeleteViewState = function () {
-
-		var result = confirm('<?php _e("Delete the view state settings?", "wpduplicator"); ?>');
-		if (! result) 
-			return;
+	Duplicator.Settings.DeleteOption = function (anchor) {
+		var key = $(anchor).text();
+		var result = confirm('<?php _e("Delete this option value", "wpduplicator"); ?> [' + key + '] ?');
+		if (! result) 	return;
 		
-	   jQuery('#dup-settings-form-action').val('clear_view_state');
-	   jQuery('#dup-settings-form').submit();
-			
-
-		
+		jQuery('#dup-settings-form-action').val(key);
+		jQuery('#dup-settings-form').submit();
 	}
-   
-   
-   
 	
 });	
 </script>

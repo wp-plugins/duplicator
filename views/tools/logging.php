@@ -9,7 +9,7 @@
 		@chmod(DUP_Util::SafePath($logs[0]), 0644);
 	} 
 	
-	$logname	 = (isset($_GET['logname'])) ? trim($_GET['logname']) : trim(basename($logs[0]));
+	$logname	 = (isset($_GET['logname'])) ? trim($_GET['logname']) : "";
 	$refresh	 = (isset($_POST['refresh']) && $_POST['refresh'] == 1) ? 1 : 0;
 	$auto		 = (isset($_POST['auto'])    && $_POST['auto'] == 1)    ? 1 : 0;
 
@@ -23,7 +23,7 @@
 	}
 	
 	if (!isset($logname) || !$logname) {
-		$logname  = basename($logs[0]);
+		$logname  = (count($logs) > 0) ? basename($logs[0]) : "";
 	}
 	
 	$logurl	 = get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' . $logname;

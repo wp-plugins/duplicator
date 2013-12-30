@@ -13,8 +13,12 @@ META-BOX2: PACKAGE OPTIONS -->
 	<!-- META-BOX: ARCHIVE -->
 	<div class="dup-box" style="margin-top:10px">
 	<div class="dup-box-title">
-		<i class="fa fa-bars"></i> <?php _e('Archive', 'wpduplicator') ?>
-		<span id="dup-archive-filter-state" title="<?php _e('Filters are enabled', 'wpduplicator') ?>"style="display:none"><i class="fa fa-filter"></i></span>
+		<i class="fa fa-bars"></i> <?php _e('Archive', 'wpduplicator') ?> &nbsp;
+		<span style="font-size:13px">
+			<span id="dup-archive-filter-file" title="<?php _e('File filter enabled', 'wpduplicator') ?>"><i class="fa fa-files-o"></i> <i class="fa fa-filter"></i> &nbsp;&nbsp;</span> 
+			<span id="dup-archive-filter-db" title="<?php _e('Database filter enabled', 'wpduplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>	
+		</span>
+
 		<div class="dup-box-arrow"></div>
 	</div>		
 	<div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo $ui_css_archive?>">
@@ -199,7 +203,8 @@ META-BOX2: PACKAGE OPTIONS -->
 	</div><br style="clear:both" /><br/>
 
 	<div class="dup-button-footer">
-		<input type="submit" value="<?php _e("Next", 'wpduplicator') ?> &#9658;" class="button button-primary button-large" />
+			
+		<input type="submit" value="<?php _e("Next", 'wpduplicator') ?> &#9658;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"';?> />
 	</div>
 	
 </form>

@@ -10,6 +10,7 @@
 		DUP_Settings::Set('uninstall_files',		isset($_POST['uninstall_files'])  ? "1" : "0");
 		DUP_Settings::Set('uninstall_tables',		isset($_POST['uninstall_tables']) ? "1" : "0");
 		DUP_Settings::Set('package_skip_scanner',	isset($_POST['package_skip_scanner']) ? "1" : "0");
+		DUP_Settings::Set('package_debug',			isset($_POST['package_debug']) ? "1" : "0");
 		
 		$action_updated  = DUP_Settings::Save();
 	} 
@@ -18,6 +19,7 @@
 	$uninstall_files		= DUP_Settings::Get('uninstall_files');
 	$uninstall_tables		= DUP_Settings::Get('uninstall_tables');
 	$package_skip_scanner	= DUP_Settings::Get('package_skip_scanner');
+	$package_debug			= DUP_Settings::Get('package_debug');
 
 ?>
 
@@ -56,13 +58,20 @@
 	<h3 class="title"><?php _e("Package Settings", 'wpduplicator') ?> </h3>
 	
 	<table class="form-table">
-		<tr valign="top">
+		<tr>
 			<th scope="row"><label><?php _e("Auto Skip Scanner", 'wpduplicator'); ?></label></th>
 			<td>
 				<input type="checkbox" name="package_skip_scanner" id="package_skip_scanner" <?php echo ($package_skip_scanner) ? 'checked="checked"' : ''; ?> />
 				<label for="package_skip_scanner"><?php _e("Skip Scanner Step", 'wpduplicator'); ?></label>
 			</td>
 		</tr>
+		<tr>
+			<th scope="row"><label><?php _e("Package Debug Enabled", 'wpduplicator'); ?></label></th>
+			<td>
+				<input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
+				<label for="package_debug"><?php _e("Show Package Debug Status", 'wpduplicator'); ?></label>
+			</td>
+		</tr>		
 	</table>
 
 	<p class="submit" style="margin: 20px 0px 0xp 5px;">

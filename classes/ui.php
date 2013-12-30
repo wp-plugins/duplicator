@@ -1,53 +1,74 @@
 <?php
-if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
+if ( ! defined('DUPLICATOR_VERSION') ) exit; // Exit if accessed directly
 
+/**
+ * Helper Class for UI internactions
+ * @package Dupicator\classes
+ */
 class DUP_UI {
 	
-	//Private
+	/**
+	 * The key used in the wp_options table
+	 * @var string 
+	 */
 	private static $OptionsTableKey = 'duplicator_ui_view_state';
 	
+	/** 
+     * Save the view state of UI elements
+	 * @param string $key A unique key to define the ui element
+	 * @param string $value A generic value to use for the view state
+     */
+	static public function SaveViewState($key, $value) {
+	   
+		$view_state = array();
+		$view_state = get_option(self::$OptionsTableKey);
+		$view_state[$key] =  $value;
+		$success = update_option(self::$OptionsTableKey, $view_state);
+		
+		return $success;
+    }
 	
-    /** METHOD: SaveViewState
-     * Saves the state of a UI element
+	
+    /** 
+     * Saves the state of a UI element via post params
 	 * @return json result string
-	 * 
 	 * <code>
 	 * //JavaScript Ajax Request
-	 * Duplicator.UI.SaveViewState('dup-pack-archive-panel', 1);
+	 * Duplicator.UI.SaveViewStateByPost('dup-pack-archive-panel', 1);
 	 * 
 	 * //Call PHP Code
 	 * $view_state       = DUP_UI::GetViewStateValue('dup-pack-archive-panel');
 	 * $ui_css_archive   = ($view_state == 1)   ? 'display:block' : 'display:none';
 	 * </code>
      */
-    static public function SaveViewState() {
-
-		$post = stripslashes_deep($_POST);
-		$json = array();
-	   
-		$view_state = array();
-		$view_state = get_option(self::$OptionsTableKey);
-		$view_state[$post['key']] =  $post['value'];
-		$success = update_option(self::$OptionsTableKey, $view_state);
+    static public function SaveViewStateByPost() {
+		$post  = stripslashes_deep($_POST);
+		$key   = esc_html($post['key']);
+		$value = esc_html($post['value']);
+		$success = self::SaveViewState($key, $value);
 		
 		//Show Results as JSON
-		$json['key']    = $post['key'];
-		$json['value']  = $post['value'];
+		$json = array();
+		$json['key']    = $key;
+		$json['value']  = $value;
 		$json['update-success'] = $success;
 		die(json_encode($json));
     }
 	
 	
-	/** METHOD: GetViewStateArray
-     *  
+	/** 
+     *	Gets all the values from the settings array
+	 *  @return array Returns and array of all the values stored in the settings array
      */
     static public function GetViewStateArray() {
 		return get_option(self::$OptionsTableKey);
 	}
 	
-	 /** METHOD: GetViewStateValue
-     *  
-     */
+	 /** 
+	  * Return the value of the of view state item
+	  * @param type $searchKey The key to search on
+	  * @return string Returns the value of the key searched or null if key is not found
+	  */
     static public function GetViewStateValue($searchKey) {
 		$view_state = get_option(self::$OptionsTableKey);
 		if (is_array($view_state)) {
@@ -56,12 +77,40 @@ class DUP_UI {
 					return $value;	
 				}
 			}
-		} else {
-			return null;
+		} 
+		return null;
+	}
+	
+	/**
+	 * Shows a display message in the wp-admin if any researved files are found
+	 * @return type void
+	 */
+	static public function ShowReservedFilesNotice() {
+
+		$hide  = isset($_REQUEST['page']) && $_REQUEST['page'] == 'duplicator-cleanup' ? true : false;
+		$perms = (current_user_can( 'install_plugins' ) && current_user_can( 'import' ));
+		if (! $perms || $hide) 
+			return;
+	
+		$metaKey = 'dup-wpnotice01';
+		 if ( isset($_GET[$metaKey]) &&  $_GET[$metaKey] == '1') {
+             self::SaveViewState($metaKey, true);
+		}
+
+		if (! self::GetViewStateValue($metaKey, false)) {
+			if (DUP_Package::RequiredFilesFound()) {
+				$queryStr = $_SERVER['QUERY_STRING'];
+				echo '<div class="error"><p>';
+				printf("%s <br/> <a href='admin.php?page=duplicator-cleanup&remove=1'>%s</a> | <a href='?{$queryStr}&{$metaKey}=1'>%s</a>",
+						__('Reserved Duplicator install file(s) still exsist in the root directory.  Please delete these file(s) to avoid possible security issues.'),
+						__('Remove file(s) now'),
+						__('Ignore this warning'));
+				echo "</p></div>";
+			} else {
+				self::SaveViewState($metaKey, true);
+			}
 		}
 	}
 	
-	
-
 }
 ?>

@@ -9,7 +9,7 @@ class DUP_Util {
 	*  bytes every 40 seconds or else it forces a script hault
 	*/
 	static public function FcgiFlush() {
-		echo(str_repeat(' ', 265));
+		echo(str_repeat(' ', 300));
 		@flush();
 	}
 

@@ -77,8 +77,8 @@ class DUP_Settings
 		//Flag used to remove all tables
 		$default['uninstall_tables']   = isset(self::$Data['uninstall_tables']) ? self::$Data['uninstall_tables'] : true;
 
-		//Flag used to auto skip scanner
-		$default['package_skip_scanner']   = isset(self::$Data['package_skip_scanner']) ? self::$Data['package_skip_scanner'] : false;
+		//Flag used to show debug info
+		$default['package_debug']   = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
 
 		self::$Data = $default;
 		return self::Save();
@@ -112,7 +112,7 @@ class DUP_Settings
 		$safeOpts = array('duplicator_ui_view_state', 'duplicator_package_active');
 
 		if ( in_array($optionName, $safeOpts) ) {
-			return delete_option('duplicator_ui_view_state'); 
+			return delete_option($optionName); 
 		}
 		return false;
 	}

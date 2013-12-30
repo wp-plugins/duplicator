@@ -371,12 +371,18 @@ if ($dbtable_count == 0) {
 //DATA CLEANUP: Perform Transient Cache Cleanup
 //Remove all duplicator entries and record this one since this is a new install.
 $dbdelete_count = 0;
-@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}duplicator`");
+@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}duplicator_packages`");
 $dbdelete_count1 = @mysqli_affected_rows($dbh) or 0;
 @mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE `option_name` LIKE ('_transient%') OR `option_name` LIKE ('_site_transient%')");
 $dbdelete_count2 = @mysqli_affected_rows($dbh) or 0;
 $dbdelete_count = (abs($dbdelete_count1) + abs($dbdelete_count2));
 DUPX_Log::Info("Removed '{$dbdelete_count}' cache/transient rows");
+//Reset Duplicator Options
+foreach ($GLOBALS['FW_OPTS_DELETE'] as $value) {
+	mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE `option_name` = '{$value}'");	
+}
+
+
 @mysqli_close($dbh);
 
 $profile_end = DupUtil::get_microtime();

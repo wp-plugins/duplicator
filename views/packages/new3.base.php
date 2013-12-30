@@ -21,7 +21,7 @@
 	div.dup-msg-success-stats{color:#999;margin:10px 0px 0px 0px}
 	div.dup-msg-success-links {margin:20px 5px 5px 5px}
 	div#dup-msg-error {color:#A62426; padding:5px;}
-	div#dup-progress-area div.inner div.done-title {font-size:22px; font-weight:bold; margin:0px 0px 10px 0px}
+	div#dup-progress-area div.done-title {font-size:22px; font-weight:bold; margin:0px 0px 10px 0px}
 	div#dup-logs {text-align:center; margin:auto; padding:5px; width:350px;}
 	div#dup-logs a {font-size:15px; text-decoration:none !important; display:inline-block; margin:20px 0px 5px 0px}
 	div.dup-button-footer {text-align:right; margin:20px 10px 0px 0px}
@@ -48,8 +48,9 @@ WIZARD STEP TABS -->
 	<div id="dup-progress-bar-area">
 		<h2><i class="fa fa-cog fa-spin"></i> <?php _e('Building Package', 'wpduplicator'); ?></h2>
 		<div id="dup-progress-bar"></div>
-		<b><?php _e('Please Wait...', 'wpduplicator'); ?></b><br/>
-		<i><?php _e('This may take several minutes', 'wpduplicator'); ?></i>
+		<b><?php _e('Please Wait...', 'wpduplicator'); ?></b><br/><br/>
+		<i><?php _e('Keep this window open during the build process.', 'wpduplicator'); ?></i><br/>
+		<i><?php _e('This may take several minutes.', 'wpduplicator'); ?></i><br/>
 	</div>
 	
 	<div id="dup-progress-area" class="dup-panel" style="display:none">
@@ -89,7 +90,10 @@ WIZARD STEP TABS -->
 			<!--  ERROR MESSAGE -->
 			<div id="dup-msg-error" style="display:none">
 				<div class="done-title"><i class="fa fa-exclamation-circle"></i> <?php _e('Build Error', 'wpduplicator'); ?></div>
-				<i><?php _e('Please try again!', 'wpduplicator'); ?></i><br/>
+				<i><?php _e('The build process was unable to complete.', 'wpduplicator'); ?></i><br/>
+				<i><?php _e('Please try the process again. If the problem persists please visit the online FAQs.', 'wpduplicator'); ?></i><br/><br/>
+				  
+				<input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = '?page=duplicator&tab=new1'" />
 				<fieldset>
 					<legend><b><?php _e('Error Details', 'wpduplicator'); ?></b></legend>
 					<div id="dup-msg-error-response-status">
@@ -101,7 +105,7 @@ WIZARD STEP TABS -->
 						<span class="data"></span>
 					</div>
 				</fieldset>
-				<small><?php _e("Open the Preview Log for more details.", 'wpduplicator') ?></small>
+				<small><?php _e("Open the package creation log file for more details.", 'wpduplicator') ?></small>
 			</div>
 			
 		</div>
@@ -110,7 +114,7 @@ WIZARD STEP TABS -->
 	<!-- LOGS -->
 	<div id="dup-logs">
 		<div>
-			<b><?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'>[ <i class='fa fa-pencil-square-o'></i>  %s ]</a>", 	__('Preview Log', 'wpduplicator'));?> </b><br/>
+			<b><?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'>[ <i class='fa fa-pencil-square-o'></i>  %s ]</a>", 	__('Package Log', 'wpduplicator'));?> </b><br/>
 			<i><?php _e('Some systems that are not multi-threaded will have to wait for the process to complete before reviewing the logs.', 'wpduplicator'); ?></i><br/>
 		</div>
 	</div>

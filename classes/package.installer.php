@@ -75,6 +75,8 @@ class DUP_Installer {
 
 		DUP_Log::Info("INSTALLER FILE: Build Finished");
 		$this->createFromTemplate();
+		$storePath = "{$this->Package->StorePath}/{$this->File}";
+		$this->Size = @filesize($storePath);
 	}
 	
 	/**
@@ -91,6 +93,12 @@ class DUP_Installer {
 		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH) . "/{$this->Package->NameHash}_installer.php";
 		
 		//$tablePrefix = (is_multisite()) ? $wpdb->get_blog_prefix() : $wpdb->prefix;
+		
+		//Option values to delete at install time
+		$deleteOpts = array();
+		$deleteINClause[0] = 'duplicator_package_active';
+		$deleteINClause[1] = 'duplicator_settings';
+		$deleteINClause[2] = 'duplicator_ui_view_state';
 
 		$replace_items = Array(
 			"fwrite_url_old"			=> get_option('siteurl'),
@@ -107,6 +115,7 @@ class DUP_Installer {
 			"fwrite_cache_wp"			=> $this->Package->Installer->OptsCacheWP,
 			"fwrite_cache_path"			=> $this->Package->Installer->OptsCachePath,
 			"fwrite_wp_tableprefix"		=> $wpdb->prefix,
+			"fwrite_opts_delete"		=> json_encode($deleteINClause),
 			"fwrite_blogname"			=> esc_html(get_option('blogname')),
 			"fwrite_wproot"				=> DUPLICATOR_WPROOTPATH,
 			"fwrite_duplicator_version" => DUPLICATOR_VERSION);

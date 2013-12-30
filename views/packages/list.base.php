@@ -1,6 +1,7 @@
 <?php
 	$result = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator_packages` ORDER BY id DESC", ARRAY_A);
 	$totalElements = count($result);
+		$package_debug			= DUP_Settings::Get('package_debug');
 ?>
 
 <style>
@@ -15,7 +16,7 @@
 	}
 	input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
 	button.dup-button-selected {border:1px solid #000 !important; background-color:#dfdfdf !important;}
-	div.dup-details-area {padding:10px}
+	div.dup-details-area-error {padding:10px; background-color:#FEF6F3; width:98%; border:1px solid silver; border-radius: 3px }
 	
 	table#toolbar-table td {padding:0px; white-space:nowrap;}
 	table#toolbar-table input {border:1px solid silver; border-radius:4px}
@@ -28,9 +29,13 @@
 	table.dup-pack-table {word-break:break-all;}
 	table.dup-pack-table th {white-space:nowrap !important;}
 	table.dup-pack-table td.pack-name {text-overflow:ellipsis; white-space:nowrap}
+	table.dup-pack-table input[name="delete_confirm"] {margin-left:15px}
+	table.dup-pack-table td.fail {border-left: 4px solid #d54e21;}
+	table.dup-pack-table td.pass {border-left: 4px solid #2ea2cc;}
 	tr.dup-pack-info td {white-space:nowrap; padding:12px 30px 0px 7px;}
 	tr.dup-pack-info td.get-btns {text-align:right; padding:3px 5px 6px 0px !important;}
 	td.dup-pack-details {display:none; padding:5px 0px 15px 15px; line-height:22px;}
+	textarea.dup-pack-debug {width:98%; height:300px; font-size:11px; display:none}
 </style>
 
 <form id="form-duplicator" method="post">
@@ -41,7 +46,7 @@
 	NO-DATA MESSAGES-->
 	<table class="widefat dup-pack-table" style="margin-top:20px">
 		<thead><tr><th>&nbsp;</th></tr></thead>
-		<tbody><tr><td><?php	include (DUPLICATOR_PLUGIN_PATH .  "views/packages/list-nodata.php") ?> </td></tr></tbody>
+		<tbody><tr><td><?php include (DUPLICATOR_PLUGIN_PATH .  "views/packages/list-nodata.php") ?> </td></tr></tbody>
 		<tfoot><tr><th>&nbsp;</th></tr></tfoot>
 	</table>
 	
@@ -64,7 +69,7 @@
 			<!-- Logs -->
 			<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/hdivider.png" class="toolbar-divider" /></td>
 			<td align="center">
-				<button id="btn-logs-dialog" class="button" onclick="Duplicator.OpenLogWindow(); return false;" title="<?php _e("Show Create Log", 'wpduplicator') ?>..." ><i class="fa fa-pencil-square-o"></i> </button>
+				<button id="btn-logs-dialog" class="button" onclick="Duplicator.OpenLogWindow(); return false;" title="<?php _e("Package Logs", 'wpduplicator') ?>..." ><i class="fa fa-pencil-square-o"></i> </button>
 			</td>
 		</tr>
 	</table>	
@@ -74,7 +79,7 @@
 	<table class="widefat dup-pack-table">
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="dup-bulk-action-all"  title="<?php _e("Select all packages", 'wpduplicator') ?>" style="" onclick="Duplicator.Pack.SetDeleteAll()" /></th>
+				<th><input type="checkbox" id="dup-bulk-action-all"  title="<?php _e("Select all packages", 'wpduplicator') ?>" style="margin-left:15px" onclick="Duplicator.Pack.SetDeleteAll()" /></th>
 				<th><?php _e("Details", 'wpduplicator') ?></th>
 				<th><?php _e("Created", 'wpduplicator') ?></th>
 				<th><?php _e("Size", 'wpduplicator') ?></th>
@@ -94,9 +99,8 @@
 			$detail_id		= "duplicator-detail-row-{$rowCount}";
 			$totalSize      = $totalSize + $Package->Archive->Size;
 			$plugin_version = empty($Package->Version) ? 'unknown' : $Package->Version;
-			$plugin_compat  = version_compare($plugin_version, '0.4.5');
-			$status         = $Package->Status;
-			$notes          = empty($Package->Notes) ? __("No notes were given for this package", 'wpduplicator') : $Package->Notes;
+			$plugin_compat  = version_compare($plugin_version, '0.5.0');
+			$notes          = empty($Package->Notes) ? __("(No Notes Taken)", 'wpduplicator') : $Package->Notes;
 
 			//Links
 			$uniqueid  			= "{$row['name']}_{$row['hash']}";
@@ -110,9 +114,9 @@
 			?>
 
 			<!-- COMPLETE -->
-			<?php if ($status == 3) : ?>
+			<?php if ($row['status'] >= 100) : ?>
 				<tr class="dup-pack-info <?php echo $css_alt ?>">
-					<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
+					<td class="pass"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
 					<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
 					<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
 					<td><?php echo DUP_Util::ByteSize($Package->Archive->Size); ?></td>
@@ -130,24 +134,27 @@
 						<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?> &nbsp; | &nbsp;  
 						<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?> <br/>
 						<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> 
-						<div style='margin:5px 0px 0px 0px'>
-							
-							<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}' " ;?>); return false;" class="thickbox"><i class="fa fa-lock"></i> <?php _e("Show Links", 'wpduplicator')?></button> &nbsp; 
-							<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-file"></i> &nbsp; <?php _e("SQL File", 'wpduplicator')?></button> &nbsp; 
-							<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-lock"></i> &nbsp; <?php _e("View Log", 'wpduplicator')?></button> 
-						</div>
+						<div style="height:7px">&nbsp;</div>
+						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}' " ;?>); return false;" class="thickbox"><i class="fa fa-lock"></i> &nbsp; <?php _e("Links", 'wpduplicator')?></button> &nbsp; 
+						<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-table"></i> &nbsp; <?php _e("SQL File", 'wpduplicator')?></button> &nbsp; 
+						<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-pencil-square-o"></i> &nbsp; <?php _e("View Log", 'wpduplicator')?></button>
+						<?php if ($package_debug) : ?>
+							<div style="margin-top:7px">
+								<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[View Package Object]</a><br/>
+								<textarea class="dup-pack-debug"><?php print_r($Package);?> </textarea>
+							</div>
+						<?php endif  ?>	
 					</td>
 				</tr>	
 			<!-- NOT COMPLETE -->				
 			<?php else : ?>	
 				<tr class="dup-pack-info  <?php echo $css_alt ?>">
-					<td style="padding-right:20px !important"><input name="delete_confirm" type="checkbox" id="<?php echo $uniqueid ;?>" /></td>
+					<td class="fail"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
 					<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
 					<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
-					<td><?php echo $Package->Archive->Size;?></td>
+					<td><?php echo DUP_Util::ByteSize($Package->Archive->Size); ?></td>
 					<td class='pack-name'><?php echo $Package->Name ;?></td>
-					<td></td>
-					<td class="get-btns">		
+					<td class="get-btns" colspan="2">		
 						<span style='display:inline-block; padding:7px 40px 0px 0px'>
 							<a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');"><?php _e("View Error Details", 'wpduplicator') ?>...</a>
 						</span>									
@@ -155,16 +162,23 @@
 				</tr>
 				<tr>
 					<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details  <?php echo $css_alt ?>">
-						<div class="dup-details-area ui-state-error">
-							<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?>  &nbsp;
-							<b><?php _e("Secure Name", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?>   &nbsp;
-														<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?>  &nbsp;<br/>
-								<?php
+						<div class="dup-details-area-error">
+							<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?> &nbsp; | &nbsp; 
+							<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?> &nbsp; | &nbsp;  
+							<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?> <br/>
+							<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> <br/>
+							<?php
 								printf("%s <u><a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a></u>",
 								__("This package has encountered errors.  Click 'View Log' for more details.  For additional support see the ", 'wpduplicator'),
 								__("online knowledgebase", 'wpduplicator')); 
-								?><br/>
-								<button class='button' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
+							?><div style="height:7px">&nbsp;</div>
+							<button class='button' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
+						<?php if ($package_debug) : ?>
+							<div style="margin-top:7px">
+								<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[View Package Object]</a><br/>
+								<textarea class="dup-pack-debug"><?php print_r($Package);?> </textarea>
+							</div>
+						<?php endif  ?>	
 						</div>
 					</td>
 				</tr>	

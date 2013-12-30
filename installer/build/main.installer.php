@@ -111,6 +111,9 @@ $GLOBALS['FW_CACHE_PATH'] = '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME'] = '%fwrite_blogname%';
 $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
 $GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
+$GLOBALS['FW_OPTS_DELETE'] = json_decode("%fwrite_opts_delete%", true);
+
+
 
 
 //DATABASE SETUP: all time in seconds	

@@ -29,7 +29,7 @@
 					__("for version 0.5.0 on instructions for getting older packages.", 'wpduplicator'));
 			?><br/>
 			<label for="dup-notice01-chk">
-				<input type="checkbox" id="dup-notice01-chk" name="dup-notice01-chk" onclick="Duplicator.UI.SaveViewState('dup-notice01-chk', 1); jQuery('#dup-notice-01').hide()" /> 
+				<input type="checkbox" id="dup-notice01-chk" name="dup-notice01-chk" onclick="Duplicator.UI.SaveViewStateByPost('dup-notice01-chk', 1); jQuery('#dup-notice-01').hide()" /> 
 				<?php _e("Hide this message", 'wpduplicator'); ?>
 			</label>
 		</div><br/><br/>

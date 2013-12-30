@@ -1,5 +1,6 @@
 <?php
 if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
+
 require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.archive.zip.php');
 
 class DUP_Archive {
@@ -37,6 +38,7 @@ class DUP_Archive {
 			if (!isset($this->PackDir) && ! is_dir($this->PackDir)) throw new Exception("The 'PackDir' property must be a valid diretory.");
 			if (!isset($this->File)) throw new Exception("A 'File' property must be set.");
 		
+			$this->Package->SetStatus(DUP_PackageStatus::ARCSTART);
 			switch ($this->Format) {
 				case 'TAR':			break;
 				case 'TAR-GZIP': 	break;
@@ -50,6 +52,10 @@ class DUP_Archive {
 					}
 					break;
 			}
+			
+			$storePath = "{$this->Package->StorePath}/{$this->File}";
+			$this->Size   = @filesize($storePath);
+			$this->Package->SetStatus(DUP_PackageStatus::ARCDONE);
 		
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";

@@ -54,8 +54,7 @@ if (is_admin() == true) {
 			`id`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 			`name`		VARCHAR(250)	NOT NULL,
 			`hash`		VARCHAR(50)		NOT NULL,
-			`status`	VARCHAR(25)		NOT NULL,
-			`type`		VARCHAR(25)		NOT NULL,
+			`status`	INT(11)			NOT NULL,
 			`created`	DATETIME		NOT NULL DEFAULT '0000-00-00 00:00:00',
 			`owner`		VARCHAR(60)		NOT NULL,
 			`package`	MEDIUMBLOB		NOT NULL )";
@@ -113,8 +112,9 @@ if (is_admin() == true) {
     add_action('wp_ajax_duplicator_package_scan',		'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_create',		'duplicator_package_create');
 	add_action('wp_ajax_duplicator_package_delete',		'duplicator_package_delete');
-	add_action('wp_ajax_DUP_UI_SaveViewState',			array('DUP_UI', 'SaveViewState'));
-	
+	add_action('wp_ajax_DUP_UI_SaveViewStateByPost',			array('DUP_UI', 'SaveViewStateByPost'));
+	add_action('admin_notices',							array('DUP_UI', 'ShowReservedFilesNotice'));
+
 	//FILTERS
     add_filter('plugin_action_links',					'duplicator_manage_link', 10, 2);
     add_filter('plugin_row_meta',						'duplicator_meta_links', 10, 2);
@@ -142,7 +142,6 @@ if (is_admin() == true) {
 			case 'duplicator-cleanup':	 include('views/tools/cleanup.php');		break;
 			case 'duplicator-logging':	 include('views/tools/logging.php');		break;
 			case 'duplicator-support':	 include('views/support.php');				break;
-			
 		}	
 	}
 

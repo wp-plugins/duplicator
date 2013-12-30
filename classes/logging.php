@@ -1,42 +1,46 @@
 <?php
-if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
+if ( ! defined('DUPLICATOR_VERSION') ) exit; // Exit if accessed directly
 
+/**
+ * Helper Class for logging
+ * @package Dupicator\classes
+ */
 class DUP_Log {
 	
+	/**
+	 * The file handle used to write to the log file
+	 * @var file resource 
+	 */
 	private static $logFileHandle;
 	
 	/**
-	 *  Open
 	 *  Open a log file connection for writing
-	 *  @param string $name		Name of the log file to create
+	 *  @param string $name Name of the log file to create
 	 */
 	static public function Open($name) {
-		if (! isset($name)) throw new Exception("A name value is required!");
+		if (! isset($name)) throw new Exception("A name value is required to open a file log.");
 		self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH . "/{$name}.log", "c+");	
 	}
 	
 	/**
-	 *  Close
-	 *  Closes the log file connection
+	 *  Close the log file connection
 	 */
 	static public function Close() {
 		 @fclose(self::$logFileHandle);
 	}
 	
 	/**
-	 *  Info
-	 *  Genral informationlogging method
-	 *  @param string $msg		The message to log
+	 *  General information logging
+	 *  @param string $msg	The message to log
 	 */
 	static public function Info($msg) {
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
 	}
 	
 	/**
-	*  Error
-	*  Centralized logging for errors
-	*  @param string $msg		The message to log
-	*  @param string $details	More info to help out
+	*  Called when an error is detected and no further processing should occur
+	*  @param string $msg The message to log
+	*  @param string $details Additional details to help resolve the issue if possible
 	*/
 	static public function Error($msg, $detail) {
 		
@@ -59,10 +63,8 @@ class DUP_Log {
 	
 	
 	/** 
-	 * Getting backtrace 
-	 * 
+	 * The current strack trace of a PHP call
 	 * @param $stacktrace The current debug stack
-	 * 
 	 * @return string 
 	 */ 
     public static function getStack($stacktrace) {

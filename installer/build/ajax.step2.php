@@ -301,7 +301,6 @@ class DupDBTextSwap {
 $ajax2_start = DupUtil::get_microtime();
 
 //MYSQL CONNECTION
-
 $dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 $charset_server = @mysqli_character_set_name($dbh);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
@@ -328,7 +327,7 @@ ksort($POST_LOG);
 DUPX_Log::Info("\n\n\n{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info('DUPLICATOR INSTALL-LOG');
 DUPX_Log::Info('STEP2 START @ ' . @date('h:i:s'));
-DUPX_Log::Info('NOTICE: NOTICE: Do not post to public sites or forums');
+DUPX_Log::Info('NOTICE: Do not post to public sites or forums');
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info("CHARSET SERVER:\t{$charset_server}");
 DUPX_Log::Info("CHARSET CLIENT:\t" . @mysqli_character_set_name($dbh));

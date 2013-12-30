@@ -5,14 +5,15 @@
 
 	$Package = new DUP_Package();
 	$Package = $Package->GetActive();
-	
+
 	$dup_tests  = array();
-	$dup_tests  = $Package->GetSystemRequirments();
+	$dup_tests  = DUP_Package::GetSystemRequirments();
 	
 	$view_state = DUP_UI::GetViewStateArray();
-	$ui_css_archive   = ($view_state['dup-pack-archive-panel'])   ? 'display:block' : 'display:none';
-	$ui_css_installer = ($view_state['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
+	$ui_css_archive   = (isset($view_state['dup-pack-archive-panel']) && $view_state['dup-pack-archive-panel'])   ? 'display:block' : 'display:none';
+	$ui_css_installer = (isset($view_state['dup-pack-installer-panel']) && $view_state['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
 	$package_skip_scanner	= DUP_Settings::Get('package_skip_scanner');
+
 
 ?>
 
@@ -44,7 +45,8 @@
 	form#dup-form-opts ul li.tabs{font-weight:bold}
 	ul.category-tabs li {padding:4px 15px 4px 15px}
 	select#archive-format {min-width:100px; margin:1px 0px 4px 0px}
-	span#dup-archive-filter-state {color:#A62426}
+	span#dup-archive-filter-file {color:#A62426; display:none}
+	span#dup-archive-filter-db {color:#A62426; display:none}
 	div#dup-file-filter-items, div#dup-db-filter-items {padding:5px 0px 0px 0px}
 	label.dup-enable-filters {display:inline-block; margin:-5px 0px 5px 0px}
 	div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
@@ -101,11 +103,12 @@ jQuery(document).ready(function($) {
 		if($("#filter-on").is(':checked')) {
 			$filterItems.removeAttr('disabled').css({color:'#000'});
 			$('#filter-exts,#filter-dirs').removeAttr('readonly').css({color:'#000'});
+			$('#dup-archive-filter-file').show(800);
 		} else {
 			$filterItems.attr('disabled', 'disabled').css({color:'#999'});
 			$('#filter-dirs, #filter-exts').attr('readonly', 'readonly').css({color:'#999'});
+			$('#dup-archive-filter-file').hide(800);
 		}
-		Duplicator.Pack.ToggleFilterAlert();
 	};
 	
 	/*	----------------------------------------
@@ -115,20 +118,14 @@ jQuery(document).ready(function($) {
 		if($("#dbfilter-on").is(':checked')) {
 			$filterItems.removeAttr('disabled').css({color:'#000'});
 			$('#dup-dbtables input').removeAttr('readonly').css({color:'#000'});
+			$('#dup-archive-filter-db').show(800);
 		} else {
 			$filterItems.attr('disabled', 'disabled').css({color:'#999'});
 			$('#dup-dbtables input').attr('readonly', 'readonly').css({color:'#999'});
-		}
-		Duplicator.Pack.ToggleFilterAlert();
-	};
-	
-	Duplicator.Pack.ToggleFilterAlert = function() {
-		if($("#dbfilter-on").is(':checked') || $("#filter-on").is(':checked')) {
-			$('#dup-archive-filter-state').show(1000);
-		} else {
-			$('#dup-archive-filter-state').hide(1000);
+			$('#dup-archive-filter-db').hide(800);
 		}
 	};
+
 	
 	/*	----------------------------------------
 	*	METHOD: Appends a path to the directory filter  */ 

@@ -12,18 +12,26 @@ class DUP_Database{
 	public $FilterOn;
 	public $Name;
 	
-	function __construct() {
-		
+	//PROTECTED
+	protected $Package;
+	
+	//CONSTRUCTOR
+	function __construct($package) {
+		 $this->Package = $package;
 	}
 
-	public function Build($destination) {
+	public function Build() {
 		try {
 
 			global $wpdb;
-			$time_start = DUP_Util::GetMicrotime();
-			$handle		= fopen($destination, 'w+');
-			$tables		= $wpdb->get_col('SHOW TABLES');
 			
+			$this->Package->SetStatus(DUP_PackageStatus::DBSTART);
+			$wpdb->query("SET session wait_timeout = " . DUPLICATOR_DB_MAX_TIME);
+			$storePath = "{$this->Package->StorePath}/{$this->File}";
+			$time_start = DUP_Util::GetMicrotime();
+			$handle		= fopen($storePath, 'w+');
+			$tables		= $wpdb->get_col('SHOW TABLES');
+		
 			$filterTables  = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
 			$tblAllCount	= count($tables);
 			$tblFilterOn	= ($this->FilterOn) ? 'ON' : 'OFF';
@@ -109,19 +117,23 @@ class DUP_Database{
 			$sql_footer = "\nSET FOREIGN_KEY_CHECKS = 1;";
 			@fwrite($handle, $sql_footer);
 
-			DUP_Log::Info("SQL CREATED: {$destination}");
+			DUP_Log::Info("SQL CREATED: {$storePath}");
 			fclose($handle);
 			$wpdb->flush();
 
 			$time_end = DUP_Util::GetMicrotime();
 			$time_sum = DUP_Util::ElapsedTime($time_end, $time_start);
 
-			$sql_file_size = filesize($destination);
+			$sql_file_size = filesize($storePath);
 			if ($sql_file_size <= 0) {
-				DUP_Log::Error("SQL file generated zero bytes.", "No data was written to the sql file.  Check permission on file and parent directory at [$destination]");
+				DUP_Log::Error("SQL file generated zero bytes.", "No data was written to the sql file.  Check permission on file and parent directory at [$storePath]");
 			}
 			DUP_Log::Info("SQL FILE SIZE: " . DUP_Util::ByteSize($sql_file_size));
 			DUP_Log::Info("SQL RUNTIME: {$time_sum}");
+			
+
+			$this->Size = @filesize($storePath);
+			$this->Package->SetStatus(DUP_PackageStatus::DBDONE);
 
 		} catch (Exception $e) {
 			DUP_Log::Error("Runtime error in DUP_Database::Build","Exception: {$e}");
