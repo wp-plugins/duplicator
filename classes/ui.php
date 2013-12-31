@@ -100,11 +100,11 @@ class DUP_UI {
 		if (! self::GetViewStateValue($metaKey, false)) {
 			if (DUP_Package::RequiredFilesFound()) {
 				$queryStr = $_SERVER['QUERY_STRING'];
-				echo '<div class="error"><p>';
+				echo '<div class="updated"><p>';
 				printf("%s <br/> <a href='admin.php?page=duplicator-cleanup&remove=1'>%s</a> | <a href='?{$queryStr}&{$metaKey}=1'>%s</a>",
 						__('Reserved Duplicator install file(s) still exsist in the root directory.  Please delete these file(s) to avoid possible security issues.'),
 						__('Remove file(s) now'),
-						__('Ignore this warning'));
+						__('Dismiss this notice'));
 				echo "</p></div>";
 			} else {
 				self::SaveViewState($metaKey, true);

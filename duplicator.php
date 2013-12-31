@@ -112,7 +112,7 @@ if (is_admin() == true) {
     add_action('wp_ajax_duplicator_package_scan',		'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_create',		'duplicator_package_create');
 	add_action('wp_ajax_duplicator_package_delete',		'duplicator_package_delete');
-	add_action('wp_ajax_DUP_UI_SaveViewStateByPost',			array('DUP_UI', 'SaveViewStateByPost'));
+	add_action('wp_ajax_DUP_UI_SaveViewStateByPost',	array('DUP_UI', 'SaveViewStateByPost'));
 	add_action('admin_notices',							array('DUP_UI', 'ShowReservedFilesNotice'));
 
 	//FILTERS
