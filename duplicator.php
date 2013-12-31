@@ -160,15 +160,12 @@ if (is_admin() == true) {
 		$page_support  = add_submenu_page('duplicator',  __('Support',  'wpduplicator'),  __('Support', 'wpduplicator'), $perms, 'duplicator-support',  'duplicator_get_menu');
 		$page_cleanup  = add_submenu_page($main_menu,    __('Cleanup',  'wpduplicator'),  '' ,							 $perms, 'duplicator-cleanup',  'duplicator_get_menu');
 		
-		
-
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_settings, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_support,  'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_cleanup,  'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_log_list,	'duplicator_scripts');
-		
 
 		//Apply Styles
         add_action('admin_print_styles-'  . $page_packages, 'duplicator_styles');
@@ -176,7 +173,6 @@ if (is_admin() == true) {
 		add_action('admin_print_styles-'  . $page_support,  'duplicator_styles');
         add_action('admin_print_styles-'  . $page_cleanup,  'duplicator_styles');
 		add_action('admin_print_styles-'  . $page_log_list,	'duplicator_styles');
-		
     }
 
     /**

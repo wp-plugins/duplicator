@@ -55,7 +55,8 @@ class DUP_Installer {
 			"ajax.step2.php"			=> "@@AJAX.STEP2.PHP@@",
 			"view.step1.php"			=> "@@VIEW.STEP1.PHP@@",
 			"view.step2.php"			=> "@@VIEW.STEP2.PHP@@",
-			"view.step3.php"			=> "@@VIEW.STEP3.PHP@@");
+			"view.step3.php"			=> "@@VIEW.STEP3.PHP@@",
+			"view.help.php"			    => "@@VIEW.HELP.PHP@@",);
 
 		foreach ($embeded_files as $name => $token) {
 			$file_path = DUPLICATOR_PLUGIN_PATH . "installer/build/${name}";

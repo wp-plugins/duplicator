@@ -26,13 +26,7 @@
 			$pb.animate({ paddingLeft: "90%", paddingRight: "0%" }, 3500, "linear", function () { runAnimation($pb); });
 		}
 	}
-	Duplicator.dlgHelp = function() {
-		$("#dup-main-help").dialog({
-			height:650, width:750, modal: true,
-			position:['center', 150],
-			buttons: {Close: function() {$(this).dialog( "close" );}}
-		});
-	}
+
 	
 	Duplicator.toggleMetaBox = function() {
 		var $title = jQuery(this);

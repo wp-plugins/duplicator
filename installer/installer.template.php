@@ -113,9 +113,6 @@ $GLOBALS['FW_WPROOT'] = '%fwrite_wproot%';
 $GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
 $GLOBALS['FW_OPTS_DELETE'] = json_decode("%fwrite_opts_delete%", true);
 
-
-
-
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME'] = 5000;
 $GLOBALS['DB_MAX_PACKETS'] = 268435456;
@@ -1930,13 +1927,7 @@ b){return!1},onFormValidate:function(a,b,c){},onFieldError:function(a,b,c){},onF
 			$pb.animate({ paddingLeft: "90%", paddingRight: "0%" }, 3500, "linear", function () { runAnimation($pb); });
 		}
 	}
-	Duplicator.dlgHelp = function() {
-		$("#dup-main-help").dialog({
-			height:650, width:750, modal: true,
-			position:['center', 150],
-			buttons: {Close: function() {$(this).dialog( "close" );}}
-		});
-	}
+
 	
 	Duplicator.toggleMetaBox = function() {
 		var $title = jQuery(this);
@@ -1994,29 +1985,36 @@ b){return!1},onFormValidate:function(a,b,c){},onFieldError:function(a,b,c){},onF
 		</tr>
 		<tr>
 			<td>
-				<?php
-				$step1CSS = ($_POST['action_step'] <= 1) ? "active-step" : "complete-step";
-				$step2CSS = ($_POST['action_step'] == 2) ? "active-step" : "";
-
-				$step3CSS = "";
-				if ($_POST['action_step'] == 3) {
-					$step2CSS = "complete-step";
-					$step3CSS = "active-step";
-				}
-				?>
-				<div id="dup-wiz">
-					<div id="dup-wiz-steps">
-						<div class="<?php echo $step1CSS; ?>"><a><span>1</span> Deploy</a></div>
-						<div class="<?php echo $step2CSS; ?>"><a><span>2</span> Update </a></div>
-						<div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
-					</div>
+				
+				<?php if (isset($_GET['help'])) :?>
+				<div style="margin:4px 0px 10px 15px; font-size:18px">
+					Help Overview
 				</div>
+				<?php else : ?>
+					<?php
+					$step1CSS = ($_POST['action_step'] <= 1) ? "active-step" : "complete-step";
+					$step2CSS = ($_POST['action_step'] == 2) ? "active-step" : "";
+
+					$step3CSS = "";
+					if ($_POST['action_step'] == 3) {
+						$step2CSS = "complete-step";
+						$step3CSS = "active-step";
+					}
+					?>
+					<div id="dup-wiz">
+						<div id="dup-wiz-steps">
+							<div class="<?php echo $step1CSS; ?>"><a><span>1</span> Deploy</a></div>
+							<div class="<?php echo $step2CSS; ?>"><a><span>2</span> Update </a></div>
+							<div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
+						</div>
+					</div>
+				<?php endif ?>
 
 			</td>
 			<td style="white-space:nowrap">
 
 				<i style='font-size:11px; color:#999'>
-					version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="Duplicator.dlgHelp()">[Help]</a>
+					version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?>&nbsp;&nbsp;<a href="installer.php?help=1" target="_blank">[Help]</a>
 				</i> &nbsp;
 				
 			</td>
@@ -2027,6 +2025,8 @@ b){return!1},onFormValidate:function(a,b,c){},onFieldError:function(a,b,c){},onF
 	FORM DATA: Data Steps -->
 	<div id="content-inner">
 <?php
+
+if (! isset($_GET['help'])) {
 switch ($_POST['action_step']) {
 	case "0" :
 	?> <?php
@@ -2247,10 +2247,10 @@ VIEW: STEP 1- INPUT -->
 					</div>
 				</td>
 			</tr>			
-    	    <tr><td>Host</td><td><input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" /></td></tr>
-    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" /></td></tr>
-    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>" /></td></tr>
-			<tr><td>Name</td><td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>" /></td></tr>
+    	    <tr><td>Host</td><td><input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" /></td></tr>
+    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database password"   /></td></tr>
+			<tr><td>Name</td><td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="database name"  /></td></tr>
     	</table>
 		
 		<div id="dup-step1-dbconn">
@@ -2704,10 +2704,10 @@ VIEW: STEP 1- INPUT -->
 					</div>
 				</td>
 			</tr>			
-    	    <tr><td>Host</td><td><input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" /></td></tr>
-    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" /></td></tr>
-    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>" /></td></tr>
-			<tr><td>Name</td><td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>" /></td></tr>
+    	    <tr><td>Host</td><td><input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" /></td></tr>
+    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database password"   /></td></tr>
+			<tr><td>Name</td><td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="database name"  /></td></tr>
     	</table>
 		
 		<div id="dup-step1-dbconn">
@@ -3476,152 +3476,153 @@ DIALOG: TROUBLSHOOTING DIALOG -->
   <?php
 	break;
 }
+} else {
+	?> <!-- =========================================
+HELP FORM -->
+<div id="dup-main-help">
+<div style="text-align:center">For in-depth help please see the <a href="http://lifeinthegrid.com/duplicator-docs" target="_blank">online resources</a></div>
+
+<h3>Step 1 - Deploy</h3>
+<div id="dup-help-step1" class="dup-help-page">
+	<!-- MYSQL SERVER -->
+	<fieldset>
+		<legend><b>MySQL Server</b></legend>
+
+		<b>Action:</b><br/>
+		'Create New' will attempt to create a new database if it does not exist.  This option will not work on many hosting providers.  If the database does not exist then you will need to login to your control panel and create the database.  If 'Remove All Tables' is checked this will DELETE all tables in the database you are connecting to as the Duplicator requires a blank database.  Please make sure you have backups of all your data before using an portion of the installer, as this option WILL remove all data.  Please contact your server administrator for more details.
+		<br/><br/>
+
+		<b>Host:</b><br/>
+		The name of the host server that the database resides on.  Many times this will be localhost, however each hosting provider will have it's own naming convention please check with your server administrator.
+		<br/><br/>
+
+		<b>User:</b><br/>
+		The name of a MySQL database server user. This is special account that has privileges to access a database and can read from or write to that database.  <i style='font-size:11px'>This is <b>not</b> the same thing as your WordPress administrator account</i> 
+		<br/><br/>
+
+		<b>Password:</b><br/>
+		The password of the MySQL database server user.
+		<br/><br/>
+
+		<b>Name:</b><br/>
+		The name of the database to which this installation will connect and install the new tables onto.
+		<br/><br/>
+
+
+	</fieldset>				
+
+	<!-- ADVANCED OPTS -->
+	<fieldset>
+		<legend><b>Advanced Options</b></legend>
+		<b>Manual Package Extraction:</b><br/>
+		This allows you to manually extract the zip archive on your own. This can be useful if your system does not have the ZipArchive support enabled.
+		<br/><br/>		
+
+		<b>Enforce SSL on Admin:</b><br/>
+		Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.
+		<br/><br/>	
+
+		<b>Enforce SSL on Login:</b><br/>
+		Turn off SSL support for WordPress Logins. This sets FORCE_SSL_LOGIN in your wp-config file to false if true, otherwise it will create the setting if not set.
+		<br/><br/>			
+
+		<b>Keep Cache Enabled:</b><br/>
+		Turn off Cache support for WordPress. This sets WP_CACHE in your wp-config file to false if true, otherwise it will create the setting if not set.
+		<br/><br/>	
+
+		<b>Keep Cache Home Path:</b><br/>
+		This sets WPCACHEHOME in your wp-config file to nothing if true, otherwise nothing is changed.
+		<br/><br/>	
+
+		<b>Fix non-breaking space characters:</b><br/>
+		The process will remove utf8 characters represented as 'xC2' 'xA0' and replace with a uniform space.  Use this option if you find strange question marks in you posts
+		<br/><br/>	
+
+		<b>MySQL Charset &amp; MySQL Collation:</b><br/>
+		When the database is populated from the SQL script it will use this value as part of its connection.  Only change this value if you know what your databases character set should be.
+		<br/>				
+	</fieldset>			
+</div>
+
+<h3>Step 2 - Update</h3>
+<div id="dup-help-step1" class="dup-help-page">
+
+	<!-- SETTINGS-->
+	<fieldset>
+		<legend><b>Settings</b></legend>
+		<b>Old Settings:</b><br/>
+		The URL and Path settings are the original values that the package was created with.  These values should not be changed.
+		<br/><br/>
+
+		<b>New Settings:</b><br/>
+		These are the new values (URL, Path and Title) you can update for the new location at which your site will be installed at.
+		<br/>		
+	</fieldset>
+
+	<!-- NEW ADMIN ACCOUNT-->
+	<fieldset>
+		<legend><b>New Admin Account</b></legend>
+		<b>Username:</b><br/>
+		The new username to create.  This will create a new WordPress administrator account.  Please note that usernames are not changeable from the within the UI.
+		<br/><br/>
+
+		<b>Password:</b><br/>
+		The new password for the user. 
+		<br/>		
+	</fieldset>
+
+	<!-- ADVANCED OPTS -->
+	<fieldset>
+		<legend><b>Advanced Options</b></legend>
+		<b>Site URL:</b><br/>
+		For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.  If you're not sure about this value then leave it the same as the new settings URL.
+		<br/><br/>
+
+		<b>Scan Tables:</b><br/>
+		Select the tables to be updated. This process will update all of the 'Old Settings' with the 'New Settings'. Hold down the 'ctrl key' to select/deselect multiple.
+		<br/><br/>
+
+		<b>Activate Plugins:</b><br/>
+		These plug-ins are the plug-ins that were activated when the package was created and represent the plug-ins that will be activated after the install.
+		<br/><br/>
+
+		<b>Post GUID:</b><br/>
+		If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.		
+		<br/>		
+	</fieldset>
+
+</div>
+
+<h3>Step 3 - Test</h3>
+<fieldset>
+	<legend><b>Final Steps</b></legend>
+
+	<b>Resave Permalinks</b><br/>
+	Re-saving your perma-links will reconfigure your .htaccess file to match the correct path on your server.  This step requires logging back into the WordPress administrator.
+	<br/><br/>
+
+	<b>Delete Installer Files</b><br/>
+	When you're completed with the installation please delete all installer files.  Leaving these files on your server can impose a security risk!
+	<br/><br/>
+
+	<b>Test Entire Site</b><br/>
+	After the install is complete run through your entire site and test all pages and posts.
+	<br/><br/>
+
+	<b>View Install Report</b><br/>
+	The install report is designed to give you a synopsis of the possible errors and warnings that may exist after the installation is completed.
+	<br/>
+</fieldset>
+<br/><br/>
+</div> <?php
+}
+	
 ?>
 	</div>
 </div><br/>
 
 
-<!-- =========================================
-HELP FORM -->
-<div id="dup-main-help" title="Quick Help" style="display:none; font-size:12px">
 
-	<div style="text-align:center">For in-depth help please see the <a href="http://lifeinthegrid.com/duplicator-docs" target="_blank">online resources</a></div>
-
-	<h3>Step 1 - Deploy</h3>
-	<div id="dup-help-step1" class="dup-help-page">
-		<!-- MYSQL SERVER -->
-		<fieldset>
-			<legend><b>MySQL Server</b></legend>
-
-			<b>Host:</b><br/>
-			The name of the host server that the database resides on.  Many times this will be localhost, however each hosting provider will have it's own naming convention please check with your server administrator.
-			<br/><br/>
-
-			<b>User:</b><br/>
-			The name of a MySQL database server user. This is special account that has privileges to access a database and can read from or write to that database.  <i style='font-size:11px'>This is <b>not</b> the same thing as your WordPress administrator account</i> 
-			<br/><br/>
-
-			<b>Password:</b><br/>
-			The password of the MySQL database server user.
-			<br/><br/>
-
-			<b>Database Name:</b><br/>
-			The name of the database to which this installation will connect and install the new tables onto.
-			<br/><br/>
-
-			<b>Database Creation:</b><br/>
-			If checked this option will try to create the database if it does not exist.  This option will not work on many hosting providers as they usually lock down the ability to create a database.  If the database does not exist then you will need to login to your control panel and create your database.  Please contact your server administrator for more details.
-			<br/><br/>
-
-			<b>Table Removal:</b><br/>
-			If checked this will automatically remove all tables in the database you are connecting to.  The Duplicator requires a blank database in order for an install to take place.  Please make sure you have backups of all your data before using an portion of the installer, as this option WILL remove data.
-			<br/>
-		</fieldset>				
-
-		<!-- ADVANCED OPTS -->
-		<fieldset>
-			<legend><b>Advanced Options</b></legend>
-			<b>Manual Package Extraction:</b><br/>
-			This allows you to manually extract the zip archive on your own. This can be useful if your system does not have the ZipArchive support enabled.
-			<br/><br/>		
-
-			<b>Enforce SSL on Admin:</b><br/>
-			Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.
-			<br/><br/>	
-
-			<b>Enforce SSL on Login:</b><br/>
-			Turn off SSL support for WordPress Logins. This sets FORCE_SSL_LOGIN in your wp-config file to false if true, otherwise it will create the setting if not set.
-			<br/><br/>			
-
-			<b>Keep Cache Enabled:</b><br/>
-			Turn off Cache support for WordPress. This sets WP_CACHE in your wp-config file to false if true, otherwise it will create the setting if not set.
-			<br/><br/>	
-
-			<b>Keep Cache Home Path:</b><br/>
-			This sets WPCACHEHOME in your wp-config file to nothing if true, otherwise nothing is changed.
-			<br/><br/>	
-
-			<b>Fix non-breaking space characters:</b><br/>
-			The process will remove utf8 characters represented as 'xC2' 'xA0' and replace with a uniform space.  Use this option if you find strange question marks in you posts
-			<br/><br/>	
-
-			<b>MySQL Charset &amp; MySQL Collation:</b><br/>
-			When the database is populated from the SQL script it will use this value as part of its connection.  Only change this value if you know what your databases character set should be.
-			<br/>				
-		</fieldset>			
-	</div>
-
-	<h3>Step 2 - Update</h3>
-	<div id="dup-help-step1" class="dup-help-page">
-
-		<!-- SETTINGS-->
-		<fieldset>
-			<legend><b>Settings</b></legend>
-			<b>Old Settings:</b><br/>
-			The URL and Path settings are the original values that the package was created with.  These values should not be changed.
-			<br/><br/>
-
-			<b>New Settings:</b><br/>
-			These are the new values (URL, Path and Title) you can update for the new location at which your site will be installed at.
-			<br/>		
-		</fieldset>
-
-		<!-- NEW ADMIN ACCOUNT-->
-		<fieldset>
-			<legend><b>New Admin Account</b></legend>
-			<b>Username:</b><br/>
-			The new username to create.  This will create a new WordPress administrator account.  Please note that usernames are not changeable from the within the UI.
-			<br/><br/>
-
-			<b>Password:</b><br/>
-			The new password for the user. 
-			<br/>		
-		</fieldset>
-
-		<!-- ADVANCED OPTS -->
-		<fieldset>
-			<legend><b>Advanced Options</b></legend>
-			<b>Site URL:</b><br/>
-			For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.  If you're not sure about this value then leave it the same as the new settings URL.
-			<br/><br/>
-
-			<b>Scan Tables:</b><br/>
-			Select the tables to be updated. This process will update all of the 'Old Settings' with the 'New Settings'. Hold down the 'ctrl key' to select/deselect multiple.
-			<br/><br/>
-
-			<b>Activate Plugins:</b><br/>
-			These plug-ins are the plug-ins that were activated when the package was created and represent the plug-ins that will be activated after the install.
-			<br/><br/>
-
-			<b>Post GUID:</b><br/>
-			If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.		
-			<br/>		
-		</fieldset>
-
-	</div>
-
-	<h3>Step 3 - Test</h3>
-	<fieldset>
-		<legend><b>Final Steps</b></legend>
-
-		<b>Resave Permalinks</b><br/>
-		Re-saving your perma-links will reconfigure your .htaccess file to match the correct path on your server.  This step requires logging back into the WordPress administrator.
-		<br/><br/>
-
-		<b>Delete Installer Files</b><br/>
-		When you're completed with the installation please delete all installer files.  Leaving these files on your server can impose a security risk!
-		<br/><br/>
-
-		<b>Test Entire Site</b><br/>
-		After the install is complete run through your entire site and test all pages and posts.
-		<br/><br/>
-
-		<b>View Install Report</b><br/>
-		The install report is designed to give you a synopsis of the possible errors and warnings that may exist after the installation is completed.
-		<br/>
-	</fieldset>
-
-</div>
 
 
 </body>
