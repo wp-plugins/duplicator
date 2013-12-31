@@ -16,20 +16,20 @@
 		?>
 	</i>
 	
-	<!-- NOTICE01 -->
+	<!-- NOTICE01: 0.5.0 and above -->
 	<?php if(! $notice01)  :	?>
 		<div id="dup-notice-01" class='dup-notice-msg'>
 			<i class="fa fa-exclamation-triangle fa-lg"></i>
 			<?php 
-				_e("Older packages are no longer supported in this version.", 'wpduplicator'); 
+				_e("Older packages prior to 0.5.0 are no longer supported in this version.", 'wpduplicator'); 
 
 				printf("  %s <a href='admin.php?page=duplicator-support'>%s</a> %s",
-					__("If you still need an older package version please visit", 'wpduplicator'), 
-					__("the changelog", 'wpduplicator'),
-					__("for version 0.5.0 on instructions for getting older packages.", 'wpduplicator'));
+					__("To get an older package please visit the", 'wpduplicator'), 
+					__("support page", 'wpduplicator'),
+					__("and look for the Change Log link for additional instructions.", 'wpduplicator'));
 			?><br/>
 			<label for="dup-notice01-chk">
-				<input type="checkbox" id="dup-notice01-chk" name="dup-notice01-chk" onclick="Duplicator.UI.SaveViewStateByPost('dup-notice01-chk', 1); jQuery('#dup-notice-01').hide()" /> 
+				<input type="checkbox" class="dup-notice-chk" id="dup-notice01-chk" name="dup-notice01-chk" onclick="Duplicator.UI.SaveViewStateByPost('dup-notice01-chk', 1); jQuery('#dup-notice-01').hide()" /> 
 				<?php _e("Hide this message", 'wpduplicator'); ?>
 			</label>
 		</div><br/><br/>
