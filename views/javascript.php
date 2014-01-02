@@ -47,7 +47,7 @@ Duplicator.ReloadWindow = function(data) {
 Duplicator.OpenLogWindow = function(log) {
 	var logFile = log || null;
 	if (logFile == null) {
-		window.open('?page=duplicator-logging', 'Log Window');
+		window.open('?page=duplicator-tools', 'Log Window');
 	} else {
 		window.open('<?php echo DUPLICATOR_SSDIR_URL; ?>' + '/' + log)
 	}

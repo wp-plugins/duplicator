@@ -20,11 +20,10 @@ require_once 'classes/utility.php';
 global $wpdb;
 $DUP_Settings = new DUP_Settings();
 
-$table_name = $wpdb->prefix . "duplicator";
+$table_name = $wpdb->prefix . "duplicator_packages";
 $wpdb->query("DROP TABLE `{$table_name}`");
 
 delete_option('duplicator_version_plugin');
-delete_option('duplicator_options');
 
 //Remvoe entire wp-snapshots directory
 if (DUP_Settings::Get('uninstall_files')) {
