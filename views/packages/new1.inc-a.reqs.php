@@ -45,7 +45,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 				<a><?php _e('Reserved Files', 'wpduplicator');?></a> <div><?php echo $dup_tests['SYS-101'];?></div>
 			</div>
 			<div class="dup-sys-info dup-info-box">
-				<form method="post" action="admin.php?page=duplicator-cleanup&remove=1">
+				<form method="post" action="admin.php?page=duplicator-tools&tab=cleanup&action=installer">
 					<?php _e('A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.', 'wpduplicator');?>
 					<br/><input type='submit' class='button action' value='<?php _e('Remove Files Now', 'wpduplicator')?>' style='font-size:10px; margin-top:5px;' />
 				</form>

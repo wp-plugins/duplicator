@@ -8,7 +8,7 @@ require_once (DUPLICATOR_PLUGIN_PATH . 'classes/utility.php');
 
 final class DUP_PackageStatus {
    private function __construct() {}
-   const CREATED	= 10;
+   const START		= 10;
    const DBSTART	= 20;
    const DBDONE		= 30;
    const ARCSTART	= 40;
@@ -28,6 +28,8 @@ final class DUP_PackageType {
  */
 class DUP_Package {
 	
+	const OPT_ACTIVE   = 'duplicator_package_active';
+	
 	//Properties
 	public $ID;
 	public $Name;
@@ -38,13 +40,13 @@ class DUP_Package {
 	public $Notes;
 	public $StorePath;
 	public $StoreURL;
+	public $Runtime;
+	public $ExeSize;
+	public $ZipSize;
 	//Objects
 	public $Archive;
 	public $Installer;
 	public $Database;
-	
-	//Private
-	private $optsTableKeyActive  = 'duplicator_package_active';
 
 	 /**
      *  Manages the Package Process
@@ -66,6 +68,101 @@ class DUP_Package {
 		$this->Installer	= new DUP_Installer($this);
 	}
 	
+	
+	/**
+	 * Starts the package build process
+	 * @return DUP_Package
+	 */
+	public function Build() {
+		
+		global $wp_version;
+		global $wpdb;
+		global $current_user;
+
+		$timerStart = DUP_Util::GetMicrotime();
+
+		$this->Hash				  = uniqid() . mt_rand(1000, 9999) . date("ymdHis");
+		$this->NameHash			  = "{$this->Name}_{$this->Hash}";
+		$this->Archive->File	  = "{$this->NameHash}_archive.zip";
+		$this->Installer->File    = "{$this->NameHash}_installer.php";
+		$this->Database->File     = "{$this->NameHash}_database.sql";
+		
+		//START LOGGING
+		DUP_Log::Open($this->NameHash);
+		$php_max_time	= @ini_get("max_execution_time");
+		$php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
+		$php_max_time	= ($php_max_time == 0)        ? "Enabled" : "NOT Enabled";
+		$php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" : "set from={$php_max_memory} to=" . DUPLICATOR_PHP_MAX_MEMORY;
+		
+		$info  = "********************************************************************************\n";
+		$info .= "PACKAGE-LOG: " . @date("Y-m-d H:i:s") . "\n";
+		$info .= "NOTICE: Do NOT post to public sites or forums \n";
+		$info .= "********************************************************************************\n";
+		$info .= "duplicator: " . DUPLICATOR_VERSION . "\n";
+		$info .= "wordpress: {$wp_version}\n";
+		$info .= "php: " . phpversion() . ' | ' . 'sapi: ' . php_sapi_name() . "\n";
+		$info .= "server: {$_SERVER['SERVER_SOFTWARE']} \n";
+		$info .= "browser: {$_SERVER['HTTP_USER_AGENT']} \n";
+		$info .= "php set_time_limit: {$php_max_time} \n";
+		$info .= "php_max_memory: {$php_max_memory} \n";
+		$info .= "mysql wait_timeout:" . DUPLICATOR_DB_MAX_TIME . "\n";
+		DUP_Log::Info($info);
+		unset($info);
+		
+		//CREATE DB RECORD
+		$packageObj = serialize($this);
+		if (! $packageObj) {
+			DUP_Log::Error("Unable to serialize pacakge object while building record.");
+		}
+		
+		$results = $wpdb->insert($wpdb->prefix . "duplicator_packages", array(
+			'name'    => $this->Name,
+			'hash'	  => $this->Hash,
+			'status'  => DUP_PackageStatus::START,
+			'created' => current_time('mysql', get_option('gmt_offset', 1)),
+			'owner'	  => isset($current_user->user_login) ? $current_user->user_login : 'unknown',
+			'package' => $packageObj)
+		);
+
+		if ($results == false) {
+			$error_result = $wpdb->print_error();
+			DUP_Log::Error("Unable to insert record into database table.", "'{$error_result}'");
+		}
+		$this->ID = $wpdb->insert_id;
+		
+		//START BUILD
+		$this->Database->Build();
+		$this->Archive->Build();
+		$this->Installer->Build();
+
+		//VALIDATE FILE SIZE
+		$dbSizeRead	 = DUP_Util::ByteSize($this->Database->Size);
+		$zipSizeRead = DUP_Util::ByteSize($this->Archive->Size);
+		$exeSizeRead = DUP_Util::ByteSize($this->Installer->Size);
+		if ( !($this->Archive->Size && $this->Database->Size && $this->Installer->Size)) {
+			DUP_Log::Error("A required file contains zero bytes.", "Archive Size: {$zipSizeRead} | SQL Size: {$dbSizeRead} | Installer Size: {$exeSizeRead}");
+		}
+
+		$this->SetStatus(DUP_PackageStatus::COMPLETE);
+		$timerEnd = DUP_Util::GetMicrotime();
+		$timerSum = DUP_Util::ElapsedTime($timerEnd, $timerStart);
+		
+		$this->Runtime  = $timerSum;
+		$this->ExeSize  = $exeSizeRead;
+		$this->ZipSize  = $zipSizeRead;
+		
+		$info  = "********************************************************************************\n";
+		$info .= "RECORD ID:[{$this->ID}]\n";
+		$info .= "FILE SIZE: Archive:{$zipSizeRead} | SQL:{$dbSizeRead} | Installer:{$exeSizeRead}\n";
+		$info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
+		$info .= "DONE PROCESSING => {$this->Name} " . @date("Y-m-d H:i:s") . "\n";
+		$info .= "********************************************************************************\n";
+		DUP_Log::Info($info);
+		DUP_Log::Close();
+		
+		return $this;
+	}
+	
 	/**
 	 * Gets the active package.  The active package is defined as the package that was lasted saved.
 	 * @see DUP_Package::SaveActive
@@ -73,7 +170,7 @@ class DUP_Package {
 	 */
 	public function GetActive() {
 		
-		$tmpOpts = get_option($this->optsTableKeyActive, false);	
+		$tmpOpts = get_option(self::OPT_ACTIVE, false);	
 		if ($tmpOpts != false) {
 			return  @unserialize($tmpOpts);
 		} else {
@@ -95,8 +192,8 @@ class DUP_Package {
 				: date('Ymd') . '_' . sanitize_title(get_bloginfo( 'name', 'display' ));
 			
 			$name          = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
-			$filter_dirs   = isset($post['filter-dirs']) ? $this->ParseDirectoryFilter($post['filter-dirs']) : '';
-			$filter_exts   = isset($post['filter-exts']) ? $this->ParseExtensionFilter($post['filter-exts']) : '';
+			$filter_dirs   = isset($post['filter-dirs']) ? $this->parseDirectoryFilter($post['filter-dirs']) : '';
+			$filter_exts   = isset($post['filter-exts']) ? $this->parseExtensionFilter($post['filter-exts']) : '';
 			$tablelist     = isset($post['dbtables'])    ? implode(',', $post['dbtables']) : '';
 
 			//PACKAGE
@@ -123,40 +220,11 @@ class DUP_Package {
 			$this->Database->FilterOn		= isset($post['dbfilter-on'])   ? 1 : 0;
 			$this->Database->FilterTables	= esc_html($tablelist);
 
-			update_option($this->optsTableKeyActive, serialize($this));
+			update_option(self::OPT_ACTIVE, serialize($this));
 		}
 	}
 	
-	/**	
-	 * Creates a new record in the database table for this package
-	 * @return boolean Returns true if the record was inserted
-	 */
-	public function CreateRecord() {
-		global $wpdb;
-		global $current_user;
 
-		$packageObj = serialize($this);
-		if (! $packageObj) {
-			DUP_Log::Error("Unable to serialize pacakge object while saving record.");
-		}
-
-		$results = $wpdb->insert($wpdb->prefix . "duplicator_packages", array(
-			'name'    => $this->Name,
-			'hash'	  => $this->Hash,
-			'status'  => DUP_PackageStatus::CREATED,
-			'created' => current_time('mysql', get_option('gmt_offset', 1)),
-			'owner'	  => isset($current_user->user_login) ? $current_user->user_login : 'unknown',
-			'package' => $packageObj)
-		);
-
-		if ($results == false) {
-			$error_result = $wpdb->print_error();
-			DUP_Log::Error("Unable to insert record into database table.", "'{$error_result}'");
-		}
-		$this->ID = $wpdb->insert_id;
-		
-		return (is_numeric($this->ID) ? true : false);
-	}
 	
 	public function SetStatus($status) {
 		global $wpdb;
@@ -181,6 +249,29 @@ class DUP_Package {
 		
 		
 		return $result;
+	}	
+	
+	public function IsBuilding() {
+		
+
+		
+		$isBuilding = get_option($optsTableKeyBuilding, false);
+		
+		/*
+		 $time = current_time('mysql', get_option('gmt_offset', 1));
+		 if ($isBuilding != 0) {
+			$time1 = strtotime("2011-10-10 10:00:00");
+			$time2 = strtotime("2011-10-10 10:45:00");
+			$interval  = abs($datetime2 - $datetime1);
+			$minutes   = round($interval / 60);
+			
+			if ($minutes > 3)
+				upate_option($buildKey, 0);
+			
+		}*/
+		
+		return $isBuilding;
+		
 	}	
 	
 	
@@ -265,7 +356,10 @@ class DUP_Package {
 
 		//CHK-SRV-101
 		$cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
-		$dup_checks['CHK-SRV-101'] = (DUP_Util::IsDirectoryEmpty($cache_path) || !file_exists($cache_path)) ? 'Good' : 'Warn';
+
+		$dirEmpty = DUP_Util::IsDirectoryEmpty($cache_path);
+		$dirSize  = DUP_Util::GetDirectorySize($cache_path); //50K
+		$dup_checks['CHK-SRV-101'] = ($dirEmpty  || $dirSize < 50000 )	? 'Good' : 'Warn';
 
 		//CHK-SRV-102
 		$test = ini_get("max_execution_time");
@@ -278,8 +372,8 @@ class DUP_Package {
 		return $dup_checks;
 	}
 	
-
-	private function ParseDirectoryFilter($dirs = "") {
+	
+	private function parseDirectoryFilter($dirs = "") {
 		$filter_dirs = "";
 		foreach (explode(";", $dirs) as $val) {
 			if (strlen($val) >= 2) {
@@ -289,7 +383,7 @@ class DUP_Package {
 		return $filter_dirs;
 	}
 	
-	private function ParseExtensionFilter($extensions = "") {
+	private function parseExtensionFilter($extensions = "") {
 		$filter_exts = "";
 		if (strlen($extensions) >= 1 && $extensions != ";") {
 			$filter_exts   = str_replace(array(' ', '.'), '', $extensions);

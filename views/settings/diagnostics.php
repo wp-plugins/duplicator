@@ -29,15 +29,12 @@
 	//POST BACK
 	$action_updated = null;
 	if (isset($_POST['action'])) {
+		$action_result = DUP_Settings::DeleteWPOption($_POST['action']);
 		switch ($_POST['action']) {
-			case 'duplicator_ui_view_state' : 
-				DUP_Settings::DeleteWPOption('duplicator_ui_view_state');		
-				$action_response = __('View state settings reset.', 'wpduplicator');
-				break;
-			case 'duplicator_package_active' : 
-				DUP_Settings::DeleteWPOption('duplicator_package_active');		
-				$action_response = __('Active package settings reset.', 'wpduplicator');
-				break;			
+			case 'duplicator_settings'		 : 	$action_response = __('Plugin settings reset.', 'wpduplicator');		break;
+			case 'duplicator_ui_view_state'  : 	$action_response = __('View state settings reset.', 'wpduplicator');	 break;
+			case 'duplicator_package_active' : 	$action_response = __('Active package settings reset.', 'wpduplicator'); break;
+			case 'duplicator_task_running'   : 	$action_response = __('Task queue was reset.', 'wpduplicator'); 	     break;				
 			case 'clear_legacy_data': 
 				DUP_Settings::LegacyClean();			
 				$action_response = __('Legacy data removed.', 'wpduplicator');
@@ -61,8 +58,6 @@
 	.widefat td:nth-child(1) {width:10px;}
 	.widefat td:nth-child(2) {padding-left: 20px; width:100% !important}
 	textarea.dup-opts-read {width:100%; height:40px; font-size:12px}
-	table.dup-reset-opts td:first-child {font-weight: bold}
-	table.dup-reset-opts td {padding:4px}
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-settings&tab=diagnostics' ); ?>" method="post">
@@ -219,16 +214,7 @@
 		<div class="dup-box-panel" id="dup-settings-diag-opts-panel" style="<?php echo $ui_css_opts_panel?>">
 			<div style="padding:0px 20px 0px 25px">
 
-			<table class="dup-reset-opts">
-				<tr>
-					<td><a href="?page=duplicator-cleanup&remove=1" target="_cleanup"><?php _e("Delete Reserved Files", 'wpduplicator'); ?></a></td>
-					<td><small><?php _e("Removes all installer files from a previous install", 'wpduplicator'); ?> </small></td>
-				</tr>
-				<tr>
-					<td><a href="javascript:void(0)" onclick="Duplicator.Settings.DeleteLegacy()"><?php _e("Delete Legacy Data", 'wpduplicator'); ?></a></td>
-					<td><small><?php _e("Removes all legacy data and settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</small></td>
-				</tr>				
-			</table>
+
 		
 
 			<h3 class="title" style="margin-left:-15px"><?php _e("Options Values", 'wpduplicator') ?> </h3>	
@@ -239,13 +225,12 @@
 					<th>Value</th>
 				</tr>		
 				<?php 
-					$safeList = array('duplicator_package_active', 'duplicator_settings', 'duplicator_ui_view_state' );
 					$sql = "SELECT * FROM `{$wpdb->prefix}options` WHERE  `option_name` LIKE  '%duplicator_%' ORDER BY option_name";
 					foreach( $wpdb->get_results("{$sql}") as $key => $row) { ?>	
 					<tr>
 						<td>
 							<?php 
-								 echo (in_array($row->option_name, $safeList))
+								 echo (in_array($row->option_name, $GLOBALS['DUPLICATOR_OPTS_DELETE']))
 									? "<a href='javascript:void(0)' onclick='Duplicator.Settings.DeleteOption(this)'>{$row->option_name}</a>"
 									: $row->option_name;
 							?>
@@ -282,24 +267,6 @@
 <script>	
 jQuery(document).ready(function($) {
 	
-	/*  ----------------------------------------
-	*  METHOD:   */
-   Duplicator.Settings.DeleteLegacy = function () {
-
-	   <?php
-		   $msg  = __('This action will remove all legacy settings prior to version %1$s.  ', 'wpduplicator');
-		   $msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.', 'wpduplicator'); 
-	   ?>
-	   var result = true;
-	   var result = confirm('<?php printf(__($msg, 'wpduplicator'), DUPLICATOR_VERSION) ?>');
-	   if (! result) 
-		   return;
-		
-	   jQuery('#dup-settings-form-action').val('clear_legacy_data');
-	   jQuery('#dup-settings-form').submit();
-   }
-   
-   
 	Duplicator.Settings.DeleteOption = function (anchor) {
 		var key = $(anchor).text();
 		var result = confirm('<?php _e("Delete this option value", "wpduplicator"); ?> [' + key + '] ?');

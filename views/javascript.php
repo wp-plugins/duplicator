@@ -8,6 +8,7 @@ Duplicator.UI		= new Object();
 Duplicator.Pack		= new Object();
 Duplicator.Settings = new Object();
 Duplicator.Tools	= new Object();
+Duplicator.Tasks	= new Object();
 
 //GLOBAL CONSTANTS
 Duplicator.DEBUG_AJAX_RESPONSE = false;
@@ -48,7 +49,7 @@ Duplicator.OpenLogWindow = function(log) {
 	if (logFile == null) {
 		window.open('?page=duplicator-logging', 'Log Window');
 	} else {
-		window.open('<?php echo DUPLICATOR_SSDIR_URL; ?>' + '/' + log, 'Log Window')
+		window.open('<?php echo DUPLICATOR_SSDIR_URL; ?>' + '/' + log)
 	}
 };
 
@@ -104,6 +105,20 @@ Duplicator.UI.ToggleMetaBox = function() {
 		: $arrow.removeClass().addClass('fa fa-caret-down');
 	
 }
+
+	
+Duplicator.Tasks.Reset = function() {
+	jQuery.ajax({
+		type: "POST",
+		url: ajaxurl,
+		dataType: "json",
+		data: {action : 'duplicator_task_reset'},
+		success:    function(data) {},
+		error: function(data) {console.log(data);}
+	});
+	return false;
+}
+
 
 jQuery(document).ready(function($) {
 	//Init: Toggle MetaBoxes

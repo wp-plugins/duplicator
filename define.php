@@ -35,6 +35,7 @@ if (function_exists('plugin_dir_url')) {
 	define("DUPLICATOR_SCAN_DBROWS",  250000);
 	define("DUPLICATOR_SCAN_TIMEOUT", 300);	//Seconds
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS');
+	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_task_running', 'duplicator_settings');
 
 } else {
     error_reporting(0);

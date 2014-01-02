@@ -4,7 +4,6 @@ if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 class DUP_Util {
 	
 	/**
-	*  FcgiFlush
 	*  PHP_SAPI for fcgi requires a data flush of at least 256
 	*  bytes every 40 seconds or else it forces a script hault
 	*/
@@ -14,7 +13,6 @@ class DUP_Util {
 	}
 
 	/**
-	*  SSDirURL
 	*  returns the snapshot url
 	*/
 	static public  function SSDirURL() {
@@ -22,7 +20,6 @@ class DUP_Util {
 	}
 
 	/**
-	*  RunAPC
 	*  Runs the APC cache to pre-cache the php files
 	*  returns true if all files where cached
 	*/
@@ -36,7 +33,6 @@ class DUP_Util {
 	}
 
 	/**
-	*  ByteSize
 	*  Display human readable byte sizes
 	*  @param string $size		The size in bytes
 	*/
@@ -52,7 +48,6 @@ class DUP_Util {
 	}
 
 	/**
-	*  SafePath
 	*  Makes path safe for any OS
 	*  Paths should ALWAYS READ be "/"
 	* 		uni: /home/path/file.xt
@@ -63,21 +58,21 @@ class DUP_Util {
 		return str_replace("\\", "/", $path);
 	}
 
-	/** GET_MICROTIME
+	/** 
 	 * Get current microtime as a float. Can be used for simple profiling.
 	 */
 	static public function GetMicrotime() {
 		return microtime(true);
 	}
 
-	/** AppendChecker
+	/** 
 	 * Append the value to the string if it doesn't already exist
 	 */
 	static public function StringAppend($string, $value ) {
 	   return $string . (substr($string, -1) == $value ? '' : $value);
 	}
 
-	/** ELAPSED_TIME
+	/** 
 	 * Return a string with the elapsed time.
 	 * Order of $end and $start can be switched. 
 	 */
@@ -86,7 +81,7 @@ class DUP_Util {
 	}
 
 	/**
-	 * MySQL server variable
+	 * Get the MySQL system variables
 	 * @param conn $dbh Database connection handle
 	 * @return string the server variable to query for
 	 */
@@ -97,7 +92,7 @@ class DUP_Util {
 	}
 
 	/**
-	 * ListDirs
+	 * List all of the directories of a path
 	 * @path path to a system directory
 	 * @return array of all directories in that path
 	 */
@@ -112,16 +107,27 @@ class DUP_Util {
 		return $dirs;
 	}
 
-	/** IsDirectoryEmpty
+	/** 
 	 * Does the directory have content
 	 */
 	static public function IsDirectoryEmpty($dir) {
 		if (!is_readable($dir)) return NULL; 
 		return (count(scandir($dir)) == 2);
 	}
+	
+	/** 
+	 * Size of the directory recuresivly
+	 */
+	static public function GetDirectorySize($dir) {
+		if(!file_exists($dir)) return 0;
+		if(is_file($dir)) return filesize($dir);
+		$size = 0;
+		foreach(glob($dir."/*") as $fn)
+		  $size += self::GetDirectorySize($fn);
+		return $size;
+	}
 
 	/**
-	*  InitSnapshotDirectory
 	*  Creates the snapshot directory if it doesn't already exisit
 	*/
 	static public function InitSnapshotDirectory() {
@@ -169,6 +175,5 @@ class DUP_Util {
 		@fclose($tokenfile2);
 	}
 
-	
 }
 ?>

@@ -135,73 +135,64 @@ jQuery(document).ready(function($) {
 <form id="dup-form-logs" method="post" action="">
 <input type="hidden" id="refresh" name="refresh" value="<?php echo ($refresh) ? 1 : 0 ?>" />
 <input type="hidden" id="auto" name="auto" value="<?php echo ($auto) ? 1 : 0 ?>" />
-<div class="wrap">
-	<!-- h2 required here for general system messages  -->
-	<h2 style='display:none'></h2>
-	<?php duplicator_header(__("Logging", 'wpduplicator') ) ?>
-	<hr size="1" />
-	
-	
-	<?php if (! $logfound)  :	?>
-		<div style="padding:20px">
-			<h2><?php _e("Log file not found or unreadable", 'wpduplicator') ?>.</h2>
+<?php if (! $logfound)  :	?>
+	<div style="padding:20px">
+		<h2><?php _e("Log file not found or unreadable", 'wpduplicator') ?>.</h2>
 
-			<?php _e("No log files were found in the snapshots directory with the extension *.log", 'wpduplicator') ?>.
-			<?php _e("If no log file is present the try to create a package", 'wpduplicator') ?>.<br/><br/>
+		<?php _e("No log files were found in the snapshots directory with the extension *.log", 'wpduplicator') ?>.
+		<?php _e("If no log file is present the try to create a package", 'wpduplicator') ?>.<br/><br/>
 
-			<?php _e("Reasons for log file not showing", 'wpduplicator') ?>: <br/>
-			- <?php _e("The web server does not support returning .log file extentions", 'wpduplicator') ?>. <br/>
-			- <?php _e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'wpduplicator') ?>. <br/>
-			- <?php _e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'wpduplicator') ?>. <br/>
-		</div>
+		<?php _e("Reasons for log file not showing", 'wpduplicator') ?>: <br/>
+		- <?php _e("The web server does not support returning .log file extentions", 'wpduplicator') ?>. <br/>
+		- <?php _e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'wpduplicator') ?>. <br/>
+		- <?php _e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'wpduplicator') ?>. <br/>
+	</div>
 
-	<?php else: ?>	
-	
-		<table id="dup-log-panels">
-			<tr>
-				<td id="dup-log-panel-left">
-					<div class="name"><i class='fa fa-pencil-square-o'></i> <?php echo basename($logurl); ?></div>
-					<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php _e("Options", 'wpduplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
-					<br style="clear:both" />
-					<iframe id="dup-log-content" src="<?php echo $logurl ?>" ></iframe>							
-				</td>
-				<td id="dup-log-panel-right">
-					<h2><?php _e("Options", 'wpduplicator') ?> </h2>
-					<div class="dup-opts-items">
-						<input type="button" class="button" id="dup-refresh" value="<?php _e("Refresh", 'wpduplicator') ?>" /> &nbsp; 
-						<div style="display:inline-block; margin-top:5px">
-							<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" /> 
-							<label id="dup-auto-refresh-lbl" for="dup-auto-refresh">
-								
-								<?php _e("Auto Refresh", 'wpduplicator') ?>
-								[<div id="dup-refresh-count"></div>]
-							</label>
-						</div>
+<?php else: ?>	
+
+	<table id="dup-log-panels">
+		<tr>
+			<td id="dup-log-panel-left">
+				<div class="name"><i class='fa fa-pencil-square-o'></i> <?php echo basename($logurl); ?></div>
+				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php _e("Options", 'wpduplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
+				<br style="clear:both" />
+				<iframe id="dup-log-content" src="<?php echo $logurl ?>" ></iframe>							
+			</td>
+			<td id="dup-log-panel-right">
+				<h2><?php _e("Options", 'wpduplicator') ?> </h2>
+				<div class="dup-opts-items">
+					<input type="button" class="button" id="dup-refresh" value="<?php _e("Refresh", 'wpduplicator') ?>" /> &nbsp; 
+					<div style="display:inline-block; margin-top:5px">
+						<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" /> 
+						<label id="dup-auto-refresh-lbl" for="dup-auto-refresh">
+
+							<?php _e("Auto Refresh", 'wpduplicator') ?>
+							[<div id="dup-refresh-count"></div>]
+						</label>
 					</div>
-					
-					<b><?php _e("Last 20 Logs", 'wpduplicator') ?> </b><br/>
-					
-					<div class="dup-log-file-list">
-						<?php 
-							$count=0; 
-							$active = basename($logurl);
-							foreach ($logs as $log) { 
-								$time = date('h:i:s m/d/y', filemtime($log));
-								$name = esc_html(basename($log));
-								$url  = '?page=duplicator-logging&logname=' . $name;
-								echo ($active == $name) 
-									? "<span title='{$name}'>{$time} - {$name}</span><br/>"
-									: "<a href='javascript:void(0)'  title='{$name}' onclick='Duplicator.Tools.GetLog(\"{$url}\")'>{$time} - {$name}</a><br/>";
-								if ($count > 20) break;
-							} 
-						?>
-					</div>
-				</td>
-			</tr>
-		</table> 
-	
-	<?php endif; ?>	
+				</div>
 
-</div>
+				<b><?php _e("Last 20 Logs", 'wpduplicator') ?> </b><br/>
+
+				<div class="dup-log-file-list">
+					<?php 
+						$count=0; 
+						$active = basename($logurl);
+						foreach ($logs as $log) { 
+							$time = date('h:i:s m/d/y', filemtime($log));
+							$name = esc_html(basename($log));
+							$url  = '?page=duplicator-logging&logname=' . $name;
+							echo ($active == $name) 
+								? "<span title='{$name}'>{$time} - {$name}</span><br/>"
+								: "<a href='javascript:void(0)'  title='{$name}' onclick='Duplicator.Tools.GetLog(\"{$url}\")'>{$time} - {$name}</a><br/>";
+							if ($count > 20) break;
+						} 
+					?>
+				</div>
+			</td>
+		</tr>
+	</table> 
+
+<?php endif; ?>	
 </form>
 	

@@ -3244,7 +3244,7 @@ VIEW: STEP 2 - AJAX RESULT  -->
 	Duplicator.removeInstallerFiles = function(package_name) {
 		var msg = "Delete all installer files now? \n\nThis will remove the page you are now viewing.\nThe page will stay active until you navigate away.";
 		if (confirm(msg)) {
-			var nurl = '<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/admin.php?page=duplicator-cleanup&remove=1&package=' + package_name;
+			var nurl = '<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/admin.php?page=duplicator-tools&tab=cleanup&action=installer&package=' + package_name;
 			window.open(nurl, "_blank");
 		}
 	};

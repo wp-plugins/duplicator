@@ -1,7 +1,7 @@
 <?php
 	$result = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator_packages` ORDER BY id DESC", ARRAY_A);
 	$totalElements = count($result);
-		$package_debug			= DUP_Settings::Get('package_debug');
+	$package_debug = DUP_Settings::Get('package_debug');
 ?>
 
 <style>
@@ -69,7 +69,7 @@
 			<!-- Logs -->
 			<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/hdivider.png" class="toolbar-divider" /></td>
 			<td align="center">
-				<button id="btn-logs-dialog" class="button" onclick="Duplicator.OpenLogWindow(); return false;" title="<?php _e("Package Logs", 'wpduplicator') ?>..." ><i class="fa fa-pencil-square-o"></i> </button>
+				<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'wpduplicator') ?>..."><i class="fa fa-pencil-square-o"></i> </button>
 			</td>
 		</tr>
 	</table>	

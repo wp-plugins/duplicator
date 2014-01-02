@@ -137,8 +137,8 @@ jQuery(document).ready(function($) {
 			dataType: "json",
 			timeout: 10000000,
 			data: data,
-			beforeSend: function() { },
-			complete:   function() { },
+			beforeSend: function() {},
+			complete:   function() {},
 			success:    function(data) { 
 				$('#dup-progress-bar-area').hide(); 
 				$('#dup-progress-area, #dup-msg-success').show(300);
@@ -147,7 +147,6 @@ jQuery(document).ready(function($) {
 				var InstallURL = Pack.StoreURL + Pack.Installer.File + "?get=1&file=" + Pack.Installer.File;
 				var ArchiveURL = Pack.StoreURL + Pack.Archive.File   + "?get=1";
 				
-				//$('#dup-btn-installer-size').append('&nbsp; (' + data.ExeSize + ')')
 				$('#dup-btn-archive-size').append('&nbsp; (' + data.ZipSize + ')')
 				$('#data-name-hash').text(Pack.NameHash || 'error read');
 				$('#data-time').text(data.Runtime || 'unable to read time');
@@ -160,6 +159,7 @@ jQuery(document).ready(function($) {
 					
 			},
 			error: function(data) { 
+				Duplicator.Tasks.Reset();
 				$('#dup-progress-bar-area').hide(); 
 				$('#dup-progress-area, #dup-msg-error').show(200);
 				var status = data.status + ' -' + data.statusText;
@@ -169,8 +169,9 @@ jQuery(document).ready(function($) {
 				console.log(data);
 			}
 		});
+		return false;
 	}
-		
+
 	//Page Init:
 	Duplicator.UI.AnimateProgressBar('dup-progress-bar');
 	Duplicator.Pack.Create();

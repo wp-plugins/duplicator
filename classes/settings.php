@@ -1,18 +1,20 @@
 <?php
 if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 
+
 class DUP_Settings
 {
+	
+	const OPT_SETTINGS = 'duplicator_settings';
+
 	public static $Data;
 	public static $Version = DUPLICATOR_VERSION;
-	public static $OptionName = 'duplicator_settings';
 
 	/**
-	*  DUPLICATOR-SETTINGS
 	*  Class used to manage all the settings for the plugin
 	*/
 	static function init() {
-		self::$Data = get_option(self::$OptionName);
+		self::$Data = get_option(self::OPT_SETTINGS);
 
 		//when the plugin updated, this will be true
 		if (empty(self::$Data) || self::$Version > self::$Data['version']){
@@ -21,7 +23,7 @@ class DUP_Settings
 	}
 
 	/**
-	*  GET: Find the setting value
+	*  Find the setting value
 	*  @param string $key	The name of the key to find
 	*  @return The value stored in the key returns null if key does not exist
 	*/
@@ -30,7 +32,7 @@ class DUP_Settings
 	}
 
 	/**
-	*  SET: Set the settings value in memory only
+	*  Set the settings value in memory only
 	*  @param string $key		The name of the key to find
 	*  @param string $value		The value to set
 	*  remarks:	 The Save() method must be called to write the Settings object to the DB
@@ -44,23 +46,22 @@ class DUP_Settings
 	}
 
 	/**
-	*  SAVE: Save all the setting values to the database
+	*  Saves all the setting values to the database
 	*  @return True if option value has changed, false if not or if update failed.
 	*/
 	public static function Save() {
-		return update_option(self::$OptionName, self::$Data);
+		return update_option(self::OPT_SETTINGS, self::$Data);
 	}
 
 	/**
-	*  DELETE: Delete all the setting values to the database
+	*  Deletes all the setting values to the database
 	*  @return True if option value has changed, false if not or if update failed.
 	*/
 	public static function Delete() {
-		return delete_option(self::$OptionName);
+		return delete_option(self::OPT_SETTINGS);
 	}
 
 	/**
-	*  SETDEFAULTS
 	*  Sets the defaults if they have not been set
 	*  @return True if option value has changed, false if not or if update failed.
 	*/
@@ -85,7 +86,6 @@ class DUP_Settings
 
 	}
 	
-	
 	/**
 	*  LegacyClean: Cleans up legacy data
 	*/
@@ -109,9 +109,7 @@ class DUP_Settings
 	*/
 	public static function DeleteWPOption($optionName) {
 		
-		$safeOpts = array('duplicator_ui_view_state', 'duplicator_package_active');
-
-		if ( in_array($optionName, $safeOpts) ) {
+		if ( in_array($optionName, $GLOBALS['DUPLICATOR_OPTS_DELETE']) ) {
 			return delete_option($optionName); 
 		}
 		return false;
