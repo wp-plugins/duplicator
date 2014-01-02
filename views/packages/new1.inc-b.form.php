@@ -69,7 +69,7 @@ META-BOX2: PACKAGE OPTIONS -->
 					
 						<div class="dup-tabs-opts-help">
 							<?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'wpduplicator'); ?> <br/>
-							<?php _e("Use the full path for directory path filters and semicolons to separate all items.", 'wpduplicator'); ?>
+							<?php _e("Use the full path for directories and semicolons to separate all items.", 'wpduplicator'); ?>
 						</div>
 						
 					</div>
