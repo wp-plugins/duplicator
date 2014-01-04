@@ -21,6 +21,7 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_SSDIR_NAME",     'wp-snapshots');
     define('DUPLICATOR_WPROOTPATH',     str_replace("\\", "/", ABSPATH));
     define("DUPLICATOR_SSDIR_PATH",     str_replace("\\", "/", DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME));
+	define("DUPLICATOR_SSDIR_PATH_TMP", DUPLICATOR_SSDIR_PATH . '/tmp');
 	define("DUPLICATOR_SSDIR_URL",      DUPLICATOR_SITE_URL . "/" . DUPLICATOR_SSDIR_NAME);
     define("DUPLICATOR_INSTALL_PHP",    'installer.php');
     define("DUPLICATOR_INSTALL_SQL",    'installer-data.sql');

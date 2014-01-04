@@ -516,6 +516,9 @@ $JSON['step2']['warn_all'] = empty($JSON['step2']['warnlist']) ? 0 : count($JSON
 mysqli_close($dbh);
 @unlink('database.sql');
 
+//CONFIG Setup
+DUPX_Config::Setup();
+
 $ajax2_end = DupUtil::get_microtime();
 $ajax2_sum = DupUtil::elapsed_time($ajax2_end, $ajax2_start);
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");

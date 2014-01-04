@@ -149,7 +149,7 @@ WIZARD STEP TABS -->
 		<hr size="1" />
 		
 		<!-- ================================================================
-		META-BOX: FILES
+		FILES
 		================================================================ -->
 		<div class="dup-panel">
 		<div class="dup-panel-title">
@@ -189,12 +189,12 @@ WIZARD STEP TABS -->
 			FILE NAME LENGTHS: CHK-FILE-101 -->
 			<div>
 				<div class='dup-scan-title'>
-					<a><?php _e('Name Lengths', 'wpduplicator');?></a> <div id="data-arc-status-names"></div>
+					<a><?php _e('Invalid Names', 'wpduplicator');?></a> <div id="data-arc-status-names"></div>
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
-						$msg  = 'Files or folders with names over 200 characters in length will cause issues when the archive is being exctracted.  ';
-						$msg .= 'It is recommended to remove these files before building the archive.';
+						$msg  = 'Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 200 characters and illegal characters that may not work on all operating systems such as * ? > < : / \ |  .  ';
+						$msg .= 'It is recommended to remove or filter these files before building the archive or else you might have issues at install time.';
 						_e($msg, 'wpduplicator');
 					?><br/><br/>
 					<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show File Locations', 'wpduplicator');?>]</a>
@@ -262,6 +262,7 @@ WIZARD STEP TABS -->
 						$msg .= '  The thresholds that trigger warnings are %1$s and %2$s records.';
 						$msg .= '  Large databases take time to process and can cause issues with server timeout and memory settings.';
 						$msg .= '  Running a %3$s on your database can also help improve the overall size and performance.';
+						$msg .= '  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu.';
 						printf(__($msg, 'wpduplicator'), 
 								DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), 
 								number_format(DUPLICATOR_SCAN_DBROWS),
@@ -388,9 +389,9 @@ jQuery(document).ready(function($) {
 	
 		//Long Names
 		html = '<?php _e("No name length issues.", 'wpduplicator') ?>';
-		if (data.ARC.LongFiles != undefined && data.ARC.LongFiles.length > 0) {
+		if (data.ARC.InvalidFiles != undefined && data.ARC.InvalidFiles.length > 0) {
 			html = '';
-			$.each(data.ARC.LongFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>' + val  + '<br/>';});	
+			$.each(data.ARC.InvalidFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>' + val  + '<br/>';});	
 		}
 		$('#data-arc-names-data').html(html);
 		

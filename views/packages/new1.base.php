@@ -3,6 +3,7 @@
 	
 	global $wpdb;	
 
+	DUP_Util::InitSnapshotDirectory();
 	$Package = new DUP_Package();
 	$Package = $Package->GetActive();
 

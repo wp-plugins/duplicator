@@ -10,6 +10,7 @@ input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
 fieldset {border:1px solid gray; padding:0px 5px 5px 5px; }
 label {font-size:13px !important}
 .no-select {user-select:none; -o-user-select:none;  -moz-user-select:none; -khtml-user-select:none; -webkit-user-select:none;}
+hr {border: 0; border-top: 1px solid #ddd; border-bottom: 1px solid #fafafa; margin: 10px 0px 2px 0px;}
 
 /* HEADER BAR */
 div.dup-header {padding:0px 0px 0px 0px; margin:0px 0px 7px 0px;}

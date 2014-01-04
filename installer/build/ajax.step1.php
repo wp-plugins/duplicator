@@ -382,16 +382,14 @@ foreach ($GLOBALS['FW_OPTS_DELETE'] as $value) {
 	mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE `option_name` = '{$value}'");	
 }
 
-
 @mysqli_close($dbh);
 
 $profile_end = DupUtil::get_microtime();
 DUPX_Log::Info("\nSECTION RUNTIME: " . DupUtil::elapsed_time($profile_end, $profile_start));
 
 //CONFIG FILE RESETS
-DUPX_Log::Info("\nWEB SERVER CONFIG FILES");
-DUPX_Config::ResetHTACCESS();
-DUPX_Config::ResetWebConfig();
+DUPX_Config::Reset();
+
 
 //FINAL RESULTS
 $ajax1_end = DupUtil::get_microtime();

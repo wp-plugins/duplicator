@@ -11,6 +11,7 @@
 		DUP_Settings::Set('uninstall_tables',		isset($_POST['uninstall_tables']) ? "1" : "0");
 		DUP_Settings::Set('package_skip_scanner',	isset($_POST['package_skip_scanner']) ? "1" : "0");
 		DUP_Settings::Set('package_debug',			isset($_POST['package_debug']) ? "1" : "0");
+		DUP_Settings::Set('package_mysqldump',		isset($_POST['package_mysqldump']) ? "1" : "0");
 		
 		$action_updated  = DUP_Settings::Save();
 	} 
@@ -20,6 +21,7 @@
 	$uninstall_tables		= DUP_Settings::Get('uninstall_tables');
 	$package_skip_scanner	= DUP_Settings::Get('package_skip_scanner');
 	$package_debug			= DUP_Settings::Get('package_debug');
+	$package_mysqldump		= DUP_Settings::Get('package_mysqldump');
 
 ?>
 
@@ -66,12 +68,24 @@
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><label><?php _e("Package Debug Enabled", 'wpduplicator'); ?></label></th>
+			<th scope="row"><label><?php _e("SQL Build Mode", 'wpduplicator'); ?></label></th>
+			<td>
+				<input type="checkbox" name="package_mysqldump" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
+				<label for="package_mysqldump"><?php _e("Attempt mysqldump", 'wpduplicator'); ?></label> &nbsp;
+				<i style="font-size:12px">(<?php _e("recommended for large databases", 'wpduplicator'); ?>)</i>
+				<p class="description">
+					<?php _e("If the server supports mysqldump it will be used otherwise PHP is used.", 'wpduplicator'); ?>
+				</p>
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row"><label><?php _e("Package Debug", 'wpduplicator'); ?></label></th>
 			<td>
 				<input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
 				<label for="package_debug"><?php _e("Show Package Debug Status", 'wpduplicator'); ?></label>
 			</td>
-		</tr>		
+		</tr>	
+		
 	</table>
 
 	<p class="submit" style="margin: 20px 0px 0xp 5px;">

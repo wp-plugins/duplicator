@@ -80,6 +80,9 @@ class DUP_Settings
 
 		//Flag used to show debug info
 		$default['package_debug']   = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
+		
+		//Flag used to show debug info
+		$default['package_mysqldump']   = isset(self::$Data['package_mysqldump']) ? self::$Data['package_mysqldump'] : false;
 
 		self::$Data = $default;
 		return self::Save();

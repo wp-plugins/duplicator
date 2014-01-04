@@ -17,7 +17,7 @@ class DUP_Archive {
 	public $LinkCount	 = 0;		
 	public $Size		 = 0;
 	public $BigFileList  = array();
-	public $LongFileList = array();
+	public $InvalidFileList = array();
 	
 	//PROTECTED
 	protected $Package;
@@ -75,6 +75,7 @@ class DUP_Archive {
 	 *  Get the directory size recursively, but don't calc the snapshot directory, exclusion diretories
 	 *  @param string $directory		The directory to calculate
 	 *  @returns array					An array of values for the directory stats
+	 *  @link http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx Windows filename restrictions
 	 */	
 	public function GetStats() {
 		$this->filerDirsArray = $this->GetFilterDirAsArray();
@@ -116,8 +117,8 @@ class DUP_Archive {
 					if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filerExtsArray)) {
 						$this->Size += $file->getSize();
 						$this->FileCount++;
-						if (strlen($nextpath) > 200) 
-							array_push($this->LongFileList, $nextpath);
+						if (strlen($nextpath) > 200 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file)) 
+							array_push($this->InvalidFileList, $nextpath);
 						if ($file->getSize() > DUPLICATOR_SCAN_BIGFILE) 
 							array_push($this->BigFileList, $nextpath);
 					}

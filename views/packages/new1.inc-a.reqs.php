@@ -29,10 +29,10 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 					printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_WPROOTPATH);
 					$test = is_writeable(DUPLICATOR_SSDIR_PATH) ? 'Pass' : 'Fail';
 					printf("<b>%s</b> [%s] <br/>", $test, DUPLICATOR_SSDIR_PATH);
-					$test = is_writeable(DUPLICATOR_PLUGIN_PATH . 'installer/') ? 'Pass' : 'Fail';
-					printf("<b>%s</b> [%s] <br/><br/>", $test, DUPLICATOR_PLUGIN_PATH . 'installer/');
+					$test = is_writeable(DUPLICATOR_SSDIR_PATH_TMP) ? 'Pass' : 'Fail';
+					printf("<b>%s</b> [%s] <br/><br/>", $test, DUPLICATOR_SSDIR_PATH_TMP);
+					
 					printf("<b>%s:</b> [%s] <br/><br/>", __('PHP Script Owner', 'wpduplicator'), get_current_user());
-
 					_e("The above paths should have permissions of 755 for directories and 644 for files. You can temporarily try 777 if you continue to have issues.  Also be sure to check the owner/group settings.  For more details contact your host or server administrator.", 'wpduplicator');
 				?>
 				<small><?php _e('Status Code', 'wpduplicator');?>: SYS-100</small>

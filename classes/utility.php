@@ -126,14 +126,38 @@ class DUP_Util {
 		  $size += self::GetDirectorySize($fn);
 		return $size;
 	}
+	
+	
+	public static function IsShellExecAvailable() {
+
+		if (array_intersect(array('shell_exec', 'escapeshellarg', 'escapeshellcmd'), array_map('trim', explode(',', @ini_get('disable_functions')))))
+			return false;
+
+		// Can we issue a simple echo command?
+		if (!@shell_exec('echo duplicator'))
+			return false;
+
+		return true;
+	}
+	
+	public static function IsOSWindows() {
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+
 
 	/**
 	*  Creates the snapshot directory if it doesn't already exisit
 	*/
 	static public function InitSnapshotDirectory() {
-		$path_wproot = DUP_Util::SafePath(DUPLICATOR_WPROOTPATH);
-		$path_ssdir = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH);
-		$path_plugin = DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH);
+		$path_wproot	= DUP_Util::SafePath(DUPLICATOR_WPROOTPATH);
+		$path_ssdir		= DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH);
+		$path_plugin	= DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH);
 
 		//--------------------------------
 		//CHMOD DIRECTORY ACCESS
@@ -143,6 +167,11 @@ class DUP_Util {
 		//snapshot directory
 		@mkdir($path_ssdir, 0755);
 		@chmod($path_ssdir, 0755);
+		
+		//snapshot tmp directory
+		$path_ssdir_tmp = $path_ssdir . '/tmp';
+		@mkdir($path_ssdir_tmp, 0755);
+		@chmod($path_ssdir_tmp, 0755);
 
 		//plugins dir/files
 		@chmod($path_plugin . 'files', 0755);

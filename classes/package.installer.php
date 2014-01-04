@@ -31,15 +31,18 @@ class DUP_Installer {
 		DUP_Log::Info("********************************************************************************");
 		DUP_Log::Info("INSTALLER FILE: Build Start");
 
-		$template_path = DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH . 'installer/installer.template.php');
-		$main_path     = DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH . 'installer/build/main.installer.php');
+		$template_uniqid = uniqid('') . '_' . time();
+		$template_path	= DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP  . "/installer.template_{$template_uniqid}.php");
+		$main_path		= DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH . 'installer/build/main.installer.php');
 		@chmod($template_path, 0777);
 		@chmod($main_path, 0777);
 
+		@touch($template_path);
 		$main_data = file_get_contents("{$main_path}");
 		$template_result = file_put_contents($template_path, $main_data);
 		if ($main_data === false || $template_result == false) {
-			$err_info ="These files may have permission issues. Please validate that PHP has read/write access.\nMain Installer=<{$main_path}> \nTemplate Installer=<$template_path>";
+			$err_info ="These files may have permission issues. Please validate that PHP has read/write access.\n";
+			$err_info .= "Main Installer: '{$main_path}' \nTemplate Installer: '$template_path'";
 			DUP_Log::Error("Install builder failed to generate files.", "{$err_info}");
 		}
 
@@ -59,7 +62,7 @@ class DUP_Installer {
 			"view.help.php"			    => "@@VIEW.HELP.PHP@@",);
 
 		foreach ($embeded_files as $name => $token) {
-			$file_path = DUPLICATOR_PLUGIN_PATH . "installer/build/${name}";
+			$file_path = DUPLICATOR_PLUGIN_PATH . "installer/build/{$name}";
 			@chmod($file_path, 0777);
 
 			$search_data = @file_get_contents($template_path);
@@ -75,7 +78,7 @@ class DUP_Installer {
 		@chmod($main_path, 0644);
 
 		DUP_Log::Info("INSTALLER FILE: Build Finished");
-		$this->createFromTemplate();
+		$this->createFromTemplate($template_path);
 		$storePath = "{$this->Package->StorePath}/{$this->File}";
 		$this->Size = @filesize($storePath);
 	}
@@ -84,22 +87,17 @@ class DUP_Installer {
 	*  createFromTemplate
 	*  Generates the final installer file from the template file
 	*/
-	private function createFromTemplate() {
+	private function createFromTemplate($template) {
 		
 		global $wpdb;
 		
 		DUP_Log::Info("INSTALLER FILE: Preping for use");
-
-		$template  = DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH . 'installer/installer.template.php');
 		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH) . "/{$this->Package->NameHash}_installer.php";
 		
 		//$tablePrefix = (is_multisite()) ? $wpdb->get_blog_prefix() : $wpdb->prefix;
 		
 		//Option values to delete at install time
-		$deleteOpts = array();
-		$deleteINClause[0] = 'duplicator_package_active';
-		$deleteINClause[1] = 'duplicator_settings';
-		$deleteINClause[2] = 'duplicator_ui_view_state';
+		$deleteOpts = $GLOBALS['DUPLICATOR_OPTS_DELETE'];
 
 		$replace_items = Array(
 			"fwrite_url_old"			=> get_option('siteurl'),
@@ -116,7 +114,7 @@ class DUP_Installer {
 			"fwrite_cache_wp"			=> $this->Package->Installer->OptsCacheWP,
 			"fwrite_cache_path"			=> $this->Package->Installer->OptsCachePath,
 			"fwrite_wp_tableprefix"		=> $wpdb->prefix,
-			"fwrite_opts_delete"		=> json_encode($deleteINClause),
+			"fwrite_opts_delete"		=> json_encode($deleteOpts),
 			"fwrite_blogname"			=> esc_html(get_option('blogname')),
 			"fwrite_wproot"				=> DUPLICATOR_WPROOTPATH,
 			"fwrite_duplicator_version" => DUPLICATOR_VERSION);
@@ -138,7 +136,7 @@ class DUP_Installer {
 		} else {
 			DUP_Log::Error("Installer Template missing or unreadable.", "Template [{$template}]");
 		}
-
+		@unlink($template);
 		DUP_Log::Info("INSTALLER FILE: Complete [{$installer}]");
 	}
 	

@@ -251,29 +251,6 @@ class DUP_Package {
 		return $result;
 	}	
 	
-	public function IsBuilding() {
-		
-
-		
-		$isBuilding = get_option($optsTableKeyBuilding, false);
-		
-		/*
-		 $time = current_time('mysql', get_option('gmt_offset', 1));
-		 if ($isBuilding != 0) {
-			$time1 = strtotime("2011-10-10 10:00:00");
-			$time2 = strtotime("2011-10-10 10:45:00");
-			$interval  = abs($datetime2 - $datetime1);
-			$minutes   = round($interval / 60);
-			
-			if ($minutes > 3)
-				upate_option($buildKey, 0);
-			
-		}*/
-		
-		return $isBuilding;
-		
-	}	
-	
 	
 	/** 
 	* Gets the required system checks
@@ -287,7 +264,7 @@ class DUP_Package {
 		//SYS-100: FILE PERMS
 		$test = is_writeable(DUPLICATOR_WPROOTPATH)
 				&& is_writeable(DUPLICATOR_SSDIR_PATH)
-				&& is_writeable(DUPLICATOR_PLUGIN_PATH . 'installer/');
+				&& is_writeable(DUPLICATOR_SSDIR_PATH_TMP);
 		$dup_tests['SYS-100'] = ($test) ? 'Pass' : 'Fail';
 
 		//SYS-101 RESERVED FILE

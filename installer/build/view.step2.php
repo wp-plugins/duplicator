@@ -92,6 +92,13 @@
 		}
 	};
 	
+	/** **********************************************
+	* METHOD: Go back on AJAX result view */
+	Duplicator.hideErrorResult2 = function() {
+		$('#dup-step2-result-form').hide();			
+		$('#dup-step2-input-form').show(200);
+	};
+	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
 		Duplicator.getNewURL('url_new');
@@ -272,7 +279,7 @@ VIEW: STEP 2 - AJAX RESULT  -->
 		<div style="padding: 0px 10px 10px 10px;">
 			<div id="ajaxerr-data">An unknown issue has occurred with the data replacement setup process.  Please see the installer-log.txt file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
-				<input type="button" onclick='Duplicator.hideErrorResult()' value="&laquo; Try Again" /><br/><br/>
+				<input type="button" onclick='Duplicator.hideErrorResult2()' value="&laquo; Try Again" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
 			</div>
 		</div>
