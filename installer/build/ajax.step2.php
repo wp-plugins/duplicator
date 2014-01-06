@@ -4,343 +4,6 @@ cause errors in the JSON data Here we hide the status so warning level is reset 
 $ajax2_error_level = error_reporting();
 error_reporting(E_ERROR);
 
-/** * *****************************************************
- * CLASS::DUPDBTEXTSWAP
- * Walks every table in db that then walks every row and column replacing searches with replaces
- * large tables are split into 50k row blocks to save on memory. */
-class DupDBTextSwap {
-
-	/**
-	 * LOG ERRORS
-	 */
-	static public function log_errors($report) {
-		if (!empty($report['errsql'])) {
-			DUPX_Log::Info("====================================");
-			DUPX_Log::Info("DATA-REPLACE ERRORS (MySQL)");
-			foreach ($report['errsql'] as $error) {
-				DUPX_Log::Info($error);
-			}
-			DUPX_Log::Info("");
-		}
-		if (!empty($report['errser'])) {
-			DUPX_Log::Info("====================================");
-			DUPX_Log::Info("DATA-REPLACE ERRORS (Serialization):");
-			foreach ($report['errser'] as $error) {
-				DUPX_Log::Info($error);
-			}
-			DUPX_Log::Info("");
-		}
-		if (!empty($report['errkey'])) {
-			DUPX_Log::Info("====================================");
-			DUPX_Log::Info("DATA-REPLACE ERRORS (Key):");
-			DUPX_Log::Info('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
-			foreach ($report['errkey'] as $error) {
-				DUPX_Log::Info($error);
-			}
-			//DUPX_Log::Info("");
-		}
-	}
-
-	/**
-	 * LOG STATS
-	 */
-	static public function log_stats($report) {
-		if (!empty($report) && is_array($report)) {
-			$stats  = '--------------------------------------';
-			$stats .= sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
-			$stats .= sprintf("SEARCH2:\t'%s' \nREPLACE2:\t'%s' \n", $_POST['path_old'], $_POST['path_new']);
-			$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
-			$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
-			$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
-			DUPX_Log::Info($stats);
-		}
-	}
-	
-	/**
-	 * Returns only the text type columns of a table ignoring all numeric types
-	 */
-	static public function getTextColumns($conn, $table) {
-	
-		$type_where  = "type NOT LIKE 'tinyint%' AND ";
-		$type_where .= "type NOT LIKE 'smallint%' AND ";
-		$type_where .= "type NOT LIKE 'mediumint%' AND ";
-		$type_where .= "type NOT LIKE 'int%' AND ";
-		$type_where .= "type NOT LIKE 'bigint%' AND ";
-		$type_where .= "type NOT LIKE 'float%' AND ";
-		$type_where .= "type NOT LIKE 'double%' AND ";
-		$type_where .= "type NOT LIKE 'decimal%' AND ";
-		$type_where .= "type NOT LIKE 'numeric%' AND ";
-		$type_where .= "type NOT LIKE 'date%' AND ";
-		$type_where .= "type NOT LIKE 'time%' AND ";
-		$type_where .= "type NOT LIKE 'year%' ";
-
-		$result = mysqli_query($conn, "SHOW COLUMNS FROM `{$table}` WHERE {$type_where}");
-		if (!$result) { 
-			return null;
-		} 
-		$fields = array(); 
-		if (mysqli_num_rows($result) > 0) { 
-			while ($row = mysqli_fetch_assoc($result)) { 
-				$fields[] = $row['Field']; 
-			} 
-		} 
-	
-		return (count($fields) > 0) ? $fields : null;
-	}
-
-	/**
-	 * LOAD
-	 * Begins the processing for replace logic
-	 * @param mysql  $conn 		 The db connection object
-	 * @param array  $list       Key value pair of 'search' and 'replace' arrays
-	 * @param array  $tables     The tables we want to look at.
-	 * @return array Collection of information gathered during the run.
-	 */
-	static public function load($conn, $list = array(), $tables = array(), $cols = array()) {
-		$exclude_cols = $cols;
-
-		$report = array('scan_tables' => 0, 'scan_rows' => 0, 'scan_cells' => 0,
-			'updt_tables' => 0, 'updt_rows' => 0, 'updt_cells' => 0,
-			'errsql' => array(), 'errser' => array(), 'errkey' => array(),
-			'errsql_sum' => 0, 'errser_sum' => 0, 'errkey_sum' => 0,
-			'time' => '', 'err_all' => 0);
-
-		$profile_start = DupUtil::get_microtime();
-		if (is_array($tables) && !empty($tables)) {
-			
-			DUPX_Log::Info("SCAN RESULTS");
-			DUPX_Log::Info("KEY: [~] scanning-only-text-columns] [*] scanning every column");
-
-			foreach ($tables as $table) {
-				$report['scan_tables']++;
-				$columns = array();
-
-				// Get a list of columns in this table
-				$fields = mysqli_query($conn, 'DESCRIBE ' . $table);
-				while ($column = mysqli_fetch_array($fields)) {
-					$columns[$column['Field']] = $column['Key'] == 'PRI' ? true : false;
-				}
-
-				// Count the number of rows we have in the table if large we'll split into blocks
-				$row_count = mysqli_query($conn, 'SELECT COUNT(*) FROM ' . $table);
-				$rows_result = mysqli_fetch_array($row_count);
-				@mysqli_free_result($row_count);
-				$row_count = $rows_result[0];
-				if ($row_count == 0)
-					continue;
-
-				$page_size = 25000;
-				$offset = ($page_size + 1);
-				$pages = ceil($row_count / $page_size);
-				
-				// Grab the columns of the table.  Only grab text based columns because 
-				// they are the only data types that should allow any type of search/replace logic
-				$colList = self::getTextColumns($conn, $table);
-				$colList = ($colList != null && is_array($colList)) ? implode(',', $colList) : '';
-				$filterMsg = (empty($colList)) ? '*' : '~';
-				DUPX_Log::Info("{$table}: ({$row_count}){$filterMsg}");
-				
-				//Paged Records
-				for ($page = 0; $page < $pages; $page++) {
-
-					$current_row = 0;
-					$start = $page * $page_size;
-					$end   = $start + $page_size;
-					$data  = (! empty($colList))
-						? mysqli_query($conn, sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset))
-						: mysqli_query($conn, sprintf('SELECT * FROM %s LIMIT %d, %d', $table, $start, $offset));
-
-					if (!$data)
-						$report['errsql'][] = mysqli_error($conn);
-					
-					DUPX_Log::Info("\tProcessing => {$start} of {$end}", 2);
-
-					//Loops every row
-					while ($row = mysqli_fetch_array($data)) {
-						$report['scan_rows']++;
-						$current_row++;
-						$upd_col = array();
-						$upd_sql = array();
-						$where_sql = array();
-						$upd = false;
-						$serial_err = 0;
-
-						//Loops every cell
-						foreach ($columns as $column => $primary_key) {
-							if (in_array($column, $exclude_cols)) {
-								continue;
-							}
-
-							$report['scan_cells']++;
-							$edited_data = $data_to_fix = $row[$column];
-							$base64coverted = false;
-
-							//Only replacing string values
-							if (!empty($row[$column]) && !is_numeric($row[$column])) {
-
-								//Base 64 detection
-								if (base64_decode($row[$column], true)) {
-									$decoded = base64_decode($row[$column], true);
-									if (self::is_serialized($decoded)) {
-										$edited_data = $decoded;
-										$base64coverted = true;
-									}
-								}
-
-								//Replace logic - level 1: simple check on basic serilized strings
-								foreach ($list as $item) {
-									$edited_data = self::recursive_unserialize_replace($item['search'], $item['replace'], $edited_data);
-								}
-
-								//Replace logic - level 2: repair larger/complex serilized strings
-								$serial_check = self::fix_serial_string($edited_data);
-								if ($serial_check['fixed']) {
-									$edited_data = $serial_check['data'];
-								} elseif ($serial_check['tried'] && !$serial_check['fixed']) {
-									$serial_err++;
-								}
-							}
-
-							//Change was made
-							if ($edited_data != $data_to_fix || $serial_err > 0) {
-								$report['updt_cells']++;
-								//Base 64 encode
-								if ($base64coverted) {
-									$edited_data = base64_encode($edited_data);
-								}
-								$upd_col[] = $column;
-								$upd_sql[] = $column . ' = "' . mysqli_real_escape_string($conn, $edited_data) . '"';
-								$upd = true;
-							}
-
-							if ($primary_key) {
-								$where_sql[] = $column . ' = "' . mysqli_real_escape_string($conn, $data_to_fix) . '"';
-							}
-						}
-
-						//PERFORM ROW UPDATE
-						if ($upd && !empty($where_sql)) {
-							$sql = "UPDATE `{$table}` SET " . implode(', ', $upd_sql) . ' WHERE ' . implode(' AND ', array_filter($where_sql));
-							$result = mysqli_query($conn, $sql) or $report['errsql'][] = mysqli_error($conn);
-							if ($result) {
-								if ($serial_err > 0) {
-									$report['errser'][] = "SELECT " . implode(', ', $upd_col) . " FROM `{$table}`  WHERE " . implode(' AND ', array_filter($where_sql)) . ';';
-								}
-								$report['updt_rows']++;
-							}
-						} elseif ($upd) {
-							$report['errkey'][] = sprintf("Row [%s] on Table [%s] requires a manual update.", $current_row, $table);
-						}
-					}
-					DupUtil::fcgi_flush();
-					@mysqli_free_result($data);
-				}
-
-				if ($upd) {
-					$report['updt_tables']++;
-				}
-			}
-		}
-		$profile_end = DupUtil::get_microtime();
-		$report['time'] = DupUtil::elapsed_time($profile_end, $profile_start);
-		$report['errsql_sum'] = empty($report['errsql']) ? 0 : count($report['errsql']);
-		$report['errser_sum'] = empty($report['errser']) ? 0 : count($report['errser']);
-		$report['errkey_sum'] = empty($report['errkey']) ? 0 : count($report['errkey']);
-		$report['err_all'] = $report['errsql_sum'] + $report['errser_sum'] + $report['errkey_sum'];
-		return $report;
-	}
-
-	/**
-	 * Take a serialised array and unserialise it replacing elements and
-	 * unserialising any subordinate arrays and performing the replace.
-	 * @param string $from       String we're looking to replace.
-	 * @param string $to         What we want it to be replaced with
-	 * @param array  $data       Used to pass any subordinate arrays back to in.
-	 * @param bool   $serialised Does the array passed via $data need serialising.
-	 * @return array	The original array with all elements replaced as needed. 
-	 */
-	static private function recursive_unserialize_replace($from = '', $to = '', $data = '', $serialised = false) {
-
-		// some unseriliased data cannot be re-serialised eg. SimpleXMLElements
-		try {
-
-			if (is_string($data) && ($unserialized = @unserialize($data)) !== false) {
-				$data = self::recursive_unserialize_replace($from, $to, $unserialized, true);
-			} elseif (is_array($data)) {
-				$_tmp = array();
-				foreach ($data as $key => $value) {
-					$_tmp[$key] = self::recursive_unserialize_replace($from, $to, $value, false);
-				}
-				$data = $_tmp;
-				unset($_tmp);
-			} elseif (is_object($data)) {
-				$dataClass = get_class($data);
-				$_tmp = new $dataClass();
-				foreach ($data as $key => $value) {
-					$_tmp->$key = self::recursive_unserialize_replace($from, $to, $value, false);
-				}
-				$data = $_tmp;
-				unset($_tmp);
-			} else {
-				if (is_string($data)) {
-					$data = str_replace($from, $to, $data);
-				}
-			}
-
-			if ($serialised)
-				return serialize($data);
-		} catch (Exception $error) {
-			DUPX_Log::Info("\nRECURSIVE UNSERIALIZE ERROR: With string\n" . $error, 2);
-		}
-		return $data;
-	}
-
-	/**
-	 *  IS_SERIALIZED
-	 *  Test if a string in properly serialized */
-	static public function is_serialized($data) {
-		$test = @unserialize(($data));
-		return ($test !== false || $test === 'b:0;') ? true : false;
-	}
-
-	/**
-	 *  FIX_STRING
-	 *  Fixes the string length of a string object that has been serialized but the length is broken
-	 *  @param string $data	The string ojbect to recalculate the size on.
-	 *  @return 
-	 */
-	static private function fix_serial_string($data) {
-
-		$result = array('data' => $data, 'fixed' => false, 'tried' => false);
-
-		if (preg_match("/s:[0-9]+:/", $data)) {
-			if (!self::is_serialized($data)) {
-				$regex = '!(?<=^|;)s:(\d+)(?=:"(.*?)";(?:}|a:|s:|b:|d:|i:|o:|N;))!s';
-				$serial_string = preg_match('/^s:[0-9]+:"(.*$)/s', trim($data), $matches);
-				//Nested serial string
-				if ($serial_string) {
-					$inner = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', rtrim($matches[1], '";'));
-					$serialized_fixed = 's:' . strlen($inner) . ':"' . $inner . '";';
-				} else {
-					$serialized_fixed = preg_replace_callback($regex, 'DupDBTextSwap::fix_string_callback', $data);
-				}
-
-				if (self::is_serialized($serialized_fixed)) {
-					$result['data'] = $serialized_fixed;
-					$result['fixed'] = true;
-				}
-				$result['tried'] = true;
-			}
-		}
-		return $result;
-	}
-
-	static private function fix_string_callback($matches) {
-		return 's:' . strlen(($matches[2]));
-	}
-
-}
-
 //====================================================================================================
 //DATABASE UPDATES
 //====================================================================================================
@@ -370,39 +33,51 @@ unset($POST_LOG['plugins']);
 unset($POST_LOG['dbpass']);
 ksort($POST_LOG);
 
-//GLOBAL DB-REPLACE
-DUPX_Log::Info("\n\n\n{$GLOBALS['SEPERATOR1']}");
-DUPX_Log::Info('DUPLICATOR INSTALL-LOG');
-DUPX_Log::Info('STEP2 START @ ' . @date('h:i:s'));
-DUPX_Log::Info('NOTICE: Do not post to public sites or forums');
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
-DUPX_Log::Info("CHARSET SERVER:\t{$charset_server}");
-DUPX_Log::Info("CHARSET CLIENT:\t" . @mysqli_character_set_name($dbh));
-DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info("POST DATA");
-DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info(print_r($POST_LOG, true));
+$date = @date('h:i:s');
+$charset_client = @mysqli_character_set_name($dbh);
 
-DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info("SCANNED TABLES");
-DUPX_Log::Info("--------------------------------------");
-$msg = (isset($_POST['tables']) && count($_POST['tables'] > 0)) ? print_r($_POST['tables'], true) : 'No tables selected to update';
-DUPX_Log::Info($msg);
+$log = <<<LOG
+\n\n
+********************************************************************************
+DUPLICATOR INSTALL-LOG
+STEP2 START @ {$date}
+NOTICE: Do not post to public sites or forums
+********************************************************************************
+CHARSET SERVER:\t{$charset_server}
+CHARSET CLIENT:\t {$charset_client} \n
+LOG;
+DUPX_Log::Info($log);
 
-DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info("KEEP PLUGINS ACTIVE");
-DUPX_Log::Info("--------------------------------------");
-$msg = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? print_r($_POST['plugins'], true) : 'No plugins selected for activation';
-DUPX_Log::Info($msg);
+//Detailed logging
+$log  = "--------------------------------------\n";
+$log .= "POST DATA\n";
+$log .= "--------------------------------------\n";
+$log .= print_r($POST_LOG, true);		
+$log .= "--------------------------------------\n";
+$log .= "SCANNED TABLES\n";
+$log .= "--------------------------------------\n";
+$log .= (isset($_POST['tables']) && count($_POST['tables'] > 0)) 
+		? print_r($_POST['tables'], true) 
+		: 'No tables selected to update';
+$log .= "--------------------------------------\n";
+$log .= "KEEP PLUGINS ACTIVE\n";
+$log .= "--------------------------------------\n";
+$log .= (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) 
+		? print_r($_POST['plugins'], true) 
+		: 'No plugins selected for activation';
+DUPX_Log::Info($log, 2);
 
 //UPDATE SETTINGS
 $serial_plugin_list = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? @serialize($_POST['plugins']) : '';
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['blogname']}' WHERE option_name = 'blogname' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 
-DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info("GLOBAL DB-REPLACE");
-DUPX_Log::Info("--------------------------------------");
+$log  = "--------------------------------------\n";
+$log .= "SERIALIZER ENGINE\n";
+$log .= "[*] scanning every column\n";
+$log .= "[~] scanning-only-text-columns]\n";
+$log .= "--------------------------------------";
+DUPX_Log::Info($log);
 
 array_push($GLOBALS['REPLACE_LIST'], 
 		array('search' => $_POST['url_old'], 'replace' => $_POST['url_new']), 
@@ -411,7 +86,7 @@ array_push($GLOBALS['REPLACE_LIST'],
 );
 
 @mysqli_autocommit($dbh, false);
-$report = DupDBTextSwap::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $GLOBALS['TABLES_SKIP_COLS']);
+$report = DUPX_Serializer::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $GLOBALS['TABLES_SKIP_COLS']);
 @mysqli_commit($dbh);
 @mysqli_autocommit($dbh, true);
 
@@ -423,8 +98,8 @@ $JSON['step2'] = $report;
 $JSON['step2']['warn_all'] = 0;
 $JSON['step2']['warnlist'] = array();
 
-DupDBTextSwap::log_stats($report);
-DupDBTextSwap::log_errors($report);
+DUPX_Serializer::log_stats($report);
+DUPX_Serializer::log_errors($report);
 
 //Reset the postguid data
 if ($_POST['postguid']) {
@@ -442,9 +117,9 @@ mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_valu
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
-DUPX_Log::Info("\n{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("\n********************************************************************************");
 DUPX_Log::Info('START FINAL CLEANUP: ' . @date('h:i:s'));
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("********************************************************************************");
 
 /*CREATE NEW USER LOGIC */
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
@@ -568,9 +243,9 @@ DUPX_Config::Setup();
 
 $ajax2_end = DupUtil::get_microtime();
 $ajax2_sum = DupUtil::elapsed_time($ajax2_end, $ajax2_start);
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("********************************************************************************");
 DUPX_Log::Info('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}");
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("********************************************************************************");
 
 $JSON['step2']['pass'] = 1;
 error_reporting($ajax2_error_level);

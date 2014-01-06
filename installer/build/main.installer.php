@@ -177,6 +177,8 @@ if ($_POST['action_step'] == 1) {
 
 @@CLASS.CONFIG.PHP@@
 
+@@CLASS.SERIALIZER.PHP@@
+
 <?php
 if (isset($_POST['action_ajax'])) {
     switch ($_POST['action_ajax']) {

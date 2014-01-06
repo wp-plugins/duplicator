@@ -1,14 +1,14 @@
 <?php
 
 //POST PARAMS
-$_POST['dbaction'] = isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
-$_POST['dbnbsp'] = (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
-$_POST['ssl_admin'] = (isset($_POST['ssl_admin'])) ? true : false;
-$_POST['ssl_login'] = (isset($_POST['ssl_login'])) ? true : false;
-$_POST['cache_wp'] = (isset($_POST['cache_wp'])) ? true : false;
-$_POST['cache_path'] = (isset($_POST['cache_path'])) ? true : false;
-$_POST['package_name'] = isset($_POST['package_name']) ? $_POST['package_name'] : null;
-$_POST['zip_manual'] = (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
+$_POST['dbaction']		= isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
+$_POST['dbnbsp']		= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
+$_POST['ssl_admin']		= (isset($_POST['ssl_admin'])) ? true : false;
+$_POST['ssl_login']		= (isset($_POST['ssl_login'])) ? true : false;
+$_POST['cache_wp']		= (isset($_POST['cache_wp'])) ? true : false;
+$_POST['cache_path']	= (isset($_POST['cache_path'])) ? true : false;
+$_POST['package_name']	= isset($_POST['package_name']) ? $_POST['package_name'] : null;
+$_POST['zip_manual']	= (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -16,10 +16,11 @@ unset($POST_LOG['dbpass']);
 ksort($POST_LOG);
 
 //PAGE VARS
-$root_path = DupUtil::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
-$package_path = "{$root_path}/{$_POST['package_name']}";
-$package_size = @filesize($package_path);
-$ajax1_start = DupUtil::get_microtime();
+$root_path		= DupUtil::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
+$package_path	= "{$root_path}/{$_POST['package_name']}";
+$package_size	= @filesize($package_path);
+$ajax1_start	= DupUtil::get_microtime();
+$zip_support	= class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $JSON = array();
 $JSON['pass'] = 0;
 
@@ -38,12 +39,12 @@ if (isset($_GET['dbtest'])) {
 	$dbErr	 = mysqli_connect_error();
 	$dbFound = mysqli_select_db($dbConn, $_POST['dbname']);
 
-	$tstSrv		 = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
-	$tstDB		 = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
-	$html		.= "<div class='dup-db-test'>";
-	$html		.= "<small>Connection String:<br/>Server={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; Port={$_POST['dbport']}</small>";
-	$html		.= "<label>Server Connected:</label> {$tstSrv} <br/>";
-	$html		.= "<label>Database Found:</label>   {$tstDB} <br/><br/>";
+	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
+	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
+	$html	 .= "<div class='dup-db-test'>";
+	$html	 .= "<small>Connection String:<br/>Server={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; Port={$_POST['dbport']}</small>";
+	$html	 .= "<label>Server Connected:</label> {$tstSrv} <br/>";
+	$html	 .= "<label>Database Found:</label>   {$tstDB} <br/><br/>";
 
 	if ($_POST['dbaction'] == 'create'){
 		$tblcount = DupUtil::dbtable_count($dbConn, $_POST['dbname']);
@@ -52,12 +53,11 @@ if (isset($_GET['dbtest'])) {
 		: "";
 	}
 	$html .= "</div>";
-	
 	die($html);
 }
 
 //===============================
-//VALIDATION MESSAGES
+//ERROR MESSAGES
 //===============================
 //ERR_MAKELOG
 ($GLOBALS['LOG_FILE_HANDLE'] != false) or DUPX_Log::Error(ERR_MAKELOG);
@@ -93,43 +93,50 @@ if ($_POST['zip_manual']) {
 		or DUPX_Log::Error(ERR_ZIPNOTFOUND);
 }
 
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info("********************************************************************************");
 DUPX_Log::Info('DUPLICATOR INSTALL-LOG');
 DUPX_Log::Info('STEP1 START @ ' . @date('h:i:s'));
-DUPX_Log::Info('NOTICE: Do not post to public sites or forums');
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
+DUPX_Log::Info('NOTICE: Do NOT post to public sites or forums');
+DUPX_Log::Info("********************************************************************************");
 DUPX_Log::Info("VERSION:\t{$GLOBALS['FW_DUPLICATOR_VERSION']}");
-DUPX_Log::Info("PHP:\t\t" . phpversion());
-DUPX_Log::Info("PHP SAPI:\t" . php_sapi_name());
-DUPX_Log::Info("ZIPARCHIVE:\t" . var_export(class_exists('ZipArchive'), true));
+DUPX_Log::Info("PHP:\t\t" . phpversion() . ' | SAPI: ' . php_sapi_name());
 DUPX_Log::Info("SERVER:\t\t{$_SERVER['SERVER_SOFTWARE']}");
 DUPX_Log::Info("DOC ROOT:\t{$root_path}");
 DUPX_Log::Info("DOC ROOT 755:\t" . var_export($GLOBALS['CHOWN_ROOT_PATH'], true));
 DUPX_Log::Info("LOG FILE 644:\t" . var_export($GLOBALS['CHOWN_LOG_PATH'], true));
 DUPX_Log::Info("BUILD NAME:\t{$GLOBALS['FW_SECURE_NAME']}");
 DUPX_Log::Info("REQUEST URL:\t{$GLOBALS['URL_PATH']}");
-DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info("POST DATA");
-DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info(print_r($POST_LOG, true));
+
+$log  = "--------------------------------------\n";
+$log .= "POST DATA\n";
+$log .= "--------------------------------------\n";
+$log .= print_r($POST_LOG, true);
+DUPX_Log::Info($log, 2);
 
 
 //====================================================================================================
 //UNZIP & FILE SETUP - Extract the zip file and prep files
 //====================================================================================================
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
-DUPX_Log::Info('UNZIP & FILE SETUP');
-DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
-DUPX_Log::Info("PACKAGE:\t" . $_POST['package_name']);
-DUPX_Log::Info("SIZE:\t\t" . DupUtil::readable_bytesize(@filesize($_POST['package_name'])));
+$log  = "\n********************************************************************************\n";
+$log .= "ARCHIVE SETUP\n";
+$log .= "********************************************************************************\n";
+$log .= "NAME:\t{$_POST['package_name']}\n";
+$log .= "SIZE:\t" . DupUtil::readable_bytesize(@filesize($_POST['package_name'])) . "\n";
+$log .= "ZIP:\t{$zip_support} (ZipArchive Support)";
+DUPX_Log::Info($log);
 
 $zip_start = DupUtil::get_microtime();
 
 if ($_POST['zip_manual']) {
-	DUPX_Log::Info("\n-package extraction is in manual mode-\n");
+	DUPX_Log::Info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
 } else {
 	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
-		DUPX_Log::Info("WARNING: This Package Set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \nTo guarantee accuracy make sure the installer and package match. For more details see the online FAQs.  \ncreated with:   {$GLOBALS['FW_PACKAGE_NAME']}  \nprocessed with: {$_POST['package_name']}  \n");
+		$log  = "\n--------------------------------------\n";
+		$log .= "WARNING: This package set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \n";
+		$log .= "To guarantee accuracy the installer and archive should match. For details see the online FAQs.";
+		$log .= "\nCREATED WITH:\t{$GLOBALS['FW_PACKAGE_NAME']} \nPROCESSED WITH:\t{$_POST['package_name']}  \n";
+		$log .= "--------------------------------------\n";
+		DUPX_Log::Info($log);
 	}
 	
 	if (! class_exists('ZipArchive')) {
@@ -140,10 +147,12 @@ if ($_POST['zip_manual']) {
 	$target = $root_path;
 	$zip = new ZipArchive();
 	if ($zip->open($_POST['package_name']) === TRUE) {
+		DUPX_Log::Info("EXTRACTING");
 		@$zip->extractTo($target);
-		DUPX_Log::Info("INFORMATION:\t" . print_r($zip, true));
 		$close_response = $zip->close();
-		DUPX_Log::Info("ZIP CLOSE: " . var_export($close_response, true));
+		$log  = print_r($zip, true);
+		$log .= "COMPLETE: " . var_export($close_response, true);
+		DUPX_Log::Info($log);
 	} else {
 		DUPX_Log::Error(ERR_ZIPEXTRACTION);
 	}
@@ -240,11 +249,11 @@ if (!is_readable($sql_result_file_path) || filesize($sql_result_file_path) == 0)
 	DUPX_Log::Info("ERROR: Unable to create new sql file {$GLOBALS['SQL_FILE_NAME']}.\nValidate the permissions and/or group-owner rights on directory '{$root_path}' and file '{$GLOBALS['SQL_FILE_NAME']}'\n");
 }
 
-DUPX_Log::Info("UPDATED SCRIPTS:");
-DUPX_Log::Info("\tsql file:  '{$sql_result_file_path}'");
-DUPX_Log::Info("\twp-config: '{$root_path}/wp-config.php'");
+DUPX_Log::Info("\nUPDATED FILES:");
+DUPX_Log::Info("- SQL FILE:  '{$sql_result_file_path}'");
+DUPX_Log::Info("- WP-CONFIG: '{$root_path}/wp-config.php'");
 $zip_end = DupUtil::get_microtime();
-DUPX_Log::Info("\nSECTION RUNTIME: " . DupUtil::elapsed_time($zip_end, $zip_start));
+DUPX_Log::Info("\nARCHIVE RUNTIME: " . DupUtil::elapsed_time($zip_end, $zip_start));
 DUPX_Log::Info("\n");
 DupUtil::fcgi_flush();
 
