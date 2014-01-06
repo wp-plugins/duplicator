@@ -86,4 +86,4 @@ if (DUP_Settings::Get('uninstall_files')) {
 if (DUP_Settings::Get('uninstall_settings')) {
 	DUP_Settings::Delete();
 }
-
+?>

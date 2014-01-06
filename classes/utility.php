@@ -147,9 +147,6 @@ class DUP_Util {
 		
 		return false;
 	}
-	
-	
-
 
 	/**
 	*  Creates the snapshot directory if it doesn't already exisit
