@@ -37,7 +37,7 @@ class DupDBTextSwap {
 			foreach ($report['errkey'] as $error) {
 				DUPX_Log::Info($error);
 			}
-			DUPX_Log::Info("");
+			//DUPX_Log::Info("");
 		}
 	}
 
@@ -46,13 +46,46 @@ class DupDBTextSwap {
 	 */
 	static public function log_stats($report) {
 		if (!empty($report) && is_array($report)) {
-			$stats = sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
+			$stats  = '--------------------------------------';
+			$stats .= sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
 			$stats .= sprintf("SEARCH2:\t'%s' \nREPLACE2:\t'%s' \n", $_POST['path_old'], $_POST['path_new']);
 			$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
 			$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
 			$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
 			DUPX_Log::Info($stats);
 		}
+	}
+	
+	/**
+	 * Returns only the text type columns of a table ignoring all numeric types
+	 */
+	static public function getTextColumns($conn, $table) {
+	
+		$type_where  = "type NOT LIKE 'tinyint%' AND ";
+		$type_where .= "type NOT LIKE 'smallint%' AND ";
+		$type_where .= "type NOT LIKE 'mediumint%' AND ";
+		$type_where .= "type NOT LIKE 'int%' AND ";
+		$type_where .= "type NOT LIKE 'bigint%' AND ";
+		$type_where .= "type NOT LIKE 'float%' AND ";
+		$type_where .= "type NOT LIKE 'double%' AND ";
+		$type_where .= "type NOT LIKE 'decimal%' AND ";
+		$type_where .= "type NOT LIKE 'numeric%' AND ";
+		$type_where .= "type NOT LIKE 'date%' AND ";
+		$type_where .= "type NOT LIKE 'time%' AND ";
+		$type_where .= "type NOT LIKE 'year%' ";
+
+		$result = mysqli_query($conn, "SHOW COLUMNS FROM `{$table}` WHERE {$type_where}");
+		if (!$result) { 
+			return null;
+		} 
+		$fields = array(); 
+		if (mysqli_num_rows($result) > 0) { 
+			while ($row = mysqli_fetch_assoc($result)) { 
+				$fields[] = $row['Field']; 
+			} 
+		} 
+	
+		return (count($fields) > 0) ? $fields : null;
 	}
 
 	/**
@@ -74,6 +107,9 @@ class DupDBTextSwap {
 
 		$profile_start = DupUtil::get_microtime();
 		if (is_array($tables) && !empty($tables)) {
+			
+			DUPX_Log::Info("SCAN RESULTS");
+			DUPX_Log::Info("KEY: [~] scanning-only-text-columns] [*] scanning every column");
 
 			foreach ($tables as $table) {
 				$report['scan_tables']++;
@@ -85,7 +121,7 @@ class DupDBTextSwap {
 					$columns[$column['Field']] = $column['Key'] == 'PRI' ? true : false;
 				}
 
-				// Count the number of rows we have in the table if large we'll split into blocks, This is a mod from Simon Wheatley
+				// Count the number of rows we have in the table if large we'll split into blocks
 				$row_count = mysqli_query($conn, 'SELECT COUNT(*) FROM ' . $table);
 				$rows_result = mysqli_fetch_array($row_count);
 				@mysqli_free_result($row_count);
@@ -94,18 +130,30 @@ class DupDBTextSwap {
 					continue;
 
 				$page_size = 25000;
+				$offset = ($page_size + 1);
 				$pages = ceil($row_count / $page_size);
-
+				
+				// Grab the columns of the table.  Only grab text based columns because 
+				// they are the only data types that should allow any type of search/replace logic
+				$colList = self::getTextColumns($conn, $table);
+				$colList = ($colList != null && is_array($colList)) ? implode(',', $colList) : '';
+				$filterMsg = (empty($colList)) ? '*' : '~';
+				DUPX_Log::Info("{$table}: ({$row_count}){$filterMsg}");
+				
+				//Paged Records
 				for ($page = 0; $page < $pages; $page++) {
 
 					$current_row = 0;
 					$start = $page * $page_size;
-					$end = $start + $page_size;
-					// Grab the content of the table
-					$data = mysqli_query($conn, sprintf('SELECT * FROM %s LIMIT %d, %d', $table, $start, $end));
+					$end   = $start + $page_size;
+					$data  = (! empty($colList))
+						? mysqli_query($conn, sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset))
+						: mysqli_query($conn, sprintf('SELECT * FROM %s LIMIT %d, %d', $table, $start, $offset));
 
 					if (!$data)
 						$report['errsql'][] = mysqli_error($conn);
+					
+					DUPX_Log::Info("\tProcessing => {$start} of {$end}", 2);
 
 					//Loops every row
 					while ($row = mysqli_fetch_array($data)) {
@@ -128,7 +176,7 @@ class DupDBTextSwap {
 							$base64coverted = false;
 
 							//Only replacing string values
-							if (!is_numeric($row[$column])) {
+							if (!empty($row[$column]) && !is_numeric($row[$column])) {
 
 								//Base 64 detection
 								if (base64_decode($row[$column], true)) {
@@ -172,7 +220,6 @@ class DupDBTextSwap {
 
 						//PERFORM ROW UPDATE
 						if ($upd && !empty($where_sql)) {
-
 							$sql = "UPDATE `{$table}` SET " . implode(', ', $upd_sql) . ' WHERE ' . implode(' AND ', array_filter($where_sql));
 							$result = mysqli_query($conn, $sql) or $report['errsql'][] = mysqli_error($conn);
 							if ($result) {
@@ -184,8 +231,8 @@ class DupDBTextSwap {
 						} elseif ($upd) {
 							$report['errkey'][] = sprintf("Row [%s] on Table [%s] requires a manual update.", $current_row, $table);
 						}
-						DupUtil::fcgi_flush();
 					}
+					DupUtil::fcgi_flush();
 					@mysqli_free_result($data);
 				}
 

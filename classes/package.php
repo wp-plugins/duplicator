@@ -92,20 +92,19 @@ class DUP_Package {
 		$php_max_time	= @ini_get("max_execution_time");
 		$php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
 		$php_max_time	= ($php_max_time == 0)        ? "Enabled" : "NOT Enabled";
-		$php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" : "set from={$php_max_memory} to=" . DUPLICATOR_PHP_MAX_MEMORY;
+		$php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" :  DUPLICATOR_PHP_MAX_MEMORY . " ({$php_max_memory} default)";
 		
 		$info  = "********************************************************************************\n";
 		$info .= "PACKAGE-LOG: " . @date("Y-m-d H:i:s") . "\n";
 		$info .= "NOTICE: Do NOT post to public sites or forums \n";
 		$info .= "********************************************************************************\n";
-		$info .= "duplicator: " . DUPLICATOR_VERSION . "\n";
-		$info .= "wordpress: {$wp_version}\n";
-		$info .= "php: " . phpversion() . ' | ' . 'sapi: ' . php_sapi_name() . "\n";
-		$info .= "server: {$_SERVER['SERVER_SOFTWARE']} \n";
-		$info .= "browser: {$_SERVER['HTTP_USER_AGENT']} \n";
-		$info .= "php set_time_limit: {$php_max_time} \n";
-		$info .= "php_max_memory: {$php_max_memory} \n";
-		$info .= "mysql wait_timeout:" . DUPLICATOR_DB_MAX_TIME . "\n";
+		$info .= "DUPLICATOR: " . DUPLICATOR_VERSION . "\n";
+		$info .= "WORDPRESS: {$wp_version}\n";
+		$info .= "PHP INFO: " . phpversion() . ' | ' . 'SAPI: ' . php_sapi_name() . "\n";
+		$info .= "SERVER: {$_SERVER['SERVER_SOFTWARE']} \n";
+		$info .= "SET_TIME_LIMIT: {$php_max_time} \n";
+		$info .= "PHP_MAX_MEMORY: {$php_max_memory} \n";
+		$info .= "MYSQL TIMEOUT: " . DUPLICATOR_DB_MAX_TIME;
 		DUP_Log::Info($info);
 		unset($info);
 		
@@ -151,7 +150,7 @@ class DUP_Package {
 		$this->ExeSize  = $exeSizeRead;
 		$this->ZipSize  = $zipSizeRead;
 		
-		$info  = "********************************************************************************\n";
+		$info  = "\n********************************************************************************\n";
 		$info .= "RECORD ID:[{$this->ID}]\n";
 		$info .= "FILE SIZE: Archive:{$zipSizeRead} | SQL:{$dbSizeRead} | Installer:{$exeSizeRead}\n";
 		$info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";

@@ -46,7 +46,7 @@ class DUP_Zip  extends DUP_Archive {
 			self::$filterDirsOn		= count(self::$filterDirsArray);
 			self::$filterExtsOn		= count(self::$filterExtsArray);
 			
-			DUP_Log::Info("********************************************************************************");
+			DUP_Log::Info("\n********************************************************************************");
 			DUP_Log::Info("CREATE ARCHIVE (ZIP):");
 			DUP_Log::Info("********************************************************************************");
             DUP_Log::Info("ARCHIVE DIR:  " . self::$compressDir);

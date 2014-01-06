@@ -204,6 +204,8 @@ $wpconfig = preg_replace($patterns, $replace, $wpconfig);
 file_put_contents('wp-config.php', $wpconfig);
 $wpconfig = null;
 
+//CONFIG FILE RESETS
+DUPX_Config::Reset();
 
 
 //===============================
@@ -386,10 +388,6 @@ foreach ($GLOBALS['FW_OPTS_DELETE'] as $value) {
 
 $profile_end = DupUtil::get_microtime();
 DUPX_Log::Info("\nSECTION RUNTIME: " . DupUtil::elapsed_time($profile_end, $profile_start));
-
-//CONFIG FILE RESETS
-DUPX_Config::Reset();
-
 
 //FINAL RESULTS
 $ajax1_end = DupUtil::get_microtime();

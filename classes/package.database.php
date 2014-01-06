@@ -25,25 +25,26 @@ class DUP_Database {
 	
 	public function Build() {
 		try {
-		
-			DUP_Log::Info("********************************************************************************");
-			DUP_Log::Info("BUILD SQL SCRIPT:");
-			DUP_Log::Info("********************************************************************************");
 			
+
 			$time_start = DUP_Util::GetMicrotime();
-			$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
 			$this->Package->SetStatus(DUP_PackageStatus::DBSTART);
-			$this->dbStorePath = "{$this->Package->StorePath}/{$this->File}";
-
+			
+			$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
+			$this->dbStorePath  = "{$this->Package->StorePath}/{$this->File}";
 			$mysqlDumpPath = $this->getMySqlDumpPath();
-			if ($mysqlDumpPath && $package_mysqldump) {
-				DUP_Log::Info("BUILD MODE: MySQLDump");
-				$this->mysqlDump($mysqlDumpPath);
-			} else {
-				DUP_Log::Info("BUILD MODE: PHP");
-				$this->phpDump();
+			$mode = ($mysqlDumpPath && $package_mysqldump) ? 'MYSQLDUMP' : 'PHP';
+			
+			DUP_Log::Info("\n********************************************************************************");
+			DUP_Log::Info("SQL SCRIPT:");
+			DUP_Log::Info("********************************************************************************");
+			DUP_Log::Info("MODE: {$mode}");
+			
+			switch ($mode) {
+				case 'MYSQLDUMP': $this->mysqlDump($mysqlDumpPath); 	break;
+				case 'PHP' :	  $this->phpDump();	break;	
 			}
-
+			
 			DUP_Log::Info("SQL CREATED: {$this->File}");
 			$time_end = DUP_Util::GetMicrotime();
 			$time_sum = DUP_Util::ElapsedTime($time_end, $time_start);
@@ -114,16 +115,36 @@ class DUP_Database {
 	
 	private function mysqlDump($exePath) {
 		
+		global $wpdb;
+		
 		$host = explode(':', DB_HOST);
 		$host = reset($host);
 		$port = strpos(DB_HOST, ':') ? end(explode( ':', DB_HOST ) ) : '';
+		$name = DB_NAME;
 		//Build command
 		$cmd = escapeshellarg($exePath);
 		$cmd .= ' --no-create-db';
 		$cmd .= ' --single-transaction';
 		$cmd .= ' --hex-blob';
+		
+		//Filter tables
+		$tables		= $wpdb->get_col('SHOW TABLES');
+		$filterTables  = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
+		$tblAllCount	= count($tables);
+		$tblFilterOn	= ($this->FilterOn) ? 'ON' : 'OFF';
 
-		//--ignore-table=database.table1
+		if (is_array($filterTables) && $this->FilterOn) {
+			foreach ($tables as $key => $val) {
+				if (in_array($tables[$key], $filterTables)) {
+					$cmd .= " --ignore-table={$name}.{$tables[$key]} ";
+					unset($tables[$key]);
+				}
+			}
+		}
+		$tblCreateCount = count($tables);
+		$tblFilterCount = $tblAllCount - $tblCreateCount;
+
+
 
 		$cmd .= ' -u ' . escapeshellarg(DB_USER);
 		$cmd .= (DB_PASSWORD) ? 
@@ -141,8 +162,12 @@ class DUP_Database {
 		if ( trim( $output ) === 'Warning: Using a password on the command line interface can be insecure.' ) {
 			$output = '';
 		}
-		$output = (strlen($strerr)) ? $output : 'Empty';
+		$output = (strlen($strerr)) ? $output : "Ran from {$exePath}";
+		
+		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
+		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");		
 		DUP_Log::Info("RESPONSE: {$output}");
+		
 		return ($output) ?  false : true;
 	}
 
@@ -169,12 +194,8 @@ class DUP_Database {
 		$tblCreateCount = count($tables);
 		$tblFilterCount = $tblAllCount - $tblCreateCount;
 
-		DUP_Log::Info("----------------------------------------");
-		DUP_Log::Info("Table Settings");
-		DUP_Log::Info("filters: *{$tblFilterOn}*");
-		DUP_Log::Info("total:{$tblAllCount} | filtered:{$tblFilterCount} | created:{$tblCreateCount}");
-		DUP_Log::Info("filtered: [{$this->FilterTables}]");
-		DUP_Log::Info("----------------------------------------");
+		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
+		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");	
 
 		$sql_header = "/* DUPLICATOR MYSQL SCRIPT CREATED ON : " . @date("F j, Y, g:i a") . " */\n\n";
 		$sql_header .= "SET FOREIGN_KEY_CHECKS = 0;\n\n";
