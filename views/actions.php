@@ -73,12 +73,12 @@ function duplicator_package_scan() {
 	$json['ARC']['FileCount']	= empty($Package->Archive->FileCount) ? '0' : number_format($Package->Archive->FileCount);
 	$json['ARC']['LinkCount']	= empty($Package->Archive->LinkCount) ? '0' : number_format($Package->Archive->LinkCount);
 	$json['ARC']['InvalidFiles']	= is_array($Package->Archive->InvalidFileList) ? $Package->Archive->InvalidFileList : "unknown";
-	$json['ARC']['BigFiles']	= is_array($Package->Archive->BigFileList)  ? $Package->Archive->BigFileList  : "unknown";
+	$json['ARC']['BigFiles']		= is_array($Package->Archive->BigFileList)  ? $Package->Archive->BigFileList  : "unknown";
 	$json['ARC']['Status']['Size']	= ($Package->Archive->Size > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
 	$json['ARC']['Status']['Names']	= count($Package->Archive->InvalidFileList) ? 'Warn' : 'Good';
 	$json['ARC']['Status']['Big']	= count($Package->Archive->BigFileList)  ? 'Warn' : 'Good';
 	
-	///die(str_repeat("To force error message uncomment this line", 200));
+	///die(str_repeat("To force error message uncomment this line", 100));
 	$json_response = json_encode($json);
     die($json_response);
 }

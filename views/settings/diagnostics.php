@@ -21,6 +21,8 @@
 	$space = @disk_total_space(DUPLICATOR_WPROOTPATH);
 	$space_free = @disk_free_space(DUPLICATOR_WPROOTPATH);
 	$perc = @round((100/$space)*$space_free,2);
+	$mysqldumpPath = DUP_Database::GetMySqlDumpPath();
+	$mysqlDumpSupport = ($mysqldumpPath) ? $mysqldumpPath : 'Path Not Found';
 	
 	$view_state = DUP_UI::GetViewStateArray();
 	$ui_css_srv_panel   = (isset($view_state['dup-settings-diag-srv-panel'])  && $view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
@@ -145,7 +147,7 @@
 				<td><?php echo get_current_user(); ?></td>
 			</tr>
 			<tr>
-				<td><?php _e("Safe Mode", 'wpduplicator'); ?></td>
+				<td><a href="" target="_blank"><?php _e("Safe Mode", 'wpduplicator'); ?></a></td>
 				<td>
 				<?php echo (((strtolower(@ini_get('safe_mode')) == 'on')	  ||  (strtolower(@ini_get('safe_mode')) == 'yes') || 
 							 (strtolower(@ini_get('safe_mode')) == 'true') ||  (ini_get("safe_mode") == 1 )))  
@@ -154,7 +156,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><?php _e("Memory Limit", 'wpduplicator'); ?></td>
+				<td><a href="http://www.php.net/manual/en/ini.core.php#ini.memory-limit" target="_blank"><?php _e("Memory Limit", 'wpduplicator'); ?></a></td>
 				<td><?php echo @ini_get('memory_limit') ?></td>
 			</tr>
 			<tr>
@@ -162,8 +164,12 @@
 				<td><?php echo size_format(@memory_get_usage(TRUE), 2) ?></td>
 			</tr>
 			<tr>
-				<td><?php _e("Max Execution Time", 'wpduplicator'); ?></td>
+				<td><a href="http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time" target="_blank"><?php _e("Max Execution Time", 'wpduplicator'); ?></a></td>
 				<td><?php echo @ini_get( 'max_execution_time' ); ?></td>
+			</tr>
+			<tr>
+				<td><a href="http://us3.php.net/shell_exec" target="_blank"><?php _e("Shell Exec", 'wpduplicator'); ?></a></td>
+				<td><?php echo (DUP_Util::IsShellExecAvailable()) ? _e("Is Supported", 'wpduplicator') : _e("Not Supported", 'wpduplicator'); ?></td>
 			</tr>
 			<tr>
 				<td class='dup-settings-diag-header' colspan="2">MySQL</td>
@@ -177,12 +183,16 @@
 				<td><?php echo DB_CHARSET ?></td>
 			</tr>
 			<tr>
-				<td><?php _e("wait_timeout", 'wpduplicator'); ?></td>
+				<td><a href="http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_wait_timeout" target="_blank"><?php _e("Wait Timeout", 'wpduplicator'); ?></a></td>
 				<td><?php echo $dbvar_maxtime ?></td>
 			</tr>
 			<tr>
-				<td><?php _e("max_allowed_packet", 'wpduplicator'); ?></td>
+				<td style="white-space:nowrap"><a href="http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_max_allowed_packet" target="_blank"><?php _e("Max Allowed Packets", 'wpduplicator'); ?></a></td>
 				<td><?php echo $dbvar_maxpacks ?></td>
+			</tr>
+			<tr>
+				<td><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump.html" target="_blank"><?php _e("msyqldump Path", 'wpduplicator'); ?></a></td>
+				<td><?php echo $mysqlDumpSupport ?></td>
 			</tr>
 			 <tr>
 				 <td class='dup-settings-diag-header' colspan="2"><?php _e("Server Disk", 'wpduplicator'); ?></td>

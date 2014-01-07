@@ -91,20 +91,19 @@ class DUP_Package {
 		DUP_Log::Open($this->NameHash);
 		$php_max_time	= @ini_get("max_execution_time");
 		$php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-		$php_max_time	= ($php_max_time == 0)        ? "Enabled" : "NOT Enabled";
+		$php_max_time	= ($php_max_time == 0)        ? "(0) no time limit imposed" : "[{$php_max_time}] not allowed";
 		$php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" :  DUPLICATOR_PHP_MAX_MEMORY . " ({$php_max_memory} default)";
 		
 		$info  = "********************************************************************************\n";
 		$info .= "PACKAGE-LOG: " . @date("Y-m-d H:i:s") . "\n";
 		$info .= "NOTICE: Do NOT post to public sites or forums \n";
 		$info .= "********************************************************************************\n";
-		$info .= "DUPLICATOR: " . DUPLICATOR_VERSION . "\n";
-		$info .= "WORDPRESS: {$wp_version}\n";
-		$info .= "PHP INFO: " . phpversion() . ' | ' . 'SAPI: ' . php_sapi_name() . "\n";
-		$info .= "SERVER: {$_SERVER['SERVER_SOFTWARE']} \n";
-		$info .= "SET_TIME_LIMIT: {$php_max_time} \n";
-		$info .= "PHP_MAX_MEMORY: {$php_max_memory} \n";
-		$info .= "MYSQL TIMEOUT: " . DUPLICATOR_DB_MAX_TIME;
+		$info .= "VERSION:\t" . DUPLICATOR_VERSION . "\n";
+		$info .= "WORDPRESS:\t{$wp_version}\n";
+		$info .= "PHP INFO:\t" . phpversion() . ' | ' . 'SAPI: ' . php_sapi_name() . "\n";
+		$info .= "SERVER:\t\t{$_SERVER['SERVER_SOFTWARE']} \n";
+		$info .= "PHP TIME LIMIT: {$php_max_time} \n";
+		$info .= "PHP MAX MEMORY: {$php_max_memory}";
 		DUP_Log::Info($info);
 		unset($info);
 		

@@ -27,7 +27,7 @@ class DUP_Installer {
 	public function Build() {
 		
 		DUP_Log::Info("\n********************************************************************************");
-		DUP_Log::Info("BUILD INSTALLER FILE:");
+		DUP_Log::Info("INSTALLER:");
 		DUP_Log::Info("********************************************************************************");
 		DUP_Log::Info("INSTALLER FILE: Build Start");
 

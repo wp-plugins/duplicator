@@ -26,19 +26,22 @@ class DUP_Database {
 	public function Build() {
 		try {
 			
-
 			$time_start = DUP_Util::GetMicrotime();
 			$this->Package->SetStatus(DUP_PackageStatus::DBSTART);
 			
 			$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
 			$this->dbStorePath  = "{$this->Package->StorePath}/{$this->File}";
-			$mysqlDumpPath = $this->getMySqlDumpPath();
+			$mysqlDumpPath = self::GetMySqlDumpPath();
 			$mode = ($mysqlDumpPath && $package_mysqldump) ? 'MYSQLDUMP' : 'PHP';
+			$mysqlDumpSupport = ($mysqlDumpPath) ? 'Is Supported' : 'Not Supported';
 			
-			DUP_Log::Info("\n********************************************************************************");
-			DUP_Log::Info("SQL SCRIPT:");
-			DUP_Log::Info("********************************************************************************");
-			DUP_Log::Info("MODE: {$mode}");
+			$log  = "\n********************************************************************************\n";
+			$log .= "DATABASE:\n";
+			$log .= "********************************************************************************\n";
+			$log .= "BUILD MODE:   {$mode}\n";
+			$log .= "MYSQLDUMP:    {$mysqlDumpSupport}\n";
+			$log .= "MYSQLTIMEOUT: " . DUPLICATOR_DB_MAX_TIME;
+			DUP_Log::Info($log);
 			
 			switch ($mode) {
 				case 'MYSQLDUMP': $this->mysqlDump($mysqlDumpPath); 	break;
@@ -65,7 +68,6 @@ class DUP_Database {
 	}
 	
 	/**
-	 *  DATABASESTATS
 	 *  Get the database stats
 	 */
 	public function Stats() {
@@ -110,6 +112,67 @@ class DUP_Database {
 		
 		return $info;
 	}	
+
+	/**
+	 * Returns the mysqldump path if the server is enabled to execute it
+	 * @return boolean|string
+	 */	
+	public static function GetMySqlDumpPath() {
+		
+		//Is shell_exec possible
+		if (! DUP_Util::IsShellExecAvailable()) {
+			return false;
+		}
+
+		$custom_mysqldump_path	= DUP_Settings::Get('package_mysqldump_path');
+		$custom_mysqldump_path = (strlen($custom_mysqldump_path)) ? $custom_mysqldump_path : '';
+		
+		//Common Windows Paths
+		if (DUP_Util::IsOSWindows()) {
+			$paths = array(
+				$custom_mysqldump_path,
+				'C:/xampp/mysql/bin/mysqldump.exe',
+				'C:/Program Files/xampp/mysql/bin/mysqldump',
+				'C:/Program Files/MySQL/MySQL Server 6.0/bin/mysqldump',
+				'C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump',
+				'C:/Program Files/MySQL/MySQL Server 5.4/bin/mysqldump',
+				'C:/Program Files/MySQL/MySQL Server 5.1/bin/mysqldump',
+				'C:/Program Files/MySQL/MySQL Server 5.0/bin/mysqldump',
+			);	
+			
+		//Common Linux Paths			
+		} else {
+			$mysqldump = `which mysqldump`;
+			if (@is_executable($mysqldump)) 
+				$path1 = (!empty($mysqldump)) ? $mysqldump : '';
+			
+			$mysqldump = dirname(`which mysql`) . "/mysqldump";
+			if (@is_executable($mysqldump)) 
+				$path2 = (!empty($mysqldump)) ? $mysqldump : '';
+			
+			$paths = array(
+				$custom_mysqldump_path,
+				$path1,
+				$path2,
+				'/usr/local/bin/mysqldump',
+				'/usr/local/mysql/bin/mysqldump',
+				'/usr/mysql/bin/mysqldump',
+				'/usr/bin/mysqldump',
+				'/opt/local/lib/mysql6/bin/mysqldump',
+				'/opt/local/lib/mysql5/bin/mysqldump',
+				'/opt/local/lib/mysql4/bin/mysqldump',
+			);
+		}
+
+		// Find the one which works
+		foreach ( $paths as $path ) {
+		    if ( @is_executable($path))
+	 	    	return $path;
+		}
+		
+		return false;
+	}
+
 	
 
 	
@@ -261,55 +324,6 @@ class DUP_Database {
 		fclose($handle);
 	}
 	
-	
-	private function getMySqlDumpPath() {
-		
-		if (! DUP_Util::IsShellExecAvailable()) {
-			DUP_Log::Info("SHELL EXEC: Not Enabled");
-			return false;
-		}
-			
-		//Common Windows Paths
-		if (DUP_Util::IsOSWindows()) {
-			$paths = array(
-				'C:/xampp/mysql/bin/mysqldump.exe',
-				'C:/Program Files/xampp/mysql/bin/mysqldump',
-				'C:/Program Files/MySQL/MySQL Server 6.0/bin/mysqldump',
-				'C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump',
-				'C:/Program Files/MySQL/MySQL Server 5.4/bin/mysqldump',
-				'C:/Program Files/MySQL/MySQL Server 5.1/bin/mysqldump',
-				'C:/Program Files/MySQL/MySQL Server 5.0/bin/mysqldump',
-			);	
-			
-		//Common Linux Paths			
-		} else {
-			$mysqldump = `which mysqldump`;
-			if (@is_executable($mysqldump)) 
-				return $mysqldump;
-			
-			$mysqldump = dirname(`which mysql`) . "/mysqldump";
-			if (@is_executable($mysqldump)) 
-				return $mysqldump;
-			
-			$paths = array(
-				'/usr/local/bin/mysqldump',
-				'/usr/local/mysql/bin/mysqldump',
-				'/usr/mysql/bin/mysqldump',
-				'/usr/bin/mysqldump',
-				'/opt/local/lib/mysql6/bin/mysqldump',
-				'/opt/local/lib/mysql5/bin/mysqldump',
-				'/opt/local/lib/mysql4/bin/mysqldump',
-			);
-		}
-
-		// Find the one which works
-		foreach ( $paths as $path ) {
-		    if ( @is_executable($path))
-	 	    	return $path;
-		}
-		
-		return false;
-	}
 
 }
 ?>

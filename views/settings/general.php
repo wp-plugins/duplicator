@@ -12,6 +12,7 @@
 		DUP_Settings::Set('package_skip_scanner',	isset($_POST['package_skip_scanner']) ? "1" : "0");
 		DUP_Settings::Set('package_debug',			isset($_POST['package_debug']) ? "1" : "0");
 		DUP_Settings::Set('package_mysqldump',		isset($_POST['package_mysqldump']) ? "1" : "0");
+		DUP_Settings::Set('package_mysqldump_path',	trim($_POST['package_mysqldump_path']));
 		
 		$action_updated  = DUP_Settings::Save();
 	} 
@@ -22,8 +23,20 @@
 	$package_skip_scanner	= DUP_Settings::Get('package_skip_scanner');
 	$package_debug			= DUP_Settings::Get('package_debug');
 	$package_mysqldump		= DUP_Settings::Get('package_mysqldump');
+	$package_mysqldump_path	= trim(DUP_Settings::Get('package_mysqldump_path'));
+	
+	
+	$mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
+	$mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
 ?>
+
+<style>
+	form#dup-settings-form input[type=text] {width: 400px; }
+	input#package_mysqldump_path_found {margin-top:5px}
+	div.dup-mysql-dump-found {padding:3px; border:1px solid silver; background: #f7fcfe; border-radius: 3px; width:400px; font-size: 12px}
+	div.dup-mysql-dump-notfound {padding:3px; border:1px solid silver; background: #fcf3ef; border-radius: 3px; width:400px; font-size: 12px}
+</style>
 
 <form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-settings&tab=general' ); ?>" method="post">
 	
@@ -36,8 +49,9 @@
 	<?php endif; ?>	
 	
 	
+	<!-- ===============================
+	PLUG-IN SETTINGS -->
 	<h3 class="title"><?php _e("Plugin Settings", 'wpduplicator') ?> </h3>
-
 	<table class="form-table">
 		<tr valign="top">
 			<th scope="row"><label><?php _e("Duplicator Version", 'wpduplicator'); ?></label></th>
@@ -57,8 +71,9 @@
 	</table>
 	
 	
+	<!-- ===============================
+	PACKAGE SETTINGS -->
 	<h3 class="title"><?php _e("Package Settings", 'wpduplicator') ?> </h3>
-	
 	<table class="form-table">
 		<tr>
 			<th scope="row"><label><?php _e("Auto Skip Scanner", 'wpduplicator'); ?></label></th>
@@ -68,21 +83,54 @@
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><label><?php _e("SQL Build Mode", 'wpduplicator'); ?></label></th>
+			<th scope="row"><label><?php _e("Database Build Mode", 'wpduplicator'); ?></label></th>
 			<td>
-				<input type="checkbox" name="package_mysqldump" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
-				<label for="package_mysqldump"><?php _e("Attempt mysqldump", 'wpduplicator'); ?></label> &nbsp;
-				<i style="font-size:12px">(<?php _e("recommended for large databases", 'wpduplicator'); ?>)</i>
-				<p class="description">
-					<?php _e("If the server supports mysqldump it will be used otherwise PHP is used.", 'wpduplicator'); ?>
-				</p>
+				
+				<?php if (! DUP_Util::IsShellExecAvailable()) :?>
+					<p class="description">
+						<?php 
+							_e("This server does not have shell_exec configured to run.", 'wpduplicator'); echo '<br/>';
+							_e("Please contact the server administrator to enable this feature.", 'wpduplicator'); 
+						?>
+					</p>
+				<?php else : ?>
+					<input type="checkbox" name="package_mysqldump" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
+					<label for="package_mysqldump"><?php _e("Use mysqldump", 'wpduplicator'); ?></label> &nbsp;
+					<i style="font-size:12px">(<?php _e("recommended for large databases", 'wpduplicator'); ?>)</i> <br/><br/>
+					
+					<div style="margin:5px 0px 0px 15px">
+						<?php if ($mysqlDumpFound) :?>
+							<div class="dup-mysql-dump-found">
+								<?php _e("Working Path:", 'wpduplicator'); ?> &nbsp;
+								<i><?php echo $mysqlDumpPath ?></i>
+							</div><br/>
+						<?php else : ?>
+							<div class="dup-mysql-dump-notfound">
+								<?php 
+									$msg  = 'Mysqldump was not found at its default location or the location provided.  ';
+									$msg .= 'Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.';
+									_e($msg, 'wpduplicator'); 
+								?>
+							</div><br/>
+						<?php endif ?>
+
+						<label><?php _e("Add Custom Path:", 'wpduplicator'); ?></label><br/>
+						<input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?> " />
+						<p class="description">
+							<?php 
+								_e("This is the path to your mysqldump program.", 'wpduplicator'); 
+							?>
+						</p>
+					</div>
+			
+				<?php endif ?>
 			</td>
 		</tr>	
 		<tr>
 			<th scope="row"><label><?php _e("Package Debug", 'wpduplicator'); ?></label></th>
 			<td>
 				<input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
-				<label for="package_debug"><?php _e("Show Package Debug Status", 'wpduplicator'); ?></label>
+				<label for="package_debug"><?php _e("Show Package Debug Status in Packages Screen", 'wpduplicator'); ?></label>
 			</td>
 		</tr>	
 		

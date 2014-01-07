@@ -38,10 +38,10 @@ class DUP_Settings
 	*  remarks:	 The Save() method must be called to write the Settings object to the DB
 	*/
 	public static function Set($key = '', $value) {
-		if (isset(self::$Data[$key]) && $value != null) {
-			self::$Data[$key] = $value;
-		} elseif (!empty($key) && $value != null) {
-			self::$Data[$key] = $value;
+		if (isset(self::$Data[$key])) {
+			self::$Data[$key] = ($value == null) ? '' : $value;
+		} elseif (!empty($key)) {
+			self::$Data[$key] = ($value == null) ? '' : $value;
 		}
 	}
 
@@ -81,8 +81,11 @@ class DUP_Settings
 		//Flag used to show debug info
 		$default['package_debug']   = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
 		
-		//Flag used to show debug info
+		//Flag used to enable mysqldump
 		$default['package_mysqldump']   = isset(self::$Data['package_mysqldump']) ? self::$Data['package_mysqldump'] : false;
+		
+		//Optional mysqldump search path
+		$default['package_mysqldump_path']   = isset(self::$Data['package_mysqldump_path']) ? self::$Data['package_mysqldump_path'] : '';
 
 		self::$Data = $default;
 		return self::Save();

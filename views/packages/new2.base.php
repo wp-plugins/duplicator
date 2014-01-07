@@ -3,12 +3,16 @@
 	$Package = new DUP_Package();
 	$Package->SaveActive($_POST);
 	$Package = $Package->GetActive();
+	
+	$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
+	$mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
+	$build_mode = ($mysqlDumpPath && $package_mysqldump) ? 'mysqldump (fast)' : 'PHP (slow)';
 ?>
 
 <style>
 	/* -----------------------------
 	PROGRESS ARES-CHECKS */
-	div#dup-progress-area {text-align:center; max-width:650px; min-height:200px; margin:0px auto 10px auto; padding:0px;}
+	div#dup-progress-area {text-align:center; max-width:650px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
 	div#dup-msg-success {color:#18592A; padding:5px; text-align: left}	
 	div#dup-msg-success-subtitle {font-style: italic; margin:7px 0px}	
 	div#dup-msg-error {color:#A62426; padding:5px; max-width: 790px;}
@@ -25,6 +29,9 @@
 	div.dup-scan-warn {display:inline-block; color:#AF0000;font-weight: bold;}
 	span.dup-toggle {float:left; margin:0 2px 2px 0; }
 	/*DATABASE*/
+	table#dup-scan-db-details {line-height: 14px; margin:5px 0px 0px 15px; border-top:1px dashed silver; width:98%}
+	table#dup-scan-db-details td {padding:0px;}
+	table#dup-scan-db-details td:first-child {font-weight: bold;  white-space: nowrap; width:90px}
 	div#dup-scan-db-info {margin:0px 0px 0px 10px}
 	div#data-db-tablelist {max-height: 300px; overflow-y: scroll}
 	div#data-db-tablelist div{padding:0px 0px 0px 15px;}
@@ -36,7 +43,7 @@
 		{word-wrap: break-word;font-size:10px; border:1px dashed silver; padding:5px; display: none}
 	
 	/*Footer*/
-	div.dup-button-footer {text-align:center; margin:30px 0px 0px 0px}
+	div.dup-button-footer {text-align:center; margin:5px 0px 0px 0px}
 	button.button {font-size:15px !important; height:30px !important; font-weight:bold; padding:3px 5px 5px 5px !important;}
 </style>
 
@@ -225,7 +232,7 @@ WIZARD STEP TABS -->
 		</div><!-- end .dup-panel-panel -->
 		
 		<!-- ================================================================
-		META-BOX: DATABASE
+		DATABASE
 		================================================================ -->
 		<div class="dup-panel">
 		<div class="dup-panel-title">
@@ -241,10 +248,7 @@ WIZARD STEP TABS -->
 			</div>
 		</div>
 		<div class="dup-panel-panel" id="dup-scan-db">
-			<table>
-				<tr><td><b><?php _e('Name:', 'wpduplicator');?></b></td><td><?php echo DB_NAME ;?> </td></tr>
-				<tr><td><b><?php _e('Host:', 'wpduplicator');?></b></td><td><?php echo DB_HOST ;?> </td></tr>
-			</table>		
+				
 			<!-- -------------------
 			TOTAL SIZE: 100 -->
 			<div>
@@ -285,6 +289,12 @@ WIZARD STEP TABS -->
 					</div>
 				</div>
 			</div>
+			
+			<table id="dup-scan-db-details">
+				<tr><td><b><?php _e('Name:', 'wpduplicator');?></b></td><td><?php echo DB_NAME ;?> </td></tr>
+				<tr><td><b><?php _e('Host:', 'wpduplicator');?></b></td><td><?php echo DB_HOST ;?> </td></tr>
+				<tr><td><b><?php _e('Build Mode:', 'wpduplicator');?></b></td><td><a href="?page=duplicator-settings"><?php echo $build_mode ;?></a> </td></tr>
+			</table>	
 
 		</div><!-- end .dup-panel -->
 		</div><!-- end .dup-panel-panel -->
@@ -306,8 +316,9 @@ WIZARD STEP TABS -->
 	</div>			
 
 </div> <!-- end #dup-progress-area -->
-<div class="dup-button-footer">
+<div class="dup-button-footer" style="display:none">
 	<input type="button" value="&#9668; <?php _e("Back", 'wpduplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
+	<input type="button" value="<?php _e("Rescan", 'wpduplicator') ?>" onclick="Duplicator.Pack.Rescan()" class="button button-large" />
 	<input type="submit" value="<?php _e("Build", 'wpduplicator') ?> &#9658" class="button button-primary button-large" />
 </div>
 </form>
@@ -326,6 +337,7 @@ jQuery(document).ready(function($) {
 			dataType: "json",
 			timeout: 10000000,
 			data: data,
+			complete: function() {$('.dup-button-footer').show()},
 			success:    function(data) { Duplicator.Pack.LoadScanData(data)},
 			error: function(data) { 
 				$('#dup-progress-bar-area').hide(); 
@@ -336,6 +348,12 @@ jQuery(document).ready(function($) {
 				console.log(data);
 			}
 		});
+	}
+	
+	Duplicator.Pack.Rescan = function() {
+		$('#dup-msg-success,#dup-msg-error,.dup-button-footer').hide();
+		$('#dup-progress-bar-area').show(); 
+		Duplicator.Pack.Scan();
 	}
 	
 	/*	----------------------------------------
