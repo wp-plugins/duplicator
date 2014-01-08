@@ -62,7 +62,7 @@ class DUP_Package {
 		$this->Name			= $name;
 		$this->Notes		= null;
 		$this->StoreURL     = DUP_Util::SSDirURL();
-		$this->StorePath    = DUPLICATOR_SSDIR_PATH;
+		$this->StorePath    = DUPLICATOR_SSDIR_PATH_TMP;
 		$this->Database		= new DUP_Database($this);
 		$this->Archive		= new DUP_Archive($this);
 		$this->Installer	= new DUP_Installer($this);

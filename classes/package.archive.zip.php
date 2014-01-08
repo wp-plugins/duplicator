@@ -25,6 +25,9 @@ class DUP_Zip  extends DUP_Archive {
 	private static $zipFileSize;
 	private static $zipArchive;
 	
+	private static $limit = DUPLICATOR_ZIP_FLUSH_TRIGGER;
+	private static $limitItems = 0;
+	
 	/**
      *  CREATE
      *  Creates the zip file and adds the SQL file to the archive
@@ -69,7 +72,7 @@ class DUP_Zip  extends DUP_Archive {
 				? DUP_Log::Info("ADDED SQL: " . self::$sqlPath)
 				: DUP_Log::Error("Unable to add database.sql file to archive.", "SQL File Path [" . self::$sqlath . "]");
 			self::$zipArchive->close();
-			self::$zipArchive->open(self::$zipPath, ZIPARCHIVE::CREATE);
+			self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);
 			
 			//--------------------------------
             //ADD FILES
@@ -142,9 +145,13 @@ class DUP_Zip  extends DUP_Archive {
 				} else if ($file->isLink()) {
 					self::$countLinks++;
 				} 
+				self::$limitItems++;
 			}
 		}
+		
 		@closedir($dh);
+		if (DUPLICATOR_ZIP_FLUSH_ON)
+			self::flushResponse();
 	} 
 	
 	//FILTER RECURSION
@@ -192,10 +199,29 @@ class DUP_Zip  extends DUP_Archive {
 				} else if ($file->isLink()) {
 					self::$countLinks++;
 				} 
+				self::$limitItems++;
 			}
 		}
 		@closedir($dh);
+		if (DUPLICATOR_ZIP_FLUSH_ON)
+			self::flushResponse();
 	} 	
+	
+	
+	/* This allows the process to not timeout on fcgi 
+	 * setups that need a response every X seconds */
+	private static function flushResponse() {
+		//Check if were over our count*/
+		if(self::$limitItems > self::$limit) {
+			$sumItems = (self::$countDirs + self::$countFiles + self::$countLinks);
+		
+			self::$zipArchive->close();
+			self::$zipArchive->open(self::$zipPath);
+			self::$limitItems = 0;
+			DUP_Util::FcgiFlush();
+			DUP_Log::Info("Items archived [{$sumItems}] flushing response.");
+		}
+	}
 	
 }
 ?>

@@ -105,25 +105,28 @@ WIZARD STEP TABS -->
 						<span class="data"></span>
 					</div>
 				</fieldset>
-				<small><?php _e("Open the package creation log file for more details.", 'wpduplicator') ?></small>
+				
+				<!-- LOGS -->
+				<div id="dup-logs">
+					<div>
+						<b><a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'>[ <i class='fa fa-pencil-square-o'></i> <?php _e('Package Log', 'wpduplicator');?>  ]</a></b><br/>
+						<i><?php _e("Open the package creation log file for more details.", 'wpduplicator') ?></i><br/>
+					</div>
+				</div>
+
 			</div>
 			
 		</div>
 	</div>
 	
-	<!-- LOGS -->
-	<div id="dup-logs">
-		<div>
-			<b><?php printf(" &nbsp; <a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'>[ <i class='fa fa-pencil-square-o'></i>  %s ]</a>", 	__('Package Log', 'wpduplicator'));?> </b><br/>
-			<i><?php _e('Some systems that are not multi-threaded will have to wait for the process to complete before reviewing the logs.', 'wpduplicator'); ?></i><br/>
-		</div>
-	</div>
+
 	
 </form>
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-
+	
+	
 	/*	----------------------------------------
 	*	METHOD: Performs Ajax post to create a new package
 	*	Timeout (10000000 = 166 minutes)  */

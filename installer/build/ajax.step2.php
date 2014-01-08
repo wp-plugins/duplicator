@@ -75,7 +75,7 @@ mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_valu
 $log  = "--------------------------------------\n";
 $log .= "SERIALIZER ENGINE\n";
 $log .= "[*] scanning every column\n";
-$log .= "[~] scanning-only-text-columns]\n";
+$log .= "[~] scanning-only-text-columns\n";
 $log .= "--------------------------------------";
 DUPX_Log::Info($log);
 

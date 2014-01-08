@@ -8,8 +8,7 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_CERTIFIED",      "http://lifeinthegrid.com/duplicator-hosts");
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
-	
-    define('DUPLICATOR_PLUGIN_PATH',    str_replace("\\", "/", plugin_dir_path(__FILE__)));
+    
 
     /* Paths should ALWAYS read "/"
       uni: /home/path/file.txt
@@ -18,7 +17,10 @@ if (function_exists('plugin_dir_url')) {
     if (!defined('ABSPATH')) {
         define('ABSPATH', dirname('__FILE__'));
     }
-    define("DUPLICATOR_SSDIR_NAME",     'wp-snapshots');
+	
+	//PATH CONSTANTS
+	define("DUPLICATOR_SSDIR_NAME",     'wp-snapshots');
+	define('DUPLICATOR_PLUGIN_PATH',    str_replace("\\", "/", plugin_dir_path(__FILE__)));
     define('DUPLICATOR_WPROOTPATH',     str_replace("\\", "/", ABSPATH));
     define("DUPLICATOR_SSDIR_PATH",     str_replace("\\", "/", DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME));
 	define("DUPLICATOR_SSDIR_PATH_TMP", DUPLICATOR_SSDIR_PATH . '/tmp');
@@ -27,7 +29,7 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_INSTALL_SQL",    'installer-data.sql');
     define("DUPLICATOR_INSTALL_LOG",    'installer-log.txt');
 	
-    define("DUPLICATOR_ZIP_FILE_POOL",   10000);
+	//RESTRAINT CONSTANTS
     define("DUPLICATOR_PHP_MAX_MEMORY",  '5000M');
     define("DUPLICATOR_DB_MAX_TIME",     5000);
 	define("DUPLICATOR_SCAN_SITE",    157286400);	//150MB
@@ -37,6 +39,11 @@ if (function_exists('plugin_dir_url')) {
 	define("DUPLICATOR_SCAN_TIMEOUT", 300);	//Seconds
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_task_running', 'duplicator_settings');
+	
+	/* Used to flush a response every N items. Set to true if having issues with timeouts. 
+	 * Note: This value will cause the Zip file to double in size durning the creation process only*/
+    define("DUPLICATOR_ZIP_FLUSH_ON",	   false);
+	define("DUPLICATOR_ZIP_FLUSH_TRIGGER", 5000);
 
 } else {
     error_reporting(0);

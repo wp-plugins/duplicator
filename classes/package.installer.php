@@ -93,7 +93,7 @@ class DUP_Installer {
 		global $wpdb;
 		
 		DUP_Log::Info("INSTALLER FILE: Preping for use");
-		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH) . "/{$this->Package->NameHash}_installer.php";
+		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP) . "/{$this->Package->NameHash}_installer.php";
 		
 		//$tablePrefix = (is_multisite()) ? $wpdb->get_blog_prefix() : $wpdb->prefix;
 		
