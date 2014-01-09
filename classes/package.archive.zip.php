@@ -214,7 +214,6 @@ class DUP_Zip  extends DUP_Archive {
 		//Check if were over our count*/
 		if(self::$limitItems > self::$limit) {
 			$sumItems = (self::$countDirs + self::$countFiles + self::$countLinks);
-		
 			self::$zipArchive->close();
 			self::$zipArchive->open(self::$zipPath);
 			self::$limitItems = 0;

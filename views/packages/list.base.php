@@ -1,6 +1,6 @@
 <?php
-	$result = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator_packages` ORDER BY id DESC", ARRAY_A);
-	$totalElements = count($result);
+	$qryResult = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator_packages` ORDER BY id DESC", ARRAY_A);
+	$totalElements = count($qryResult);
 	$package_debug = DUP_Settings::Get('package_debug');
 ?>
 
@@ -93,21 +93,37 @@
 
 		$rowCount = 0;
 		$totalSize = 0;
-		while($rowCount < $totalElements) {
-			$row			= $result[$rowCount];
-			$Package		= unserialize($row['package']);
+		$rows = $qryResult;
+		foreach ($rows as $row) {
+			$Package = unserialize($row['package']);
+			
+			if (is_object($Package)) {
+				 $pack_name			= $Package->Name;
+				 $pack_archive_size = $Package->Archive->Size;
+				 $pack_version      = $Package->Version;
+				 $pack_notes		= $Package->Notes;
+				 $pack_storeurl		= $Package->StoreURL;
+				 $pack_namehash	    = $Package->NameHash;		
+			} else {
+				 $pack_archive_size = 0;
+				 $pack_version	    = 'unknown';
+				 $pack_notes		= 'unknown';
+				 $pack_storeurl		= 'unknown';
+				 $pack_name			= 'unknown';
+				 $pack_namehash	    = 'unknown';	
+			}
+			
 			$detail_id		= "duplicator-detail-row-{$rowCount}";
-			$totalSize      = $totalSize + $Package->Archive->Size;
-			$plugin_version = empty($Package->Version) ? 'unknown' : $Package->Version;
+			$plugin_version = empty($pack_version) ? 'unknown' : $pack_version;
 			$plugin_compat  = version_compare($plugin_version, '0.5.0');
-			$notes          = empty($Package->Notes) ? __("(No Notes Taken)", 'wpduplicator') : $Package->Notes;
+			$notes          = empty($pack_notes) ? __("(No Notes Taken)", 'wpduplicator') : $pack_notes;
 
 			//Links
 			$uniqueid  			= "{$row['name']}_{$row['hash']}";
-			$sqlfilelink		= $Package->StoreURL . "{$uniqueid}_database.sql";
-			$packagepath 		= $Package->StoreURL . "{$uniqueid}_archive.zip";
-			$installerpath		= $Package->StoreURL . "{$uniqueid}_installer.php";
-			$logfilelink		= $Package->StoreURL . "{$uniqueid}.log";
+			$sqlfilelink		= $pack_storeurl . "{$uniqueid}_database.sql";
+			$packagepath 		= $pack_storeurl . "{$uniqueid}_archive.zip";
+			$installerpath		= $pack_storeurl . "{$uniqueid}_installer.php";
+			$logfilelink		= $pack_storeurl . "{$uniqueid}.log";
 			$installfilelink	= "{$installerpath}?get=1&file={$uniqueid}_installer.php";
 			$logfilename	    = "{$uniqueid}.log";
 			$css_alt		    = ($rowCount % 2 != 0) ? '' : 'alternate';
@@ -119,8 +135,8 @@
 					<td class="pass"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
 					<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
 					<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
-					<td><?php echo DUP_Util::ByteSize($Package->Archive->Size); ?></td>
-					<td class='pack-name'><?php	echo $Package->Name ;?></td>
+					<td><?php echo DUP_Util::ByteSize($pack_archive_size); ?></td>
+					<td class='pack-name'><?php	echo  $pack_name ;?></td>
 					<td class="get-btns">
 						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $installfilelink; ?>', this); return false;"><i class="fa fa-bolt"></i> <?php _e("Installer", 'wpduplicator') ?></button> &nbsp;
 					</td>
@@ -132,7 +148,7 @@
 					<td colspan="8" id="<?php echo $detail_id; ?>" class="dup-pack-details  <?php echo $css_alt ?>">
 						<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?> &nbsp; | &nbsp; 
 						<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?> &nbsp; | &nbsp;  
-						<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?> <br/>
+						<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $pack_namehash ;?> <br/>
 						<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> 
 						<div style="height:7px">&nbsp;</div>
 						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}' " ;?>); return false;" class="thickbox"><i class="fa fa-lock"></i> &nbsp; <?php _e("Links", 'wpduplicator')?></button> &nbsp; 
@@ -146,14 +162,25 @@
 						<?php endif  ?>	
 					</td>
 				</tr>	
+				
 			<!-- NOT COMPLETE -->				
 			<?php else : ?>	
+			
+				<?php
+					$size = 0;
+					$tmpSearch = glob(DUPLICATOR_SSDIR_PATH_TMP . "/{$pack_namehash}_*");
+					if (is_array($tmpSearch)) {
+						$result = array_map('filesize', $tmpSearch);
+						$size = array_sum($result);
+					}
+					$pack_archive_size = $size;
+				?>
 				<tr class="dup-pack-info  <?php echo $css_alt ?>">
 					<td class="fail"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
 					<td><a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');">[<?php echo __("View", 'wpduplicator') . ' ' . $row['id'];?>]</a></td>
 					<td><?php echo date( "m-d-y G:i", strtotime($row['created']));?></td>
-					<td><?php echo DUP_Util::ByteSize($Package->Archive->Size); ?></td>
-					<td class='pack-name'><?php echo $Package->Name ;?></td>
+					<td><?php echo DUP_Util::ByteSize($size); ?></td>
+					<td class='pack-name'><?php echo $pack_name ;?></td>
 					<td class="get-btns" colspan="2">		
 						<span style='display:inline-block; padding:7px 40px 0px 0px'>
 							<a href="javascript:void(0);" onclick="return Duplicator.Pack.ToggleDetail('<?php echo $detail_id ;?>');"><?php _e("View Error Details", 'wpduplicator') ?>...</a>
@@ -165,25 +192,33 @@
 						<div class="dup-details-area-error">
 							<b><?php _e("Version", 'wpduplicator') ?>:</b> <?php echo $plugin_version ?> &nbsp; | &nbsp; 
 							<b><?php _e("User", 'wpduplicator') ?>:</b> <?php echo $row['owner']; ?> &nbsp; | &nbsp;  
-							<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $Package->NameHash ;?> <br/>
-							<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> <br/>
-							<?php
-								printf("%s <u><a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a></u>",
-								__("This package has encountered errors.  Click 'View Log' for more details.  For additional support see the ", 'wpduplicator'),
-								__("online knowledgebase", 'wpduplicator')); 
-							?><div style="height:7px">&nbsp;</div>
-							<button class='button' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
-						<?php if ($package_debug) : ?>
-							<div style="margin-top:7px">
-								<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[View Package Object]</a><br/>
-								<textarea class="dup-pack-debug"><?php print_r($Package);?> </textarea>
-							</div>
-						<?php endif  ?>	
+							<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $pack_name ;?> <br/>
+							
+							<?php if ($pack_name == 'unknown') : ?>
+								<b><?php _e("Unrecoverable Error! Please remove this package.", 'wpduplicator')?></b><br/>
+							<?php else : ?>	
+								<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> <br/>
+								<?php
+									printf("%s <u><a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a></u>",
+									__("This package has encountered errors.  Click 'View Log' for more details.  For additional support see the ", 'wpduplicator'),
+									__("online knowledgebase", 'wpduplicator')); 
+								?><div style="height:7px">&nbsp;</div>
+								<button class='button' onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><?php _e("View Log", 'wpduplicator')?></button>
+								<?php if ($package_debug) : ?>
+									<div style="margin-top:7px">
+										<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[View Package Object]</a><br/>
+										<textarea class="dup-pack-debug"><?php print_r($Package);?> </textarea>
+									</div>
+								<?php endif  ?>	
+							<?php endif  ?>	
+							
+							
 						</div>
 					</td>
 				</tr>	
 			<?php endif; ?>
 			<?php
+			$totalSize = $totalSize + $pack_archive_size;
 			$rowCount++;
 		}
 	?>
@@ -200,11 +235,11 @@
 </form>
 
 
-<form id="dup-paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:none"> 
+<!--form id="dup-paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:none"> 
 	<input name="cmd" type="hidden" value="_s-xclick" /> 
 	<input name="hosted_button_id" type="hidden" value="EYJ7AV43RTZJL" /> 
 	<img src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /> 
-</form>
+</form-->
 
 
 <!-- ==========================================
@@ -222,8 +257,6 @@ DIALOG: QUICK PATH -->
 		<i style='font-size:11px'><?php _e("The database SQL script is a quick link to your database backup script.  An exact copy is also stored in the package.", 'wpduplicator'); ?></i>
 	</div>
 </div>
-
-
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {

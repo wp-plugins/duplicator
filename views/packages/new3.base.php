@@ -19,7 +19,7 @@
 	div#dup-msg-success fieldset, 
 	div#dup-msg-error fieldset {text-align:left; width:95%; border:1px solid #dfdfdf; border-radius:5px; padding:5px 15px 5px 15px; min-height:200px}
 	div.dup-msg-success-stats{color:#999;margin:10px 0px 0px 0px}
-	div.dup-msg-success-links {margin:20px 5px 5px 5px}
+	div.dup-msg-success-links {margin:20px 5px 5px 5px; font-size: 14px; font-weight: bold}
 	div#dup-msg-error {color:#A62426; padding:5px;}
 	div#dup-progress-area div.done-title {font-size:22px; font-weight:bold; margin:0px 0px 10px 0px}
 	div#dup-logs {text-align:center; margin:auto; padding:5px; width:350px;}
@@ -64,7 +64,7 @@ WIZARD STEP TABS -->
 				</div>
 				
 				<div class="dup-msg-success-stats">
-					<b><?php _e('Secure Name', 'wpduplicator'); ?>:</b> <span id="data-name-hash"></span><br/>
+					<b><?php _e('Name', 'wpduplicator'); ?>:</b> <span id="data-name-hash"></span><br/>
 					<b><?php _e('Process Time', 'wpduplicator'); ?>:</b> <span id="data-time"></span><br/>
 				</div><br/>
 				
@@ -80,7 +80,7 @@ WIZARD STEP TABS -->
 	
 				<div class="dup-msg-success-links">
 					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'wpduplicator'));?> 
-					<?php printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create New', 'wpduplicator'));?> 
+					<?php //printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create Another Package', 'wpduplicator'));?> 
 				</div><br/>
 				
 				<!-- Used for iMacros testing do not remove -->
@@ -162,7 +162,6 @@ jQuery(document).ready(function($) {
 					
 			},
 			error: function(data) { 
-				Duplicator.Tasks.Reset();
 				$('#dup-progress-bar-area').hide(); 
 				$('#dup-progress-area, #dup-msg-error').show(200);
 				var status = data.status + ' -' + data.statusText;

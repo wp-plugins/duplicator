@@ -78,6 +78,7 @@ if (is_admin() == true) {
         if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
             duplicator_activate();
         }
+		load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
     }
 
     /* DEACTIVATION / UNINSTALL 
@@ -132,7 +133,7 @@ if (is_admin() == true) {
         wp_register_style('duplicator_style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
 		/* JS */
 		wp_register_script('parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley-standalone.min.js', array('jquery'), '1.1.18');
-		load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
+		
     }
 	
 	//PAGE VIEWS

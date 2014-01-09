@@ -9,11 +9,9 @@ function duplicator_package_create() {
 	DUP_Util::InitSnapshotDirectory();
 
 	$Task = new DUP_Task();
-	if ($Task->IsRunning) {
-		die($Task->MsgRunning);
-	} else {
-		$Task->Create();
-	}
+
+	$Task->Create();
+	
 	
 	//JSON:Debug Response
 	//Pass = 1, Warn = 2, Fail = 3
@@ -27,13 +25,6 @@ function duplicator_package_create() {
 	
 	error_reporting($errLevel);
     die($json_response);
-}
-
-
-function duplicator_task_reset() {
-	$json = array();
-	$json['Success'] = update_option('duplicator_task_running', 0);
-	die(json_encode($json));
 }
 
 
@@ -111,15 +102,25 @@ function duplicator_package_delete() {
 					$delResult	= $wpdb->query("DELETE FROM `{$tblName}` WHERE id = {$id}");
 					if ($delResult != 0) {
 						//Perms
+						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"), 0644);
+						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_database.sql"), 0644);
+						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_installer.php"), 0644);						
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"), 0644);
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"), 0644);
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"), 0644);
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"), 0644);
 						//Remove
+						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"));
+						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_database.sql"));
+						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_installer.php"));
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"));
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"));
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"));
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"));
+						//Unfinished Zip files
+						$tmpZip = DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip.*";
+						array_map('unlink', glob($tmpZip));
+						@unlink(DUP_Util::SafePath());
 						$delCount++;
 					} 
 				}

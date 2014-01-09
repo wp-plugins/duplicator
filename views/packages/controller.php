@@ -73,8 +73,8 @@ jQuery(document).ready(function($) {
 	<?php duplicator_header(__("Packages", 'wpduplicator') ) ?>
 	
 	<h2 class="nav-tab-wrapper">  
-		<a href="?page=duplicator" class="nav-tab <?php echo ($current_tab == 'list') ? 'nav-tab-active' : '' ?>">Packages</a>  
-		<a href="?page=duplicator&tab=new1" class="nav-tab <?php echo ($current_tab != 'list') ? 'nav-tab-active' : '' ?>">Create New</a>  
+		<a href="?page=duplicator" class="nav-tab <?php echo ($current_tab == 'list') ? 'nav-tab-active' : '' ?>"><?php _e("Packages", 'wpduplicator') ?></a>  
+		<a href="?page=duplicator&tab=new1" class="nav-tab <?php echo ($current_tab != 'list') ? 'nav-tab-active' : '' ?>"><?php _e("Create New", 'wpduplicator') ?></a>  
 	</h2> 	
 	
 	<?php

@@ -92,14 +92,14 @@ WIZARD STEP TABS -->
 			OPEN BASE DIRECTORY: 100 -->
 			<div>
 				<div class='dup-scan-title'>
-					<a><?php _e('Open Base Dir', 'wpduplicator');?></a> <div id="data-srv-openbase"></div>
+					<a><?php _e('PHP Settings', 'wpduplicator');?></a> <div id="data-srv-openbase"></div>
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
 						$test = ini_get("open_basedir");
 						echo '<b>' . __('Open Base Dir', 'wpduplicator') . ':</b> ';
 						echo (empty($test)) ? 'Off' : 'On';  echo '<br/><br/>';
-						_e('The Duplicator has been known to have issues with this setting. Please work with your host or server administrator to disable this value in the php.ini file if you’re having issues with building a package.', 'wpduplicator');
+						_e('The Duplicator has been known to have issues with some of the settings above. Please work with your host or server administrator to disable this value in the php.ini file if you’re having issues with building a package.', 'wpduplicator');
 						echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
 					?>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-SRV-100</small>
@@ -130,17 +130,15 @@ WIZARD STEP TABS -->
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
-						$test = ini_get("max_execution_time");
-		
+						$test = ini_get("max_execution_time");		
 						echo '<b>' . __('max_execution_time', 'wpduplicator') . ':</b> ';
 						echo (empty($test)) ? 'Off' : "{$test}";  
 						echo '<br/><br/>';
-						$msg1  = 'Timeouts effect how long a process is allowed to run.  The recommended timeout is "%1$s" seconds. An attempt is made to override this value if the enviroment allows it.  ';
-						$msg1 .= "A 'Warn' status will not be an issue unless your host kills PHP processes after a certain amount of time.  ";
-						$msg2  = "Timeouts can also be set at the web server layer, please work with your host or server administrator to make sure there are not restrictions for how long a PHP process is allowed to run.  ";
-						$msg2 .= "If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.";
-						printf(__($msg1, 'wpduplicator'), DUPLICATOR_SCAN_TIMEOUT); echo '<br/><br/>';
-						_e($msg2, 'wpduplicator');
+						
+						printf(__('Timeouts effect how long a process is allowed to run.  The recommended timeout is "%1$s" seconds. An attempt is made to override this value if the enviroment allows it.  A "Warn" status will not be an issue unless your host kills PHP processes after a certain amount of time. ', 'wpduplicator'), DUPLICATOR_SCAN_TIMEOUT); 
+						echo '<br/><br/>';
+						
+						_e('Timeouts can also be set at the web server layer, please work with your host or server administrator to make sure there are not restrictions for how long a PHP process is allowed to run.  If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.', 'wpduplicator');
 						echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
 					?>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-SRV-102</small>
@@ -184,9 +182,7 @@ WIZARD STEP TABS -->
 					<b><?php _e('File Count', 'wpduplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
 					<b><?php _e('Directory Count', 'wpduplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
 					<?php 
-						$msg  = 'Total size reprents all files minus any filters that have been setup.  ';
-						$msg .= 'The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.';
-						printf(__($msg, 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_BIGFILE));
+						printf(__('Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_BIGFILE));
 					?>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-FILE-100</small>
 				</div>
@@ -200,9 +196,7 @@ WIZARD STEP TABS -->
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
-						$msg  = 'Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 200 characters and illegal characters that may not work on all operating systems such as * ? > < : / \ |  .  ';
-						$msg .= 'It is recommended to remove or filter these files before building the archive or else you might have issues at install time.';
-						_e($msg, 'wpduplicator');
+						_e('Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 200 characters and illegal characters that may not work on all operating systems such as * ? > < : / \ |  .  It is recommended to remove or filter these files before building the archive or else you might have issues at install time.', 'wpduplicator');
 					?><br/><br/>
 					<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show File Locations', 'wpduplicator');?>]</a>
 					<div id="data-arc-names-data"></div>
@@ -218,9 +212,7 @@ WIZARD STEP TABS -->
 				</div>
 				<div class='dup-scan-info  dup-info-box'>
 					<?php 
-						$msg  = 'Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  ';
-						$msg .= 'If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.';
-						printf(__($msg, 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_BIGFILE));
+						printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_BIGFILE));
 					?><br/><br/>
 					<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show File Locations', 'wpduplicator');?>]</a>
 					<div id="data-arc-big-data"></div>
@@ -262,12 +254,7 @@ WIZARD STEP TABS -->
 					<b><?php _e('Size', 'wpduplicator');?>:</b> <span id="data-db-size2"></span> <br/><br/>
 					<?php 
 						$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'wpduplicator') . '</a>';
-						$msg  = 'Total size and row count for all database tables are approximate values.';
-						$msg .= '  The thresholds that trigger warnings are %1$s and %2$s records.';
-						$msg .= '  Large databases take time to process and can cause issues with server timeout and memory settings.';
-						$msg .= '  Running a %3$s on your database can also help improve the overall size and performance.';
-						$msg .= '  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu.';
-						printf(__($msg, 'wpduplicator'), 
+						printf(__('Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu.', 'wpduplicator'), 
 								DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), 
 								number_format(DUPLICATOR_SCAN_DBROWS),
 								$lnk);

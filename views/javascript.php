@@ -106,19 +106,6 @@ Duplicator.UI.ToggleMetaBox = function() {
 	
 }
 
-	
-Duplicator.Tasks.Reset = function() {
-	jQuery.ajax({
-		type: "POST",
-		url: ajaxurl,
-		dataType: "json",
-		data: {action : 'duplicator_task_reset'},
-		success:    function(data) {},
-		error: function(data) {console.log(data);}
-	});
-	return false;
-}
-
 
 jQuery(document).ready(function($) {
 	//Init: Toggle MetaBoxes

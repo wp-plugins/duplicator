@@ -35,8 +35,7 @@
 		switch ($_POST['action']) {
 			case 'duplicator_settings'		 : 	$action_response = __('Plugin settings reset.', 'wpduplicator');		break;
 			case 'duplicator_ui_view_state'  : 	$action_response = __('View state settings reset.', 'wpduplicator');	 break;
-			case 'duplicator_package_active' : 	$action_response = __('Active package settings reset.', 'wpduplicator'); break;
-			case 'duplicator_task_running'   : 	$action_response = __('Task queue was reset.', 'wpduplicator'); 	     break;				
+			case 'duplicator_package_active' : 	$action_response = __('Active package settings reset.', 'wpduplicator'); break;		
 			case 'clear_legacy_data': 
 				DUP_Settings::LegacyClean();			
 				$action_response = __('Legacy data removed.', 'wpduplicator');
