@@ -35,6 +35,7 @@ Contributors:
 
 Localization:
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
+<li>Marco Andrei Kichalowsky (Portuguese)</li>
 <li>[Emilio De Fez](http://www.canaryas.com) (Spanish) </li>
 
 

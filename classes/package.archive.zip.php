@@ -27,6 +27,7 @@ class DUP_Zip  extends DUP_Archive {
 	
 	private static $limit = DUPLICATOR_ZIP_FLUSH_TRIGGER;
 	private static $limitItems = 0;
+	private static $networkFlush = false;
 	
 	/**
      *  CREATE
@@ -36,6 +37,7 @@ class DUP_Zip  extends DUP_Archive {
 		  try {
 		    
 			$timerAllStart = DUP_Util::GetMicrotime();
+			$package_zip_flush = DUP_Settings::Get('package_zip_flush');
 			
 			self::$compressDir		= rtrim(DUP_Util::SafePath($archive->PackDir), '/');
 			self::$filterDirsArray	= array_map('DUP_Util::SafePath', explode(";", $archive->FilterDirs, -1));
@@ -48,6 +50,7 @@ class DUP_Zip  extends DUP_Archive {
 			self::$zipArchive		= new ZipArchive();
 			self::$filterDirsOn		= count(self::$filterDirsArray);
 			self::$filterExtsOn		= count(self::$filterExtsArray);
+			self::$networkFlush		= empty($package_zip_flush) ? false : $package_zip_flush;
 			
 			DUP_Log::Info("\n********************************************************************************");
 			DUP_Log::Info("ARCHIVE (ZIP):");
@@ -150,7 +153,7 @@ class DUP_Zip  extends DUP_Archive {
 		}
 		
 		@closedir($dh);
-		if (DUPLICATOR_ZIP_FLUSH_ON)
+		if (self::$networkFlush)
 			self::flushResponse();
 	} 
 	
@@ -203,7 +206,7 @@ class DUP_Zip  extends DUP_Archive {
 			}
 		}
 		@closedir($dh);
-		if (DUPLICATOR_ZIP_FLUSH_ON)
+		if (self::$networkFlush)
 			self::flushResponse();
 	} 	
 	

@@ -57,7 +57,8 @@ WIZARD STEP TABS -->
 		<div class="dup-panel-title dup-box-title-fancy"><b style="font-size:18px"><?php _e('Build Status', 'wpduplicator'); ?></b></div>
 		<div class="dup-panel-panel">
 
-			<!--  SUCCESS MESSAGE -->
+			<!--  =========================
+			SUCCESS MESSAGE -->
 			<div id="dup-msg-success" style="display:none">
 				<div class="dup-hdr-success">
 					<i class="fa fa-check-square-o fa-lg"></i> <?php _e('Package Completed', 'wpduplicator'); ?>
@@ -87,7 +88,8 @@ WIZARD STEP TABS -->
 				<div id="dup-automation-imacros"></div>
 			</div>
 			
-			<!--  ERROR MESSAGE -->
+			<!--  =========================
+			ERROR MESSAGE -->
 			<div id="dup-msg-error" style="display:none">
 				<div class="done-title"><i class="fa fa-exclamation-circle"></i> <?php _e('Build Error', 'wpduplicator'); ?></div>
 				<i><?php _e('The build process was unable to complete.', 'wpduplicator'); ?></i><br/>

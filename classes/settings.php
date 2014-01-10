@@ -86,6 +86,9 @@ class DUP_Settings
 		
 		//Optional mysqldump search path
 		$default['package_mysqldump_path']   = isset(self::$Data['package_mysqldump_path']) ? self::$Data['package_mysqldump_path'] : '';
+		
+		//Optional mysqldump search path
+		$default['package_zip_flush']   = isset(self::$Data['package_zip_flush']) ? self::$Data['package_zip_flush'] : false;
 
 		self::$Data = $default;
 		return self::Save();

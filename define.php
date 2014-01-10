@@ -40,10 +40,9 @@ if (function_exists('plugin_dir_url')) {
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');
 	
-	/* Used to flush a response every N items. Set to true if having issues with timeouts. 
+	/* Used to flush a response every N items. 
 	 * Note: This value will cause the Zip file to double in size durning the creation process only*/
-    define("DUPLICATOR_ZIP_FLUSH_ON",	   false);
-	define("DUPLICATOR_ZIP_FLUSH_TRIGGER", 5000);
+	define("DUPLICATOR_ZIP_FLUSH_TRIGGER", 1000);
 
 } else {
     error_reporting(0);
