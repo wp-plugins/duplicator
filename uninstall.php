@@ -60,11 +60,12 @@ if (DUP_Settings::Get('uninstall_files')) {
 		//Check for core files and only continue removing data if the snapshots directory
 		//has not been edited by 3rd party sources, this helps to keep the system stable
 		$files = glob("{$ssdir}/*");
-		if (is_array($files) && count($files) == 3) {
+		if (is_array($files) && count($files) < 6) {
 			$defaults = array("{$ssdir}/index.php", "{$ssdir}/robots.txt", "{$ssdir}/dtoken.php");
 			$compare = array_diff($defaults, $files);
-
-			if (count($compare) == 0) {
+			
+			//There might be a .htaccess file or index.php/html etc.
+			if (count($compare) < 3) {
 				foreach ($defaults as $file) {
 					@unlink("{$file}");
 				}
@@ -72,16 +73,7 @@ if (DUP_Settings::Get('uninstall_files')) {
 				@rmdir($ssdir_tmp);
 				@rmdir($ssdir);
 			}
-			//No packages have ever been created
-		} else if (is_array($files) && count($files) == 1) {
-			$defaults = array("{$ssdir}/index.php");
-			$compare = array_diff($defaults, $files);
-			if (count($compare) == 0) {
-				@unlink("{$ssdir}/index.php");
-				@rmdir($ssdir_tmp);
-				@rmdir($ssdir);
-			}
-		}
+		} 
 	}
 }
 
