@@ -29,6 +29,7 @@ delete_option('duplicator_version_plugin');
 if (DUP_Settings::Get('uninstall_files')) {
 
 	$ssdir = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH);
+	$ssdir_tmp = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP);
 
 	//Sanity check for strange setup
 	$check = glob("{$ssdir}/wp-config.php");
@@ -68,7 +69,7 @@ if (DUP_Settings::Get('uninstall_files')) {
 					@unlink("{$file}");
 				}
 				@unlink("{$ssdir}/.htaccess");
-				@rmdir(DUPLICATOR_SSDIR_PATH_TMP);
+				@rmdir($ssdir_tmp);
 				@rmdir($ssdir);
 			}
 			//No packages have ever been created
@@ -77,7 +78,7 @@ if (DUP_Settings::Get('uninstall_files')) {
 			$compare = array_diff($defaults, $files);
 			if (count($compare) == 0) {
 				@unlink("{$ssdir}/index.php");
-				@rmdir(DUPLICATOR_SSDIR_PATH_TMP);
+				@rmdir($ssdir_tmp);
 				@rmdir($ssdir);
 			}
 		}

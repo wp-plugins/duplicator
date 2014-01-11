@@ -39,6 +39,8 @@ function duplicator_package_create() {
  */
 function duplicator_package_scan() {
 	
+	@set_time_limit(0);
+	
 	$json = array();
 	$Package = new DUP_Package();
 	$Package = $Package->GetActive();

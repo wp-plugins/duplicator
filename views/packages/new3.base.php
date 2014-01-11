@@ -17,7 +17,8 @@
 	div#dup-progress-area span.label {font-weight:bold}
 	div#dup-msg-success {color:#18592A; padding:5px;}
 	div#dup-msg-success fieldset, 
-	div#dup-msg-error fieldset {text-align:left; width:95%; border:1px solid #dfdfdf; border-radius:5px; padding:5px 15px 5px 15px; min-height:200px}
+	div#dup-msg-error fieldset {text-align:left; width:95%; border:1px solid #dfdfdf; border-radius:5px;}
+	div.dup-msg-error-area {overflow-y: scroll; padding:5px 15px 5px 15px; max-height:150px;}
 	div.dup-msg-success-stats{color:#999;margin:10px 0px 0px 0px}
 	div.dup-msg-success-links {margin:20px 5px 5px 5px; font-size: 14px; font-weight: bold}
 	div#dup-msg-error {color:#A62426; padding:5px;}
@@ -91,20 +92,35 @@ WIZARD STEP TABS -->
 			<!--  =========================
 			ERROR MESSAGE -->
 			<div id="dup-msg-error" style="display:none">
-				<div class="done-title"><i class="fa fa-exclamation-circle"></i> <?php _e('Build Error', 'wpduplicator'); ?></div>
-				<i><?php _e('The build process was unable to complete.', 'wpduplicator'); ?></i><br/>
+				<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Build Interrupt', 'wpduplicator'); ?></div>
+				<b><?php _e('The current build has experienced an issue.', 'wpduplicator'); ?></b><br/>
+			
 				<i><?php _e('Please try the process again. If the problem persists please visit the online FAQs.', 'wpduplicator'); ?></i><br/><br/>
 				  
-				<input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = '?page=duplicator&tab=new1'" />
+				<input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />
 				<fieldset>
-					<legend><b><?php _e('Error Details', 'wpduplicator'); ?></b></legend>
-					<div id="dup-msg-error-response-status">
-						<span class="label"><?php _e("Server Status:", 'wpduplicator'); ?></span>
-						<span class="data"></span>
+					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'wpduplicator'); ?></b></legend>
+					<div class="dup-msg-error-area">
+						<div id="dup-msg-error-response-status">
+							<span class="label"><?php _e("Server Status:", 'wpduplicator'); ?></span>
+							<span class="data"></span>
+						</div>
+						<div id="dup-msg-error-response-text">
+							<span class="label"><?php _e("Error Message:", 'wpduplicator'); ?></span><br/>
+							<span class="data"></span>
+						</div>
 					</div>
-					<div id="dup-msg-error-response-text">
-						<span class="label"><?php _e("Error Message:", 'wpduplicator'); ?></span><br/>
-						<span class="data"></span>
+				</fieldset><br/>
+				
+				<fieldset style="color:#777">
+					<legend><b> <?php _e('Notice', 'wpduplicator'); ?></b></legend>
+					<div class="dup-msg-error-area">
+						<?php printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s',
+							__('Build Folder:'),
+								DUPLICATOR_SSDIR_PATH_TMP,
+							__("Some servers are configured to close a request connections after a short period of time, however the build can continue to run in the background till it’s finished. To validate if a build is still running; open the tmp folder above and check if the archive file is still growing in size. If it is still changing then the process is running and should finish shortly. Once it is complete visit the main packages page where the status will eventually show as completed. If the archive is not increasing in size then this server is configured to completely kill the web request after a specific timeout. For possible workarounds to this issue see the online FAQs.", 'wpduplicator')
+							);
+						?> <br/>
 					</div>
 				</fieldset>
 				

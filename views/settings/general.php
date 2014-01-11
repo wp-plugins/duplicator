@@ -94,7 +94,7 @@
 			<td>
 				<input type="checkbox" name="package_zip_flush" id="package_zip_flush" <?php echo ($package_zip_flush) ? 'checked="checked"' : ''; ?> />
 				<label for="package_zip_flush"><?php _e("Attempt Network Keep Alive", 'wpduplicator'); ?></label>
-				<i style="font-size:12px">(<?php _e("recommended for large archives", 'wpduplicator'); ?>)</i> 
+				<i style="font-size:12px">(<?php _e("recommended only for large archives", 'wpduplicator'); ?>)</i> 
 				<p class="description">
 					<?php _e("This will attempt to keep a network connection established for large archives.", 'wpduplicator'); ?>
 				</p>
