@@ -20,6 +20,7 @@ class DUP_Zip  extends DUP_Archive {
 	private static $filterExtsArray;
 	private static $filterExtsList;
 	private static $filterOn = false;
+	private static $size = 0;
 	private static $sqlPath;
 	private static $zipPath;
 	private static $zipFileSize;
@@ -56,60 +57,68 @@ class DUP_Zip  extends DUP_Archive {
 			DUP_Log::Info("ARCHIVE (ZIP):");
 			DUP_Log::Info("********************************************************************************");
             DUP_Log::Info("ARCHIVE DIR:  " . self::$compressDir);
-            DUP_Log::Info("ARCHIVE FILE: " . self::$zipPath );
+            DUP_Log::Info("ARCHIVE FILE: " . basename(self::$zipPath));
 			DUP_Log::Info("FILTER DIRS:  " . self::$filterDirsList);
 			DUP_Log::Info("FILTER EXTS:  " . self::$filterExtsList);
-            DUP_Log::Info('----------------------------------------');
-			
+            
+						
 			//--------------------------------
 			//OPEN ZIP
 			$isZipOpen = (self::$zipArchive->open(self::$zipPath, ZIPARCHIVE::CREATE) === TRUE);
-			($isZipOpen)
-                ? DUP_Log::Info("STARTING ARCHIVE BUILD")
-				: DUP_Log::Error("Cannot open zip file with PHP ZipArchive.", "Path location [" . self::$zipPath . "]");
+			if (! $isZipOpen){
+				DUP_Log::Error("Cannot open zip file with PHP ZipArchive.", "Path location [" . self::$zipPath . "]");
+			}
             
 			//--------------------------------
-			//ADD SQL 
-			$isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, "database.sql");
-			($isSQLInZip) 
-				? DUP_Log::Info("ADDED SQL: " . self::$sqlPath)
-				: DUP_Log::Error("Unable to add database.sql file to archive.", "SQL File Path [" . self::$sqlath . "]");
-			self::$zipArchive->close();
-			self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);
-			
-			//--------------------------------
             //ADD FILES
+			DUP_Log::Info("----------------------------------------");
+			DUP_Log::Info("SCANNING");
 			$timerFilesStart = DUP_Util::GetMicrotime();
 			if (self::$filterOn && (self::$filterDirsOn || self::$filterExtsOn)) {
-				DUP_Log::Info("FILE SCAN FILTERS *ON*");
+				DUP_Log::Info("FILTERS *ON*");
 				(! in_array(self::$compressDir, self::$filterDirsArray)) 
 					? self::recurseDirsWithFilters(self::$compressDir)
-					: DUP_Log::Info("path filter found: [" . self::$compressDir . "]");
+					: DUP_Log::Info("-filter@[" . self::$compressDir . "]");
 			} else {
-				DUP_Log::Info("FILE SCAN FILTERS *OFF*");
+				DUP_Log::Info("FILTERS *OFF*");
 				self::recurseDirs(self::$compressDir);
 			}
             
             $timerFilesEnd = DUP_Util::GetMicrotime();
             $timerFilesSum = DUP_Util::ElapsedTime($timerFilesEnd, $timerFilesStart);
-			DUP_Log::Info("FILE SCAN STATS: Dirs " . self::$countDirs . " | Files " . self::$countFiles . " | Links " . self::$countLinks );
-			DUP_Log::Info("FILE SCAN TIME: {$timerFilesSum}");
-            DUP_Log::Info("\nZIP INFO: " . print_r(self::$zipArchive, true));
+			
+			DUP_Log::Info("STATS:\tDirs " . self::$countDirs . " | Files " . self::$countFiles . " | Links " . self::$countLinks);
+			DUP_Log::Info("SIZE:\t" . DUP_Util::ByteSize(self::$size));
+			DUP_Log::Info("TIME:\t{$timerFilesSum}");
+			DUP_Log::Info("----------------------------------------");
+			DUP_Log::Info("COMPRESSING");
+
+			//--------------------------------
+			//ADD SQL 
+			$isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, "database.sql");
+			if ($isSQLInZip)  {
+				DUP_Log::Info("SQL ADDED: " . basename(self::$sqlPath));
+			} else {
+				DUP_Log::Error("Unable to add database.sql file to archive.", "SQL File Path [" . self::$sqlath . "]");
+			}
+			self::$zipArchive->close();
+			self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);
+			DUP_Log::Info(print_r(self::$zipArchive, true));
+
 			
 			//--------------------------------
 			//LOG FINAL RESULTS
-			DUP_Log::Info("CREATING ARCHIVE");
 			DUP_Util::FcgiFlush();
             $zipCloseResult = self::$zipArchive->close();
 			($zipCloseResult) 
-				? DUP_Log::Info("CLOSING ARCHIVE RESULT: '{$zipCloseResult}'")
+				? DUP_Log::Info("COMPRESSION RESULT: '{$zipCloseResult}'")
 				: DUP_Log::Error("ZipArchive close failure.", "This hosted server may have a disk quota limit.\nCheck to make sure this archive file can be stored.");
 		
             $timerAllEnd = DUP_Util::GetMicrotime();
             $timerAllSum = DUP_Util::ElapsedTime($timerAllEnd, $timerAllStart);
 			
 			self::$zipFileSize = @filesize(self::$zipPath);
-			DUP_Log::Info("ARCHIVE FILE SIZE: " . DUP_Util::ByteSize(self::$zipFileSize));
+			DUP_Log::Info("COMPRESSED SIZE: " . DUP_Util::ByteSize(self::$zipFileSize));
             DUP_Log::Info("ARCHIVE RUNTIME: {$timerAllSum}");
         } 
         catch (Exception $e) {
@@ -149,6 +158,7 @@ class DUP_Zip  extends DUP_Archive {
 					self::$countLinks++;
 				} 
 				self::$limitItems++;
+				self::$size = self::$size + $file->getSize();
 			}
 		}
 		
@@ -185,7 +195,7 @@ class DUP_Zip  extends DUP_Archive {
 							DUP_Log::Info("WARNING: Unable to add directory: {$fullPath}");
 						}
 					}  else {
-						DUP_Log::Info("path filter found: {$fullPath}");
+						DUP_Log::Info("- filter@ [{$fullPath}]");
 					}
 				} else if ($file->isFile() && $file->isReadable()) {
 					if (self::$filterExtsOn) {
@@ -203,6 +213,7 @@ class DUP_Zip  extends DUP_Archive {
 					self::$countLinks++;
 				} 
 				self::$limitItems++;
+				self::$size = self::$size + $file->getSize();
 			}
 		}
 		@closedir($dh);

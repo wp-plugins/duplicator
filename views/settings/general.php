@@ -125,9 +125,7 @@
 						<?php else : ?>
 							<div class="dup-mysql-dump-notfound">
 								<?php 
-									$msg  = 'Mysqldump was not found at its default location or the location provided.  ';
-									$msg .= 'Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.';
-									_e($msg, 'wpduplicator'); 
+									_e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.', 'wpduplicator'); 
 								?>
 							</div><br/>
 						<?php endif ?>
