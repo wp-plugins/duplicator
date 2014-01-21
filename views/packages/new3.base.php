@@ -95,7 +95,7 @@ WIZARD STEP TABS -->
 				<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Build Interrupt', 'wpduplicator'); ?></div>
 				<b><?php _e('The current build has experienced an issue.', 'wpduplicator'); ?></b><br/>
 			
-				<i><?php _e('Please try the process again. If the problem persists please visit the online FAQs.', 'wpduplicator'); ?></i><br/><br/>
+				<i><?php _e('Please try the process again. If the problem persists please visit the support page.', 'wpduplicator'); ?></i><br/><br/>
 				  
 				<input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />
 				<fieldset>
@@ -118,7 +118,7 @@ WIZARD STEP TABS -->
 						<?php printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s',
 							__('Build Folder:'),
 								DUPLICATOR_SSDIR_PATH_TMP,
-							__("Some servers are configured to close a request connections after a short period of time, however the build can continue to run in the background till it’s finished. To validate if a build is still running; open the tmp folder above and check if the archive file is still growing in size. If it is still changing then the process is running and should finish shortly. Once it is complete visit the main packages page where the status will eventually show as completed. If the archive is not increasing in size then this server is configured to completely kill the web request after a specific timeout. For possible workarounds to this issue see the online FAQs.", 'wpduplicator')
+							__("Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.  Please visit the support page for additional resources.", 'wpduplicator')
 							);
 						?> <br/>
 					</div>
@@ -126,10 +126,11 @@ WIZARD STEP TABS -->
 				
 				<!-- LOGS -->
 				<div id="dup-logs">
-					<div>
-						<b><a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'>[ <i class='fa fa-pencil-square-o'></i> <?php _e('Package Log', 'wpduplicator');?>  ]</a></b><br/>
-						<i><?php _e("Open the package creation log file for more details.", 'wpduplicator') ?></i><br/>
-					</div>
+					<div style="font-weight:bold">
+						<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a> &nbsp; | &nbsp;
+						<a href='admin.php?page=duplicator-support' target="support"> <?php _e('Support', 'wpduplicator');?> </a>
+					</div> 
+					<br/>
 				</div>
 
 			</div>

@@ -139,18 +139,6 @@ $GLOBALS['REPLACE_LIST'] = array();
 
 //CONSTANTS
 define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
-//GLOBALS
-$GLOBALS["SQL_FILE_NAME"] = "installer-data.sql";
-$GLOBALS["LOG_FILE_NAME"] = "installer-log.txt";
-$GLOBALS['SEPERATOR1'] = str_repeat("********", 10);
-$GLOBALS['LOGGING'] = isset($_POST['logging']) ? $_POST['logging'] : 1;
-
-$GLOBALS['CURRENT_ROOT_PATH'] = dirname(__FILE__);
-$GLOBALS['CHOWN_ROOT_PATH'] = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
-$GLOBALS['CHOWN_LOG_PATH'] = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}/{$GLOBALS['LOG_FILE_NAME']}", 0644);
-$GLOBALS['URL_SSL'] = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;
-$GLOBALS['URL_PATH'] = ($GLOBALS['URL_SSL']) ? "https://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}" : "http://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}";
-$GLOBALS['DB_PORT'] = parse_url($_POST['dbhost'], PHP_URL_PORT);
 
 //SHARED POST PARMS
 $_POST['action_step'] = isset($_POST['action_step']) ? $_POST['action_step'] : "0";
@@ -158,10 +146,24 @@ $_POST['dbhost']	= isset($_POST['dbhost']) ? trim($_POST['dbhost']) : null;
 $_POST['dbuser']	= isset($_POST['dbuser']) ? trim($_POST['dbuser']) : null;
 $_POST['dbpass']	= isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
 $_POST['dbname']	= isset($_POST['dbname']) ? trim($_POST['dbname']) : null;
-$_POST['dbcharset'] = isset($_POST['dbcharset']) ? trim($_POST['dbcharset']) : $GLOBALS['DBCHARSET_DEFAULT'];
-$_POST['dbcollate'] = isset($_POST['dbcollate']) ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
-$_POST['dbport']	= isset($_POST['dbhost'])	 ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
-$_POST['dbport']    = ! empty($_POST['dbport'])  ? $_POST['dbport'] : 3306;
+$_POST['dbcharset'] = isset($_POST['dbcharset'])  ? trim($_POST['dbcharset']) : $GLOBALS['DBCHARSET_DEFAULT'];
+$_POST['dbcollate'] = isset($_POST['dbcollate'])  ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
+$_POST['dbport']	= isset($_POST['dbhost'])	  ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
+$_POST['dbport']    = (! empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
+
+//GLOBALS
+$GLOBALS["SQL_FILE_NAME"] = "installer-data.sql";
+$GLOBALS["LOG_FILE_NAME"] = "installer-log.txt";
+$GLOBALS['SEPERATOR1'] = str_repeat("********", 10);
+$GLOBALS['LOGGING'] = isset($_POST['logging']) ? $_POST['logging'] : 1;
+$GLOBALS['CURRENT_ROOT_PATH'] = dirname(__FILE__);
+$GLOBALS['CHOWN_ROOT_PATH'] = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
+$GLOBALS['CHOWN_LOG_PATH'] = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}/{$GLOBALS['LOG_FILE_NAME']}", 0644);
+$GLOBALS['URL_SSL'] = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;
+$GLOBALS['URL_PATH'] = ($GLOBALS['URL_SSL']) ? "https://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}" : "http://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}";
+$GLOBALS['DB_PORT'] = parse_url($_POST['dbhost'], PHP_URL_PORT);
+
+
 
 //Restart log if user starts from step 1
 if ($_POST['action_step'] == 1) {

@@ -6,7 +6,6 @@
 /*================================================
 PAGE-SUPPORT:*/
 div.dup-support-all {font-size:13px; line-height:20px}
-h2.dup-support-headers {margin:-20px 0px -5px 0px; font-weight:bold; font-size:1.5em}
 div.dup-support-txts-links {width:100%;font-size:14px; font-weight:bold; line-height:26px; text-align:center}
 div.dup-support-hlp-area {width:265px; height:175px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:6px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
@@ -49,18 +48,18 @@ img#dup-img-5stars:hover {opacity:1.0;}
 	<hr size="1" />
 
 	<div style="width:850px; margin:auto; margin-top: 20px">
-		<table>
+		<table style="width:825px">
 			<tr>
-				<td valign="top" class="dup-drop-cap">
+				<td valign="top" style="padding-top:10px; font-size:14px">
 				<?php 
 					_e("Created for Admins, Developers and Designers the Duplicator will streamline your workflows and help you quickly clone a WordPress application.  If you run into an issue please read through the", 'wpduplicator');
 					printf(" <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a> ", __("knowledgebase", 'wpduplicator'));
-					_e('in detail as it will have answers to most of your questions and issues.', 'wpduplicator')
+					_e('in detail for many of the quick and common answers.', 'wpduplicator')
 				?>
 				</td>
-				<td>
+				<td >
 					<a href="http://lifeinthegrid.com/labs/duplicator" target="_blank">
-						<img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/logo-box.png" style='text-align:top; margin:-10px 0px 0px 20px'  />
+						<img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/logo-box.png" style='text-align:top; margin:-15px 0px 0px 0px'  />
 					</a>
 				</td>
 			</tr>
@@ -70,7 +69,7 @@ img#dup-img-5stars:hover {opacity:1.0;}
 		<!--  =================================================
 		NEED HELP?
 		==================================================== -->
-		<h2 class="dup-support-headers" style="margin-top:-35px"><?php _e('Need Help?', 'wpduplicator') ?></h2>
+		<h2><?php _e('Need Help?', 'wpduplicator') ?></h2>
 
 		<!-- HELP LINKS -->
 		<div class="dup-support-hlp-area">
@@ -81,8 +80,8 @@ img#dup-img-5stars:hover {opacity:1.0;}
 				</tr>
 			</table>
 			<div class="dup-support-hlp-txt">
-				<?php  _e('Please review the online documentation for complete usage of the plugin.', 'wpduplicator');?>
-				<select id="dup-support-kb-lnks" style="margin-top:10px; font-size:14px; min-width: 170px">
+				<?php  _e('Complete online documentation!', 'wpduplicator');?>
+				<select id="dup-support-kb-lnks" style="margin-top:18px; font-size:14px; min-width: 170px">
 					<option> <?php _e('Choose A Section', 'wpduplicator') ?> </option>
 					<option value="http://lifeinthegrid.com/duplicator-quick"><?php _e('Quick Start', 'wpduplicator') ?></option>
 					<option value="http://lifeinthegrid.com/duplicator-guide"><?php _e('User Guide', 'wpduplicator') ?></option>
@@ -103,9 +102,10 @@ img#dup-img-5stars:hover {opacity:1.0;}
 				</tr>
 			</table>
 			<div class="dup-support-hlp-txt">
-				<?php _e('Need a solid hosting provider that will work well with the Duplicator?', 'wpduplicator'); ?>
-				<div class="dup-support-txts-links" style="margin-top:10px">
-					<?php printf("<a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>%s</a>", __("Approved Hosting Services", 'wpduplicator')); ?>
+				<?php _e('Servers that work with Duplicator!', 'wpduplicator'); ?>
+				<br/><br/>
+				<div class="dup-support-txts-links">
+					<button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-hosts', 'litg');"><?php _e('Get Hosting!', 'wpduplicator') ?></button> &nbsp; 
 				</div>
 			</div>
 		</div>
@@ -120,16 +120,12 @@ img#dup-img-5stars:hover {opacity:1.0;}
 				</tr>
 			</table>
 			<div class="dup-support-hlp-txt">
-				<?php _e("Online support  is available for issues not covered in the knowledgebase." , 'wpduplicator');	?>
+				<?php _e("Work with IT Profressionals!" , 'wpduplicator');	?> 
+				<br/><br/>
+				
 				<div class="dup-support-txts-links">
-					<button class="button" onclick="Duplicator.ShowProSupportWindow(); return false;"><?php _e('Professional', 'wpduplicator') ?></button> &nbsp; 
-					<button class="button" onclick="Duplicator.ShowBasicSupportDialog(); return false;" class="thickbox"><?php _e('Basic', 'wpduplicator') ?></button>
+					<button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow(); return false;"><?php _e('Get Help!', 'wpduplicator') ?></button> &nbsp; 
 				</div>	
-				<i style="font-size:11px">
-					<?php _e('Pro: Hire at Freelancer.com', 'wpduplicator') ?> <br/>
-					<?php _e('Basic: 3-5 business days', 'wpduplicator') ?> 
-				 
-				</i>
 			</div>
 		</div> <br style="clear:both" /><br/><br/><br/>
 		
@@ -139,15 +135,13 @@ img#dup-img-5stars:hover {opacity:1.0;}
 		<!--  ==================================================
 		SUPPORT DUPLICATOR
 		==================================================== -->
-		<h2 class="dup-support-headers"><?php _e('Support Duplicator', 'wpduplicator') ?></h2>
-		
+		<h2><?php _e('Support Duplicator', 'wpduplicator') ?></h2>
 		
 		<!-- PARTNER WITH US -->
 		<div class="dup-support-give-area">
 			<table class="dup-support-hlp-hdrs">
 				<tr >
 					<td style="height:30px; text-align: center;">
-						<img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/check.png" align="left" />
 						<span style="display: inline-block; margin-top: 5px"><?php _e('Partner with Us', 'wpduplicator') ?></span>
 					</td>
 				</tr>
@@ -185,7 +179,6 @@ img#dup-img-5stars:hover {opacity:1.0;}
 			<table class="dup-support-hlp-hdrs">
 				<tr>
 					<td style="height:30px; text-align: center;">
-						<img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/mega.png" align="left" />
 						<span style="display: inline-block; margin-top: 5px"><?php _e('Spread the Word', 'wpduplicator') ?></span>
 					</td>
 				</tr>
@@ -206,56 +199,18 @@ img#dup-img-5stars:hover {opacity:1.0;}
 			</div>
 		</div>
 		<br style="clear:both" /><br/>
-		
-		<!--  ========================
-		VISIT US -->
-		<div style="width:100%; padding:10px 10px 0px 10px; font-size:11px; font-style: italic; color:gray" align="center">
-			<a href="http://lifeinthegrid.com" target="_blank">LifeInTheGrid</a> &nbsp; | &nbsp;
-			<a href="http://lifeinthegrid.com/labs" target="_blank"><?php _e('Labs', 'wpduplicator') ?></a> &nbsp; | &nbsp; 
-			<a href="http://www.youtube.com/lifeinthegridtv" target="_blank">YouTube</a>
-		</div>
-		
+	
 	</div>
 </div><br/><br/><br/><br/>
-
-<!-- ==========================================
-DIALOG: QUICK PATH -->
-<?php add_thickbox(); ?>
-<div id="dup-dlg-basic-support"  style="display:none;">
-	<div style="color:#000; padding:5px 10px 5px 10px">
-
-	<?php _e("This is a free courtesy we offer to the WordPress community, but it is clear that some people do abuse the service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find an answer first.  Thank you for being thoughtful of this free service!", 'wpduplicator');	?>
-
-	<br/><br/><b><?php _e("Support Tips", 'wpduplicator');	?></b><br/>
-
-	- <?php _e("If your issue is time sensitive please use the Professional service link", 'wpduplicator');	?> <br/>
-	- <?php _e("Read all knowledgebase articles before asking a question", 'wpduplicator');	?> <br/>
-	- <?php _e("Check the WordPress forums and Google for similar issues", 'wpduplicator');	?> <br/>
-	- <?php _e("Read the Duplicator log files for clues", 'wpduplicator');	?> <br/>
-	- <?php _e("Contact your hosting provider for permission and timeout issues", 'wpduplicator');	?> <br/>
-	
-	<div style="padding: 20px 0px 0px 0px; text-align: right">
-		<a href="http://support.lifeinthegrid.com" target="_blank"><?php _e('Continue with Basic Support', 'wpduplicator') ?></a>
-	</div>
-	</div>
-</div>
-
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	
-	//METHOD: Open Pro Link
-	Duplicator.ShowProSupportWindow = function() {
-		var url = 'http://www.freelancer.com/affiliates/lifeinthegrid/';
-		window.open(url, 'freelancer');
+	Duplicator.OpenSupportWindow = function() {
+		var url = 'http://lifeinthegrid.com/duplicator/resources/';
+		window.open(url, 'litg');
 	}
 
-	//METHOD: Show Basic Dialog
-	Duplicator.ShowBasicSupportDialog = function() {		
-		var url = '#TB_inline?width=425&height=275&inlineId=dup-dlg-basic-support';
-		tb_show("<?php _e('Basic Support', 'wpduplicator') ?>", url);
-	}
-	
 	//ATTACHED EVENTS
 	jQuery('#dup-support-kb-lnks').change(function() {
 		if (jQuery(this).val() != "null") 

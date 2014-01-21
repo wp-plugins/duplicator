@@ -142,6 +142,8 @@ class DUP_Database {
 			
 		//Common Linux Paths			
 		} else {
+			$path1 = '';
+			$path2 = '';
 			$mysqldump = `which mysqldump`;
 			if (@is_executable($mysqldump)) 
 				$path1 = (!empty($mysqldump)) ? $mysqldump : '';

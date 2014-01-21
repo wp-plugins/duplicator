@@ -104,12 +104,16 @@
 				<td><?php echo DUPLICATOR_WPROOTPATH ?></td>
 			</tr>	
 			<tr>
+				<td><?php _e("ABSPATH", 'wpduplicator'); ?></td>
+				<td><?php echo ABSPATH ?></td>
+			</tr>			
+			<tr>
 				<td><?php _e("Plugins Path", 'wpduplicator'); ?></td>
 				<td><?php echo DUP_Util::SafePath(WP_PLUGIN_DIR) ?></td>
 			</tr>
 			<tr>
 				<td><?php _e("Loaded PHP INI", 'wpduplicator'); ?></td>
-				<td><?php echo php_ini_loaded_file () ;?></td>
+				<td><?php echo php_ini_loaded_file() ;?></td>
 			</tr>	
 			<tr>
 				<td class='dup-settings-diag-header' colspan="2">WordPress</td>

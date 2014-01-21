@@ -15,7 +15,7 @@ if (function_exists('plugin_dir_url')) {
       win:  D:/home/path/file.txt
       SSDIR = SnapShot Directory */
     if (!defined('ABSPATH')) {
-        define('ABSPATH', dirname('__FILE__'));
+		define('ABSPATH', dirname(__FILE__));
     }
 	
 	//PATH CONSTANTS

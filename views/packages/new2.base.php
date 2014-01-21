@@ -349,7 +349,7 @@ jQuery(document).ready(function($) {
 		
 		var errMsg = "unable to read";
 		$('#dup-progress-bar-area').hide(); 
-		$('#dup-msg-success').show(300);
+		$('#dup-msg-success').show();
 		
 		//****************
 		//SERVER
