@@ -1,4 +1,4 @@
-=== WordPress Duplicator by LifeInTheGrid ===
+=== WordPress Duplicator ===
 Contributors: Cory Lamle
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
@@ -35,7 +35,7 @@ Contributors:
 
 Localization:
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
-<li>[Marco Andrei Kichalowsky] (http://www.arsnovasolucoes.com) (Portuguese)</li>
+<li>[Marco Andrei Kichalowsky](http://www.arsnovasolucoes.com) (Portuguese)</li>
 <li>[Emilio De Fez](http://www.canaryas.com) (Spanish) </li>
 
 
