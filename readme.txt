@@ -73,9 +73,11 @@ No.  Hopefully in future versions we will support MU
 
 == Screenshots ==
  
-1. The main interface used to create and manage packages
-2. The systems check dialog, used to validate a server
-3. The installer screen used to install a packaged instance
+1. Main Interface for all Packages
+2. Create Package Step 1
+3. Create Package Step 2
+4. Build Process
+5. Installer Screen
  
 
 == Changelog ==
