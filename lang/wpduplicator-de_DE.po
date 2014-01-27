@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-08 21:27-0700\n"
-"PO-Revision-Date: 2014-01-25 19:12:30+0000\n"
+"PO-Revision-Date: 2014-01-27 11:35:13+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -136,7 +136,7 @@ msgstr "Liste der Änderungen"
 #: views/support.php:90
 #@ wpduplicator
 msgid "Product Page"
-msgstr "Produkt Seite"
+msgstr "Produkt-Seite"
 
 #: views/support.php:101
 #@ wpduplicator
@@ -186,7 +186,7 @@ msgstr "Duplizieren dein WordPress"
 #: views/support.php:189
 #@ wpduplicator
 msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
-msgstr "Schnelle WordPress Vervielfältigung von LifeInTheGrid.com"
+msgstr "Schnelle WordPress-Vervielfältigung von LifeInTheGrid.com"
 
 #: views/packages/controller.php:77
 #@ wpduplicator
@@ -385,7 +385,7 @@ msgstr "Fehler-Details ansehen"
 #: views/packages/list.base.php:203
 #@ wpduplicator
 msgid "This package has encountered errors.  Click 'View Log' for more details.  For additional support see the "
-msgstr "Es sind Fehler aufgetreten. Klicke auf \\\"Log ansehen\\\" für weitere Details. Zusätzliche Unterstützung findest du in der "
+msgstr "Es sind Fehler aufgetreten. Klicke auf 'Log ansehen' für weitere Details. Zusätzliche Unterstützung findest du in der "
 
 #: views/packages/list.base.php:204
 #@ wpduplicator
@@ -432,7 +432,7 @@ msgstr "Ausgewählte Archive wirklich löschen?"
 #: views/packages/list.base.php:326
 #@ wpduplicator
 msgid "Package File Links"
-msgstr "Archive Datei Links"
+msgstr "Archiv-Datei Links"
 
 #: views/packages/list.base.php:329
 #@ wpduplicator
@@ -489,7 +489,7 @@ msgstr "Anforderungen:"
 #: views/packages/new1.inc-a.reqs.php:16
 #@ wpduplicator
 msgid "System requirments must pass for the Duplicator to work properly.  Click each link for details."
-msgstr "Diese System-Anforderungen sind notwendig, damit der Duplicator richtig arbeitet. Klicke auf jeden Link für Details."
+msgstr "Diese System-Anforderungen sind notwendig, damit der Duplicator richtig arbeitet. Klicke auf jeden Link für mehr Details."
 
 #: views/packages/new1.inc-a.reqs.php:22
 #@ wpduplicator
@@ -537,7 +537,7 @@ msgstr "Reservierte Dateien"
 #: views/packages/new1.inc-a.reqs.php:49
 #@ wpduplicator
 msgid "A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again."
-msgstr "Es wurden reservierte Datei (en) im WordPress Stammverzeichnis gefunden. Reservierte Dateinamen sind installer.php, Installateur-data.sql und Installateur-log.txt. Zum korrekten Archivieren deiner Dateien entferne bitte diese Dateien aus dem WordPress Stammverzeichnis. Dann versuche erneut, das Archiv zu erstellen."
+msgstr "Es wurden reservierte Datei (en) im WordPress Stammverzeichnis gefunden. Reservierte Dateinamen sind installer.php, Installateur-data.sql und Installateur-log.txt. Zum korrekten Archivieren deiner Dateien entferne bitte diese Dateien aus dem WordPress-Stammverzeichnis. Dann versuche erneut, das Archiv zu erstellen."
 
 #: views/packages/new1.inc-a.reqs.php:50
 #@ wpduplicator
@@ -547,7 +547,7 @@ msgstr "Dateien werden entfernt"
 #: views/packages/new1.inc-a.reqs.php:59
 #@ wpduplicator
 msgid "Zip Archive Enabled"
-msgstr "Zip-Archiv Aktiviert"
+msgstr "Zip-Archiv aktiviert"
 
 #: views/packages/new1.inc-a.reqs.php:62
 #@ wpduplicator
@@ -579,7 +579,7 @@ msgstr "mehr Informationen"
 #: views/packages/new1.inc-a.reqs.php:104
 #@ wpduplicator
 msgid "PHP Support"
-msgstr "PHP Unterstützung"
+msgstr "PHP-Unterstützung"
 
 #: views/packages/new1.inc-a.reqs.php:111
 #@ wpduplicator
@@ -611,7 +611,7 @@ msgstr "Benötigst du einen für Duplicator zertifizierten Hosting-Anbieter?"
 #: views/packages/new1.inc-a.reqs.php:151
 #@ wpduplicator
 msgid "duplicator approved"
-msgstr "Duplicator erlaubt"
+msgstr "Empfohlene Provider"
 
 #: views/packages/new1.inc-b.form.php:11
 #@ wpduplicator
@@ -672,7 +672,7 @@ msgstr "Verzeichnisse"
 #: views/packages/new1.inc-b.form.php:57
 #@ wpduplicator
 msgid "root path"
-msgstr "Root Pfad"
+msgstr "Root-Pfad"
 
 #: views/packages/new1.inc-b.form.php:58
 #@ wpduplicator
@@ -860,7 +860,7 @@ msgstr "Zwischengespeicherte Daten"
 #: views/packages/new2.base.php:118
 #@ wpduplicator
 msgid "Cache Path"
-msgstr "Cache Pfad"
+msgstr "Cache-Pfad"
 
 #: views/packages/new2.base.php:119
 #@ wpduplicator
@@ -989,7 +989,7 @@ msgstr ""
 #: views/packages/new2.base.php:396
 #@ wpduplicator
 msgid "No name length issues."
-msgstr ""
+msgstr "Keine lange oder ungültige Namen."
 
 #: views/packages/new2.base.php:399
 #: views/packages/new2.base.php:407
@@ -1109,7 +1109,7 @@ msgstr "APC Aktiviert"
 #: views/settings/diagnostics.php:103
 #@ wpduplicator
 msgid "Root Path"
-msgstr "Root Pfad"
+msgstr "Root-Pfad"
 
 #: views/settings/diagnostics.php:111
 #@ wpduplicator
@@ -1119,7 +1119,7 @@ msgstr "Plugin-Pfad"
 #: views/settings/diagnostics.php:115
 #@ wpduplicator
 msgid "Loaded PHP INI"
-msgstr "Geladene PHP INI"
+msgstr "Geladene PHP-INI"
 
 #: views/settings/diagnostics.php:126
 #@ wpduplicator
@@ -1220,7 +1220,7 @@ msgstr "Hinweis: Dieser Wert ist die physische Server-Festplatte-Verteilung."
 #: views/settings/diagnostics.php:208
 #@ wpduplicator
 msgid "On shared hosts check your control panel for the 'TRUE' disk space quota value."
-msgstr "Überprüfen Sie auf freigegebenen Hosts Ihres Control Panels für den 'TRUE' Disk Space Quote Wert."
+msgstr "Überprüfe auf freigegebenen Hosts deines Control Panels für den 'TRUE' Disk Space Quote Wert."
 
 #: views/settings/diagnostics.php:224
 #@ wpduplicator
@@ -1235,7 +1235,7 @@ msgstr "Options Werte"
 #: views/settings/diagnostics.php:266
 #@ wpduplicator
 msgid "PHP Information"
-msgstr "PHP Information"
+msgstr "PHP-Information"
 
 #: views/settings/diagnostics.php:285
 #@ wpduplicator
@@ -1331,12 +1331,12 @@ msgstr "Einstellungen speichern"
 #: views/tools/cleanup.php:8
 #@ wpduplicator
 msgid "Installer File Cleanup Ran."
-msgstr "Installations-Datei gelöscht."
+msgstr "Installations-Dateien gelöscht."
 
 #: views/tools/cleanup.php:58
 #@ wpduplicator
 msgid "If the installer files did not successfully get removed, then you WILL need to remove them manually"
-msgstr "Wenn die Installationsdateien nicht vollständig folgreich entfernt wurden, dann müssen sie manuell gelöscht werden"
+msgstr "Wenn die Installationsdateien nicht vollständig erfolgreich entfernt wurden, dann müssen sie manuell gelöscht werden"
 
 #: views/tools/cleanup.php:59
 #@ wpduplicator
@@ -1356,7 +1356,7 @@ msgstr "Lösche reservierte Dateien"
 #: views/tools/cleanup.php:71
 #@ wpduplicator
 msgid "Removes all installer files from a previous install"
-msgstr "Entferne alle Installations-Dateien der früheren Installation"
+msgstr "Entferne alle Installations-Dateien der früheren Installation."
 
 #: views/tools/cleanup.php:74
 #@ wpduplicator
@@ -1372,7 +1372,7 @@ msgstr "Entfernt alle übernommenen Daten und Einstellungen vor Version"
 #, php-format
 #@ wpduplicator
 msgid "This action will remove all legacy settings prior to version %1$s.  "
-msgstr "Diese Aktion wird alle alten Einstellungen vor Version% 1 $ s entfernen. "
+msgstr "Diese Aktion wird alle alten Einstellungen vor Version %1$s entfernen. "
 
 #: views/tools/cleanup.php:91
 #@ wpduplicator
@@ -1397,7 +1397,7 @@ msgstr "Log-Datei nicht gefunden oder nicht lesbar"
 #: views/tools/logging.php:142
 #@ wpduplicator
 msgid "No log files were found in the snapshots directory with the extension *.log"
-msgstr "Im Snapshots-Verzeichnis wurden keine Log-Dateien mit der Endung *. Log gefunden"
+msgstr "Im Snapshots-Verzeichnis wurden keine Log-Dateien mit der Endung *.log gefunden"
 
 #: views/tools/logging.php:143
 #@ wpduplicator
@@ -1458,13 +1458,13 @@ msgstr "PHP-Einstellungen"
 #: views/packages/new2.base.php:102
 #@ wpduplicator
 msgid "The Duplicator has been known to have issues with some of the settings above. Please work with your host or server administrator to disable this value in the php.ini file if you’re having issues with building a package."
-msgstr "Der Duplicator hat einige Probleme mit den oben genannten Einstellungen. Bitte arbeite mit dem Host-oder Server-Administrator, um diesen Wert in der php.ini-Datei deaktivieren, wenn Probleme mit dem Aufbau eines Archives bestehen."
+msgstr "Der Duplicator hat einige Probleme mit den oben genannten Einstellungen. Bitte informiere deinen Host-oder Server-Administrator, um diesen Wert in der php.ini-Datei zu deaktivieren, wenn Probleme mit dem Aufbau eines Archives bestehen."
 
 #: views/packages/new2.base.php:138
 #, php-format
 #@ wpduplicator
 msgid "Timeouts effect how long a process is allowed to run.  The recommended timeout is \"%1$s\" seconds. An attempt is made to override this value if the enviroment allows it.  A \"Warn\" status will not be an issue unless your host kills PHP processes after a certain amount of time. "
-msgstr "Timeouts geben an, wie lange ein Prozess ausgeführt werden darf. Die empfohlene Timeout ist \\ \\\"% 1 $ s \" Sekunden. Es wird ein Versuch gemacht, diesen Wert zu überschreiben, wenn es die Umgebung zulässt. A \\ \\\"Warn \"-Status wird kein Problem sein, es sei denn, der Hoster beendet PHP-Prozesse nach einer gewissen Zeit."
+msgstr "Timeouts geben an, wie lange ein Prozess ausgeführt werden darf. Die empfohlene Timeout ist \"%1$s\" Sekunden. Es wird ein Versuch gemacht, diesen Wert zu überschreiben, wenn es die Umgebung zulässt. Ein \"Warn \"-Status wird kein Problem sein, es sei denn, der Hoster beendet PHP-Prozesse nach einer gewissen Zeit."
 
 #: views/packages/new2.base.php:141
 #@ wpduplicator
@@ -1475,7 +1475,7 @@ msgstr "Timeouts können auch auf dem Web-Server eingestellt werden. Bitte arbei
 #, php-format
 #@ wpduplicator
 msgid "Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files."
-msgstr "Gesamtgröße aller Dateien abzüglich aller Filter durch das Setup. Die aktuellen Grenzwerte, die Warnungen auslösen, sind % 1 $ s für die gesamte Website und% 2 $ s für große Dateien."
+msgstr "Gesamtgröße aller Dateien abzüglich aller Filter durch das Setup. Die aktuellen Grenzwerte, die Warnungen auslösen, sind %1$s für die gesamte Website und %2$s für große Dateien."
 
 #: views/packages/new2.base.php:199
 #@ wpduplicator
@@ -1492,7 +1492,7 @@ msgstr "Große Dateien wie Filme oder andere Archiv-Daten können zu Problemen m
 #, php-format
 #@ wpduplicator
 msgid "Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu."
-msgstr "Gesamtgröße und Zeilenanzahl für alle Datenbank-Tabellen sind Richtwerte. Die Schwellenwerte, die Warnungen auslösen sind % 1 $ s und% 2 $ s Datensätze. Große Datenbanken benötigen mehr Zeit bei der Verarbeitung und können zu Problemen mit Server-Timeout und Speichereinstellungen führen. Ausführen eines % 3 $ s auf der Datenbank kann auch dazu beitragen, die Gesamtgröße und Leistung zu verbessern. Wenn der Server shell_exec und mysqldump unterstützt, kannst du versuchen, diese Option aus dem Menü Einstellungen zu aktivieren."
+msgstr "Gesamtgröße und Zeilenanzahl für alle Datenbank-Tabellen sind Richtwerte. Die Schwellenwerte, die Warnungen auslösen sind %1$s und %2$s Datensätze. Große Datenbanken benötigen mehr Zeit bei der Verarbeitung und können zu Problemen mit Server-Timeout und Speichereinstellungen führen. Ausführen eines %3$s auf der Datenbank kann auch dazu beitragen, die Gesamtgröße und Leistung zu verbessern. Wenn der Server shell_exec und mysqldump unterstützt, kannst du versuchen, diese Option aus dem Menü Einstellungen zu aktivieren."
 
 #: views/packages/new3.base.php:95
 #@ wpduplicator
@@ -1522,7 +1522,7 @@ msgstr ""
 #: views/packages/new3.base.php:121
 #@ wpduplicator
 msgid "Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.  Please visit the support page for additional resources."
-msgstr "Einige Server schließen die Verbindungen schnell, doch die Erstellung kann auch weiterhin im Hintergrund laufen. Um zu prüfen ob derProzess noch läuft, öffnen den \\\"tmp\\\"-Ordner um zu sehen, ob die Archivdatei in der Größe wächst. Wenn nicht, hat der Server strenge Beschränkungen im Timeout. Bitte besuche die Support-Seite für weitere Lösungen."
+msgstr "Einige Server schließen die Verbindungen schnell, doch die Erstellung kann auch weiterhin im Hintergrund laufen. Um zu prüfen ob derProzess noch läuft, öffnen den 'tmp'-Ordner um zu sehen, ob die Archivdatei in der Größe wächst. Wenn nicht, hat der Server strenge Beschränkungen im Timeout. Bitte besuche die Support-Seite für weitere Lösungen."
 
 #: views/settings/diagnostics.php:107
 #@ wpduplicator
@@ -1537,7 +1537,7 @@ msgstr "Plugin"
 #: views/settings/general.php:88
 #@ wpduplicator
 msgid "Keeps the 'Skip Scan (step 2)' option checked."
-msgstr ""
+msgstr "Markiert 'Scan überspringen (Schritt 2)'."
 
 #: views/settings/general.php:93
 #@ wpduplicator
@@ -1557,7 +1557,7 @@ msgstr "nur empfohlen für große Archive"
 #: views/settings/general.php:99
 #@ wpduplicator
 msgid "This will attempt to keep a network connection established for large archives."
-msgstr ""
+msgstr "Dadurch wird versucht, eine Netzwerkverbindung für große Archive zu etablieren."
 
 #: views/settings/general.php:104
 #@ wpduplicator
