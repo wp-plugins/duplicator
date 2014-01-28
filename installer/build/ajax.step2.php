@@ -19,6 +19,7 @@ DupUtil::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 //POST PARAMS
 $_POST['blogname'] = mysqli_real_escape_string($dbh, $_POST['blogname']);
 $_POST['postguid'] = isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
+$_POST['fullsearch'] = isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
 $_POST['path_old'] = isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
 $_POST['path_new'] = isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
 $_POST['siteurl'] = isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
@@ -86,7 +87,7 @@ array_push($GLOBALS['REPLACE_LIST'],
 );
 
 @mysqli_autocommit($dbh, false);
-$report = DUPX_Serializer::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $GLOBALS['TABLES_SKIP_COLS']);
+$report = DUPX_Serializer::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $GLOBALS['TABLES_SKIP_COLS'], $_POST['fullsearch']);
 @mysqli_commit($dbh);
 @mysqli_autocommit($dbh, true);
 

@@ -78,6 +78,14 @@ class DUPX_Serializer {
 				$fields[] = $row['Field']; 
 			} 
 		} 
+		
+		//Return Primary which is needed for index lookup
+		$result = mysqli_query($conn, "SHOW INDEX FROM `{$table}` WHERE KEY_NAME LIKE '%PRIMARY%'");
+		if (mysqli_num_rows($result) > 0) { 
+			while ($row = mysqli_fetch_assoc($result)) { 
+				$fields[] = $row['Column_name']; 
+			} 
+		} 
 	
 		return (count($fields) > 0) ? $fields : null;
 	}
@@ -90,7 +98,7 @@ class DUPX_Serializer {
 	 * @param array  $tables     The tables we want to look at.
 	 * @return array Collection of information gathered during the run.
 	 */
-	static public function load($conn, $list = array(), $tables = array(), $cols = array()) {
+	static public function load($conn, $list = array(), $tables = array(), $cols = array(), $fullsearch = false) {
 		$exclude_cols = $cols;
 
 		$report = array('scan_tables' => 0, 'scan_rows' => 0, 'scan_cells' => 0,
@@ -126,9 +134,14 @@ class DUPX_Serializer {
 				
 				// Grab the columns of the table.  Only grab text based columns because 
 				// they are the only data types that should allow any type of search/replace logic
-				$colList = self::getTextColumns($conn, $table);
-				$colList = ($colList != null && is_array($colList)) ? implode(',', $colList) : '';
-				$filterMsg = (empty($colList)) ? '*' : '~';
+				$colList = '*';
+				$filterMsg =  '*';
+				if (! $fullsearch) {
+					$colList = self::getTextColumns($conn, $table);
+					$colList = ($colList != null && is_array($colList)) ? implode(',', $colList) : '';
+					$filterMsg = (empty($colList)) ? '*' : '~';
+				}
+
 				DUPX_Log::Info("{$table}{$filterMsg}: ({$row_count})");
 				
 				//Paged Records
@@ -137,9 +150,7 @@ class DUPX_Serializer {
 					$current_row = 0;
 					$start = $page * $page_size;
 					$end   = $start + $page_size;
-					$data  = (! empty($colList))
-						? mysqli_query($conn, sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset))
-						: mysqli_query($conn, sprintf('SELECT * FROM %s LIMIT %d, %d', $table, $start, $offset));
+					$data  = mysqli_query($conn, sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset));
 
 					if (!$data)
 						$report['errsql'][] = mysqli_error($conn);
