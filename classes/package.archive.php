@@ -117,8 +117,9 @@ class DUP_Archive {
 
 				} else if ($file->isFile() && $file->isReadable()) {
 					if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filterExtsArray)) {
-						$fileSize  = @$file->getSize() or 0;
-						$this->Size += $fileSize; 
+						$fileSize  = filesize($nextpath);
+						$fileSize  = ($fileSize) ? $fileSize : 0;
+						$this->Size += $fileSize;
 						$this->FileCount++;
 						if (strlen($nextpath) > 200 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file)) 
 							array_push($this->InvalidFileList, $nextpath);
