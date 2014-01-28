@@ -147,10 +147,11 @@ class DUPX_Serializer {
 				//Paged Records
 				for ($page = 0; $page < $pages; $page++) {
 
-					$sql = sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset);
+	
 					$current_row = 0;
 					$start = $page * $page_size;
 					$end   = $start + $page_size;
+					$sql = sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset);
 					$data  = mysqli_query($conn, $sql);
 
 					if (!$data)
