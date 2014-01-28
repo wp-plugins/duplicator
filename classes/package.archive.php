@@ -23,8 +23,8 @@ class DUP_Archive {
 	protected $Package;
 	
 	//PRIVATE
-	private $filerDirsArray = array();
-	private $filerExtsArray = array();
+	private $filterDirsArray = array();
+	private $filterExtsArray = array();
 
 	
 	public function __construct($package) {
@@ -78,16 +78,18 @@ class DUP_Archive {
 	 *  @link http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx Windows filename restrictions
 	 */	
 	public function GetStats() {
-		$this->filerDirsArray = $this->GetFilterDirAsArray();
-		$this->filerExtsArray = $this->GetFilterExtsAsArray();
+		$this->filterDirsArray = $this->GetFilterDirAsArray();
+		$this->filterExtsArray = $this->GetFilterExtsAsArray();
 		$rootPath = rtrim(DUPLICATOR_WPROOTPATH, '//' );
 	
 		if ($this->FilterOn) {
-			if (! in_array($rootPath, $this->filerDirsArray) ) {
+			if (! in_array($rootPath, $this->filterDirsArray) ) {
 				$this->runDirStats($this->PackDir);
 				return $this;
 			}
 		} else {
+			$this->filterDirsArray = array();
+			$this->filterDirsArray = array();
 			$this->runDirStats($this->PackDir);
 			return $this;
 		}
@@ -108,19 +110,20 @@ class DUP_Archive {
 			if (!$file->isDot()) {
 				$nextpath	= "{$currentPath}/{$file}";
 				if ($file->isDir()) {
-					if (! in_array($nextpath, $this->filerDirsArray)) {						
+					if (! in_array($nextpath, $this->filterDirsArray)) {						
 						$result = $this->runDirStats($nextpath);
 						$this->DirCount++;
 					}
 
 				} else if ($file->isFile() && $file->isReadable()) {
-					if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filerExtsArray)) {
-						$this->Size += $file->getSize();
+					if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filterExtsArray)) {
+						$fileSize  = @$file->getSize() or 0;
+						$this->Size += $fileSize; 
 						$this->FileCount++;
 						if (strlen($nextpath) > 200 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file)) 
 							array_push($this->InvalidFileList, $nextpath);
 						if ($file->getSize() > DUPLICATOR_SCAN_BIGFILE) 
-							array_push($this->BigFileList, $nextpath);
+							array_push($this->BigFileList, $nextpath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
 					}
 				} else if ($file->isLink()) {
 					$this->LinkCount++;

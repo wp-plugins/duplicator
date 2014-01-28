@@ -313,8 +313,6 @@ switch ($_POST['dbaction']) {
 }
 
 
-
-
 //WRITE DATA
 DUPX_Log::Info("--------------------------------------");
 DUPX_Log::Info("DATABASE RESULTS");
@@ -323,6 +321,7 @@ $profile_start = DupUtil::get_microtime();
 $fcgi_buffer_pool = 5000;
 $fcgi_buffer_count = 0;
 $dbquery_rows = 0;
+$dbtable_rows = 1;
 $dbquery_errs = 0;
 $counter = 0;
 @mysqli_autocommit($dbh, false);
@@ -367,6 +366,7 @@ $dbtable_count = 0;
 if ($result = mysqli_query($dbh, "SHOW TABLES")) {
 	while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
 		$table_rows = DupUtil::table_row_count($dbh, $row[0]);
+		$dbtable_rows += $table_rows;
 		DUPX_Log::Info("{$row[0]}: ({$table_rows})");
 		$dbtable_count++;
 	}
@@ -407,8 +407,8 @@ DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 
 $JSON['pass'] = 1;
 $JSON['table_count'] = $dbtable_count;
-$JSON['table_rows'] = ($dbquery_rows - ($dbtable_count + $dbdelete_count + $dbquery_errs));
-$JSON['query_errs'] = $dbquery_errs;
+$JSON['table_rows']  = $dbtable_rows;
+$JSON['query_errs']  = $dbquery_errs;
 echo json_encode($JSON);
 error_reporting($ajax1_error_level);
 die('');

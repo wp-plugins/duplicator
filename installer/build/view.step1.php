@@ -153,6 +153,7 @@ VIEW: STEP 1- INPUT -->
 		<select name="logging" id="logging">
 		    <option value="1" selected="selected">Light Logging</option>
 		    <option value="2">Detailed Logging</option>
+			<!--option value="3">Debug Logging</option-->
 		</select>
 	</div>
 	<h3 style="margin-bottom:5px">

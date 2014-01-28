@@ -147,16 +147,19 @@ class DUPX_Serializer {
 				//Paged Records
 				for ($page = 0; $page < $pages; $page++) {
 
+					$sql = sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset);
 					$current_row = 0;
 					$start = $page * $page_size;
 					$end   = $start + $page_size;
-					$data  = mysqli_query($conn, sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset));
+					$data  = mysqli_query($conn, $sql);
 
 					if (!$data)
 						$report['errsql'][] = mysqli_error($conn);
 					
 					$scan_count = ($row_count < $end) ? $row_count : $end;
 					DUPX_Log::Info("\tScan => {$start} of {$scan_count}", 2);
+					//DEBUG ONLY:
+					//DUPX_Log::Info("\t{$sql}", 3);
 
 					//Loops every row
 					while ($row = mysqli_fetch_array($data)) {
@@ -225,6 +228,8 @@ class DUPX_Serializer {
 						if ($upd && !empty($where_sql)) {
 							$sql = "UPDATE `{$table}` SET " . implode(', ', $upd_sql) . ' WHERE ' . implode(' AND ', array_filter($where_sql));
 							$result = mysqli_query($conn, $sql) or $report['errsql'][] = mysqli_error($conn);
+							//DEBUG ONLY:
+							//DUPX_Log::Info("\t{$sql}", 3);
 							if ($result) {
 								if ($serial_err > 0) {
 									$report['errser'][] = "SELECT " . implode(', ', $upd_col) . " FROM `{$table}`  WHERE " . implode(' AND ', array_filter($where_sql)) . ';';
