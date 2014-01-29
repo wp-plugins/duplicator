@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-08 21:27-0700\n"
-"PO-Revision-Date: 2014-01-27 11:35:13+0000\n"
+"PO-Revision-Date: 2014-01-27 23:48:08+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1464,12 +1464,12 @@ msgstr "Der Duplicator hat einige Probleme mit den oben genannten Einstellungen.
 #, php-format
 #@ wpduplicator
 msgid "Timeouts effect how long a process is allowed to run.  The recommended timeout is \"%1$s\" seconds. An attempt is made to override this value if the enviroment allows it.  A \"Warn\" status will not be an issue unless your host kills PHP processes after a certain amount of time. "
-msgstr "Timeouts geben an, wie lange ein Prozess ausgeführt werden darf. Die empfohlene Timeout ist \"%1$s\" Sekunden. Es wird ein Versuch gemacht, diesen Wert zu überschreiben, wenn es die Umgebung zulässt. Ein \"Warn \"-Status wird kein Problem sein, es sei denn, der Hoster beendet PHP-Prozesse nach einer gewissen Zeit."
+msgstr "Timeouts geben an, wie lange ein Prozess ausgeführt werden darf. Die empfohlene Timeout ist \"%1$s\" Sekunden. Es wird ein Versuch gemacht, diesen Wert zu überschreiben, wenn es die Umgebung zulässt. Ein \"Warn\"-Status wird kein Problem sein, es sei denn, der Hoster beendet PHP-Prozesse nach einer gewissen Zeit."
 
 #: views/packages/new2.base.php:141
 #@ wpduplicator
 msgid "Timeouts can also be set at the web server layer, please work with your host or server administrator to make sure there are not restrictions for how long a PHP process is allowed to run.  If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly."
-msgstr "Timeouts können auch auf dem Web-Server eingestellt werden. Bitte arbeite mit dem Host-oder Server-Administrator zusammen, um sicherzustellen, dass es keine Beschränkungen gibt, für wie lange ein PHP-Prozess ausgeführt werden darf. Wenn die Verarbeitungszeit begrenzt ist, sollte mit denDatenbank-oder Dateifiltern die Größe des Gesamtpakets verkleinert werden. Benutze die Einstellungen mit Vorsicht, denn falsche Einstellungen können dazu führen, dass die Installation nicht richtig funktioniert."
+msgstr "Timeouts können auch auf dem Web-Server eingestellt werden. Bitte arbeite mit dem Host-oder Server-Administrator zusammen, um sicherzustellen, dass es keine Beschränkungen gibt, für wie lange ein PHP-Prozess ausgeführt werden darf. Wenn die Verarbeitungszeit begrenzt ist, sollte mit den Datenbank- oder Dateifiltern die Größe des Gesamtpakets verkleinert werden. Benutze die Einstellungen mit Vorsicht, denn falsche Einstellungen können dazu führen, dass die Installation nicht richtig funktioniert."
 
 #: views/packages/new2.base.php:185
 #, php-format
@@ -1486,13 +1486,13 @@ msgstr "Ungültige Datei-oder Ordnernamen können zu Problemen führen, wenn das
 #, php-format
 #@ wpduplicator
 msgid "Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location."
-msgstr "Große Dateien wie Filme oder andere Archiv-Daten können zu Problemen mit Timeouts führen. Die aktuelle Prüfung für große Dateien ist % 1 $ s pro Datei. Wenn es zu Problemen beim Erstellen des Paketes kommt, bitte diese Dateien mit dem Filter ausschließen und manuell auf die neue Position verschieben."
+msgstr "Große Dateien wie Filme oder andere Archiv-Daten können zu Problemen mit Timeouts führen. Die aktuelle Prüfung für große Dateien ist %1$s pro Datei. Wenn es zu Problemen beim Erstellen des Archives kommt, bitte diese Dateien mit dem Filter ausschließen und manuell auf die neue Position verschieben."
 
 #: views/packages/new2.base.php:257
 #, php-format
 #@ wpduplicator
 msgid "Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu."
-msgstr "Gesamtgröße und Zeilenanzahl für alle Datenbank-Tabellen sind Richtwerte. Die Schwellenwerte, die Warnungen auslösen sind %1$s und %2$s Datensätze. Große Datenbanken benötigen mehr Zeit bei der Verarbeitung und können zu Problemen mit Server-Timeout und Speichereinstellungen führen. Ausführen eines %3$s auf der Datenbank kann auch dazu beitragen, die Gesamtgröße und Leistung zu verbessern. Wenn der Server shell_exec und mysqldump unterstützt, kannst du versuchen, diese Option aus dem Menü Einstellungen zu aktivieren."
+msgstr "Gesamtgröße und Zeilenanzahl für alle Datenbank-Tabellen sind Richtwerte. Die Schwellenwerte, die Warnungen auslösen sind %1$s und %2$s Datensätze. Große Datenbanken benötigen mehr Zeit bei der Verarbeitung und können zu Problemen mit Server-Timeout und Speichereinstellungen führen. Ausführen einer %3$s auf der Datenbank können auch dazu beitragen, die Gesamtgröße und Leistung zu verbessern. Wenn der Server shell_exec und mysqldump unterstützt, kannst du versuchen, diese Option aus dem Menü Einstellungen zu aktivieren."
 
 #: views/packages/new3.base.php:95
 #@ wpduplicator
@@ -1567,7 +1567,7 @@ msgstr "Datenbank erstellen"
 #: views/settings/general.php:128
 #@ wpduplicator
 msgid "Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator."
-msgstr "Mysqldump wurde nicht an der Standardposition oder der Ort gefunden. Bitte gib den Pfad zu einem gültigen Ort ein, an dem mysqldump ausgeführt werden kann. Sollte das Problem bestehen bleiben, kontaktiere den Server-Administrator."
+msgstr "Mysqldump wurde nicht an der Standardposition gefunden. Bitte gib den Pfad zu einem gültigen Ort ein, an dem mysqldump ausgeführt werden kann. Sollte das Problem bestehen bleiben, kontaktiere den Server-Administrator."
 
 #: views/support.php:57
 #@ wpduplicator

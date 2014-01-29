@@ -101,6 +101,7 @@ $GLOBALS['FW_PACKAGE_NAME'] = '%fwrite_package_name%';
 $GLOBALS['FW_PACKAGE_NOTES'] = '%fwrite_package_notes%';
 $GLOBALS['FW_SECURE_NAME'] = '%fwrite_secure_name%';
 $GLOBALS['FW_DBHOST'] = '%fwrite_dbhost%';
+$GLOBALS['FW_DBHOST'] = empty($GLOBALS['FW_DBHOST']) ? 'localhost' : $GLOBALS['FW_DBHOST'];
 $GLOBALS['FW_DBNAME'] = '%fwrite_dbname%';
 $GLOBALS['FW_DBUSER'] = '%fwrite_dbuser%';
 $GLOBALS['FW_DBPASS'] = '%fwrite_dbpass%';
@@ -141,7 +142,7 @@ $GLOBALS['REPLACE_LIST'] = array();
 define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 
 //SHARED POST PARMS
-$_POST['action_step'] = isset($_POST['action_step']) ? $_POST['action_step'] : "0";
+$_POST['action_step'] = isset($_POST['action_step']) ? $_POST['action_step'] : "1";
 $_POST['dbhost']	= isset($_POST['dbhost']) ? trim($_POST['dbhost']) : null;
 $_POST['dbuser']	= isset($_POST['dbuser']) ? trim($_POST['dbuser']) : null;
 $_POST['dbpass']	= isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
@@ -276,9 +277,6 @@ if (isset($_POST['action_ajax'])) {
 
 if (! isset($_GET['help'])) {
 switch ($_POST['action_step']) {
-	case "0" :
-	?> @@VIEW.STEP1.PHP@@ <?php
-	break;
 	case "1" :
 	?> @@VIEW.STEP1.PHP@@ <?php
 	break;

@@ -4,7 +4,7 @@
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
 	
 	$logs = glob(DUPLICATOR_SSDIR_PATH . '/*.log') ;
-	if (count($logs)) {
+	if ($logs != false && count($logs)) {
 		usort($logs, create_function('$a,$b', 'return filemtime($b) - filemtime($a);'));
 		@chmod(DUP_Util::SafePath($logs[0]), 0644);
 	} 
@@ -139,8 +139,7 @@ jQuery(document).ready(function($) {
 	<div style="padding:20px">
 		<h2><?php _e("Log file not found or unreadable", 'wpduplicator') ?>.</h2>
 
-		<?php _e("No log files were found in the snapshots directory with the extension *.log", 'wpduplicator') ?>.
-		<?php _e("If no log file is present the try to create a package", 'wpduplicator') ?>.<br/><br/>
+		<?php _e("Try to create a package, since no log files were found in the snapshots directory with the extension *.log", 'wpduplicator') ?>.<br/><br/>
 
 		<?php _e("Reasons for log file not showing", 'wpduplicator') ?>: <br/>
 		- <?php _e("The web server does not support returning .log file extentions", 'wpduplicator') ?>. <br/>
