@@ -158,7 +158,9 @@ class DUP_Zip  extends DUP_Archive {
 					self::$countLinks++;
 				} 
 				self::$limitItems++;
-				self::$size = self::$size + $file->getSize();
+				$fileSize  = filesize($fullPath);
+				$fileSize  = ($fileSize) ? $fileSize : 0;
+				self::$size = self::$size + $fileSize;
 			}
 		}
 		
@@ -213,7 +215,9 @@ class DUP_Zip  extends DUP_Archive {
 					self::$countLinks++;
 				} 
 				self::$limitItems++;
-				self::$size = self::$size + $file->getSize();
+				$fileSize  = filesize($fullPath);
+				$fileSize  = ($fileSize) ? $fileSize : 0;
+				self::$size = self::$size + $fileSize;
 			}
 		}
 		@closedir($dh);

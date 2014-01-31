@@ -123,7 +123,7 @@ class DUP_Archive {
 						$this->FileCount++;
 						if (strlen($nextpath) > 200 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file)) 
 							array_push($this->InvalidFileList, $nextpath);
-						if ($file->getSize() > DUPLICATOR_SCAN_BIGFILE) 
+						if ($fileSize > DUPLICATOR_SCAN_BIGFILE) 
 							array_push($this->BigFileList, $nextpath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
 					}
 				} else if ($file->isLink()) {
