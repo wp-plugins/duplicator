@@ -138,7 +138,12 @@ class DUPX_Serializer {
 				$filterMsg =  '*';
 				if (! $fullsearch) {
 					$colList = self::getTextColumns($conn, $table);
-					$colList = ($colList != null && is_array($colList)) ? implode(',', $colList) : '';
+					if ($colList != null && is_array($colList)) {
+						array_walk($colList, create_function('&$str', '$str = "`$str`";'));
+						$colList = implode(',', $colList);
+					} else {
+						$colList =  '';
+					}
 					$filterMsg = (empty($colList)) ? '*' : '~';
 				}
 
@@ -147,7 +152,6 @@ class DUPX_Serializer {
 				//Paged Records
 				for ($page = 0; $page < $pages; $page++) {
 
-	
 					$current_row = 0;
 					$start = $page * $page_size;
 					$end   = $start + $page_size;
@@ -230,7 +234,7 @@ class DUPX_Serializer {
 							$sql = "UPDATE `{$table}` SET " . implode(', ', $upd_sql) . ' WHERE ' . implode(' AND ', array_filter($where_sql));
 							$result = mysqli_query($conn, $sql) or $report['errsql'][] = mysqli_error($conn);
 							//DEBUG ONLY:
-							//DUPX_Log::Info("\t{$sql}", 3);
+							DUPX_Log::Info("\t{$sql}", 3);
 							if ($result) {
 								if ($serial_err > 0) {
 									$report['errser'][] = "SELECT " . implode(', ', $upd_col) . " FROM `{$table}`  WHERE " . implode(' AND ', array_filter($where_sql)) . ';';

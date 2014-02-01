@@ -40,8 +40,8 @@ VIEW: STEP 3- INPUT -->
 			</td>
 			<td>
 				<i style='font-size:11px; color:#BE2323'>
-					<span data-bind="with: status.step1">Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
-					<span data-bind="with: status.step2">Update Errors: <span data-bind="text: err_all"></span></span> &nbsp; &nbsp;
+					<span data-bind="with: status.step1">Step1 Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
+					<span data-bind="with: status.step2">Step2 Update Errors: <span data-bind="text: err_all"></span></span> &nbsp; &nbsp;
 					<span data-bind="with: status.step2">Warnings: <span data-bind="text: warn_all"></span></span>
 				</i>
 			</td>
@@ -103,10 +103,10 @@ VIEW: STEP 3- INPUT -->
 			<tr><th colspan="4">Errors &amp; Warnings <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
 			<tr>
 				<td data-bind="with: status.step1">
-					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Deploy Errors (<span data-bind="text: query_errs"></span>)</a><br/>
+					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Step 1: Deploy Errors (<span data-bind="text: query_errs"></span>)</a><br/>
 				</td>
 				<td data-bind="with: status.step2">
-					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Update Errors (<span data-bind="text: err_all"></span>)</a>
+					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Step2: Update Errors (<span data-bind="text: err_all"></span>)</a>
 				</td>
 				<td data-bind="with: status.step2">
 					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
@@ -191,7 +191,7 @@ VIEW: STEP 3- INPUT -->
 		Please consider <a href='http://lifeinthegrid.com/partner/' target='_blank'>Partnering or a Donation</a>! <br/>
 		<a href="javascript:void(0)" onclick="Duplicator.dlgTips()">Troubleshoot</a> | 
 		<a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> | 
-		<a href='http://support.lifeinthegrid.com' target='_blank'>Support</a>
+		<a href='http://lifeinthegrid.com/duplicator' target='_blank'>Support</a>
 	</div><br/>
 </form>
 
@@ -202,7 +202,7 @@ DIALOG: TROUBLSHOOTING DIALOG -->
 	<div style="padding: 0px 10px 10px 10px;">		
 		<b>Common Quick Fix Issues:</b>
 		<ul>
-			<li>Use an <a href='http://lifeinthegrid.com/duplicator-certified' target='_blank'>approved hosting provider</a></li>
+			<li>Use an <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>approved hosting provider</a></li>
 			<li>Validate directory and file permissions (see below)</li>
 			<li>Validate web server configuration file (see below)</li>
 			<li>Clear your browsers cache</li>
@@ -233,9 +233,6 @@ DIALOG: TROUBLSHOOTING DIALOG -->
 		 If you have a large log file that needs evaluated please email the file, or attach it to a help ticket.
 		 <br/><br/>
 		 
-		 <b>Approved Hosts:</b><br/>
-		 Please check out our <a href='http://lifeinthegrid.com/duplicator-certified' target='_blank'>approved hosts page</a> as it has a list of hosting providers and themes that have been tested
-		 successfully with the Duplicator plugin.<br/><br/>
 	</div>
 </div>
 

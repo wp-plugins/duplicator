@@ -231,12 +231,11 @@ VIEW: STEP 1- INPUT -->
     	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
     	If your interested in Private Label Rights please contact us at the URL below to discuss
     	customizations to product labeling: http://lifeinthegrid.com	-->
-    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Database Setup Help...</b></a>
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Need Setup Help...</b></a>
     	<div id='dup-step1-cpanel' style="display:none">
     	    <div style="padding:10px 0px 0px 10px;line-height:22px">
-    		<b>Need cPanel Database Help?</b> <br/>
-    		&raquo; See the online <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
-    		&raquo; Need a host that supports cPanel?  See the Duplicator <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">approved hosting</a> page.
+    		&raquo; Check out the <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
+    		&raquo; Get help from our <a href="http://lifeinthegrid.com/labs/duplicator/resources/" target="_blank">resources page</a>
     	    </div>
     	</div><br/><br/>
     		    
@@ -372,7 +371,7 @@ PANEL: SERVER CHECKS  -->
 		<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
 	</tr>
 	<tr>
-		<td>MySQL Support</td>
+		<td><a href="http://us2.php.net/manual/en/mysqli.installation.php" target="_blank">MySQLi Support</a></td>
 		<td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
 	</tr>
 	<tr>
@@ -430,7 +429,8 @@ PANEL: SERVER CHECKS  -->
 	<!-- SAPI -->
 	<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
 	<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
-	<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com") && DupUtil::is_url_active("ajax.googleapis.com")) ? 'Yes' : 'No'; ?> 
+	<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com") && DupUtil::is_url_active("ajax.googleapis.com")) ? 'Yes' : 'No'; ?> <br/>
+	Need an <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>approved</a> Duplicator hosting provider?
 
 </div>
 </div>

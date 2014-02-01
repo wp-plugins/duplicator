@@ -150,7 +150,7 @@
 				<td><?php echo get_current_user(); ?></td>
 			</tr>
 			<tr>
-				<td><a href="" target="_blank"><?php _e("Safe Mode", 'wpduplicator'); ?></a></td>
+				<td><a href="http://php.net/manual/en/features.safe-mode.php" target="_blank"><?php _e("Safe Mode", 'wpduplicator'); ?></a></td>
 				<td>
 				<?php echo (((strtolower(@ini_get('safe_mode')) == 'on')	  ||  (strtolower(@ini_get('safe_mode')) == 'yes') || 
 							 (strtolower(@ini_get('safe_mode')) == 'true') ||  (ini_get("safe_mode") == 1 )))  
