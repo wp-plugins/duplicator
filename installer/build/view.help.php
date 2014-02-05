@@ -109,7 +109,11 @@ HELP FORM -->
 
 		<b>Post GUID:</b><br/>
 		If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.		
-		<br/>		
+		<br/><br/>	
+		
+		<b>Full Search:</b><br/>
+		Full search forces a scan of every single cell in the database. If it is not checked then only text based columns are searched which makes the update process much faster.
+		<br/>	
 	</fieldset>
 
 </div>

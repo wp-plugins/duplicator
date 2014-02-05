@@ -121,12 +121,14 @@ class DUPX_Serializer {
 				}
 
 				// Count the number of rows we have in the table if large we'll split into blocks
-				$row_count = mysqli_query($conn, 'SELECT COUNT(*) FROM ' . $table);
+				$row_count = mysqli_query($conn, "SELECT COUNT(*) FROM `{$table}`");
 				$rows_result = mysqli_fetch_array($row_count);
 				@mysqli_free_result($row_count);
 				$row_count = $rows_result[0];
-				if ($row_count == 0)
+				if ($row_count == 0) {
+					DUPX_Log::Info("{$table}^ ({$row_count})");
 					continue;
+				}
 
 				$page_size = 25000;
 				$offset = ($page_size + 1);
@@ -135,27 +137,30 @@ class DUPX_Serializer {
 				// Grab the columns of the table.  Only grab text based columns because 
 				// they are the only data types that should allow any type of search/replace logic
 				$colList = '*';
-				$filterMsg =  '*';
+				$colMsg  = '*';
 				if (! $fullsearch) {
 					$colList = self::getTextColumns($conn, $table);
 					if ($colList != null && is_array($colList)) {
 						array_walk($colList, create_function('&$str', '$str = "`$str`";'));
 						$colList = implode(',', $colList);
-					} else {
-						$colList =  '';
-					}
-					$filterMsg = (empty($colList)) ? '*' : '~';
+					} 
+					$colMsg = (empty($colList)) ? '*' : '~';
+				}
+				
+				if (empty($colList)) {
+					DUPX_Log::Info("{$table}^ ({$row_count})");
+					continue;
+				} else {
+					DUPX_Log::Info("{$table}{$colMsg} ({$row_count})");
 				}
 
-				DUPX_Log::Info("{$table}{$filterMsg}: ({$row_count})");
-				
 				//Paged Records
 				for ($page = 0; $page < $pages; $page++) {
 
 					$current_row = 0;
 					$start = $page * $page_size;
 					$end   = $start + $page_size;
-					$sql = sprintf("SELECT {$colList} FROM %s LIMIT %d, %d", $table, $start, $offset);
+					$sql = sprintf("SELECT {$colList} FROM `%s` LIMIT %d, %d", $table, $start, $offset);
 					$data  = mysqli_query($conn, $sql);
 
 					if (!$data)

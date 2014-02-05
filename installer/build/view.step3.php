@@ -40,8 +40,8 @@ VIEW: STEP 3- INPUT -->
 			</td>
 			<td>
 				<i style='font-size:11px; color:#BE2323'>
-					<span data-bind="with: status.step1">Step1 Deploy Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
-					<span data-bind="with: status.step2">Step2 Update Errors: <span data-bind="text: err_all"></span></span> &nbsp; &nbsp;
+					<span data-bind="with: status.step1">Step1 Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
+					<span data-bind="with: status.step2">Step2 Errors: <span data-bind="text: err_all"></span></span> &nbsp; &nbsp;
 					<span data-bind="with: status.step2">Warnings: <span data-bind="text: warn_all"></span></span>
 				</i>
 			</td>
@@ -103,7 +103,7 @@ VIEW: STEP 3- INPUT -->
 			<tr><th colspan="4">Errors &amp; Warnings <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
 			<tr>
 				<td data-bind="with: status.step1">
-					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Step 1: Deploy Errors (<span data-bind="text: query_errs"></span>)</a><br/>
+					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Step1: Deploy Errors (<span data-bind="text: query_errs"></span>)</a><br/>
 				</td>
 				<td data-bind="with: status.step2">
 					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Step2: Update Errors (<span data-bind="text: err_all"></span>)</a>
