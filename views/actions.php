@@ -9,15 +9,13 @@ function duplicator_package_create() {
 	DUP_Util::InitSnapshotDirectory();
 
 	$Task = new DUP_Task();
-
 	$Task->Create();
-	
 	
 	//JSON:Debug Response
 	//Pass = 1, Warn = 2, Fail = 3
 	$json = array();
-	$json['Package'] = $Task->Package;
-    $json['Status']  = 1;
+	$json['Status']   = 1;
+	$json['Package']  = $Task->Package;
 	$json['Runtime']  = $Task->Package->Runtime;
 	$json['ExeSize']  = $Task->Package->ExeSize;
 	$json['ZipSize']  = $Task->Package->ZipSize;
@@ -40,6 +38,8 @@ function duplicator_package_create() {
 function duplicator_package_scan() {
 	
 	@set_time_limit(0);
+	$errLevel = error_reporting();
+	error_reporting(E_ERROR);
 	
 	$json = array();
 	$Package = new DUP_Package();
@@ -73,6 +73,7 @@ function duplicator_package_scan() {
 	
 	///die(str_repeat("To force error message uncomment this line", 100));
 	$json_response = json_encode($json);
+	error_reporting($errLevel);
     die($json_response);
 }
 

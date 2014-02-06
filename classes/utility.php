@@ -119,11 +119,17 @@ class DUP_Util {
 	 * Size of the directory recuresivly
 	 */
 	static public function GetDirectorySize($dir) {
-		if(!file_exists($dir)) return 0;
-		if(is_file($dir)) return filesize($dir);
+		if(!file_exists($dir)) 
+			return 0;
+		if(is_file($dir)) 
+			return filesize($dir);
+		
 		$size = 0;
-		foreach(glob($dir."/*") as $fn)
-		  $size += self::GetDirectorySize($fn);
+		$list = glob($dir."/*");
+		if (! empty($list)) {
+			foreach($list as $file)
+				$size += self::GetDirectorySize($file);
+		}
 		return $size;
 	}
 	
