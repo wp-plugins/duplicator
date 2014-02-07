@@ -1,5 +1,5 @@
-<?php if( DupUtil::is_url_active("ajax.googleapis.com") ): ?>
-	<link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css' type='text/css' media='all' />
+<?php if( DupUtil::is_url_active("ajax.googleapis.com", 443) ): ?>
+	<link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css' type='text/css' media='all' />
 <?php else: ?>
 	<style type="text/css">
 	/*! jQuery UI - v1.10.3 - 2013-07-24

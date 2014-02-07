@@ -262,11 +262,13 @@ class DupUtil {
      *  IS_WEB_CONNECTED
      *  Check to see if the internet is accessable
 	 *  @param string $url		A url e.g without prefix "ajax.googleapis.com"
+	 *  @param string $port		A valid port number
 	 *  @return bool
      */
-	static public function is_url_active($url) {
+	static public function is_url_active($url, $port) {
 		if (function_exists('fsockopen')) {
-			$connected = @fsockopen($url, 80); //website and port
+			$port = isset($port) && is_integer($port) ? $port : 80;
+			$connected = @fsockopen($url, $port); //website and port
 			if ($connected){
 				$is_conn = true;
 				@fclose($connected);

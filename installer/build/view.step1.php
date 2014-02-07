@@ -429,7 +429,7 @@ PANEL: SERVER CHECKS  -->
 	<!-- SAPI -->
 	<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
 	<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
-	<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com") && DupUtil::is_url_active("ajax.googleapis.com")) ? 'Yes' : 'No'; ?> <br/>
+	<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com", 443) && DupUtil::is_url_active("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> <br/>
 	Need an <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>approved</a> Duplicator hosting provider?
 
 </div>

@@ -36,13 +36,14 @@ VIEW: STEP 3- INPUT -->
 		
 	<table class="dup-step3-final-step">
 		<tr>
-			<td>1. <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Read Install Report</a>
+			<td>1. <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Install Report</a>
 			</td>
 			<td>
-				<i style='font-size:11px; color:#BE2323'>
-					<span data-bind="with: status.step1">Step1 Errors: <span data-bind="text: query_errs"></span></span> &nbsp; &nbsp;
-					<span data-bind="with: status.step2">Step2 Errors: <span data-bind="text: err_all"></span></span> &nbsp; &nbsp;
-					<span data-bind="with: status.step2">Warnings: <span data-bind="text: warn_all"></span></span>
+				<i style='color:#BE2323'>
+					<b>Errors:</b>
+					<span data-bind="with: status.step1">Deploy (<span data-bind="text: query_errs"></span>)</span> &nbsp;
+					<span data-bind="with: status.step2">Update (<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
+					<span data-bind="with: status.step2" style="color:#888"><b>Warnings:</b> (<span data-bind="text: warn_all"></span>)</span>
 				</i>
 			</td>
 		</tr>	
@@ -50,15 +51,15 @@ VIEW: STEP 3- INPUT -->
 			<td style="width:170px">
 				2. <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Resave Permalinks</a> 
 			</td>
-			<td><i style='font-size:11px'>Updates URL rewrite rules in .htaccess (requires login)</i></td>
+			<td><i>Updates URL rewrite rules in .htaccess (requires login)</i></td>
 		</tr>	
 		<tr>
-			<td>3. <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>Test Entire Site</a></td>
-			<td><i style='font-size:11px'>Validate all pages, links images and plugins</i></td>
+			<td>3. <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>Test Site</a></td>
+			<td><i>Validate all pages, links images and plugins</i></td>
 		</tr>		
 		<tr>
 			<td>4. <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">File Cleanup</a></td>
-			<td><i style='font-size:11px'>Removes all installer files (requires login)</i></td>
+			<td><i>Removes all installer files (requires login)</i></td>
 		</tr>	
 	</table><br/>
 	
