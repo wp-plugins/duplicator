@@ -110,7 +110,10 @@ class DUP_Archive {
 			if (!$file->isDot()) {
 				$nextpath	= "{$currentPath}/{$file}";
 				if ($file->isDir()) {
-					if (! in_array($nextpath, $this->filterDirsArray)) {						
+					if (! in_array($nextpath, $this->filterDirsArray)) {		
+						if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file) || trim($file) == "") {
+							array_push($this->InvalidFileList, $nextpath);
+						}
 						$result = $this->runDirStats($nextpath);
 						$this->DirCount++;
 					}
@@ -131,6 +134,7 @@ class DUP_Archive {
 				} 
 			}	 
 		}
+		@closedir($dh);
 	}	
 	
 }

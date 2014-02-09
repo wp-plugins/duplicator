@@ -49,7 +49,7 @@ VIEW: STEP 3- INPUT -->
 		</tr>	
 		<tr>
 			<td style="width:170px">
-				2. <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Resave Permalinks</a> 
+				2. <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Save Permalinks</a> 
 			</td>
 			<td><i>Updates URL rewrite rules in .htaccess (requires login)</i></td>
 		</tr>	

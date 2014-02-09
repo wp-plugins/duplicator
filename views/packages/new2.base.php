@@ -198,7 +198,7 @@ WIZARD STEP TABS -->
 					<?php 
 						_e('Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 200 characters and illegal characters that may not work on all operating systems such as * ? > < : / \ |  .  It is recommended to remove or filter these files before building the archive or else you might have issues at install time.', 'wpduplicator');
 					?><br/><br/>
-					<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show File Locations', 'wpduplicator');?>]</a>
+					<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
 					<div id="data-arc-names-data"></div>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-FILE-101</small>
 				</div>
@@ -214,7 +214,7 @@ WIZARD STEP TABS -->
 					<?php 
 						printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_BIGFILE));
 					?><br/><br/>
-					<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show File Locations', 'wpduplicator');?>]</a>
+					<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
 					<div id="data-arc-big-data"></div>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-FILE-102</small>
 				</div>
@@ -392,11 +392,11 @@ jQuery(document).ready(function($) {
 		$('#data-arc-files').text(data.ARC.FileCount || errMsg);
 		$('#data-arc-dirs').text(data.ARC.DirCount || errMsg);
 	
-		//Long Names
+		//Invalid Names
 		html = '<?php _e("No name length issues.", 'wpduplicator') ?>';
 		if (data.ARC.InvalidFiles != undefined && data.ARC.InvalidFiles.length > 0) {
 			html = '';
-			$.each(data.ARC.InvalidFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>' + val  + '<br/>';});	
+			$.each(data.ARC.InvalidFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>[' + val  + ']<br/>';});
 		}
 		$('#data-arc-names-data').html(html);
 		

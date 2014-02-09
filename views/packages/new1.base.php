@@ -2,19 +2,29 @@
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
 	
 	global $wpdb;	
-
+	
+	//POST BACK
+	$action_updated = null;
+	if (isset($_POST['action'])) {
+		$action_result = DUP_Settings::DeleteWPOption($_POST['action']);
+		switch ($_POST['action']) {
+			case 'duplicator_package_active' : 	$action_response = __('Package settings have been reset.', 'wpduplicator'); break;		
+		}
+	} 
+	
+	
 	DUP_Util::InitSnapshotDirectory();
 	$Package = new DUP_Package();
 	$Package = $Package->GetActive();
 
 	$dup_tests  = array();
 	$dup_tests  = DUP_Package::GetSystemRequirments();
+	$default_name = DUP_Package::GetDefaultName();
 	
 	$view_state = DUP_UI::GetViewStateArray();
 	$ui_css_archive   = (isset($view_state['dup-pack-archive-panel']) && $view_state['dup-pack-archive-panel'])   ? 'display:block' : 'display:none';
 	$ui_css_installer = (isset($view_state['dup-pack-installer-panel']) && $view_state['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
 	$package_skip_scanner	= DUP_Settings::Get('package_skip_scanner');
-
 
 ?>
 
@@ -73,6 +83,10 @@ WIZARD STEP TABS -->
 		<?php _e('Step 1: Package Setup', 'wpduplicator'); ?>
 	</div> <hr/>
 </div>	
+
+<?php if (! empty($action_response))  :	?>
+	<div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
+<?php endif; ?>	
 
 <?php include('new1.inc-a.reqs.php'); ?>
 

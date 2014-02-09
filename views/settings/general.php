@@ -64,7 +64,7 @@
 			<th scope="row"><label><?php _e("Uninstall Options", 'wpduplicator'); ?></label></th>
 			<td>
 				<input type="checkbox" name="uninstall_settings" id="uninstall_settings" <?php echo ($uninstall_settings) ? 'checked="checked"' : ''; ?> /> 
-				<label for="uninstall_settings"><?php _e("Delete Plugin Settings", 'wpduplicator') ?></label><br/>
+				<label for="uninstall_settings"><?php _e("Delete Plugin Settings", 'wpduplicator') ?> </label><br/>
 
 				<input type="checkbox" name="uninstall_files" id="uninstall_files" <?php echo ($uninstall_files) ? 'checked="checked"' : ''; ?> /> 
 				<label for="uninstall_files"><?php _e("Delete Entire Snapshot Directory", 'wpduplicator') ?></label><br/>

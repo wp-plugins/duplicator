@@ -1,11 +1,13 @@
 <!-- =========================================
 META-BOX2: PACKAGE OPTIONS -->
 <form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2" data-validate="parsley">
+	<input type="hidden" id="dup-form-opts-action" name="action" value="">
 
 	<b style="font-size:15px"><i class="fa fa-archive"></i> <?php _e('Package', 'wpduplicator') ?></b>
 	<hr size="1" />
 
-	<label for="package-name"><b><?php _e('Name', 'wpduplicator') ?>:</b></label><br/>
+	<label for="package-name"><b><?php _e('Name', 'wpduplicator') ?>:</b> </label>
+	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Create a new default name', 'wpduplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
 	<input id="package-name"  name="package-name" type="text" value="<?php echo $Package->Name ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>
 	<label><b><?php _e('Notes', 'wpduplicator') ?>:</b></label> <br/>
 	<textarea id="package-notes" name="package-notes" type="text" maxlength="300" placeholder="<?php _e('Purpose of this package', 'wpduplicator') ?>" /><?php echo $Package->Notes ?></textarea>
@@ -203,8 +205,31 @@ META-BOX2: PACKAGE OPTIONS -->
 	</div><br style="clear:both" /><br/>
 
 	<div class="dup-button-footer">
-			
+		<input type="button" value="<?php _e("Reset", 'wpduplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"';?> onclick="Duplicator.Pack.ResetSettings()" />
 		<input type="submit" value="<?php _e("Next", 'wpduplicator') ?> &#9658;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"';?> />
 	</div>
 	
 </form>
+
+<script>	
+jQuery(document).ready(function($) {
+	var DUP_NAMEDEFAULT = '<?php echo $default_name ?>';
+	var DUP_NAMELAST = $('#package-name').val();
+	
+	Duplicator.Pack.ResetSettings = function () {
+		var key = 'duplicator_package_active';
+		var result = confirm('<?php _e("This will reset all of the current package settings.  Would you like to continue?", "wpduplicator"); ?>');
+		if (! result) 	return;
+		
+		jQuery('#dup-form-opts-action').val(key);
+		jQuery('#dup-form-opts').attr('action', '?page=duplicator&tab=new1')
+		jQuery('#dup-form-opts').submit();
+	}
+	
+	Duplicator.Pack.ResetName = function () {
+		var current = $('#package-name').val(); 
+		$('#package-name').val( (current == DUP_NAMELAST) ? DUP_NAMEDEFAULT : DUP_NAMELAST)
+	}
+	
+});	
+</script>

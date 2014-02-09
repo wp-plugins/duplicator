@@ -144,11 +144,15 @@ class DUP_Zip  extends DUP_Archive {
 				$zipPath	= str_replace(self::$compressDir, '', $currentPath);
 				$zipPath	= empty($zipPath) ? $file : ltrim("{$zipPath}/{$file}", '/');
 				if ($file->isDir()) {
-					if ($file->isReadable() && self::$zipArchive->addEmptyDir($zipPath)) {
-						self::$countDirs++;
-						self::recurseDirs($fullPath);
+					if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file) || trim($file) == "") {
+						DUP_Log::Info("WARNING: Excluding invalid directory - [{$fullPath}]");
 					} else {
-						DUP_Log::Info("WARNING: Unable to add directory: {$fullPath}");
+						if ($file->isReadable() && self::$zipArchive->addEmptyDir($zipPath)) {
+							self::$countDirs++;
+							self::recurseDirs($fullPath);
+						} else {
+							DUP_Log::Info("WARNING: Unable to add directory: {$fullPath}");
+						}
 					}
 				} else if ($file->isFile() && $file->isReadable()) {
 					(self::$zipArchive->addFile($fullPath, $zipPath))
@@ -190,11 +194,15 @@ class DUP_Zip  extends DUP_Archive {
 				$zipPath	= empty($zipPath) ? $file : ltrim("{$zipPath}/{$file}", '/');
 				if ($file->isDir()) {
 					if (! in_array($fullPath, self::$filterDirsArray)) {
-						if ($file->isReadable() && self::$zipArchive->addEmptyDir($zipPath)) {
-							self::$countDirs++;
-							self::recurseDirsWithFilters($fullPath);
+						if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file) || trim($file) == "") {
+							DUP_Log::Info("WARNING: Excluding invalid directory - [{$fullPath}]");
 						} else {
-							DUP_Log::Info("WARNING: Unable to add directory: {$fullPath}");
+							if ($file->isReadable() && self::$zipArchive->addEmptyDir($zipPath)) {
+								self::$countDirs++;
+								self::recurseDirsWithFilters($fullPath);
+							} else {
+								DUP_Log::Info("WARNING: Unable to add directory: {$fullPath}");
+							}
 						}
 					}  else {
 						DUP_Log::Info("- filter@ [{$fullPath}]");

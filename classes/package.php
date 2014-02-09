@@ -53,13 +53,10 @@ class DUP_Package {
      */
     function __construct() {
 		
-		$name = date('Ymd') . '_' . sanitize_title(get_bloginfo( 'name', 'display' ));
-		$name = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
-
 		$this->ID			= null;
 		$this->Version		= DUPLICATOR_VERSION;
 		$this->Type			= DUP_PackageType::MANUAL;
-		$this->Name			= $name;
+		$this->Name			= self::GetDefaultName();
 		$this->Notes		= null;
 		$this->StoreURL     = DUP_Util::SSDirURL();
 		$this->StorePath    = DUPLICATOR_SSDIR_PATH_TMP;
@@ -187,7 +184,7 @@ class DUP_Package {
 			$post = stripslashes_deep($post);
 			$name = ( isset($post['package-name']) && ! empty($post['package-name']))
 				? $post['package-name'] 
-				: date('Ymd') . '_' . sanitize_title(get_bloginfo( 'name', 'display' ));
+				: self::GetDefaultName();
 			
 			$name          = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
 			$filter_dirs   = isset($post['filter-dirs']) ? $this->parseDirectoryFilter($post['filter-dirs']) : '';
@@ -318,6 +315,18 @@ class DUP_Package {
 		$sqlFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL);
 		$logFile = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG);
 		return  ($phpFile || $sqlFile || $logFile);
+		
+	}
+	
+		/** 
+	*  Creates a default name
+	*  @return string   A default packagename
+	*/
+	public static function GetDefaultName() {
+		
+		$name = date('Ymd') . '_' . sanitize_title(get_bloginfo( 'name', 'display' ));
+		$name = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
+		return $name;
 		
 	}
 	

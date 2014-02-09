@@ -1,8 +1,8 @@
 <!-- ========================================
 JQUERY ASSETS -->
 <?php if(DupUtil::is_url_active("ajax.googleapis.com", 443) ): ?>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <?php else: ?>
 	<script type="text/javascript">
 	/*! jQuery v1.10.2 | (c) 2005, 2013 jQuery Foundation, Inc. | jquery.org/license
@@ -32,7 +32,7 @@ JQUERY ASSETS -->
 <!-- ========================================
 KNOCKOUT ASSETS -->
 <?php if( DupUtil::is_url_active("ajax.aspnetcdn.com", 443) ): ?>
-	<script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+	<script src="//ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 <?php else: ?>	
 	
 	<script type="text/javascript">
