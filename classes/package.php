@@ -182,11 +182,12 @@ class DUP_Package {
 
 		if (isset($post)) {
 			$post = stripslashes_deep($post);
-			$name = ( isset($post['package-name']) && ! empty($post['package-name']))
-				? $post['package-name'] 
-				: self::GetDefaultName();
 			
-			$name          = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
+			$name_chars = array(".", "-");
+			$name = ( isset($post['package-name']) && ! empty($post['package-name'])) ? $post['package-name'] : self::GetDefaultName();
+			$name = substr(sanitize_file_name($name), 0 , 40);
+			$name = str_replace($name_chars, '', $name);
+
 			$filter_dirs   = isset($post['filter-dirs']) ? $this->parseDirectoryFilter($post['filter-dirs']) : '';
 			$filter_exts   = isset($post['filter-exts']) ? $this->parseExtensionFilter($post['filter-exts']) : '';
 			$tablelist     = isset($post['dbtables'])    ? implode(',', $post['dbtables']) : '';
@@ -323,9 +324,11 @@ class DUP_Package {
 	*  @return string   A default packagename
 	*/
 	public static function GetDefaultName() {
-		
+		//Remove specail_chars from final result
+		$special_chars = array(".", "-");
 		$name = date('Ymd') . '_' . sanitize_title(get_bloginfo( 'name', 'display' ));
-		$name = substr(str_replace('-', '', sanitize_file_name($name)), 0 , 40);
+		$name = substr(sanitize_file_name($name), 0 , 40);
+		$name = str_replace($special_chars, '', $name);
 		return $name;
 		
 	}
