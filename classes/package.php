@@ -225,27 +225,22 @@ class DUP_Package {
 	public function SetStatus($status) {
 		global $wpdb;
 		
-		if ( ! isset($status)) {
-			return false;
+		$packageObj = serialize($this);
+		
+		if (! isset($status)) {
+			DUP_Log::Error("Package SetStatus did not receive a proper code.");
 		}
 
-		$packageObj = serialize($this);
 		if (! $packageObj) {
-			DUP_Log::Error("Unable to serialize pacakge object while updating record.");
+			DUP_Log::Error("Package SetStatus was unable to serialize package object while updating record.");
 		}
 		
-		$result = $wpdb->update( 
-			$wpdb->prefix . "duplicator_packages", 
-			array( 
-				'status' => $status,
-				'package' => $packageObj
-			), 
-			array( 'ID' => $this->ID )
-		);
-		
-		
-		return $result;
-	}	
+		$wpdb->flush();
+		$table = $wpdb->prefix . "duplicator_packages";
+		$sql   = "UPDATE `{$table}` SET  status = {$status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
+		$wpdb->query($sql);
+	}
+	
 	
 	
 	/** 
