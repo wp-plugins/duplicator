@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Duplicator v0.5.0\n"
+"Project-Id-Version: Duplicator v0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-08 21:27-0700\n"
-"PO-Revision-Date: 2014-01-27 23:48:08+0000\n"
+"PO-Revision-Date: 2014-02-13 23:47:59+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -292,14 +292,14 @@ msgid "Size"
 msgstr "Größe"
 
 #: views/packages/list.base.php:86
-#: views/packages/new1.inc-b.form.php:8
+#: views/packages/new1.inc-b.form.php:9
 #: views/packages/new3.base.php:69
 #@ wpduplicator
 msgid "Name"
 msgstr "Name"
 
 #: views/packages/list.base.php:88
-#: views/packages/new1.inc-b.form.php:5
+#: views/packages/new1.inc-b.form.php:6
 #: views/settings/general.php:79
 #@ wpduplicator
 msgid "Package"
@@ -317,14 +317,14 @@ msgid "View"
 msgstr "Ansicht"
 
 #: views/packages/list.base.php:141
-#: views/packages/new1.inc-b.form.php:127
+#: views/packages/new1.inc-b.form.php:129
 #: views/packages/new3.base.php:74
 #@ wpduplicator
 msgid "Installer"
 msgstr "Installer"
 
 #: views/packages/list.base.php:144
-#: views/packages/new1.inc-b.form.php:16
+#: views/packages/new1.inc-b.form.php:18
 #: views/packages/new2.base.php:153
 #: views/packages/new3.base.php:78
 #@ wpduplicator
@@ -342,7 +342,7 @@ msgstr "Version"
 
 #: views/packages/list.base.php:150
 #: views/packages/list.base.php:194
-#: views/packages/new1.inc-b.form.php:146
+#: views/packages/new1.inc-b.form.php:148
 #: views/settings/diagnostics.php:149
 #@ wpduplicator
 msgid "User"
@@ -356,7 +356,7 @@ msgstr "Hash"
 
 #: views/packages/list.base.php:152
 #: views/packages/list.base.php:200
-#: views/packages/new1.inc-b.form.php:10
+#: views/packages/new1.inc-b.form.php:12
 #@ wpduplicator
 msgid "Notes"
 msgstr "Anmerkungen"
@@ -454,21 +454,21 @@ msgstr "INSTALLER"
 msgid "LOG"
 msgstr "Log"
 
-#: views/packages/new1.base.php:68
+#: views/packages/new1.base.php:78
 #: views/packages/new2.base.php:54
 #: views/packages/new3.base.php:37
 #@ wpduplicator
 msgid "Setup"
 msgstr "Setup"
 
-#: views/packages/new1.base.php:69
+#: views/packages/new1.base.php:79
 #: views/packages/new2.base.php:55
 #: views/packages/new3.base.php:38
 #@ wpduplicator
 msgid "Scan"
 msgstr "Scan"
 
-#: views/packages/new1.base.php:70
+#: views/packages/new1.base.php:80
 #: views/packages/new2.base.php:56
 #: views/packages/new2.base.php:309
 #: views/packages/new3.base.php:39
@@ -476,7 +476,7 @@ msgstr "Scan"
 msgid "Build"
 msgstr "Erstellen"
 
-#: views/packages/new1.base.php:73
+#: views/packages/new1.base.php:83
 #@ wpduplicator
 msgid "Step 1: Package Setup"
 msgstr "Schritt 1: Archiv-Setup"
@@ -613,199 +613,199 @@ msgstr "Benötigst du einen für Duplicator zertifizierten Hosting-Anbieter?"
 msgid "duplicator approved"
 msgstr "Empfohlene Provider"
 
-#: views/packages/new1.inc-b.form.php:11
+#: views/packages/new1.inc-b.form.php:13
 #@ wpduplicator
 msgid "Purpose of this package"
 msgstr "Zweck dieses Pakets"
 
-#: views/packages/new1.inc-b.form.php:18
+#: views/packages/new1.inc-b.form.php:20
 #@ wpduplicator
 msgid "File filter enabled"
 msgstr "Datei-Filter aktiviert"
 
-#: views/packages/new1.inc-b.form.php:19
+#: views/packages/new1.inc-b.form.php:21
 #@ wpduplicator
 msgid "Database filter enabled"
 msgstr "Datenbank-Filter aktiviert"
 
-#: views/packages/new1.inc-b.form.php:26
+#: views/packages/new1.inc-b.form.php:28
 #@ wpduplicator
 msgid "Format"
 msgstr "Format"
 
-#: views/packages/new1.inc-b.form.php:35
+#: views/packages/new1.inc-b.form.php:37
 #: views/packages/new2.base.php:162
 #@ wpduplicator
 msgid "Files"
 msgstr "Dateien"
 
-#: views/packages/new1.inc-b.form.php:36
-#: views/packages/new1.inc-b.form.php:142
+#: views/packages/new1.inc-b.form.php:38
+#: views/packages/new1.inc-b.form.php:144
 #: views/packages/new2.base.php:232
 #@ wpduplicator
 msgid "Database"
 msgstr "Datenbank"
 
-#: views/packages/new1.inc-b.form.php:47
-#: views/packages/new1.inc-b.form.php:82
+#: views/packages/new1.inc-b.form.php:49
+#: views/packages/new1.inc-b.form.php:84
 #@ wpduplicator
 msgid "Filters"
 msgstr "Filter"
 
-#: views/packages/new1.inc-b.form.php:51
-#: views/packages/new1.inc-b.form.php:86
+#: views/packages/new1.inc-b.form.php:53
+#: views/packages/new1.inc-b.form.php:88
 #@ wpduplicator
 msgid "Enable Filters"
 msgstr "Filter aktivieren"
 
-#: views/packages/new1.inc-b.form.php:55
-#: views/packages/new1.inc-b.form.php:62
+#: views/packages/new1.inc-b.form.php:57
+#: views/packages/new1.inc-b.form.php:64
 #@ wpduplicator
 msgid "Separate all filters by semicolon"
 msgstr "Trenne alle Filter durch ein Semikolon"
 
-#: views/packages/new1.inc-b.form.php:55
+#: views/packages/new1.inc-b.form.php:57
 #@ wpduplicator
 msgid "Directories"
 msgstr "Verzeichnisse"
 
-#: views/packages/new1.inc-b.form.php:57
+#: views/packages/new1.inc-b.form.php:59
 #@ wpduplicator
 msgid "root path"
 msgstr "Root-Pfad"
 
-#: views/packages/new1.inc-b.form.php:58
+#: views/packages/new1.inc-b.form.php:60
 #@ wpduplicator
 msgid "wp-uploads"
 msgstr "uploads"
 
-#: views/packages/new1.inc-b.form.php:59
-#: views/packages/new1.inc-b.form.php:66
+#: views/packages/new1.inc-b.form.php:61
+#: views/packages/new1.inc-b.form.php:68
 #@ wpduplicator
 msgid "(clear)"
 msgstr "(Löschen)"
 
-#: views/packages/new1.inc-b.form.php:62
+#: views/packages/new1.inc-b.form.php:64
 #@ wpduplicator
 msgid "File extensions"
 msgstr "Datei-Erweiterungen"
 
-#: views/packages/new1.inc-b.form.php:64
+#: views/packages/new1.inc-b.form.php:66
 #@ wpduplicator
 msgid "media"
 msgstr "Medien"
 
-#: views/packages/new1.inc-b.form.php:65
+#: views/packages/new1.inc-b.form.php:67
 #@ wpduplicator
 msgid "archive"
 msgstr "Archive"
 
-#: views/packages/new1.inc-b.form.php:71
+#: views/packages/new1.inc-b.form.php:73
 #@ wpduplicator
 msgid "The directory paths and extensions above will be be excluded from the archive file if enabled is checked."
 msgstr "Diese Verzeichnispfade und Erweiterungen werden aus der Archivdatei ausgeschlossen."
 
-#: views/packages/new1.inc-b.form.php:72
+#: views/packages/new1.inc-b.form.php:74
 #@ wpduplicator
 msgid "Use the full path for directories and semicolons to separate all items."
 msgstr "Verwende den vollständigen Pfad für Verzeichnisse und Semikolons, um alle Elemente zu trennen."
 
-#: views/packages/new1.inc-b.form.php:90
+#: views/packages/new1.inc-b.form.php:92
 #@ wpduplicator
 msgid "All"
 msgstr "Alle"
 
-#: views/packages/new1.inc-b.form.php:91
+#: views/packages/new1.inc-b.form.php:93
 #@ wpduplicator
 msgid "None"
 msgstr "Keine"
 
-#: views/packages/new1.inc-b.form.php:113
+#: views/packages/new1.inc-b.form.php:115
 #@ wpduplicator
 msgid "Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!"
 msgstr "Ausgewählte Tabellen werden dem Archiv nicht hinzugefügt. Ohne diese Tabellen funktionieren möglicherweise die Website oder Plugins nach der Installation nicht korrekt!"
 
-#: views/packages/new1.inc-b.form.php:132
+#: views/packages/new1.inc-b.form.php:134
 #@ default
 msgid "STEP 1 - INPUTS"
 msgstr ""
 
-#: views/packages/new1.inc-b.form.php:135
+#: views/packages/new1.inc-b.form.php:137
 #@ wpduplicator
 msgid "MySQL Server"
 msgstr "MySQL-Server"
 
-#: views/packages/new1.inc-b.form.php:138
+#: views/packages/new1.inc-b.form.php:140
 #@ wpduplicator
 msgid "Host"
 msgstr "Host"
 
-#: views/packages/new1.inc-b.form.php:150
+#: views/packages/new1.inc-b.form.php:152
 #@ wpduplicator
 msgid "Advanced Options"
 msgstr "Erweiterte Optionen"
 
-#: views/packages/new1.inc-b.form.php:156
+#: views/packages/new1.inc-b.form.php:158
 #@ wpduplicator
 msgid "SSL"
 msgstr "SSL"
 
-#: views/packages/new1.inc-b.form.php:159
+#: views/packages/new1.inc-b.form.php:161
 #@ wpduplicator
 msgid "Enforce on Admin"
 msgstr "Auf Admin durchsetzen"
 
-#: views/packages/new1.inc-b.form.php:163
+#: views/packages/new1.inc-b.form.php:165
 #@ wpduplicator
 msgid "Enforce on Logins"
 msgstr "Erzwingen auf Logins"
 
-#: views/packages/new1.inc-b.form.php:167
+#: views/packages/new1.inc-b.form.php:169
 #@ wpduplicator
 msgid "Cache"
 msgstr "Cache"
 
-#: views/packages/new1.inc-b.form.php:170
+#: views/packages/new1.inc-b.form.php:172
 #@ wpduplicator
 msgid "Keep Enabled"
 msgstr "Halten Aktiviert"
 
-#: views/packages/new1.inc-b.form.php:174
+#: views/packages/new1.inc-b.form.php:176
 #@ wpduplicator
 msgid "Keep Home Path"
 msgstr "Halten Startseite Pfad"
 
-#: views/packages/new1.inc-b.form.php:182
+#: views/packages/new1.inc-b.form.php:184
 #@ default
 msgid "STEP 2 - INPUTS"
 msgstr ""
 
-#: views/packages/new1.inc-b.form.php:186
+#: views/packages/new1.inc-b.form.php:188
 #@ wpduplicator
 msgid "New URL"
 msgstr "Neue URL"
 
-#: views/packages/new1.inc-b.form.php:193
+#: views/packages/new1.inc-b.form.php:195
 #@ wpduplicator
 msgid "The installer can have these fields pre-filled at install time."
 msgstr "Das Installationsprogramm kann diese Felder bereits vor der Installation ausgefüllt haben."
 
-#: views/packages/new1.inc-b.form.php:193
+#: views/packages/new1.inc-b.form.php:195
 #@ wpduplicator
 msgid "All values are optional."
 msgstr "Alle Werte sind optional."
 
-#: views/packages/new1.inc-b.form.php:202
+#: views/packages/new1.inc-b.form.php:204
 #@ wpduplicator
 msgid "Skip Scan"
 msgstr "Scan überspringen"
 
-#: views/packages/new1.inc-b.form.php:202
+#: views/packages/new1.inc-b.form.php:204
 #@ wpduplicator
 msgid "step 2"
 msgstr "Schritt 2"
 
-#: views/packages/new1.inc-b.form.php:207
+#: views/packages/new1.inc-b.form.php:209
 #@ wpduplicator
 msgid "Next"
 msgstr "Weiter"
@@ -897,12 +897,6 @@ msgstr "Verzeichnisanzahl"
 #@ wpduplicator
 msgid "Invalid Names"
 msgstr "Ungültige Namen"
-
-#: views/packages/new2.base.php:201
-#: views/packages/new2.base.php:217
-#@ wpduplicator
-msgid "Show File Locations"
-msgstr "Zeige Dateispeicherorte"
 
 #: views/packages/new2.base.php:211
 #@ wpduplicator
@@ -1227,17 +1221,17 @@ msgstr "Überprüfe auf freigegebenen Hosts deines Control Panels für den 'TRUE
 msgid "Stored Data"
 msgstr "Gespeicherte Daten"
 
-#: views/settings/diagnostics.php:233
+#: views/settings/diagnostics.php:229
 #@ wpduplicator
 msgid "Options Values"
 msgstr "Options Werte"
 
-#: views/settings/diagnostics.php:266
+#: views/settings/diagnostics.php:262
 #@ wpduplicator
 msgid "PHP Information"
 msgstr "PHP-Information"
 
-#: views/settings/diagnostics.php:285
+#: views/settings/diagnostics.php:281
 #@ wpduplicator
 msgid "Delete this option value"
 msgstr "Lösche den optionalen Wert"
@@ -1394,53 +1388,43 @@ msgstr "Löschen"
 msgid "Log file not found or unreadable"
 msgstr "Log-Datei nicht gefunden oder nicht lesbar"
 
-#: views/tools/logging.php:142
-#@ wpduplicator
-msgid "No log files were found in the snapshots directory with the extension *.log"
-msgstr "Im Snapshots-Verzeichnis wurden keine Log-Dateien mit der Endung *.log gefunden"
-
-#: views/tools/logging.php:143
-#@ wpduplicator
-msgid "If no log file is present the try to create a package"
-msgstr "Wenn keine Log-Datei vorhanden ist, erstelle zuerst ein Archiv"
-
-#: views/tools/logging.php:145
+#: views/tools/logging.php:144
 #@ wpduplicator
 msgid "Reasons for log file not showing"
 msgstr "Die Gründe für die Log-Datei werden nicht angezeigt"
 
-#: views/tools/logging.php:146
+#: views/tools/logging.php:145
 #@ wpduplicator
 msgid "The web server does not support returning .log file extentions"
 msgstr "Der Webserver unterstützt keine .log-Datei-Erweiterungen"
 
-#: views/tools/logging.php:147
+#: views/tools/logging.php:146
 #@ wpduplicator
 msgid "The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755"
 msgstr "In das Verzeichnis wp-snapshots kann nicht geschrieben werden. Bitte setze die Berechtigung auf 755"
 
-#: views/tools/logging.php:148
+#: views/tools/logging.php:147
 #@ wpduplicator
 msgid "The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details"
 msgstr "Der Prozess hat nicht genügend Berechtigungen, um Dateien zu erstellen. Bitte kontaktiere deinen Hosting-Provider für weitere Informationen"
 
-#: views/tools/logging.php:157
-#: views/tools/logging.php:162
+#: views/tools/logging.php:156
+#: views/tools/logging.php:161
 #@ wpduplicator
 msgid "Options"
 msgstr "Optionen"
 
-#: views/tools/logging.php:164
+#: views/tools/logging.php:163
 #@ wpduplicator
 msgid "Refresh"
 msgstr "Neu laden"
 
-#: views/tools/logging.php:169
+#: views/tools/logging.php:168
 #@ wpduplicator
 msgid "Auto Refresh"
 msgstr "Automatisch neu laden"
 
-#: views/tools/logging.php:175
+#: views/tools/logging.php:174
 #@ wpduplicator
 msgid "Last 20 Logs"
 msgstr "Letzte 20 Logs"
@@ -1464,7 +1448,7 @@ msgstr "Der Duplicator hat einige Probleme mit den oben genannten Einstellungen.
 #, php-format
 #@ wpduplicator
 msgid "Timeouts effect how long a process is allowed to run.  The recommended timeout is \"%1$s\" seconds. An attempt is made to override this value if the enviroment allows it.  A \"Warn\" status will not be an issue unless your host kills PHP processes after a certain amount of time. "
-msgstr "Timeouts geben an, wie lange ein Prozess ausgeführt werden darf. Die empfohlene Timeout ist \"%1$s\" Sekunden. Es wird ein Versuch gemacht, diesen Wert zu überschreiben, wenn es die Umgebung zulässt. Ein \"Warn\"-Status wird kein Problem sein, es sei denn, der Hoster beendet PHP-Prozesse nach einer gewissen Zeit."
+msgstr "Timeouts geben an, wie lange ein Prozess ausgeführt werden darf. Die empfohlene Timeout ist \"%1$s\" Sekunden. Es wird ein Versuch gemacht, diesen Wert zu überschreiben, wenn es die Umgebung zulässt. Ein \"Warn\"-Status wird kein Problem sein, es sei denn, der Hoster beendet PHP-Prozesse nach einer gewissen Zeit. "
 
 #: views/packages/new2.base.php:141
 #@ wpduplicator
@@ -1547,7 +1531,7 @@ msgstr ""
 #: views/settings/general.php:96
 #@ wpduplicator
 msgid "Attempt Network Keep Alive"
-msgstr ""
+msgstr "Dadurch wird versucht, eine Netzwerkverbindung für große Archive zu etablieren"
 
 #: views/settings/general.php:97
 #@ wpduplicator
@@ -1598,4 +1582,35 @@ msgstr "Unterstützung durch IT-Experten!"
 #@ wpduplicator
 msgid "Get Help!"
 msgstr "Hilfe bekommen"
+
+#: views/packages/new1.base.php:11
+#@ wpduplicator
+msgid "Package settings have been reset."
+msgstr "Archiveinstellungen wurden zurückgesetzt."
+
+#: views/packages/new1.inc-b.form.php:10
+#@ wpduplicator
+msgid "Create a new default name"
+msgstr "Erstelle einen neuen Standardnamen"
+
+#: views/packages/new1.inc-b.form.php:208
+#@ wpduplicator
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: views/packages/new1.inc-b.form.php:221
+#@ wpduplicator
+msgid "This will reset all of the current package settings.  Would you like to continue?"
+msgstr "Dies wird alle aktuellen Archiveinstellungen zurückzusetzen. Möchtest Du fortfahren?"
+
+#: views/packages/new2.base.php:201
+#: views/packages/new2.base.php:217
+#@ wpduplicator
+msgid "Show Paths"
+msgstr "Zeige Pfade"
+
+#: views/tools/logging.php:142
+#@ wpduplicator
+msgid "Try to create a package, since no log files were found in the snapshots directory with the extension *.log"
+msgstr "Versuche ein Archiv zu erstellen, da keine Log-Dateien im Snapshots-Verzeichnis mit der Endung *. Log gefunden wurden"
 
