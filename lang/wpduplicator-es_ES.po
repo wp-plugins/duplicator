@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Duplicator v0.4.4\n"
+"Project-Id-Version: Duplicator v0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-07-15 20:30:44+0000\n"
+"PO-Revision-Date: 2014-01-27 22:30:29+0000\n"
 "Last-Translator: basicos <emiliodefez@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,1475 +20,1580 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: duplicator.php:211
+#: duplicator.php:97
 #@ wpduplicator
 msgid "FAQ"
 msgstr "FAQ"
 
-#: duplicator.php:212
+#: duplicator.php:98
 #@ wpduplicator
 msgid "Partner"
 msgstr "Partner"
 
-#: duplicator.php:213
+#: duplicator.php:99
 #@ wpduplicator
 msgid "Approved Hosts"
 msgstr "Hosts aprobados"
 
-#: inc/settings.php:53
+#: views/packages/new2.base.php:86
+#: views/settings/controller.php:22
 #@ wpduplicator
 msgid "Diagnostics"
 msgstr "Diagnósticos"
 
-#: duplicator.php:280
-#: inc/support.php:14
+#: duplicator.php:162
+#: views/packages/new3.base.php:131
+#: views/support.php:47
 #@ wpduplicator
 msgid "Support"
 msgstr "Ayuda y soporte"
 
-#: duplicator.php:325
+#: duplicator.php:205
 #@ wpduplicator
 msgid "Manage"
 msgstr "Manejar"
 
-#: installer/log-read.php:61
+#: views/tools/logging.php:140
 #@ wpduplicator
 msgid "Log file not found or unreadable"
 msgstr "Fichero log no se encuentra"
 
-#: installer/log-read.php:63
-#@ wpduplicator
-msgid "The log file for the Duplicator Plugin can be found in the snapshots directory with the extension *.log"
-msgstr "El fichero log puede encontrarse en el directorio de duplicados con la extensión *.log"
-
-#: installer/log-read.php:64
+#: views/tools/logging.php:143
 #@ wpduplicator
 msgid "If no log file is present the try to create a package"
 msgstr "Si no hay fichero log, intente crear un duplicado"
 
-#: installer/log-read.php:66
+#: views/tools/logging.php:145
 #@ wpduplicator
 msgid "Reasons for log file not showing"
 msgstr "Razones porque el fichero log no se ve"
 
-#: installer/log-read.php:67
+#: views/tools/logging.php:146
 #@ wpduplicator
 msgid "The web server does not support returning .log file extentions"
 msgstr "El servidor web no soporta extensiones .log"
 
-#: installer/log-read.php:68
+#: views/tools/logging.php:147
 #@ wpduplicator
 msgid "The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755"
 msgstr "El directorio de duplicados no tiene los permisos corretos para escribir ficheros. Intente poner los permisos en 755"
 
-#: installer/log-read.php:69
+#: views/tools/logging.php:148
 #@ wpduplicator
 msgid "The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details"
 msgstr "El proceso que corre con PHP no tiene suficientes permisos. Por favor contacte su proveedor para más detalles"
 
-#: installer/log-view.php:123
-#@ wpduplicator
-msgid "Duplicator: Create Package Log"
-msgstr "Duplicator: Crear Log de duplicado"
-
-#: installer/log-view.php:126
-#@ wpduplicator
-msgid "Processing may take several minutes, please wait for progress bar to complete on the main status bar"
-msgstr "El proceso puede tomar varios minutos, por favor espere a que la barra de progreso acabe"
-
-#: installer/log-view.php:131
+#: views/tools/logging.php:169
 #@ wpduplicator
 msgid "Auto Refresh"
 msgstr "Refrescar automatico"
 
-#: installer/log-view.php:132
+#: views/tools/logging.php:164
 #@ wpduplicator
 msgid "Refresh"
 msgstr "Refrescar"
 
-#: installer/log-view.php:150
-#@ wpduplicator
-msgid "Support Center"
-msgstr "Centro de soporte"
-
-#: installer/log-view.php:151
-#@ wpduplicator
-msgid "Do NOT post this data to public sites like the WordPress.org forums as it contains sensitive data."
-msgstr "No publique estos datos en sitios públicos como foros Wordpress.org porque contiene información sensible"
-
-#: inc/pack.win.options.php:147
-#: inc/pack.win.options.php:175
-#@ wpduplicator
-msgid "Saving"
-msgstr "Guardando"
-
-#: inc/pack.main.php:410
+#: views/packages/list.base.php:288
 #@ wpduplicator
 msgid "Please select at least one package to delete."
 msgstr "Por favor, seleccione al menos un duplicado para borrar"
 
-#: inc/pack.main.php:414
+#: views/packages/list.base.php:292
 #@ wpduplicator
 msgid "Are you sure, you want to delete the selected package(s)?"
 msgstr "Esta seguro de que quiere borrar lo/s duplicado/s seleccionados"
 
-#: inc/pack.main.php:346
-#: inc/pack.main.php:430
-#: inc/pack.win.error.php:67
-#: inc/pack.win.system.php:208
-#@ wpduplicator
-msgid "Ready to create new package."
-msgstr "Listo para crear un nuevo paquete"
-
-#: inc/pack.win.create.php:54
-#@ wpduplicator
-msgid "Please enter a backup name."
-msgstr "Por favor, introduzca un nombre de backup"
-
-#: inc/pack.main.php:343
-#@ wpduplicator
-msgid "Evaluating WordPress Setup. Please Wait"
-msgstr "Evaluando el setup de Wordpress. Por favor, espere"
-
-#: inc/pack.win.create.php:121
-#: inc/pack.win.options.php:195
-#@ wpduplicator
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: inc/pack.win.create.php:111
-#@ wpduplicator
-msgid "Create Package Set"
-msgstr "Crear Duplicado"
-
-#: inc/pack.win.system.php:214
-#@ wpduplicator
-msgid "Checking System Status.  Please Wait!"
-msgstr "Chequeando el estado del sistema. Por favor, espere"
-
-#: inc/pack.win.system.php:241
-#@ wpduplicator
-msgid "Scanning Please Wait"
-msgstr "Escaneando por favor, espere"
-
-#: inc/pack.win.system.php:246
-#: inc/pack.win.system.php:247
-#: inc/pack.win.system.php:248
-#@ wpduplicator
-msgid "unreadable"
-msgstr "no se lee"
-
-#: inc/pack.win.system.php:249
-#@ wpduplicator
-msgid "*Scan Error"
-msgstr "*Error de escaneo"
-
-#: inc/pack.win.system.php:250
+#: views/packages/new1.inc-b.form.php:35
+#: views/packages/new2.base.php:162
 #@ wpduplicator
 msgid "Files"
 msgstr "Ficheros"
 
-#: inc/pack.win.system.php:250
-#@ wpduplicator
-msgid "Folders"
-msgstr "Carpetas"
-
-#: inc/pack.win.system.php:255
-#@ wpduplicator
-msgid "error scanning directory"
-msgstr "error escaneando el directorio"
-
-#: inc/pack.win.links.php:28
+#: views/packages/list.base.php:329
 #@ wpduplicator
 msgid "DATABASE"
 msgstr "BASE DE DATOS"
 
-#: inc/pack.win.links.php:29
+#: views/packages/list.base.php:330
 #@ wpduplicator
 msgid "PACKAGE"
 msgstr "DUPLICADO"
 
-#: inc/pack.win.links.php:30
+#: views/packages/list.base.php:331
 #@ wpduplicator
 msgid "INSTALLER"
 msgstr "INSTALADOR"
 
-#: inc/pack.win.error.php:63
-#@ wpduplicator
-msgid "AJAX Response"
-msgstr "Respuesta de AJAX"
-
-#: inc/pack.win.create.php:96
-#@ wpduplicator
-msgid "Creating package may take several minutes. Please Wait... "
-msgstr "Crear el paquete puede tomar varios minutos. Por favor, espere"
-
-#: inc/pack.win.create.php:97
-#@ wpduplicator
-msgid "Preview Log"
-msgstr "Ver Log"
-
-#: inc/inc.header.php:10
+#: views/inc.header.php:10
 #@ wpduplicator
 msgid "By"
 msgstr "Por"
 
-#: inc/support.php:22
+#: views/support.php:56
 #@ wpduplicator
 msgid "knowledgebase"
 msgstr "Página de Ayuda y Documentación"
 
-#: inc/support.php:106
+#: views/support.php:138
 #@ wpduplicator
 msgid "Support Duplicator"
 msgstr "Soporte Duplicator"
 
-#: inc/support.php:153
+#: views/support.php:182
 #@ wpduplicator
 msgid "Spread the Word"
 msgstr "Corra la voz"
 
-#: inc/support.php:159
+#: views/support.php:188
 #@ wpduplicator
 msgid "Duplicate Your WordPress"
 msgstr "Duplicar su WordPress"
 
-#: inc/support.php:160
+#: views/support.php:189
 #@ wpduplicator
 msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
 msgstr "Duplicación rápida de WordPress por LifeInTheGrid.com"
 
-#: inc/support.php:195
-#@ wpduplicator
-msgid "Labs"
-msgstr "Laboratorio"
-
-#: inc/pack.main.php:94
-#@ wpduplicator
-msgid "Package Name"
-msgstr "Nombre del Duplicado"
-
-#: inc/pack.main.php:55
-#@ wpduplicator
-msgid "Create Package"
-msgstr "Crear Duplicado"
-
-#: inc/pack.main.php:48
+#: views/packages/list.base.php:63
 #@ wpduplicator
 msgid "Delete selected package(s)"
 msgstr "Borrar duplicados seleccionados"
 
-#: inc/pack.main.php:58
+#: views/tools/logging.php:157
+#: views/tools/logging.php:162
 #@ wpduplicator
 msgid "Options"
 msgstr "Opciones"
 
-#: inc/pack.main.php:59
-#@ wpduplicator
-msgid "System Check"
-msgstr "Chequeo del sistema"
-
-#: inc/pack.main.php:60
-#@ wpduplicator
-msgid "Show Create Log"
-msgstr "Ver Log de Creación"
-
-#: inc/pack.main.php:75
-#@ wpduplicator
-msgid "Status"
-msgstr "Estado"
-
-#: inc/pack.main.php:76
-#@ wpduplicator
-msgid "Ready to create new package"
-msgstr "Listo para crear nuevo duplicado"
-
-#: inc/pack.main.php:89
+#: views/packages/list.base.php:82
 #@ wpduplicator
 msgid "Select all packages"
 msgstr "Seleccione todos los duplicados"
 
-#: inc/pack.main.php:92
+#: views/packages/list.base.php:84
 #@ wpduplicator
 msgid "Created"
 msgstr "Creado"
 
-#: inc/pack.main.php:93
+#: views/packages/list.base.php:85
+#: views/packages/new2.base.php:181
+#: views/packages/new2.base.php:254
 #@ wpduplicator
 msgid "Size"
 msgstr "Tamaño"
 
-#: inc/pack.main.php:96
-#@ wpduplicator
-msgid "Package Set"
-msgstr "Archivos del Duplicado"
-
-#: inc/pack.main.php:97
-#@ wpduplicator
-msgid "(Download Both)"
-msgstr "(Bajar ambos)"
-
-#: inc/pack.main.php:133
-#: inc/pack.main.php:158
-#: inc/pack.main.php:188
+#: views/packages/list.base.php:136
+#: views/packages/list.base.php:180
 #@ wpduplicator
 msgid "View"
 msgstr "Ver"
 
-#: inc/pack.main.php:139
-#: inc/pack.win.options.php:10
+#: views/packages/list.base.php:141
+#: views/packages/new1.inc-b.form.php:127
+#: views/packages/new3.base.php:74
 #@ wpduplicator
 msgid "Installer"
 msgstr "Instalador"
 
-#: inc/pack.main.php:140
-#: inc/pack.win.create.php:8
-#: inc/pack.win.options.php:9
+#: views/packages/list.base.php:88
+#: views/packages/new1.inc-b.form.php:5
+#: views/settings/general.php:79
 #@ wpduplicator
 msgid "Package"
 msgstr "Duplicado"
 
-#: inc/pack.main.php:146
-#: inc/pack.main.php:172
-#: inc/settings.php:142
-#: inc/settings.php:165
-#: inc/settings.php:201
+#: views/packages/list.base.php:149
+#: views/packages/list.base.php:193
+#: views/settings/diagnostics.php:122
+#: views/settings/diagnostics.php:141
+#: views/settings/diagnostics.php:181
 #@ wpduplicator
 msgid "Version"
 msgstr "Version"
 
-#: inc/pack.main.php:147
-#: inc/pack.main.php:173
-#@ wpduplicator
-msgid "Secure Name"
-msgstr "Nombre seguro"
-
-#: inc/pack.main.php:202
-#@ wpduplicator
-msgid "Legacy Version"
-msgstr "Versión oficial"
-
-#: inc/pack.main.php:205
-#@ wpduplicator
-msgid "This package was built with a version that is no longer supported.  It is highly recommended that this package be deleted.  For more details see the"
-msgstr "Este duplicado se creó por una versión no soportada. Se recomienda que borre el duplicado. Para más detalles vea "
-
-#: inc/pack.main.php:206
-#: inc/pack.win.create.php:39
-#@ wpduplicator
-msgid "Online FAQs"
-msgstr "FAQ Online"
-
-#: inc/pack.main.php:217
-#@ wpduplicator
-msgid "No packages found"
-msgstr "No se encontraron ficheros de duplicado"
-
-#: inc/pack.main.php:220
-#@ wpduplicator
-msgid "Check your"
-msgstr "Chequee su"
-
-#: inc/pack.main.php:221
-#@ wpduplicator
-msgid "server's compatibility"
-msgstr "Compatibilidad del servidor"
-
-#: inc/pack.main.php:224
-#@ wpduplicator
-msgid "This window should remain open for the process to complete"
-msgstr "Deje esta ventana ABIERTA para dejar que acabe el proceso. Gracias."
-
-#: inc/support.php:52
+#: views/support.php:86
 #@ wpduplicator
 msgid "Quick Start"
 msgstr "Comienzo rápido"
 
-#: inc/support.php:53
+#: views/support.php:87
 #@ wpduplicator
 msgid "User Guide"
 msgstr "Guia de usuario"
 
-#: inc/support.php:54
+#: views/support.php:88
 #@ wpduplicator
 msgid "FAQs"
 msgstr "FAQs"
 
-#: inc/support.php:56
+#: views/support.php:90
 #@ wpduplicator
 msgid "Product Page"
 msgstr "Página de producto"
 
-#: inc/support.php:67
+#: views/support.php:101
 #@ wpduplicator
 msgid "Approved Hosting"
 msgstr "Hosting aprobado"
 
-#: inc/support.php:84
+#: views/support.php:119
 #@ wpduplicator
 msgid "Online Support"
 msgstr "Soporte Online Profesional"
 
-#: inc/pack.win.options.php:20
-#@ wpduplicator
-msgid "Processing"
-msgstr "Procesando"
-
-#: inc/pack.win.options.php:32
-#@ wpduplicator
-msgid "Exclusion Filters"
-msgstr "Filtros de excluidos"
-
-#: inc/pack.win.options.php:33
+#: views/packages/new1.inc-b.form.php:55
 #@ wpduplicator
 msgid "Directories"
 msgstr "Directorios"
 
-#: inc/pack.win.options.php:40
+#: views/packages/new1.inc-b.form.php:62
 #@ wpduplicator
 msgid "File extensions"
 msgstr "Extensiones de fichero"
 
-#: inc/pack.win.options.php:33
-#: inc/pack.win.options.php:40
+#: views/packages/new1.inc-b.form.php:55
+#: views/packages/new1.inc-b.form.php:62
 #@ wpduplicator
 msgid "Separate all filters by semicolon"
 msgstr "Separar todos los filtros por punto y coma."
 
-#: inc/pack.win.options.php:52
-#@ wpduplicator
-msgid "Having issues saving these options?  Temporarily disable all 'Object Caches' (i.e. W3C Total Object Cache)"
-msgstr "¿Tiene problemas para estas opciones? Disabilite temporalmente todos los 'Caches de objeto' (i.e. W3C Total Object Cache)"
-
-#: inc/pack.win.options.php:68
+#: views/packages/new1.inc-b.form.php:138
 #@ wpduplicator
 msgid "Host"
 msgstr "Host"
 
-#: inc/pack.main.php:91
-#: inc/pack.win.options.php:76
-#: inc/settings.php:173
+#: views/packages/list.base.php:150
+#: views/packages/list.base.php:194
+#: views/packages/new1.inc-b.form.php:146
+#: views/settings/diagnostics.php:149
 #@ wpduplicator
 msgid "User"
 msgstr "Usuario"
 
-#: inc/settings.php:74
+#: views/settings/general.php:64
 #@ wpduplicator
 msgid "Uninstall Options"
 msgstr "Opciones de desinstalación"
 
-#: inc/settings.php:77
-#@ wpduplicator
-msgid "Delete entire snapshot directory when removing plugin"
-msgstr "Borrar el directorio de duplicados cuando borre el plugin."
-
-#: inc/settings.php:78
+#: views/settings/general.php:71
 #@ wpduplicator
 msgid "Snapshot Directory"
 msgstr "Directorio de Duplicados"
 
-#: inc/pack.win.options.php:190
-#@ wpduplicator
-msgid "Save"
-msgstr "Guardar"
-
-#: inc/pack.win.system.php:279
-#@ wpduplicator
-msgid "Close"
-msgstr "Cerrar"
-
-#: inc/pack.win.system.php:149
-#@ wpduplicator
-msgid "Pre-Zip Overview"
-msgstr "Precálculo antes del ZIP"
-
-#: inc/pack.win.error.php:3
-#@ wpduplicator
-msgid "System Constraint"
-msgstr "Limitación del sistema"
-
-#: inc/pack.win.error.php:6
-#@ wpduplicator
-msgid "Please try again! An issue has occurred."
-msgstr "Por favor, intentelo de nuevo! Ha habido un problema"
-
-#: inc/pack.win.error.php:10
-#@ wpduplicator
-msgid "Recommendations"
-msgstr "Recomendaciones"
-
-#: inc/pack.win.error.php:15
-#@ wpduplicator
-msgid "Validate"
-msgstr "Validar"
-
-#: inc/pack.win.error.php:16
-#@ wpduplicator
-msgid "your system"
-msgstr "su sistema"
-
-#: inc/pack.win.error.php:17
-#@ wpduplicator
-msgid "refresh"
-msgstr "refrescar"
-
-#: inc/pack.win.error.php:18
-#@ wpduplicator
-msgid "the dashboard."
-msgstr "el escritorio."
-
-#: inc/pack.win.error.php:22
-#@ wpduplicator
-msgid "Monitor"
-msgstr "Monitor"
-
-#: inc/pack.win.error.php:23
-#@ wpduplicator
-msgid "your log file a few more minutes as processing may continue on some systems"
-msgstr "su fichero log, porque el proceso puede continuar en algunos sistemas"
-
-#: inc/pack.win.error.php:26
-#@ wpduplicator
-msgid "Contact your server admin to have the page timeout increased (see duration below)"
-msgstr "Contacte a su administrador para incrementar su limitación de timeout (ver duración abajo)"
-
-#: inc/pack.win.error.php:27
-#@ wpduplicator
-msgid "Consider adding a directory filter in the options dialog if the process continues to timeout"
-msgstr "Considere añadir un filtro de directorio en el diálogo de opciones si el proceso sigue parandose"
-
-#: inc/pack.win.error.php:28
-#@ wpduplicator
-msgid "Check your disk space.  For hosted sites review your providers help."
-msgstr "Chequee su espacio de disco. Revise la ayuda de su proveedor."
-
-#: inc/pack.win.error.php:31
-#@ wpduplicator
-msgid "Consider using an"
-msgstr "Considere usar un"
-
-#: inc/pack.win.error.php:33
-#@ wpduplicator
-msgid "approved"
-msgstr "aprobado"
-
-#: inc/pack.win.error.php:34
-#@ wpduplicator
-msgid "hosting provider."
-msgstr "Proveedor de Hosting Aprobado."
-
-#: inc/pack.win.error.php:38
-#@ wpduplicator
-msgid "Server Response"
-msgstr "Respuesta del servidor"
-
-#: inc/pack.win.error.php:43
-#@ wpduplicator
-msgid "See online help for more details at"
-msgstr "Mire la ayuda online para mas detalles en"
-
-#: inc/pack.win.system.php:3
-#@ wpduplicator
-msgid "System Status"
-msgstr "Estado del sistema"
-
-#: inc/pack.win.system.php:6
-#@ wpduplicator
-msgid "Please validate your system configuration."
-msgstr "Por favor, valide su configuración del sistema"
-
-#: inc/pack.win.system.php:7
-#@ wpduplicator
-msgid "Click link for details"
-msgstr "Click enlace para detalles"
-
-#: inc/pack.win.system.php:16
-#@ wpduplicator
-msgid "SYSTEM REQUIRMENTS"
-msgstr "REQUERIMIENTOS DEL SISTEMA"
-
-#: inc/pack.win.system.php:17
-#@ wpduplicator
-msgid "File Permissions"
-msgstr "Permisos de fichero"
-
-#: inc/pack.win.system.php:20
-#@ wpduplicator
-msgid "Required permissions"
-msgstr "Permisos requeridos"
-
-#: inc/pack.win.system.php:35
-#@ wpduplicator
-msgid "The above paths should have permissions of 755 for directories and 644 for files. On some hosts the permission set requires 777.  Setting items to 777 is a security issue and should only be set temporarily.  Please avoid any hosting company that requires this kind of setup.  See the 'Duplicator Approved' link at the bottom of this dialog for a list of approved hosting providers."
-msgstr "Las rutas de arriba deben tener permisos 755 de directorios, y 644 de ficheros. En algunos hosts se requiere 777. Colocar el 777 puede generar problemas de seguridad y debe ser temporal. Por favor, evite el hosting con este nivel 777. Mire el enlace de servidor aprobado en el final de este texto."
-
-#: inc/pack.win.system.php:38
-#@ wpduplicator
-msgid "Also be sure to check the Owner/Group settings and validate they are correct and match other successful directories/files that are accessible.  For more details contact your host or visit their help pages for more information on how they implement permissions and group settings."
-msgstr "También asegurese de revisar la configuració nde Grupo/Propietario y validar que sean correctas y que se ajustan a otros dirs/ficheros que sean accesibles. Para más detalles contacte a su hosting o visite sus páginas de ayuda para implementar permisos y configs de grupo."
-
-#: inc/pack.win.system.php:45
+#: views/packages/new1.inc-a.reqs.php:45
 #@ wpduplicator
 msgid "Reserved Files"
 msgstr "Ficheros reservados"
 
-#: inc/pack.win.system.php:54
+#: views/packages/new1.inc-a.reqs.php:59
 #@ wpduplicator
 msgid "Zip Archive Enabled"
 msgstr "Permitido archivo en Zip"
 
-#: inc/pack.win.system.php:57
+#: views/packages/new1.inc-a.reqs.php:62
 #@ wpduplicator
 msgid "The ZipArchive extension for PHP is required for compression.  Please contact your hosting provider if you're on a hosted server.  For additional information see our online documentation."
 msgstr "La extensión del Archivo Zip para PHP está requerido para compresión. Por favor, contacte con su proveedor de hosting. Para más info mirar nuestra documentación online."
 
-#: inc/pack.win.system.php:62
+#: views/packages/new1.inc-a.reqs.php:70
 #@ wpduplicator
 msgid "Safe Mode Off"
 msgstr "Modo Seguro Off (Safe Mode)"
 
-#: inc/pack.win.system.php:65
-#@ wpduplicator
-msgid "Safe Mode needs to be disabled in order for the Duplicator to operate correctly.  Please set safe_mode = Off in you php.ini file.  If you're on a hosted server and don't have access to the php.ini file then you will need to request this setting be updated. Safe Mode is no longer in future versions of PHP.  If your host will not work with you to resolve the issue then consider a higher reputable hosting provider."
-msgstr "Modo seguro necesita ser deshabilitado para que el Duplicator funcione perfectamente. Poner safe_mode=Off en su php.ini. Si no tiene acceso a su php.ini, entonces necesitará pedir que se lo habiliten. Safe Mode no está en las ultimas versiones de PHP y es obsoleto."
-
-#: inc/pack.win.system.php:70
+#: views/packages/new1.inc-a.reqs.php:86
 #@ wpduplicator
 msgid "MySQL Support"
 msgstr "Soporte MySQL"
 
-#: inc/pack.win.system.php:75
-#@ wpduplicator
-msgid "The version of MySQL on this server is "
-msgstr "La versión de MySQL en este servidor es"
-
-#: inc/pack.win.system.php:77
-#@ wpduplicator
-msgid "The Duplicator requires MySQL version 4.1+ or better."
-msgstr "El Duplicator requiere MySQL version 4.1+ o superior."
-
-#: inc/pack.win.system.php:80
-#@ wpduplicator
-msgid "If the MySQL server version is valid and this requirement fails then the mysqli extension is not installed. If you are on a hosted server please contact your host and request that mysqli extension and MySQL Server 4.1+ be installed. For more info visit: http://php.net/manual/en/mysqli.installation.php"
-msgstr "Si la versión de MySQL es correcta, debe instalar la extesión mysqli. Requiera que se le instale. http://php.net/manual/en/mysqli.installation.php"
-
-#: inc/pack.win.system.php:85
+#: views/packages/new1.inc-a.reqs.php:104
 #@ wpduplicator
 msgid "PHP Support"
 msgstr "Soporte PHP"
 
-#: inc/pack.win.system.php:89
-#@ wpduplicator
-msgid "The version of PHP on this server is "
-msgstr "La versión de PHP en este servidor es"
-
-#: inc/pack.win.system.php:108
-#@ wpduplicator
-msgid "SYSTEM CHECKS"
-msgstr "CHEQUEO DEL SISTEMA"
-
-#: inc/pack.win.system.php:113
-#: inc/pack.win.system.php:116
-#: inc/pack.win.system.php:119
-#: inc/pack.win.system.php:122
-#: inc/pack.win.system.php:125
-#: inc/pack.win.system.php:128
-#: inc/settings.php:118
+#: views/packages/new1.inc-a.reqs.php:126
+#: views/packages/new1.inc-a.reqs.php:133
+#: views/settings/diagnostics.php:95
 #@ wpduplicator
 msgid "Web Server"
 msgstr "Servidor Web"
 
-#: inc/pack.win.system.php:114
-#: inc/pack.win.system.php:138
-#@ wpduplicator
-msgid "Good"
-msgstr "Bueno"
-
-#: inc/pack.win.system.php:117
-#: inc/pack.win.system.php:120
-#: inc/pack.win.system.php:123
-#: inc/pack.win.system.php:126
-#@ wpduplicator
-msgid "OK"
-msgstr "OK"
-
-#: inc/pack.win.system.php:128
-#@ wpduplicator
-msgid "Not detected"
-msgstr "No detectado"
-
-#: inc/pack.win.system.php:129
-#: inc/pack.win.system.php:141
-#@ wpduplicator
-msgid "Fail"
-msgstr "Fallo"
-
-#: inc/pack.win.system.php:137
-#: inc/pack.win.system.php:140
+#: views/packages/new2.base.php:100
 #@ wpduplicator
 msgid "Open Base Dir"
 msgstr "Dir Open Base"
 
-#: inc/pack.win.system.php:137
-#: inc/settings.php:181
+#: views/settings/diagnostics.php:157
 #@ wpduplicator
 msgid "Off"
 msgstr "Off"
 
-#: inc/pack.win.system.php:140
-#: inc/settings.php:181
+#: views/settings/diagnostics.php:157
 #@ wpduplicator
 msgid "On"
 msgstr "On"
 
-#: inc/pack.win.system.php:151
-#@ wpduplicator
-msgid "Scan Now"
-msgstr "Escanear ahora"
-
-#: inc/pack.win.system.php:160
-#@ wpduplicator
-msgid "Cache Directory Found"
-msgstr "Encontrado Cache de directorio"
-
-#: inc/pack.win.system.php:161
-#@ wpduplicator
-msgid "Add to exclusion path now"
-msgstr "Añadir ruta de exclusión ahora"
-
-#: inc/pack.win.system.php:163
-#@ wpduplicator
-msgid "Directory excluded"
-msgstr "Directorio excluido"
-
-#: inc/pack.win.system.php:164
-#@ wpduplicator
-msgid "Path"
-msgstr "Ruta"
-
-#: inc/pack.win.system.php:166
-#@ wpduplicator
-msgid "Cache Directory Not Found"
-msgstr "Directorio de Cache no encontrado"
-
-#: inc/pack.win.system.php:172
-#@ wpduplicator
-msgid "ONLINE RESOURCES"
-msgstr "RECURSOS ONLINE"
-
-#: inc/pack.win.system.php:177
+#: views/packages/new1.inc-a.reqs.php:146
 #@ wpduplicator
 msgid "For additional online help please visit"
 msgstr "Para ayuda online, por favor visite"
 
-#: inc/pack.win.system.php:183
+#: views/packages/new1.inc-a.reqs.php:149
 #@ wpduplicator
 msgid "Need a hosting provider that is"
 msgstr "Necesita un proveeder de hosting que"
 
-#: inc/pack.win.system.php:185
-#@ wpduplicator
-msgid "Duplicator Approved"
-msgstr "cumpla los requerimientos y aprobado"
-
-#: inc/pack.win.links.php:3
+#: views/packages/list.base.php:248
 #@ wpduplicator
 msgid "Download Links"
 msgstr "Enlaces de bajada"
 
-#: inc/pack.win.links.php:6
+#: views/packages/list.base.php:251
 #@ wpduplicator
 msgid "The following links contain sensitive data.  Please share with caution!"
 msgstr "Los siguiente enlaces tienen datos sensibles. Compartir con precaución."
 
-#: inc/pack.win.links.php:12
+#: views/packages/list.base.php:257
 #@ wpduplicator
 msgid "The database SQL script is a quick link to your database backup script.  An exact copy is also stored in the package."
 msgstr "El script SQL es un enlace rápido del backup de la base de datos. Otra copia exacta está guarda tambien dentro el duplicado"
 
-#: inc/pack.win.options.php:23
-#@ wpduplicator
-msgid "WP-admin email is included.  Add extra emails semicolon separated."
-msgstr "El mail del Wp-Admin está incluido. Añada emails adicionales separados por punto y coma."
-
-#: inc/pack.win.options.php:35
+#: views/packages/new1.inc-b.form.php:57
 #@ wpduplicator
 msgid "root path"
 msgstr "ruta raíz"
 
-#: inc/pack.win.options.php:36
+#: views/packages/new1.inc-b.form.php:58
 #@ wpduplicator
 msgid "wp-uploads"
 msgstr "carpeta de subidos (wp-uploads)"
 
-#: inc/pack.win.options.php:37
-#: inc/pack.win.options.php:44
+#: views/packages/new1.inc-b.form.php:59
+#: views/packages/new1.inc-b.form.php:66
 #@ wpduplicator
 msgid "(clear)"
 msgstr "(limpiar)"
 
-#: inc/pack.win.options.php:42
+#: views/packages/new1.inc-b.form.php:64
 #@ wpduplicator
 msgid "media"
 msgstr "video-multimedia"
 
-#: inc/pack.win.options.php:43
+#: views/packages/new1.inc-b.form.php:65
 #@ wpduplicator
 msgid "archive"
 msgstr "comprimidos"
 
-#: duplicator.php:277
-#: inc/pack.main.php:39
-#: inc/pack.main.php:246
+#: duplicator.php:159
+#: views/packages/controller.php:73
+#: views/packages/controller.php:76
+#: views/packages/list.base.php:228
 #@ wpduplicator
 msgid "Packages"
 msgstr "Paquetes"
 
-#: duplicator.php:279
-#: inc/settings.php:43
+#: duplicator.php:160
+#: views/settings/controller.php:18
 #@ wpduplicator
 msgid "Settings"
 msgstr "Opciones"
 
-#: inc/pack.main.php:47
+#: views/packages/list.base.php:62
 #@ wpduplicator
 msgid "Bulk Actions"
 msgstr "Acciones en Bloque"
 
-#: inc/pack.main.php:48
+#: views/packages/list.base.php:63
 #@ wpduplicator
 msgid "Delete"
 msgstr "Borrar"
 
-#: inc/pack.main.php:50
+#: views/packages/list.base.php:65
 #@ wpduplicator
 msgid "Apply"
 msgstr "Aplicar"
 
-#: inc/pack.main.php:90
+#: views/packages/list.base.php:83
+#: views/packages/new3.base.php:102
 #@ wpduplicator
 msgid "Details"
 msgstr "Detalles"
 
-#: inc/pack.main.php:218
-#@ wpduplicator
-msgid "To create a new package click the create button "
-msgstr "Para crear un paquete nuevo cliquee el botón crear"
-
-#: inc/pack.main.php:222
-#@ wpduplicator
-msgid "with the Duplicator"
-msgstr "con el Duplicator"
-
-#: inc/pack.main.php:401
+#: views/packages/list.base.php:280
 #@ wpduplicator
 msgid "Please select an action from the bulk action drop down menu to perform a specific action."
 msgstr "Por favor seleccione una acción en bloque del menú para ejecutarla"
 
-#: inc/pack.win.create.php:21
-#@ wpduplicator
-msgid "Pre-Zip Size"
-msgstr "Tamaño antes de comprimir"
-
-#: inc/pack.win.create.php:23
-#@ wpduplicator
-msgid "Check Application Size"
-msgstr "Chequear Tamaño de la Aplicación"
-
-#: inc/pack.win.create.php:33
-#@ wpduplicator
-msgid "Pre-Zip provides the size of your application and will exclude items in the"
-msgstr "Pre-Zip proporciona el tamaño de su aplicación y ejecutará elementos en el "
-
-#: inc/pack.win.create.php:34
-#@ wpduplicator
-msgid "directory filter"
-msgstr "filtro de directorio"
-
-#: inc/pack.win.create.php:37
-#@ wpduplicator
-msgid "Please note that some hosts will kill any process after 45-60 seconds."
-msgstr "Por favor, tenga en cuenta que algunos hosts paran los procesos despues de 45-50 segundos"
-
-#: inc/pack.win.create.php:38
-#@ wpduplicator
-msgid "If your hosting provider performs this practice ask them how to extend the PHP timeout.  For more details see the"
-msgstr "Si su proveedor de Hosting le limita, pida que le incrementen el tiempo de ejecución PHP. Para más detalles ver"
-
-#: inc/pack.win.create.php:62
-#@ wpduplicator
-msgid "Alpanumeric characters only on package name."
-msgstr "Solo carácteres alfanuméricos en el nombre de paquete"
-
-#: inc/pack.win.options.php:4
-#@ wpduplicator
-msgid "Package Options"
-msgstr "Opciones de Paquete"
-
-#: inc/pack.win.system.php:48
+#: views/packages/new1.inc-a.reqs.php:49
 #@ wpduplicator
 msgid "A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again."
 msgstr "Un fichero/s reservado/s está en el directorio raíz de Wordpress. Ficheros reservados:  installer.php, installer-data.sql and installer-log.txt. Para guardar sus datos correctamente, por favor elimine estos ficheros del Worpress. Intente la creación del paquete de nuevo."
 
-#: inc/pack.win.system.php:49
+#: views/packages/new1.inc-a.reqs.php:50
 #@ wpduplicator
 msgid "Remove Files Now"
 msgstr "Eliminar Fichers Ahora"
 
-#: inc/pack.win.system.php:91
-#@ wpduplicator
-msgid "The Duplicator requires PHP version 5.2.17+ or higher.  Please contact your host and have them upgrade to this stable secure version."
-msgstr "Duplicator necesita PHP version 5.2.17+ o superior. Por favor contacte con su host y actualice la versión del PHP."
-
-#: inc/pack.win.system.php:94
-#@ wpduplicator
-msgid "Requried PHP functions"
-msgstr "Funciones PHP requeridas"
-
-#: inc/settings.php:12
+#: views/settings/general.php:6
 #@ wpduplicator
 msgid "Settings Saved"
 msgstr "Opciones Salvadas"
 
-#: inc/settings.php:15
-#: inc/settings.php:16
+#: views/settings/diagnostics.php:18
+#: views/settings/diagnostics.php:19
 #@ wpduplicator
 msgid "unknow"
 msgstr "desconocido"
 
-#: inc/settings.php:52
-#: inc/settings.php:107
+#: views/settings/controller.php:21
+#: views/settings/diagnostics.php:84
 #@ wpduplicator
 msgid "General"
 msgstr "General"
 
-#: inc/settings.php:66
-#@ wpduplicator
-msgid "Plugin Settings"
-msgstr "Opciones de Plugin"
-
-#: inc/settings.php:70
-#: inc/settings.php:110
+#: views/settings/diagnostics.php:87
+#: views/settings/general.php:60
 #@ wpduplicator
 msgid "Duplicator Version"
 msgstr "Duplicadora Version"
 
-#: inc/settings.php:86
+#: views/settings/general.php:157
 #@ wpduplicator
 msgid "Save Settings"
 msgstr "Guardar Opciones"
 
-#: inc/settings.php:96
+#: views/settings/diagnostics.php:78
 #@ wpduplicator
 msgid "Server Settings"
 msgstr "Opciones del Servidor"
 
-#: inc/settings.php:101
-#@ wpduplicator
-msgid "Setting"
-msgstr "Opción"
-
-#: inc/settings.php:102
-#@ wpduplicator
-msgid "Value"
-msgstr "Valor"
-
-#: inc/settings.php:114
+#: views/settings/diagnostics.php:91
 #@ wpduplicator
 msgid "Operating System"
 msgstr "Sistema Operativo"
 
-#: inc/settings.php:122
+#: views/settings/diagnostics.php:103
 #@ wpduplicator
 msgid "Root Path"
 msgstr "Ruta raiz"
 
-#: inc/settings.php:146
+#: views/settings/diagnostics.php:126
 #@ wpduplicator
 msgid "Langugage"
 msgstr "Lenguaje"
 
-#: inc/settings.php:150
-#: inc/settings.php:205
+#: views/settings/diagnostics.php:130
+#: views/settings/diagnostics.php:185
 #@ wpduplicator
 msgid "Charset"
 msgstr "Juego de Carácteres"
 
-#: inc/settings.php:154
+#: views/settings/diagnostics.php:134
 #@ wpduplicator
 msgid "Memory Limit "
-msgstr "Limite de Memoria"
+msgstr "Limite de Memoria "
 
-#: inc/settings.php:158
-#@ wpduplicator
-msgid "Memory Limit Max"
-msgstr "Max. Límite de Memoria"
-
-#: inc/settings.php:177
+#: views/settings/diagnostics.php:153
 #@ wpduplicator
 msgid "Safe Mode"
 msgstr "Modo Seguro"
 
-#: inc/settings.php:186
+#: views/settings/diagnostics.php:162
 #@ wpduplicator
 msgid "Memory Limit"
 msgstr "Límite de Memoria"
 
-#: inc/settings.php:190
+#: views/settings/diagnostics.php:166
 #@ wpduplicator
 msgid "Memory In Use"
 msgstr "Memoria en Uso"
 
-#: inc/settings.php:194
+#: views/settings/diagnostics.php:170
 #@ wpduplicator
 msgid "Max Execution Time"
 msgstr "Tiempo Máximo de ejecución"
 
-#: inc/settings.php:209
-#@ wpduplicator
-msgid "wait_timeout"
-msgstr ""
-
-#: inc/settings.php:213
-#@ wpduplicator
-msgid "max_allowed_packet"
-msgstr ""
-
-#: inc/settings.php:232
-#@ wpduplicator
-msgid "Show/Hide All PHP Information"
-msgstr "Mostrar/Esconder PHP Info"
-
-#: inc/support.php:21
+#: views/support.php:55
 #@ wpduplicator
 msgid "Created for Admins, Developers and Designers the Duplicator will streamline your workflows and help you quickly clone a WordPress application.  If you run into an issue please read through the"
 msgstr "Creado para Admin, Desarrolladores y Diseñadores, Duplicator facilitará sus flujos de trabajo y ayudará a clonar rápidamente una instalación Wordpress. Si tiene algún problema por favor contacte "
 
-#: inc/support.php:23
-#@ wpduplicator
-msgid "in detail as it will have answers to most of your questions and issues."
-msgstr "en detalle,  tendrá respuestas a la mayoría de sus preguntas y problemas."
-
-#: inc/support.php:38
+#: views/support.php:72
 #@ wpduplicator
 msgid "Need Help?"
 msgstr "¿Necesita Ayuda?"
 
-#: inc/support.php:45
+#: views/support.php:79
 #@ wpduplicator
 msgid "Knowledgebase"
 msgstr "Base de Conocimientos"
 
-#: inc/support.php:49
-#@ wpduplicator
-msgid "Please review the online documentation for complete usage of the plugin."
-msgstr "Por favor, revise la documentaicón online para un uso avanzado"
-
-#: inc/support.php:51
+#: views/support.php:85
 #@ wpduplicator
 msgid "Choose A Section"
 msgstr "Elija una sección"
 
-#: inc/support.php:55
+#: views/support.php:89
 #@ wpduplicator
 msgid "Change Log"
 msgstr "Cambiar Log"
 
-#: inc/support.php:71
-#@ wpduplicator
-msgid "Need a solid hosting provider that will work well with the Duplicator?"
-msgstr "¿Necesita un proveedor de hosting que trabaje con Duplicator?"
-
-#: inc/support.php:73
-#@ wpduplicator
-msgid "Approved Hosting Program"
-msgstr "Programa Aprobado de Hosting"
-
-#: inc/support.php:88
-#@ wpduplicator
-msgid "Online support  is available for issues not covered in the knowledgebase."
-msgstr "Soporte online para problemas no cubiertos por la base de conocimientos"
-
-#: inc/support.php:90
-#@ wpduplicator
-msgid "Basic"
-msgstr "Básico"
-
-#: inc/support.php:91
-#@ wpduplicator
-msgid "Premium"
-msgstr "Prima"
-
-#: inc/support.php:94
-#@ wpduplicator
-msgid "Basic: 2-5 business days"
-msgstr "Básico: 2-5 dias laborales"
-
-#: inc/support.php:95
-#@ wpduplicator
-msgid "Premium: 24-48hrs"
-msgstr "Prima: 24-48hrs"
-
-#: inc/support.php:115
+#: views/support.php:145
 #@ wpduplicator
 msgid "Partner with Us"
 msgstr "Cuente con nosotros"
 
-#: inc/support.php:127
+#: views/support.php:157
 #@ wpduplicator
 msgid "Keep Active and Online"
 msgstr "Quedarse Activo y Online"
 
-#: inc/support.php:134
+#: views/support.php:164
 #@ wpduplicator
 msgid "Leave 5 Stars"
 msgstr "Deje 5 estrellas"
 
-#: inc/support.php:140
+#: views/support.php:170
 #@ wpduplicator
 msgid "Take A Quick 60 Second Survey"
 msgstr "Tome un cursito de 60 segundos"
 
-#: inc/pack.main.php:223
-#@ wpduplicator
-msgid "Creating a package may take several minutes"
-msgstr "Crear un paquete puede tardar varios minutos"
-
-#: inc/support.php:204
-#@ wpduplicator
-msgid "Basic Support"
-msgstr "Soporte básico"
-
-#: inc/support.php:209
-#@ wpduplicator
-msgid "Support Tips"
-msgstr "Consejos de apoyo"
-
-#: inc/support.php:211
-#@ wpduplicator
-msgid "Read all knowledgebase articles before asking a question"
-msgstr "Lea todos los artículos de base de datos antes de hacer una pregunta"
-
-#: inc/support.php:212
-#@ wpduplicator
-msgid "Check the WordPress forums for similar issues"
-msgstr "Compruebe los foros de WordPress para problemas similares"
-
-#: inc/support.php:219
-#@ wpduplicator
-msgid "Continue with Basic Support"
-msgstr "Continuar con el soporte básico"
-
-#: inc/support.php:207
-#@ wpduplicator
-msgid "This is a free courtesy we offer to the WordPress community, but it is clear that some people do abuse the service. Please put time and thought into what you’re asking and do not ask every question that comes to mind without trying to find an answer first.  Thank you for being thoughtful of this free service!"
-msgstr "Esta es una cortesía gratuito que ofrecemos a la comunidad de WordPress, pero está claro que algunas personas abusen del servicio. Por favor, ponga el tiempo y el pensamiento en lo que estás pidiendo y no hacer todas las preguntas que se le ocurra, sin tratar de encontrar una primera respuesta. Gracias por estar atento de este servicio gratuito!"
-
-#: inc/support.php:213
-#@ wpduplicator
-msgid "Read the Duplicator log files for clues"
-msgstr "Lea los archivos de registro en busca de pistas duplicadora"
-
-#: inc/support.php:214
-#@ wpduplicator
-msgid "Do a Google search including errors from the log files"
-msgstr "Haga una búsqueda en Google, incluidos los errores de los archivos de registro"
-
-#: inc/support.php:215
-#@ wpduplicator
-msgid "Contact your hosting provider for permission and timeout issues"
-msgstr "Póngase en contacto con su proveedor de alojamiento para el permiso y los problemas de tiempo de espera"
-
-#: inc/pack.win.options.php:62
+#: views/packages/new1.inc-b.form.php:132
 #@ default
 msgid "STEP 1 - INPUTS"
 msgstr ""
 
-#: inc/pack.win.options.php:65
+#: views/packages/new1.inc-b.form.php:135
 #@ wpduplicator
 msgid "MySQL Server"
 msgstr "Servidor MYSQL"
 
-#: inc/pack.win.options.php:72
+#: views/packages/new1.inc-b.form.php:36
+#: views/packages/new1.inc-b.form.php:142
+#: views/packages/new2.base.php:232
 #@ wpduplicator
 msgid "Database"
 msgstr "base de datos"
 
-#: inc/pack.win.options.php:80
+#: views/packages/new1.inc-b.form.php:150
 #@ wpduplicator
 msgid "Advanced Options"
 msgstr "Opciones avanzadas"
 
-#: inc/pack.win.options.php:87
+#: views/packages/new1.inc-b.form.php:156
 #@ wpduplicator
 msgid "SSL"
 msgstr ""
 
-#: inc/pack.win.options.php:90
+#: views/packages/new1.inc-b.form.php:159
 #@ wpduplicator
 msgid "Enforce on Admin"
 msgstr "Hacer cumplir el Administrador"
 
-#: inc/pack.win.options.php:94
+#: views/packages/new1.inc-b.form.php:163
 #@ wpduplicator
 msgid "Enforce on Logins"
 msgstr "Hacer cumplir en Inicios de sesión"
 
-#: inc/pack.win.options.php:98
+#: views/packages/new1.inc-b.form.php:167
 #@ wpduplicator
 msgid "Cache"
 msgstr ""
 
-#: inc/pack.win.options.php:101
+#: views/packages/new1.inc-b.form.php:170
 #@ wpduplicator
 msgid "Keep Enabled"
 msgstr "Mantenga Activado"
 
-#: inc/pack.win.options.php:105
+#: views/packages/new1.inc-b.form.php:174
 #@ wpduplicator
 msgid "Keep Home Path"
 msgstr "Mantenga Portada Camino"
 
-#: inc/pack.win.options.php:113
+#: views/packages/new1.inc-b.form.php:182
 #@ default
 msgid "STEP 2 - INPUTS"
 msgstr ""
 
-#: inc/pack.win.options.php:117
+#: views/packages/new1.inc-b.form.php:186
 #@ wpduplicator
 msgid "New URL"
 msgstr "Nueva URL"
 
-#: inc/pack.win.options.php:123
-#@ default
+#: views/packages/new1.inc-b.form.php:193
+#@ wpduplicator
 msgid "The installer can have these fields pre-filled at install time."
-msgstr ""
+msgstr "El instalador puede tener estos campos rellenos al instalarse."
 
-#: inc/pack.win.options.php:123
-#@ default
+#: views/packages/new1.inc-b.form.php:193
+#@ wpduplicator
 msgid "All values are optional."
-msgstr ""
+msgstr "Todos los valores son opcionales."
 
-#: inc/settings.php:217
+#: views/settings/diagnostics.php:201
 #@ wpduplicator
 msgid "Server Disk"
 msgstr "Disco del Servidor"
 
-#: inc/settings.php:220
+#: views/settings/diagnostics.php:204
 #@ hyper-cache
 msgid "Free space"
 msgstr ""
 
-#: inc/settings.php:223
+#: views/settings/diagnostics.php:207
 #@ wpduplicator
 msgid "Note: This value is the physical servers hard-drive allocation."
 msgstr "Nota: Este valor es la asignación de servidores físicos en el disco duro."
 
-#: inc/settings.php:224
+#: views/settings/diagnostics.php:208
 #@ wpduplicator
 msgid "On shared hosts check your control panel for the 'TRUE' disk space quota value."
 msgstr "En los servidores compartidos comprobar su panel de control para el valor de la cuota de espacio en disco verdadero."
 
-#: duplicator.php:281
+#: views/tools/controller.php:17
 #@ wpduplicator
 msgid "Cleanup"
 msgstr "Limpieza"
 
-#: installer/log-view.php:127
-#@ default
-msgid "log:"
-msgstr ""
-
-#: installer/log-view.php:133
-#@ default
-msgid "Last"
-msgstr ""
-
-#: installer/log-view.php:133
-#@ default
-msgid "logs"
-msgstr ""
-
-#: inc/cleanup.php:16
-#: inc/cleanup.php:24
-#@ wpduplicator
-msgid "Installer Cleanup"
-msgstr "Limpieza Ficheros Instalador"
-
-#: inc/cleanup.php:58
+#: views/tools/cleanup.php:58
 #@ wpduplicator
 msgid "If the installer files did not successfully get removed, then you WILL need to remove them manually"
 msgstr "Si los ficheros de instalación no se eliminan correctamente, entonces TENDRÁ que eliminarlos manualmente."
 
-#: inc/cleanup.php:59
+#: views/tools/cleanup.php:59
 #@ wpduplicator
 msgid "Please remove all installer files to avoid leaving open security issues on your server"
 msgstr "Por favor elimine todos los ficheros del instalador para evitar  errores en la seguridad de su sistema"
 
-#: inc/pack.main.php:66
-#@ wpduplicator
-msgid "We hope you are enjoying the Duplicator!  Would you consider helping in the continued development of the plugin"
-msgstr "Deseamos que se divierta con the Duplicator! Considere respondernos y ayudarnos a continuar el desarrollo"
-
-#: inc/pack.main.php:67
-#@ wpduplicator
-msgid "Donate"
-msgstr "Donar"
-
-#: inc/pack.main.php:68
-#@ wpduplicator
-msgid "Rate It"
-msgstr "Calificar"
-
-#: inc/pack.main.php:69
-#@ wpduplicator
-msgid "Share It"
-msgstr "Compartir"
-
-#: inc/pack.main.php:70
-#@ wpduplicator
-msgid "Not Now"
-msgstr "Ahora no"
-
-#: inc/pack.main.php:115
-#@ wpduplicator
-msgid "No notes were given for this package"
-msgstr "No hay notas para esta copia"
-
-#: inc/pack.main.php:148
-#: inc/pack.win.create.php:16
+#: views/packages/list.base.php:152
+#: views/packages/list.base.php:200
+#: views/packages/new1.inc-b.form.php:10
 #@ wpduplicator
 msgid "Notes"
 msgstr "Notas"
 
-#: inc/pack.main.php:149
+#: views/packages/list.base.php:155
 #@ wpduplicator
 msgid "SQL File"
 msgstr "Fichero SQL"
 
-#: inc/pack.main.php:150
-#@ wpduplicator
-msgid "Show Links"
-msgstr "Enseñe enlaces"
-
-#: inc/pack.main.php:151
-#: inc/pack.main.php:179
+#: views/packages/list.base.php:156
+#: views/packages/list.base.php:206
 #@ wpduplicator
 msgid "View Log"
 msgstr "Ver Log"
 
-#: inc/pack.main.php:165
+#: views/packages/list.base.php:186
 #@ wpduplicator
 msgid "View Error Details"
 msgstr "Ver detalles de error"
 
-#: inc/pack.main.php:176
+#: views/packages/list.base.php:203
 #@ wpduplicator
 msgid "This package has encountered errors.  Click 'View Log' for more details.  For additional support see the "
 msgstr "Esta copia contiene errores. Cliquee \\\"Ver Log\\\" para más detalles. Más soporte en "
 
-#: inc/pack.main.php:177
+#: views/packages/list.base.php:204
 #@ wpduplicator
 msgid "online knowledgebase"
 msgstr "Base de conocimientos online"
 
-#: inc/pack.main.php:195
+#: views/settings/diagnostics.php:175
 #@ wpduplicator
 msgid "Not Supported"
 msgstr "No soportado"
 
-#: inc/pack.main.php:226
+#: views/packages/list-nodata.php:13
 #@ wpduplicator
 msgid "Please visit the"
 msgstr "Por favor visite"
 
-#: inc/pack.main.php:227
+#: views/packages/list-nodata.php:28
 #@ wpduplicator
 msgid "support page"
 msgstr "página de soporte"
 
-#: inc/pack.main.php:228
+#: views/packages/list-nodata.php:15
 #@ wpduplicator
 msgid "for additional help topics"
 msgstr "para temas de ayuda adicional"
 
-#: inc/pack.main.php:247
+#: views/packages/list.base.php:229
+#: views/packages/new2.base.php:178
+#: views/packages/new2.base.php:248
 #@ wpduplicator
 msgid "Total Size"
 msgstr "Tamaño total"
 
-#: inc/pack.main.php:364
-#@ wpduplicator
-msgid "Also check-out the support link for additional ways to help."
-msgstr "También chequee el enlace de soporte para maneras adicionales de ayudar."
-
-#: inc/pack.main.php:365
-#@ wpduplicator
-msgid "This message will disappear after refreshing the page."
-msgstr "Este mensaje desaparecerá después de refrescar la página"
-
-#: inc/pack.main.php:373
-#@ wpduplicator
-msgid "Thanks for donating to the Duplicator!  Your contribution really does make a difference!"
-msgstr "¡Gracias por donar a the Duplicator! ¡Su contribución marca la diferencia!"
-
-#: inc/pack.main.php:378
-#@ wpduplicator
-msgid "Thanks for giving a 5 star rating!  A huge amount of time and effort has gone into creating this plugin."
-msgstr "¡Gracias por darnos 5 estrellas! Una cantidad ingente de tiempo y esfuerzo ha ido en crear este plugin."
-
-#: inc/pack.main.php:383
-#@ wpduplicator
-msgid "Thanks for sharing the Duplicator and spreading the word!  We have definitly enjoyed helping this awesome community!"
-msgstr "¡Gracias por compartir the Duplicator y correr la voz! ¡Hemos conseguido ayudar a esta comunidad!"
-
-#: inc/pack.win.create.php:3
-#@ wpduplicator
-msgid "Create New Package"
-msgstr "Crear nuevo paquete-copia"
-
-#: inc/pack.win.create.php:12
+#: views/packages/list.base.php:86
+#: views/packages/new1.inc-b.form.php:8
+#: views/packages/new3.base.php:69
 #@ wpduplicator
 msgid "Name"
 msgstr "Nombre"
 
-#: inc/pack.win.create.php:17
+#: views/packages/new1.inc-b.form.php:11
 #@ wpduplicator
 msgid "Purpose of this package"
 msgstr "Proposito de esta copia"
 
-#: inc/pack.win.links.php:31
+#: views/packages/list.base.php:332
 #@ wpduplicator
 msgid "LOG"
 msgstr "LOG"
 
-#: inc/pack.win.options.php:22
-#@ wpduplicator
-msgid "Email a notice when completed"
-msgstr "Email un aviso cuando se complete"
-
-#: inc/pack.win.options.php:48
-#@ wpduplicator
-msgid "This will exclude all directories and extensions from the package file. This will slow down package creation times."
-msgstr "Esto va a excluir todos los directorios y extensiones del fichero de copia. Bajará la duración de la copia."
-
-#: inc/pack.win.system.php:155
+#: views/packages/new2.base.php:113
 #@ wpduplicator
 msgid "Cached Data"
 msgstr "Data en cache"
 
-#: inc/settings.php:126
+#: views/settings/diagnostics.php:111
 #@ wpduplicator
 msgid "Plugins Path"
 msgstr "Ruta de Plugins"
 
-#: inc/settings.php:130
-#@ wpduplicator
-msgid "Packages Built"
-msgstr "Copias construidas"
+#: classes/ui.php:105
+#@ default
+msgid "Reserved Duplicator install file(s) still exsist in the root directory.  Please delete these file(s) to avoid possible security issues."
+msgstr ""
 
-#: inc/settings.php:134
+#: classes/ui.php:106
+#@ default
+msgid "Remove file(s) now"
+msgstr ""
+
+#: classes/ui.php:107
+#@ default
+msgid "Dismiss this notice"
+msgstr ""
+
+#: duplicator.php:161
+#: views/tools/controller.php:13
 #@ wpduplicator
-msgid "The number of successful packages created."
-msgstr "Número de copias creadas correctamente."
+msgid "Tools"
+msgstr "Herramientas"
+
+#: views/packages/controller.php:77
+#@ wpduplicator
+msgid "Create New"
+msgstr "Crear Nuevo"
+
+#: views/packages/list.base.php:72
+#@ wpduplicator
+msgid "Package Logs"
+msgstr "Log de Paquete"
+
+#: views/packages/list.base.php:119
+#@ wpduplicator
+msgid "(No Notes Taken)"
+msgstr "(Sin notas)"
+
+#: views/packages/list.base.php:144
+#: views/packages/new1.inc-b.form.php:16
+#: views/packages/new2.base.php:153
+#: views/packages/new3.base.php:78
+#@ wpduplicator
+msgid "Archive"
+msgstr "Archivo"
+
+#: views/packages/list.base.php:151
+#: views/packages/list.base.php:195
+#@ wpduplicator
+msgid "Hash"
+msgstr "Hash"
+
+#: views/packages/list.base.php:154
+#@ wpduplicator
+msgid "Links"
+msgstr "Enlaces"
+
+#: views/packages/list.base.php:198
+#@ wpduplicator
+msgid "Unrecoverable Error! Please remove this package."
+msgstr "Error no recuperable! Por favor borre este paquete."
+
+#: views/packages/list.base.php:326
+#@ wpduplicator
+msgid "Package File Links"
+msgstr "Enlaces de Fichero de Paquete"
+
+#: views/packages/list-nodata.php:7
+#@ wpduplicator
+msgid "No Packages Found."
+msgstr "No se encontraron paquetes."
+
+#: views/packages/list-nodata.php:8
+#@ wpduplicator
+msgid "Click the 'Create New' tab to build a package."
+msgstr "Click el tab 'Crear Nuevo' y cree un paquete. "
+
+#: views/packages/list-nodata.php:14
+#@ wpduplicator
+msgid "support section"
+msgstr "sección de soporte"
+
+#: views/packages/list-nodata.php:24
+#@ wpduplicator
+msgid "Older packages prior to 0.5.0 are no longer supported in this version."
+msgstr "Paquetes más antiguos de 0.5.0 no son compatibles con esta versión."
+
+#: views/packages/list-nodata.php:27
+#@ wpduplicator
+msgid "To get an older package please visit the"
+msgstr "Para conseguir paqutes más antiguos visite "
+
+#: views/packages/list-nodata.php:29
+#@ wpduplicator
+msgid "and look for the Change Log link for additional instructions."
+msgstr "y mire el enlace Change Log  para instrucciones adicionales."
+
+#: views/packages/list-nodata.php:33
+#@ wpduplicator
+msgid "Hide this message"
+msgstr "Oculte este mensaje"
+
+#: views/packages/new1.base.php:68
+#: views/packages/new2.base.php:54
+#: views/packages/new3.base.php:37
+#@ wpduplicator
+msgid "Setup"
+msgstr "Setup"
+
+#: views/packages/new1.base.php:69
+#: views/packages/new2.base.php:55
+#: views/packages/new3.base.php:38
+#@ wpduplicator
+msgid "Scan"
+msgstr "Escanear"
+
+#: views/packages/new1.base.php:70
+#: views/packages/new2.base.php:56
+#: views/packages/new2.base.php:309
+#: views/packages/new3.base.php:39
+#@ wpduplicator
+msgid "Build"
+msgstr "Construir"
+
+#: views/packages/new1.base.php:73
+#@ wpduplicator
+msgid "Step 1: Package Setup"
+msgstr "Paso 1: Instale Paquete"
+
+#: views/packages/new1.inc-a.reqs.php:7
+#@ wpduplicator
+msgid "Requirements:"
+msgstr "Requerimientos: "
+
+#: views/packages/new1.inc-a.reqs.php:16
+#@ wpduplicator
+msgid "System requirments must pass for the Duplicator to work properly.  Click each link for details."
+msgstr "Debe pasar los requerimientos de Sistema para que Duplicator funcione bien. Click en enlace para info."
+
+#: views/packages/new1.inc-a.reqs.php:22
+#@ wpduplicator
+msgid "Permissions"
+msgstr "Permisos"
+
+#: views/packages/new1.inc-a.reqs.php:26
+#@ wpduplicator
+msgid "Required Paths"
+msgstr "Rutas Requeridas"
+
+#: views/packages/new1.inc-a.reqs.php:35
+#@ wpduplicator
+msgid "PHP Script Owner"
+msgstr "Propietario de Script Php"
+
+#: views/packages/new1.inc-a.reqs.php:36
+#@ wpduplicator
+msgid "The above paths should have permissions of 755 for directories and 644 for files. You can temporarily try 777 if you continue to have issues.  Also be sure to check the owner/group settings.  For more details contact your host or server administrator."
+msgstr "Las rutas arriba deben tener permisos de 755 para directorios y 644 para ficheros. Puede intentar temporalmente 777 si sigue teniendo problemas. Revise los ajustes de propietario/grupo. Para más detalles contacte su administrador de host o servidor."
+
+#: views/packages/new1.inc-a.reqs.php:38
+#: views/packages/new1.inc-a.reqs.php:52
+#: views/packages/new1.inc-a.reqs.php:63
+#: views/packages/new1.inc-a.reqs.php:79
+#: views/packages/new1.inc-a.reqs.php:97
+#: views/packages/new1.inc-a.reqs.php:119
+#: views/packages/new1.inc-a.reqs.php:138
+#: views/packages/new2.base.php:105
+#: views/packages/new2.base.php:121
+#: views/packages/new2.base.php:144
+#: views/packages/new2.base.php:187
+#: views/packages/new2.base.php:203
+#: views/packages/new2.base.php:219
+#: views/packages/new2.base.php:262
+#@ wpduplicator
+msgid "Status Code"
+msgstr "Código de Status"
+
+#: views/packages/new1.inc-a.reqs.php:91
+#@ wpduplicator
+msgid "MySQL version"
+msgstr "Versión Mysql"
+
+#: views/packages/new1.inc-a.reqs.php:95
+#: views/packages/new2.base.php:103
+#: views/packages/new2.base.php:142
+#@ wpduplicator
+msgid "more info"
+msgstr "más info"
+
+#: views/packages/new1.inc-a.reqs.php:111
+#@ wpduplicator
+msgid "PHP version"
+msgstr "Versión PHP"
+
+#: views/packages/new1.inc-a.reqs.php:112
+#@ wpduplicator
+msgid "Requried Functions"
+msgstr "Funciones Requeridas"
+
+#: views/packages/new1.inc-a.reqs.php:151
+#@ wpduplicator
+msgid "duplicator approved"
+msgstr "aprobado duplicator"
+
+#: views/packages/new1.inc-b.form.php:18
+#@ wpduplicator
+msgid "File filter enabled"
+msgstr "Habilitado filtro de fichero"
+
+#: views/packages/new1.inc-b.form.php:19
+#@ wpduplicator
+msgid "Database filter enabled"
+msgstr "Habilitado filtro de Base de datos"
+
+#: views/packages/new1.inc-b.form.php:26
+#@ wpduplicator
+msgid "Format"
+msgstr "Formato"
+
+#: views/packages/new1.inc-b.form.php:47
+#: views/packages/new1.inc-b.form.php:82
+#@ wpduplicator
+msgid "Filters"
+msgstr "Filtros"
+
+#: views/packages/new1.inc-b.form.php:51
+#: views/packages/new1.inc-b.form.php:86
+#@ wpduplicator
+msgid "Enable Filters"
+msgstr "Habilita filtros"
+
+#: views/packages/new1.inc-b.form.php:71
+#@ wpduplicator
+msgid "The directory paths and extensions above will be be excluded from the archive file if enabled is checked."
+msgstr "Las rutas de directorio y extensiones arriba serán excluidos del fichero archivo si está elegido."
+
+#: views/packages/new1.inc-b.form.php:72
+#@ wpduplicator
+msgid "Use the full path for directories and semicolons to separate all items."
+msgstr "Use la ruta completa para directorios y punto y coma para separar los elementos."
+
+#: views/packages/new1.inc-b.form.php:90
+#@ wpduplicator
+msgid "All"
+msgstr "Todos"
+
+#: views/packages/new1.inc-b.form.php:91
+#@ wpduplicator
+msgid "None"
+msgstr "Ninguno"
+
+#: views/packages/new1.inc-b.form.php:113
+#@ wpduplicator
+msgid "Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!"
+msgstr "Tabladas elegidas no se añadirán al script de database. Excluyendo ciertas tablas puede hacer que su web o plugins no funcionen bien después de la instalación!"
+
+#: views/packages/new1.inc-b.form.php:202
+#@ wpduplicator
+msgid "Skip Scan"
+msgstr "Saltar Escaneo"
+
+#: views/packages/new1.inc-b.form.php:202
+#@ wpduplicator
+msgid "step 2"
+msgstr "paso 2"
+
+#: views/packages/new1.inc-b.form.php:207
+#@ wpduplicator
+msgid "Next"
+msgstr "Siguiente"
+
+#: views/packages/new2.base.php:59
+#@ wpduplicator
+msgid "Step 2: System Scan"
+msgstr "Paso 2: Escaneo de Sistema"
+
+#: views/packages/new2.base.php:67
+#@ wpduplicator
+msgid "Scanning Site"
+msgstr "Escaneando Sitio"
+
+#: views/packages/new2.base.php:69
+#: views/packages/new3.base.php:52
+#@ wpduplicator
+msgid "Please Wait..."
+msgstr "Por favor Espere..."
+
+#: views/packages/new2.base.php:75
+#@ wpduplicator
+msgid "Scan Complete"
+msgstr "Escaneo Completado"
+
+#: views/packages/new2.base.php:76
+#@ wpduplicator
+msgid "Scan checks are not required to pass, however they could cause issues on some systems."
+msgstr "Los escaneos no son obligados para pasar, sin embargo ellos pueden causar problemas en algún sistema."
+
+#: views/packages/new2.base.php:84
+#@ wpduplicator
+msgid "Server"
+msgstr "Servidor"
+
+#: views/packages/new2.base.php:95
+#@ wpduplicator
+msgid "PHP Settings"
+msgstr "Ajustes PHP"
+
+#: views/packages/new2.base.php:102
+#@ wpduplicator
+msgid "The Duplicator has been known to have issues with some of the settings above. Please work with your host or server administrator to disable this value in the php.ini file if you’re having issues with building a package."
+msgstr "Duplicator puede tener problemas con alguno de los ajustes de arriba. Por favor, trabaje con su administrador de host o servidor para deshabilitar este valor en el php.ini si está teniendo problemas al construir un paquete."
+
+#: views/packages/new2.base.php:118
+#@ wpduplicator
+msgid "Cache Path"
+msgstr "Ruta de Cache"
+
+#: views/packages/new2.base.php:119
+#@ wpduplicator
+msgid "Cached data will lead to issues at install time and increases your archive size. It is highly recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you’re using a cache plugin please read the directions for how to properly clean the cache directory; simply removing the files can cause errors with some cache plugins."
+msgstr "El Caché llevará a problemas en la instalación e incrementa su tamaño final. Se recomienda vaciar el directorio de cache al construir. Use con precaución cuando borre datos del directorio caché. Si está usando un plugin de cache por favor lea las direccioens de como limpiar debidamente el cache; simplemente quitando los ficheros puede causar errores con algunos plugins de cache."
+
+#: views/packages/new2.base.php:129
+#@ wpduplicator
+msgid "Timeouts"
+msgstr "Timeouts"
+
+#: views/packages/new2.base.php:134
+#@ wpduplicator
+msgid "max_execution_time"
+msgstr "max_execution_time"
+
+#: views/packages/new2.base.php:138
+#, php-format
+#@ wpduplicator
+msgid "Timeouts effect how long a process is allowed to run.  The recommended timeout is \"%1$s\" seconds. An attempt is made to override this value if the enviroment allows it.  A \"Warn\" status will not be an issue unless your host kills PHP processes after a certain amount of time. "
+msgstr "Timeouts afecta cuanto tiempo corre un proceso. El timeout recomendado es \"%1$s\" segundos. Se intentará saltarse este valor si el entorno lo permite. Un status  \"Warn\" no será un problema a menos que su host mate los procesos después de cierto periodo de tiempo. "
+
+#: views/packages/new2.base.php:141
+#@ wpduplicator
+msgid "Timeouts can also be set at the web server layer, please work with your host or server administrator to make sure there are not restrictions for how long a PHP process is allowed to run.  If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly."
+msgstr "Timeouts tambien se puede poner en la capa del servidor web, por favor trabaje con su admin de host o servidor para asegurarse que no hay restricciones para procesos largos PHP. Si usted está limitado en tiempo de proceso, considere usar los filtros de database o fichero para bajar el tamaño de su paquete. Sin embargo con cuidado ya que excluir algunos recursos puede hacer que la instalación tenga error."
+
+#: views/packages/new2.base.php:167
+#: views/packages/new2.base.php:237
+#@ wpduplicator
+msgid "Enabled"
+msgstr "Habilitado"
+
+#: views/packages/new2.base.php:182
+#@ wpduplicator
+msgid "File Count"
+msgstr "Cuenta de Ficheros"
+
+#: views/packages/new2.base.php:183
+#@ wpduplicator
+msgid "Directory Count"
+msgstr "Cuenta de Directorios"
+
+#: views/packages/new2.base.php:185
+#, php-format
+#@ wpduplicator
+msgid "Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files."
+msgstr "El tamaño total representa todos los ficheros menos los filtros. Los umbrales que dan warnings avisos son  %1$s  para todo el sitio y  %2$s para ficheros grandes."
+
+#: views/packages/new2.base.php:195
+#@ wpduplicator
+msgid "Invalid Names"
+msgstr "Nombres inválidos"
+
+#: views/packages/new2.base.php:199
+#@ wpduplicator
+msgid "Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 200 characters and illegal characters that may not work on all operating systems such as * ? > < : / \\ |  .  It is recommended to remove or filter these files before building the archive or else you might have issues at install time."
+msgstr "Nombres de Ficheros o directorios inválidos pueden causar problemas cuando se extraiga el paquete entre sistemas. Nombres inválidos consisten en longitudes de más de 200 caracteres  y caracteres ilegales que puede que no vayan bien entre sistemas como * ? > < : / \\ |  .  Se recomienda borrar o filtrar estos ficheros antes de construir el paquete o puede tener problemas."
+
+#: views/packages/new2.base.php:201
+#: views/packages/new2.base.php:217
+#@ wpduplicator
+msgid "Show File Locations"
+msgstr "Muetra Lugares de Ficheros"
+
+#: views/packages/new2.base.php:211
+#@ wpduplicator
+msgid "Large Files"
+msgstr "Ficheros grandes"
+
+#: views/packages/new2.base.php:215
+#, php-format
+#@ wpduplicator
+msgid "Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location."
+msgstr "Ficheros grandes como películas y otros backups pueden causar problemas de timeout. El chequeo actual para ficheros grandes es %1$s por fichero.  Si tiene problemas al crear un paquete, considere excluir estos ficheros con el filtro y moverlos manualmente a su nueva sitio."
+
+#: views/packages/new2.base.php:252
+#@ wpduplicator
+msgid "Tables"
+msgstr "Tablas"
+
+#: views/packages/new2.base.php:253
+#@ wpduplicator
+msgid "Records"
+msgstr "Registros"
+
+#: views/packages/new2.base.php:256
+#@ wpduplicator
+msgid "repair and optimization"
+msgstr "reparación y optimización"
+
+#: views/packages/new2.base.php:257
+#, php-format
+#@ wpduplicator
+msgid "Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu."
+msgstr "El tamaño total y el número de filas de todas las tablas de bases de datos son valores aproximados. Los umbrales que desencadenan las advertencias son %1$s y registros %2$s. Grandes bases de datos necesitan tiempo para procesar y pueden causar problemas con el tiempo de espera del servidor y la config de memoria. Ejecución de un %3$s en su base de datos también puede ayudar a mejorar el tamaño y el rendimiento general. Si su servidor soporta shell_exec y mysqldump puede intentar activar esta opción en el menú de ajustes."
+
+#: views/packages/new2.base.php:270
+#@ wpduplicator
+msgid "Table Details"
+msgstr "Detalles de Tabla"
+
+#: views/packages/new2.base.php:281
+#@ wpduplicator
+msgid "Name:"
+msgstr "Nombre:"
+
+#: views/packages/new2.base.php:282
+#@ wpduplicator
+msgid "Host:"
+msgstr "Host"
+
+#: views/packages/new2.base.php:283
+#@ wpduplicator
+msgid "Build Mode:"
+msgstr "Modo Construcción:"
+
+#: views/packages/new2.base.php:294
+#@ wpduplicator
+msgid "Scan Error"
+msgstr "Error de Escaneo"
+
+#: views/packages/new2.base.php:295
+#@ wpduplicator
+msgid "Please try again!"
+msgstr "Por favor inténtelo de nuevo!"
+
+#: views/packages/new2.base.php:297
+#: views/packages/new3.base.php:105
+#@ wpduplicator
+msgid "Server Status:"
+msgstr "Status del Servidor:"
+
+#: views/packages/new2.base.php:300
+#: views/packages/new3.base.php:109
+#@ wpduplicator
+msgid "Error Message:"
+msgstr "Mensaje de Error"
+
+#: views/packages/new2.base.php:307
+#@ wpduplicator
+msgid "Back"
+msgstr "Atrás"
+
+#: views/packages/new2.base.php:308
+#@ wpduplicator
+msgid "Rescan"
+msgstr "Rescaneo"
+
+#: views/packages/new2.base.php:372
+#@ wpduplicator
+msgid "Unable to report on any tables"
+msgstr "Incapaz de crear report de cualquier tabla"
+
+#: views/packages/new2.base.php:381
+#@ wpduplicator
+msgid "Unable to report on database stats"
+msgstr "No puedo informar de estadísticas de database"
+
+#: views/packages/new2.base.php:396
+#@ wpduplicator
+msgid "No name length issues."
+msgstr "No hay problemas de nombres largos."
+
+#: views/packages/new2.base.php:399
+#: views/packages/new2.base.php:407
+#@ wpduplicator
+msgid "FILE"
+msgstr "FICHERO"
+
+#: views/packages/new2.base.php:404
+#@ wpduplicator
+msgid "No large files found."
+msgstr "No se encuentran ficheros grandes"
+
+#: views/packages/new3.base.php:42
+#@ wpduplicator
+msgid "Step 3: Build Package"
+msgstr "Step 3: Construye Paquete"
+
+#: views/packages/new3.base.php:50
+#@ wpduplicator
+msgid "Building Package"
+msgstr "Construyendo Paquete"
+
+#: views/packages/new3.base.php:53
+#@ wpduplicator
+msgid "Keep this window open during the build process."
+msgstr "Mantenga abierta esta ventana durante el proceso."
+
+#: views/packages/new3.base.php:54
+#@ wpduplicator
+msgid "This may take several minutes."
+msgstr "Esto necesitará algunos minutos."
+
+#: views/packages/new3.base.php:58
+#@ wpduplicator
+msgid "Build Status"
+msgstr "Estado de Construcción"
+
+#: views/packages/new3.base.php:65
+#@ wpduplicator
+msgid "Package Completed"
+msgstr "Paquete Completado"
+
+#: views/packages/new3.base.php:70
+#@ wpduplicator
+msgid "Process Time"
+msgstr "Tiempo de Proceso"
+
+#: views/packages/new3.base.php:84
+#@ wpduplicator
+msgid "All Packages"
+msgstr "Todos los Paquetes"
+
+#: views/packages/new3.base.php:95
+#@ wpduplicator
+msgid "Build Interrupt"
+msgstr "Interrupción de Construcción"
+
+#: views/packages/new3.base.php:96
+#@ wpduplicator
+msgid "The current build has experienced an issue."
+msgstr "El paquete actual tiene un problema."
+
+#: views/packages/new3.base.php:98
+#@ wpduplicator
+msgid "Please try the process again. If the problem persists please visit the support page."
+msgstr "Por favor inténtelo  de nuevo. Si el problema persiste visite la página de soporte."
+
+#: views/packages/new3.base.php:100
+#@ wpduplicator
+msgid "Try Again"
+msgstr "Intente de Nuevo"
+
+#: views/packages/new3.base.php:116
+#@ wpduplicator
+msgid "Notice"
+msgstr "Aviso"
+
+#: views/packages/new3.base.php:119
+#@ default
+msgid "Build Folder:"
+msgstr ""
+
+#: views/packages/new3.base.php:121
+#@ wpduplicator
+msgid "Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.  Please visit the support page for additional resources."
+msgstr "Algunos servidores cierran conexiones rápido; la construcción puede continuar en segundo plano. Para validar si una construcción está todavía corriendo, abra la carpeta 'tmp' arriba y mire si el archivo está creciendo en problemas. Si no es así entonces su servidor tiene tiempos restringidos. Visite la página de soporte para recursos adicionales."
+
+#: views/packages/new3.base.php:130
+#@ wpduplicator
+msgid "Package Log"
+msgstr "Log de Paquete"
+
+#: views/settings/diagnostics.php:36
+#@ wpduplicator
+msgid "Plugin settings reset."
+msgstr "Reseteo de ajustes de Plugin."
+
+#: views/settings/diagnostics.php:37
+#@ wpduplicator
+msgid "View state settings reset."
+msgstr "Ver ajustes de reseteo "
+
+#: views/settings/diagnostics.php:38
+#@ wpduplicator
+msgid "Active package settings reset."
+msgstr "Reseteo de ajustes de paquete activo."
+
+#: views/settings/diagnostics.php:41
+#: views/tools/cleanup.php:12
+#@ wpduplicator
+msgid "Legacy data removed."
+msgstr "Quitados datos base. "
+
+#: views/settings/diagnostics.php:99
+#@ wpduplicator
+msgid "APC Enabled"
+msgstr "Habilitado APC"
+
+#: views/settings/diagnostics.php:107
+#@ wpduplicator
+msgid "ABSPATH"
+msgstr "ABSPATH"
+
+#: views/settings/diagnostics.php:115
+#@ wpduplicator
+msgid "Loaded PHP INI"
+msgstr "Cargado PHP INI"
+
+#: views/settings/diagnostics.php:135
+#@ wpduplicator
+msgid "Max"
+msgstr "Max"
+
+#: views/settings/diagnostics.php:174
+#@ wpduplicator
+msgid "Shell Exec"
+msgstr "Shell Exec"
+
+#: views/settings/diagnostics.php:175
+#@ wpduplicator
+msgid "Is Supported"
+msgstr "Se Soporta"
+
+#: views/settings/diagnostics.php:189
+#@ wpduplicator
+msgid "Wait Timeout"
+msgstr "Timeout de Espera "
+
+#: views/settings/diagnostics.php:193
+#@ wpduplicator
+msgid "Max Allowed Packets"
+msgstr "Paquetes Max Permitidos"
+
+#: views/settings/diagnostics.php:197
+#@ wpduplicator
+msgid "msyqldump Path"
+msgstr "Ruta mysqldump"
+
+#: views/settings/diagnostics.php:224
+#@ wpduplicator
+msgid "Stored Data"
+msgstr "Datos Almacenados"
+
+#: views/settings/diagnostics.php:233
+#@ wpduplicator
+msgid "Options Values"
+msgstr "Valores Opcionales"
+
+#: views/settings/diagnostics.php:266
+#@ wpduplicator
+msgid "PHP Information"
+msgstr "Información de PHP"
+
+#: views/settings/diagnostics.php:285
+#@ wpduplicator
+msgid "Delete this option value"
+msgstr "Borre este valor de opción"
+
+#: views/settings/general.php:56
+#@ wpduplicator
+msgid "Plugin"
+msgstr "Plugin"
+
+#: views/settings/general.php:67
+#@ wpduplicator
+msgid "Delete Plugin Settings"
+msgstr "Borre Ajustes de Plugin"
+
+#: views/settings/general.php:70
+#@ wpduplicator
+msgid "Delete Entire Snapshot Directory"
+msgstr "Borre Todo el Dir de Snapshot"
+
+#: views/settings/general.php:83
+#@ wpduplicator
+msgid "Auto Skip Scanner"
+msgstr "Auto Saltar Escaneado"
+
+#: views/settings/general.php:86
+#@ wpduplicator
+msgid "Skip Scanner Step"
+msgstr "Saltar Paso de Escaneo"
+
+#: views/settings/general.php:88
+#@ wpduplicator
+msgid "Keeps the 'Skip Scan (step 2)' option checked."
+msgstr "Guarda el 'Saltar Escaneo (paso 2)' opción elegida."
+
+#: views/settings/general.php:93
+#@ wpduplicator
+msgid "Archive Flush"
+msgstr "Flush de Fichero"
+
+#: views/settings/general.php:96
+#@ wpduplicator
+msgid "Attempt Network Keep Alive"
+msgstr "Intentar Mantener la Conexión de Red"
+
+#: views/settings/general.php:97
+#@ wpduplicator
+msgid "recommended only for large archives"
+msgstr "recomendado solo para ficheros grandes"
+
+#: views/settings/general.php:99
+#@ wpduplicator
+msgid "This will attempt to keep a network connection established for large archives."
+msgstr "Ahora intentaremos mantener la conexión de red para archivos grandes."
+
+#: views/settings/general.php:104
+#@ wpduplicator
+msgid "Database Build"
+msgstr "Construcción de Database"
+
+#: views/settings/general.php:110
+#@ wpduplicator
+msgid "This server does not have shell_exec configured to run."
+msgstr "Este servidor no tiene configurado shell_exec para ejecutar."
+
+#: views/settings/general.php:111
+#@ wpduplicator
+msgid "Please contact the server administrator to enable this feature."
+msgstr "Por favor contacte el admin del servidor para habilitar esto."
+
+#: views/settings/general.php:116
+#@ wpduplicator
+msgid "Use mysqldump"
+msgstr "Use mysqldump"
+
+#: views/settings/general.php:117
+#@ wpduplicator
+msgid "recommended for large databases"
+msgstr "recomendado para bases de datos grandes"
+
+#: views/settings/general.php:122
+#@ wpduplicator
+msgid "Working Path:"
+msgstr "Ruta de Trabajo:"
+
+#: views/settings/general.php:128
+#@ wpduplicator
+msgid "Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator."
+msgstr "Mysqldump no se ha encontrado en su ubicación por defecto o la ubicación proporcionada. Por favor, introduzca una ruta a una ubicación válida donde mysqldump se puede ejecutar. Si el problema persiste póngase en contacto con el admin del servidor."
+
+#: views/settings/general.php:133
+#@ wpduplicator
+msgid "Add Custom Path:"
+msgstr "Añadir Ruta Personalizada:"
+
+#: views/settings/general.php:137
+#@ wpduplicator
+msgid "This is the path to your mysqldump program."
+msgstr "Esta es la ruta de su programa mysqldump."
+
+#: views/settings/general.php:146
+#@ wpduplicator
+msgid "Package Debug"
+msgstr "Debug de Paquete"
+
+#: views/settings/general.php:149
+#@ wpduplicator
+msgid "Show Package Debug Status in Packages Screen"
+msgstr "Mostrar Paquete de Depuración de Estado en la Pantalla de Paquetes"
+
+#: views/support.php:57
+#@ wpduplicator
+msgid "in detail for many of the quick and common answers."
+msgstr "en detalle para muchas de las preguntas rápidas y comunes."
+
+#: views/support.php:83
+#@ wpduplicator
+msgid "Complete online documentation!"
+msgstr "Documentación online completa!"
+
+#: views/support.php:105
+#@ wpduplicator
+msgid "Servers that work with Duplicator!"
+msgstr "Servidores que trabajan con Duplicator!"
+
+#: views/support.php:108
+#@ wpduplicator
+msgid "Get Hosting!"
+msgstr "Consiga Hosting!"
+
+#: views/support.php:123
+#@ wpduplicator
+msgid "Work with IT Profressionals!"
+msgstr "Trabaje con profesionales de IT!"
+
+#: views/support.php:127
+#@ wpduplicator
+msgid "Get Help!"
+msgstr "Consiga Ayuda!"
+
+#: views/tools/cleanup.php:8
+#@ wpduplicator
+msgid "Installer File Cleanup Ran."
+msgstr "Ejecutar Limpieza de Archivos Setup."
+
+#: views/tools/cleanup.php:67
+#@ wpduplicator
+msgid "Data Cleanup"
+msgstr "Limpieza de Datos"
+
+#: views/tools/cleanup.php:70
+#@ wpduplicator
+msgid "Delete Reserved Files"
+msgstr "Borrar Ficheros Reservados"
+
+#: views/tools/cleanup.php:71
+#@ wpduplicator
+msgid "Removes all installer files from a previous install"
+msgstr "Quitar todos los ficheros de la instalación previa"
+
+#: views/tools/cleanup.php:74
+#@ wpduplicator
+msgid "Delete Legacy Data"
+msgstr "Borrar Datos Antiguos"
+
+#: views/tools/cleanup.php:75
+#@ wpduplicator
+msgid "Removes all legacy data and settings prior to version"
+msgstr "Elimina todos los datos antiguos y los ajustes anteriores a la versión"
+
+#: views/tools/cleanup.php:90
+#, php-format
+#@ wpduplicator
+msgid "This action will remove all legacy settings prior to version %1$s.  "
+msgstr "Esta acción eliminará todos los ajustes antiguos anteriores a la versión  %1$s. "
+
+#: views/tools/cleanup.php:91
+#@ wpduplicator
+msgid "Legacy settings are only needed if you plan to migrate back to an older version of this plugin."
+msgstr "Ajustes antiguos sólo son necesarios si va a migrar de nuevo a una versión anterior de este plugin."
+
+#: views/tools/controller.php:16
+#@ wpduplicator
+msgid "Logging"
+msgstr "Logging"
+
+#: views/tools/logging.php:142
+#@ wpduplicator
+msgid "No log files were found in the snapshots directory with the extension *.log"
+msgstr "No hay archivos de registro en el directorio de snapshots con la extensión *.log"
+
+#: views/tools/logging.php:175
+#@ wpduplicator
+msgid "Last 20 Logs"
+msgstr "Últimos 20 Logs"
 
