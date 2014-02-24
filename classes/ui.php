@@ -86,6 +86,9 @@ class DUP_UI {
 	 * @return type void
 	 */
 	static public function ShowReservedFilesNotice() {
+		
+		if (! is_plugin_active('duplicator/duplicator.php'))
+			return;
 
 		$hide  = isset($_REQUEST['page']) && $_REQUEST['page'] == 'duplicator-tools' ? true : false;
 		$perms = (current_user_can( 'install_plugins' ) && current_user_can( 'import' ));

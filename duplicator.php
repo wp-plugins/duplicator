@@ -48,20 +48,25 @@ if (is_admin() == true) {
     function duplicator_activate() {
 
         global $wpdb;
-        $table_name = $wpdb->prefix . "duplicator_packages";
 		
-		 //PRIMARY KEY must have 2 spaces before for dbDelta to work
-		$sql = "CREATE TABLE `{$table_name}` (
-			`id`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-			`name`		VARCHAR(250)	NOT NULL,
-			`hash`		VARCHAR(50)		NOT NULL,
-			`status`	INT(11)			NOT NULL,
-			`created`	DATETIME		NOT NULL DEFAULT '0000-00-00 00:00:00',
-			`owner`		VARCHAR(60)		NOT NULL,
-			`package`	MEDIUMBLOB		NOT NULL )";
+		//Only update database on version update
+		if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
+			$table_name = $wpdb->prefix . "duplicator_packages";
+		
+			//PRIMARY KEY must have 2 spaces before for dbDelta to work
+		   $sql = "CREATE TABLE `{$table_name}` (
+			   `id`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+			   `name`		VARCHAR(250)	NOT NULL,
+			   `hash`		VARCHAR(50)		NOT NULL,
+			   `status`	INT(11)			NOT NULL,
+			   `created`	DATETIME		NOT NULL DEFAULT '0000-00-00 00:00:00',
+			   `owner`		VARCHAR(60)		NOT NULL,
+			   `package`	MEDIUMBLOB		NOT NULL )";
 
-        require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
-        @dbDelta($sql);
+		   require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
+		   @dbDelta($sql);
+			
+		}
 
 		//WordPress Options Hooks
         update_option('duplicator_version_plugin',  DUPLICATOR_VERSION);

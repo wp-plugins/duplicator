@@ -43,7 +43,6 @@ class DUP_Archive {
 				case 'TAR':			break;
 				case 'TAR-GZIP': 	break;
 				default:
-
 					if (class_exists(ZipArchive)) {
 						$this->Format = 'ZIP';
 						DUP_Zip::Create($this);
@@ -96,46 +95,48 @@ class DUP_Archive {
 		return null;
 	}
 	
-
+	//Must use iterator_to_array in order to avoid the error 'too many files open'
 	private function runDirStats($directory) {
 		
-		$currentPath = DUP_Util::SafePath($directory);
-		//EXCLUDE: Snapshot directory
-		if (strstr($currentPath, DUPLICATOR_SSDIR_PATH) || empty($currentPath)) {
-			return;
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(DUP_Util::SafePath($directory)));
+		$files = iterator_to_array($iterator);
+		unset($iterator);
+		array_push($this->filterDirsArray, DUPLICATOR_SSDIR_PATH);
+
+		foreach ($files as $file) {
+			
+			$nextpath	=  DUP_Util::SafePath($file->getRealPath());
+			$filename   = $file->getFilename();
+			
+			//Path Filters
+			foreach($this->filterDirsArray as $item) { 
+				if (strstr($nextpath, $item)) {
+					continue 2;
+				}
+			}
+
+			if ($file->isFile() && $file->isReadable()) {
+				if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filterExtsArray)) {
+					$fileSize  = filesize($nextpath);
+					$fileSize  = ($fileSize) ? $fileSize : 0;
+					$this->Size += $fileSize;
+					$this->FileCount++;
+					if (strlen($nextpath) > 200 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $filename)) 
+						array_push($this->InvalidFileList, $nextpath);
+					if ($fileSize > DUPLICATOR_SCAN_BIGFILE) 
+						array_push($this->BigFileList, $nextpath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
+				}
+			} elseif ($file->isDir() && $file->getFilename() !== '..') {
+				if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $filename) || trim($filename) == "") {
+					array_push($this->InvalidFileList, $nextpath);
+				}
+				$this->DirCount++;
+			} else if ($file->isLink()) {
+				$this->LinkCount++;
+			} 
+		
 		}
 		
-		$dh = new DirectoryIterator($currentPath);
-		foreach ($dh as $file) {
-			if (!$file->isDot()) {
-				$nextpath	= "{$currentPath}/{$file}";
-				if ($file->isDir()) {
-					if (! in_array($nextpath, $this->filterDirsArray)) {		
-						if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file) || trim($file) == "") {
-							array_push($this->InvalidFileList, $nextpath);
-						}
-						$result = $this->runDirStats($nextpath);
-						$this->DirCount++;
-					}
-
-				} else if ($file->isFile() && $file->isReadable()) {
-					if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filterExtsArray)) {
-						$fileSize  = filesize($nextpath);
-						$fileSize  = ($fileSize) ? $fileSize : 0;
-						$this->Size += $fileSize;
-						$this->FileCount++;
-						if (strlen($nextpath) > 200 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $file)) 
-							array_push($this->InvalidFileList, $nextpath);
-						if ($fileSize > DUPLICATOR_SCAN_BIGFILE) 
-							array_push($this->BigFileList, $nextpath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
-					}
-				} else if ($file->isLink()) {
-					$this->LinkCount++;
-				} 
-			}	 
-		}
-		@closedir($dh);
 	}	
-	
 }
 ?>
