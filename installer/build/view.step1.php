@@ -218,9 +218,9 @@ VIEW: STEP 1- INPUT -->
 				</td>
 			</tr>			
     	    <tr><td>Host</td><td><input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" /></td></tr>
-    	    <tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td></tr>
-    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database password"   /></td></tr>
 			<tr><td>Name</td><td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="database name"  /></td></tr>
+			<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td></tr>
+    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database user password"   /></td></tr>
     	</table>
 		
 		<div id="dup-step1-dbconn">

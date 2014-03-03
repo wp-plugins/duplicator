@@ -88,7 +88,7 @@ class DUP_Archive {
 			}
 		} else {
 			$this->filterDirsArray = array();
-			$this->filterDirsArray = array();
+			$this->filterExtsArray = array();
 			$this->runDirStats($this->PackDir);
 			return $this;
 		}
