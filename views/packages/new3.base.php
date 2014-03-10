@@ -1,13 +1,6 @@
 <?php
-
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
-	
-	$Package = new DUP_Package();
-	if (isset($_POST['dup-skip-step2'])) {
-		$Package->SaveActive($_POST);
-	}
-	$Package = $Package->GetActive();
-
+	$Package = DUP_Package::GetActive();
 ?>
 
 <style>
@@ -151,7 +144,7 @@ jQuery(document).ready(function($) {
 	*	Timeout (10000000 = 166 minutes)  */
 	Duplicator.Pack.Create = function() {
 		
-		var data = {action : 'duplicator_package_create'}
+		var data = {action : 'duplicator_package_build'}
 
 		$.ajax({
 			type: "POST",

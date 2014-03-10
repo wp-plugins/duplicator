@@ -101,7 +101,7 @@ class DUP_UI {
 		}
 
 		if (! self::GetViewStateValue($metaKey, false)) {
-			if (DUP_Package::RequiredFilesFound()) {
+			if (DUP_Server::InstallerFilesFound()) {
 				$queryStr = $_SERVER['QUERY_STRING'];
 				echo '<div class="updated"><p>';
 				printf("%s <br/> <a href='admin.php?page=duplicator-tools&tab=cleanup&action=installer'>%s</a> | <a href='?{$queryStr}&{$metaKey}=1'>%s</a>",

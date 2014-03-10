@@ -11,13 +11,15 @@ class DUP_Archive {
 	public $FilterOn;
 	public $File;
 	public $Format;
-	public $PackDir;
-	public $DirCount	 = 0;
-	public $FileCount	 = 0;
-	public $LinkCount	 = 0;		
-	public $Size		 = 0;
-	public $BigFileList  = array();
-	public $InvalidFileList = array();
+	public $PackDir;		
+	public $Size = 0;
+	public $WarnFileSize = array();
+	public $WarnFileName = array();
+	public $Dirs  = array();
+	public $Files = array();
+	public $Links = array();
+	public $OmitDirs  = array();
+	public $OmitFiles = array();
 	
 	//PROTECTED
 	protected $Package;
@@ -26,7 +28,7 @@ class DUP_Archive {
 	private $filterDirsArray = array();
 	private $filterExtsArray = array();
 
-	
+
 	public function __construct($package) {
 		$this->Package   = $package;
 		$this->FilterOn  = false;
@@ -76,67 +78,95 @@ class DUP_Archive {
 	 *  @returns array					An array of values for the directory stats
 	 *  @link http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx Windows filename restrictions
 	 */	
-	public function GetStats() {
-		$this->filterDirsArray = $this->GetFilterDirAsArray();
-		$this->filterExtsArray = $this->GetFilterExtsAsArray();
-		$rootPath = rtrim(DUPLICATOR_WPROOTPATH, '//' );
-	
+	public function Stats() {
+		
+		$this->filterDirsArray = array();
+		$this->filterExtsArray = array();
 		if ($this->FilterOn) {
-			if (! in_array($rootPath, $this->filterDirsArray) ) {
-				$this->runDirStats($this->PackDir);
-				return $this;
-			}
-		} else {
-			$this->filterDirsArray = array();
-			$this->filterExtsArray = array();
-			$this->runDirStats($this->PackDir);
-			return $this;
+			$this->filterDirsArray = $this->GetFilterDirAsArray();
+			$this->filterExtsArray = $this->GetFilterExtsAsArray();
 		}
-		return null;
+		
+		$this->runStats();
+		return $this;
 	}
 	
-	//Must use iterator_to_array in order to avoid the error 'too many files open'
-	private function runDirStats($directory) {
-		
-		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(DUP_Util::SafePath($directory)));
-		$files = iterator_to_array($iterator);
-		unset($iterator);
-		array_push($this->filterDirsArray, DUPLICATOR_SSDIR_PATH);
 
+	//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
+	//when a file has a permission such as 705 falling back to pathinfo is more stable
+	private function runStats() {
+		
+		array_push($this->filterDirsArray, DUPLICATOR_SSDIR_PATH);
+		$rootPath = DUP_Util::SafePath(rtrim(DUPLICATOR_WPROOTPATH, '//' ));
+		
+		//If the root directory is a filter then we only need a simple DirectoryIterator
+		//Must use iterator_to_array in order to avoid the error 'too many files open' for recursion
+		if (in_array($this->PackDir, $this->filterDirsArray)) {
+			$files = new DirectoryIterator($rootPath);
+			$key = array_search($this->PackDir, $this->filterDirsArray);
+			unset($this->filterDirsArray[$key]);
+		} else {
+			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rootPath));
+			$files = iterator_to_array($iterator);
+			unset($iterator);
+		}
+		
 		foreach ($files as $file) {
 			
-			$nextpath	=  DUP_Util::SafePath($file->getRealPath());
-			$filename   = $file->getFilename();
+			$filePath =  DUP_Util::SafePath($file->getRealPath());
+			$fileName = $file->getFilename();
+			$valid = true;
 			
-			//Path Filters
+			//PATH FILTERS
 			foreach($this->filterDirsArray as $item) { 
-				if (strstr($nextpath, $item)) {
+				if (strstr($filePath, $item)) {
+					if ($file->isDir() && $file->getFilename() !== '..')
+						$this->OmitDirs[] = $filePath;
 					continue 2;
 				}
 			}
-
-			if ($file->isFile() && $file->isReadable()) {
-				if (!in_array(@pathinfo($nextpath, PATHINFO_EXTENSION), $this->filterExtsArray)) {
-					$fileSize  = filesize($nextpath);
-					$fileSize  = ($fileSize) ? $fileSize : 0;
-					$this->Size += $fileSize;
-					$this->FileCount++;
-					if (strlen($nextpath) > 200 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $filename)) 
-						array_push($this->InvalidFileList, $nextpath);
-					if ($fileSize > DUPLICATOR_SCAN_BIGFILE) 
-						array_push($this->BigFileList, $nextpath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
+			
+			//FILES
+			if ($file->isFile()) {
+				if (! $file->isReadable()) {
+					$this->OmitFiles[] = $filePath;	
+				} 
+				else if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)) {
+					$fileSize = @filesize($filePath) or 0;
+					if (strlen($filePath) > 225 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName)|| trim($fileName) == "") {
+						array_push($this->WarnFileName, $filePath);
+						$valid = false;
+					} 
+					if ($fileSize > DUPLICATOR_SCAN_WARNFILESIZE) {
+						array_push($this->WarnFileSize, $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
+					}
+					if ($valid) {
+						$this->Size += $fileSize;
+						$this->Files[] = $filePath;
+					} 
+					else {
+						$this->OmitFiles[] = $filePath;
+					}
+				} 
+			}
+			//DIRECTORIES
+			elseif ($file->isDir() && $file->getFilename() !== '..') {
+				if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName) || trim($fileName) == "") {
+					array_push($this->WarnFileName, $filePath);
+					$valid = false;
 				}
-			} elseif ($file->isDir() && $file->getFilename() !== '..') {
-				if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $filename) || trim($filename) == "") {
-					array_push($this->InvalidFileList, $nextpath);
+				if ($valid) {
+					$this->Dirs[] = $filePath;
+				} else {
+					$this->OmitDirs[] = $filePath;
 				}
-				$this->DirCount++;
-			} else if ($file->isLink()) {
-				$this->LinkCount++;
 			} 
-		
+			//LINKS
+			else if ($file->isLink()) {
+				$this->Links[] = $filePath;
+			} 
 		}
-		
 	}	
+	
 }
 ?>

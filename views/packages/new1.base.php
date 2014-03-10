@@ -14,17 +14,17 @@
 	
 	
 	DUP_Util::InitSnapshotDirectory();
-	$Package = new DUP_Package();
-	$Package = $Package->GetActive();
+
+	$Package = DUP_Package::GetActive();
+	$package_hash = $Package->MakeHash();
 
 	$dup_tests  = array();
-	$dup_tests  = DUP_Package::GetSystemRequirments();
+	$dup_tests  = DUP_Server::GetRequirments();
 	$default_name = DUP_Package::GetDefaultName();
 	
 	$view_state = DUP_UI::GetViewStateArray();
 	$ui_css_archive   = (isset($view_state['dup-pack-archive-panel']) && $view_state['dup-pack-archive-panel'])   ? 'display:block' : 'display:none';
 	$ui_css_installer = (isset($view_state['dup-pack-installer-panel']) && $view_state['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
-	$package_skip_scanner	= DUP_Settings::Get('package_skip_scanner');
 
 ?>
 
@@ -156,17 +156,7 @@ jQuery(document).ready(function($) {
 		$("#filter-exts").val(text);
 	};	
 	
-	/*	----------------------------------------
-	*	METHOD: Auto Skip Step 2*/ 
-	Duplicator.Pack.SkipStep2 = function() {
-		var $chkbox = jQuery('#dup-skip-step2');
-		if ($chkbox.prop('checked') ) {
-			jQuery('#dup-form-opts').attr('action', '?page=duplicator&tab=new3');
-		} else {
-			jQuery('#dup-form-opts').attr('action', '?page=duplicator&tab=new2');
-		}
-	};	
-	
+
 	//Init: Toogle for system requirment detial links
 	$('.dup-sys-title a').each(function() {
 		$(this).attr('href', 'javascript:void(0)');
@@ -182,7 +172,6 @@ jQuery(document).ready(function($) {
 	//Init: Toggle OptionTabs
 	Duplicator.Pack.ToggleFileFilters();
 	Duplicator.Pack.ToggleDBFilters();
-	<?php echo ($package_skip_scanner) ? 'Duplicator.Pack.SkipStep2();' : ''; ?>
 	
 });
 </script>

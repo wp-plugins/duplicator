@@ -38,9 +38,9 @@ if (is_admin() == true) {
 	require_once 'classes/utility.php';
 	require_once 'classes/ui.php';
 	require_once 'classes/settings.php';
+	require_once 'classes/server.php';
 	require_once 'classes/package.php';
 	require_once 'classes/package.archive.zip.php';
-	require_once 'classes/task.php';
     require_once 'views/actions.php';
 	
     /* ACTIVATION 
@@ -55,13 +55,14 @@ if (is_admin() == true) {
 		
 			//PRIMARY KEY must have 2 spaces before for dbDelta to work
 		   $sql = "CREATE TABLE `{$table_name}` (
-			   `id`		BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+			   `id`			BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 			   `name`		VARCHAR(250)	NOT NULL,
 			   `hash`		VARCHAR(50)		NOT NULL,
-			   `status`	INT(11)			NOT NULL,
+			   `status`		INT(11)			NOT NULL,
 			   `created`	DATETIME		NOT NULL DEFAULT '0000-00-00 00:00:00',
 			   `owner`		VARCHAR(60)		NOT NULL,
-			   `package`	MEDIUMBLOB		NOT NULL )";
+			   `package`	MEDIUMBLOB		NOT NULL,
+			    KEY `hash` (`hash`))";
 
 		   require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
 		   @dbDelta($sql);
@@ -118,11 +119,12 @@ if (is_admin() == true) {
     add_action('admin_menu',							'duplicator_menu');
 	add_action('wp_ajax_duplicator_task_reset',			'duplicator_task_reset');
     add_action('wp_ajax_duplicator_package_scan',		'duplicator_package_scan');
-    add_action('wp_ajax_duplicator_package_create',		'duplicator_package_create');
+    add_action('wp_ajax_duplicator_package_build',		'duplicator_package_build');
 	add_action('wp_ajax_duplicator_package_delete',		'duplicator_package_delete');
+	add_action('wp_ajax_duplicator_package_report',		'duplicator_package_report');
 	add_action('wp_ajax_DUP_UI_SaveViewStateByPost',	array('DUP_UI', 'SaveViewStateByPost'));
 	add_action('admin_notices',							array('DUP_UI', 'ShowReservedFilesNotice'));
-
+	
 	//FILTERS
     add_filter('plugin_action_links',					'duplicator_manage_link', 10, 2);
     add_filter('plugin_row_meta',						'duplicator_meta_links', 10, 2);

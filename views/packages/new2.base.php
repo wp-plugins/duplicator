@@ -2,11 +2,13 @@
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
 	$Package = new DUP_Package();
 	$Package->SaveActive($_POST);
-	$Package = $Package->GetActive();
+	$Package = DUP_Package::GetActive();
 	
 	$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
 	$mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
 	$build_mode = ($mysqlDumpPath && $package_mysqldump) ? 'mysqldump (fast)' : 'PHP (slow)';
+	
+	
 ?>
 
 <style>
@@ -73,7 +75,10 @@ WIZARD STEP TABS -->
 	<div id="dup-msg-success" style="display:none">
 		<div style="text-align:center">
 			<div class="dup-hdr-success"><i class="fa fa-check-square-o fa-lg"></i> <?php _e('Scan Complete', 'wpduplicator'); ?></div>
-			<div id="dup-msg-success-subtitle"><?php _e("Scan checks are not required to pass, however they could cause issues on some systems.", 'wpduplicator'); ?></div>
+			<div id="dup-msg-success-subtitle">
+				<?php _e("Scan checks are not required to pass, however they could cause issues on some systems.", 'wpduplicator'); ?><br/>
+				<?php _e("Scan Time:", 'wpduplicator'); ?> <span id="data-rpt-scantime"></span>
+			</div>
 		</div><br/>
 		
 		<!-- ================================================================
@@ -83,7 +88,9 @@ WIZARD STEP TABS -->
 		<div class="dup-panel-title">
 			<i class="fa fa-hdd-o"></i> <?php 	_e("Server", 'wpduplicator');	?>
 			<div style="float:right; margin:-1px 10px 0px 0px">
-				<small><a href="?page=duplicator-settings&tab=diagnostics" target="_blank">[<?php _e('Diagnostics', 'wpduplicator');?>]</a> <i class="fa fa-external-link"></i> </small>	
+				<small><a href="?page=duplicator-settings&tab=diagnostics" target="_blank"><?php _e('Diagnostics', 'wpduplicator');?></a>  </small>	
+				<!--span style="font-size:11px">|</span>
+				<small><a id="data-rpt-scanfile" href="admin-ajax.php?action=duplicator_package_report" target="_blank"><?php _e('Report', 'wpduplicator');?></a></small-->
 			</div>
 		
 		</div>
@@ -182,7 +189,7 @@ WIZARD STEP TABS -->
 					<b><?php _e('File Count', 'wpduplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
 					<b><?php _e('Directory Count', 'wpduplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
 					<?php 
-						printf(__('Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_BIGFILE));
+						printf(__('Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 					?>
 					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-FILE-100</small>
 				</div>
@@ -212,7 +219,7 @@ WIZARD STEP TABS -->
 				</div>
 				<div class='dup-scan-info  dup-info-box'>
 					<?php 
-						printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_BIGFILE));
+						printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 					?><br/><br/>
 					<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
 					<div id="data-arc-big-data"></div>
@@ -307,6 +314,8 @@ WIZARD STEP TABS -->
 	<input type="button" value="&#9668; <?php _e("Back", 'wpduplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
 	<input type="button" value="<?php _e("Rescan", 'wpduplicator') ?>" onclick="Duplicator.Pack.Rescan()" class="button button-large" />
 	<input type="submit" value="<?php _e("Build", 'wpduplicator') ?> &#9658" class="button button-primary button-large" />
+	<!-- Used for iMacros testing do not remove -->
+	<div id="dup-automation-imacros"></div>
 </div>
 </form>
 
@@ -325,7 +334,11 @@ jQuery(document).ready(function($) {
 			timeout: 10000000,
 			data: data,
 			complete: function() {$('.dup-button-footer').show()},
-			success:    function(data) { Duplicator.Pack.LoadScanData(data)},
+			success:    function(data) { 
+				Duplicator.Pack.LoadScanData(data)
+				//Imacros testing required
+				$('#dup-automation-imacros').html('<input type="hidden" id="dup-finished" value="done" />');
+			},
 			error: function(data) { 
 				$('#dup-progress-bar-area').hide(); 
 				var status = data.status + ' -' + data.statusText;
@@ -352,11 +365,17 @@ jQuery(document).ready(function($) {
 		$('#dup-msg-success').show();
 		
 		//****************
+		//REPORT
+		var base = $('#data-rpt-scanfile').attr('href');
+		$('#data-rpt-scanfile').attr('href',  base + '&scanfile=' + data.RPT.ScanFile);
+		$('#data-rpt-scantime').text(data.RPT.ScanTime || 0);
+		
+		//****************
 		//SERVER
 		$('#data-srv-openbase').text(data.SRV.OpenBase || errMsg);
 		$('#data-srv-cacheon').text(data.SRV.CacheOn   || errMsg);
 		$('#data-srv-timeouts').text(data.SRV.TimeOuts || errMsg);
-
+		
 		//****************
 		//DATABASE
 		var html = "";
@@ -383,7 +402,7 @@ jQuery(document).ready(function($) {
 		}
 		
 		//****************
-		//FILES
+		//ARCHIVE
 		$('#data-arc-status-size').text(data.ARC.Status.Size || errMsg);
 		$('#data-arc-status-names').text(data.ARC.Status.Names|| errMsg);
 		$('#data-arc-status-big').text(data.ARC.Status.Big || errMsg);
@@ -394,17 +413,17 @@ jQuery(document).ready(function($) {
 	
 		//Invalid Names
 		html = '<?php _e("No name length issues.", 'wpduplicator') ?>';
-		if (data.ARC.InvalidFiles != undefined && data.ARC.InvalidFiles.length > 0) {
+		if (data.ARC.WarnFileName != undefined && data.ARC.WarnFileName.length > 0) {
 			html = '';
-			$.each(data.ARC.InvalidFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>[' + val  + ']<br/>';});
+			$.each(data.ARC.WarnFileName, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>[' + val  + ']<br/>';});
 		}
 		$('#data-arc-names-data').html(html);
 		
-		//Big Files
+		//Large Files
 		html = '<?php _e("No large files found.", 'wpduplicator') ?>';
-		if (data.ARC.BigFiles != undefined && data.ARC.BigFiles.length > 0) {
+		if (data.ARC.WarnFileSize != undefined && data.ARC.WarnFileSize.length > 0) {
 			html = '';
-			$.each(data.ARC.BigFiles, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>' + val  + '<br/>' ;});	
+			$.each(data.ARC.WarnFileSize, function(key, val) {html += '<?php _e("FILE", 'wpduplicator') ?> ' + key + ':<br/>' + val  + '<br/>' ;});	
 		}
 		$('#data-arc-big-data').html(html);
 		

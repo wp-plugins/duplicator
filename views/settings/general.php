@@ -9,7 +9,6 @@
 		DUP_Settings::Set('uninstall_settings',		isset($_POST['uninstall_settings']) ? "1" : "0");
 		DUP_Settings::Set('uninstall_files',		isset($_POST['uninstall_files'])  ? "1" : "0");
 		DUP_Settings::Set('uninstall_tables',		isset($_POST['uninstall_tables']) ? "1" : "0");
-		DUP_Settings::Set('package_skip_scanner',	isset($_POST['package_skip_scanner']) ? "1" : "0");
 		DUP_Settings::Set('package_debug',			isset($_POST['package_debug']) ? "1" : "0");
 		DUP_Settings::Set('package_zip_flush',		isset($_POST['package_zip_flush']) ? "1" : "0");
 		DUP_Settings::Set('package_mysqldump',		isset($_POST['package_mysqldump']) ? "1" : "0");
@@ -21,7 +20,6 @@
 	$uninstall_settings		= DUP_Settings::Get('uninstall_settings');
 	$uninstall_files		= DUP_Settings::Get('uninstall_files');
 	$uninstall_tables		= DUP_Settings::Get('uninstall_tables');
-	$package_skip_scanner	= DUP_Settings::Get('package_skip_scanner');
 	$package_debug			= DUP_Settings::Get('package_debug');
 	$package_zip_flush		= DUP_Settings::Get('package_zip_flush');
 	$package_mysqldump		= DUP_Settings::Get('package_mysqldump');
@@ -79,16 +77,6 @@
 	<h3 class="title"><?php _e("Package", 'wpduplicator') ?> </h3>
 	<hr size="1" />
 	<table class="form-table">
-		<tr>
-			<th scope="row"><label><?php _e("Auto Skip Scanner", 'wpduplicator'); ?></label></th>
-			<td>
-				<input type="checkbox" name="package_skip_scanner" id="package_skip_scanner" <?php echo ($package_skip_scanner) ? 'checked="checked"' : ''; ?> />
-				<label for="package_skip_scanner"><?php _e("Skip Scanner Step", 'wpduplicator'); ?></label>
-				<p class="description">
-					<?php _e("Keeps the 'Skip Scan (step 2)' option checked.", 'wpduplicator'); ?>
-				</p>
-			</td>
-		</tr>
 		<tr>
 			<th scope="row"><label><?php _e("Archive Flush", 'wpduplicator'); ?></label></th>
 			<td>

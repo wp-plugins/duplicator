@@ -1,24 +1,58 @@
 <?php
-
-function duplicator_package_create() {
+/**
+ *  DUPLICATOR_PACKAGE_SCAN
+ *  Returns a json scan report object which contains data about the system
+ *  
+ *  @return json   json report object
+ *  @example	   to test: admin-ajax.php?action=duplicator_package_scan
+ */
+function duplicator_package_scan() {
 	
 	@set_time_limit(0);
+	$errLevel = error_reporting();
+	error_reporting(E_ERROR);
+	DUP_Util::InitSnapshotDirectory();
+	
+	$Package = DUP_Package::GetActive();
+	$report = $Package->Scan();
+	$Package->SaveActiveItem('ScanFile', $Package->ScanFile);
+	$json_response = json_encode($report);
+	
+	DUP_Package::TmpCleanup();
+	error_reporting($errLevel);
+    die($json_response);
+}
 
+/**
+ *  duplicator_package_build
+ *  Returns the package result status
+ *  
+ *  @return json   json object of package results
+ */
+function duplicator_package_build() {
+	
+	@set_time_limit(0);
 	$errLevel = error_reporting();
 	error_reporting(E_ERROR);
 	DUP_Util::InitSnapshotDirectory();
 
-	$Task = new DUP_Task();
-	$Task->Create();
+	$Package = DUP_Package::GetActive();
+	
+	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$Package->ScanFile}")) {
+		die("The scan result file was not found.  Please run the scan step before building the package.");
+	}
+	
+	
+	$Package->Build();
 	
 	//JSON:Debug Response
 	//Pass = 1, Warn = 2, Fail = 3
 	$json = array();
 	$json['Status']   = 1;
-	$json['Package']  = $Task->Package;
-	$json['Runtime']  = $Task->Package->Runtime;
-	$json['ExeSize']  = $Task->Package->ExeSize;
-	$json['ZipSize']  = $Task->Package->ZipSize;
+	$json['Package']  = $Package;
+	$json['Runtime']  = $Package->Runtime;
+	$json['ExeSize']  = $Package->ExeSize;
+	$json['ZipSize']  = $Package->ZipSize;
 	$json_response = json_encode($json);
 	
 	error_reporting($errLevel);
@@ -26,55 +60,14 @@ function duplicator_package_create() {
 }
 
 
-/**
- *  DUPLICATOR_PACKAGE_SCAN
- *  Returns the directory size and file count for the root directory minus
- *  any of the filters
- *  
- *  @return json   size and file count of directory
- *  @example	   to test: admin-ajax.php?action=duplicator_package_scan
- *  
- */
-function duplicator_package_scan() {
+function duplicator_package_report() {
 	
-	@set_time_limit(0);
-	$errLevel = error_reporting();
-	error_reporting(E_ERROR);
+	$scanReport = $_GET['scanfile'];
+	header('Content-Type: application/json');
+	header("Location: " . DUPLICATOR_SSDIR_URL . "/tmp/" . $scanReport);
+	echo DUPLICATOR_SSDIR_URL . "/tmp/" . $scanReport;
 	
-	$json = array();
-	$Package = new DUP_Package();
-	$Package = $Package->GetActive();
-	
-	//SERVER
-	$srv = $Package->GetServerChecks();
-	$json['SRV']['OpenBase'] = $srv['CHK-SRV-100'];
-	$json['SRV']['CacheOn']  = $srv['CHK-SRV-101'];
-	$json['SRV']['TimeOuts'] = $srv['CHK-SRV-102'];
-
-	//DATABASE
-	$db = $Package->Database->Stats();
-	$json['DB']['Status']		= $db['Status'];
-	$json['DB']['Size']			= DUP_Util::ByteSize($db['Size'])	or "unknown";
-	$json['DB']['Rows']			= number_format($db['Rows'])		or "unknown";
-	$json['DB']['TableCount']	= $db['TableCount']					or "unknown";
-	$json['DB']['TableList']	= $db['TableList']					or "unknown";
-	
-	//FILES
-	$Package->Archive->GetStats();
-	$json['ARC']['Size']		= DUP_Util::ByteSize($Package->Archive->Size)  or "unknown";
-	$json['ARC']['DirCount']	= empty($Package->Archive->DirCount)  ? '0' : number_format($Package->Archive->DirCount);
-	$json['ARC']['FileCount']	= empty($Package->Archive->FileCount) ? '0' : number_format($Package->Archive->FileCount);
-	$json['ARC']['LinkCount']	= empty($Package->Archive->LinkCount) ? '0' : number_format($Package->Archive->LinkCount);
-	$json['ARC']['InvalidFiles']	= is_array($Package->Archive->InvalidFileList) ? $Package->Archive->InvalidFileList : "unknown";
-	$json['ARC']['BigFiles']		= is_array($Package->Archive->BigFileList)  ? $Package->Archive->BigFileList  : "unknown";
-	$json['ARC']['Status']['Size']	= ($Package->Archive->Size > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
-	$json['ARC']['Status']['Names']	= count($Package->Archive->InvalidFileList) ? 'Warn' : 'Good';
-	$json['ARC']['Status']['Big']	= count($Package->Archive->BigFileList)  ? 'Warn' : 'Good';
-	
-	///die(str_repeat("To force error message uncomment this line", 100));
-	$json_response = json_encode($json);
-	error_reporting($errLevel);
-    die($json_response);
+    die();
 }
 
 /**
@@ -111,6 +104,7 @@ function duplicator_package_delete() {
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"), 0644);
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"), 0644);
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"), 0644);
+						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_scan.json"), 0644);
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"), 0644);
 						//Remove
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"));
@@ -119,6 +113,7 @@ function duplicator_package_delete() {
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"));
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"));
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"));
+						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_scan.json"));
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"));
 						//Unfinished Zip files
 						$tmpZip = DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip.*";
