@@ -124,6 +124,7 @@
 			$packagepath 		= $pack_storeurl . "{$uniqueid}_archive.zip";
 			$installerpath		= $pack_storeurl . "{$uniqueid}_installer.php";
 			$logfilelink		= $pack_storeurl . "{$uniqueid}.log";
+			$reportfilelink		= $pack_storeurl . "{$uniqueid}_scan.json";
 			$installfilelink	= "{$installerpath}?get=1&file={$uniqueid}_installer.php";
 			$logfilename	    = "{$uniqueid}.log";
 			$css_alt		    = ($rowCount % 2 != 0) ? '' : 'alternate';
@@ -151,8 +152,9 @@
 						<b><?php _e("Hash", 'wpduplicator')?>:</b> <?php echo $pack_namehash ;?> <br/>
 						<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> 
 						<div style="height:7px">&nbsp;</div>
-						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}' " ;?>); return false;" class="thickbox"><i class="fa fa-lock"></i> &nbsp; <?php _e("Links", 'wpduplicator')?></button> &nbsp; 
+						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}', '{$reportfilelink}' " ;?>); return false;" class="thickbox"><i class="fa fa-lock"></i> &nbsp; <?php _e("Links", 'wpduplicator')?></button> &nbsp; 
 						<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-table"></i> &nbsp; <?php _e("SQL File", 'wpduplicator')?></button> &nbsp; 
+						<button class="button" onclick="window.open(<?php echo "'{$reportfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-file-text"></i> &nbsp; <?php _e("Scan Report", 'wpduplicator')?></button> &nbsp; 
 						<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-pencil-square-o"></i> &nbsp; <?php _e("View Log", 'wpduplicator')?></button>
 						<?php if ($package_debug) : ?>
 							<div style="margin-top:7px">
@@ -320,16 +322,17 @@ jQuery(document).ready(function($) {
 	 *	@param db		The path to the sql file
 	 *	@param install	The path to the install file 
 	 *	@param pack		The path to the package file */
-	Duplicator.Pack.ShowLinksDialog = function(db, install, pack, log) {
+	Duplicator.Pack.ShowLinksDialog = function(db, install, pack, log, report) {
 		
 		var url = '#TB_inline?width=650&height=350&inlineId=dup-dlg-quick-path';
 		tb_show("<?php _e('Package File Links', 'wpduplicator') ?>", url);
 		
-		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + install + "\n\n%s:\n" + pack + "\n\n%s:\n" + log;', 
+		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + install + "\n\n%s:\n" + pack + "\n\n%s:\n" + log + "\n\n%s:\n" + report;', 
 			__("DATABASE",  'wpduplicator'), 
 			__("PACKAGE", 'wpduplicator'), 
 			__("INSTALLER",   'wpduplicator'),
-			__("LOG", 'wpduplicator')); 
+			__("LOG", 'wpduplicator'),
+			__("REPORT", 'wpduplicator')); 
 		?>
 		$("#dup-dlg-quick-path-data").val(msg);
 		return false;

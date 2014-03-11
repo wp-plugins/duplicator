@@ -11,6 +11,10 @@
 			DUP_Settings::LegacyClean();			
 			$action_response = __('Legacy data removed.', 'wpduplicator');
 			break;
+		case 'tmp-cache': 
+			DUP_Package::TmpCleanup(true);
+			$action_response = __('Build cache removed.', 'wpduplicator');
+			break;		
 	} 
 	
 ?>
@@ -71,9 +75,13 @@
 			<td><?php _e("Removes all installer files from a previous install", 'wpduplicator'); ?></td>
 		</tr>
 		<tr>
-			<td><a href="javascript:void(0)" onclick="Duplicator.Settings.DeleteLegacy()"><?php _e("Delete Legacy Data", 'wpduplicator'); ?></a></td>
+			<td><a href="javascript:void(0)" onclick="Duplicator.Tools.DeleteLegacy()"><?php _e("Delete Legacy Data", 'wpduplicator'); ?></a></td>
 			<td><?php _e("Removes all legacy data and settings prior to version", 'wpduplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</td>
-		</tr>				
+		</tr>
+				<tr>
+			<td><a href="javascript:void(0)" onclick="Duplicator.Tools.ClearBuildCache()"><?php _e("Clear Build Cache", 'wpduplicator'); ?></a></td>
+			<td><?php _e("Removes all build data from:", 'wpduplicator'); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
+		</tr>	
 	</table>
 
 	
@@ -82,10 +90,8 @@
 <script>	
 jQuery(document).ready(function($) {
 	
-	/*  ----------------------------------------
-	*  METHOD:   */
-   Duplicator.Settings.DeleteLegacy = function () {
 
+   Duplicator.Tools.DeleteLegacy = function () {
 	   <?php
 		   $msg  = __('This action will remove all legacy settings prior to version %1$s.  ', 'wpduplicator');
 		   $msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.', 'wpduplicator'); 
@@ -97,6 +103,17 @@ jQuery(document).ready(function($) {
 		
 	   window.location = '?page=duplicator-tools&tab=cleanup&action=legacy';
    }
+   
+   Duplicator.Tools.ClearBuildCache = function () {
+	   <?php
+		   $msg  = __('This process will remove all build cache files.  Be sure no packages are currently building or else they will be cancelled.', 'wpduplicator');
+	   ?>
+	   var result = true;
+	   var result = confirm('<?php echo $msg ?>');
+	   if (! result) 
+		   return;
+	   window.location = '?page=duplicator-tools&tab=cleanup&action=tmp-cache';
+   }   
   
 	
 });	

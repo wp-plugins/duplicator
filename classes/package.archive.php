@@ -128,11 +128,10 @@ class DUP_Archive {
 			
 			//FILES
 			if ($file->isFile()) {
-				if (! $file->isReadable()) {
-					$this->OmitFiles[] = $filePath;	
-				} 
-				else if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)) {
-					$fileSize = @filesize($filePath) or 0;
+
+				if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)  && $file->isReadable()) {
+					$fileSize = @filesize($filePath);
+					$fileSize = empty($fileSize) ? 0 : $fileSize; 
 					if (strlen($filePath) > 225 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName)|| trim($fileName) == "") {
 						array_push($this->WarnFileName, $filePath);
 						$valid = false;
@@ -147,6 +146,8 @@ class DUP_Archive {
 					else {
 						$this->OmitFiles[] = $filePath;
 					}
+				} else {
+					$this->OmitFiles[] = $filePath;	
 				} 
 			}
 			//DIRECTORIES

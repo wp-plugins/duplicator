@@ -353,6 +353,11 @@ class DUP_Package {
 		
 	}
 	
+	/** 
+	*  Cleanup all tmp files
+	*  @param all empty all contents
+	*  @return void
+	*/
 	public static function TmpCleanup($all = false) {
 		
 		//Delete all files now

@@ -12,8 +12,6 @@ class DUP_Zip  extends DUP_Archive {
 	private static $compressDir;	
 	private static $countDirs  = 0;
 	private static $countFiles = 0;
-	private static $countLinks = 0;
-	private static $size = 0;
 	private static $sqlPath;
 	private static $zipPath;
 	private static $zipFileSize;
@@ -38,8 +36,11 @@ class DUP_Zip  extends DUP_Archive {
 			self::$zipPath			= DUP_Util::SafePath("{$archive->Package->StorePath}/{$archive->File}");
 			self::$zipArchive		= new ZipArchive();
 			self::$networkFlush		= empty($package_zip_flush) ? false : $package_zip_flush;
+			
 			$filterDirs = empty($archive->FilterDirs) ? 'not set' : $archive->FilterDirs;
 			$filterExts = empty($archive->FilterExts) ? 'not set' : $archive->FilterExts;
+			$filterOn   = ($archive->FilterOn) ? 'ON' : 'OFF';
+			
 			//Load Scan Report
 			$json = file_get_contents(DUPLICATOR_SSDIR_PATH_TMP . "/{$archive->Package->NameHash}_scan.json");
 			self::$scanReport = json_decode($json);
@@ -53,8 +54,26 @@ class DUP_Zip  extends DUP_Archive {
 			}
             DUP_Log::Info("ARCHIVE DIR:  " . self::$compressDir);
             DUP_Log::Info("ARCHIVE FILE: " . basename(self::$zipPath));
-			DUP_Log::Info("FILTER DIRS:  {$filterDirs}");
-			DUP_Log::Info("FILTER EXTS:  {$filterExts}");	
+			DUP_Log::Info("FILTERS: *{$filterOn}*");
+			DUP_Log::Info("DIRS:  {$filterDirs}");
+			DUP_Log::Info("EXTS:  {$filterExts}");
+			
+			DUP_Log::Info("----------------------------------------");
+			DUP_Log::Info("COMPRESSING");
+			DUP_Log::Info("SIZE:\t" . self::$scanReport->ARC->Size);
+			DUP_Log::Info("STATS:\tDirs " . self::$scanReport->ARC->DirCount . " | Files " . self::$scanReport->ARC->FileCount . " | Links " . self::$scanReport->ARC->LinkCount);
+			
+			//ADD SQL 
+			$isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, "database.sql");
+			if ($isSQLInZip)  {
+				DUP_Log::Info("SQL ADDED: " . basename(self::$sqlPath));
+			} else {
+				DUP_Log::Error("Unable to add database.sql to archive.", "SQL File Path [" . self::$sqlath . "]");
+			}
+			self::$zipArchive->close();
+			self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);
+			
+			
 			//ZIP DIRECTORIES
 			foreach(self::$scanReport->ARC->Dirs as $file){
 				$zipPath = ltrim(str_replace(self::$compressDir, '', $file), '/');
@@ -74,9 +93,6 @@ class DUP_Zip  extends DUP_Archive {
 				if (self::$zipArchive->addFile($file, $zipPath)) {
 					self::$limitItems++;
 					self::$countFiles++;
-					$fileSize = @filesize($file);
-					$fileSize = empty($fileSize) ? 0 : $fileSize; 
-					self::$size = self::$size + $fileSize;
 				} else {
 					DUP_Log::Info("WARNING: Unable to zip file: {$file}");
 				}
@@ -84,24 +100,7 @@ class DUP_Zip  extends DUP_Archive {
 				if (self::$networkFlush)
 					self::flushResponse();
 			}
-		
-			//ZIP LINKS
-			self::$countLinks = count($scanReport->ARC->Links);
-			
-			DUP_Log::Info("----------------------------------------");
-			DUP_Log::Info("COMPRESSING");
-			DUP_Log::Info("STATS:\tDirs " . self::$countDirs . " | Files " . self::$countFiles . " | Links " . self::$countLinks);
-			DUP_Log::Info("SIZE:\t" . DUP_Util::ByteSize(self::$size));
 
-			//--------------------------------
-			//ADD SQL 
-			$isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, "database.sql");
-			if ($isSQLInZip)  {
-				DUP_Log::Info("SQL ADDED: " . basename(self::$sqlPath));
-			} else {
-				DUP_Log::Error("Unable to add database.sql file to archive.", "SQL File Path [" . self::$sqlath . "]");
-			}
-			self::$zipArchive->close();
 			self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);
 			DUP_Log::Info(print_r(self::$zipArchive, true));
 

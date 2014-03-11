@@ -77,7 +77,7 @@ WIZARD STEP TABS -->
 			<div class="dup-hdr-success"><i class="fa fa-check-square-o fa-lg"></i> <?php _e('Scan Complete', 'wpduplicator'); ?></div>
 			<div id="dup-msg-success-subtitle">
 				<?php _e("Scan checks are not required to pass, however they could cause issues on some systems.", 'wpduplicator'); ?><br/>
-				<?php _e("Scan Time:", 'wpduplicator'); ?> <span id="data-rpt-scantime"></span>
+				<?php _e("Process Time:", 'wpduplicator'); ?> <span id="data-rpt-scantime"></span>
 			</div>
 		</div><br/>
 		

@@ -42,7 +42,6 @@ function duplicator_package_build() {
 		die("The scan result file was not found.  Please run the scan step before building the package.");
 	}
 	
-	
 	$Package->Build();
 	
 	//JSON:Debug Response
