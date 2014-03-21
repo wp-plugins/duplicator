@@ -49,16 +49,7 @@ class DUP_Server {
 		$php_test3 =  function_exists("file_put_contents");
 		$req['SYS-105'] = ($php_test1 >= 0 && $php_test2 && $php_test3) ? 'Pass' : 'Fail';
 
-		//SYS-106: WEB SERVER 
-		$servers = $GLOBALS['DUPLICATOR_SERVER_LIST'];
-		$test = false;
-		foreach ($servers as $value) {
-			if (stristr($_SERVER['SERVER_SOFTWARE'], $value)) {
-				$test = true;
-				break;
-			}
-		}
-		$req['SYS-106'] = ($test) ? 'Pass' : 'Fail';
+
 
 		//RESULTS
 		$result = in_array('Fail', $req);
@@ -74,21 +65,29 @@ class DUP_Server {
 	public static function GetChecks() {
 		$checks = array();
 
-		//CHK-SRV-100
-		$test = ini_get("open_basedir");
-		$checks['CHK-SRV-100'] = empty($test) ? 'Good' : 'Warn';
+		//CHK-SRV-100: PHP SETTINGS
+		$php_test1 = ini_get("open_basedir");
+		$php_test1 = empty($php_test1) ? true : false;
+		$php_test2 = ini_get("max_execution_time");
+		$php_test2  = ($php_test2  > DUPLICATOR_SCAN_TIMEOUT || strcmp($php_test2 , 'Off') == 0 || $php_test2  == 0) ? 'Good' : 'Warn';
+		$checks['CHK-SRV-100'] = ($php_test1 && $php_test2) ? 'Good' : 'Warn';
 
-		//CHK-SRV-101
+		//CHK-SRV-101: CACHE DIRECTORY
 		$cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
-
 		$dirEmpty = DUP_Util::IsDirectoryEmpty($cache_path);
 		$dirSize  = DUP_Util::GetDirectorySize($cache_path); //50K
 		$checks['CHK-SRV-101'] = ($dirEmpty  || $dirSize < 50000 )	? 'Good' : 'Warn';
 
-		//CHK-SRV-102
-		$test = ini_get("max_execution_time");
-		
-		$checks['CHK-SRV-102'] = ($test > DUPLICATOR_SCAN_TIMEOUT || strcmp($test, 'Off') == 0 || $test == 0) ? 'Good' : 'Warn';
+		//CHK-SRV-102: WEB SERVER 
+		$servers = $GLOBALS['DUPLICATOR_SERVER_LIST'];
+		$test = false;
+		foreach ($servers as $value) {
+			if (stristr($_SERVER['SERVER_SOFTWARE'], $value)) {
+				$test = true;
+				break;
+			}
+		}
+		$checks['CHK-SRV-102'] = ($test) ? 'Good' : 'Warn';
 		
 		//RESULTS
 		$result = in_array('Warn', $checks);

@@ -120,25 +120,6 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 			</div>
 		</div>
 
-		<!-- SYS-106 -->
-		<div class='dup-sys-req'>
-			<div class='dup-sys-title'>
-				<a><?php _e('Web Server', 'wpduplicator');?></a>
-				<div><?php echo $dup_tests['SYS-106'];?></div>
-			</div>
-			<div class="dup-sys-info dup-info-box">
-				<?php 
-					$web_servers = implode(', ', $GLOBALS['DUPLICATOR_SERVER_LIST']);
-					printf("<b>%s:</b> [%s]<br/> %s",
-						__("Web Server", 'wpduplicator'),
-						$_SERVER['SERVER_SOFTWARE'],
-						__("The Duplicator currently works with these web servers: {$web_servers}", 'wpduplicator')
-					);
-				?>
-				<small><?php _e('Status Code', 'wpduplicator');?>: SYS-106</small>
-			</div>
-		</div>
-
 		<!-- ONLINE SUPPORT -->
 		<div class="dup-sys-contact">
 			<?php 	

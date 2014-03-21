@@ -95,23 +95,39 @@ WIZARD STEP TABS -->
 		
 		</div>
 		<div class="dup-panel-panel">
+			
 			<!-- -------------------
-			OPEN BASE DIRECTORY: 100 -->
+			PHP SETTINGS: 100 -->
 			<div>
 				<div class='dup-scan-title'>
-					<a><?php _e('PHP Settings', 'wpduplicator');?></a> <div id="data-srv-openbase"></div>
+					<a><?php _e('PHP Settings', 'wpduplicator');?></a> <div id="data-srv-phpserver"></div>
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
+						//OPEN BASE DIR
 						$test = ini_get("open_basedir");
 						echo '<b>' . __('Open Base Dir', 'wpduplicator') . ':</b> ';
 						echo (empty($test)) ? 'Off' : 'On';  echo '<br/><br/>';
-						_e('The Duplicator has been known to have issues with some of the settings above. Please work with your host or server administrator to disable this value in the php.ini file if you’re having issues with building a package.', 'wpduplicator');
-						echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
+						_e('The Duplicator may have issues when [open_basedir] is enabled. Please work with your server administrator to disable this value in the php.ini file if you’re having issues building a package.', 'wpduplicator');
+						echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i><br/><br/>";
+						
+						//TIMEOUT SETTINGS
+						$test = ini_get("max_execution_time");		
+						echo '<b>' . __('Max Execution Time', 'wpduplicator') . ':</b> ';
+						echo (empty($test)) ? 'Off' : "{$test}";  
+						echo '<br/><br/>';
+						
+						printf(__('The Duplicator will have issues when the [max_execution_time] value in the php.ini is low.  Timeouts effect how long a process is allowed to run.  The recommended timeout is "%1$s" seconds. An attempt is made to override this value if the server allows it.  Please work with your server administrator to make sure there are no restrictions for how long a PHP process is allowed to run.', 'wpduplicator'), DUPLICATOR_SCAN_TIMEOUT); 
+						echo '<br/>';
+						echo '<small>';
+						_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build interrupt messages, then your web server could be killing the process.   If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.', 'wpduplicator');
+						echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
+						echo '</small>';
+						
 					?>
-					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-SRV-100</small>
 				</div>
 			</div>
+		
 			
 			<!-- -------------------
 			CACHED DATA: 101 -->
@@ -125,12 +141,11 @@ WIZARD STEP TABS -->
 						echo '<b>' . __('Cache Path', 'wpduplicator') . ":</b> {$cache_path} <br/><br/>";
 						_e("Cached data will lead to issues at install time and increases your archive size. It is highly recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you’re using a cache plugin please read the directions for how to properly clean the cache directory; simply removing the files can cause errors with some cache plugins.", 'wpduplicator');
 					?>
-					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-SRV-101</small>
 				</div>
 			</div>
 			
 			<!-- -------------------
-			TIMEOUTS: 102 -->
+			TIMEOUTS: 102 
 			<div>
 				<div class='dup-scan-title'>
 					<a><?php _e('Timeouts', 'wpduplicator');?></a> <div id="data-srv-timeouts"></div>
@@ -148,9 +163,28 @@ WIZARD STEP TABS -->
 						_e('Timeouts can also be set at the web server layer, please work with your host or server administrator to make sure there are not restrictions for how long a PHP process is allowed to run.  If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.', 'wpduplicator');
 						echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
 					?>
-					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-SRV-102</small>
 				</div>
-			</div>	
+			</div>	-->
+			
+			<!-- -------------------
+			WEB SERVER: 103 -->
+			<div>
+				<div class='dup-scan-title'>
+					<a><?php _e('Web Server', 'wpduplicator');?></a> <div id="data-srv-webserver"></div>
+				</div>
+				<div class='dup-scan-info dup-info-box'>
+					<?php 
+						$web_servers = implode(', ', $GLOBALS['DUPLICATOR_SERVER_LIST']);
+						printf("<b>%s:</b> [%s]<br/> %s",
+							__("Web Server", 'wpduplicator'),
+							$_SERVER['SERVER_SOFTWARE'],
+							__("The Duplicator currently works with these web servers: {$web_servers}", 'wpduplicator')
+						);
+					?>
+				</div>
+			</div>			
+			
+			
 			
 
 		</div><!-- end .dup-panel -->
@@ -191,7 +225,6 @@ WIZARD STEP TABS -->
 					<?php 
 						printf(__('Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 					?>
-					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-FILE-100</small>
 				</div>
 			</div>		
 			
@@ -207,7 +240,6 @@ WIZARD STEP TABS -->
 					?><br/><br/>
 					<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
 					<div id="data-arc-names-data"></div>
-					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-FILE-101</small>
 				</div>
 			</div>		
 		
@@ -223,7 +255,6 @@ WIZARD STEP TABS -->
 					?><br/><br/>
 					<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
 					<div id="data-arc-big-data"></div>
-					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-FILE-102</small>
 				</div>
 			</div>		
 
@@ -266,7 +297,6 @@ WIZARD STEP TABS -->
 								number_format(DUPLICATOR_SCAN_DBROWS),
 								$lnk);
 					?>
-					<small><?php _e('Status Code', 'wpduplicator');?>: CHK-DB-100</small>
 				</div>
 			</div>
 
@@ -372,9 +402,9 @@ jQuery(document).ready(function($) {
 		
 		//****************
 		//SERVER
-		$('#data-srv-openbase').text(data.SRV.OpenBase || errMsg);
+		$('#data-srv-phpserver').text(data.SRV.PHPServer || errMsg);
 		$('#data-srv-cacheon').text(data.SRV.CacheOn   || errMsg);
-		$('#data-srv-timeouts').text(data.SRV.TimeOuts || errMsg);
+		$('#data-srv-webserver').text(data.SRV.WebServer || errMsg);
 		
 		//****************
 		//DATABASE
