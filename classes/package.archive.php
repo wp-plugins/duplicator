@@ -132,7 +132,7 @@ class DUP_Archive {
 				if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)  && $file->isReadable()) {
 					$fileSize = @filesize($filePath);
 					$fileSize = empty($fileSize) ? 0 : $fileSize; 
-					if (strlen($filePath) > 225 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName)|| trim($fileName) == "") {
+					if (strlen($filePath) > 250 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName)|| trim($fileName) == "") {
 						array_push($this->WarnFileName, $filePath);
 						$valid = false;
 					} 
