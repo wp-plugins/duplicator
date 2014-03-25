@@ -85,13 +85,17 @@ if (file_exists('dtoken.php')) {
 
 <?php
 /* ==============================================================================================
-  ADVANCED FEATURES - Allows admins to perform aditional logic on the import.
+ADVANCED FEATURES - Allows admins to perform aditional logic on the import.
 
-  $GLOBALS['TABLES_SKIP_COLS']
-  Add Known column names of tables you don't want the search and replace logic to run on.
-  $GLOBALS['REPLACE_LIST']
-  Add additional search and replace items add list here
-  Example: array(array('search'=> '/html/oldpath/images',  'replace'=> '/html/newpath/images'));
+$GLOBALS['TABLES_SKIP_COLS']
+	Add Known column names of tables you don't want the search and replace logic to run on.
+
+$GLOBALS['REPLACE_LIST']
+	Add additional search and replace items to the serilizer engine.  
+	Place directly below $GLOBALS['REPLACE_LIST']
+	EXAMPLE:
+		array_push($GLOBALS['REPLACE_LIST'], array('search' => 'https://localhost/projects/wpplugins/',  'replace' => 'https://newurl/'));
+		array_push($GLOBALS['REPLACE_LIST'], array('search' => 'ftps://oldurl/', 'replace' => 'ftps://newurl/'));
   ================================================================================================= */
 
 $GLOBALS['FW_TABLEPREFIX'] = '%fwrite_wp_tableprefix%';
