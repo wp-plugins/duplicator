@@ -91,11 +91,11 @@ $GLOBALS['TABLES_SKIP_COLS']
 	Add Known column names of tables you don't want the search and replace logic to run on.
 
 $GLOBALS['REPLACE_LIST']
-	Add additional search and replace items to the serilizer engine.  
-	Place directly below $GLOBALS['REPLACE_LIST']
+	Add additional search and replace items to step 2 for the serialize engine.  
+	Place directly below $GLOBALS['REPLACE_LIST'] variable below your items
 	EXAMPLE:
-		array_push($GLOBALS['REPLACE_LIST'], array('search' => 'https://localhost/projects/wpplugins/',  'replace' => 'https://newurl/'));
-		array_push($GLOBALS['REPLACE_LIST'], array('search' => 'ftps://oldurl/', 'replace' => 'ftps://newurl/'));
+		array_push($GLOBALS['REPLACE_LIST'], array('search' => 'https://oldurl/',  'replace' => 'https://newurl/'));
+		array_push($GLOBALS['REPLACE_LIST'], array('search' => 'ftps://oldurl/',   'replace' => 'ftps://newurl/'));
   ================================================================================================= */
 
 $GLOBALS['FW_TABLEPREFIX'] = '%fwrite_wp_tableprefix%';
