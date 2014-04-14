@@ -36,7 +36,8 @@ if (function_exists('plugin_dir_url')) {
 	define("DUPLICATOR_SCAN_WARNFILESIZE", 4194304);//4MB
 	define("DUPLICATOR_SCAN_DBSIZE",  52428800);	//50MB
 	define("DUPLICATOR_SCAN_DBROWS",  250000);
-	define("DUPLICATOR_SCAN_TIMEOUT", 300);	//Seconds
+	define("DUPLICATOR_SCAN_TIMEOUT", 300);			//Seconds
+	define("DUPLICATOR_SCAN_USELEGACY", true);
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');
 	

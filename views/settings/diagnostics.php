@@ -147,7 +147,7 @@
 			</tr>
 			<tr>
 				<td><?php _e("User", 'wpduplicator'); ?></td>
-				<td><?php echo get_current_user(); ?></td>
+				<td><?php echo DUP_Util::GetCurrentUser(); ?></td>
 			</tr>
 			<tr>
 				<td><a href="http://php.net/manual/en/features.safe-mode.php" target="_blank"><?php _e("Safe Mode", 'wpduplicator'); ?></a></td>

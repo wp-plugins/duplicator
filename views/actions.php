@@ -4,7 +4,7 @@
  *  Returns a json scan report object which contains data about the system
  *  
  *  @return json   json report object
- *  @example	   to test: admin-ajax.php?action=duplicator_package_scan
+ *  @example	   to test: /wp-admin/admin-ajax.php?action=duplicator_package_scan
  */
 function duplicator_package_scan() {
 	

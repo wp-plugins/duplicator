@@ -87,87 +87,121 @@ class DUP_Archive {
 			$this->filterExtsArray = $this->GetFilterExtsAsArray();
 		}
 		
-		$this->runStats();
+		$this->getDirs();
+		$this->getFiles();
 		return $this;
 	}
 	
-
+	//Get All Directories then filter
+	//SPL classes in dirsToArray_New are buggy on some PHP versions
+	//Add back into code base once PHP 5.3.0 is minimum requirment
+	private function getDirs() {
+		
+		$rootPath = DUP_Util::SafePath(rtrim(DUPLICATOR_WPROOTPATH, '//' ));
+		array_push($this->filterDirsArray, DUPLICATOR_SSDIR_PATH);
+		
+		//If the root directory is a filter then we will only need the root files
+		if (in_array($this->PackDir, $this->filterDirsArray)) {
+			$this->Dirs = $this->PackDir;
+		} else {
+			$this->Dirs = (DUPLICATOR_SCAN_USELEGACY)
+				? $this->dirsToArray_Legacy($rootPath)
+				: $this->dirsToArray_New($rootPath);
+			array_push($this->Dirs, $this->PackDir);
+		}
+		
+		//Filter Directories
+		foreach ($this->Dirs as $key => $val) {
+			$name = basename($val); 
+			if (strlen($val) > 250 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name)|| trim($name) == "") {
+				$this->WarnFileName[] = $val;
+				$this->OmitDirs[]     = $val;
+				unset($this->Dirs[$key]);
+			} else {
+				//PATH FILTERS
+				foreach($this->filterDirsArray as $item) { 
+					if (strstr($val, $item)) {
+						$this->OmitDirs[] = $val;
+						unset($this->Dirs[$key]);
+						continue 2;
+					}
+				}
+			}
+		}
+	}
+	
+	private function getFiles() {
+		
+		foreach ($this->Dirs as $key => $val) {
+			foreach (glob("{$val}/{,.}*", GLOB_NOSORT | GLOB_BRACE) as $filePath) {
+				$fileName = basename($filePath);
+				$valid = true;
+				if (!is_dir($filePath)){
+					
+					if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)  && is_readable($filePath)) {
+						$fileSize = @filesize($filePath);
+						$fileSize = empty($fileSize) ? 0 : $fileSize; 
+						if (strlen($filePath) > 250 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName)|| trim($fileName) == "") {
+							array_push($this->WarnFileName, $filePath);
+							$valid = false;
+						} 
+						if ($fileSize > DUPLICATOR_SCAN_WARNFILESIZE) {
+							array_push($this->WarnFileSize, $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
+						}
+						if ($valid) {
+							$this->Size += $fileSize;
+							$this->Files[] = $filePath;
+						} 
+						else {
+							$this->OmitFiles[] = $filePath;
+						}
+					} else {
+						$this->OmitFiles[] = $filePath;	
+					} 
+				}
+			}
+		}
+	}
+	
+	//Recursive function to get all Directories in a wp install
+	//Older PHP logic which shows to be more stable on older version of PHP
+	private function dirsToArray_Legacy($path) {
+		$items = array();
+		$handle = opendir($path);
+		if ($handle) {
+			while (($file = readdir($handle)) !== false ) {
+				if ($file != "." && $file != "..") {
+					$fullPath = DUP_Util::SafePath($path. "/" . $file);
+					if (is_dir($fullPath)) {
+						$items = array_merge($items, $this->dirsToArray_Legacy($fullPath));
+						$items[] = $fullPath;
+					}
+				}
+			}
+			closedir($handle);
+		}
+		return $items;
+	}
+	
+	//Recursive function to get all Directories in a wp install
+	//Must use iterator_to_array in order to avoid the error 'too many files open' for recursion
 	//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
 	//when a file has a permission such as 705 falling back to pathinfo is more stable
-	private function runStats() {
-		
-		array_push($this->filterDirsArray, DUPLICATOR_SSDIR_PATH);
-		$rootPath = DUP_Util::SafePath(rtrim(DUPLICATOR_WPROOTPATH, '//' ));
-		
-		//If the root directory is a filter then we only need a simple DirectoryIterator
-		//Must use iterator_to_array in order to avoid the error 'too many files open' for recursion
-		if (in_array($this->PackDir, $this->filterDirsArray)) {
-			$files = new DirectoryIterator($rootPath);
-			$key = array_search($this->PackDir, $this->filterDirsArray);
-			unset($this->filterDirsArray[$key]);
-		} else {
-			$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rootPath));
-			$files = iterator_to_array($iterator);
-			unset($iterator);
-		}
-		
+	private function dirsToArray_New($path) {
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+				RecursiveIteratorIterator::SELF_FIRST,
+				RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
+		);
+		$files = iterator_to_array($iterator);
+		$items = array();
 		foreach ($files as $file) {
-			
-			$filePath =  DUP_Util::SafePath($file->getRealPath());
-			$fileName = $file->getFilename();
-			$valid = true;
-			
-			//PATH FILTERS
-			foreach($this->filterDirsArray as $item) { 
-				if (strstr($filePath, $item)) {
-					if ($file->isDir() && $file->getFilename() !== '..')
-						$this->OmitDirs[] = $filePath;
-					continue 2;
-				}
+			if ($file->isDir()) {
+				$items[] = DUP_Util::SafePath($file->getRealPath());
 			}
-			
-			//FILES
-			if ($file->isFile()) {
-
-				if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)  && $file->isReadable()) {
-					$fileSize = @filesize($filePath);
-					$fileSize = empty($fileSize) ? 0 : $fileSize; 
-					if (strlen($filePath) > 250 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName)|| trim($fileName) == "") {
-						array_push($this->WarnFileName, $filePath);
-						$valid = false;
-					} 
-					if ($fileSize > DUPLICATOR_SCAN_WARNFILESIZE) {
-						array_push($this->WarnFileSize, $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
-					}
-					if ($valid) {
-						$this->Size += $fileSize;
-						$this->Files[] = $filePath;
-					} 
-					else {
-						$this->OmitFiles[] = $filePath;
-					}
-				} else {
-					$this->OmitFiles[] = $filePath;	
-				} 
-			}
-			//DIRECTORIES
-			elseif ($file->isDir() && $file->getFilename() !== '..') {
-				if (preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName) || trim($fileName) == "") {
-					array_push($this->WarnFileName, $filePath);
-					$valid = false;
-				}
-				if ($valid) {
-					$this->Dirs[] = $filePath;
-				} else {
-					$this->OmitDirs[] = $filePath;
-				}
-			} 
-			//LINKS
-			else if ($file->isLink()) {
-				$this->Links[] = $filePath;
-			} 
 		}
-	}	
-	
+		return $items;
+	}
+
 }
 ?>
