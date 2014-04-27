@@ -35,26 +35,26 @@ if (DUP_Settings::Get('uninstall_files')) {
 	$check = glob("{$ssdir}/wp-config.php");
 	if (count($check) == 0) {
 
-		//PHP is sometimes flaky so lets do a sanity check
+		//PHP sanity check
 		foreach (glob("{$ssdir}/*_database.sql") as $file) {
-			if (strstr($file, '_database.sql')) {
+			if (strstr($file, '_database.sql'))
 				@unlink("{$file}");
-			}
 		}
 		foreach (glob("{$ssdir}/*_installer.php") as $file) {
-			if (strstr($file, '_installer.php')) {
+			if (strstr($file, '_installer.php'))
 				@unlink("{$file}");
-			}
 		}
 		foreach (glob("{$ssdir}/*_archive.zip") as $file) {
-			if (strstr($file, '_archive.zip')) {
+			if (strstr($file, '_archive.zip')) 
 				@unlink("{$file}");
-			}
+		}
+		foreach (glob("{$ssdir}/*_scan.json") as $file) {
+			if (strstr($file, '_scan.json'))
+				@unlink("{$file}");
 		}
 		foreach (glob("{$ssdir}/*.log") as $file) {
-			if (strstr($file, '.log')) {
+			if (strstr($file, '.log')) 
 				@unlink("{$file}");
-			}
 		}
 
 		//Check for core files and only continue removing data if the snapshots directory
