@@ -307,8 +307,8 @@ class DUP_Database {
 								($num_values == $num_counter) 	? $sql .= 'NULL' 	: $sql .= 'NULL, ';
 							} else {
 								($num_values == $num_counter) 
-									? $sql .= '"' . @mysql_real_escape_string($value) . '"' 
-									: $sql .= '"' . @mysql_real_escape_string($value) . '", ';
+									? $sql .= '"' . @esc_sql($value) . '"' 
+									: $sql .= '"' . @esc_sql($value) . '", ';
 							}
 							$num_counter++;
 						}
