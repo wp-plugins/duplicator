@@ -261,7 +261,7 @@ if (isset($_POST['action_ajax'])) {
 							<div class="<?php echo $step3CSS; ?>"><a><span>3</span> Test </a></div>
 						</div>
 					</div>
-				<?php endif ?>
+				<?php endif; ?>
 
 			</td>
 			<td style="white-space:nowrap">

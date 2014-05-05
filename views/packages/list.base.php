@@ -159,9 +159,9 @@
 						<?php if ($package_debug) : ?>
 							<div style="margin-top:7px">
 								<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[View Package Object]</a><br/>
-								<textarea class="dup-pack-debug"><?php print_r($Package);?> </textarea>
+								<textarea class="dup-pack-debug"><?php @print_r($Package); ?> </textarea>
 							</div>
-						<?php endif  ?>	
+						<?php endif;  ?>	
 					</td>
 				</tr>	
 				
@@ -211,8 +211,8 @@
 										<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[View Package Object]</a><br/>
 										<textarea class="dup-pack-debug"><?php print_r($Package);?> </textarea>
 									</div>
-								<?php endif  ?>	
-							<?php endif  ?>	
+								<?php endif;  ?>	
+							<?php endif;  ?>	
 							
 							
 						</div>

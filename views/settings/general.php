@@ -116,7 +116,7 @@
 									_e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.', 'wpduplicator'); 
 								?>
 							</div><br/>
-						<?php endif ?>
+						<?php endif; ?>
 
 						<label><?php _e("Add Custom Path:", 'wpduplicator'); ?></label><br/>
 						<input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?> " />
@@ -127,7 +127,7 @@
 						</p>
 					</div>
 			
-				<?php endif ?>
+				<?php endif; ?>
 			</td>
 		</tr>	
 		<tr>

@@ -63,7 +63,7 @@
 			 <?php _e('Please remove all installer files to avoid leaving open security issues on your server', 'wpduplicator')?>. <br/><br/>
 			</i>
 			
-		<?php endif ?>
+		<?php endif; ?>
 		</div>
 	<?php endif; ?>	
 	

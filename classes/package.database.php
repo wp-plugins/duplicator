@@ -209,8 +209,6 @@ class DUP_Database {
 		$tblCreateCount = count($tables);
 		$tblFilterCount = $tblAllCount - $tblCreateCount;
 
-
-
 		$cmd .= ' -u ' . escapeshellarg(DB_USER);
 		$cmd .= (DB_PASSWORD) ? 
 				' -p'  . escapeshellarg(DB_PASSWORD) : '';
@@ -227,7 +225,7 @@ class DUP_Database {
 		if ( trim( $output ) === 'Warning: Using a password on the command line interface can be insecure.' ) {
 			$output = '';
 		}
-		$output = (strlen($strerr)) ? $output : "Ran from {$exePath}";
+		$output = (strlen($output)) ? $output : "Ran from {$exePath}";
 		
 		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
 		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");		
@@ -236,7 +234,7 @@ class DUP_Database {
 		return ($output) ?  false : true;
 	}
 
-
+	//TODO: esc_sql is a wrapper around mysqli_real_escape_string
 	private function phpDump() {
 
 		global $wpdb;
