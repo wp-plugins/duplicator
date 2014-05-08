@@ -1,5 +1,4 @@
-<!-- =========================================
-META-BOX2: PACKAGE OPTIONS -->
+
 <form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2" data-validate="parsley">
 	<input type="hidden" id="dup-form-opts-action" name="action" value="">
 	<input type="hidden" id="dup-form-opts-hash" name="package-hash" value="<?php echo $package_hash; ?>">

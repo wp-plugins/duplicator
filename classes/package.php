@@ -64,6 +64,7 @@ class DUP_Package {
 		$this->Database		= new DUP_Database($this);
 		$this->Archive		= new DUP_Archive($this);
 		$this->Installer	= new DUP_Installer($this);
+		
 	}
 	
 	/**
@@ -129,7 +130,7 @@ class DUP_Package {
 		global $current_user;
 
 		$timerStart = DUP_Util::GetMicrotime();
-
+		
 		$this->Archive->File	  = "{$this->NameHash}_archive.zip";
 		$this->Installer->File    = "{$this->NameHash}_installer.php";
 		$this->Database->File     = "{$this->NameHash}_database.sql";
@@ -180,11 +181,12 @@ class DUP_Package {
 			$this->ID = $wpdb->insert_id;
 		}
 
-
 		//START BUILD
-		$this->Database->Build();
-		$this->Archive->Build();
-		$this->Installer->Build();
+		//PHPs serialze method will return the object but the ID above is not passed
+		//for one reason or another so passing the object back in seems to do the trick
+		$this->Database->Build($this);
+		$this->Archive->Build($this);
+		$this->Installer->Build($this);
 
 		//VALIDATE FILE SIZE
 		$dbSizeRead	 = DUP_Util::ByteSize($this->Database->Size);
@@ -260,7 +262,7 @@ class DUP_Package {
 			$this->Database->FilterOn		= isset($post['dbfilter-on'])   ? 1 : 0;
 			$this->Database->FilterTables	= esc_html($tablelist);
 
-			update_option(self::OPT_ACTIVE, serialize($this));
+			update_option(self::OPT_ACTIVE, $this);
 		}
 	}
 	
@@ -274,7 +276,7 @@ class DUP_Package {
 	
 		$reflectionClass = new ReflectionClass($package);
 		$reflectionClass->getProperty($property)->setValue($package, $value);
-		update_option(self::OPT_ACTIVE, serialize($package));
+		update_option(self::OPT_ACTIVE, $package);
 	}
 	
 	/**
@@ -327,17 +329,19 @@ class DUP_Package {
 
 	/**
 	 * Gets the active package.  The active package is defined as the package that was lasted saved.
+	 * Do to cache issues with the built in WP function get_option moved call to a direct DB call.
 	 * @see DUP_Package::SaveActive
 	 * @return DUP_Package
 	 */
 	public static function GetActive() {
 		
-		$tmpOpts = get_option(self::OPT_ACTIVE, false);	
-		if ($tmpOpts != false) {
-			return  @unserialize($tmpOpts);
-		} else {
-			return new DUP_Package();
+		global $wpdb;
+		$obj = new DUP_Package();
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM `{$wpdb->options}` WHERE option_name = %s LIMIT 1", self::OPT_ACTIVE ) );
+		if (is_object($row)) {
+			$obj =  @unserialize($row->option_value);
 		}
+		return $obj;
 	}
 	
 	/** 

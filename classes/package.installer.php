@@ -24,7 +24,9 @@ class DUP_Installer {
 		 $this->Package = $package;
 	}
 	
-	public function Build() {
+	public function Build($package) {
+		
+		$this->Package = $package;
 		
 		DUP_Log::Info("\n********************************************************************************");
 		DUP_Log::Info("INSTALLER:");

@@ -23,8 +23,10 @@ class DUP_Database {
 		 $this->Package = $package;
 	}
 	
-	public function Build() {
+	public function Build($package) {
 		try {
+			
+			$this->Package = $package;
 			
 			$time_start = DUP_Util::GetMicrotime();
 			$this->Package->SetStatus(DUP_PackageStatus::DBSTART);

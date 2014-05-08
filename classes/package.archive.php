@@ -34,8 +34,10 @@ class DUP_Archive {
 		$this->FilterOn  = false;
 	}
 	
-	public function Build() {
+	public function Build($package) {
 		try {
+			
+			$this->Package = $package;
 			
 			if (!isset($this->PackDir) && ! is_dir($this->PackDir)) throw new Exception("The 'PackDir' property must be a valid diretory.");
 			if (!isset($this->File)) throw new Exception("A 'File' property must be set.");
