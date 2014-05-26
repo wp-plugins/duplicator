@@ -93,8 +93,8 @@
 						</table>
 					</div>
 					<div id="dup-db-filter-items">
-						<a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true);">[ <?php _e( 'All', 'wpduplicator' ); ?> ]</a> &nbsp; 
-						<a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false);">[ <?php _e( 'None', 'wpduplicator' ); ?> ]</a>
+						<a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e( 'All', 'wpduplicator' ); ?> ]</a> &nbsp; 
+						<a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e( 'None', 'wpduplicator' ); ?> ]</a>
 						<div style="font-stretch:ultra-condensed; font-family: Calibri; white-space: nowrap">
 							<?php
 							$tables = $wpdb->get_results( "SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N );
