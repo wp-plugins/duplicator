@@ -162,9 +162,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 			</div>
 			<div class="dup-sys-info dup-info-box">
 				<?php
-					$msg  = "Safe Mode should be set safe_mode=Off in you php.ini file. On hosted servers you may have to request this setting be turned off.  ";
-					$msg .= "Please note that Safe Mode is deprecated as of PHP 5.3.0";
-					_e($msg, 'wpduplicator'); 
+					_e("Safe Mode should be set safe_mode=Off in you php.ini file. On hosted servers you may have to request this setting be turned off. Please note that Safe Mode is deprecated as of PHP 5.3.0" , 'wpduplicator'); 
 				?>
 				<small><?php _e('Status Code', 'wpduplicator');?>: SYS-103</small>
 			</div>
@@ -178,10 +176,8 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 			</div>
 			<div class="dup-sys-info dup-info-box">
 				<?php 
-					printf("<b>%s:</b> [%s]<br/><br/>",	__("MySQL version", 'wpduplicator'), $wpdb->db_version());	
-					$msg  = "MySQL version 5.0+ or better is required. If the MySQL version is valid and this requirement fails then the mysqli extension (note the trailing 'i') is not installed.  ";
-					$msg .= "Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed. Please note in future version support for other databases and extensions will be added.";
-					_e($msg, 'wpduplicator');
+					printf("<b>%s:</b> [%s]<br/><br/>",	__("MySQL version", 'wpduplicator'), $wpdb->db_version());
+					_e("MySQL version 5.0+ or better is required. If the MySQL version is valid and this requirement fails then the mysqli extension (note the trailing 'i') is not installed.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed. Please note in future version support for other databases and extensions will be added.", 'wpduplicator');
 					echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
 				?>
 				<small><?php _e('Status Code', 'wpduplicator');?>: SYS-104</small>
@@ -202,9 +198,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 					printf("<b>%s</b>:<br/>", __("Requried Functions", 'wpduplicator'));
 					printf("<b>%s</b> [file_get_contents] <br/>", $php_test1);
 					printf("<b>%s</b> [file_put_contents] <br/><br/>", $php_test2);
-					$msg  = "PHP versions 5.2.17+ or higher is required. Please note that in versioning logic a value such as 5.2.9 is less than 5.2.17.  ";
-					$msg .= "Please contact your server administrator to upgrade to a stable and secure version of PHP";
-					_e($msg, 'wpduplicator');
+					_e("PHP versions 5.2.17+ or higher is required. Please note that in versioning logic a value such as 5.2.9 is less than 5.2.17.  Please contact your server administrator to upgrade to a stable and secure version of PHP", 'wpduplicator');
 				?>
 				<small><?php _e('Status Code', 'wpduplicator');?>: SYS-105</small>
 			</div>

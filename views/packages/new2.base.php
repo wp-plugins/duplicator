@@ -175,10 +175,10 @@ WIZARD STEP TABS -->
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
 						$web_servers = implode(', ', $GLOBALS['DUPLICATOR_SERVER_LIST']);
-						printf("<b>%s:</b> [%s]<br/> %s",
+						printf("<b>%s:</b> [%s]<br/> %s {$web_servers}",
 							__("Web Server", 'wpduplicator'),
 							$_SERVER['SERVER_SOFTWARE'],
-							__("The Duplicator currently works with these web servers: {$web_servers}", 'wpduplicator')
+							__("The Duplicator currently works with these web servers:", 'wpduplicator')
 						);
 					?>
 				</div>
