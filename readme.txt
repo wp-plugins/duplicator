@@ -35,7 +35,7 @@ Localization:
 <li>[Emilio De Fez](http://www.canaryas.com) (Spanish) </li>
 <li>[Nicolas Richer] (http://nicolasricher.fr) (French)</li>
 
-Past Contributors:
+Other Contributors:
 
 Jonathan Foote, Tomas Gurny, Aaron Crawford
 
@@ -54,6 +54,10 @@ The Duplicator requires php 5.3 or higher.
 = I'm having issues getting the plugin to work what should I do? =
 
 See the [FAQs](http://lifeinthegrid.com/duplicator-faq) page for a detailed rundown of common issues
+
+= Are there any videos I can watch? =
+
+Yes.  Please see the [tutorial section](http://lifeinthegrid.com/duplicator-tutorials] on the user guide for videos.
 
 
 = Where can I get more information and support for this plugin? =

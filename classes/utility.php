@@ -135,9 +135,14 @@ class DUP_Util {
 	
 	
 	public static function IsShellExecAvailable() {
-
-		if (array_intersect(array('shell_exec', 'escapeshellarg', 'escapeshellcmd'), array_map('trim', explode(',', @ini_get('disable_functions')))))
+		
+		if (array_intersect(array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded'), array_map('trim', explode(',', @ini_get('disable_functions')))))
 			return false;
+		
+		//Suhosin: http://www.hardened-php.net/suhosin/
+		//Will cause PHP to silently fail.
+		if (extension_loaded('suhosin'))
+		  return false;
 
 		// Can we issue a simple echo command?
 		if (!@shell_exec('echo duplicator'))
