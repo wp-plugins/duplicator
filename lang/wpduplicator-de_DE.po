@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Duplicator v0.5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-08 21:27-0700\n"
-"PO-Revision-Date: 2014-05-27 14:32:10+0000\n"
+"PO-Revision-Date: 2014-05-29 17:36:07+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -514,9 +514,9 @@ msgstr "Die oben genannten Pfade sollten Berechtigungen von 755 für Verzeichnis
 #: views/packages/new1.base.php:128
 #: views/packages/new1.base.php:142
 #: views/packages/new1.base.php:153
-#: views/packages/new1.base.php:169
-#: views/packages/new1.base.php:187
-#: views/packages/new1.base.php:209
+#: views/packages/new1.base.php:167
+#: views/packages/new1.base.php:183
+#: views/packages/new1.base.php:203
 #@ wpduplicator
 msgid "Status Code"
 msgstr "Status Code"
@@ -544,24 +544,24 @@ msgstr "Zip-Archiv aktiviert"
 #: views/packages/new1.base.php:152
 #@ wpduplicator
 msgid "The ZipArchive extension for PHP is required for compression.  Please contact your hosting provider if you're on a hosted server.  For additional information see our online documentation."
-msgstr "Die Zip-Archiv-Erweiterung für PHP erfordern eine Kompression. Weitere Informationen befinden sich auf unserer Online-Dokumentation."
+msgstr "Die Zip-Archiv-Erweiterung für PHP erfordert eine Kompression. Weitere Informationen befinden sich auf unserer Online-Dokumentation."
 
 #: views/packages/new1.base.php:160
 #@ wpduplicator
 msgid "Safe Mode Off"
 msgstr "Safe Mode Off"
 
-#: views/packages/new1.base.php:176
+#: views/packages/new1.base.php:174
 #@ wpduplicator
 msgid "MySQL Support"
 msgstr "MySQL-Unterstützung"
 
-#: views/packages/new1.base.php:181
+#: views/packages/new1.base.php:179
 #@ wpduplicator
 msgid "MySQL version"
 msgstr "MySQL-Version"
 
-#: views/packages/new1.base.php:185
+#: views/packages/new1.base.php:181
 #: views/packages/new2.base.php:112
 #: views/packages/new2.base.php:124
 #: views/packages/new2.base.php:164
@@ -569,17 +569,17 @@ msgstr "MySQL-Version"
 msgid "more info"
 msgstr "mehr Informationen"
 
-#: views/packages/new1.base.php:194
+#: views/packages/new1.base.php:190
 #@ wpduplicator
 msgid "PHP Support"
 msgstr "PHP-Unterstützung"
 
-#: views/packages/new1.base.php:201
+#: views/packages/new1.base.php:197
 #@ wpduplicator
 msgid "PHP version"
 msgstr "PHP-Version"
 
-#: views/packages/new1.base.php:202
+#: views/packages/new1.base.php:198
 #@ wpduplicator
 msgid "Requried Functions"
 msgstr "Erforderliche Funktionen"
@@ -591,17 +591,17 @@ msgstr "Erforderliche Funktionen"
 msgid "Web Server"
 msgstr "Webserver"
 
-#: views/packages/new1.base.php:217
+#: views/packages/new1.base.php:211
 #@ wpduplicator
 msgid "For additional online help please visit"
 msgstr "Für weitere Online-Hilfe besuche bitte"
 
-#: views/packages/new1.base.php:220
+#: views/packages/new1.base.php:214
 #@ wpduplicator
 msgid "Need a hosting provider that is"
 msgstr "Benötigst du einen für Duplicator zertifizierten Hosting-Anbieter?"
 
-#: views/packages/new1.base.php:222
+#: views/packages/new1.base.php:216
 #@ wpduplicator
 msgid "duplicator approved"
 msgstr "Empfohlene Provider"
@@ -1638,4 +1638,24 @@ msgstr "Entferne alle Daten von:"
 #@ wpduplicator
 msgid "This process will remove all build cache files.  Be sure no packages are currently building or else they will be cancelled."
 msgstr "Dieser Vorgang wird alle erstellten Cache-Dateien entfernen. Bitte stelle sicher, dass derzeit keine neuen Cache-Dateien erstellt werden."
+
+#: views/packages/new1.base.php:165
+#@ wpduplicator
+msgid "Safe Mode should be set safe_mode=Off in you php.ini file. On hosted servers you may have to request this setting be turned off. Please note that Safe Mode is deprecated as of PHP 5.3.0"
+msgstr "Safe Mode sollte auf safe_mode = Off in der php.ini-Datei eingestellt werden. Auf gehosteten Servern kann die Einstellung ggf. durch den Provider deaktiviert werden. Bitte beachte, dass Safe Mode seit PHP 5.3.0 veraltet ist"
+
+#: views/packages/new1.base.php:180
+#@ wpduplicator
+msgid "MySQL version 5.0+ or better is required. If the MySQL version is valid and this requirement fails then the mysqli extension (note the trailing 'i') is not installed.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed. Please note in future version support for other databases and extensions will be added."
+msgstr "MySQL Version 5.0 + oder höher ist erforderlich. Wenn der MySQL-Version gültig ist und diese Anforderung fehlschlägt, dann ist die mysqli-Erweiterung (beachte die Erweiterung 'i') ​​nicht installiert. Kontaktiere den Server-Administrator und bitte darum, dass die mysqli-Erweiterung und MySQL Server 5.0 + installiert werden. Bitte beachte, dass die Datenbanken und Erweiterungen für künftige Versionen hinzugefügt werden."
+
+#: views/packages/new1.base.php:201
+#@ wpduplicator
+msgid "PHP versions 5.2.17+ or higher is required. Please note that in versioning logic a value such as 5.2.9 is less than 5.2.17.  Please contact your server administrator to upgrade to a stable and secure version of PHP"
+msgstr "PHP-Versionen 5.2.17 + oder höher ist erforderlich. Bitte beachte, dass in der Versionierungs-Logik ein Wert wie 5.2.9 weniger als 5.2.17 ist. Bitte kontaktiere den Server-Administrator für ein Update, um eine stabile und sichere Version von PHP zu erhalten"
+
+#: views/packages/new2.base.php:181
+#@ wpduplicator
+msgid "The Duplicator currently works with these web servers:"
+msgstr "Der Duplicator arbeitet derzeit mit diesen Web-Server:"
 
