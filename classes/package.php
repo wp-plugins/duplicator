@@ -341,6 +341,8 @@ class DUP_Package {
 		if (is_object($row)) {
 			$obj =  @unserialize($row->option_value);
 		}
+		//Incase unserilaize fails
+		$obj = (is_object($obj)) ? $obj : new DUP_Package();
 		return $obj;
 	}
 	
