@@ -156,9 +156,9 @@
 						<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-table"></i> &nbsp; <?php _e("SQL File", 'wpduplicator')?></button> &nbsp; 
 						<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-pencil-square-o"></i> &nbsp; <?php _e("View Log", 'wpduplicator')?></button>
 						<?php if ($package_debug) : ?>
-							<button class="button" onclick="window.open(<?php echo "'{$reportfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-file-text"></i> &nbsp; <?php _e("Scan Report", 'wpduplicator')?></button>
 							<div style="margin-top:7px">
-								<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[View Package Object]</a><br/>
+								<a href="javascript:void(0)" onclick="window.open(<?php echo "'{$reportfilelink}', '_blank'" ;?>); return false;">[<?php _e("Open Scan Report", 'wpduplicator')?>]</a> &nbsp;
+								<a href="javascript:void(0)" onclick="jQuery(this).parent().find('.dup-pack-debug').toggle()">[<?php _e("View Package Object", 'wpduplicator')?>]</a><br/>
 								<textarea class="dup-pack-debug"><?php @print_r($Package); ?> </textarea>
 							</div>
 						<?php endif;  ?>	
