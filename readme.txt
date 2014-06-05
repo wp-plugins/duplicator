@@ -31,12 +31,12 @@ This project is currently in Beta, the underlying logic to backup WordPress, mov
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
 <li>[Marco Andrei Kichalowsky](http://www.arsnovasolucoes.com) (Portuguese)</li>
 <li>[Emilio De Fez](http://www.canaryas.com) (Spanish) </li>
-<li>[Nicolas Richer] (http://nicolasricher.fr) (French)</li>
+<li>[Nicolas Richer](http://nicolasricher.fr) (French)</li>
 
 = Other Contributors =
 Jonathan Foote, Tomas Gurny, Aaron Crawford
 
-== Donate ==
+= Donate =
 Enjoy using *Duplicator*? Please consider [making a donation](http://lifeinthegrid.com/partner/) to support the project's continued development.
 
 
