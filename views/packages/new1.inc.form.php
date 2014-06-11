@@ -50,7 +50,7 @@
 					
 					<div class="dup-enable-filters">
 						<input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" : ""; ?> />	
-						<label for="filter-on"><?php _e("Enable Filters", 'wpduplicator') ?></label>
+						<label for="filter-on"><?php _e("Enable File Filters", 'wpduplicator') ?></label>
 					</div>
 
 					<div id="dup-file-filter-items">
@@ -87,7 +87,7 @@
 						<table>
 							<tr>
 								<td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" : ""; ?> /></td>
-								<td><label for="dbfilter-on"><?php _e("Enable Filters", 'wpduplicator') ?> &nbsp;</label> </td>
+								<td><label for="dbfilter-on"><?php _e("Enable Table Filters", 'wpduplicator') ?> &nbsp;</label> </td>
 								<td><div class="dup-tabs-opts-help" style="margin:5px 0px 0px 0px"><?php _e("checked tables are excluded", 'wpduplicator') ?></div></td>
 							</tr>
 						</table>
