@@ -41,7 +41,7 @@ class DUP_Zip  extends DUP_Archive {
 			$filterExts = empty($archive->FilterExts) ? 'not set' : $archive->FilterExts;
 			$filterOn   = ($archive->FilterOn) ? 'ON' : 'OFF';
 			
-			//Load Scan Report
+			//LOAD SCAN REPORT
 			$json = file_get_contents(DUPLICATOR_SSDIR_PATH_TMP . "/{$archive->Package->NameHash}_scan.json");
 			self::$scanReport = json_decode($json);
 			
@@ -73,35 +73,47 @@ class DUP_Zip  extends DUP_Archive {
 			self::$zipArchive->close();
 			self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);
 			
-			
 			//ZIP DIRECTORIES
-			foreach(self::$scanReport->ARC->Dirs as $file){
-				$zipPath = ltrim(str_replace(self::$compressDir, '', $file), '/');
-				if (! self::$zipArchive->addEmptyDir($zipPath)) {
-					if (self::$compressDir != $file)
-						DUP_Log::Info("WARNING: Unable to zip directory: '{$file}'");
-
-				} else {
+			foreach(self::$scanReport->ARC->Dirs as $dir){
+				if (self::$zipArchive->addEmptyDir(ltrim(str_replace(self::$compressDir, '', $dir), '/'))) {
 					self::$countDirs++;
+				} else {
+					DUP_Log::Info("WARNING: Unable to zip directory: '{$dir}'");
 				}
 			}
 		
-			//ZIP FILES
-			foreach(self::$scanReport->ARC->Files as $file) {
-				$zipPath = ltrim(str_replace(self::$compressDir, '', $file), '/');
-
-				if (self::$zipArchive->addFile($file, $zipPath)) {
-					self::$limitItems++;
-					self::$countFiles++;
-				} else {
-					DUP_Log::Info("WARNING: Unable to zip file: {$file}");
+			/* ZIP FILES: Network Flush
+			*  This allows the process to not timeout on fcgi 
+			*  setups that need a response every X seconds */
+			if (self::$networkFlush) {
+				foreach(self::$scanReport->ARC->Files as $file) {
+					if (self::$zipArchive->addFile($file, ltrim(str_replace(self::$compressDir, '', $file), '/'))) {
+						self::$limitItems++;
+						self::$countFiles++;
+					} else {
+						DUP_Log::Info("WARNING: Unable to zip file: {$file}");
+					}
+					//Trigger a flush to the web server after so many files have been loaded.
+					if(self::$limitItems > DUPLICATOR_ZIP_FLUSH_TRIGGER) {
+						$sumItems = (self::$countDirs + self::$countFiles);
+						self::$zipArchive->close();
+						self::$zipArchive->open(self::$zipPath);
+						self::$limitItems = 0;
+						DUP_Util::FcgiFlush();
+						DUP_Log::Info("Items archived [{$sumItems}] flushing response.");
+					}
 				}
-
-				if (self::$networkFlush)
-					self::flushResponse();
+			//Normal
+			} else {
+				foreach(self::$scanReport->ARC->Files as $file) {
+					if (self::$zipArchive->addFile($file, ltrim(str_replace(self::$compressDir, '', $file), '/'))) {
+						self::$countFiles++;
+					} else {
+						DUP_Log::Info("WARNING: Unable to zip file: {$file}");
+					}
+				}
 			}
-
-			self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);
+			
 			DUP_Log::Info(print_r(self::$zipArchive, true));
 
 			//--------------------------------
@@ -122,20 +134,6 @@ class DUP_Zip  extends DUP_Archive {
         catch (Exception $e) {
 			DUP_Log::Error("Runtime error in package.archive.zip.php constructor.", "Exception: {$e}");
         }
-	}
-	
-	/* This allows the process to not timeout on fcgi 
-	* setups that need a response every X seconds */
-	private static function flushResponse() {
-		//Check if were over our count*/
-		if(self::$limitItems > DUPLICATOR_ZIP_FLUSH_TRIGGER) {
-			$sumItems = (self::$countDirs + self::$countFiles);
-			self::$zipArchive->close();
-			self::$zipArchive->open(self::$zipPath);
-			self::$limitItems = 0;
-			DUP_Util::FcgiFlush();
-			DUP_Log::Info("Items archived [{$sumItems}] flushing response.");
-		}
 	}
 	
 }

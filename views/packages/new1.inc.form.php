@@ -10,7 +10,7 @@
 	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Create a new default name', 'wpduplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
 	<input id="package-name"  name="package-name" type="text" value="<?php echo $Package->Name ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>
 	<label><b><?php _e('Notes', 'wpduplicator') ?>:</b></label> <br/>
-	<textarea id="package-notes" name="package-notes" type="text" maxlength="300" placeholder="<?php _e('Purpose of this package', 'wpduplicator') ?>" /><?php echo $Package->Notes ?></textarea>
+	<textarea id="package-notes" name="package-notes" maxlength="300" placeholder="<?php _e('Purpose of this package', 'wpduplicator') ?>" /><?php echo $Package->Notes ?></textarea>
 
 	<!-- META-BOX: ARCHIVE -->
 	<div class="dup-box" style="margin-top:10px">

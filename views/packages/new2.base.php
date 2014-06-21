@@ -1,5 +1,6 @@
 <?php
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
+	global $wp_version;
 	$Package = new DUP_Package();
 	$Package->SaveActive($_POST);
 	$Package = DUP_Package::GetActive();
@@ -31,7 +32,7 @@
 	div.dup-scan-warn {display:inline-block; color:#AF0000;font-weight: bold;}
 	span.dup-toggle {float:left; margin:0 2px 2px 0; }
 	/*DATABASE*/
-	table#dup-scan-db-details {line-height: 14px; margin:5px 0px 0px 15px; border-top:1px dashed silver; width:98%}
+	table#dup-scan-db-details {line-height: 14px; margin:15px 0px 0px 5px;  width:98%}
 	table#dup-scan-db-details td {padding:0px;}
 	table#dup-scan-db-details td:first-child {font-weight: bold;  white-space: nowrap; width:90px}
 	div#dup-scan-db-info {margin:0px 0px 0px 10px}
@@ -95,77 +96,6 @@ WIZARD STEP TABS -->
 		
 		</div>
 		<div class="dup-panel-panel">
-			
-			<!-- -------------------
-			PHP SETTINGS: 100 -->
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('PHP Settings', 'wpduplicator');?></a> <div id="data-srv-phpserver"></div>
-				</div>
-				<div class='dup-scan-info dup-info-box'>
-					<?php 
-						//OPEN BASE DIR
-						$test = ini_get("open_basedir");
-						echo '<b>' . __('Open Base Dir', 'wpduplicator') . ':</b> ';
-						echo (empty($test)) ? 'Off' : 'On';  echo '<br/><br/>';
-						_e('The Duplicator may have issues when [open_basedir] is enabled. Please work with your server administrator to disable this value in the php.ini file if you’re having issues building a package.', 'wpduplicator');
-						echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i><br/><br/>";
-						
-						//TIMEOUT SETTINGS
-						$test = ini_get("max_execution_time");		
-						echo '<b>' . __('Max Execution Time', 'wpduplicator') . ':</b> ';
-						echo (empty($test)) ? 'Off' : "{$test}";  
-						echo '<br/><br/>';
-						
-						printf(__('The Duplicator will have issues when the [max_execution_time] value in the php.ini is low.  Timeouts effect how long a process is allowed to run.  The recommended timeout is "%1$s" seconds. An attempt is made to override this value if the server allows it.  Please work with your server administrator to make sure there are no restrictions for how long a PHP process is allowed to run.', 'wpduplicator'), DUPLICATOR_SCAN_TIMEOUT); 
-						echo '<br/>';
-						echo '<small>';
-						_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build interrupt messages, then your web server could be killing the process.   If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.', 'wpduplicator');
-						echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
-						echo '</small>';
-						
-					?>
-				</div>
-			</div>
-		
-			
-			<!-- -------------------
-			CACHED DATA: 101 -->
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('Cached Data', 'wpduplicator');?></a> <div id="data-srv-cacheon"></div>
-				</div>
-				<div class='dup-scan-info dup-info-box'>
-					<?php 
-						$cache_path = $cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
-						echo '<b>' . __('Cache Path', 'wpduplicator') . ":</b> {$cache_path} <br/><br/>";
-						_e("Cached data will lead to issues at install time and increases your archive size. It is highly recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you’re using a cache plugin please read the directions for how to properly clean the cache directory; simply removing the files can cause errors with some cache plugins.", 'wpduplicator');
-					?>
-				</div>
-			</div>
-			
-			<!-- -------------------
-			TIMEOUTS: 102 
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('Timeouts', 'wpduplicator');?></a> <div id="data-srv-timeouts"></div>
-				</div>
-				<div class='dup-scan-info dup-info-box'>
-					<?php 
-						$test = ini_get("max_execution_time");		
-						echo '<b>' . __('max_execution_time', 'wpduplicator') . ':</b> ';
-						echo (empty($test)) ? 'Off' : "{$test}";  
-						echo '<br/><br/>';
-						
-						printf(__('Timeouts effect how long a process is allowed to run.  The recommended timeout is "%1$s" seconds. An attempt is made to override this value if the enviroment allows it.  A "Warn" status will not be an issue unless your host kills PHP processes after a certain amount of time. ', 'wpduplicator'), DUPLICATOR_SCAN_TIMEOUT); 
-						echo '<br/><br/>';
-						
-						_e('Timeouts can also be set at the web server layer, please work with your host or server administrator to make sure there are not restrictions for how long a PHP process is allowed to run.  If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.', 'wpduplicator');
-						echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
-					?>
-				</div>
-			</div>	-->
-			
 			<!-- -------------------
 			WEB SERVER: 103 -->
 			<div>
@@ -182,14 +112,67 @@ WIZARD STEP TABS -->
 						);
 					?>
 				</div>
-			</div>			
-			
-			
-			
+			</div>				
+			<!-- -------------------
+			PHP SETTINGS: 100 -->
+			<div>
+				<div class='dup-scan-title'>
+					<a><?php _e('PHP Settings', 'wpduplicator');?></a> <div id="data-srv-phpserver"></div>
+				</div>
+				<div class='dup-scan-info dup-info-box'>
+					<?php 
+						//OPEN BASE DIR
+						$test = ini_get("open_basedir");
+						echo '<b>' . __('Open Base Dir', 'wpduplicator') . ':</b> ';
+						echo (empty($test)) ? 'Off' : 'On';  echo '<br/><br/>';
+						_e('The Duplicator may have issues when [open_basedir] is enabled. Please work with your server administrator to disable this value in the php.ini file if you’re having issues building a package.', 'wpduplicator');
+						echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i><br/>";
+						
+						//TIMEOUT SETTINGS
+						$test = ini_get("max_execution_time");		
+						echo '<hr size="1" /><br/> <b>' . __('Max Execution Time', 'wpduplicator') . ':</b> ';
+						echo (empty($test)) ? 'Off' : "{$test}";  
+						echo '<br/><br/>';
+						
+						printf(__('The Duplicator will have issues when the [max_execution_time] value in the php.ini is low.  Timeouts effect how long a process is allowed to run.  The recommended timeout is "%1$s" seconds. An attempt is made to override this value if the server allows it.  Please work with your server administrator to make sure there are no restrictions for how long a PHP process is allowed to run.', 'wpduplicator'), DUPLICATOR_SCAN_TIMEOUT); 
+						echo '<br/>';
+						echo '<small>';
+						_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build interrupt messages, then your web server could be killing the process.   If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.', 'wpduplicator');
+						echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('more info', 'wpduplicator')  . "]</a></i>";
+						echo '</small>';
+						
+					?>
+				</div>
+			</div>
+			<!-- -------------------
+			WORDPRESS SETTINGS: 101 -->
+			<div>
+				<div class='dup-scan-title'>
+					<a><?php _e('WordPress Settings', 'wpduplicator');?></a> <div id="data-srv-wpsettings"></div>
+				</div>
+				<div class='dup-scan-info dup-info-box'>
+					<?php 
+						//VERSION CHECK
+						printf("<b>%s:</b> [%s]<br/><br/> %s %s",
+							__("WordPress Version", 'wpduplicator'),
+							$wp_version,
+							__("It is recommended to have a version of WordPress that is greater that ", 'wpduplicator'),
+							DUPLICATOR_SCAN_MIN_WP
+						);
+					
+						//CACHE DIR
+						echo "<hr size='1' /><br/>";
+						$cache_path = $cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
+						$cache_size = DUP_Util::ByteSize(DUP_Util::GetDirectorySize($cache_path));
+						echo '<b>' . __('Cache Path', 'wpduplicator') . ":</b> {$cache_path} ({$cache_size})<br/><br/>";
+						_e("Cached data will lead to issues at install time and increases your archive size. It is highly recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you’re using a cache plugin please read the directions for how to properly clean the cache directory; simply removing the files can cause errors with some cache plugins.", 'wpduplicator');
 
+					?>
+				</div>
+			</div>
 		</div><!-- end .dup-panel -->
 		</div><!-- end .dup-panel-panel -->
-		
+		<br/>
 	
 		<b style="font-size:16px"><i class="fa fa-bars"></i>&nbsp;<?php _e('Archive', 'wpduplicator');?> </b>
 		<hr size="1" />
@@ -198,129 +181,162 @@ WIZARD STEP TABS -->
 		FILES
 		================================================================ -->
 		<div class="dup-panel">
-		<div class="dup-panel-title">
-			<i class="fa fa-files-o"></i>
-			<?php _e("Files", 'wpduplicator'); ?> 
-			<div id="data-arc-size1"></div>
-			<div class="dup-scan-filter-status">
-				<?php 
-					if ($Package->Archive->FilterOn) {
-						echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'wpduplicator');
-					} 
-				?> 
+			<div class="dup-panel-title">
+				<i class="fa fa-files-o"></i>
+				<?php _e("Files", 'wpduplicator'); ?> 
+				<div id="data-arc-size1"></div>
+				<div class="dup-scan-filter-status">
+					<?php 
+						if ($Package->Archive->FilterOn) {
+							echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'wpduplicator');
+						} 
+					?> 
+				</div>
 			</div>
-		</div>
-		<div class="dup-panel-panel">
-			
-			<!-- -------------------
-			TOTAL SIZE: CHK-FILE-100 -->
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('Total Size', 'wpduplicator');?></a> <div id="data-arc-status-size"></div>
-				</div>
-				<div class='dup-scan-info  dup-info-box'>
-					<b><?php _e('Size', 'wpduplicator');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
-					<b><?php _e('File Count', 'wpduplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
-					<b><?php _e('Directory Count', 'wpduplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
-					<?php 
-						printf(__('Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
-					?>
-				</div>
-			</div>		
-			
-			<!-- -------------------
-			FILE NAME LENGTHS: CHK-FILE-101 -->
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('Invalid Names', 'wpduplicator');?></a> <div id="data-arc-status-names"></div>
-				</div>
-				<div class='dup-scan-info dup-info-box'>
-					<?php 
-						_e('Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 250 characters and illegal characters that may not work on all operating systems such as * ? > < : / \ |  .  It is recommended to remove or filter these files before building the archive or else you might have issues at install time.', 'wpduplicator');
-					?><br/><br/>
-					<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
-					<div id="data-arc-names-data"></div>
-				</div>
-			</div>		
-		
-			<!-- -------------------
-			LARGE FILES: CHK-FILE-102 -->
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('Large Files', 'wpduplicator');?></a> <div id="data-arc-status-big"></div>
-				</div>
-				<div class='dup-scan-info  dup-info-box'>
-					<?php 
-						printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
-					?><br/><br/>
-					<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
-					<div id="data-arc-big-data"></div>
-				</div>
-			</div>		
+			<div class="dup-panel-panel">
 
-		</div><!-- end .dup-panel -->
-		</div><!-- end .dup-panel-panel -->
-		
-		<!-- ================================================================
-		DATABASE
-		================================================================ -->
-		<div class="dup-panel">
-		<div class="dup-panel-title">
-			<i class="fa fa-table"></i>
-			<?php _e("Database", 'wpduplicator');	?>
-			<div id="data-db-size1"></div>
-			<div class="dup-scan-filter-status">
-				<?php 
-					if ($Package->Database->FilterOn) {
-						echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'wpduplicator');
-					} 
-				?> 
-			</div>
-		</div>
-		<div class="dup-panel-panel" id="dup-scan-db">
+				<!-- -------------------
+				TOTAL SIZE: CHK-FILE-100 -->
+				<div>
+					<div class='dup-scan-title'>
+						<a><?php _e('Total Size', 'wpduplicator');?></a> <div id="data-arc-status-size"></div>
+					</div>
+					<div class='dup-scan-info  dup-info-box'>
+						<b><?php _e('Size', 'wpduplicator');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
+						<b><?php _e('File Count', 'wpduplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
+						<b><?php _e('Directory Count', 'wpduplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
+						<?php 
+							printf(__('Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
+						?>
+					</div>
+				</div>		
+
+				<!-- -------------------
+				FILE NAME LENGTHS: CHK-FILE-101 -->
+				<div>
+					<div class='dup-scan-title'>
+						<a><?php _e('Invalid Names', 'wpduplicator');?></a> <div id="data-arc-status-names"></div>
+					</div>
+					<div class='dup-scan-info dup-info-box'>
+						<?php 
+							_e('Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 250 characters and illegal characters that may not work on all operating systems such as * ? > < : / \ |  .  It is recommended to remove or filter these files before building the archive or else you might have issues at install time.', 'wpduplicator');
+						?><br/><br/>
+						<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
+						<div id="data-arc-names-data"></div>
+					</div>
+				</div>		
+
+				<!-- -------------------
+				LARGE FILES: CHK-FILE-102 -->
+				<div>
+					<div class='dup-scan-title'>
+						<a><?php _e('Large Files', 'wpduplicator');?></a> <div id="data-arc-status-big"></div>
+					</div>
+					<div class='dup-scan-info  dup-info-box'>
+						<?php 
+							printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
+						?><br/><br/>
+						<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show Paths', 'wpduplicator');?>]</a>
+						<div id="data-arc-big-data"></div>
+					</div>
+				</div>	
 				
-			<!-- -------------------
-			TOTAL SIZE: 100 -->
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('Total Size', 'wpduplicator');?></a>
-					<div id="data-db-status-size1"></div>
-				</div>
-				<div class='dup-scan-info  dup-info-box'>
-					<b><?php _e('Tables', 'wpduplicator');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
-					<b><?php _e('Records', 'wpduplicator');?>:</b> <span id="data-db-rows"></span> &nbsp; | &nbsp;
-					<b><?php _e('Size', 'wpduplicator');?>:</b> <span id="data-db-size2"></span> <br/><br/>
+				<!-- -------------------
+				VIEW FILTERS -->
+				
+				<?php if ($Package->Archive->FilterOn) : ?>
+					<div>
+						<div class='dup-scan-title'>
+							<a><?php _e('View Filters', 'wpduplicator');?></a> 
+						</div>
+						<div class='dup-scan-info  dup-info-box'>
+							<?php _e('Below is a list of the directories and file extension that will be excluded from the archive.', 'wpduplicator'); ?>
+							<br/><br/>
+							
+							<b>[<?php _e('Directories', 'wpduplicator');?>]</b><br/>
+							<?php
+								if (strlen( $Package->Archive->FilterDirs)) {
+									echo str_replace(";", "<br/>", $Package->Archive->FilterDirs); 
+								} else {
+									_e('No directory filters have been set.', 'wpduplicator');
+								}
+							?>
+							<br/>
+							
+							<b>[<?php _e('File Extensions', 'wpduplicator');?>]</b><br/>
+							<?php
+								if (strlen( $Package->Archive->FilterExts)) {
+									echo $Package->Archive->FilterExts; 
+								} else {
+									_e('No file extension filters have been set.', 'wpduplicator');
+								}
+							?>								
+						</div>
+					</div>	
+				<?php endif;  ?>	
+
+			</div><!-- end .dup-panel -->
+			<br/>
+
+			<!-- ================================================================
+			DATABASE
+			================================================================ -->
+			<div class="dup-panel-title">
+				<i class="fa fa-table"></i>
+				<?php _e("Database", 'wpduplicator');	?>
+				<div id="data-db-size1"></div>
+				<div class="dup-scan-filter-status">
 					<?php 
-						$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'wpduplicator') . '</a>';
-						printf(__('Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu.', 'wpduplicator'), 
-								DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), 
-								number_format(DUPLICATOR_SCAN_DBROWS),
-								$lnk);
-					?>
+						if ($Package->Database->FilterOn) {
+							echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'wpduplicator');
+						} 
+					?> 
 				</div>
 			</div>
+			<div class="dup-panel-panel" id="dup-scan-db">
 
-			<!-- -------------------
-			TABLE DETAILS -->
-			<div>
-				<div class='dup-scan-title'>
-					<a><?php _e('Table Details', 'wpduplicator');?></a>
-					<div id="data-db-status-size2"></div>
-				</div>
-				<div class='dup-scan-info dup-info-box'>
-					<div id="dup-scan-db-info">
-						<div id="data-db-tablelist"></div>
+				<!-- -------------------
+				TOTAL SIZE: 100 -->
+				<div>
+					<div class='dup-scan-title'>
+						<a><?php _e('Total Size', 'wpduplicator');?></a>
+						<div id="data-db-status-size1"></div>
+					</div>
+					<div class='dup-scan-info  dup-info-box'>
+						<b><?php _e('Tables', 'wpduplicator');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
+						<b><?php _e('Records', 'wpduplicator');?>:</b> <span id="data-db-rows"></span> &nbsp; | &nbsp;
+						<b><?php _e('Size', 'wpduplicator');?>:</b> <span id="data-db-size2"></span> <br/><br/>
+						<?php 
+							$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'wpduplicator') . '</a>';
+							printf(__('Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu.', 'wpduplicator'), 
+									DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), 
+									number_format(DUPLICATOR_SCAN_DBROWS),
+									$lnk);
+						?>
 					</div>
 				</div>
-			</div>
-			
-			<table id="dup-scan-db-details">
-				<tr><td><b><?php _e('Name:', 'wpduplicator');?></b></td><td><?php echo DB_NAME ;?> </td></tr>
-				<tr><td><b><?php _e('Host:', 'wpduplicator');?></b></td><td><?php echo DB_HOST ;?> </td></tr>
-				<tr><td><b><?php _e('Build Mode:', 'wpduplicator');?></b></td><td><a href="?page=duplicator-settings"><?php echo $build_mode ;?></a> </td></tr>
-			</table>	
 
-		</div><!-- end .dup-panel -->
+				<!-- -------------------
+				TABLE DETAILS -->
+				<div>
+					<div class='dup-scan-title'>
+						<a><?php _e('Table Details', 'wpduplicator');?></a>
+						<div id="data-db-status-size2"></div>
+					</div>
+					<div class='dup-scan-info dup-info-box'>
+						<div id="dup-scan-db-info">
+							<div id="data-db-tablelist"></div>
+						</div>
+					</div>
+				</div>
+
+				<table id="dup-scan-db-details">
+					<tr><td><b><?php _e('Name:', 'wpduplicator');?></b></td><td><?php echo DB_NAME ;?> </td></tr>
+					<tr><td><b><?php _e('Host:', 'wpduplicator');?></b></td><td><?php echo DB_HOST ;?> </td></tr>
+					<tr><td><b><?php _e('Build Mode:', 'wpduplicator');?></b></td><td><a href="?page=duplicator-settings" target="_blank"><?php echo $build_mode ;?></a> </td></tr>
+				</table>	
+
+			</div><!-- end .dup-panel -->
 		</div><!-- end .dup-panel-panel -->
 		
 		
@@ -403,7 +419,7 @@ jQuery(document).ready(function($) {
 		//****************
 		//SERVER
 		$('#data-srv-phpserver').text(data.SRV.PHPServer || errMsg);
-		$('#data-srv-cacheon').text(data.SRV.CacheOn   || errMsg);
+		$('#data-srv-wpsettings').text(data.SRV.WPSettings   || errMsg);
 		$('#data-srv-webserver').text(data.SRV.WebServer || errMsg);
 		
 		//****************

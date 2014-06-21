@@ -72,11 +72,14 @@ class DUP_Server {
 		$php_test2  = ($php_test2  > DUPLICATOR_SCAN_TIMEOUT || strcmp($php_test2 , 'Off') == 0 || $php_test2  == 0) ? 'Good' : 'Warn';
 		$checks['CHK-SRV-100'] = ($php_test1 && $php_test2) ? 'Good' : 'Warn';
 
-		//CHK-SRV-101: CACHE DIRECTORY
+		//CHK-SRV-101: WORDPRESS SETTINGS
+		global $wp_version;
+		$version_test = version_compare($wp_version,  DUPLICATOR_SCAN_MIN_WP) >= 0 ? true : false;
 		$cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
-		$dirEmpty = DUP_Util::IsDirectoryEmpty($cache_path);
-		$dirSize  = DUP_Util::GetDirectorySize($cache_path); //50K
-		$checks['CHK-SRV-101'] = ($dirEmpty  || $dirSize < 50000 )	? 'Good' : 'Warn';
+		$dirEmpty	= DUP_Util::IsDirectoryEmpty($cache_path);
+		$dirSize	= DUP_Util::GetDirectorySize($cache_path); //50K
+		$cache_test = ($dirEmpty  || $dirSize < 50000 ) ? true : false;
+		$checks['CHK-SRV-101'] = $cache_test && $version_test ? 'Good' : 'Warn';
 
 		//CHK-SRV-102: WEB SERVER 
 		$servers = $GLOBALS['DUPLICATOR_SERVER_LIST'];

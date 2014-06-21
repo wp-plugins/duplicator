@@ -84,7 +84,7 @@ class DUP_Package {
 		$srv = DUP_Server::GetChecks();
 		
 		$report['SRV']['PHPServer']  = $srv['CHK-SRV-100'];
-		$report['SRV']['CacheOn']   = $srv['CHK-SRV-101'];
+		$report['SRV']['WPSettings']   = $srv['CHK-SRV-101'];
 		$report['SRV']['WebServer'] = $srv['CHK-SRV-102'];
 		
 		//FILES
@@ -248,7 +248,7 @@ class DUP_Package {
 			$this->Archive->Format			= 'ZIP';
 			$this->Archive->FilterOn		= isset($post['filter-on'])   ? 1 : 0;
 			$this->Archive->FilterDirs		= esc_html($filter_dirs);
-			$this->Archive->FilterExts		= esc_html($filter_exts);
+			$this->Archive->FilterExts		= str_replace(array('.' ,' '), "", esc_html($filter_exts));
 			//INSTALLER
 			$this->Installer->OptsDBHost		= esc_html($post['dbhost']);
 			$this->Installer->OptsDBName		= esc_html($post['dbname']);
