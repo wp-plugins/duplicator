@@ -84,6 +84,29 @@ class DUP_Installer {
 		$this->createFromTemplate($template_path);
 		$storePath = "{$this->Package->StorePath}/{$this->File}";
 		$this->Size = @filesize($storePath);
+		$this->addBackup();
+		
+	}
+	
+	
+	/**
+	*  createZipBackup
+	*  Puts an installer zip file in the archive for backup purposes.
+	*/
+	private function addBackup() {
+		
+		$zipPath   = DUP_Util::SafePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
+		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP) . "/{$this->Package->NameHash}_installer.php";
+		
+		$zipArchive	= new ZipArchive();
+		if ($zipArchive->open($zipPath, ZIPARCHIVE::CREATE) === TRUE) {
+			if ($zipArchive->addFile($installer, "installer-backup.php"))  {
+				DUP_Log::Info("INSTALLER FILE: Added to archive");
+			} else {
+				DUP_Log::Info("Unable to add installer-backup.php to archive.", "Installer File Path [{$installer}]");
+			}
+			$zipArchive->close();
+		}
 	}
 	
 	/**

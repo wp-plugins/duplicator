@@ -26,6 +26,7 @@ if (function_exists('plugin_dir_url')) {
 	define("DUPLICATOR_SSDIR_PATH_TMP", DUPLICATOR_SSDIR_PATH . '/tmp');
 	define("DUPLICATOR_SSDIR_URL",      DUPLICATOR_SITE_URL . "/" . DUPLICATOR_SSDIR_NAME);
     define("DUPLICATOR_INSTALL_PHP",    'installer.php');
+	define("DUPLICATOR_INSTALL_BAK",    'installer-backup.php');
     define("DUPLICATOR_INSTALL_SQL",    'installer-data.sql');
     define("DUPLICATOR_INSTALL_LOG",    'installer-log.txt');
 	
