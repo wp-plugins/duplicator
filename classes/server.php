@@ -78,8 +78,8 @@ class DUP_Server {
 		//Cache
 		$cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
 		$dirEmpty	= DUP_Util::IsDirectoryEmpty($cache_path);
-		$dirSize	= DUP_Util::GetDirectorySize($cache_path); //50K
-		$cache_test = ($dirEmpty  || $dirSize < 50000 ) ? true : false;
+		$dirSize	= DUP_Util::GetDirectorySize($cache_path); 
+		$cache_test = ($dirEmpty  || $dirSize < DUPLICATOR_SCAN_CACHESIZE ) ? true : false;
 		
 		//Core Files
 		$files = array();

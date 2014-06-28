@@ -35,6 +35,7 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_DB_MAX_TIME",     5000);
 	define("DUPLICATOR_SCAN_SITE",    157286400);	//150MB
 	define("DUPLICATOR_SCAN_WARNFILESIZE", 4194304);//4MB
+	define("DUPLICATOR_SCAN_CACHESIZE", 524288);	//512K
 	define("DUPLICATOR_SCAN_DBSIZE",  52428800);	//50MB
 	define("DUPLICATOR_SCAN_DBROWS",  250000);
 	define("DUPLICATOR_SCAN_TIMEOUT", 300);			//Seconds

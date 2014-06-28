@@ -174,10 +174,10 @@ WIZARD STEP TABS -->
 						$cache_path = $cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
 						$cache_size = DUP_Util::ByteSize(DUP_Util::GetDirectorySize($cache_path));
 						echo '<b>' . __('Cache Path', 'wpduplicator') . ":</b> {$cache_path} ({$cache_size})<br/><br/>";
-						_e("Cached data will lead to issues at install time and increases your archive size. It is recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you’re using a cache plugin see the directions for how to clean the cache directory; simply removing the files can cause errors with some cache plugins.", 'wpduplicator');
-
+						_e("Cached data will lead to issues at install time and increases your archive size. It is recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you have a cache plugin review the documentation for how to empty it; simply removing files might cause errors on your site.", 'wpduplicator');
+						_e("The cache size minimum threshold is currently set at ", 'wpduplicator');
+						echo DUP_Util::ByteSize(DUPLICATOR_SCAN_CACHESIZE) . '.';
 						
-
 					?>
 				</div>
 			</div>

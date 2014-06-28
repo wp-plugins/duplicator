@@ -116,7 +116,7 @@ class DUP_Util {
 	}
 	
 	/** 
-	 * Size of the directory recuresivly
+	 * Size of the directory recuresivly in bytes
 	 */
 	static public function GetDirectorySize($dir) {
 		if(!file_exists($dir)) 
