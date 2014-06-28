@@ -15,7 +15,7 @@
 	<!-- META-BOX: ARCHIVE -->
 	<div class="dup-box" style="margin-top:10px">
 	<div class="dup-box-title">
-		<i class="fa fa-bars"></i> <?php _e('Archive', 'wpduplicator') ?> &nbsp;
+		<i class="fa fa-file-archive-o"></i> <?php _e('Archive', 'wpduplicator') ?> &nbsp;
 		<span style="font-size:13px">
 			<span id="dup-archive-filter-file" title="<?php _e('File filter enabled', 'wpduplicator') ?>"><i class="fa fa-files-o"></i> <i class="fa fa-filter"></i> &nbsp;&nbsp;</span> 
 			<span id="dup-archive-filter-db" title="<?php _e('Database filter enabled', 'wpduplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>	

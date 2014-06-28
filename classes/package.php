@@ -83,9 +83,9 @@ class DUP_Package {
 		//SERVER
 		$srv = DUP_Server::GetChecks();
 		
-		$report['SRV']['PHPServer']  = $srv['CHK-SRV-100'];
-		$report['SRV']['WPSettings']   = $srv['CHK-SRV-101'];
-		$report['SRV']['WebServer'] = $srv['CHK-SRV-102'];
+		$report['SRV']['PHPServer']		= $srv['CHK-SRV-100'];
+		$report['SRV']['WPSettings']	= $srv['CHK-SRV-101'];
+		$report['SRV']['WebServer']		= $srv['CHK-SRV-102'];
 		
 		//FILES
 		$this->Archive->Stats();

@@ -159,13 +159,24 @@ WIZARD STEP TABS -->
 							__("It is recommended to have a version of WordPress that is greater that ", 'wpduplicator'),
 							DUPLICATOR_SCAN_MIN_WP
 						);
+						
+						//CORE FILES
+						echo "<hr size='1' /><br/>";
+						$core_test = file_exists(DUP_Util::SafePath(DUPLICATOR_WPROOTPATH .  '/wp-config.php')) ? __('Found', 'wpduplicator') : __('Missing', 'wpduplicator');
+						printf("<b>%s:</b> [%s]<br/><br/> %s",
+							__("Core Files", 'wpduplicator'),
+							$core_test,
+							__("If the scanner is unable to locate the wp-config.php file in the root directory, then you will need to manually copy it to its new location.", 'wpduplicator')
+						);
 					
 						//CACHE DIR
 						echo "<hr size='1' /><br/>";
 						$cache_path = $cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
 						$cache_size = DUP_Util::ByteSize(DUP_Util::GetDirectorySize($cache_path));
 						echo '<b>' . __('Cache Path', 'wpduplicator') . ":</b> {$cache_path} ({$cache_size})<br/><br/>";
-						_e("Cached data will lead to issues at install time and increases your archive size. It is highly recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you’re using a cache plugin please read the directions for how to properly clean the cache directory; simply removing the files can cause errors with some cache plugins.", 'wpduplicator');
+						_e("Cached data will lead to issues at install time and increases your archive size. It is recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you’re using a cache plugin see the directions for how to clean the cache directory; simply removing the files can cause errors with some cache plugins.", 'wpduplicator');
+
+						
 
 					?>
 				</div>
@@ -174,8 +185,7 @@ WIZARD STEP TABS -->
 		</div><!-- end .dup-panel-panel -->
 		<br/>
 	
-		<b style="font-size:16px"><i class="fa fa-bars"></i>&nbsp;<?php _e('Archive', 'wpduplicator');?> </b>
-		<hr size="1" />
+		<h2 style="font-size:18px; font-weight:bold"><i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'wpduplicator');?> </h2>
 		
 		<!-- ================================================================
 		FILES

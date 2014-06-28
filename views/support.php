@@ -166,8 +166,8 @@ img#dup-img-5stars:hover {opacity:1.0;}
 				</tr>
 				<tr>
 					<td colspan="2">
-						<a href="http://lifeinthegrid.com/duplicator-survey" target="_blank">
-						<?php _e('Take A Quick 60 Second Survey', 'wpduplicator') ?></a>
+						<a href="http://lifeinthegrid.com/tools" target="_blank" style="font-size:14px">
+						<i class="fa fa-rocket"></i> <?php _e('Check out other great resources', 'wpduplicator') ?>...</a>
 					</td>
 				</tr>
 			</table>

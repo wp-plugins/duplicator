@@ -1,6 +1,8 @@
 <?php
 	$qryResult = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator_packages` ORDER BY id DESC", ARRAY_A);
+	$qryStatus = $wpdb->get_results("SELECT status FROM `{$wpdb->prefix}duplicator_packages` WHERE status >= 100", ARRAY_A);
 	$totalElements = count($qryResult);
+	$statusCount   = count($qryStatus) or 0;
 	$package_debug = DUP_Settings::Get('package_debug');
 ?>
 
@@ -54,9 +56,9 @@
 	
 	<!-- ====================
 	TOOL-BAR -->
-	<table border="0" id="toolbar-table" cellspacing="0" style="margin-top:15px">
+	<table border="0" id="toolbar-table" cellspacing="0" style="margin-top:15px; width:100%">
 		<tr valign="top">
-			<td>
+			<td style="white-space: nowrap">
 				<div class="alignleft actions">
 					<select id="dup-pack-bulk-actions">
 						<option value="-1" selected="selected"><?php _e("Bulk Actions", 'wpduplicator') ?></option>
@@ -70,6 +72,13 @@
 			<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/hdivider.png" class="toolbar-divider" /></td>
 			<td align="center">
 				<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'wpduplicator') ?>..."><i class="fa fa-pencil-square-o"></i> </button>
+			</td>
+			<td align="right" style="width:100%;">
+				<?php if($statusCount >= 3)  :	?>
+				<div style="margin:8px 5px 0px 0px; font-size:12px">
+					<a href="admin.php?page=duplicator-support"><?php _e("Help Support Duplicator", 'wpduplicator') ?> <i class="fa fa-check-circle"></i> </a>
+				</div>
+				<?php endif; ?>	
 			</td>
 		</tr>
 	</table>	
@@ -142,7 +151,7 @@
 						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $installfilelink; ?>', this); return false;"><i class="fa fa-bolt"></i> <?php _e("Installer", 'wpduplicator') ?></button> &nbsp;
 					</td>
 					<td class="get-btns">	
-						<button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $packagepath; ?>', this); return false;"><i class="fa fa-bars"></i> <?php _e("Archive", 'wpduplicator') ?></button>
+						<button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $packagepath; ?>', this); return false;"><i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'wpduplicator') ?></button>
 					</td>
 				</tr>
 				<tr>

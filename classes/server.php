@@ -49,8 +49,6 @@ class DUP_Server {
 		$php_test3 =  function_exists("file_put_contents");
 		$req['SYS-105'] = ($php_test1 >= 0 && $php_test2 && $php_test3) ? 'Pass' : 'Fail';
 
-
-
 		//RESULTS
 		$result = in_array('Fail', $req);
 		$req['Success'] = !$result;
@@ -73,13 +71,22 @@ class DUP_Server {
 		$checks['CHK-SRV-100'] = ($php_test1 && $php_test2) ? 'Good' : 'Warn';
 
 		//CHK-SRV-101: WORDPRESS SETTINGS
+		//Version
 		global $wp_version;
 		$version_test = version_compare($wp_version,  DUPLICATOR_SCAN_MIN_WP) >= 0 ? true : false;
+		
+		//Cache
 		$cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) .  '/cache';
 		$dirEmpty	= DUP_Util::IsDirectoryEmpty($cache_path);
 		$dirSize	= DUP_Util::GetDirectorySize($cache_path); //50K
 		$cache_test = ($dirEmpty  || $dirSize < 50000 ) ? true : false;
-		$checks['CHK-SRV-101'] = $cache_test && $version_test ? 'Good' : 'Warn';
+		
+		//Core Files
+		$files = array();
+		$files['wp-config.php'] = file_exists(DUP_Util::SafePath(DUPLICATOR_WPROOTPATH .  '/wp-config.php'));
+		$files_test = $files['wp-config.php'];
+		
+		$checks['CHK-SRV-101'] = $files_test && $cache_test && $version_test ? 'Good' : 'Warn';
 
 		//CHK-SRV-102: WEB SERVER 
 		$servers = $GLOBALS['DUPLICATOR_SERVER_LIST'];

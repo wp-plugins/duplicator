@@ -89,6 +89,9 @@ class DUP_Settings
 		
 		//Optional mysqldump search path
 		$default['package_zip_flush']   = isset(self::$Data['package_zip_flush']) ? self::$Data['package_zip_flush'] : false;
+		
+		//Flag for .htaccess file
+		$default['storage_htaccess_off']   = isset(self::$Data['storage_htaccess_off']) ? self::$Data['storage_htaccess_off'] : false;
 
 		self::$Data = $default;
 		return self::Save();
