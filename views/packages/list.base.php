@@ -2,7 +2,7 @@
 	$qryResult = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator_packages` ORDER BY id DESC", ARRAY_A);
 	$qryStatus = $wpdb->get_results("SELECT status FROM `{$wpdb->prefix}duplicator_packages` WHERE status >= 100", ARRAY_A);
 	$totalElements = count($qryResult);
-	$statusCount   = count($qryStatus) or 0;
+	$statusCount   = count($qryStatus);
 	$package_debug = DUP_Settings::Get('package_debug');
 ?>
 
