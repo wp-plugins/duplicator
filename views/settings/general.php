@@ -19,6 +19,7 @@
 		DUP_Settings::Set('package_mysqldump_path',	trim($_POST['package_mysqldump_path']));
 		
 		$action_updated  = DUP_Settings::Save();
+		DUP_Util::InitSnapshotDirectory();
 	} 
 
 	$uninstall_settings		= DUP_Settings::Get('uninstall_settings');

@@ -205,12 +205,15 @@ class DUP_Util {
 		@fclose($tokenfile);
 
 		//SSDIR: Create .htaccess
-		
 		$storage_htaccess_off = DUP_Settings::Get('storage_htaccess_off');
-		$htfile = @fopen($path_ssdir . '/.htaccess', 'w');
-		$htoutput = ($storage_htaccess_off) ? "" : "Options -Indexes" ;
-		@fwrite($htfile, $htoutput);
-		@fclose($htfile);
+		if ($storage_htaccess_off) {
+			@unlink($path_ssdir . '/.htaccess');
+		} else {
+			$htfile = @fopen($path_ssdir . '/.htaccess', 'w');
+			$htoutput = "Options -Indexes" ;
+			@fwrite($htfile, $htoutput);
+			@fclose($htfile);
+		}
 
 		//SSDIR: Robots.txt file
 		$robotfile = @fopen($path_ssdir . '/robots.txt', 'w');
