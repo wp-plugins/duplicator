@@ -1,4 +1,13 @@
-
+<?php
+	// Exit if accessed directly
+	if (! defined('DUPLICATOR_INIT')) {
+		$_baseURL =  strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+		$_baseURL =  "http://" . $_baseURL;
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: $_baseURL");
+		exit; 
+	}
+?>
 
 <script type="text/javascript">
 	//Unique namespace

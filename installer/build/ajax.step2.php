@@ -1,4 +1,13 @@
 <?php
+// Exit if accessed directly
+if (! defined('DUPLICATOR_INIT')) {
+	$_baseURL =  strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+	$_baseURL =  "http://" . $_baseURL;
+	header("HTTP/1.1 301 Moved Permanently");
+	header("Location: $_baseURL");
+	exit; 
+}
+
 /* JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
 cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
 $ajax2_error_level = error_reporting();

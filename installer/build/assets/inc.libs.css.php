@@ -1,3 +1,13 @@
+<?php
+	// Exit if accessed directly
+	if (! defined('DUPLICATOR_INIT')) {
+		$_baseURL =  strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+		$_baseURL =  "http://" . $_baseURL;
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: $_baseURL");
+		exit; 
+	}
+?>
 <?php if( DupUtil::is_url_active("ajax.googleapis.com", 443) ): ?>
 	<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css' type='text/css' media='all' />
 <?php else: ?>

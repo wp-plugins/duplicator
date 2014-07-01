@@ -143,6 +143,7 @@ $GLOBALS['REPLACE_LIST'] = array();
   =================================================================================================== */
 
 //CONSTANTS
+define("DUPLICATOR_INIT", 1); 
 define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 
 //SHARED POST PARMS
