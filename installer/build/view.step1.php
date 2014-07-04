@@ -216,11 +216,11 @@ VIEW: STEP 1- INPUT -->
 				<td>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-create" value="create" checked="checked" />
-						<label for="dbaction-create">Create new database and insert data</label>
+						<label for="dbaction-create">Create New Database</label>
 					</div>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-empty" value="empty" />
-						<label for="dbaction-empty">Connect to database and remove tables then insert data</label>						
+						<label for="dbaction-empty">Connect to Database and Remove Tables</label>						
 					</div>
 				</td>
 			</tr>			
