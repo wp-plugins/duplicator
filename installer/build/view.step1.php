@@ -220,7 +220,7 @@ VIEW: STEP 1- INPUT -->
 					</div>
 					<div class="dup-step1-modes">
 						<input type="radio" name="dbaction" id="dbaction-empty" value="empty" />
-						<label for="dbaction-empty">Connect to Database and Remove Tables</label>						
+						<label for="dbaction-empty">Connect and Remove All Data</label>						
 					</div>
 				</td>
 			</tr>			
@@ -294,7 +294,7 @@ VIEW: STEP 1- INPUT -->
     	<div id="dup-step1-warning-check">
     	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
 			<div id="dup-step1-warning-emptydb">
-				The remove action will delete <u>all</u> tables from the database!
+				The remove action will delete <u>all</u> tables and data from the database!
 			</div>
     	</div><br/><br/><br/>
     		    

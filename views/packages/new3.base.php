@@ -88,7 +88,7 @@ WIZARD STEP TABS -->
 				<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Build Interrupt', 'wpduplicator'); ?></div>
 				<b><?php _e('The current build has experienced an issue.', 'wpduplicator'); ?></b><br/>
 			
-				<i><?php _e('Please try the process again. If the problem persists please visit the support page.', 'wpduplicator'); ?></i><br/><br/>
+				<i><?php _e('Please try the process again.', 'wpduplicator'); ?></i><br/><br/>
 				  
 				<input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />
 				<fieldset>
