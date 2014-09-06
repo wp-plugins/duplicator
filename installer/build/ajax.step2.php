@@ -90,9 +90,16 @@ $log .= "[^] no searchable columns\n";
 $log .= "--------------------------------------";
 DUPX_Log::Info($log);
 
+$url_old_json = str_replace('"', "", json_encode($_POST['url_old']));
+$url_new_json = str_replace('"', "", json_encode($_POST['url_new']));
+$path_old_json = str_replace('"', "", json_encode($_POST['path_old']));
+$path_new_json = str_replace('"', "", json_encode($_POST['path_new']));
+
 array_push($GLOBALS['REPLACE_LIST'], 
-		array('search' => $_POST['url_old'], 'replace' => $_POST['url_new']), 
+		array('search' => $_POST['url_old'],  'replace' => $_POST['url_new']), 
+		array('search' => $url_old_json,	  'replace' => $url_new_json), 
 		array('search' => $_POST['path_old'], 'replace' => $_POST['path_new']), 
+		array('search' => $path_old_json,	  'replace' => $path_new_json), 		
 		array('search' => rtrim(DupUtil::unset_safe_path($_POST['path_old']), '\\'), 'replace' => rtrim($_POST['path_new'], '/'))
 );
 

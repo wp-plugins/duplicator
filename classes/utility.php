@@ -158,13 +158,39 @@ class DUP_Util {
 		return false;
 	}
 
+	/**
+	*  Creates the snapshot directory if it doesn't already exisit
+	*/
 	public static function GetCurrentUser() {
-		$unreadable =  '(Undetectable)';
-		if (@function_exists('get_current_user') && @is_callable('get_current_user')) {
-			$user = @get_current_user(); 
+		$unreadable =  'Undetectable';
+		if (function_exists('get_current_user') && is_callable('get_current_user')) {
+			$user = get_current_user(); 
 			return strlen($user) ? $user : $unreadable;
 		}
 		return $unreadable;
+	}
+	
+	/**
+	*  Gets the owner of the PHP process
+	*/
+	public static function GetProcessOwner() {
+		$unreadable = 'Undetectable';
+		$user = '';
+		try {
+			if (function_exists('exec')) {
+				$user = exec('whoami');
+			} 
+			
+			if (! strlen($user) && function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
+				$user = posix_getpwuid(posix_geteuid());
+				$user = $user['name'];  
+			}
+			
+			return strlen($user) ? $user : $unreadable;
+
+		} catch (Exception $ex) {
+			return $unreadable;
+		}
 	}
 	
 	/**

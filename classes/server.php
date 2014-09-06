@@ -16,44 +16,33 @@ class DUP_Server {
 	public static function GetRequirments() {
 
 		global $wpdb;
-
-		$req = array();
-		//SYS-100: FILE PERMS
-		$test = is_writeable(DUPLICATOR_WPROOTPATH)
-				&& is_writeable(DUPLICATOR_SSDIR_PATH)
-				&& is_writeable(DUPLICATOR_SSDIR_PATH_TMP);
-		$req['SYS-100'] = ($test) ? 'Pass' : 'Fail';
-
-		//SYS-101 RESERVED FILE
-		$req['SYS-101'] = (self::InstallerFilesFound()) ? 'Fail' : 'Pass';
-
-		//SYS-102: ZIP-ARCHIVE
-		$test = class_exists('ZipArchive');
-		$req['SYS-102'] = ($test) ? 'Pass' : 'Fail';
-
-		//SYS-103: SAFE MODE
-		$test = (((strtolower(@ini_get('safe_mode'))   == 'on')   
-				||  (strtolower(@ini_get('safe_mode')) == 'yes') 
-				||  (strtolower(@ini_get('safe_mode')) == 'true') 
-				||  (ini_get("safe_mode") == 1 )));
-		$req['SYS-103'] = !($test) ? 'Pass' : 'Fail';
-
-		//SYS-104: MYSQL SUPPORT
-		$mysql_test1 = function_exists('mysqli_connect');
-		$mysql_test2 = version_compare($wpdb->db_version(), '5.0', '>=');
-		$req['SYS-104'] = ($mysql_test1 && $mysql_test2) ? 'Pass' : 'Fail';
-
-		//SYS-105: PHP TESTS
-		$php_test1 = version_compare(phpversion(), '5.2.17');
-		$php_test2 =  function_exists("file_get_contents");
-		$php_test3 =  function_exists("file_put_contents");
-		$req['SYS-105'] = ($php_test1 >= 0 && $php_test2 && $php_test3) ? 'Pass' : 'Fail';
-
-		//RESULTS
-		$result = in_array('Fail', $req);
-		$req['Success'] = !$result;
-
-		return $req;
+		$dup_tests = array();
+		
+		//PHP SUPPORT
+		$safe_ini = strtolower(ini_get('safe_mode'));
+		$dup_tests['PHP']['SAFE_MODE'] = $safe_ini  != 'on' || $safe_ini != 'yes' || $safe_ini != 'true' || ini_get("safe_mode") != 1 ? 'Pass' : 'Fail';
+		$dup_tests['PHP']['VERSION'] = version_compare(phpversion(), '5.2.17') >= 0 ? 'Pass' : 'Fail';
+		$dup_tests['PHP']['ZIP']	 = class_exists('ZipArchive')				? 'Pass' : 'Fail';
+		$dup_tests['PHP']['FUNC_1']  = function_exists("file_get_contents")		? 'Pass' : 'Fail';
+		$dup_tests['PHP']['FUNC_2']  = function_exists("file_put_contents")		? 'Pass' : 'Fail';
+		$dup_tests['PHP']['ALL']	 = ! in_array('Fail', $dup_tests['PHP'])	? 'Pass' : 'Fail';		
+		
+		//PERMISSIONS
+		$dup_tests['IO']['WPROOT']	= is_writeable(DUPLICATOR_WPROOTPATH)		? 'Pass' : 'Fail';
+		$dup_tests['IO']['SSDIR']	= is_writeable(DUPLICATOR_SSDIR_PATH)		? 'Pass' : 'Fail';
+		$dup_tests['IO']['SSTMP']	= is_writeable(DUPLICATOR_SSDIR_PATH_TMP)	? 'Pass' : 'Fail';
+		$dup_tests['IO']['ALL']		= ! in_array('Fail', $dup_tests['IO'])		? 'Pass' : 'Fail'; 
+		
+		//SERVER SUPPORT
+		$dup_tests['SRV']['MYSQLi']		= function_exists('mysqli_connect')					? 'Pass' : 'Fail'; 
+		$dup_tests['SRV']['MYSQL_VER']	= version_compare($wpdb->db_version(), '5.0', '>=')	? 'Pass' : 'Fail'; 
+		$dup_tests['SRV']['ALL']		= ! in_array('Fail', $dup_tests['SRV'])				? 'Pass' : 'Fail'; 
+		
+		//RESERVED FILES
+		$dup_tests['RES']['INSTALL'] = !(self::InstallerFilesFound()) ? 'Pass' : 'Fail';
+		$dup_tests['Success'] = $dup_tests['PHP']['ALL']  == 'Pass' &&  $dup_tests['IO']['ALL'] == 'Pass' &&  $dup_tests['SRV']['ALL']  == 'Pass';
+		
+		return $dup_tests;
 	}		
 	
 	/** 

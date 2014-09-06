@@ -6,8 +6,6 @@
 /*================================================
 PAGE-SUPPORT:*/
 div.dup-support-all {font-size:13px; line-height:20px}
-div.dup-support-txts-links {width:100%;font-size:14px; font-weight:bold; line-height:26px; text-align:center}
-div.dup-support-hlp-area {width:265px; height:175px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:6px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
 table.dup-support-hlp-hdrs {background-color:#efefef;}
 table.dup-support-hlp-hdrs td {
@@ -44,91 +42,27 @@ img#dup-img-5stars:hover {opacity:1.0;}
 	<!-- h2 required here for general system messages -->
 	<h2 style='display:none'></h2>
 
-	<?php duplicator_header(__("Support", 'wpduplicator') ) ?>
+	<?php duplicator_header(__("About", 'wpduplicator') ) ?>
 	<hr size="1" />
 
 	<div style="width:850px; margin:auto; margin-top: 20px">
 		<table style="width:825px">
 			<tr>
-				<td valign="top" style="padding-top:10px; font-size:14px">
-				<?php 
-					_e("Created for Admins, Developers and Designers the Duplicator will streamline your workflows and help you quickly clone a WordPress application.  If you run into an issue please read through the", 'wpduplicator');
-					printf(" <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a> ", __("knowledgebase", 'wpduplicator'));
-					_e('in detail for many of the quick and common answers.', 'wpduplicator')
-				?>
-				</td>
-				<td >
+				<td style="width:90px">
 					<a href="http://lifeinthegrid.com/labs/duplicator" target="_blank">
 						<img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/logo-box.png" style='text-align:top; margin:-15px 0px 0px 0px'  />
 					</a>
 				</td>
+				<td valign="top" style="padding-top:10px; font-size:14px">
+				<?php 
+					_e("Created for Admins, Developers and Designers the Duplicator can streamline your workflows and help you quickly clone a WordPress application.  Migrating a WordPress site manually can be very time consuming.  The Duplicator was made to help you speed up the migration process.", 'wpduplicator');
+				
+				?>
+				</td>
+
+				
 			</tr>
 		</table><br/>
-		
-		
-		<!--  =================================================
-		NEED HELP?
-		==================================================== -->
-		<h2><?php _e('Need Help?', 'wpduplicator') ?></h2>
-
-		<!-- HELP LINKS -->
-		<div class="dup-support-hlp-area">
-			<table class="dup-support-hlp-hdrs">
-				<tr >
-					<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/books.png" /></td>
-					<td><?php _e('Knowledgebase', 'wpduplicator') ?></td>
-				</tr>
-			</table>
-			<div class="dup-support-hlp-txt">
-				<?php  _e('Complete online documentation!', 'wpduplicator');?>
-				<select id="dup-support-kb-lnks" style="margin-top:18px; font-size:14px; min-width: 170px">
-					<option> <?php _e('Choose A Section', 'wpduplicator') ?> </option>
-					<option value="http://lifeinthegrid.com/duplicator-quick"><?php _e('Quick Start', 'wpduplicator') ?></option>
-					<option value="http://lifeinthegrid.com/duplicator-guide"><?php _e('User Guide', 'wpduplicator') ?></option>
-					<option value="http://lifeinthegrid.com/duplicator-faq"><?php _e('FAQs', 'wpduplicator') ?></option>
-					<option value="http://lifeinthegrid.com/duplicator-log"><?php _e('Change Log', 'wpduplicator') ?></option>
-					<option value="http://lifeinthegrid.com/labs/duplicator"><?php _e('Product Page', 'wpduplicator') ?></option>
-				</select>
-			</div>
-		</div>
-		
-
-		<!-- APPROVED HOSTING -->
-		<div class="dup-support-hlp-area">
-			<table class="dup-support-hlp-hdrs">
-				<tr >
-					<td><img id="dup-support-approved" src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/approved.png"  /></td>
-					<td><?php _e('Approved Hosting', 'wpduplicator') ?></td>
-				</tr>
-			</table>
-			<div class="dup-support-hlp-txt">
-				<?php _e('Servers that work with Duplicator!', 'wpduplicator'); ?>
-				<br/><br/>
-				<div class="dup-support-txts-links">
-					<button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-hosts', 'litg');"><?php _e('Get Hosting!', 'wpduplicator') ?></button> &nbsp; 
-				</div>
-			</div>
-		</div>
-		
-
-		<!-- ONLINE SUPPORT -->
-		<div class="dup-support-hlp-area">
-			<table class="dup-support-hlp-hdrs">
-				<tr >
-					<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/support.png" /></td>
-					<td><?php _e('Online Support', 'wpduplicator') ?></td>
-				</tr>
-			</table>
-			<div class="dup-support-hlp-txt">
-				<?php _e("Work with IT Profressionals!" , 'wpduplicator');	?> 
-				<br/><br/>
-				
-				<div class="dup-support-txts-links">
-					<button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow(); return false;"><?php _e('Get Help!', 'wpduplicator') ?></button> &nbsp; 
-				</div>	
-			</div>
-		</div> <br style="clear:both" /><br/><br/><br/>
-		
 		
 		
 		
@@ -202,20 +136,3 @@ img#dup-img-5stars:hover {opacity:1.0;}
 	
 	</div>
 </div><br/><br/><br/><br/>
-
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-	
-	Duplicator.OpenSupportWindow = function() {
-		var url = 'http://lifeinthegrid.com/duplicator/resources/';
-		window.open(url, 'litg');
-	}
-
-	//ATTACHED EVENTS
-	jQuery('#dup-support-kb-lnks').change(function() {
-		if (jQuery(this).val() != "null") 
-			window.open(jQuery(this).val())
-	});
-		
-});
-</script>

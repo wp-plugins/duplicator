@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 0.5.6
+  Version: 0.5.7
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   License: GPLv2 or later
@@ -150,7 +150,8 @@ if (is_admin() == true) {
 			case 'duplicator':			 include('views/packages/controller.php');	break;
 			case 'duplicator-settings':	 include('views/settings/controller.php');	break;
 			case 'duplicator-tools':	 include('views/tools/controller.php');		break;
-			case 'duplicator-support':	 include('views/support.php');				break;
+			case 'duplicator-help':		 include('views/help/help.php');			break;
+			case 'duplicator-about':	 include('views/help/about.php');			break;
 		}	
 	}
 
@@ -165,20 +166,23 @@ if (is_admin() == true) {
         $main_menu		= add_menu_page('Duplicator Plugin', 'Duplicator', $perms, 'duplicator', 'duplicator_get_menu', plugins_url('duplicator/assets/img/create.png'));
         $page_packages	= add_submenu_page('duplicator',  __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), $perms, 'duplicator',			 'duplicator_get_menu');
         $page_settings	= add_submenu_page('duplicator',  __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), $perms, 'duplicator-settings', 'duplicator_get_menu');
-        $page_tools		= add_submenu_page('duplicator',  __('Tools',	'wpduplicator'),  __('Tools', 'wpduplicator'),	  $perms, 'duplicator-tools',	 'duplicator_get_menu');
-		$page_support	= add_submenu_page('duplicator',  __('Support',  'wpduplicator'), __('Support', 'wpduplicator'),  $perms, 'duplicator-support',  'duplicator_get_menu');
+        $page_tools		= add_submenu_page('duplicator',  __('Tools',	 'wpduplicator'), __('Tools', 'wpduplicator'),	  $perms, 'duplicator-tools',	 'duplicator_get_menu');
+		$page_help		= add_submenu_page('duplicator',  __('Help',	 'wpduplicator'), __('Help', 'wpduplicator'),	  $perms, 'duplicator-help',  'duplicator_get_menu');
+		$page_about		= add_submenu_page('duplicator',  __('About',    'wpduplicator'), __('About', 'wpduplicator'),    $perms, 'duplicator-about',  'duplicator_get_menu');
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_settings, 'duplicator_scripts');
-		add_action('admin_print_scripts-' . $page_support,  'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_help,  'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_tools,	'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_about,	'duplicator_scripts');
 
 		//Apply Styles
         add_action('admin_print_styles-'  . $page_packages, 'duplicator_styles');
         add_action('admin_print_styles-'  . $page_settings, 'duplicator_styles');
-		add_action('admin_print_styles-'  . $page_support,  'duplicator_styles');
+		add_action('admin_print_styles-'  . $page_help,  'duplicator_styles');
 		add_action('admin_print_styles-'  . $page_tools,	'duplicator_styles');
+		add_action('admin_print_styles-'  . $page_about,	'duplicator_styles');
     }
 
     /**

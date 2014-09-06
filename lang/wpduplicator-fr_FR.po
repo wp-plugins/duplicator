@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WPDuplicator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-29 16:53+0100\n"
-"PO-Revision-Date: 2014-06-29 17:19+0100\n"
+"POT-Creation-Date: 2014-07-17 09:40+0100\n"
+"PO-Revision-Date: 2014-07-17 09:42+0100\n"
 "Last-Translator: \n"
 "Language-Team: Nicolas Richer <contact@nicolasricher.fr>\n"
 "Language: fr_FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: ./\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.6\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: classes/ui.php:108
@@ -165,7 +165,7 @@ msgid "Name"
 msgstr "Nom"
 
 #: views/packages/list.base.php:97 views/packages/new1.inc.form.php:6
-#: views/settings/general.php:95
+#: views/settings/general.php:96
 msgid "Package"
 msgstr "Paquet"
 
@@ -189,7 +189,7 @@ msgstr "Archive"
 
 #: views/packages/list.base.php:159 views/packages/list.base.php:204
 #: views/settings/diagnostics.php:122 views/settings/diagnostics.php:141
-#: views/settings/diagnostics.php:181 views/settings/general.php:64
+#: views/settings/diagnostics.php:181 views/settings/general.php:65
 msgid "Version"
 msgstr "Version"
 
@@ -567,7 +567,7 @@ msgstr ""
 #: views/packages/new1.inc.form.php:74
 msgid "Use the full path for directories and semicolons to separate all items."
 msgstr ""
-"Utilisez le chemin complet pour les répertoires et des semi-colonnes pour "
+"Utilisez le chemin complet pour les répertoires et des points virgules pour "
 "séparer les fichiers."
 
 #: views/packages/new1.inc.form.php:90
@@ -1057,12 +1057,8 @@ msgid "The current build has experienced an issue."
 msgstr "L&#39;assemblage en cours a rencontré une erreur."
 
 #: views/packages/new3.base.php:91
-msgid ""
-"Please try the process again. If the problem persists please visit the "
-"support page."
-msgstr ""
-"Merci de réessayer l&#39;assemblage à nouveau. Si le problème persiste, "
-"merci de visiter le support."
+msgid "Please try the process again."
+msgstr "Merci de réessayer l'assemblage à nouveau."
 
 #: views/packages/new3.base.php:93
 msgid "Try Again"
@@ -1253,53 +1249,53 @@ msgstr "Effacer cette option de valeur"
 msgid "Settings Saved"
 msgstr "Paramètres Sauvegardés"
 
-#: views/settings/general.php:60
+#: views/settings/general.php:61
 msgid "Plugin"
 msgstr "Plugin"
 
-#: views/settings/general.php:68
+#: views/settings/general.php:69
 msgid "Uninstall"
 msgstr "Désinstallation"
 
-#: views/settings/general.php:71
+#: views/settings/general.php:72
 msgid "Delete Plugin Settings"
 msgstr "Effacer les paramètres du plugin"
 
-#: views/settings/general.php:74
+#: views/settings/general.php:75
 msgid "Delete Entire Storage Directory"
 msgstr "Effacer tout le Répertoire de Stockage"
 
-#: views/settings/general.php:79
+#: views/settings/general.php:80
 msgid "Storage"
 msgstr "Stockage"
 
-#: views/settings/general.php:81
+#: views/settings/general.php:82
 msgid "Full Path"
 msgstr "Chemin Complet"
 
-#: views/settings/general.php:84
+#: views/settings/general.php:85
 msgid "Disable .htaccess File In Storage Directory"
 msgstr "Désactiver le fichier .htaccess dans le Répertoire de Stockage"
 
-#: views/settings/general.php:86
+#: views/settings/general.php:87
 msgid "Disable if issues occur when downloading installer/archive files."
 msgstr ""
 "Désactivez-le si vous n&#39;arrivez pas à télécharger l&#39;installer ou les "
 "fichiers d&#39;archive."
 
-#: views/settings/general.php:99
+#: views/settings/general.php:100
 msgid "Archive Flush"
 msgstr "Effacement des Archives"
 
-#: views/settings/general.php:102
+#: views/settings/general.php:103
 msgid "Attempt Network Keep Alive"
 msgstr "Tenter de garder le réseau en ligne"
 
-#: views/settings/general.php:103
+#: views/settings/general.php:104
 msgid "recommended only for large archives"
 msgstr "recommandé seulement pour les archives volumineuses"
 
-#: views/settings/general.php:105
+#: views/settings/general.php:106
 msgid ""
 "This will attempt to keep a network connection established for large "
 "archives."
@@ -1307,33 +1303,33 @@ msgstr ""
 "Ceci va essayer de garder une connexion réseau pour les archives "
 "volumineuses."
 
-#: views/settings/general.php:110
+#: views/settings/general.php:111
 msgid "Database Build"
 msgstr "Base de Données construite"
 
-#: views/settings/general.php:116
+#: views/settings/general.php:117
 msgid "This server does not have shell_exec configured to run."
 msgstr "Ce serveur n&#39;a pas shell_exec de paramétré."
 
-#: views/settings/general.php:117
+#: views/settings/general.php:118
 msgid "Please contact the server administrator to enable this feature."
 msgstr ""
 "Merci de contacter votre administrateur réseau pour activer cette "
 "fonctionnalité."
 
-#: views/settings/general.php:122
+#: views/settings/general.php:123
 msgid "Use mysqldump"
 msgstr "Utiliser mysqldump"
 
-#: views/settings/general.php:123
+#: views/settings/general.php:124
 msgid "recommended for large databases"
 msgstr "recommandé pour les bases de données volumineuses"
 
-#: views/settings/general.php:128
+#: views/settings/general.php:129
 msgid "Working Path:"
 msgstr "Chemin Fonctionnel :"
 
-#: views/settings/general.php:134
+#: views/settings/general.php:135
 msgid ""
 "Mysqldump was not found at its default location or the location provided.  "
 "Please enter a path to a valid location where mysqldump can run.  If the "
@@ -1344,23 +1340,23 @@ msgstr ""
 "mysqldump pourra tourner. Si le problème persiste, contactez votre "
 "administrateur réseau."
 
-#: views/settings/general.php:139
+#: views/settings/general.php:140
 msgid "Add Custom Path:"
 msgstr "Ajouter un chemin personnalisé :"
 
-#: views/settings/general.php:143
+#: views/settings/general.php:144
 msgid "This is the path to your mysqldump program."
 msgstr "C&#39;est le chemin vers le programme mysqldump."
 
-#: views/settings/general.php:152
+#: views/settings/general.php:153
 msgid "Package Debug"
 msgstr "Débogage des Paquets"
 
-#: views/settings/general.php:155
+#: views/settings/general.php:156
 msgid "Show Package Debug Status in Packages Screen"
 msgstr "Montrer le statut de débogage dans l&#39;écran des Paquets"
 
-#: views/settings/general.php:163
+#: views/settings/general.php:164
 msgid "Save Settings"
 msgstr "Sauvegarder les Paramètres"
 
@@ -1611,6 +1607,13 @@ msgstr "Rafraîchissement automatique"
 #: views/tools/logging.php:174
 msgid "Last 20 Logs"
 msgstr "Les derniers 20 rapports"
+
+#~ msgid ""
+#~ "Please try the process again. If the problem persists please visit the "
+#~ "support page."
+#~ msgstr ""
+#~ "Merci de réessayer l&#39;assemblage à nouveau. Si le problème persiste, "
+#~ "merci de visiter le support."
 
 #~ msgid "All"
 #~ msgstr "Tous"

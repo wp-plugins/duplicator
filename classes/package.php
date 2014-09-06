@@ -176,7 +176,7 @@ class DUP_Package {
 			);
 			if ($results == false) {
 				$error_result = $wpdb->print_error();
-				DUP_Log::Error("Unable to insert record into database table.", "'{$error_result}'");
+				DUP_Log::Error("Duplicator is unable to insert a package record into the database table.", "'{$error_result}'");
 			}
 			$this->ID = $wpdb->insert_id;
 		}
