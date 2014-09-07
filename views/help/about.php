@@ -56,15 +56,11 @@ img#dup-img-5stars:hover {opacity:1.0;}
 				<td valign="top" style="padding-top:10px; font-size:14px">
 				<?php 
 					_e("Created for Admins, Developers and Designers the Duplicator can streamline your workflows and help you quickly clone a WordPress application.  Migrating a WordPress site manually can be very time consuming.  The Duplicator was made to help you speed up the migration process. Please help us to continue the development effort of this plugin.", 'wpduplicator');
-				
 				?>
 				</td>
-
-				
 			</tr>
 		</table><br/>
-		
-		
+
 		
 		<!--  ==================================================
 		SUPPORT DUPLICATOR
