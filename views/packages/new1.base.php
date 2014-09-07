@@ -196,23 +196,27 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 				<a><?php _e('Reserved Files', 'wpduplicator');?></a> <div><?php echo $dup_tests['RES']['INSTALL'];?></div>
 			</div>
 			<div class="dup-sys-info dup-info-box">
-				<form method="post" action="admin.php?page=duplicator-tools&tab=cleanup&action=installer">
-					<?php _e('A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.', 'wpduplicator');?>
-					<br/><input type='submit' class='button action' value='<?php _e('Remove Files Now', 'wpduplicator')?>' style='font-size:10px; margin-top:5px;' />
-				</form>
+				
+				<?php if ($dup_tests['RES']['INSTALL'] == 'Pass')  :	?>
+					<?php _e('None of the reserved files (installer.php, installer-data.sql and installer-log.txt) where found from a previous install.  This means you are clear to create a new package.', 'wpduplicator');?>
+				<?php else: ?> 
+				
+					<form method="post" action="admin.php?page=duplicator-tools&tab=cleanup&action=installer">
+						<?php _e('A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.', 'wpduplicator');?>
+						<br/><input type='submit' class='button action' value='<?php _e('Remove Files Now', 'wpduplicator')?>' style='font-size:10px; margin-top:5px;' />
+					</form>
+				
+				<?php endif; ?>	
+				
+
 			</div>
 		</div>
 
 		<!-- ONLINE SUPPORT -->
 		<div class="dup-sys-contact">
 			<?php 	
-				printf("<i class='fa fa-info'></i> %s <i>%s</i>", 
-						__("For additional online help please visit", 'wpduplicator'), 
-						"<a href='" . DUPLICATOR_HELPLINK . "' target='_blank'>support.lifeinthegrid.com</a><br/>" );
-				printf("<i class='fa fa-lightbulb-o'></i> %s <i><a href='%s' target='_blank'>%s</a></i>?", 
-						__("Need a hosting provider that is", 'wpduplicator'), 
-						DUPLICATOR_CERTIFIED,
-						__("duplicator approved", 'wpduplicator'));
+				printf("<i class='fa fa-question-circle'></i> %s <a href='admin.php?page=duplicator-help'>[%s]</a>", 
+						__("For additional help please see the ", 'wpduplicator'), 	__("help page", 'wpduplicator'));
 			?>
 		</div>
 

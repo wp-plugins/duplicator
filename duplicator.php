@@ -100,9 +100,8 @@ if (is_admin() == true) {
         $plugin = plugin_basename(__FILE__);
         // create link
         if ($file == $plugin) {
-            $links[] = '<a href="' . DUPLICATOR_HELPLINK . '" title="' . __('FAQ', 'wpduplicator') . '" target="_blank">' . __('FAQ', 'wpduplicator') . '</a>';
-            $links[] = '<a href="' . DUPLICATOR_GIVELINK . '" title="' . __('Partner', 'wpduplicator') . '" target="_blank">' . __('Partner', 'wpduplicator') . '</a>';
-            $links[] = '<a href="' . DUPLICATOR_CERTIFIED . '" title="' . __('Approved Hosts', 'wpduplicator') . '"  target="_blank">' . __('Approved Hosts', 'wpduplicator') . '</a>';
+            $links[] = '<a href="admin.php?page=duplicator-help" title="' . __('Get Help', 'wpduplicator') . '" >' . __('Help', 'wpduplicator') . '</a>';
+			$links[] = '<a href="admin.php?page=duplicator-about" title="' . __('Support the Plugin', 'wpduplicator') . '">' . __('About', 'wpduplicator') . '</a>';
             return $links;
         }
         return $links;

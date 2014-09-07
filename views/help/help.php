@@ -5,12 +5,11 @@
 <style>
 div.dup-support-all {font-size:13px; line-height:20px}
 div.dup-support-txts-links {width:100%;font-size:14px; font-weight:bold; line-height:26px; text-align:center}
-div.dup-support-hlp-area {width:265px; height:175px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:6px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+div.dup-support-hlp-area {width:375px; height:160px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
 table.dup-support-hlp-hdrs {background-color:#efefef;}
-table.dup-support-hlp-hdrs td {
-	padding:2px; height:52px;
-	font-weight:bold; font-size:17px;
+div.dup-support-hlp-hdrs {
+	font-weight:bold; font-size:17px; height: 35px; padding:5px 5px 5px 10px;
 	background-image:-ms-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
 	background-image:-moz-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
 	background-image:-o-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
@@ -18,7 +17,7 @@ table.dup-support-hlp-hdrs td {
 	background-image:-webkit-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
 	background-image:linear-gradient(to bottom, #FFFFFF 0%, #DEDEDE 100%);
 }
-table.dup-support-hlp-hdrs td img{margin-left:7px}
+div.dup-support-hlp-hdrs div {padding:5px; margin:4px 20px 0px -20px;  text-align: center;}
 div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
 div.dup-support-give-area {width:400px; height:185px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
@@ -37,15 +36,13 @@ div.dup-spread-word {display:inline-block; border:1px solid red; text-align:cent
 	<?php duplicator_header(__("Help", 'wpduplicator') ) ?>
 	<hr size="1" />
 
-	<div style="width:850px; margin:auto; margin-top: 20px">
-		<table style="width:825px">
+	<div style="width:800px; margin:auto; margin-top: 20px">
+		<table>
 			<tr>
 				<td style="width:70px"><i class="fa fa-question-circle fa-5x"></i></td>
-				<td valign="top" style="padding-top:10px; font-size:14px">
+				<td valign="top" style="padding-top:10px; font-size:13px">
 				<?php 
-					_e("Migrating WordPress is a complex process and the underlying logic to make all the magic happen smoothly does not always happen quickly with every site.  Each WordPress site has its own unique factors and with over 30,000 plugins and a very complex server eco-system some migrations may run into issues.   Therefore the Duplicator has also provided a very detailed and free ", 'wpduplicator');
-					printf(" <a href='http://lifeinthegrid.com/duplicator-docs' target='_blank'>%s</a> ", __("knowledgebase", 'wpduplicator'));
-					_e('that can help you with many common issues.', 'wpduplicator')
+					_e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below.", 'wpduplicator');	
 				?>
 				</td>
 				
@@ -55,15 +52,13 @@ div.dup-spread-word {display:inline-block; border:1px solid red; text-align:cent
 
 		<!-- HELP LINKS -->
 		<div class="dup-support-hlp-area">
-			<table class="dup-support-hlp-hdrs">
-				<tr>
-					<td>&nbsp; <i class="fa fa-cube fa-2x"></i></td>
-					<td><?php _e('Knowledgebase', 'wpduplicator') ?></td>
-				</tr>
-			</table>
+			<div class="dup-support-hlp-hdrs">
+				<i class="fa fa-cube fa-2x pull-left"></i>
+				<div><?php _e('Knowledgebase', 'wpduplicator') ?></div>
+			</div>
 			<div class="dup-support-hlp-txt">
-				<?php  _e('Complete online documentation!', 'wpduplicator');?>
-				<select id="dup-support-kb-lnks" style="margin-top:18px; font-size:14px; min-width: 170px">
+				<?php  _e('Complete Online Documentation', 'wpduplicator');?><br/>
+				<select id="dup-support-kb-lnks" style="margin-top:18px; font-size:16px; min-width: 170px">
 					<option> <?php _e('Choose A Section', 'wpduplicator') ?> </option>
 					<option value="http://lifeinthegrid.com/duplicator-quick"><?php _e('Quick Start', 'wpduplicator') ?></option>
 					<option value="http://lifeinthegrid.com/duplicator-guide"><?php _e('User Guide', 'wpduplicator') ?></option>
@@ -73,41 +68,57 @@ div.dup-spread-word {display:inline-block; border:1px solid red; text-align:cent
 				</select>
 			</div>
 		</div>
+		
+		<!-- ONLINE SUPPORT -->
+		<div class="dup-support-hlp-area">
+			<div class="dup-support-hlp-hdrs">
+				<i class="fa fa-lightbulb-o fa-2x pull-left"></i>
+				<div><?php _e('Online Support', 'wpduplicator') ?></div>
+			</div>
+			<div class="dup-support-hlp-txt">
+				<?php _e("Get Help From IT Profressionals" , 'wpduplicator');	?> 
+				<br/><br/>
+				<div class="dup-support-txts-links">
+					<button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow(); return false;"><?php _e('Get Help Now!', 'wpduplicator') ?></button> &nbsp; 
+				</div>	
+			</div>
+		</div> 
+		<br style="clear:both" /><br/><br/>
+		
 
 		<!-- APPROVED HOSTING -->
 		<div class="dup-support-hlp-area">
-			<table class="dup-support-hlp-hdrs">
-				<tr >
-					<td>&nbsp; <i class="fa fa-bolt fa-2x"></i></td>
-					<td><?php _e('Approved Hosting', 'wpduplicator') ?></td>
-				</tr>
-			</table>
+			
+			<div class="dup-support-hlp-hdrs">
+				<i class="fa fa-bolt fa-2x pull-left"></i>
+				<div><?php _e('Approved Hosting', 'wpduplicator') ?></div>
+			</div>			
 			<div class="dup-support-hlp-txt">
-				<?php _e('Servers that work with Duplicator!', 'wpduplicator'); ?>
+				<?php _e('Servers That Work With Duplicator', 'wpduplicator'); ?>
 				<br/><br/>
 				<div class="dup-support-txts-links">
-					<button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-hosts', 'litg');"><?php _e('Get Hosting!', 'wpduplicator') ?></button> &nbsp; 
+					<button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-hosts', 'litg');"><?php _e('Trusted Providers!', 'wpduplicator') ?></button> &nbsp; 
 				</div>
 			</div>
 		</div>
 		
-		<!-- ONLINE SUPPORT -->
+		<!-- ALTERNATIVES -->
 		<div class="dup-support-hlp-area">
-			<table class="dup-support-hlp-hdrs">
-				<tr>
-					<td>&nbsp; <i class="fa fa-lightbulb-o fa-2x"></i></td>
-					<td><?php _e('Online Support', 'wpduplicator') ?></td>
-				</tr>
-			</table>
+			
+			<div class="dup-support-hlp-hdrs">
+				<i class="fa fa-code-fork fa-2x pull-left"></i>
+				<div><?php _e('Alternatives', 'wpduplicator') ?></div>
+			</div>			
 			<div class="dup-support-hlp-txt">
-				<?php _e("Work with IT Profressionals!" , 'wpduplicator');	?> 
+				<?php _e('Other Commercial Resources', 'wpduplicator'); ?>
 				<br/><br/>
-				
 				<div class="dup-support-txts-links">
-					<button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow(); return false;"><?php _e('Get Support Now!', 'wpduplicator') ?></button> &nbsp; 
-				</div>	
+					<button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-getalts', 'litg');"><?php _e('Go Pro!', 'wpduplicator') ?></button> &nbsp; 
+				</div>
 			</div>
-		</div> <br style="clear:both" /><br/><br/><br/>
+		</div>
+		
+
 		
 	</div>
 </div><br/><br/><br/><br/>

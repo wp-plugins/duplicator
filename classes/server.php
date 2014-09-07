@@ -40,7 +40,8 @@ class DUP_Server {
 		
 		//RESERVED FILES
 		$dup_tests['RES']['INSTALL'] = !(self::InstallerFilesFound()) ? 'Pass' : 'Fail';
-		$dup_tests['Success'] = $dup_tests['PHP']['ALL']  == 'Pass' &&  $dup_tests['IO']['ALL'] == 'Pass' &&  $dup_tests['SRV']['ALL']  == 'Pass';
+		$dup_tests['Success'] = $dup_tests['PHP']['ALL']  == 'Pass' && $dup_tests['IO']['ALL'] == 'Pass' &&
+								$dup_tests['SRV']['ALL']  == 'Pass' && $dup_tests['RES']['INSTALL'] == 'Pass';
 		
 		return $dup_tests;
 	}		
