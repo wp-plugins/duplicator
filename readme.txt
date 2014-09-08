@@ -3,7 +3,7 @@ Contributors: corylamleorg
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.8
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: 0.5.6
 License: GPLv2
 
@@ -29,11 +29,11 @@ This project is currently in Beta, the underlying logic to backup WordPress, mov
 = Active Contributors =
 <li>[Paal Joachim Romdahl](http://www.easywebdesigntutorials.com) (Training)</li>
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
-<li>[Marco Andrei Kichalowsky](http://www.arsnovasolucoes.com) (Portuguese)</li>
-<li>[Emilio De Fez](http://www.canaryas.com) (Spanish) </li>
 <li>[Nicolas Richer](http://nicolasricher.fr) (French)</li>
 
 = Other Contributors =
+<li>[Emilio De Fez](http://www.canaryas.com) (Spanish) </li>
+<li>[Marco Andrei Kichalowsky](http://www.arsnovasolucoes.com) (Portuguese)</li>
 Jonathan Foote, Tomas Gurny, Aaron Crawford
 
 = Donate =
