@@ -79,7 +79,7 @@ div.dup-spread-word {display:inline-block; border:1px solid red; text-align:cent
 				<?php _e("Get Help From IT Profressionals" , 'wpduplicator');	?> 
 				<br/><br/>
 				<div class="dup-support-txts-links">
-					<button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow(); return false;"><?php _e('Get Help Now!', 'wpduplicator') ?></button> &nbsp; 
+					<button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow(); return false;"><?php _e('Get Support!', 'wpduplicator') ?></button> &nbsp; 
 				</div>	
 			</div>
 		</div> 
