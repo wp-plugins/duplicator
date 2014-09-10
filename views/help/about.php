@@ -93,7 +93,7 @@ img#dup-img-5stars:hover {opacity:1.0;}
 				</tr>
 				<tr>
 					<td colspan="2">
-						<a href="http://lifeinthegrid.com/tools" target="_blank" style="font-size:14px">
+						<a href="http://lifeinthegrid.com/tools" target="_blank" style="font-size:18px">
 						<i class="fa fa-rocket"></i> <?php _e('Check out other great resources', 'wpduplicator') ?>...</a>
 					</td>
 				</tr>

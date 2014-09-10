@@ -76,7 +76,7 @@
 			<td align="right" style="width:100%;">
 				<?php if($statusCount >= 3)  :	?>
 				<div style="margin:8px 5px 0px 0px; font-size:12px">
-					<a href="admin.php?page=duplicator-support"><?php _e("Help Support Duplicator", 'wpduplicator') ?> <i class="fa fa-check-circle"></i> </a>
+					<a href="admin.php?page=duplicator-about"  style="color:maroon"><i><i class="fa fa-check-circle"></i> <?php _e("Help Support Duplicator", 'wpduplicator') ?></i> </a>
 				</div>
 				<?php endif; ?>	
 			</td>

@@ -9,10 +9,10 @@
 	</b>
 	<i>
 		<?php
-			printf("%s <a href='admin.php?page=duplicator-support'>%s</a> %s",
+			printf("%s <a href='admin.php?page=duplicator-help'>%s</a> %s",
 				__("Please visit the", 'wpduplicator'), 
-				__("support section", 'wpduplicator'),
-				__("for additional help topics", 'wpduplicator'));
+				__("help page", 'wpduplicator'),
+				__("for additional support", 'wpduplicator'));
 		?>
 	</i>
 	
@@ -23,9 +23,9 @@
 			<?php 
 				_e("Older packages prior to 0.5.0 are no longer supported in this version.", 'wpduplicator'); 
 
-				printf("  %s <a href='admin.php?page=duplicator-support'>%s</a> %s",
+				printf("  %s <a href='admin.php?page=duplicator-help'>%s</a> %s",
 					__("To get an older package please visit the", 'wpduplicator'), 
-					__("support page", 'wpduplicator'),
+					__("help page", 'wpduplicator'),
 					__("and look for the Change Log link for additional instructions.", 'wpduplicator'));
 			?><br/>
 			<label for="dup-notice01-chk">
