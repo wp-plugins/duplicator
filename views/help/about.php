@@ -22,10 +22,7 @@ table.dup-support-hlp-hdrs td img{margin-left:7px}
 div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
 div.dup-support-give-area {width:400px; height:185px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
-@-webkit-keyframes approve-keyframe  { 
-    from {-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
-    to {-webkit-transform:rotateX(0deg) rotateY(0deg) rotateZ(30deg);}
-}
+
 img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
 form#dup-donate-form input {opacity:0.7;}
 form#dup-donate-form input:hover {opacity:1.0;}

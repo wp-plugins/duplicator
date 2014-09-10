@@ -3,17 +3,17 @@
 	<input type="hidden" id="dup-form-opts-action" name="action" value="">
 	<input type="hidden" id="dup-form-opts-hash" name="package-hash" value="<?php echo $package_hash; ?>">
 
-	<b style="font-size:15px"><i class="fa fa-archive"></i> <?php _e('Package', 'wpduplicator') ?></b>
-	<hr size="1" />
+	<!--b style="font-size:15px"><i class="fa fa-archive"></i> <?php _e('Package', 'wpduplicator') ?></b>
+	<hr size="1" /-->
 
 	<label for="package-name"><b><?php _e('Name', 'wpduplicator') ?>:</b> </label>
 	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Create a new default name', 'wpduplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
 	<input id="package-name"  name="package-name" type="text" value="<?php echo $Package->Name ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>
 	<label><b><?php _e('Notes', 'wpduplicator') ?>:</b></label> <br/>
-	<textarea id="package-notes" name="package-notes" maxlength="300" placeholder="<?php _e('Purpose of this package', 'wpduplicator') ?>" /><?php echo $Package->Notes ?></textarea>
+	<textarea id="package-notes" name="package-notes" maxlength="300" /><?php echo $Package->Notes ?></textarea>
 
 	<!-- META-BOX: ARCHIVE -->
-	<div class="dup-box" style="margin-top:10px">
+	<div class="dup-box" style="margin-top:15px">
 	<div class="dup-box-title">
 		<i class="fa fa-file-archive-o"></i> <?php _e('Archive', 'wpduplicator') ?> &nbsp;
 		<span style="font-size:13px">
@@ -26,11 +26,12 @@
 	<div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo $ui_css_archive?>">
 
 		<label for="archive-format"><?php _e("Format", 'wpduplicator') ?>: </label> &nbsp;
-		<select name="archive-format" id="archive-format">
+		<input type="hidden" name="archive-format" value="ZIP" />
+		<!--select name="archive-format" id="archive-format">
 			<option value="ZIP">Zip</option>
-			<!--option value="TAR"></option>
-			<option value="TAR-GZIP"></option-->
-		</select>
+			<option value="TAR"></option>
+			<option value="TAR-GZIP"></option>
+		</select-->
 		<!-- NESTED TABS -->
 		<div class="categorydiv" id="dup-pack-opts-tabs">
 			<ul class="category-tabs">

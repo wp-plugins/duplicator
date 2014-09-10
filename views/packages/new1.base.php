@@ -221,7 +221,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 
 <!-- =========================================
 FORM PACKAGE OPTIONS -->
-<div style="padding:2px 5px 2px 5px">
+<div style="padding:5px 5px 2px 5px">
 	<?php include('new1.inc.form.php'); ?>
 </div>
 

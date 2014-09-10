@@ -134,7 +134,7 @@ VIEW: STEP 2- INPUT -->
 	<input type="hidden" name="json"		 value="<?php echo $_POST['json']; ?>" />
 	<input type="hidden" name="dbhost"		 value="<?php echo $_POST['dbhost'] ?>" />
 	<input type="hidden" name="dbuser" 		 value="<?php echo $_POST['dbuser'] ?>" />
-	<input type="hidden" name="dbpass" 		 value="<?php echo $_POST['dbpass'] ?>" />
+	<input type="hidden" name="dbpass" 		 value="<?php echo htmlentities($_POST['dbpass']) ?>" />
 	<input type="hidden" name="dbname" 		 value="<?php echo $_POST['dbname'] ?>" />
 	<input type="hidden" name="dbcharset" 	 value="<?php echo $_POST['dbcharset'] ?>" />
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
