@@ -28,6 +28,12 @@
 	$ui_css_srv_panel   = (isset($view_state['dup-settings-diag-srv-panel'])  && $view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
 	$ui_css_opts_panel  = (isset($view_state['dup-settings-diag-opts-panel']) && $view_state['dup-settings-diag-opts-panel'])  ? 'display:block' : 'display:none';
 	
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARTDED_FOR'] != '') {
+		$client_ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} else {
+		$client_ip_address = $_SERVER['REMOTE_ADDR'];
+	}
+	
 	//POST BACK
 	$action_updated = null;
 	if (isset($_POST['action'])) {
@@ -115,6 +121,14 @@
 				<td><?php _e("Loaded PHP INI", 'wpduplicator'); ?></td>
 				<td><?php echo php_ini_loaded_file() ;?></td>
 			</tr>	
+			<tr>
+				<td><?php _e("Server IP", 'wpduplicator'); ?></td>
+				<td><?php echo $_SERVER['SERVER_ADDR'];?></td>
+			</tr>	
+			<tr>
+				<td><?php _e("Client IP", 'wpduplicator'); ?></td>
+				<td><?php echo $client_ip_address;?></td>
+			</tr>
 			<tr>
 				<td class='dup-settings-diag-header' colspan="2">WordPress</td>
 			</tr>

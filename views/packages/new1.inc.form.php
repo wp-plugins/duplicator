@@ -13,7 +13,7 @@
 	<textarea id="package-notes" name="package-notes" maxlength="300" /><?php echo $Package->Notes ?></textarea>
 
 	<!-- META-BOX: ARCHIVE -->
-	<div class="dup-box" style="margin-top:15px">
+	<div class="dup-box" style="margin-top:20px">
 	<div class="dup-box-title">
 		<i class="fa fa-file-archive-o"></i> <?php _e('Archive', 'wpduplicator') ?> &nbsp;
 		<span style="font-size:13px">
@@ -24,10 +24,10 @@
 		<div class="dup-box-arrow"></div>
 	</div>		
 	<div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo $ui_css_archive?>">
-
-		<label for="archive-format"><?php _e("Format", 'wpduplicator') ?>: </label> &nbsp;
 		<input type="hidden" name="archive-format" value="ZIP" />
-		<!--select name="archive-format" id="archive-format">
+		<!--label for="archive-format"><?php _e("Format", 'wpduplicator') ?>: </label> &nbsp;
+		
+		<select name="archive-format" id="archive-format">
 			<option value="ZIP">Zip</option>
 			<option value="TAR"></option>
 			<option value="TAR-GZIP"></option>
