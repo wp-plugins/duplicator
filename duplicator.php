@@ -116,7 +116,6 @@ if (is_admin() == true) {
     add_action('plugins_loaded',						'duplicator_update');
     add_action('admin_init',							'duplicator_init');
     add_action('admin_menu',							'duplicator_menu');
-	add_action('wp_ajax_duplicator_task_reset',			'duplicator_task_reset');
     add_action('wp_ajax_duplicator_package_scan',		'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_build',		'duplicator_package_build');
 	add_action('wp_ajax_duplicator_package_delete',		'duplicator_package_delete');

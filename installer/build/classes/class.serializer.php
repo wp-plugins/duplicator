@@ -115,6 +115,8 @@ class DUPX_Serializer {
 			'errsql' => array(), 'errser' => array(), 'errkey' => array(),
 			'errsql_sum' => 0, 'errser_sum' => 0, 'errkey_sum' => 0,
 			'time' => '', 'err_all' => 0);
+		
+		$walk_function = create_function('&$str', '$str = "`$str`";');
 
 		$profile_start = DupUtil::get_microtime();
 		if (is_array($tables) && !empty($tables)) {
@@ -150,7 +152,7 @@ class DUPX_Serializer {
 				if (! $fullsearch) {
 					$colList = self::getTextColumns($conn, $table);
 					if ($colList != null && is_array($colList)) {
-						array_walk($colList, create_function('&$str', '$str = "`$str`";'));
+						array_walk($colList, $walk_function);
 						$colList = implode(',', $colList);
 					} 
 					$colMsg = (empty($colList)) ? '*' : '~';

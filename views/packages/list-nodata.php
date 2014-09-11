@@ -1,5 +1,5 @@
 <?php
-	$notice01  = DUP_UI::GetViewStateValue('dup-notice01-chk');
+	$show_notice01  = false; //DUP_UI::GetViewStateValue('dup-notice01-chk');
 ?>
 
 <div id='dup-list-alert-nodata'>
@@ -16,8 +16,8 @@
 		?>
 	</i>
 	
-	<!-- NOTICE01: 0.5.0 and above -->
-	<?php if(! $notice01)  :	?>
+	<!-- NOTICE01: 0.5.0 and 0.5.6:  Removed in 0.5.8 -->
+	<?php if( $show_notice01)  :	?>
 		<div id="dup-notice-01" class='dup-notice-msg'>
 			<i class="fa fa-exclamation-triangle fa-lg"></i>
 			<?php 
