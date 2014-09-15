@@ -28,10 +28,12 @@ class DUP_Server {
 		$dup_tests['PHP']['ALL']	 = ! in_array('Fail', $dup_tests['PHP'])	? 'Pass' : 'Fail';		
 		
 		//PERMISSIONS
-		$dup_tests['IO']['WPROOT']	= is_writeable(DUPLICATOR_WPROOTPATH)		? 'Pass' : 'Fail';
+		$handle_test = @opendir(DUPLICATOR_WPROOTPATH);		
+		$dup_tests['IO']['WPROOT']	= is_writeable(DUPLICATOR_WPROOTPATH) && $handle_test ? 'Pass' : 'Fail';
 		$dup_tests['IO']['SSDIR']	= is_writeable(DUPLICATOR_SSDIR_PATH)		? 'Pass' : 'Fail';
 		$dup_tests['IO']['SSTMP']	= is_writeable(DUPLICATOR_SSDIR_PATH_TMP)	? 'Pass' : 'Fail';
 		$dup_tests['IO']['ALL']		= ! in_array('Fail', $dup_tests['IO'])		? 'Pass' : 'Fail'; 
+		@closedir($handle_test);
 		
 		//SERVER SUPPORT
 		$dup_tests['SRV']['MYSQLi']		= function_exists('mysqli_connect')					? 'Pass' : 'Fail'; 
