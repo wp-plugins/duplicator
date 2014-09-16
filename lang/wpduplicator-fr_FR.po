@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WPDuplicator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-17 09:40+0100\n"
-"PO-Revision-Date: 2014-07-17 09:42+0100\n"
+"POT-Creation-Date: 2014-09-07 10:35+0100\n"
+"PO-Revision-Date: 2014-09-16 08:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: Nicolas Richer <contact@nicolasricher.fr>\n"
 "Language: fr_FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: ./\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.6\n"
+"X-Generator: Poedit 1.6.9\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: classes/ui.php:108
@@ -34,16 +34,20 @@ msgid "Dismiss this notice"
 msgstr "Masquer ce message"
 
 #: duplicator.php:103
-msgid "FAQ"
-msgstr "FAQ"
+msgid "Get Help"
+msgstr "Contactez le support"
+
+#: duplicator.php:103 duplicator.php:169 views/help/help.php:36
+msgid "Help"
+msgstr "Support"
 
 #: duplicator.php:104
-msgid "Partner"
-msgstr "Partenaire"
+msgid "Support the Plugin"
+msgstr "Aidez le plugin"
 
-#: duplicator.php:105
-msgid "Approved Hosts"
-msgstr "Hébergeurs approuvés"
+#: duplicator.php:104 duplicator.php:170 views/help/about.php:45
+msgid "About"
+msgstr "A propos"
 
 #: duplicator.php:166 views/packages/controller.php:73
 #: views/packages/controller.php:76 views/packages/list.base.php:239
@@ -58,13 +62,141 @@ msgstr "Paramètres"
 msgid "Tools"
 msgstr "Outils"
 
-#: duplicator.php:169 views/packages/new3.base.php:124 views/support.php:47
-msgid "Support"
-msgstr "Support"
-
-#: duplicator.php:212
+#: duplicator.php:215
 msgid "Manage"
 msgstr "Gérer"
+
+#: views/help/about.php:58
+msgid ""
+"Created for Admins, Developers and Designers the Duplicator can streamline "
+"your workflows and help you quickly clone a WordPress application.  "
+"Migrating a WordPress site manually can be very time consuming.  The "
+"Duplicator was made to help you speed up the migration process. Please help "
+"us to continue the development effort of this plugin."
+msgstr ""
+"Créé pour les webmasters, développeurs et designers, Duplicator va accélérer "
+"votre travail en vous permettant de cloner rapidement une installation "
+"WordPress. Faire une migration manuelle peut vite devenir très long, c&#39;"
+"est pourquoi Duplicator vient l'automatiser. Merci de nous aider pour "
+"continuer les efforts de développement du plugin."
+
+#: views/help/about.php:68
+msgid "Support Duplicator"
+msgstr "Aide de Duplicator"
+
+#: views/help/about.php:75
+msgid "Partner with Us"
+msgstr "Soutenez-nous"
+
+#: views/help/about.php:87
+msgid "Keep Active and Online"
+msgstr "Pour que Duplicator soit activement développé"
+
+#: views/help/about.php:94
+msgid "Leave 5 Stars"
+msgstr "Nous donner 5 Étoiles"
+
+#: views/help/about.php:100
+msgid "Check out other great resources"
+msgstr "Jetez un oeil à nos autres super ressources"
+
+#: views/help/about.php:112
+msgid "Spread the Word"
+msgstr "Faites passer le mot"
+
+#: views/help/about.php:118
+msgid "Duplicate Your WordPress"
+msgstr "Dupliquer votre WordPress"
+
+#: views/help/about.php:119
+msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
+msgstr "Duplication Rapide WordPress par LifeInTheGrid.com"
+
+#: views/help/help.php:45
+msgid ""
+"Migrating WordPress is a complex process and the logic to make all the magic "
+"happen smoothly may not work quickly with every site.  With over 30,000 "
+"plugins and a very complex server eco-system some migrations may run into "
+"issues.  This is why the Duplicator includes a detailed knowledgebase that "
+"can help with many common issues.  Resources to additional support, approved "
+"hosting, and alternatives to fit your needs can be found below."
+msgstr ""
+"Migrer un site WordPress est un processus complexe et il n&#39;est pas "
+"facile de rendre cette opération rapide à 100%. Avec plus de 30 000 plugins "
+"et un écosystème serveur complexe, il est courant que tout ne fonctionne pas "
+"comme prévu. C&#39;est pourquoi Duplicator contient une documentation "
+"détaillée (en anglais seulement) pour vous aider à résoudre les problèmes "
+"les plus fréquents. Les liens pour du support additionnel (en anglais), les "
+"hébergeurs \"approuvés\" et les solutions alternatives se trouvent ci-"
+"dessous."
+
+#: views/help/help.php:57
+msgid "Knowledgebase"
+msgstr "Base de connaissances"
+
+#: views/help/help.php:60
+msgid "Complete Online Documentation"
+msgstr "Documentation en ligne"
+
+#: views/help/help.php:62
+msgid "Choose A Section"
+msgstr "Choisissez une section"
+
+#: views/help/help.php:63
+msgid "Quick Start"
+msgstr "Démarrage Rapide"
+
+#: views/help/help.php:64
+msgid "User Guide"
+msgstr "Guide Utilisateur"
+
+#: views/help/help.php:65
+msgid "FAQs"
+msgstr "FAQs"
+
+#: views/help/help.php:66
+msgid "Change Log"
+msgstr "Notes de Version"
+
+#: views/help/help.php:67
+msgid "Product Page"
+msgstr "Page Produit"
+
+#: views/help/help.php:76
+msgid "Online Support"
+msgstr "Aide en Ligne"
+
+#: views/help/help.php:79
+msgid "Get Help From IT Profressionals"
+msgstr "Demander de l'aide à des professionnels"
+
+#: views/help/help.php:82
+msgid "Get Help Now!"
+msgstr "Demander de l'aide"
+
+#: views/help/help.php:94
+msgid "Approved Hosting"
+msgstr "Hébergeur Approuvés"
+
+#: views/help/help.php:97
+msgid "Servers That Work With Duplicator"
+msgstr "Les serveurs qui fonctionnent avec Duplicator"
+
+#: views/help/help.php:100
+msgid "Trusted Providers!"
+msgstr "Hébergeurs approuvés"
+
+#: views/help/help.php:110
+msgid "Alternatives"
+msgstr "Alternatives"
+
+#: views/help/help.php:113
+msgid "Other Commercial Resources"
+msgstr "Autres ressources (commerciales)"
+
+#: views/help/help.php:116
+msgid "Go Pro!"
+msgstr "Version Premium"
 
 #: views/inc.header.php:10
 msgid "By"
@@ -344,41 +476,120 @@ msgstr ""
 "convenablement. Cliquez sur chaque lien pour en voir les détails."
 
 #: views/packages/new1.base.php:112
+msgid "PHP Support"
+msgstr "Support de PHP"
+
+#: views/packages/new1.base.php:118
+msgid "PHP Version"
+msgstr "Version de PHP"
+
+#: views/packages/new1.base.php:122
+msgid "Zip Archive Enabled"
+msgstr "Archivage Zip Activé"
+
+#: views/packages/new1.base.php:126
+msgid "Safe Mode Off"
+msgstr "Mode Sécurité Désactivé"
+
+#: views/packages/new1.base.php:130 views/packages/new1.base.php:134
+msgid "Function"
+msgstr "Fonction"
+
+#: views/packages/new1.base.php:139
+msgid ""
+"PHP versions 5.2.17+ or higher is required. Please note that in versioning "
+"logic a value such as 5.2.9 is less than 5.2.17. For compression to work the "
+"ZipArchive extension for PHP is required. Safe Mode should be set to 'Off' "
+"in you php.ini file and is deprecated as of PHP 5.3.0.  For any issues in "
+"this section please contact your hosting provider or server administrator.  "
+"For additional information see our online documentation."
+msgstr ""
+"PHP dans ses versions 5.2.17 ou supérieures est nécessaire. La logique de "
+"versioning de PHP fonctionne de telle façon que 5.2.9 est inférieur à "
+"5.2.17. Pour que la compression soit activée, l&#39;extension ZipArchive de "
+"PHP est requise. Le mode sécurité (Safe Mode) doit être désactivé (Off) dans "
+"votre fichier php.ini ; cette fonction n&#39;est plus supportée après PHP "
+"5.3.0. En cas de problèmes avec cette section, merci de contacter votre "
+"hébergeur ou administrateur système. Pour plus d&#39;informations, veuillez "
+"vous reporter à notre documentation en ligne."
+
+#: views/packages/new1.base.php:147
 msgid "Permissions"
 msgstr "Permissions"
 
-#: views/packages/new1.base.php:116
+#: views/packages/new1.base.php:150
 msgid "Required Paths"
 msgstr "Chemins"
 
-#: views/packages/new1.base.php:125
-msgid "PHP Script Owner"
-msgstr "Propriétaire du Script PHP"
-
-#: views/packages/new1.base.php:126
+#: views/packages/new1.base.php:162
 msgid ""
-"The above paths should have permissions of 755 for directories and 644 for "
-"files. You can temporarily try 777 if you continue to have issues.  Also be "
-"sure to check the owner/group settings.  For more details contact your host "
-"or server administrator."
+"Permissions can be difficult to resolve on some systems. If the plugin can "
+"not read the above paths here are a few things to try. 1) Set the above "
+"paths to have permissions of 755 for directories and 644 for files. You can "
+"temporarily try 777 however, be sure you don’t leave them this way. 2) Check "
+"the owner/group settings for both files and directories. The PHP script "
+"owner and the process owner are different. The script owner owns the PHP "
+"script but the process owner is the user the script is running as, thus "
+"determining its capabilities/privileges in the file system. For more details "
+"contact your host or server administrator or visit the 'Help' menu under "
+"Duplicator for additional online resources."
 msgstr ""
-"Les chemins ci-dessous devraient avoir des permissions de 755 pour les "
-"répertoires et 644 pour les fichiers. Vous pouvez les passer à 777 mais "
-"seulement de manière temporaire, si vous rencontrez des problèmes. Veillez "
-"également à vérifier les paramètres de propriétaire/groupe. Pour plus de "
-"détails, contactez votre administrateur réseau."
+"Les permissions sont parfois difficiles à appréhender sur certains systèmes. "
+"Si le plugin n&#39;arrive pas à lire les chemins suivants, voici ce que vous "
+"pouvez essayer. 1) Passer les permissions à 755 pour les répertoires et 644 "
+"pour les fichiers. Vous pouvez également essayer de passer en 777 mais ne "
+"laissez pas ce paramètre par la suite. 2) Vérifier les paramètres de "
+"propriétaire ou de groupe pour les fichiers et répertoires. Le script PHP "
+"pour les propriétaires et groupes ne fonctionne pas de la même façon. Pour "
+"plus de détails, contactez votre hébergeur ou administrateur système. Vous "
+"pouvez également aller dans la section &#39;Aide&#39; pour des ressources "
+"supplémentaires."
 
-#: views/packages/new1.base.php:128 views/packages/new1.base.php:142
-#: views/packages/new1.base.php:153 views/packages/new1.base.php:167
-#: views/packages/new1.base.php:183 views/packages/new1.base.php:203
-msgid "Status Code"
-msgstr "Code Statut"
+#: views/packages/new1.base.php:170
+msgid "Server Support"
+msgstr "Compatibilité avec le Serveur"
 
-#: views/packages/new1.base.php:135
+#: views/packages/new1.base.php:176
+msgid "MySQL Version"
+msgstr "Version de MySQL"
+
+#: views/packages/new1.base.php:180
+msgid "MySQLi Support"
+msgstr "Compatibilité MySQLi"
+
+#: views/packages/new1.base.php:186
+msgid ""
+"MySQL version 5.0+ or better is required and the PHP MySQLi extension (note "
+"the trailing 'i') is also required.  Contact your server administrator and "
+"request that mysqli extension and MySQL Server 5.0+ be installed. Please "
+"note in future versions support for other databases and extensions will be "
+"added."
+msgstr ""
+"Une version 5.0 ou supérieure de MySQL ainsi que l&#39;extension MySQLi "
+"(remarquez bien le &#39;i&#39;) est nécessaire. Contactez alors votre "
+"administrateur pour lui demander que tout soit en règle. Nous ajouterons par "
+"la suite la compatibilité avec d'autres bases de données et extensions."
+
+#: views/packages/new1.base.php:187 views/packages/new2.base.php:129
+#: views/packages/new2.base.php:141
+msgid "more info"
+msgstr "plus d&#39;information"
+
+#: views/packages/new1.base.php:196
 msgid "Reserved Files"
 msgstr "Fichiers Réservés"
 
-#: views/packages/new1.base.php:139
+#: views/packages/new1.base.php:200
+msgid ""
+"None of the reserved files (installer.php, installer-data.sql and installer-"
+"log.txt) where found from a previous install.  This means you are clear to "
+"create a new package."
+msgstr ""
+"Aucun des fichiers &#39réservés&#39; n&#39;a été détecté (installer.php, "
+"installer-data.sql et installer-log.txt). Cela signifie que vous pouvez "
+"créer un nouveau paquet."
+
+#: views/packages/new1.base.php:203
 msgid ""
 "A reserved file(s) was found in the WordPress root directory. Reserved file "
 "names are installer.php, installer-data.sql and installer-log.txt.  To "
@@ -391,101 +602,17 @@ msgstr ""
 "correctement, merci de retirer ces fichiers du répertoire racine. Ensuite, "
 "essayez de créer un nouveau paquet."
 
-#: views/packages/new1.base.php:140
+#: views/packages/new1.base.php:204
 msgid "Remove Files Now"
 msgstr "Supprimer les Fichiers maintenant"
 
-#: views/packages/new1.base.php:149
-msgid "Zip Archive Enabled"
-msgstr "Archivage Zip Activé"
-
-#: views/packages/new1.base.php:152
-msgid ""
-"The ZipArchive extension for PHP is required for compression.  Please "
-"contact your hosting provider if you're on a hosted server.  For additional "
-"information see our online documentation."
-msgstr ""
-"L&#39;extension ZipArchive pour PHP est requise pour la compression. Merci "
-"de contacter votre hébergeur si vous êtes sur un serveur mutualité. Pour "
-"plus d&#39;informations, consultez notre aide en ligne."
-
-#: views/packages/new1.base.php:160
-msgid "Safe Mode Off"
-msgstr "Mode Sécurité Désactivé"
-
-#: views/packages/new1.base.php:165
-msgid ""
-"Safe Mode should be set safe_mode=Off in you php.ini file. On hosted servers "
-"you may have to request this setting be turned off. Please note that Safe "
-"Mode is deprecated as of PHP 5.3.0"
-msgstr ""
-"Le Mode Sécurité devrait être réglé à safe_mode=Off dans votre fichier php."
-"ini. Pour les hébergements mutualisés, vous devriez demander à ce que ce "
-"paramètre soit désactivé. Veuillez également noter que le Mode Sécurité est "
-"obsolète depuis la version 5.3.0 de PHP"
-
-#: views/packages/new1.base.php:174
-msgid "MySQL Support"
-msgstr "Support de MySQL"
-
-#: views/packages/new1.base.php:179
-msgid "MySQL version"
-msgstr "Version de MySQL"
-
-#: views/packages/new1.base.php:180
-msgid ""
-"MySQL version 5.0+ or better is required. If the MySQL version is valid and "
-"this requirement fails then the mysqli extension (note the trailing 'i') is "
-"not installed.  Contact your server administrator and request that mysqli "
-"extension and MySQL Server 5.0+ be installed. Please note in future version "
-"support for other databases and extensions will be added."
-msgstr ""
-"Une version 5.0 ou supérieure de MySQL est nécessaire. Si jamais votre "
-"version est correcte mais que ce message est toujours présent alors l&#39;"
-"extension mysqli (remarquez bien le &#39;i&#39;) n&#39;est pas installée. "
-"Contactez alors votre administrateur pour lui demander que l'extension "
-"mysqli et MySQL Server 5.0+ soient installés. Nous ajouterons par la suite "
-"la compatibilité avec d'autres bases de données et extensions."
-
-#: views/packages/new1.base.php:181 views/packages/new2.base.php:129
-#: views/packages/new2.base.php:141
-msgid "more info"
-msgstr "plus d&#39;information"
-
-#: views/packages/new1.base.php:190
-msgid "PHP Support"
-msgstr "Support de PHP"
-
-#: views/packages/new1.base.php:197
-msgid "PHP version"
-msgstr "Version de PHP"
-
-#: views/packages/new1.base.php:198
-msgid "Requried Functions"
-msgstr "Fonctions nécessaires"
-
-#: views/packages/new1.base.php:201
-msgid ""
-"PHP versions 5.2.17+ or higher is required. Please note that in versioning "
-"logic a value such as 5.2.9 is less than 5.2.17.  Please contact your server "
-"administrator to upgrade to a stable and secure version of PHP"
-msgstr ""
-"PHP dans sa version 5.2.17+ ou supérieure est requis. Veuillez noter que la "
-"logique des versions de PHP veut que 5.2.9 est inférieur à 5.2.17. Contactez "
-"alors votre administrateur pour qu&#39;il mette à jour PHP à une version "
-"stable et sécurisée."
-
-#: views/packages/new1.base.php:211
-msgid "For additional online help please visit"
-msgstr "Pour plus d&#39;aide en ligne, allez sur"
+#: views/packages/new1.base.php:214
+msgid "For additional help please see the "
+msgstr "Pour plus d'aide en ligne, allez sur"
 
 #: views/packages/new1.base.php:214
-msgid "Need a hosting provider that is"
-msgstr "Besoin d&#39;un hébergeur qui est"
-
-#: views/packages/new1.base.php:216
-msgid "duplicator approved"
-msgstr "compatible Duplicator"
+msgid "help page"
+msgstr "la page de support"
 
 #: views/packages/new1.inc.form.php:10
 msgid "Create a new default name"
@@ -1091,6 +1218,10 @@ msgstr ""
 msgid "Package Log"
 msgstr "Journaux des Paquets"
 
+#: views/packages/new3.base.php:124
+msgid "Support"
+msgstr "Support"
+
 #: views/settings/controller.php:21 views/settings/diagnostics.php:84
 msgid "General"
 msgstr "Général"
@@ -1360,116 +1491,6 @@ msgstr "Montrer le statut de débogage dans l&#39;écran des Paquets"
 msgid "Save Settings"
 msgstr "Sauvegarder les Paramètres"
 
-#: views/support.php:55
-msgid ""
-"Created for Admins, Developers and Designers the Duplicator will streamline "
-"your workflows and help you quickly clone a WordPress application.  If you "
-"run into an issue please read through the"
-msgstr ""
-"Créé pour les webmasters, développeurs et designers, Duplicator va améliorer "
-"votre travail en vous permettant de cloner rapidement une installation "
-"WordPress. Si vous rencontrez des problèmes, merci de consulter la"
-
-#: views/support.php:56
-msgid "knowledgebase"
-msgstr "base de connaissances"
-
-#: views/support.php:57
-msgid "in detail for many of the quick and common answers."
-msgstr "en détail pour la plupart des questions les plus courantes."
-
-#: views/support.php:72
-msgid "Need Help?"
-msgstr "Besoin d&#39;aide ?"
-
-#: views/support.php:79
-msgid "Knowledgebase"
-msgstr "Base de connaissances"
-
-#: views/support.php:83
-msgid "Complete online documentation!"
-msgstr "Documentation complète en ligne !"
-
-#: views/support.php:85
-msgid "Choose A Section"
-msgstr "Choisissez une section"
-
-#: views/support.php:86
-msgid "Quick Start"
-msgstr "Démarrage Rapide"
-
-#: views/support.php:87
-msgid "User Guide"
-msgstr "Guide Utilisateur"
-
-#: views/support.php:88
-msgid "FAQs"
-msgstr "FAQs"
-
-#: views/support.php:89
-msgid "Change Log"
-msgstr "Notes de Version"
-
-#: views/support.php:90
-msgid "Product Page"
-msgstr "Page Produit"
-
-#: views/support.php:101
-msgid "Approved Hosting"
-msgstr "Hébergeur Approuvés"
-
-#: views/support.php:105
-msgid "Servers that work with Duplicator!"
-msgstr "Les serveurs qui fonctionnent avec Duplicator !"
-
-#: views/support.php:108
-msgid "Get Hosting!"
-msgstr "Trouver un Hébergeur !"
-
-#: views/support.php:119
-msgid "Online Support"
-msgstr "Aide en Ligne"
-
-#: views/support.php:123
-msgid "Work with IT Profressionals!"
-msgstr "Contactez des professionnels de l&#39;informatique !"
-
-#: views/support.php:127
-msgid "Get Help!"
-msgstr "Trouvez de l&#39;Aide !"
-
-#: views/support.php:138
-msgid "Support Duplicator"
-msgstr "Aide de Duplicator"
-
-#: views/support.php:145
-msgid "Partner with Us"
-msgstr "Soutenez-nous"
-
-#: views/support.php:157
-msgid "Keep Active and Online"
-msgstr "Pour que Duplicator soit activement développé"
-
-#: views/support.php:164
-msgid "Leave 5 Stars"
-msgstr "Nous donner 5 Étoiles"
-
-#: views/support.php:170
-msgid "Check out other great resources"
-msgstr "Jetez un oeil à nos autres super ressources"
-
-#: views/support.php:182
-msgid "Spread the Word"
-msgstr "Faites passer le mot"
-
-#: views/support.php:188
-msgid "Duplicate Your WordPress"
-msgstr "Dupliquer votre WordPress"
-
-#: views/support.php:189
-msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
-msgstr "Duplication Rapide WordPress par LifeInTheGrid.com"
-
 #: views/tools/cleanup.php:8
 msgid "Installer File Cleanup Ran."
 msgstr "Le Nettoyage des Fichiers d&#39;Installation a eu lieu."
@@ -1608,6 +1629,81 @@ msgstr "Rafraîchissement automatique"
 msgid "Last 20 Logs"
 msgstr "Les derniers 20 rapports"
 
+#~ msgid "FAQ"
+#~ msgstr "FAQ"
+
+#~ msgid "Partner"
+#~ msgstr "Partenaire"
+
+#~ msgid "Approved Hosts"
+#~ msgstr "Hébergeurs approuvés"
+
+#~ msgid "PHP Script Owner"
+#~ msgstr "Propriétaire du Script PHP"
+
+#~ msgid ""
+#~ "The above paths should have permissions of 755 for directories and 644 "
+#~ "for files. You can temporarily try 777 if you continue to have issues.  "
+#~ "Also be sure to check the owner/group settings.  For more details contact "
+#~ "your host or server administrator."
+#~ msgstr ""
+#~ "Les chemins ci-dessous devraient avoir des permissions de 755 pour les "
+#~ "répertoires et 644 pour les fichiers. Vous pouvez les passer à 777 mais "
+#~ "seulement de manière temporaire, si vous rencontrez des problèmes. "
+#~ "Veillez également à vérifier les paramètres de propriétaire/groupe. Pour "
+#~ "plus de détails, contactez votre administrateur réseau."
+
+#~ msgid "Status Code"
+#~ msgstr "Code Statut"
+
+#~ msgid ""
+#~ "The ZipArchive extension for PHP is required for compression.  Please "
+#~ "contact your hosting provider if you're on a hosted server.  For "
+#~ "additional information see our online documentation."
+#~ msgstr ""
+#~ "L&#39;extension ZipArchive pour PHP est requise pour la compression. "
+#~ "Merci de contacter votre hébergeur si vous êtes sur un serveur mutualité. "
+#~ "Pour plus d&#39;informations, consultez notre aide en ligne."
+
+#~ msgid ""
+#~ "Safe Mode should be set safe_mode=Off in you php.ini file. On hosted "
+#~ "servers you may have to request this setting be turned off. Please note "
+#~ "that Safe Mode is deprecated as of PHP 5.3.0"
+#~ msgstr ""
+#~ "Le Mode Sécurité devrait être réglé à safe_mode=Off dans votre fichier "
+#~ "php.ini. Pour les hébergements mutualisés, vous devriez demander à ce que "
+#~ "ce paramètre soit désactivé. Veuillez également noter que le Mode "
+#~ "Sécurité est obsolète depuis la version 5.3.0 de PHP"
+
+#~ msgid ""
+#~ "PHP versions 5.2.17+ or higher is required. Please note that in "
+#~ "versioning logic a value such as 5.2.9 is less than 5.2.17.  Please "
+#~ "contact your server administrator to upgrade to a stable and secure "
+#~ "version of PHP"
+#~ msgstr ""
+#~ "PHP dans sa version 5.2.17+ ou supérieure est requis. Veuillez noter que "
+#~ "la logique des versions de PHP veut que 5.2.9 est inférieur à 5.2.17. "
+#~ "Contactez alors votre administrateur pour qu&#39;il mette à jour PHP à "
+#~ "une version stable et sécurisée."
+
+#~ msgid "Need a hosting provider that is"
+#~ msgstr "Besoin d&#39;un hébergeur qui est"
+
+#~ msgid "duplicator approved"
+#~ msgstr "compatible Duplicator"
+
+#~ msgid "knowledgebase"
+#~ msgstr "base de connaissances"
+
+#~ msgid "in detail for many of the quick and common answers."
+#~ msgstr "en détail pour la plupart des questions les plus courantes."
+
+#~ msgid "Need Help?"
+#~ msgstr "Besoin d&#39;aide ?"
+
+#~ msgid "Get Hosting!"
+#~ msgstr "Trouver un Hébergeur !"
+
 #~ msgid ""
 #~ "Please try the process again. If the problem persists please visit the "
 #~ "support page."
@@ -1723,9 +1819,6 @@ msgstr "Les derniers 20 rapports"
 
 #~ msgid "AJAX Response"
 #~ msgstr "Réponse AJAX"
-
-#~ msgid "About"
-#~ msgstr "A propos"
 
 #~ msgid ""
 #~ "Your LifeInTheGrid should be about working smarter not harder.  With the "
