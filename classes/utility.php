@@ -92,6 +92,27 @@ class DUP_Util {
 	}
 
 	/**
+	 * List all of the files of a path
+	 * @path path to a system directory
+	 * @return array of all files in that path
+	 */
+	static public function ListFiles($path = '.') {
+		$files = array();
+		
+		//GLOB_BRACE is not an option on some systems
+		//{,.}*  allows for hidden files to be shown
+		if (defined("GLOB_BRACE")) {
+			$files	= glob("{$path}/{,.}*", GLOB_NOSORT | GLOB_BRACE);
+		} else {
+			foreach (new DirectoryIterator($path) as $file) {
+				$files[] = DUP_Util::SafePath($file->getPathname());
+			}
+		}
+
+		return $files;
+	}
+	
+	/**
 	 * List all of the directories of a path
 	 * @path path to a system directory
 	 * @return array of all directories in that path

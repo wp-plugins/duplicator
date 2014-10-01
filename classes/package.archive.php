@@ -132,14 +132,14 @@ class DUP_Archive {
 		}
 	}
 	
+	//Get all files and filter out error prone subsets
 	private function getFiles() {
-		
 		foreach ($this->Dirs as $key => $val) {
-			foreach (glob("{$val}/{,.}*", GLOB_NOSORT | GLOB_BRACE) as $filePath) {
+			$files = DUP_Util::ListFiles($val);
+			foreach ($files as $filePath) {
 				$fileName = basename($filePath);
 				$valid = true;
 				if (!is_dir($filePath)){
-					
 					if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)  && is_readable($filePath)) {
 						$fileSize = @filesize($filePath);
 						$fileSize = empty($fileSize) ? 0 : $fileSize; 
