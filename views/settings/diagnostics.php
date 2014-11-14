@@ -28,11 +28,8 @@
 	$ui_css_srv_panel   = (isset($view_state['dup-settings-diag-srv-panel'])  && $view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
 	$ui_css_opts_panel  = (isset($view_state['dup-settings-diag-opts-panel']) && $view_state['dup-settings-diag-opts-panel'])  ? 'display:block' : 'display:none';
 	
-	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARTDED_FOR'] != '') {
-		$client_ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	} else {
-		$client_ip_address = $_SERVER['REMOTE_ADDR'];
-	}
+
+	$client_ip_address = DUP_Server::GetClientIP();
 	
 	//POST BACK
 	$action_updated = null;

@@ -110,5 +110,23 @@ class DUP_Server {
 		return  ($phpFile || $sqlFile || $logFile);
 	}
 	
+	
+	/** 
+	* Get the IP of a client machine
+	* @return string   IP of the client machine
+	*/
+	public static function GetClientIP() {
+		
+		if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)){
+            return  $_SERVER["HTTP_X_FORWARDED_FOR"];  
+        }else if (array_key_exists('REMOTE_ADDR', $_SERVER)) { 
+            return $_SERVER["REMOTE_ADDR"]; 
+        }else if (array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
+            return $_SERVER["HTTP_CLIENT_IP"]; 
+        } 
+
+        return '';
+	}
+	
 }
 ?>
