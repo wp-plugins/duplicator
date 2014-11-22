@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WPDuplicator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-07 10:35+0100\n"
-"PO-Revision-Date: 2014-09-16 08:37+0100\n"
+"PO-Revision-Date: 2014-11-06 12:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: Nicolas Richer <contact@nicolasricher.fr>\n"
 "Language: fr_FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: ./\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.6.10\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: classes/ui.php:108
@@ -703,7 +703,7 @@ msgstr "Activer les Filtres de Tables"
 
 #: views/packages/new1.inc.form.php:91
 msgid "checked tables are excluded"
-msgstr "les tables cochées sont exclus"
+msgstr "les tables cochées seront exclues"
 
 #: views/packages/new1.inc.form.php:96
 msgid "Include All"
@@ -733,7 +733,7 @@ msgstr "Serveur MySQL"
 
 #: views/packages/new1.inc.form.php:150
 msgid "Host"
-msgstr "Hébergeur"
+msgstr "Adresse"
 
 #: views/packages/new1.inc.form.php:162
 msgid "Advanced Options"

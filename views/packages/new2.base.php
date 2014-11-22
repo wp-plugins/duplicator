@@ -369,7 +369,7 @@ WIZARD STEP TABS -->
 <div class="dup-button-footer" style="display:none">
 	<input type="button" value="&#9668; <?php _e("Back", 'wpduplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
 	<input type="button" value="<?php _e("Rescan", 'wpduplicator') ?>" onclick="Duplicator.Pack.Rescan()" class="button button-large" />
-	<input type="submit" value="<?php _e("Build", 'wpduplicator') ?> &#9658" class="button button-primary button-large" />
+	<input type="submit" value="<?php _e("Build", 'wpduplicator') ?> &#9658" class="button button-primary button-large" id="dup-build-button" />
 	<!-- Used for iMacros testing do not remove -->
 	<div id="dup-automation-imacros"></div>
 </div>

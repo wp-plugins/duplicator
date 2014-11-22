@@ -383,24 +383,27 @@ class DUP_Package {
 				}
 			}
 		}
-		
 	}
 	
 	private function buildCleanup() {
 		
-		$files   = glob(DUPLICATOR_SSDIR_PATH_TMP . "/{{$this->NameHash}*}", GLOB_BRACE | GLOB_NOSORT);
+		$files = DUP_Util::ListFiles(DUPLICATOR_SSDIR_PATH_TMP);
 		$newPath = DUPLICATOR_SSDIR_PATH;
 		
 		if (function_exists('rename')) {
 			foreach($files as $file){
 				$name = basename($file);
-				rename($file,"{$newPath}/{$name}");
+				if (strstr($name, $this->NameHash)) {
+					rename($file,"{$newPath}/{$name}");
+				}
 			}
 		} else {
 			foreach($files as $file){
 				$name = basename($file);
-				copy($file,"{$newPath}/{$name}");
-				unlink($file);
+				if (strstr($name, $this->NameHash)) {	
+					copy($file,"{$newPath}/{$name}");
+					unlink($file);
+				}
 			}
 		}
 	}

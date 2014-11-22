@@ -108,7 +108,6 @@ class DUP_Util {
 				$files[] = DUP_Util::SafePath($file->getPathname());
 			}
 		}
-
 		return $files;
 	}
 	
