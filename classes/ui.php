@@ -42,6 +42,9 @@ class DUP_UI {
 	 * </code>
      */
     static public function SaveViewStateByPost() {
+		
+		DUP_Util::CheckPermissions('read');
+		
 		$post  = stripslashes_deep($_POST);
 		$key   = esc_html($post['key']);
 		$value = esc_html($post['value']);

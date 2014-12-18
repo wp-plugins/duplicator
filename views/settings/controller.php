@@ -1,11 +1,6 @@
 <?php
-$capability = 'manage_options';
-$capability = apply_filters('wpfront_user_role_editor_duplicator_translate_capability', $capability);
 
-if (!current_user_can($capability)) {
-    wp_die(__('You do not have sufficient permissions to access this page.', 'wpduplicator'));
-    return;
-}
+DUP_Util::CheckPermissions('manage_options');
 
 global $wpdb;
 

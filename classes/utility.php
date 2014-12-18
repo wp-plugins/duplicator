@@ -177,6 +177,16 @@ class DUP_Util {
 		}
 		return false;
 	}
+	
+	public static function CheckPermissions($permission = 'read') {
+		$capability = $permission;
+		$capability = apply_filters('wpfront_user_role_editor_duplicator_translate_capability', $capability);
+
+		if(!current_user_can($capability)) {
+			wp_die(__('You do not have sufficient permissions to access this page.', 'wpduplicator'));
+			return;
+		}
+	}
 
 	/**
 	*  Creates the snapshot directory if it doesn't already exisit
