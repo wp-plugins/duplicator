@@ -50,9 +50,10 @@ if (isset($_GET['dbtest'])) {
 	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$html	 .= "<div class='dup-db-test'>";
-	$html	 .= "<small>Connection String:<br/>Server={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; Port={$_POST['dbport']}</small>";
+	$html	 .= "<small style='display:block; padding:5px'>Using Connection String:<br/>Server={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; Port={$_POST['dbport']}</small>";
 	$html	 .= "<label>Server Connected:</label> {$tstSrv} <br/>";
-	$html	 .= "<label>Database Found:</label>   {$tstDB} <br/><br/>";
+	$html	 .= "<label>Database Found:</label>   {$tstDB} <br/>";
+	
 
 	if ($_POST['dbaction'] == 'create'){
 		$tblcount = DupUtil::dbtable_count($dbConn, $_POST['dbname']);

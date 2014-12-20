@@ -24,7 +24,7 @@ HELP FORM -->
 		<br/><br/>
 
 		<b>Host:</b><br/>
-		The name of the host server that the database resides on.  Many times this will be localhost, however each hosting provider will have it's own naming convention please check with your server administrator.
+		The name of the host server that the database resides on.  Many times this will be localhost, however each hosting provider will have it's own naming convention please check with your server administrator.  To add a port number just append it to the host i.e. 'localhost:3306'.
 		<br/><br/>
 
 		<b>User:</b><br/>
@@ -38,6 +38,17 @@ HELP FORM -->
 		<b>Name:</b><br/>
 		The name of the database to which this installation will connect and install the new tables onto.
 		<br/><br/>
+		
+		<div class="help" style="border-top:1px solid silver">
+			<b>Common Database Connection Issues:</b><br/>
+			- Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
+			- Validate the database and database user exist on this server <br/>
+			- Check if the database user has the correct permission levels to this database <br/>
+			- The host 'localhost' may not work on all hosting providers <br/>
+			- Contact your hosting provider for the exact required parameters <br/>
+			- See the 'Database Setup Help' section on step 1 for more details<br/>
+			- Visit the online resources 'Common FAQ page' <br/>
+		</div>
 
 
 	</fieldset>				
