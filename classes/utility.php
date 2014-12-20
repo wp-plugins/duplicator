@@ -20,7 +20,8 @@ class DUP_Util {
 	}
 
 	/**
-	*  returns the snapshot url
+	*  Returns the last N lines of a file
+	*  Equivelent to tail command
 	*/
 	static public function TailFile($filepath, $lines = 2, $adaptive = true) {
 
@@ -47,16 +48,12 @@ class DUP_Util {
 		while (ftell($f) > 0 && $lines >= 0) {
 			// Figure out how far back we should jump
 			$seek = min(ftell($f), $buffer);
-
 			// Do the jump (backwards, relative to where we are)
 			fseek($f, -$seek, SEEK_CUR);
-
 			// Read a chunk and prepend it to our output
 			$output = ($chunk = fread($f, $seek)) . $output;
-
 			// Jump back to where we started reading
 			fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
-
 			// Decrease our line counter
 			$lines -= substr_count($chunk, "\n");
 		}
@@ -66,7 +63,6 @@ class DUP_Util {
 		while ($lines++ < 0) {
 			// Find first newline and remove all text before that
 			$output = substr($output, strpos($output, "\n") + 1);
-
 		}
 		fclose($f);
 		return trim($output);

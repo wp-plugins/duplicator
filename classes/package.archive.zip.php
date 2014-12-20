@@ -78,7 +78,9 @@ class DUP_Zip  extends DUP_Archive {
 				if (self::$zipArchive->addEmptyDir(ltrim(str_replace(self::$compressDir, '', $dir), '/'))) {
 					self::$countDirs++;
 				} else {
-					DUP_Log::Info("WARNING: Unable to zip directory: '{$dir}'");
+					//Don't warn when dirtory is the root path
+					if (strcmp($dir, rtrim(self::$compressDir, '/')) != 0)
+						DUP_Log::Info("WARNING: Unable to zip directory: '{$dir}'" . rtrim(self::$compressDir, '/'));
 				}
 			}
 		
