@@ -182,21 +182,35 @@ class DUP_Package {
 		}
 
 		//START BUILD
-		//PHPs serialze method will return the object but the ID above is not passed
+		//PHPs serialze method will return the object, but the ID above is not passed
 		//for one reason or another so passing the object back in seems to do the trick
 		$this->Database->Build($this);
 		$this->Archive->Build($this);
 		$this->Installer->Build($this);
 
-		//VALIDATE FILE SIZE
+		
+		//INTEGRITY CHECKS
+		DUP_Log::Info("\n********************************************************************************");
+		DUP_Log::Info("INTEGRITY CHECKS:");
+		DUP_Log::Info("********************************************************************************");
 		$dbSizeRead	 = DUP_Util::ByteSize($this->Database->Size);
 		$zipSizeRead = DUP_Util::ByteSize($this->Archive->Size);
 		$exeSizeRead = DUP_Util::ByteSize($this->Installer->Size);
+		DUP_Log::Info("SQL File: {$dbSizeRead}");
+		DUP_Log::Info("Installer File: {$exeSizeRead}");
+		DUP_Log::Info("Archive File: {$zipSizeRead} ");
+
 		if ( !($this->Archive->Size && $this->Database->Size && $this->Installer->Size)) {
 			DUP_Log::Error("A required file contains zero bytes.", "Archive Size: {$zipSizeRead} | SQL Size: {$dbSizeRead} | Installer Size: {$exeSizeRead}");
 		}
+		
+		//Validate SQL files completed
+		$sql_tmp_path = DUP_UTIL::SafePath(DUPLICATOR_SSDIR_PATH_TMP . '/'. $this->Database->File);
+		$sql_complete_txt = DUP_Util::TailFile($sql_tmp_path, 5);
+		if (! strstr($sql_complete_txt, 'DUPLICATOR_MYSQLDUMP_EOF')) {
+			DUP_Log::Error("ERROR: SQL file not complete.  The end of file marker was not found.  Please try to re-create the package.");
+		}
 
-		$this->SetStatus(DUP_PackageStatus::COMPLETE);
 		$timerEnd = DUP_Util::GetMicrotime();
 		$timerSum = DUP_Util::ElapsedTime($timerEnd, $timerStart);
 		
@@ -206,15 +220,16 @@ class DUP_Package {
 		
 		$this->buildCleanup();
 		
-		$info  = "\n********************************************************************************\n";
+		//FINAL REPORT
+		$info = "\n********************************************************************************\n";
 		$info .= "RECORD ID:[{$this->ID}]\n";
-		$info .= "FILE SIZE: Archive:{$zipSizeRead} | SQL:{$dbSizeRead} | Installer:{$exeSizeRead}\n";
 		$info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
 		$info .= "DONE PROCESSING => {$this->Name} " . @date("Y-m-d H:i:s") . "\n";
-		$info .= "********************************************************************************\n";
+	
 		DUP_Log::Info($info);
 		DUP_Log::Close();
 		
+		$this->SetStatus(DUP_PackageStatus::COMPLETE);
 		return $this;
 	}
 	

@@ -29,9 +29,9 @@ class DUP_Installer {
 		$this->Package = $package;
 		
 		DUP_Log::Info("\n********************************************************************************");
-		DUP_Log::Info("INSTALLER:");
+		DUP_Log::Info("MAKE INSTALLER:");
 		DUP_Log::Info("********************************************************************************");
-		DUP_Log::Info("INSTALLER FILE: Build Start");
+		DUP_Log::Info("Build Start");
 
 		$template_uniqid = uniqid('') . '_' . time();
 		$template_path	= DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP  . "/installer.template_{$template_uniqid}.php");
@@ -80,7 +80,7 @@ class DUP_Installer {
 		@chmod($template_path, 0644);
 		@chmod($main_path, 0644);
 
-		DUP_Log::Info("INSTALLER FILE: Build Finished");
+		DUP_Log::Info("Build Finished");
 		$this->createFromTemplate($template_path);
 		$storePath = "{$this->Package->StorePath}/{$this->File}";
 		$this->Size = @filesize($storePath);
@@ -101,7 +101,7 @@ class DUP_Installer {
 		$zipArchive	= new ZipArchive();
 		if ($zipArchive->open($zipPath, ZIPARCHIVE::CREATE) === TRUE) {
 			if ($zipArchive->addFile($installer, "installer-backup.php"))  {
-				DUP_Log::Info("INSTALLER FILE: Added to archive");
+				DUP_Log::Info("Added to archive");
 			} else {
 				DUP_Log::Info("Unable to add installer-backup.php to archive.", "Installer File Path [{$installer}]");
 			}
@@ -117,7 +117,7 @@ class DUP_Installer {
 		
 		global $wpdb;
 		
-		DUP_Log::Info("INSTALLER FILE: Preping for use");
+		DUP_Log::Info("Preping for use");
 		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP) . "/{$this->Package->NameHash}_installer.php";
 		
 		//$tablePrefix = (is_multisite()) ? $wpdb->get_blog_prefix() : $wpdb->prefix;
@@ -150,7 +150,7 @@ class DUP_Installer {
 			$install_str = $this->parseTemplate($template, $replace_items);
 			(empty($install_str))
 					? DUP_Log::Error("{$err_msg}" , "DUP_Installer::createFromTemplate => file-empty-read")
-					: DUP_Log::Info("INSTALLER FILE: Template parsed with new data");
+					: DUP_Log::Info("Template parsed with new data");
 			
 			//INSTALLER FILE
 			$fp = (!file_exists($installer)) ? fopen($installer, 'x+') : fopen($installer, 'w');
@@ -163,7 +163,7 @@ class DUP_Installer {
 			DUP_Log::Error("Installer Template missing or unreadable.", "Template [{$template}]");
 		}
 		@unlink($template);
-		DUP_Log::Info("INSTALLER FILE: Complete [{$installer}]");
+		DUP_Log::Info("Complete [{$installer}]");
 	}
 	
 	/**

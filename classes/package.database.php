@@ -17,10 +17,12 @@ class DUP_Database {
 	
 	//PRIVATE
 	private $dbStorePath;
+	private $EOFMarker;
 
 	//CONSTRUCTOR
 	function __construct($package) {
 		 $this->Package = $package;
+		 $this->EOFMarker = "";
 	}
 	
 	public function Build($package) {
@@ -193,6 +195,7 @@ class DUP_Database {
 		$cmd .= ' --no-create-db';
 		$cmd .= ' --single-transaction';
 		$cmd .= ' --hex-blob';
+		$cmd .= ' --skip-add-drop-table';
 		
 		//Filter tables
 		$tables		= $wpdb->get_col('SHOW TABLES');
@@ -232,6 +235,9 @@ class DUP_Database {
 		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
 		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");		
 		DUP_Log::Info("RESPONSE: {$output}");
+		
+		$sql_footer = "/* " . DUPLICATOR_DB_EOF_MARKER . " */\n\n";
+		file_put_contents($this->dbStorePath, $sql_footer, FILE_APPEND);
 		
 		return ($output) ?  false : true;
 	}
@@ -320,7 +326,9 @@ class DUP_Database {
 			}
 		}
 		unset($sql);
-		$sql_footer = "\nSET FOREIGN_KEY_CHECKS = 1;";
+		$sql_footer = "\nSET FOREIGN_KEY_CHECKS = 1; \n\n";
+		$sql_footer .= "/* DUPLICATOR MYSQL SCRIPT END ON : " . @date("F j, Y, g:i a") . " */\n\n";
+		$sql_footer .= "/* " . DUPLICATOR_DB_EOF_MARKER . " */\n\n";
 		@fwrite($handle, $sql_footer);
 		$wpdb->flush();
 		fclose($handle);
