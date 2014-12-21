@@ -142,8 +142,8 @@ if (is_admin() == true) {
      *  Init routines  */
     function duplicator_init() {
         /* CSS */
-        wp_register_style('jquery-ui', DUPLICATOR_PLUGIN_URL . 'assets/css/jquery-ui.css', null, "1.9.2");
-        wp_register_style('font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.0.3');
+        wp_register_style('jquery-ui', DUPLICATOR_PLUGIN_URL . 'assets/css/jquery-ui.css', null, "1.11.2");
+        wp_register_style('font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.1.0');
         wp_register_style('duplicator_style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
         /* JS */
         wp_register_script('parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley-standalone.min.js', array('jquery'), '1.1.18');
