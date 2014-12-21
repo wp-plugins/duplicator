@@ -301,8 +301,5 @@ switch ($_POST['action_step']) {
 </div><br/>
 
 
-
-
-
 </body>
 </html>

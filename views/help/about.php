@@ -75,7 +75,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                     </td>
                 </tr>
             </table>
-            <table style="text-align: center;width:100%; font-size:11px; font-style:italic; margin-top:15px">
+            <table style="text-align: center;width:100%; font-size:11px; font-style:italic; margin-top:25px">
                 <tr>
                     <td class="dup-support-grid-img" style="padding-left:40px">
                         <div class="dup-support-cell" onclick="jQuery('#dup-donate-form').submit()">
@@ -95,8 +95,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <a href="http://lifeinthegrid.com/tools" target="_blank" style="font-size:22px">
-                            <i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Resources', 'wpduplicator') ?>...</a>
+                   
                     </td>
                 </tr>
             </table>
@@ -128,6 +127,13 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             </div>
         </div>
         <br style="clear:both" /><br/>
+		
+		
+		<div style='margin: auto; text-align: center; margin-top: 20px'>
+				<a href="http://lifeinthegrid.com/tools" target="_blank" style="font-size:22px;">
+				   <i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Tools', 'wpduplicator') ?>...
+				</a>
+		</div>
 
     </div>
 </div><br/><br/><br/><br/>
