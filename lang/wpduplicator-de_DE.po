@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Duplicator v0.5.7\n"
+"Project-Id-Version: Duplicator v0.5.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-08 21:27-0700\n"
-"PO-Revision-Date: 2014-09-13 18:21:56+0000\n"
+"PO-Revision-Date: 2014-12-21 23:18:57+0000\n"
 "Last-Translator: Cory Lamle <cory@lifeinthegrid.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,22 +20,22 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: duplicator.php:165
-#: views/packages/controller.php:73
-#: views/packages/controller.php:76
+#: duplicator.php:182
+#: views/packages/controller.php:77
+#: views/packages/controller.php:80
 #: views/packages/list.base.php:239
 #@ wpduplicator
 msgid "Packages"
 msgstr "Archive"
 
-#: duplicator.php:166
-#: views/settings/controller.php:18
+#: duplicator.php:186
+#: views/settings/controller.php:21
 #@ wpduplicator
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: duplicator.php:167
-#: views/tools/controller.php:13
+#: duplicator.php:190
+#: views/tools/controller.php:16
 #@ wpduplicator
 msgid "Tools"
 msgstr "Werkzeuge"
@@ -45,17 +45,17 @@ msgstr "Werkzeuge"
 msgid "Support"
 msgstr "Unterstützen"
 
-#: duplicator.php:214
+#: duplicator.php:243
 #@ wpduplicator
 msgid "Manage"
 msgstr "Verwalten"
 
-#: classes/ui.php:109
+#: classes/ui.php:112
 #@ default
 msgid "Remove file(s) now"
 msgstr ""
 
-#: classes/ui.php:110
+#: classes/ui.php:113
 #@ default
 msgid "Dismiss this notice"
 msgstr ""
@@ -65,87 +65,87 @@ msgstr ""
 msgid "By"
 msgstr "von"
 
-#: views/help/help.php:51
+#: views/help/help.php:53
 #@ wpduplicator
 msgid "Knowledgebase"
 msgstr "Wissens-Datenbank"
 
-#: views/help/help.php:56
+#: views/help/help.php:58
 #@ wpduplicator
 msgid "Choose A Section"
 msgstr "Wähle eine Rubrik"
 
-#: views/help/help.php:57
+#: views/help/help.php:59
 #@ wpduplicator
 msgid "Quick Start"
 msgstr "Schnell-Start"
 
-#: views/help/help.php:58
+#: views/help/help.php:60
 #@ wpduplicator
 msgid "User Guide"
 msgstr "Benutzerhandbuch"
 
-#: views/help/help.php:59
+#: views/help/help.php:61
 #@ wpduplicator
 msgid "FAQs"
 msgstr "Häufig gestellte Fragen"
 
-#: views/help/help.php:60
+#: views/help/help.php:62
 #@ wpduplicator
 msgid "Change Log"
 msgstr "Liste der Änderungen"
 
-#: views/help/help.php:61
+#: views/help/help.php:63
 #@ wpduplicator
 msgid "Product Page"
 msgstr "Produkt-Seite"
 
-#: views/help/help.php:88
+#: views/help/help.php:91
 #@ wpduplicator
 msgid "Approved Hosting"
 msgstr "Empfohlene Hosting-Provider"
 
-#: views/help/help.php:70
+#: views/help/help.php:72
 #@ wpduplicator
 msgid "Online Support"
 msgstr "Online Support"
 
-#: views/help/about.php:65
+#: views/help/about.php:67
 #@ wpduplicator
 msgid "Support Duplicator"
 msgstr "Unterstützung Duplicator"
 
-#: views/help/about.php:72
+#: views/help/about.php:74
 #@ wpduplicator
 msgid "Partner with Us"
 msgstr "Unsere Partner"
 
-#: views/help/about.php:84
+#: views/help/about.php:86
 #@ wpduplicator
 msgid "Keep Active and Online"
 msgstr "Bitte unterstütze den Duplicator mit einer Spende"
 
-#: views/help/about.php:91
+#: views/help/about.php:93
 #@ wpduplicator
 msgid "Leave 5 Stars"
 msgstr "Vergebe 5 Sterne"
 
-#: views/help/about.php:109
+#: views/help/about.php:110
 #@ wpduplicator
 msgid "Spread the Word"
 msgstr "Verbreitung des Inhaltes"
 
-#: views/help/about.php:115
+#: views/help/about.php:116
 #@ wpduplicator
 msgid "Duplicate Your WordPress"
 msgstr "Duplizieren dein WordPress"
 
-#: views/help/about.php:116
+#: views/help/about.php:117
 #@ wpduplicator
 msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
 msgstr "Schnelle WordPress-Vervielfältigung von LifeInTheGrid.com"
 
-#: views/packages/controller.php:77
+#: views/packages/controller.php:81
 #@ wpduplicator
 msgid "Create New"
 msgstr "Neu erzeugen"
@@ -242,7 +242,7 @@ msgstr "Name"
 
 #: views/packages/list.base.php:97
 #: views/packages/new1.inc.form.php:6
-#: views/settings/general.php:96
+#: views/settings/general.php:100
 #@ wpduplicator
 msgid "Package"
 msgstr "Archiv"
@@ -275,10 +275,10 @@ msgstr "Archive"
 
 #: views/packages/list.base.php:159
 #: views/packages/list.base.php:204
-#: views/settings/diagnostics.php:136
-#: views/settings/diagnostics.php:155
-#: views/settings/diagnostics.php:195
-#: views/settings/general.php:65
+#: views/settings/diagnostics.php:133
+#: views/settings/diagnostics.php:152
+#: views/settings/diagnostics.php:192
+#: views/settings/general.php:69
 #@ wpduplicator
 msgid "Version"
 msgstr "Version"
@@ -286,7 +286,7 @@ msgstr "Version"
 #: views/packages/list.base.php:160
 #: views/packages/list.base.php:205
 #: views/packages/new1.inc.form.php:159
-#: views/settings/diagnostics.php:163
+#: views/settings/diagnostics.php:160
 #@ wpduplicator
 msgid "User"
 msgstr "Benutzer"
@@ -483,7 +483,7 @@ msgstr "PHP-Unterstützung"
 
 #: views/packages/new2.base.php:103
 #: views/packages/new2.base.php:109
-#: views/settings/diagnostics.php:101
+#: views/settings/diagnostics.php:98
 #@ wpduplicator
 msgid "Web Server"
 msgstr "Webserver"
@@ -687,7 +687,7 @@ msgid "Server"
 msgstr "Server"
 
 #: views/packages/new2.base.php:92
-#: views/settings/controller.php:22
+#: views/settings/controller.php:25
 #@ wpduplicator
 msgid "Diagnostics"
 msgstr "Diagnose"
@@ -871,8 +871,8 @@ msgstr "Nochmals versuchen"
 msgid "Package Log"
 msgstr "Archiv Log"
 
-#: views/settings/controller.php:21
-#: views/settings/diagnostics.php:90
+#: views/settings/controller.php:24
+#: views/settings/diagnostics.php:87
 #@ wpduplicator
 msgid "General"
 msgstr "Allgemein"
@@ -883,180 +883,180 @@ msgstr "Allgemein"
 msgid "unknow"
 msgstr "unbekannt"
 
-#: views/settings/diagnostics.php:42
+#: views/settings/diagnostics.php:39
 #@ wpduplicator
 msgid "Plugin settings reset."
 msgstr "Plugin-Einstellungen zurücksetzen."
 
-#: views/settings/diagnostics.php:43
+#: views/settings/diagnostics.php:40
 #@ wpduplicator
 msgid "View state settings reset."
 msgstr "Statuseinstellungen zurücksetzen."
 
-#: views/settings/diagnostics.php:44
+#: views/settings/diagnostics.php:41
 #@ wpduplicator
 msgid "Active package settings reset."
 msgstr "Aktive Archiv-Einstellungen zurücksetzen."
 
-#: views/settings/diagnostics.php:47
+#: views/settings/diagnostics.php:44
 #: views/tools/cleanup.php:12
 #@ wpduplicator
 msgid "Legacy data removed."
 msgstr "Daten entfernt."
 
-#: views/settings/diagnostics.php:84
+#: views/settings/diagnostics.php:81
 #@ wpduplicator
 msgid "Server Settings"
 msgstr "Server-Einstellungen"
 
-#: views/settings/diagnostics.php:93
+#: views/settings/diagnostics.php:90
 #@ wpduplicator
 msgid "Duplicator Version"
 msgstr "Duplicator-Version"
 
-#: views/settings/diagnostics.php:97
+#: views/settings/diagnostics.php:94
 #@ wpduplicator
 msgid "Operating System"
 msgstr "Betriebs-System"
 
-#: views/settings/diagnostics.php:105
+#: views/settings/diagnostics.php:102
 #@ wpduplicator
 msgid "APC Enabled"
 msgstr "APC Aktiviert"
 
-#: views/settings/diagnostics.php:109
+#: views/settings/diagnostics.php:106
 #@ wpduplicator
 msgid "Root Path"
 msgstr "Root-Pfad"
 
-#: views/settings/diagnostics.php:117
+#: views/settings/diagnostics.php:114
 #@ wpduplicator
 msgid "Plugins Path"
 msgstr "Plugin-Pfad"
 
-#: views/settings/diagnostics.php:121
+#: views/settings/diagnostics.php:118
 #@ wpduplicator
 msgid "Loaded PHP INI"
 msgstr "Geladene PHP-INI"
 
-#: views/settings/diagnostics.php:140
+#: views/settings/diagnostics.php:137
 #@ wpduplicator
 msgid "Langugage"
 msgstr "Sprache"
 
-#: views/settings/diagnostics.php:144
-#: views/settings/diagnostics.php:199
+#: views/settings/diagnostics.php:141
+#: views/settings/diagnostics.php:196
 #@ wpduplicator
 msgid "Charset"
 msgstr "Zeichensatz"
 
-#: views/settings/diagnostics.php:148
+#: views/settings/diagnostics.php:145
 #@ wpduplicator
 msgid "Memory Limit "
 msgstr "Speicher-Limit "
 
-#: views/settings/diagnostics.php:149
+#: views/settings/diagnostics.php:146
 #@ wpduplicator
 msgid "Max"
 msgstr "Max"
 
-#: views/settings/diagnostics.php:167
+#: views/settings/diagnostics.php:164
 #@ wpduplicator
 msgid "Safe Mode"
 msgstr "Safe Mode"
 
-#: views/settings/diagnostics.php:171
+#: views/settings/diagnostics.php:168
 #@ wpduplicator
 msgid "On"
 msgstr "An"
 
-#: views/settings/diagnostics.php:171
+#: views/settings/diagnostics.php:168
 #@ wpduplicator
 msgid "Off"
 msgstr "Aus"
 
-#: views/settings/diagnostics.php:176
+#: views/settings/diagnostics.php:173
 #@ wpduplicator
 msgid "Memory Limit"
 msgstr "Speicher-Limit"
 
-#: views/settings/diagnostics.php:180
+#: views/settings/diagnostics.php:177
 #@ wpduplicator
 msgid "Memory In Use"
 msgstr "Verwendeter Arbeitsspeicher"
 
 #: views/packages/new2.base.php:133
-#: views/settings/diagnostics.php:184
+#: views/settings/diagnostics.php:181
 #@ wpduplicator
 msgid "Max Execution Time"
 msgstr "Maximale Ausführungs-Zeit"
 
-#: views/settings/diagnostics.php:188
+#: views/settings/diagnostics.php:185
 #@ wpduplicator
 msgid "Shell Exec"
 msgstr "Shell Exec"
 
-#: views/settings/diagnostics.php:189
+#: views/settings/diagnostics.php:186
 #@ wpduplicator
 msgid "Is Supported"
 msgstr "Wird unterstützt"
 
-#: views/settings/diagnostics.php:189
+#: views/settings/diagnostics.php:186
 #@ wpduplicator
 msgid "Not Supported"
 msgstr "Nicht unterstützt"
 
-#: views/settings/diagnostics.php:203
+#: views/settings/diagnostics.php:200
 #@ wpduplicator
 msgid "Wait Timeout"
 msgstr "Wartezeitsperre"
 
-#: views/settings/diagnostics.php:207
+#: views/settings/diagnostics.php:204
 #@ wpduplicator
 msgid "Max Allowed Packets"
 msgstr "Maximal erlaubte Pakete"
 
-#: views/settings/diagnostics.php:211
+#: views/settings/diagnostics.php:208
 #@ wpduplicator
 msgid "msyqldump Path"
 msgstr "msyqldump Pfad"
 
-#: views/settings/diagnostics.php:215
+#: views/settings/diagnostics.php:212
 #@ wpduplicator
 msgid "Server Disk"
 msgstr "Server-Festplatte"
 
-#: views/settings/diagnostics.php:218
+#: views/settings/diagnostics.php:215
 #@ hyper-cache
 msgid "Free space"
 msgstr ""
 
-#: views/settings/diagnostics.php:221
+#: views/settings/diagnostics.php:218
 #@ wpduplicator
 msgid "Note: This value is the physical servers hard-drive allocation."
 msgstr "Hinweis: Dieser Wert ist die physische Server-Festplatte-Verteilung."
 
-#: views/settings/diagnostics.php:222
+#: views/settings/diagnostics.php:219
 #@ wpduplicator
 msgid "On shared hosts check your control panel for the 'TRUE' disk space quota value."
 msgstr "Überprüfe auf freigegebenen Hosts deines Control Panels für den 'TRUE' Disk Space Quote Wert."
 
-#: views/settings/diagnostics.php:238
+#: views/settings/diagnostics.php:235
 #@ wpduplicator
 msgid "Stored Data"
 msgstr "Gespeicherte Daten"
 
-#: views/settings/diagnostics.php:243
+#: views/settings/diagnostics.php:240
 #@ wpduplicator
 msgid "Options Values"
 msgstr "Options Werte"
 
-#: views/settings/diagnostics.php:276
+#: views/settings/diagnostics.php:273
 #@ wpduplicator
 msgid "PHP Information"
 msgstr "PHP-Information"
 
-#: views/settings/diagnostics.php:295
+#: views/settings/diagnostics.php:292
 #@ wpduplicator
 msgid "Delete this option value"
 msgstr "Lösche den optionalen Wert"
@@ -1066,57 +1066,57 @@ msgstr "Lösche den optionalen Wert"
 msgid "Settings Saved"
 msgstr "Einstellungen gespeichert"
 
-#: views/settings/general.php:72
+#: views/settings/general.php:76
 #@ wpduplicator
 msgid "Delete Plugin Settings"
 msgstr "Plugin-Einstellungen löschen"
 
-#: views/settings/general.php:117
+#: views/settings/general.php:121
 #@ wpduplicator
 msgid "This server does not have shell_exec configured to run."
 msgstr "Dieser Server ist nicht zur Ausführung von shell_exec konfiguriert."
 
-#: views/settings/general.php:118
+#: views/settings/general.php:123
 #@ wpduplicator
 msgid "Please contact the server administrator to enable this feature."
 msgstr "Bitte kontaktiere den Server-Administrator, um diese Funktion zu aktivieren."
 
-#: views/settings/general.php:123
+#: views/settings/general.php:128
 #@ wpduplicator
 msgid "Use mysqldump"
 msgstr "Benutze mysqldump"
 
-#: views/settings/general.php:124
+#: views/settings/general.php:129
 #@ wpduplicator
 msgid "recommended for large databases"
 msgstr "für große Datenbanken empfohlen"
 
-#: views/settings/general.php:129
+#: views/settings/general.php:134
 #@ wpduplicator
 msgid "Working Path:"
 msgstr "Arbeits-Pfad"
 
-#: views/settings/general.php:140
+#: views/settings/general.php:145
 #@ wpduplicator
 msgid "Add Custom Path:"
 msgstr "Benutzer-Pfad hinzufügen"
 
-#: views/settings/general.php:144
+#: views/settings/general.php:149
 #@ wpduplicator
 msgid "This is the path to your mysqldump program."
 msgstr "Das ist der Pfad zu deinem mysqldump-Programm."
 
-#: views/settings/general.php:153
+#: views/settings/general.php:158
 #@ wpduplicator
 msgid "Package Debug"
 msgstr "Fehlerbeseitigung Archiv"
 
-#: views/settings/general.php:156
+#: views/settings/general.php:161
 #@ wpduplicator
 msgid "Show Package Debug Status in Packages Screen"
 msgstr "Zeige Fehlerstatus des Archives in der Anzeige"
 
-#: views/settings/general.php:164
+#: views/settings/general.php:201
 #@ wpduplicator
 msgid "Save Settings"
 msgstr "Einstellungen speichern"
@@ -1172,12 +1172,12 @@ msgstr "Diese Aktion wird alle alten Einstellungen vor Version %1$s entfernen. "
 msgid "Legacy settings are only needed if you plan to migrate back to an older version of this plugin."
 msgstr "Frühere Einstellungen werden nur benötigt, wenn du zu einer älteren Version des Plugins zurückgehst."
 
-#: views/tools/controller.php:16
+#: views/tools/controller.php:19
 #@ wpduplicator
 msgid "Logging"
 msgstr "Logging"
 
-#: views/tools/controller.php:17
+#: views/tools/controller.php:20
 #@ wpduplicator
 msgid "Cleanup"
 msgstr "Löschen"
@@ -1281,42 +1281,42 @@ msgstr ""
 msgid "Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.  Please visit the support page for additional resources."
 msgstr "Einige Server schließen die Verbindungen schnell, doch die Erstellung kann auch weiterhin im Hintergrund laufen. Um zu prüfen ob derProzess noch läuft, öffnen den 'tmp'-Ordner um zu sehen, ob die Archivdatei in der Größe wächst. Wenn nicht, hat der Server strenge Beschränkungen im Timeout. Bitte besuche die Support-Seite für weitere Lösungen."
 
-#: views/settings/diagnostics.php:113
+#: views/settings/diagnostics.php:110
 #@ wpduplicator
 msgid "ABSPATH"
 msgstr "ABSPATH"
 
-#: views/settings/general.php:61
+#: views/settings/general.php:65
 #@ wpduplicator
 msgid "Plugin"
 msgstr "Plugin"
 
-#: views/settings/general.php:100
+#: views/settings/general.php:104
 #@ wpduplicator
 msgid "Archive Flush"
 msgstr ""
 
-#: views/settings/general.php:103
+#: views/settings/general.php:107
 #@ wpduplicator
 msgid "Attempt Network Keep Alive"
 msgstr "Dadurch wird versucht, eine Netzwerkverbindung für große Archive zu etablieren"
 
-#: views/settings/general.php:104
+#: views/settings/general.php:108
 #@ wpduplicator
 msgid "recommended only for large archives"
 msgstr "nur empfohlen für große Archive"
 
-#: views/settings/general.php:106
+#: views/settings/general.php:110
 #@ wpduplicator
 msgid "This will attempt to keep a network connection established for large archives."
 msgstr "Dadurch wird versucht, eine Netzwerkverbindung für große Archive zu etablieren."
 
-#: views/settings/general.php:111
+#: views/settings/general.php:115
 #@ wpduplicator
 msgid "Database Build"
 msgstr "Datenbank erstellen"
 
-#: views/settings/general.php:135
+#: views/settings/general.php:140
 #@ wpduplicator
 msgid "Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator."
 msgstr "Mysqldump wurde nicht an der Standardposition gefunden. Bitte gib den Pfad zu einem gültigen Ort ein, an dem mysqldump ausgeführt werden kann. Sollte das Problem bestehen bleiben, kontaktiere den Server-Administrator."
@@ -1523,116 +1523,111 @@ msgstr "Datei-Erweiterungen"
 msgid "No file extension filters have been set."
 msgstr "Keine Dateierweiterungs-Filter gesetzt."
 
-#: views/settings/general.php:69
+#: views/settings/general.php:73
 #@ wpduplicator
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: views/settings/general.php:75
+#: views/settings/general.php:79
 #@ wpduplicator
 msgid "Delete Entire Storage Directory"
 msgstr "Speicher-Verzeichnisse vollständig löschen"
 
-#: views/settings/general.php:80
+#: views/settings/general.php:84
 #@ wpduplicator
 msgid "Storage"
 msgstr "Speicher"
 
-#: views/settings/general.php:82
+#: views/settings/general.php:86
 #@ wpduplicator
 msgid "Full Path"
 msgstr "Vollständiger Pfad"
 
-#: views/settings/general.php:85
+#: views/settings/general.php:89
 #@ wpduplicator
 msgid "Disable .htaccess File In Storage Directory"
 msgstr ".htaccess-Datei im Speicher-Verzeichnis deaktivieren"
 
-#: views/settings/general.php:87
+#: views/settings/general.php:91
 #@ wpduplicator
 msgid "Disable if issues occur when downloading installer/archive files."
 msgstr "Deaktivieren, wenn beim Download von Installer / Archivdateien Probleme auftreten."
 
-#: classes/ui.php:108
+#: classes/ui.php:111
 #@ default
 msgid "Reserved Duplicator install file(s) still exists in the root directory.  Please delete these file(s) to avoid possible security issues."
 msgstr ""
 
-#: duplicator.php:103
+#: duplicator.php:106
 #@ wpduplicator
 msgid "Get Help"
 msgstr "Hilfe bekommen"
 
-#: duplicator.php:103
-#: duplicator.php:168
-#: views/help/help.php:30
+#: duplicator.php:106
+#: duplicator.php:194
+#: views/help/help.php:32
 #@ wpduplicator
 msgid "Help"
 msgstr "Hilfe"
 
-#: duplicator.php:104
+#: duplicator.php:107
 #@ wpduplicator
 msgid "Support the Plugin"
 msgstr "Unterstütze das Plugin"
 
-#: duplicator.php:104
-#: duplicator.php:169
-#: views/help/about.php:42
+#: duplicator.php:107
+#: duplicator.php:198
+#: views/help/about.php:44
 #@ wpduplicator
 msgid "About"
 msgstr "Über"
 
-#: views/help/about.php:55
+#: views/help/about.php:57
 #@ wpduplicator
 msgid "Created for Admins, Developers and Designers the Duplicator can streamline your workflows and help you quickly clone a WordPress application.  Migrating a WordPress site manually can be very time consuming.  The Duplicator was made to help you speed up the migration process. Please help us to continue the development effort of this plugin."
 msgstr "Erstellt für Admins, Entwickler und Designer, die mit dem Duplicator Ihre Arbeitsabläufe optimieren und eine Wordpress-Anwendung schnell klonen können. Die manuell Migration eines Wordpress-Seite kann sehr zeitaufwendig sein. Der Duplicator wurde entwickelt, um den Migrationsprozess zu beschleunigen. Bitte unterstütze uns, um die Entwicklung des Plugins weiter zu führen."
 
-#: views/help/about.php:97
-#@ wpduplicator
-msgid "Get More Great Resources"
-msgstr "Hole dir mehr großartige Anwendungen"
-
-#: views/help/help.php:39
+#: views/help/help.php:41
 #@ wpduplicator
 msgid "Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below."
 msgstr "Die Migration von Wordpress ist ein komplexer Prozess. Mit über 30.000 installierbaren Plugins kann es zu Problemen kommen. Deshalb enthält der Duplicator eine detaillierte Wissensdatenbank, in welcher zahlreiche Fehler beschrieben sind. Weitere Unterstützung, Hosting und Alternativen sind unten zu finden."
 
-#: views/help/help.php:54
+#: views/help/help.php:56
 #@ wpduplicator
 msgid "Complete Online Documentation"
 msgstr "Vollständige Online-Dokumentation"
 
-#: views/help/help.php:73
+#: views/help/help.php:75
 #@ wpduplicator
 msgid "Get Help From IT Profressionals"
 msgstr "Professionelle Hilfe erhalten"
 
-#: views/help/help.php:76
+#: views/help/help.php:79
 #@ wpduplicator
 msgid "Get Support!"
 msgstr "Unterstützung bekommen!"
 
-#: views/help/help.php:91
+#: views/help/help.php:94
 #@ wpduplicator
 msgid "Servers That Work With Duplicator"
 msgstr "Server, welche mit dem Duplicator problemlos zusammenarbeiten"
 
-#: views/help/help.php:94
+#: views/help/help.php:97
 #@ wpduplicator
 msgid "Trusted Providers!"
 msgstr "Vertrauenswürdige Provider!"
 
-#: views/help/help.php:104
+#: views/help/help.php:107
 #@ wpduplicator
 msgid "Alternatives"
 msgstr "Alternativen"
 
-#: views/help/help.php:107
+#: views/help/help.php:110
 #@ wpduplicator
 msgid "Other Commercial Resources"
 msgstr "Andere kommerzielle Angebote"
 
-#: views/help/help.php:110
+#: views/help/help.php:113
 #@ wpduplicator
 msgid "Go Pro!"
 msgstr "Zur Pro-Version wechseln!"
@@ -1705,13 +1700,68 @@ msgstr "Weitere Hilfe befindet sich in der "
 msgid "Please try the process again."
 msgstr "Bitte versuche den Vorgang erneut."
 
-#: views/settings/diagnostics.php:125
+#: views/settings/diagnostics.php:122
 #@ wpduplicator
 msgid "Server IP"
 msgstr "Server-IP"
 
-#: views/settings/diagnostics.php:129
+#: views/settings/diagnostics.php:126
 #@ wpduplicator
 msgid "Client IP"
 msgstr "Client-IP"
+
+#: classes/utility.php:237
+#@ wpduplicator
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Du verfügst nicht über ausreichende Rechte, um diese Seite zu betreten."
+
+#: views/help/about.php:134
+#@ wpduplicator
+msgid "Get More Great Tools"
+msgstr "Hole dir mehr großartige Anwendungen..."
+
+#: views/settings/general.php:169
+#@ wpduplicator
+msgid "Roles & Capabilities"
+msgstr "Rollen & Funktionen"
+
+#: views/settings/general.php:174
+#@ wpduplicator
+msgid "Custom Roles"
+msgstr "Benutzerdefinierte Rollen"
+
+#: views/settings/general.php:177
+#@ wpduplicator
+msgid "Enable User Role Editor Plugin Integration"
+msgstr "Ermöglicht User Role Editor Plugin Integration"
+
+#: views/settings/general.php:184
+#@ wpduplicator
+msgid "The User Role Editor Plugin"
+msgstr "Das User Role Editor Plugin"
+
+#: views/settings/general.php:185
+#@ wpduplicator
+msgid "Free"
+msgstr "Free"
+
+#: views/settings/general.php:186
+#@ wpduplicator
+msgid "or"
+msgstr "oder"
+
+#: views/settings/general.php:187
+#@ wpduplicator
+msgid "Professional"
+msgstr "Professional"
+
+#: views/settings/general.php:188
+#@ wpduplicator
+msgid "must be installed to use"
+msgstr "muss installiert werden zur Benutzung"
+
+#: views/settings/general.php:189
+#@ wpduplicator
+msgid "this feature."
+msgstr "dieser Option."
 

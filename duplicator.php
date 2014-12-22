@@ -46,7 +46,6 @@ if (is_admin() == true) {
 
     /* ACTIVATION 
       Only called when plugin is activated */
-
     function duplicator_activate() {
 
         global $wpdb;
@@ -80,7 +79,6 @@ if (is_admin() == true) {
     /* UPDATE 
       register_activation_hook is not called when a plugin is updated
       so we need to use the following function */
-
     function duplicator_update() {
         if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
             duplicator_activate();
@@ -91,14 +89,12 @@ if (is_admin() == true) {
     /* DEACTIVATION / UNINSTALL 
      * Only called when plugin is deactivated.
      * For uninstall see uninstall.php */
-
     function duplicator_deactivate() {
         //No actions needed yet
     }
 
     /* META LINK ADDONS
       Adds links to the plugins manager page */
-
     function duplicator_meta_links($links, $file) {
         $plugin = plugin_basename(__FILE__);
         // create link
@@ -111,7 +107,6 @@ if (is_admin() == true) {
     }
 
     //HOOKS 
-    //load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
     register_activation_hook(__FILE__, 'duplicator_activate');
     register_deactivation_hook(__FILE__, 'duplicator_deactivate');
 
