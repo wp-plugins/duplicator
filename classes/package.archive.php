@@ -113,22 +113,29 @@ class DUP_Archive {
 		}
 		
 		//Filter Directories
+		//Invalid test contains checks for: characters over 250, invlaid characters, 
+		//empty string and directories ending with period (Windows incompatable)
 		foreach ($this->Dirs as $key => $val) {
+			//Remove path filter directories
+			foreach($this->filterDirsArray as $item) { 
+				if (strstr($val, $item)) {
+					$this->OmitDirs[] = $val;
+					unset($this->Dirs[$key]);
+					continue 2;
+				}
+			}
+			
+			//Locate invalid directories and warn
 			$name = basename($val); 
-			if (strlen($val) > 250 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name)|| trim($name) == "") {
+			$invalid_test = strlen($val) > 250 
+							|| 	preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name) 
+							|| 	trim($name) == "" 
+							||  (strrpos($name, '.') == strlen($name) - 1  && substr($name, -1) == '.');
+			if ($invalid_test) {
 				$this->WarnFileName[] = $val;
 				$this->OmitDirs[]     = $val;
 				unset($this->Dirs[$key]);
-			} else {
-				//PATH FILTERS
-				foreach($this->filterDirsArray as $item) { 
-					if (strstr($val, $item)) {
-						$this->OmitDirs[] = $val;
-						unset($this->Dirs[$key]);
-						continue 2;
-					}
-				}
-			}
+			} 
 		}
 	}
 	

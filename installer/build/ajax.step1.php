@@ -157,13 +157,15 @@ if ($_POST['zip_manual']) {
 	$zip = new ZipArchive();
 	if ($zip->open($_POST['package_name']) === TRUE) {
 		DUPX_Log::Info("EXTRACTING");
-		@$zip->extractTo($target);
+		if (! $zip->extractTo($target)) {
+			DUPX_Log::Error(ERR_ZIPEXTRACTION);
+		}
 		$close_response = $zip->close();
 		$log  = print_r($zip, true);
 		$log .= "COMPLETE: " . var_export($close_response, true);
 		DUPX_Log::Info($log);
 	} else {
-		DUPX_Log::Error(ERR_ZIPEXTRACTION);
+		DUPX_Log::Error(ERR_ZIPOPEN);
 	}
 	$zip = null;
 }
