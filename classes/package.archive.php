@@ -134,7 +134,6 @@ class DUP_Archive {
 			if ($invalid_test) {
 				$this->WarnFileName[] = $val;
 				$this->OmitDirs[]     = $val;
-				unset($this->Dirs[$key]);
 			} 
 		}
 	}
