@@ -18,11 +18,14 @@ class DUP_Database {
 	//PRIVATE
 	private $dbStorePath;
 	private $EOFMarker;
+	private $networkFlush;
 
 	//CONSTRUCTOR
 	function __construct($package) {
 		 $this->Package = $package;
 		 $this->EOFMarker = "";
+		 $package_zip_flush  = DUP_Settings::Get('package_zip_flush');
+		 $this->networkFlush = empty($package_zip_flush) ? false : $package_zip_flush;
 	}
 	
 	public function Build($package) {
@@ -321,7 +324,9 @@ class DUP_Database {
 						$sql .= ");\n";
 					}
 					@fwrite($handle, $sql);
-					DUP_Util::FcgiFlush();
+					if ($this->networkFlush) {
+						DUP_Util::FcgiFlush();
+					}
 				}
 			}
 		}
