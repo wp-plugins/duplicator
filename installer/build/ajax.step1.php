@@ -160,8 +160,8 @@ if ($_POST['zip_manual']) {
 		if (! $zip->extractTo($target)) {
 			DUPX_Log::Error(ERR_ZIPEXTRACTION);
 		}
-		$close_response = $zip->close();
 		$log  = print_r($zip, true);
+		$close_response = $zip->close();
 		$log .= "COMPLETE: " . var_export($close_response, true);
 		DUPX_Log::Info($log);
 	} else {
