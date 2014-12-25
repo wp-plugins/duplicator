@@ -46,87 +46,79 @@
 					$uploads = wp_upload_dir();
 					$upload_dir = DUP_Util::SafePath($uploads['basedir']);
 				?>
-				<fieldset>
-					<legend><b> <i class="fa fa-filter"></i> <?php _e("Filters", 'wpduplicator') ?></b></legend>
-					
-					<div class="dup-enable-filters">
-						<input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" : ""; ?> />	
-						<label for="filter-on"><?php _e("Enable File Filters", 'wpduplicator') ?></label>
-					</div>
+				<div class="dup-enable-filters">
+					<input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" : ""; ?> />	
+					<label for="filter-on"><?php _e("Enable File Filters", 'wpduplicator') ?></label>
+				</div>
 
-					<div id="dup-file-filter-items">
-						<label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'wpduplicator'); ?>"><?php _e("Directories", 'wpduplicator') ?>: </label>
-						<div class='dup-quick-links'>
-							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'wpduplicator') ?>]</a>
-							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir , '/'); ?>')">[<?php _e("wp-uploads", 'wpduplicator') ?>]</a>
-							<a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
-						</div>
-						<textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo esc_textarea($Package->Archive->FilterDirs); ?></textarea><br/>
-						<label class="no-select" title="<?php _e("Separate all filters by semicolon", 'wpduplicator'); ?>"><?php _e("File extensions", 'wpduplicator') ?>:</label>
-						<div class='dup-quick-links'>
-							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php _e("media", 'wpduplicator') ?>]</a>
-							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php _e("archive", 'wpduplicator') ?>]</a>
-							<a href="javascript:void(0)" onclick="jQuery('#filter-exts').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
-						</div>
-						<textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
-					
-						<div class="dup-tabs-opts-help">
-							<?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'wpduplicator'); ?> <br/>
-							<?php _e("Use the full path for directories and semicolons to separate all items.", 'wpduplicator'); ?>
-						</div>
-						
+				<div id="dup-file-filter-items">
+					<label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'wpduplicator'); ?>"><?php _e("Directories", 'wpduplicator') ?>: </label>
+					<div class='dup-quick-links'>
+						<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'wpduplicator') ?>]</a>
+						<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir , '/'); ?>')">[<?php _e("wp-uploads", 'wpduplicator') ?>]</a>
+						<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>/wp-content/cache')">[<?php _e("cache", 'wpduplicator') ?>]</a>
+						<a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
 					</div>
-				</fieldset>
+					<textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterDirs)) ?></textarea><br/>
+					<label class="no-select" title="<?php _e("Separate all filters by semicolon", 'wpduplicator'); ?>"><?php _e("File extensions", 'wpduplicator') ?>:</label>
+					<div class='dup-quick-links'>
+						<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php _e("media", 'wpduplicator') ?>]</a>
+						<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php _e("archive", 'wpduplicator') ?>]</a>
+						<a href="javascript:void(0)" onclick="jQuery('#filter-exts').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
+					</div>
+					<textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
+
+					<div class="dup-tabs-opts-help">
+						<?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'wpduplicator'); ?> <br/>
+						<?php _e("Use the full path for directories and semicolons to separate all items.", 'wpduplicator'); ?>
+					</div>
+				</div>
 			</div>
 
 			<!-- TAB2: DATABASE -->
 			<div class="tabs-panel" id="dup-pack-opts-tabs-panel-2" style="display: none;">
-				<fieldset>
-					<legend><b><i class="fa fa-filter"></i> <?php _e('Filters', 'wpduplicator'); ?></b></legend>
-					
-					<div class="dup-enable-filters">						
-						<table>
-							<tr>
-								<td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" : ""; ?> /></td>
-								<td><label for="dbfilter-on"><?php _e("Enable Table Filters", 'wpduplicator') ?> &nbsp;</label> </td>
-								<td><div class="dup-tabs-opts-help" style="margin:5px 0px 0px 0px"><?php _e("checked tables are excluded", 'wpduplicator') ?></div></td>
-							</tr>
-						</table>
-					</div>
-					<div id="dup-db-filter-items">
-						<a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e( 'Include All', 'wpduplicator' ); ?> ]</a> &nbsp; 
-						<a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e( 'Exclude All', 'wpduplicator' ); ?> ]</a>
-						<div style="font-stretch:ultra-condensed; font-family: Calibri; white-space: nowrap">
-							<?php
-							$tables = $wpdb->get_results( "SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N );
-							$num_rows = count( $tables );
-							echo '<table id="dup-dbtables"><tr><td valign="top">';
-							$next_row = round( $num_rows / 3, 0 );
-							$counter = 0;
-							$tableList = explode(',', $Package->Database->FilterTables);
-							foreach ( $tables as $table ) {
-								if (in_array($table[0], $tableList)) {
-									$checked =   'checked="checked"';
-									$css =  'text-decoration:line-through';
-								} else {
-									$checked =   '';
-									$css = '';
-								}
-								echo "<label for='dbtables-{$table[0]}' style='{$css}'><input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />&nbsp;{$table[0]}</label><br />";
-								$counter++;
-								if ($next_row <= $counter) {
-									echo '</td><td valign="top">';
-									$counter = 0;
-								}
+				<div class="dup-enable-filters">						
+					<table>
+						<tr>
+							<td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" : ""; ?> /></td>
+							<td><label for="dbfilter-on"><?php _e("Enable Table Filters", 'wpduplicator') ?> &nbsp;</label> </td>
+							<td><div class="dup-tabs-opts-help" style="margin:5px 0px 0px 0px"><?php _e("checked tables are excluded", 'wpduplicator') ?></div></td>
+						</tr>
+					</table>
+				</div>
+				<div id="dup-db-filter-items">
+					<a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e( 'Include All', 'wpduplicator' ); ?> ]</a> &nbsp; 
+					<a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e( 'Exclude All', 'wpduplicator' ); ?> ]</a>
+					<div style="font-stretch:ultra-condensed; font-family: Calibri; white-space: nowrap">
+						<?php
+						$tables = $wpdb->get_results( "SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N );
+						$num_rows = count( $tables );
+						echo '<table id="dup-dbtables"><tr><td valign="top">';
+						$next_row = round( $num_rows / 3, 0 );
+						$counter = 0;
+						$tableList = explode(',', $Package->Database->FilterTables);
+						foreach ( $tables as $table ) {
+							if (in_array($table[0], $tableList)) {
+								$checked =   'checked="checked"';
+								$css =  'text-decoration:line-through';
+							} else {
+								$checked =   '';
+								$css = '';
 							}
-							echo '</td></tr></table>';
-						?>
-						</div>
-						<div class="dup-tabs-opts-help">
-							<?php _e("Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!", 'wpduplicator'); ?>
-						</div>	
+							echo "<label for='dbtables-{$table[0]}' style='{$css}'><input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />&nbsp;{$table[0]}</label><br />";
+							$counter++;
+							if ($next_row <= $counter) {
+								echo '</td><td valign="top">';
+								$counter = 0;
+							}
+						}
+						echo '</td></tr></table>';
+					?>
 					</div>
-				</fieldset>
+					<div class="dup-tabs-opts-help">
+						<?php _e("Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!", 'wpduplicator'); ?>
+					</div>	
+				</div>
 			</div>
 		</div>		
 	</div>

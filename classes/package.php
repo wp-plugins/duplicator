@@ -425,6 +425,7 @@ class DUP_Package {
 	
 	
 	private function parseDirectoryFilter($dirs = "") {
+		$dirs = str_replace(array('.', ' ', "\n", "\t", "\r"), '', $dirs);
 		$filter_dirs = "";
 		foreach (explode(";", $dirs) as $val) {
 			if (strlen($val) >= 2) {

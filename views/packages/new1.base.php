@@ -44,8 +44,8 @@
 	PACKAGE OPTS*/
 	form#dup-form-opts label {line-height:22px}
 	form#dup-form-opts input[type=checkbox] {margin-top:3px}
-	form#dup-form-opts fieldset {border-radius:4px; border:1px solid #ccc;  line-height:20px}
-	form#dup-form-opts fieldset{padding:10px 15px 15px 15px; min-height:275px}
+	form#dup-form-opts fieldset {border-radius:4px;  border-top:1px solid #dfdfdf;  line-height:20px}
+	form#dup-form-opts fieldset{padding:10px 15px 15px 15px; min-height:275px; margin:0 10px 10px 10px}
 	form#dup-form-opts textarea, input[type="text"] {width:100%}
 	form#dup-form-opts textarea#filter-dirs {height:85px}
 	form#dup-form-opts textarea#filter-exts {height:27px}
@@ -277,7 +277,7 @@ jQuery(document).ready(function($) {
 	/*	----------------------------------------
 	*	METHOD: Appends a path to the directory filter  */ 
 	Duplicator.Pack.AddExcludePath = function(path) {
-		var text = $("#filter-dirs").val() + path + ';';
+		var text = $("#filter-dirs").val()  + path + ';\n';
 		$("#filter-dirs").val(text);
 	};
 	

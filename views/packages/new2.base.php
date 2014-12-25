@@ -8,8 +8,6 @@
 	$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
 	$mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
 	$build_mode = ($mysqlDumpPath && $package_mysqldump) ? 'mysqldump (fast)' : 'PHP (slow)';
-	
-	
 ?>
 
 <style>
@@ -25,7 +23,7 @@
 	div.dup-scan-filter-status {display:inline; float: right; font-size:11px; margin-right:10px; color:#AF0000; font-style: italic}
 	/* 	SERVER-CHECKS */
 	div.dup-scan-title {display:inline-block;  padding:1px; font-weight: bold;}
-	div.dup-scan-title a {display:inline-block; width:225px; padding:1px; }
+	div.dup-scan-title a {display:inline-block; min-width:200px; padding:3px; }
 	div.dup-scan-title div {display:inline-block;  }
 	div.dup-scan-info {display:none;}
 	div.dup-scan-good {display:inline-block; color:green;font-weight: bold;}
@@ -46,7 +44,7 @@
 		{word-wrap: break-word;font-size:10px; border:1px dashed silver; padding:5px; display: none}
 	
 	/*Footer*/
-	div.dup-button-footer {text-align:center; margin:5px 0px 0px 0px}
+	div.dup-button-footer {text-align:center; margin:0}
 	button.button {font-size:15px !important; height:30px !important; font-weight:bold; padding:3px 5px 5px 5px !important;}
 </style>
 
@@ -89,15 +87,13 @@ WIZARD STEP TABS -->
 		<div class="dup-panel-title">
 			<i class="fa fa-hdd-o"></i> <?php 	_e("Server", 'wpduplicator');	?>
 			<div style="float:right; margin:-1px 10px 0px 0px">
-				<small><a href="?page=duplicator-settings&tab=diagnostics" target="_blank"><?php _e('Diagnostics', 'wpduplicator');?></a>  </small>	
-				<!--span style="font-size:11px">|</span>
-				<small><a id="data-rpt-scanfile" href="admin-ajax.php?action=duplicator_package_report" target="_blank"><?php _e('Report', 'wpduplicator');?></a></small-->
+				<small><a href="?page=duplicator-settings&tab=diagnostics" target="_blank"><?php _e('Diagnostics', 'wpduplicator');?></a></small>
 			</div>
 		
 		</div>
 		<div class="dup-panel-panel">
 			<!-- -------------------
-			WEB SERVER: 103 -->
+			WEB SERVER -->
 			<div>
 				<div class='dup-scan-title'>
 					<a><?php _e('Web Server', 'wpduplicator');?></a> <div id="data-srv-webserver"></div>
@@ -114,7 +110,7 @@ WIZARD STEP TABS -->
 				</div>
 			</div>				
 			<!-- -------------------
-			PHP SETTINGS: 100 -->
+			PHP SETTINGS -->
 			<div>
 				<div class='dup-scan-title'>
 					<a><?php _e('PHP Settings', 'wpduplicator');?></a> <div id="data-srv-phpserver"></div>
@@ -145,7 +141,7 @@ WIZARD STEP TABS -->
 				</div>
 			</div>
 			<!-- -------------------
-			WORDPRESS SETTINGS: 101 -->
+			WORDPRESS SETTINGS -->
 			<div>
 				<div class='dup-scan-title'>
 					<a><?php _e('WordPress Settings', 'wpduplicator');?></a> <div id="data-srv-wpsettings"></div>
@@ -183,9 +179,8 @@ WIZARD STEP TABS -->
 			</div>
 		</div><!-- end .dup-panel -->
 		</div><!-- end .dup-panel-panel -->
-		<br/>
 	
-		<h2 style="font-size:18px; font-weight:bold"><i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'wpduplicator');?> </h2>
+		<h2 style="font-size:18px; font-weight:bold; margin:-15px 0 0 10px"><i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'wpduplicator');?> </h2>
 		
 		<!-- ================================================================
 		FILES
@@ -206,7 +201,7 @@ WIZARD STEP TABS -->
 			<div class="dup-panel-panel">
 
 				<!-- -------------------
-				TOTAL SIZE: CHK-FILE-100 -->
+				TOTAL SIZE -->
 				<div>
 					<div class='dup-scan-title'>
 						<a><?php _e('Total Size', 'wpduplicator');?></a> <div id="data-arc-status-size"></div>
@@ -222,7 +217,7 @@ WIZARD STEP TABS -->
 				</div>		
 
 				<!-- -------------------
-				FILE NAME LENGTHS: CHK-FILE-101 -->
+				FILE NAME LENGTHS -->
 				<div>
 					<div class='dup-scan-title'>
 						<a><?php _e('Invalid Names', 'wpduplicator');?></a> <div id="data-arc-status-names"></div>
@@ -237,7 +232,7 @@ WIZARD STEP TABS -->
 				</div>		
 
 				<!-- -------------------
-				LARGE FILES: CHK-FILE-102 -->
+				LARGE FILES -->
 				<div>
 					<div class='dup-scan-title'>
 						<a><?php _e('Large Files', 'wpduplicator');?></a> <div id="data-arc-status-big"></div>
@@ -253,7 +248,6 @@ WIZARD STEP TABS -->
 				
 				<!-- -------------------
 				VIEW FILTERS -->
-				
 				<?php if ($Package->Archive->FilterOn) : ?>
 					<div>
 						<div class='dup-scan-title'>
@@ -306,7 +300,7 @@ WIZARD STEP TABS -->
 			<div class="dup-panel-panel" id="dup-scan-db">
 
 				<!-- -------------------
-				TOTAL SIZE: 100 -->
+				TOTAL SIZE -->
 				<div>
 					<div class='dup-scan-title'>
 						<a><?php _e('Total Size', 'wpduplicator');?></a>
@@ -364,8 +358,8 @@ WIZARD STEP TABS -->
 			<div id="dup-msg-error-response-text"></div>
 		</div>
 	</div>			
-
 </div> <!-- end #dup-progress-area -->
+
 <div class="dup-button-footer" style="display:none">
 	<input type="button" value="&#9668; <?php _e("Back", 'wpduplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
 	<input type="button" value="<?php _e("Rescan", 'wpduplicator') ?>" onclick="Duplicator.Pack.Rescan()" class="button button-large" />
@@ -412,6 +406,17 @@ jQuery(document).ready(function($) {
 		Duplicator.Pack.Scan();
 	}
 	
+	Duplicator.Pack.LoadScanStatus = function(status) {
+		var result;
+		switch (status) {
+			case 'Warn' : result = '<i class="fa fa-exclamation-triangle"></i> Warn'; break;
+			case 'Good' : result = '<i class="fa fa-check"></i> Good'; break;
+			default :
+				result = 'unable to read';
+		}
+		return result;
+	}
+	
 	/*	----------------------------------------
 	*	METHOD:    */
 	Duplicator.Pack.LoadScanData = function(data) {
@@ -428,16 +433,16 @@ jQuery(document).ready(function($) {
 		
 		//****************
 		//SERVER
-		$('#data-srv-phpserver').text(data.SRV.PHPServer || errMsg);
-		$('#data-srv-wpsettings').text(data.SRV.WPSettings   || errMsg);
-		$('#data-srv-webserver').text(data.SRV.WebServer || errMsg);
+		$('#data-srv-phpserver').html(Duplicator.Pack.LoadScanStatus(data.SRV.PHPServer));
+		$('#data-srv-wpsettings').html(Duplicator.Pack.LoadScanStatus(data.SRV.WPSettings));
+		$('#data-srv-webserver').html(Duplicator.Pack.LoadScanStatus(data.SRV.WebServer));
 		
 		//****************
 		//DATABASE
 		var html = "";
 		if (data.DB.Status.Success) {
-			$('#data-db-status-size1').text(data.DB.Status.Size || errMsg);
-			$('#data-db-status-size2').text(data.DB.Status.Size || errMsg);
+			$('#data-db-status-size1').html(Duplicator.Pack.LoadScanStatus(data.DB.Status.Size));
+			$('#data-db-status-size2').html(Duplicator.Pack.LoadScanStatus(data.DB.Status.Size));
 			$('#data-db-size1').text(data.DB.Size || errMsg);
 			$('#data-db-size2').text(data.DB.Size || errMsg);
 			$('#data-db-rows').text(data.DB.Rows || errMsg);
@@ -459,9 +464,9 @@ jQuery(document).ready(function($) {
 		
 		//****************
 		//ARCHIVE
-		$('#data-arc-status-size').text(data.ARC.Status.Size || errMsg);
-		$('#data-arc-status-names').text(data.ARC.Status.Names|| errMsg);
-		$('#data-arc-status-big').text(data.ARC.Status.Big || errMsg);
+		$('#data-arc-status-size').html(Duplicator.Pack.LoadScanStatus(data.ARC.Status.Size));
+		$('#data-arc-status-names').html(Duplicator.Pack.LoadScanStatus(data.ARC.Status.Names));
+		$('#data-arc-status-big').html(Duplicator.Pack.LoadScanStatus(data.ARC.Status.Big));
 		$('#data-arc-size1').text(data.ARC.Size || errMsg);
 		$('#data-arc-size2').text(data.ARC.Size || errMsg);
 		$('#data-arc-files').text(data.ARC.FileCount || errMsg);
@@ -486,7 +491,8 @@ jQuery(document).ready(function($) {
 
 		//Color Code Good/Warn
 		$('.dup-scan-title div').each(function() {
-			$(this).addClass( ( $(this).text() == 'Good') ? 'dup-scan-good' : 'dup-scan-warn');
+			
+			$(this).addClass( $(this).text().indexOf('Good') > -1 ? 'dup-scan-good' : 'dup-scan-warn');
 		});
 	}
 	
