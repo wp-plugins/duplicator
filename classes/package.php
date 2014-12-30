@@ -423,11 +423,11 @@ class DUP_Package {
 		}
 	}
 	
-	
 	private function parseDirectoryFilter($dirs = "") {
-		$dirs = str_replace(array('.', ' ', "\n", "\t", "\r"), '', $dirs);
+		$dirs = str_replace(array("\n", "\t", "\r"), '', $dirs);
 		$filter_dirs = "";
-		foreach (explode(";", $dirs) as $val) {
+		$dir_array = array_unique(explode(";", $dirs));
+		foreach ($dir_array as $val) {
 			if (strlen($val) >= 2) {
 				$filter_dirs .= DUP_Util::SafePath(trim(rtrim($val, "/\\"))) . ";";
 			}

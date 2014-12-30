@@ -78,7 +78,7 @@
 	div.dup-db-test label{display:inline-block; width:150px; font-weight:bold; white-space:nowrap;}
 	div.dup-db-test small{display:block; margin:5px 0 5px 0px; font-style:italic; color:#444}
 	div#dbconn-test-msg {font-size:12px}
-	div#dup-step1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:10px; margin-top:10px; height:125px}
+	div#dup-step1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:10px; margin-top:10px; height:125px; overflow-y: scroll}
 	
 	/*Warning Area and Message */
 	div#dup-step1-warning {margin-top:40px;padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:75px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
@@ -109,7 +109,6 @@
 	div.dup-step3-final-msg {height:110px; border:1px solid #CDCDCD; padding:8px;font-size:12px; border-radius:5px;box-shadow:0 4px 2px -2px #777;}
 	div.dup-step3-final-title {color:#BE2323;}
 	div.dup-step3-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
-	div#dup-step3-dialog{font-size:12px}
 	table.dup-step3-report-results,
 	table.dup-step3-report-errs {border-collapse:collapse; border:1px solid #dfdfdf; }
 	table.dup-step3-report-errs  td {text-align:center; width:33%}

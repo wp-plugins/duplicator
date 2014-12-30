@@ -131,6 +131,7 @@ class DUP_Archive {
 							|| 	preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name) 
 							|| 	trim($name) == "" 
 							||  (strrpos($name, '.') == strlen($name) - 1  && substr($name, -1) == '.');
+			
 			if ($invalid_test) {
 				$this->WarnFileName[] = $val;
 				$this->OmitDirs[]     = $val;
