@@ -26,13 +26,11 @@
 			$req01a = 'Fail';
 		}
 	}
-	$req01b = ($zip_file_count == 1) ? 'Pass' : 'Fail';
-	$req01  = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
-	$req02 = (((strtolower(@ini_get('safe_mode'))   == 'on')   
-				||  (strtolower(@ini_get('safe_mode')) == 'yes') 
-				||  (strtolower(@ini_get('safe_mode')) == 'true') 
-				||  (ini_get("safe_mode") == 1 ))) ? 'Fail' : 'Pass';
-	$req03  = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
+	$req01b   = ($zip_file_count == 1) ? 'Pass' : 'Fail';
+	$req01    = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
+	$safe_ini = strtolower(@ini_get('safe_mode'));
+	$req02    =  $safe_ini  != 'on' || $safe_ini != 'yes' || $safe_ini != 'true' || ini_get("safe_mode") != 1 ? 'Pass' : 'Fail';
+	$req03    = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
 	$php_compare  = version_compare(phpversion(), '5.2.17');
 	$req04 = $php_compare >= 0 ? 'Pass' : 'Fail';
 	$total_req = ($req01 == 'Pass' && $req02 == 'Pass' && $req03 == 'Pass' && $req04 == 'Pass') ? 'Pass' : 'Fail';

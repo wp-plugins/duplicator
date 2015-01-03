@@ -120,8 +120,6 @@ class DUP_Installer {
 		DUP_Log::Info("Preping for use");
 		$installer = DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP) . "/{$this->Package->NameHash}_installer.php";
 		
-		//$tablePrefix = (is_multisite()) ? $wpdb->get_blog_prefix() : $wpdb->prefix;
-		
 		//Option values to delete at install time
 		$deleteOpts = $GLOBALS['DUPLICATOR_OPTS_DELETE'];
 
