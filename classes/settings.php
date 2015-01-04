@@ -28,7 +28,16 @@ class DUP_Settings
 	*  @return The value stored in the key returns null if key does not exist
 	*/
 	public static function Get($key = '') {
-		return isset(self::$Data[$key]) ? self::$Data[$key] : null;
+		$result = null;
+		if (isset(self::$Data[$key])) {
+			$result = self::$Data[$key]; 
+		} else {
+			$defaults = self::GetAllDefaults();
+			if (isset($defaults[$key])) {
+				$result = $defaults[$key];
+			} 
+		}
+		return $result;
 	}
 
 	/**
@@ -66,36 +75,9 @@ class DUP_Settings
 	*  @return True if option value has changed, false if not or if update failed.
 	*/
 	public static function SetDefaults() {
-		$default = array();
-		$default['version'] = self::$Version;
-
-		//Flag used to remove the wp_options value duplicator_settings which are all the settings in this class
-		$default['uninstall_settings'] = isset(self::$Data['uninstall_settings']) ? self::$Data['uninstall_settings'] : true;
-
-		//Flag used to remove entire wp-snapshot directory
-		$default['uninstall_files']    = isset(self::$Data['uninstall_files'])  ? self::$Data['uninstall_files']  : true;
-
-		//Flag used to remove all tables
-		$default['uninstall_tables']   = isset(self::$Data['uninstall_tables']) ? self::$Data['uninstall_tables'] : true;
-
-		//Flag used to show debug info
-		$default['package_debug']   = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
-		
-		//Flag used to enable mysqldump
-		$default['package_mysqldump']   = isset(self::$Data['package_mysqldump']) ? self::$Data['package_mysqldump'] : false;
-		
-		//Optional mysqldump search path
-		$default['package_mysqldump_path']   = isset(self::$Data['package_mysqldump_path']) ? self::$Data['package_mysqldump_path'] : '';
-		
-		//Optional mysqldump search path
-		$default['package_zip_flush']   = isset(self::$Data['package_zip_flush']) ? self::$Data['package_zip_flush'] : false;
-		
-		//Flag for .htaccess file
-		$default['storage_htaccess_off']   = isset(self::$Data['storage_htaccess_off']) ? self::$Data['storage_htaccess_off'] : false;
-
-		self::$Data = $default;
+		$defaults = self::GetAllDefaults();
+		self::$Data = $defaults;
 		return self::Save();
-
 	}
 	
 	/**
@@ -112,7 +94,7 @@ class DUP_Settings
 		delete_option('duplicator_add1_clicked'); 
 		delete_option('duplicator_options'); 
 		
-		//PRE 5.1
+		//PRE 5.n
 		//Next version here if needed
 	}
 	
@@ -126,7 +108,35 @@ class DUP_Settings
 		}
 		return false;
 	}
+	
+	
+	public static function GetAllDefaults() {	
+		$default = array();
+		$default['version'] = self::$Version;
 
+		//Flag used to remove the wp_options value duplicator_settings which are all the settings in this class
+		$default['uninstall_settings']	= isset(self::$Data['uninstall_settings']) ? self::$Data['uninstall_settings'] : true;
+		//Flag used to remove entire wp-snapshot directory
+		$default['uninstall_files']		= isset(self::$Data['uninstall_files'])  ? self::$Data['uninstall_files']  : true;
+		//Flag used to remove all tables
+		$default['uninstall_tables']	= isset(self::$Data['uninstall_tables']) ? self::$Data['uninstall_tables'] : true;
+		
+		//Flag used to show debug info
+		$default['package_debug']			 = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
+		//Flag used to enable mysqldump
+		$default['package_mysqldump']		 = isset(self::$Data['package_mysqldump']) ? self::$Data['package_mysqldump'] : false;
+		//Optional mysqldump search path
+		$default['package_mysqldump_path']	 = isset(self::$Data['package_mysqldump_path']) ? self::$Data['package_mysqldump_path'] : '';
+		//Optional mysql limit size
+		$default['package_phpdump_qrylimit'] = isset(self::$Data['package_phpdump_qrylimit']) ? self::$Data['package_phpdump_qrylimit'] : "100";
+		//Optional mysqldump search path
+		$default['package_zip_flush']		 = isset(self::$Data['package_zip_flush']) ? self::$Data['package_zip_flush'] : false;
+		
+		//Flag for .htaccess file
+		$default['storage_htaccess_off'] = isset(self::$Data['storage_htaccess_off']) ? self::$Data['storage_htaccess_off'] : false;
+		
+		return $default;
+	}
 }
 
 //Init Class

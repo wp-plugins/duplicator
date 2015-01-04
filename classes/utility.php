@@ -23,15 +23,14 @@ class DUP_Util {
 	*  Returns the last N lines of a file
 	*  Equivelent to tail command
 	*/
-	static public function TailFile($filepath, $lines = 2, $adaptive = true) {
+	static public function TailFile($filepath, $lines = 2) {
 
 		// Open file
 		$f = @fopen($filepath, "rb");
 		if ($f === false) return false;
 
 		// Sets buffer size
-		if (!$adaptive) $buffer = 4096;
-		else $buffer = ($lines < 2 ? 64 : ($lines < 10 ? 512 : 4096));
+		$buffer = 256;
 
 		// Jump to last character
 		fseek($f, -1, SEEK_END);

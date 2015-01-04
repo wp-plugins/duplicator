@@ -151,9 +151,10 @@ class DUP_Package {
 		$info .= "PHP INFO:\t" . phpversion() . ' | ' . 'SAPI: ' . php_sapi_name() . "\n";
 		$info .= "SERVER:\t\t{$_SERVER['SERVER_SOFTWARE']} \n";
 		$info .= "PHP TIME LIMIT: {$php_max_time} \n";
-		$info .= "PHP MAX MEMORY: {$php_max_memory}";
+		$info .= "PHP MAX MEMORY: {$php_max_memory} \n";
+		$info .= "MEMORY STACK: " . DUP_Server::GetPHPMemory();
 		DUP_Log::Info($info);
-		unset($info);
+		$info = null;
 		
 		//CREATE DB RECORD
 		$packageObj = serialize($this);
@@ -196,17 +197,18 @@ class DUP_Package {
 		$dbSizeRead	 = DUP_Util::ByteSize($this->Database->Size);
 		$zipSizeRead = DUP_Util::ByteSize($this->Archive->Size);
 		$exeSizeRead = DUP_Util::ByteSize($this->Installer->Size);
+
 		DUP_Log::Info("SQL File: {$dbSizeRead}");
 		DUP_Log::Info("Installer File: {$exeSizeRead}");
 		DUP_Log::Info("Archive File: {$zipSizeRead} ");
-
+		
 		if ( !($this->Archive->Size && $this->Database->Size && $this->Installer->Size)) {
 			DUP_Log::Error("A required file contains zero bytes.", "Archive Size: {$zipSizeRead} | SQL Size: {$dbSizeRead} | Installer Size: {$exeSizeRead}");
 		}
 		
 		//Validate SQL files completed
 		$sql_tmp_path = DUP_UTIL::SafePath(DUPLICATOR_SSDIR_PATH_TMP . '/'. $this->Database->File);
-		$sql_complete_txt = DUP_Util::TailFile($sql_tmp_path, 5);
+		$sql_complete_txt = DUP_Util::TailFile($sql_tmp_path, 3);
 		if (! strstr($sql_complete_txt, 'DUPLICATOR_MYSQLDUMP_EOF')) {
 			DUP_Log::Error("ERROR: SQL file not complete.  The end of file marker was not found.  Please try to re-create the package.");
 		}
@@ -224,6 +226,7 @@ class DUP_Package {
 		$info = "\n********************************************************************************\n";
 		$info .= "RECORD ID:[{$this->ID}]\n";
 		$info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
+		$info .= "PEAK PHP MEMORY USED: " . DUP_Server::GetPHPMemory(true) . "\n";
 		$info .= "DONE PROCESSING => {$this->Name} " . @date("Y-m-d H:i:s") . "\n";
 	
 		DUP_Log::Info($info);

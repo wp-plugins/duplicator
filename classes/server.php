@@ -112,7 +112,6 @@ class DUP_Server {
 		return  ($phpFile || $sqlFile || $logFile);
 	}
 	
-	
 	/** 
 	* Get the IP of a client machine
 	* @return string   IP of the client machine
@@ -128,6 +127,27 @@ class DUP_Server {
         } 
 
         return '';
+	}
+	
+	/** 
+	* Get PHP memory useage 
+	* @return string   Returns human readable memory useage.
+	*/
+	public static function GetPHPMemory($peak = false) {
+		
+		if ($peak) {
+			$result = 'Unable to read PHP peak memory usage';
+			if (function_exists('memory_get_peak_usage')) {
+				$result = DUP_Util::ByteSize(memory_get_peak_usage(true));
+			} 
+		} else {
+			$result = 'Unable to read PHP memory usage';
+			if (function_exists('memory_get_usage')) {
+				$result = DUP_Util::ByteSize(memory_get_usage(true));
+			} 
+		}
+
+        return $result;
 	}
 	
 }

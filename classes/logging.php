@@ -32,9 +32,15 @@ class DUP_Log {
 	/**
 	 *  General information logging
 	 *  @param string $msg	The message to log
+	 * 
+	 *  REPLACE TO DEBUG: Memory consuption as script runs	
+	 *	$results = DUP_Util::ByteSize(memory_get_peak_usage(true)) . "\t" . $msg;
+	 *	@fwrite(self::$logFileHandle, "{$results} \n"); 
 	 */
 	static public function Info($msg) {
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
+		//$results = DUP_Util::ByteSize(memory_get_usage(true)) . "\t" . $msg;
+		//@fwrite(self::$logFileHandle, "{$results} \n"); 
 	}
 	
 	/**
@@ -47,7 +53,7 @@ class DUP_Log {
 		$source = self::getStack(debug_backtrace());
 		
 		$err_msg  = "\n==================================================================================\n";
-		$err_msg .= "!!!DUPLICATOR ERROR!!!\n";
+		$err_msg .= "!!DUPLICATOR ERROR!!\n";
 		$err_msg .= "Please Try Again! If the error persists please see the Duplicator 'Support' link.\n";
 		$err_msg .= "---------------------------------------------------------------------------------\n";
 		$err_msg .= "MESSAGE:\n{$msg}\n";

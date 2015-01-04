@@ -41,7 +41,6 @@ if (is_admin() == true) {
     require_once 'classes/settings.php';
     require_once 'classes/server.php';
     require_once 'classes/package.php';
-    require_once 'classes/package.archive.zip.php';
     require_once 'views/actions.php';
 
     /* ACTIVATION 

@@ -4,6 +4,8 @@ global $wpdb;
 
 $action_updated = null;
 $action_response = __("Settings Saved", 'wpduplicator');
+
+//SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
     //General Tab
     //Plugin
@@ -13,9 +15,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     DUP_Settings::Set('storage_htaccess_off', isset($_POST['storage_htaccess_off']) ? "1" : "0");
 
     //Package
+	$enable_mysqldump = isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
     DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
-    DUP_Settings::Set('package_mysqldump', isset($_POST['package_mysqldump']) ? "1" : "0");
+	DUP_Settings::Set('package_mysqldump', $enable_mysqldump ? "1" : "0");
+	DUP_Settings::Set('package_phpdump_qrylimit', isset($_POST['package_phpdump_qrylimit']) ? $_POST['package_phpdump_qrylimit'] : "100");
     DUP_Settings::Set('package_mysqldump_path', trim($_POST['package_mysqldump_path']));
 
     //WPFront
@@ -32,6 +36,10 @@ $storage_htaccess_off = DUP_Settings::Get('storage_htaccess_off');
 
 $package_debug = DUP_Settings::Get('package_debug');
 $package_zip_flush = DUP_Settings::Get('package_zip_flush');
+
+$phpdump_chunkopts = array("20", "100", "500", "1000", "2000");
+
+$package_phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
 $package_mysqldump = DUP_Settings::Get('package_mysqldump');
 $package_mysqldump_path = trim(DUP_Settings::Get('package_mysqldump_path'));
 
@@ -40,6 +48,8 @@ $wpfront_ready = apply_filters('wpfront_user_role_editor_duplicator_integration_
 
 $mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
 $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
+
+
 ?>
 
 <style>
@@ -114,6 +124,22 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
         <tr>
             <th scope="row"><label><?php _e("Database Build", 'wpduplicator'); ?></label></th>
             <td>
+				<input type="radio" name="package_dbmode" id="package_phpdump" value="php" <?php echo (! $package_mysqldump) ? 'checked="checked"' : ''; ?> />
+                <label for="package_phpdump"><?php _e("Use PHP", 'wpduplicator'); ?></label> &nbsp;
+				
+				<div style="margin:5px 0px 0px 25px">
+					<label for="package_phpdump_qrylimit"><?php _e("Query Limit Size", 'wpduplicator'); ?></label> &nbsp;
+					<select name="package_phpdump_qrylimit" id="package_phpdump_qrylimit">
+						<?php 
+							foreach($phpdump_chunkopts as $value) {
+								$selected = ( $package_phpdump_qrylimit == $value ? "selected='selected'" : '' );
+								echo "<option {$selected} value='{$value}'>" . number_format($value)  . '</option>';
+							}
+						?>
+					</select>
+					 <i style="font-size:12px">(<?php _e("higher values speed up build times but uses more memory", 'wpduplicator'); ?>)</i> 
+					
+				</div><br/>
 
                 <?php if (!DUP_Util::IsShellExecAvailable()) : ?>
                     <p class="description">
@@ -124,7 +150,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                         ?>
                     </p>
                 <?php else : ?>
-                    <input type="checkbox" name="package_mysqldump" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
+                    <input type="radio" name="package_dbmode" value="mysql" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
                     <label for="package_mysqldump"><?php _e("Use mysqldump", 'wpduplicator'); ?></label> &nbsp;
                     <i style="font-size:12px">(<?php _e("recommended for large databases", 'wpduplicator'); ?>)</i> <br/><br/>
 
