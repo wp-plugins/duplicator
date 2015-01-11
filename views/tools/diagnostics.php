@@ -64,7 +64,7 @@
 	textarea.dup-opts-read {width:100%; height:40px; font-size:12px}
 </style>
 
-<form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-settings&tab=diagnostics' ); ?>" method="post">
+<form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-tools&tab=diagnostics' ); ?>" method="post">
 	<?php wp_nonce_field( 'duplicator_settings_page' ); ?>
 	<input type="hidden" id="dup-settings-form-action" name="action" value="">
 	<br/>
@@ -89,11 +89,19 @@
 			<tr>
 				<td><?php _e("Duplicator Version", 'wpduplicator'); ?></td>
 				<td><?php echo DUPLICATOR_VERSION ?></td>
-			</tr>	
+			</tr>
 			<tr>
 				<td><?php _e("Operating System", 'wpduplicator'); ?></td>
 				<td><?php echo PHP_OS ?></td>
-			</tr>					   
+			</tr>
+			<tr>
+				<td><?php _e("Timezone", 'wpduplicator'); ?></td>
+				<td><?php echo  date_default_timezone_get() ; ?> &nbsp; <small><i>This is a <a href='options-general.php'>WordPress setting</a></i></small></td>
+			</tr>	
+			<tr>
+				<td><?php _e("Server Time", 'wpduplicator'); ?></td>
+				<td><?php echo date("Y-m-d H:i:s"); ?></td>
+			</tr>				   
 			<tr>
 				<td><?php _e("Web Server", 'wpduplicator'); ?></td>
 				<td><?php echo $_SERVER['SERVER_SOFTWARE'] ?></td>

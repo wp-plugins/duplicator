@@ -21,15 +21,12 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
     <?php duplicator_header(__("Settings", 'wpduplicator')) ?>
 
     <h2 class="nav-tab-wrapper">  
-        <a href="?page=duplicator-settings" class="nav-tab <?php echo ($current_tab == 'general') ? 'nav-tab-active' : '' ?>"> <?php _e('General', 'wpduplicator'); ?></a>  
-        <a href="?page=duplicator-settings&tab=diagnostics" class="nav-tab <?php echo ($current_tab != 'general') ? 'nav-tab-active' : '' ?>"> <?php _e('Diagnostics', 'wpduplicator'); ?></a>  
+        <a href="?page=duplicator-settings&tab=general" class="nav-tab <?php echo ($current_tab == 'general') ? 'nav-tab-active' : '' ?>"> <?php _e('General', 'wpduplicator'); ?></a>  
     </h2> 	
 
     <?php
     switch ($current_tab) {
         case 'general': include('general.php');
-            break;
-        case 'diagnostics': include('diagnostics.php');
             break;
     }
     ?>

@@ -68,8 +68,8 @@ class DUP_Database {
 				DUP_Log::Error("SQL file generated zero bytes.", "No data was written to the sql file.  Check permission on file and parent directory at [{$this->dbStorePath}]");
 			}
 			DUP_Log::Info("SQL FILE SIZE: " . DUP_Util::ByteSize($sql_file_size));
+			DUP_Log::Info("SQL FILE TIME: " . date("Y-m-d H:i:s"));
 			DUP_Log::Info("SQL RUNTIME: {$time_sum}");
-			DUP_Log::Info("MEMORY STACK: " . DUP_Server::GetPHPMemory());
 			
 			$this->Size = @filesize($this->dbStorePath);
 			$this->Package->SetStatus(DUP_PackageStatus::DBDONE);
@@ -241,14 +241,14 @@ class DUP_Database {
 		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");		
 		DUP_Log::Info("RESPONSE: {$output}");
 	
-
-		$sql_footer = "/* " . DUPLICATOR_DB_EOF_MARKER . " */\n\n";
+		$sql_footer  = "\n\n/* Duplicator WordPress Timestamp: " . date("Y-m-d H:i:s") . "*/\n";
+		$sql_footer .= "/* " . DUPLICATOR_DB_EOF_MARKER . " */\n";
 		file_put_contents($this->dbStorePath, $sql_footer, FILE_APPEND);
 	
 		return ($output) ?  false : true;
 	}
 
-	//TODO: esc_sql is a wrapper around mysqli_real_escape_string
+
 	private function phpDump() {
 
 		global $wpdb;
@@ -275,7 +275,7 @@ class DUP_Database {
 		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
 		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");	
 
-		$sql_header = "/* DUPLICATOR MYSQL SCRIPT CREATED ON : " . @date("F j, Y, g:i a") . " */\n\n";
+		$sql_header = "/* DUPLICATOR MYSQL SCRIPT CREATED ON : " . @date("Y-m-d H:i:s") . " */\n\n";
 		$sql_header .= "SET FOREIGN_KEY_CHECKS = 0;\n\n";
 		fwrite($handle, $sql_header);
 
@@ -340,7 +340,7 @@ class DUP_Database {
 		}
 		
 		$sql_footer = "\nSET FOREIGN_KEY_CHECKS = 1; \n\n";
-		$sql_footer .= "/* DUPLICATOR MYSQL SCRIPT END ON : " . @date("F j, Y, g:i a") . " */\n\n";
+		$sql_footer .= "/* Duplicator WordPress Timestamp: " . date("Y-m-d H:i:s") . "*/\n";
 		$sql_footer .= "/* " . DUPLICATOR_DB_EOF_MARKER . " */\n";
 		fwrite($handle, $sql_footer);
 		$wpdb->flush();

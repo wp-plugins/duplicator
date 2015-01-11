@@ -44,20 +44,28 @@
 				$installer_log  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG;
 				$package_name   	= (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
 				
-				$html .= (@unlink($installer_file)) ?  "<div class='success'>Successfully removed {$installer_file}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_file}</div>";
-				$html .= (@unlink($installer_bak))  ?  "<div class='success'>Successfully removed {$installer_bak}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_bak}</div>";
-				$html .= (@unlink($installer_sql))  ?  "<div class='success'>Successfully removed {$installer_sql}</div>"  	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_sql}</div>";
-				$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exsist or unable to remove file: {$installer_log}</div>";
+				$html .= (@unlink($installer_file)) ?  "<div class='success'>Successfully removed {$installer_file}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_file}</div>";
+				$html .= (@unlink($installer_bak))  ?  "<div class='success'>Successfully removed {$installer_bak}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_bak}</div>";
+				$html .= (@unlink($installer_sql))  ?  "<div class='success'>Successfully removed {$installer_sql}</div>"  	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_sql}</div>";
+				$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_log}</div>";
 
-				$path_parts = pathinfo($package_name);
-				$path_parts = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
-				if ($path_parts  == "zip"  && ! is_dir($package_name)) {
-					$html .= (@unlink($package_name))   
-						?  "<div class='success'>Successfully removed {$package_name}</div>"   
-						:  "<div class='failed'>Does not exsist or unable to remove file: {$package_name}</div>";
+				//No way to know exact name of archive file except from installer.
+				//The only place where the package can be remove is from installer
+				//So just show a message if removing from plugin.
+				if (! empty($package_name) ){
+					$path_parts = pathinfo($package_name);
+					$path_parts = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
+					if ($path_parts  == "zip"  && ! is_dir($package_name)) {
+						$html .= (@unlink($package_name))   
+							?  "<div class='success'>Successfully removed {$package_name}</div>"   
+							:  "<div class='failed'>Does not exist or unable to remove archive file.</div>";
+					} else {
+						$html .= "<div class='failed'>Does not exist or unable to remove archive file.  Please validate that an archive file exists.</div>";
+					}
 				} else {
-					$html .= "<div class='failed'>Does not exsist or unable to remove file '{$package_name}'.  Validate that an archive file exists.</div>";
+					$html .= '<div>It is <u>recommended</u> to remove your archive file from the root of your WordPress install.  This will need to be done manually.</div>';
 				}
+
 				echo $html;
 			 ?>
 			
