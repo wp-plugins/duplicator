@@ -4,7 +4,7 @@ Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 0.5.10
+Stable tag: 0.5.12
 License: GPLv2
 
 Duplicate, clone, backup, move and transfer an entire site from one location to another.
