@@ -1,5 +1,5 @@
 === Duplicator ===
-Contributors: corylamleorg
+Contributors: corylamleorg, bobriley
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
 Requires at least: 3.8
