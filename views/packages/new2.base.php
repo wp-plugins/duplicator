@@ -49,17 +49,28 @@
 </style>
 
 <!-- =========================================
-WIZARD STEP TABS -->
-<div id="dup-wiz">
-	<div id="dup-wiz-steps">
-		<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
-		<div class="active-step"><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
-		<div><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
-	</div>
-	<div id="dup-wiz-title">
-		<?php _e('Step 2: System Scan', 'wpduplicator'); ?>
-	</div> <hr />
-</div>	
+TOOL BAR: STEPS -->
+<table id="toolbar-table">
+	<tr valign="top">
+		<td style="white-space: nowrap">
+			<div id="dup-wiz">
+				<div id="dup-wiz-steps">
+					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
+					<div class="active-step"><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
+					<div><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
+				</div>
+				<div id="dup-wiz-title">
+					<?php _e('Step 2: System Scan', 'wpduplicator'); ?>
+				</div> 
+			</div>	
+		</td>
+		<td class="toolbar-btns">
+			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
+			<span> <?php echo DUP_PRO_U::_e('Create New'); ?></span>
+		</td>
+	</tr>
+</table>		
+<hr style="margin-bottom:10px">
 
 <form id="form-duplicator" method="post" action="?page=duplicator&tab=new3">
 <div id="dup-progress-area">
@@ -211,7 +222,7 @@ WIZARD STEP TABS -->
 						<b><?php _e('File Count', 'wpduplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
 						<b><?php _e('Directory Count', 'wpduplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
 						<?php 
-							printf(__('Total size reprents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
+							printf(__('Total size represents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.', 'wpduplicator'), DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 						?>
 					</div>
 				</div>		

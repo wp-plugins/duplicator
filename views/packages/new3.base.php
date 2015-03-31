@@ -24,17 +24,29 @@
 </style>
 
 <!-- =========================================
-WIZARD STEP TABS -->
-<div id="dup-wiz">
-	<div id="dup-wiz-steps">
-		<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
-		<div class="completed-step"><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
-		<div class="active-step"><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
-	</div>
-	<div id="dup-wiz-title">
-		<?php _e('Step 3: Build Package', 'wpduplicator'); ?>
-	</div> <hr/>
-</div>
+TOOL BAR: STEPS -->
+<table id="toolbar-table">
+	<tr valign="top">
+		<td style="white-space: nowrap">
+			<div id="dup-wiz">
+				<div id="dup-wiz-steps">
+					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
+					<div class="completed-step"><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
+					<div class="active-step"><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
+				</div>
+				<div id="dup-wiz-title">
+					<?php _e('Step 3: Build Package', 'wpduplicator'); ?>
+				</div> 
+			</div>
+		</td>
+		<td class="toolbar-btns">
+			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
+			<span> <?php echo DUP_PRO_U::_e('Create New'); ?></span>
+		</td>
+	</tr>
+</table>		
+<hr style="margin-bottom:10px">
+
 
 <form id="form-duplicator" method="post" action="?page=duplicator">
 
@@ -121,7 +133,7 @@ WIZARD STEP TABS -->
 				<div id="dup-logs">
 					<div style="font-weight:bold">
 						<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a> &nbsp; | &nbsp;
-						<a href='admin.php?page=duplicator-support' target="support"> <?php _e('Support', 'wpduplicator');?> </a>
+						<a href='admin.php?page=duplicator-help' target="support"> <?php _e('Support', 'wpduplicator');?> </a>
 					</div> 
 					<br/>
 				</div>
@@ -130,15 +142,10 @@ WIZARD STEP TABS -->
 			
 		</div>
 	</div>
-	
-
-	
 </form>
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	
-	
 	/*	----------------------------------------
 	*	METHOD: Performs Ajax post to create a new package
 	*	Timeout (10000000 = 166 minutes)  */

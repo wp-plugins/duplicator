@@ -18,7 +18,7 @@
 	$package_hash = $Package->MakeHash();
 
 	$dup_tests  = array();
-	$dup_tests  = DUP_Server::GetRequirments();
+	$dup_tests  = DUP_Server::GetRequirements();
 	$default_name = DUP_Package::GetDefaultName();
 	
 	$view_state = DUP_UI::GetViewStateArray();
@@ -29,7 +29,7 @@
 
 <style>
 	/* -----------------------------
-	REQUIRMENTS*/
+	REQUIREMENTS*/
 	div.dup-sys-section {margin:1px 0px 5px 0px}
 	div.dup-sys-title {display:inline-block; width:250px; padding:1px; }
 	div.dup-sys-title div {display:inline-block;float:right; }
@@ -72,18 +72,31 @@
 </style>
 
 <!-- =========================================
-WIZARD STEP TABS -->			
-<div id="dup-wiz">
-	<div id="dup-wiz-steps">
-		<div class="active-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
-		<div><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
-		<div><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
-	</div>
-	<div id="dup-wiz-title">
-		<?php _e('Step 1: Package Setup', 'wpduplicator'); ?>
-	</div> <hr/>
-</div>	
-
+TOOL BAR: STEPS -->
+<table id="toolbar-table">
+	<tr valign="top">
+		<td style="white-space: nowrap">
+			<div id="dup-wiz">
+				<div id="dup-wiz-steps">
+					<div class="active-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
+					<div><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
+					<div><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
+				</div>
+				<div id="dup-wiz-title">
+					<?php _e('Step 1: Package Setup', 'wpduplicator'); ?>
+				</div> 
+			</div>	
+		</td>
+		<td class="toolbar-btns">
+			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
+			<span> <?php echo DUP_PRO_U::_e('Create New'); ?></span>
+		</td>
+	</tr>
+</table>	
+<hr style="margin-bottom:8px">
+				
+			
+			
 <?php if (! empty($action_response))  :	?>
 	<div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
 <?php endif; ?>	
@@ -103,7 +116,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 	<div class="dup-box-panel" style="<?php echo ($dup_tests['Success']) ? 'display:none' : ''; ?>">
 
 		<div class="dup-sys-section">
-			<i><?php _e("System requirments must pass for the Duplicator to work properly.  Click each link for details.", 'wpduplicator'); ?></i>
+			<i><?php _e("System requirements must pass for the Duplicator to work properly.  Click each link for details.", 'wpduplicator'); ?></i>
 		</div>
 		
 		<!-- PHP SUPPORT -->
@@ -127,13 +140,17 @@ META-BOX1: SYSTEM REQUIREMENTS -->
 						<td><?php echo $dup_tests['PHP']['SAFE_MODE'] ?></td>
 					</tr>					
 					<tr>
-						<td><?php _e('Function', 'wpduplicator');?> file_get_contents</td>
+						<td><?php _e('Function', 'wpduplicator');?> <a href="http://php.net/manual/en/function.file-get-contents.php" target="_blank">file_get_contents</a></td>
 						<td><?php echo $dup_tests['PHP']['FUNC_1'] ?></td>
 					</tr>					
 					<tr>
-						<td><?php _e('Function', 'wpduplicator');?> file_put_contents</td>
+						<td><?php _e('Function', 'wpduplicator');?> <a href="http://php.net/manual/en/function.file-put-contents.php" target="_blank">file_put_contents</a></td>
 						<td><?php echo $dup_tests['PHP']['FUNC_2'] ?></td>
 					</tr>
+					<tr>
+						<td><?php _e('Function', 'wpduplicator');?> <a href="http://php.net/manual/en/mbstring.installation.php" target="_blank">mb_strlen</a></td>
+						<td><?php echo $dup_tests['PHP']['FUNC_3'] ?></td>
+					</tr>					
 				</table>
 				<small>
 					<?php _e("PHP versions 5.2.17+ or higher is required. Please note that in versioning logic a value such as 5.2.9 is less than 5.2.17. For compression to work the ZipArchive extension for PHP is required. Safe Mode should be set to 'Off' in you php.ini file and is deprecated as of PHP 5.3.0.  For any issues in this section please contact your hosting provider or server administrator.  For additional information see our online documentation.", 'wpduplicator'); ?>

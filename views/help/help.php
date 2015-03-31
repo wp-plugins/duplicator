@@ -25,10 +25,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 
 <div class="wrap dup-wrap dup-support-all">
-
-    <!-- h2 required here for general system messages -->
-    <h2 style='display:none'></h2>
-
+	
     <?php duplicator_header(__("Help", 'wpduplicator')) ?>
     <hr size="1" />
 
