@@ -183,11 +183,11 @@ if (is_admin() == true) {
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_tools = add_submenu_page('duplicator', __('Tools', 'wpduplicator'), __('Tools', 'wpduplicator'), $perms, 'duplicator-tools', 'duplicator_get_menu');
 
-        $perms = 'read';
+        $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_help = add_submenu_page('duplicator', __('Help', 'wpduplicator'), __('Help', 'wpduplicator'), $perms, 'duplicator-help', 'duplicator_get_menu');
 
-        $perms = 'read';
+        $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_about = add_submenu_page('duplicator', __('About', 'wpduplicator'), __('About', 'wpduplicator'), $perms, 'duplicator-about', 'duplicator_get_menu');
 
