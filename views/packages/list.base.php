@@ -59,7 +59,7 @@ TOOL-BAR -->
 		</td>
 		<td class="toolbar-btns">
 			<span><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></span> &nbsp;
-			<a id="dup-pro-create-new"  href="?page=duplicator&tab=new1" class="add-new-h2"><?php echo DUP_PRO_U::_e('Create New'); ?></a>
+			<a id="dup-pro-create-new"  href="?page=duplicator&tab=new1" class="add-new-h2"><?php _e("Create New", 'wpduplicator'); ?></a>
 		</td>
 	</tr>
 </table>	

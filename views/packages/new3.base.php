@@ -41,7 +41,7 @@ TOOL BAR: STEPS -->
 		</td>
 		<td class="toolbar-btns">
 			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
-			<span> <?php echo DUP_PRO_U::_e('Create New'); ?></span>
+			<span> <?php _e("Create New", 'wpduplicator'); ?></span>
 		</td>
 	</tr>
 </table>		
