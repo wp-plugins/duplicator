@@ -118,7 +118,7 @@ class DUP_Archive {
 		foreach ($this->Dirs as $key => $val) {
 			//Remove path filter directories
 			foreach($this->filterDirsArray as $item) { 
-				if (strstr($val, $item)) {
+				if (strstr($val, $item . '/') || $val == $item) {
 					$this->OmitDirs[] = $val;
 					unset($this->Dirs[$key]);
 					continue 2;
