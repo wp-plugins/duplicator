@@ -158,8 +158,8 @@ TOOL-BAR -->
 						<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> 
 						<div style="height:7px">&nbsp;</div>
 						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}', '{$reportfilelink}' " ;?>); return false;" class="thickbox"><i class="fa fa-lock"></i> &nbsp; <?php _e("Links", 'wpduplicator')?></button> &nbsp; 
-						<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-table"></i> &nbsp; <?php _e("SQL File", 'wpduplicator')?></button> &nbsp; 
-						<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-pencil-square-o"></i> &nbsp; <?php _e("View Log", 'wpduplicator')?></button>
+						<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-table"></i> &nbsp; <?php _e("SQL", 'wpduplicator')?></button> &nbsp; 
+						<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-list-alt"></i> &nbsp; <?php _e("Log", 'wpduplicator')?></button>
 						<?php if ($package_debug) : ?>
 							<div style="margin-top:7px">
 								<a href="javascript:void(0)" onclick="window.open(<?php echo "'{$reportfilelink}', '_blank'" ;?>); return false;">[<?php _e("Open Scan Report", 'wpduplicator')?>]</a> &nbsp;
