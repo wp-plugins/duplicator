@@ -20,7 +20,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         background-image:linear-gradient(to bottom, #FFFFFF 0%, #DEDEDE 100%);
     }
     div.dup-compare-area {width:400px;  float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
-	div.feature {background: #fff; padding:20px; margin: 2px; text-align: center; min-height: 30px}
+	div.feature {background: #fff; padding:15px; margin: 2px; text-align: center; min-height: 30px}
 	div.feature a {font-size:20px; font-weight: bold;}
 	div.dup-compare-area div.feature div.info {display:none; padding:10px 15px 5px 15px; font-style: italic; color: #555; font-size: 14px}
 	div.dup-gopro-header {text-align: center; margin: 5px 0 15px 0; font-size:18px; line-height: 30px}
@@ -77,6 +77,8 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<div class="feature"><i class="fa fa-times fa-2x"></i></div>
 			<div class="feature"><i class="fa fa-times fa-2x"></i></div>
 			<div class="feature"><i class="fa fa-times fa-2x"></i></div>
+			<div class="feature"><i class="fa fa-times fa-2x"></i></div>
+			
         </div> 
 
         <!-- PRO  -->
@@ -120,6 +122,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<div class="feature">
 				<a href="javascript:void(0)" class="dup-info-click"><?php _e('Queued Processing', 'wpduplicator') ?></a>
 				<div class="info"><?php _e('Enable the build of larger more complex packages and avoid server timeouts with queued processing.', 'wpduplicator') ?></div>
+			</div>
+			<div class="feature">
+				<a href="javascript:void(0)" class="dup-info-click"><?php _e('Customer Support', 'wpduplicator') ?></a>
+				<div class="info"><?php _e('Server setups can be quite complex, with pro you get prompt help to get your site backed up and moved.', 'wpduplicator') ?></div>
 			</div>
 			
         </div>
