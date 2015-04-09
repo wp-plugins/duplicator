@@ -98,7 +98,7 @@ TOOL BAR: STEPS -->
 		<div class="dup-panel-title">
 			<i class="fa fa-hdd-o"></i> <?php 	_e("Server", 'wpduplicator');	?>
 			<div style="float:right; margin:-1px 10px 0px 0px">
-				<small><a href="?page=duplicator-settings&tab=diagnostics" target="_blank"><?php _e('Diagnostics', 'wpduplicator');?></a></small>
+				<small><a href="?page=duplicator-tools&tab=diagnostics" target="_blank"><?php _e('Diagnostics', 'wpduplicator');?></a></small>
 			</div>
 		
 		</div>
