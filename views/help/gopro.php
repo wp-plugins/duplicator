@@ -40,7 +40,11 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
     <div style="width:850px; margin:auto; text-align: center;">
 
 		<div style="line-height:28px">
-			<h1 style="font-size:38px"><?php _e('Duplicator Pro Has Arrived!', 'wpduplicator') ?></h1>
+			
+			<h1 style="font-size:38px">
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo.png" style='text-align:top; margin:-8px 0'  />
+				<?php _e('Duplicator Pro Has Arrived!', 'wpduplicator') ?>
+			</h1>
 			<h3 style="font-size:20px">
 				<?php _e('The simplicity of Duplicator', 'wpduplicator') ?>
 				<?php _e('with the power the professional requires.', 'wpduplicator') ?>
@@ -116,10 +120,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         </div>
         <br style="clear:both" />
         <p style="text-align:center">
-            <a href="http://duplicatorpro.com" target="_blank" class="button button-primary button-large dup-check-it-btn" >
+            <a href="http://duplicatorpro.com?go-pro" target="_blank" class="button button-primary button-large dup-check-it-btn" >
                 <?php _e('Check It Out!', 'wpduplicator') ?>
             </a>
-            </p>
+        </p>
     </div>
 </div><br/><br/><br/><br/>
 
