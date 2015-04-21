@@ -42,7 +42,7 @@
 
 <!-- ====================
 TOOL-BAR -->
-<table id="toolbar-table">
+<table id="dup-toolbar">
 	<tr valign="top">
 		<td style="white-space: nowrap">
 			<div class="alignleft actions">
@@ -57,7 +57,7 @@ TOOL-BAR -->
 		<td align="center">
 			<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'wpduplicator') ?>..."><i class="fa fa-list-alt"></i>
 		</td>
-		<td class="toolbar-btns">
+		<td class="dup-toolbar-btns">
 			<span><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></span> &nbsp;
 			<a id="dup-pro-create-new"  href="?page=duplicator&tab=new1" class="add-new-h2"><?php _e("Create New", 'wpduplicator'); ?></a>
 		</td>

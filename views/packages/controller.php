@@ -12,10 +12,11 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'list';
 
 <style>
 	//TOOLBAR TABLE
-	table#toolbar-table td {padding:0px; white-space:nowrap;}
-	table#toolbar-table td.toolbar-btns {width:100%; text-align: right; vertical-align: bottom}
-	table#toolbar-table td.toolbar-btns a, span{font-size:16px !important;}
-	table#toolbar-table {width:100%; border:0px solid red; padding: 0; margin:0 0 10px 0; height: 35px}
+	table#dup-toolbar td {padding:0px; white-space:nowrap;}
+	table#dup-toolbar td.dup-toolbar-btns {width:100%; text-align: right; vertical-align: bottom}
+	table#dup-toolbar td.dup-toolbar-btns a {font-size:16px !important;}
+	table#dup-toolbar td.dup-toolbar-btns span {font-size:16px !important;}
+	table#dup-toolbar {width:100%; border:0px solid red; padding: 0; margin:0 0 10px 0; height: 35px}
 	
     /*WIZARD TABS */
     div#dup-wiz {padding:0px; margin:0;  }

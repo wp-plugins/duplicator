@@ -50,7 +50,7 @@
 
 <!-- =========================================
 TOOL BAR: STEPS -->
-<table id="toolbar-table">
+<table id="dup-toolbar">
 	<tr valign="top">
 		<td style="white-space: nowrap">
 			<div id="dup-wiz">
@@ -64,7 +64,7 @@ TOOL BAR: STEPS -->
 				</div> 
 			</div>	
 		</td>
-		<td class="toolbar-btns">
+		<td class="dup-toolbar-btns">
 			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
 			<span> <?php _e("Create New", 'wpduplicator'); ?></span>
 		</td>

@@ -25,7 +25,7 @@
 
 <!-- =========================================
 TOOL BAR: STEPS -->
-<table id="toolbar-table">
+<table id="dup-toolbar">
 	<tr valign="top">
 		<td style="white-space: nowrap">
 			<div id="dup-wiz">
@@ -39,7 +39,7 @@ TOOL BAR: STEPS -->
 				</div> 
 			</div>
 		</td>
-		<td class="toolbar-btns">
+		<td class="dup-toolbar-btns">
 			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
 			<span> <?php _e("Create New", 'wpduplicator'); ?></span>
 		</td>
@@ -102,7 +102,8 @@ TOOL BAR: STEPS -->
 			
 				<i><?php _e('Please try the process again.', 'wpduplicator'); ?></i><br/><br/>
 				  
-				<input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />
+				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'wpduplicator'); ?>" onclick="window.open('http://lifeinthegrid.com/support/knowledgebase.php?article=12#faq-trouble-timeout', '_blank');return false;" />
+                                <input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />                                
 				<fieldset>
 					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'wpduplicator'); ?></b></legend>
 					<div class="dup-msg-error-area">
@@ -132,8 +133,7 @@ TOOL BAR: STEPS -->
 				<!-- LOGS -->
 				<div id="dup-logs">
 					<div style="font-weight:bold">
-						<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a> &nbsp; | &nbsp;
-						<a href='admin.php?page=duplicator-help' target="support"> <?php _e('Support', 'wpduplicator');?> </a>
+						<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a>						
 					</div> 
 					<br/>
 				</div>
