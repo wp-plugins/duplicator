@@ -13,6 +13,19 @@ class DUP_Util {
 	}
 
 	/**
+	*  Language slug
+	*/
+	static public function _e($text)
+	{
+		_e($text, DUPLICATOR_LANG_SLUG);
+	}
+
+	static public function __($text)
+	{
+		return __($text, DUPLICATOR_LANG_SLUG);
+	}
+	
+	/**
 	*  returns the snapshot url
 	*/
 	static public function SSDirURL() {
