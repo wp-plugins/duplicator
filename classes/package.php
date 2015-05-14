@@ -277,6 +277,7 @@ class DUP_Package {
 			$this->Archive->FilterExts		= str_replace(array('.' ,' '), "", esc_html($filter_exts));
 			//INSTALLER
 			$this->Installer->OptsDBHost		= esc_html($post['dbhost']);
+			$this->Installer->OptsDBPort		= esc_html($post['dbport']);
 			$this->Installer->OptsDBName		= esc_html($post['dbname']);
 			$this->Installer->OptsDBUser		= esc_html($post['dbuser']);
 			$this->Installer->OptsSSLAdmin		= isset($post['ssl-admin'])		? 1 : 0;

@@ -70,6 +70,7 @@
 				success: function(data, textStatus, xhr){ 
 					if (typeof(data) != 'undefined' && data.pass == 1) {
 						$("#ajax-dbhost").val($("#dbhost").val());
+						$("#ajax-dbport").val($("#dbport").val());
 						$("#ajax-dbuser").val($("#dbuser").val());
 						$("#ajax-dbpass").val($("#dbpass").val());
 						$("#ajax-dbname").val($("#dbname").val());
@@ -77,7 +78,7 @@
 						$("#ajax-dbcollate").val($("#dbcollate").val());
 						$("#ajax-logging").val($("#logging").val());
 						$("#ajax-json").val(escape(JSON.stringify(data)));
-						setTimeout(function() {$('#dup-step1-result-form').submit();}, 200);
+						setTimeout(function() {$('#dup-step1-result-form').submit();}, 400);
 						$('#progress-area').fadeOut(700);
 					} else {
 						Duplicator.hideProgressBar();
@@ -112,7 +113,7 @@
 	/** **********************************************
 	* METHOD: Shows results of database connection 
 	* Timeout (45000 = 45 secs) */
-	Duplicator.dlgTestDB = function () {
+	Duplicator.dlgTestDB = function () {		
 		$.ajax({
 			type: "POST",
 			timeout: 45000,
@@ -132,6 +133,13 @@
 			? $('#dup-step1-warning-emptydb').show(300)
 			: $('#dup-step1-warning-emptydb').hide(300);
 	};
+	
+	Duplicator.togglePort = function () {
+		
+		$('#dup-step1-dbport-btn').hide();
+		$('#dbport').show();
+	}
+	
 	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
@@ -218,10 +226,26 @@ VIEW: STEP 1- INPUT -->
 					</div>
 				</td>
 			</tr>			
-    	    <tr><td>Host</td><td><input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" /></td></tr>
-			<tr><td>Name</td><td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  /></td></tr>
-			<tr><td>User</td><td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td></tr>
-    	    <tr><td>Password</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database user password"   /></td></tr>
+    	    <tr>
+				<td>Host</td>
+				<td>
+					<input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:410px" />
+					<input id="dup-step1-dbport-btn" type="button" onclick="Duplicator.togglePort()" style="" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+					<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  /></td>
+			</tr>
+			<tr>
+				<td>User</td>
+				<td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td>
+			</tr>
+    	    <tr>
+				<td>Password</td>
+				<td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database user password"   /></td>
+			</tr>
     	</table>
 		
 		
@@ -313,9 +337,9 @@ Auto Posts to view.step2.php  -->
 <form id='dup-step1-result-form' method="post" class="content-form" style="display:none">
 	<input type="hidden" name="action_step" value="2" />
 	<input type="hidden" name="package_name" value="<?php echo $zip_file_name ?>" />
-	<!-- Set via jQuery -->
 	<input type="hidden" name="logging" id="ajax-logging"  />	
 	<input type="hidden" name="dbhost" id="ajax-dbhost" />
+	<input type="hidden" name="dbport" id="ajax-dbport" />
 	<input type="hidden" name="dbuser" id="ajax-dbuser" />
 	<input type="hidden" name="dbpass" id="ajax-dbpass" />
 	<input type="hidden" name="dbname" id="ajax-dbname" />

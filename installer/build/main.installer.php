@@ -106,6 +106,8 @@ $GLOBALS['FW_PACKAGE_NOTES'] = '%fwrite_package_notes%';
 $GLOBALS['FW_SECURE_NAME'] = '%fwrite_secure_name%';
 $GLOBALS['FW_DBHOST'] = '%fwrite_dbhost%';
 $GLOBALS['FW_DBHOST'] = empty($GLOBALS['FW_DBHOST']) ? 'localhost' : $GLOBALS['FW_DBHOST'];
+$GLOBALS['FW_DBPORT'] = '%fwrite_dbport%';
+$GLOBALS['FW_DBPORT'] = empty($GLOBALS['FW_DBPORT']) ? 3306 : $GLOBALS['FW_DBPORT'];
 $GLOBALS['FW_DBNAME'] = '%fwrite_dbname%';
 $GLOBALS['FW_DBUSER'] = '%fwrite_dbuser%';
 $GLOBALS['FW_DBPASS'] = '%fwrite_dbpass%';
@@ -148,14 +150,16 @@ define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR
 
 //SHARED POST PARMS
 $_POST['action_step'] = isset($_POST['action_step']) ? $_POST['action_step'] : "1";
+
+/* Host has several combinations : 
+localhost | localhost:55 | localhost: | http://localhost | http://localhost:55 */
 $_POST['dbhost']	= isset($_POST['dbhost']) ? trim($_POST['dbhost']) : null;
+$_POST['dbport']    = isset($_POST['dbport']) ? trim($_POST['dbport']) : 3306;
 $_POST['dbuser']	= isset($_POST['dbuser']) ? trim($_POST['dbuser']) : null;
 $_POST['dbpass']	= isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
 $_POST['dbname']	= isset($_POST['dbname']) ? trim($_POST['dbname']) : null;
 $_POST['dbcharset'] = isset($_POST['dbcharset'])  ? trim($_POST['dbcharset']) : $GLOBALS['DBCHARSET_DEFAULT'];
 $_POST['dbcollate'] = isset($_POST['dbcollate'])  ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
-$_POST['dbport']	= isset($_POST['dbhost'])	  ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
-$_POST['dbport']    = (! empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
 
 //GLOBALS
 $GLOBALS["SQL_FILE_NAME"] = "installer-data.sql";
@@ -167,7 +171,7 @@ $GLOBALS['CHOWN_ROOT_PATH'] = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
 $GLOBALS['CHOWN_LOG_PATH'] = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}/{$GLOBALS['LOG_FILE_NAME']}", 0644);
 $GLOBALS['URL_SSL'] = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;
 $GLOBALS['URL_PATH'] = ($GLOBALS['URL_SSL']) ? "https://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}" : "http://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}";
-$GLOBALS['DB_PORT'] = parse_url($_POST['dbhost'], PHP_URL_PORT);
+
 
 
 

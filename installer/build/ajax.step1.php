@@ -42,15 +42,17 @@ error_reporting(E_ERROR);
 //===============================
 if (isset($_GET['dbtest'])) {
 	
-	$html    = "";
-	$dbConn  = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
-	$dbErr	 = mysqli_connect_error();
-	$dbFound = mysqli_select_db($dbConn, $_POST['dbname']);
+	$html     = "";
+	$baseport =  parse_url($_POST['dbhost'], PHP_URL_PORT);
+	$dbConn   = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
+	$dbErr	  = mysqli_connect_error();
+	$dbFound  = mysqli_select_db($dbConn, $_POST['dbname']);
+	$port_view = (is_int($baseport) || substr($_POST['dbhost'], -1) == ":") ? "Port=[Set in Host]" : "Port={$_POST['dbport']}";
 
 	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$html	 .= "<div class='dup-db-test'>";
-	$html	 .= "<small style='display:block; padding:5px'>Using Connection String:<br/>Server={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; Port={$_POST['dbport']}</small>";
+	$html	 .= "<small style='display:block; padding:5px'>Using Connection String:<br/>Host={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; {$port_view}</small>";
 	$html	 .= "<label>Server Connected:</label> {$tstSrv} <br/>";
 	$html	 .= "<label>Database Found:</label>   {$tstDB} <br/>";
 	
@@ -181,11 +183,13 @@ $patterns = array(
 	"/'DB_PASSWORD',\s*'.*?'/",
 	"/'DB_HOST',\s*'.*?'/");
 
+$db_host = ($_POST['dbport'] == 3306) ? $_POST['dbhost'] : "{$_POST['dbhost']}:{$_POST['dbport']}";
+
 $replace = array(
 	"'DB_NAME', "	  . '\'' . $_POST['dbname']				. '\'',
 	"'DB_USER', "	  . '\'' . $_POST['dbuser']				. '\'',
 	"'DB_PASSWORD', " . '\'' . DupUtil::preg_replacement_quote($_POST['dbpass']) . '\'',
-	"'DB_HOST', "	  . '\'' . $_POST['dbhost']				. '\'');
+	"'DB_HOST', "	  . '\'' . $db_host				. '\'');
 
 //SSL CHECKS
 if ($_POST['ssl_admin']) {

@@ -187,6 +187,10 @@ META-BOX: STORAGE -->
                 <td style="width:130px"><?php _e("Host", 'wpduplicator') ?></td>
                 <td><input type="text" name="dbhost" id="dbhost" value="<?php echo $Package->Installer->OptsDBHost ?>"  maxlength="200" placeholder="localhost"/></td>
             </tr>
+			<tr>
+                <td style="width:130px"><?php _e("Host Port", 'wpduplicator') ?></td>
+                <td><input type="text" name="dbport" id="dbport" value="<?php echo $Package->Installer->OptsDBPort ?>"  maxlength="200" placeholder="3306"/></td>
+            </tr>
             <tr>
                 <td><?php _e("Database", 'wpduplicator') ?></td>
                 <td><input type="text" name="dbname" id="dbname" value="<?php echo $Package->Installer->OptsDBName ?>" maxlength="100" placeholder="mydatabaseName" /></td>

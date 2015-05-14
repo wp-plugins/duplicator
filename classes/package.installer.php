@@ -8,6 +8,7 @@ class DUP_Installer {
 	public $File;
 	public $Size = 0;
 	public $OptsDBHost;
+	public $OptsDBPort;
 	public $OptsDBName;
 	public $OptsDBUser;
 	public $OptsSSLAdmin;
@@ -130,6 +131,7 @@ class DUP_Installer {
 			"fwrite_secure_name"		=> $this->Package->NameHash,
 			"fwrite_url_new"			=> $this->Package->Installer->OptsURLNew,
 			"fwrite_dbhost"				=> $this->Package->Installer->OptsDBHost,
+			"fwrite_dbport"				=> $this->Package->Installer->OptsDBPort,
 			"fwrite_dbname"				=> $this->Package->Installer->OptsDBName,
 			"fwrite_dbuser"				=> $this->Package->Installer->OptsDBUser,
 			"fwrite_dbpass"				=> '',
