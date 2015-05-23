@@ -1,7 +1,7 @@
 <?php
 //Prevent directly browsing to the file
 if (function_exists('plugin_dir_url')) {
-    define('DUPLICATOR_VERSION',        '0.5.19');
+    define('DUPLICATOR_VERSION',        '0.5.20');
     define("DUPLICATOR_HOMEPAGE",       "http://lifeinthegrid.com/labs/duplicator");
     define("DUPLICATOR_GIVELINK",       "http://lifeinthegrid.com/partner");
     define("DUPLICATOR_HELPLINK",       "http://lifeinthegrid.com/duplicator-docs");
