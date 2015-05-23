@@ -7,7 +7,7 @@ Tested up to: 4.2
 Stable tag: 0.5.20
 License: GPLv2
 
-Duplicate, clone, backup, move and transfer an entire site from one location to another.
+Duplicate, clone, backup, move and transfer an entire site from one location to another. 
 
 
 == Description ==
