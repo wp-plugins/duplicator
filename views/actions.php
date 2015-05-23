@@ -9,6 +9,7 @@
  */
 function duplicator_package_scan() {
 	
+	header('Content-Type: application/json;');
 	DUP_Util::CheckPermissions('export');
 	
 	@set_time_limit(0);
@@ -18,6 +19,7 @@ function duplicator_package_scan() {
 	
 	$Package = DUP_Package::GetActive();
 	$report = $Package->Scan();
+	
 	$Package->SaveActiveItem('ScanFile', $Package->ScanFile);
 	$json_response = json_encode($report);
 	
@@ -34,6 +36,7 @@ function duplicator_package_scan() {
  */
 function duplicator_package_build() {
 	
+	header('Content-Type: application/json');
 	DUP_Util::CheckPermissions('export');
 	
 	@set_time_limit(0);

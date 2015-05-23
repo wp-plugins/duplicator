@@ -194,7 +194,7 @@ if (is_admin() == true) {
 		
 		$perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_gopro = add_submenu_page('duplicator', __('Go Pro!', 'wpduplicator'), __('Go Pro!', 'wpduplicator'), $perms, 'duplicator-gopro', 'duplicator_get_menu');
+        //$page_gopro = add_submenu_page('duplicator', __('Go Pro!', 'wpduplicator'), __('Go Pro!', 'wpduplicator'), $perms, 'duplicator-gopro', 'duplicator_get_menu');
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');

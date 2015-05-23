@@ -44,12 +44,12 @@ META-BOX: STORAGE -->
 						<p class="description">
 							<?php _e("All packages including the archive, installer and SQL script are stored in the location above. ", 'wpduplicator'); ?>
 							<br/>
-						<small>
+						<!--small>
 							<?php _e("Dropbox, FTP and other multiple storage options available in ", 'wpduplicator'); ?>
 							<a href="http://duplicatorpro.com/?from_free_storage" target="_blank">
 								<?php _e("Duplicator Pro", 'wpduplicator'); ?>
 							</a>
-						</small>
+						</small-->
 						</p>
 					</td>
 				</tr>

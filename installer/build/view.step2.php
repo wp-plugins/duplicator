@@ -48,7 +48,7 @@
 				if (typeof(data) != 'undefined' && data.step2.pass == 1) {
 					$("#ajax-url_new").val($("#url_new").val());
 					$("#ajax-json").val(escape(JSON.stringify(data)));
-					setTimeout(function(){$('#dup-step2-result-form').submit();}, 100);
+					setTimeout(function(){$('#dup-step2-result-form').submit();}, 1000);
 					$('#progress-area').fadeOut(1800);
 				} else {
 					Duplicator.hideProgressBar();

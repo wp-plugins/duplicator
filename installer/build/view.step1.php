@@ -78,7 +78,7 @@
 						$("#ajax-dbcollate").val($("#dbcollate").val());
 						$("#ajax-logging").val($("#logging").val());
 						$("#ajax-json").val(escape(JSON.stringify(data)));
-						setTimeout(function() {$('#dup-step1-result-form').submit();}, 400);
+						setTimeout(function() {$('#dup-step1-result-form').submit();}, 1000);
 						$('#progress-area').fadeOut(700);
 					} else {
 						Duplicator.hideProgressBar();
