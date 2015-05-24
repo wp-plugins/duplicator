@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 0.5.20
+  Version: 0.5.22
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   License: GPLv2 or later
@@ -192,8 +192,8 @@ if (is_admin() == true) {
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_about = add_submenu_page('duplicator', __('About', 'wpduplicator'), __('About', 'wpduplicator'), $perms, 'duplicator-about', 'duplicator_get_menu');
 		
-		$perms = 'manage_options';
-        $perms = apply_filters($wpfront_caps_translator, $perms);
+		//$perms = 'manage_options';
+        //$perms = apply_filters($wpfront_caps_translator, $perms);
         //$page_gopro = add_submenu_page('duplicator', __('Go Pro!', 'wpduplicator'), __('Go Pro!', 'wpduplicator'), $perms, 'duplicator-gopro', 'duplicator_get_menu');
 
         //Apply Scripts
@@ -202,7 +202,7 @@ if (is_admin() == true) {
         add_action('admin_print_scripts-' . $page_help, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_about, 'duplicator_scripts');
-		add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
+		//add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
 
         //Apply Styles
         add_action('admin_print_styles-' . $page_packages, 'duplicator_styles');
@@ -210,7 +210,7 @@ if (is_admin() == true) {
         add_action('admin_print_styles-' . $page_help, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_about, 'duplicator_styles');
-		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
+		//add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
     }
 
     /**
