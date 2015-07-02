@@ -1,7 +1,7 @@
 <?php
 //Prevent directly browsing to the file
 if (function_exists('plugin_dir_url')) {
-    define('DUPLICATOR_VERSION',        '0.5.22');
+    define('DUPLICATOR_VERSION',        '0.5.23');
     define("DUPLICATOR_HOMEPAGE",       "http://lifeinthegrid.com/labs/duplicator");
     define("DUPLICATOR_GIVELINK",       "http://lifeinthegrid.com/partner");
     define("DUPLICATOR_HELPLINK",       "http://lifeinthegrid.com/duplicator-docs");
@@ -10,8 +10,6 @@ if (function_exists('plugin_dir_url')) {
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	define('DUPLICATOR_LANG_SLUG',		'wpduplicator');
 	
-    
-
     /* Paths should ALWAYS read "/"
       uni: /home/path/file.txt
       win:  D:/home/path/file.txt
@@ -43,7 +41,6 @@ if (function_exists('plugin_dir_url')) {
 	define("DUPLICATOR_SCAN_DBROWS",  250000);
 	define("DUPLICATOR_SCAN_TIMEOUT", 150);			//Seconds
 	define("DUPLICATOR_SCAN_MIN_WP", "3.7.0");
-	define("DUPLICATOR_SCAN_USELEGACY", true);
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');
 	

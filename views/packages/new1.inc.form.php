@@ -178,7 +178,7 @@ META-BOX: STORAGE -->
     </div>			
 
     <div class="dup-box-panel" id="dup-pack-installer-panel" style="<?php echo $ui_css_installer ?>">
-        <div class="dup-installer-header-1"><?php echo _e('STEP 1 - INPUTS'); ?></div><br/>
+        <div class="dup-installer-header-1"><?php echo _e('STEP 1 - INPUTS', 'wpduplicator'); ?></div><br/>
         <table class="dup-installer-tbl">
             <tr>
                 <td colspan="2"><div class="dup-installer-header-2"><?php _e("MySQL Server", 'wpduplicator') ?></div></td>
@@ -232,7 +232,7 @@ META-BOX: STORAGE -->
             </tr>
         </table><br />
 
-        <div class="dup-installer-header-1"><?php echo _e('STEP 2 - INPUTS'); ?></div>
+        <div class="dup-installer-header-1"><?php echo _e('STEP 2 - INPUTS', 'wpduplicator'); ?></div>
 
         <table class="dup-installer-tbl">
             <tr>

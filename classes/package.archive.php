@@ -3,11 +3,83 @@ if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 
 require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.archive.zip.php');
 
+
+
+/**
+ * Defines the scope from which a filter item was created/retreived from
+ * @package DupicatorPro\classes
+ */
+class DUP_Archive_Filter_Scope_Base
+{
+	//All internal storage items that we decide to filter
+	public $Core = array();
+	
+	//Items when creating a package or template
+	public $Instance = array();
+	
+
+}
+
+/**
+ * Defines the scope from which a filter item was created/retreived from
+ * @package DupicatorPro\classes
+ */
+class DUP_Archive_Filter_Scope_Directory extends DUP_Archive_Filter_Scope_Base
+{
+	//Items that are not readable
+	public $Warning = array();
+	
+	//Items that are not readable
+	public $Unreadable = array();
+	
+}
+
+/**
+ * Defines the scope from which a filter item was created/retreived from
+ * @package DupicatorPro\classes
+ */
+class DUP_Archive_Filter_Scope_File extends DUP_Archive_Filter_Scope_Directory
+{
+	//Items that are too large
+	public $Size = array();
+	
+}
+
+/**
+ * Defines the filtered items that are pulled from there various scopes
+ * @package DupicatorPro\classes
+ */
+class DUP_Archive_Filter_Info
+{
+	//Contains all folder filter info
+	public $Dirs = array();
+	
+	//Contains all file filter info
+	public $Files = array();
+	
+	//Contains all extensions filter info
+	public $Exts = array();
+	
+	public $UDirCount  = 0;
+	public $UFileCount = 0;
+	public $UExtCount  = 0;
+	
+	public function __construct()
+    {
+		$this->Dirs  = new DUP_Archive_Filter_Scope_Directory();
+		$this->Files = new DUP_Archive_Filter_Scope_File();
+		$this->Exts  = new DUP_Archive_Filter_Scope_Base();
+	}
+}
+
+
 class DUP_Archive {
 	
 	//PUBLIC
 	public $FilterDirs;
 	public $FilterExts;
+	public $FilterDirsAll = array();
+	public $FilterExtsAll = array();
 	public $FilterOn;
 	public $File;
 	public $Format;
@@ -17,21 +89,18 @@ class DUP_Archive {
 	public $WarnFileName = array();
 	public $Dirs  = array();
 	public $Files = array();
-	public $Links = array();
-	public $OmitDirs  = array();
-	public $OmitFiles = array();
+	
+	public $FilterInfo;
 	
 	//PROTECTED
 	protected $Package;
 	
-	//PRIVATE
-	private $filterDirsArray = array();
-	private $filterExtsArray = array();
-
 
 	public function __construct($package) {
 		$this->Package   = $package;
 		$this->FilterOn  = false;
+		
+		$this->FilterInfo = new DUP_Archive_Filter_Info();
 	}
 	
 	public function Build($package) {
@@ -80,46 +149,66 @@ class DUP_Archive {
 	 *  @returns array					An array of values for the directory stats
 	 *  @link http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx Windows filename restrictions
 	 */	
-	public function Stats() {
-		
-		$this->filterDirsArray = array();
-		$this->filterExtsArray = array();
-		if ($this->FilterOn) {
-			$this->filterDirsArray = $this->GetFilterDirAsArray();
-			$this->filterExtsArray = $this->GetFilterExtsAsArray();
-		}
-		
+	public function Stats() 
+	{
+		$this->createFilterInfo();
 		$this->getDirs();
 		$this->getFiles();
 		return $this;
 	}
 	
+	
+	//Build Filter Data
+	private function createFilterInfo()
+    {
+		//FILTER: INSTANCE ITEMS
+		//Add the items generated at create time
+		if ($this->FilterOn)
+        {
+			$this->FilterInfo->Dirs->Instance = array_map('DUP_Util::SafePath', explode(";", $this->FilterDirs, -1));
+			$this->FilterInfo->Exts->Instance = explode(";", $this->FilterExts, -1);
+        }
+		
+		//FILTER: CORE ITMES
+		//Filters Duplicator free packages & All pro local directories
+		$this->FilterInfo->Dirs->Core[] = DUPLICATOR_SSDIR_PATH;
+
+		$this->FilterDirsAll = array_merge($this->FilterInfo->Dirs->Instance, 
+				                           $this->FilterInfo->Dirs->Core);
+		
+		$this->FilterExtsAll = array_merge($this->FilterInfo->Exts->Instance,
+				                           $this->FilterInfo->Exts->Core);
+	}
+	
+	
+	
 	//Get All Directories then filter
-	//SPL classes in dirsToArray_New are buggy on some PHP versions
-	//Add back into code base once PHP 5.3.0 is minimum requirment
-	private function getDirs() {
+	private function getDirs() 
+	{
 		
 		$rootPath = DUP_Util::SafePath(rtrim(DUPLICATOR_WPROOTPATH, '//' ));
-		array_push($this->filterDirsArray, DUPLICATOR_SSDIR_PATH);
+		$this->Dirs = array();
 		
 		//If the root directory is a filter then we will only need the root files
-		if (in_array($this->PackDir, $this->filterDirsArray)) {
-			$this->Dirs = $this->PackDir;
-		} else {
-			$this->Dirs = (DUPLICATOR_SCAN_USELEGACY)
-				? $this->dirsToArray_Legacy($rootPath)
-				: $this->dirsToArray_New($rootPath);
-			array_push($this->Dirs, $this->PackDir);
-		}
+        if (in_array($this->PackDir, $this->FilterDirsAll))
+        {
+            $this->Dirs[] = $this->PackDir;
+        }
+        else
+        {
+            $this->Dirs = $this->dirsToArray($rootPath);
+            $this->Dirs[] = $this->PackDir;
+        }
 		
 		//Filter Directories
 		//Invalid test contains checks for: characters over 250, invlaid characters, 
 		//empty string and directories ending with period (Windows incompatable)
-		foreach ($this->Dirs as $key => $val) {
+		foreach ($this->Dirs as $key => $val) 
+		{
 			//Remove path filter directories
-			foreach($this->filterDirsArray as $item) { 
+			foreach($this->FilterDirsAll as $item) 
+			{ 
 				if (strstr($val, $item . '/') || $val == $item) {
-					$this->OmitDirs[] = $val;
 					unset($this->Dirs[$key]);
 					continue 2;
 				}
@@ -132,85 +221,102 @@ class DUP_Archive {
 							|| 	trim($name) == "" 
 							||  (strrpos($name, '.') == strlen($name) - 1  && substr($name, -1) == '.');
 			
-			if ($invalid_test) {
+			if ($invalid_test || preg_match('/[^\x20-\x7f]/', $name)) {
 				$this->WarnFileName[] = $val;
-				$this->OmitDirs[]     = $val;
+				$this->FilterInfo->Dirs->Warning[] = utf8_encode($val);
 			} 
+			
+			
+			//Dir is not readble remove and flag
+			if (! is_readable($this->Dirs[$key])) 
+			{
+				unset($this->Dirs[$key]);
+				$this->WarnInfo['DirName'][] =  $val;
+				$this->FilterInfo->Dirs->Unreadable[] = $val;
+				$this->FilterDirsAll[] = $val;
+			}
 		}
 	}
 	
 	//Get all files and filter out error prone subsets
-	private function getFiles() {
-		foreach ($this->Dirs as $key => $val) {
+	private function getFiles() 
+	{
+		foreach ($this->Dirs as $key => $val) 
+		{
 			$files = DUP_Util::ListFiles($val);
-			foreach ($files as $filePath) {
+			foreach ($files as $filePath) 
+			{
 				$fileName = basename($filePath);
-				$valid = true;
-				if (!is_dir($filePath)){
-					if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->filterExtsArray)  && is_readable($filePath)) {
+				if (!is_dir($filePath))
+				{
+					if (!in_array(@pathinfo($filePath, PATHINFO_EXTENSION), $this->FilterExtsAll)) 
+					{
+						//Unreadable
+						if (!is_readable($filePath))
+						{
+							$this->FilterInfo->Files->Unreadable[]  = $filePath;
+							continue;
+						}
+						
 						$fileSize = @filesize($filePath);
 						$fileSize = empty($fileSize) ? 0 : $fileSize; 
-						if (strlen($filePath) > 250 || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName)|| trim($fileName) == "") {
+						$invalid_test = strlen($filePath) > 250 || 
+										preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName) || 
+										trim($fileName) == "";
+
+						if ($invalid_test || preg_match('/[^\x20-\x7f]/', $fileName))
+						{
+							$this->FilterInfo->Files->Warning[] = utf8_encode($filePath);
 							array_push($this->WarnFileName, $filePath);
-							$valid = false;
 						} 
-						if ($fileSize > DUPLICATOR_SCAN_WARNFILESIZE) {
-							array_push($this->WarnFileSize, $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
-						}
-						if ($valid) {
+						else 
+						{
 							$this->Size += $fileSize;
 							$this->Files[] = $filePath;
-						} 
-						else {
-							$this->OmitFiles[] = $filePath;
 						}
-					} else {
-						$this->OmitFiles[] = $filePath;	
+						
+						if ($fileSize > DUPLICATOR_SCAN_WARNFILESIZE) 
+						{
+							$this->FilterInfo->Files->Size[] = $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']';
+							array_push($this->WarnFileSize, $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
+						}
 					} 
 				}
 			}
 		}
 	}
 	
-	//Recursive function to get all Directories in a wp install
-	//Older PHP logic which shows to be more stable on older version of PHP
-	private function dirsToArray_Legacy($path) {
+    //Recursive function to get all Directories in a wp install
+    //Older PHP logic which is more stable on older version of PHP
+	//NOTE RecursiveIteratorIterator is problematic on some systems issues include:
+    // - error 'too many files open' for recursion
+    // - $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
+    // - issues with when a file has a permission such as 705 and trying to get info (had to fallback to pathinfo)
+	// - basic conclusion wait on the SPL libs untill after php 5.4 is a requiremnt
+	// - since we are in a tight recursive loop lets remove the utiltiy call DUP_Util::SafePath("{$path}/{$file}") and 
+	//   squeeze out as much performance as we possible can
+	private function dirsToArray($path) 
+	{
 		$items = array();
-		$handle = opendir($path);
-		if ($handle) {
-			while (($file = readdir($handle)) !== false ) {
-				if ($file != "." && $file != "..") {
-					$fullPath = DUP_Util::SafePath($path. "/" . $file);
-					if (is_dir($fullPath)) {
-						$items = array_merge($items, $this->dirsToArray_Legacy($fullPath));
-						$items[] = $fullPath;
-					}
-				}
-			}
-			closedir($handle);
-		}
-		return $items;
+        $handle = @opendir($path);
+        if ($handle)
+        {
+            while (($file = readdir($handle)) !== false)
+            {
+                if ($file != '.' && $file != '..')
+                {
+					$fullPath = str_replace("\\", '/', "{$path}/{$file}");
+                    if (is_dir($fullPath))
+                    {
+                        $items = array_merge($items, $this->dirsToArray($fullPath));
+                        $items[] = $fullPath;
+                    }
+                }
+            }
+            closedir($handle);
+        }
+        return $items;
 	}
 	
-	//Recursive function to get all Directories in a wp install
-	//Must use iterator_to_array in order to avoid the error 'too many files open' for recursion
-	//Notes: $file->getExtension() is not reliable as it silently fails at least in php 5.2.17 
-	//when a file has a permission such as 705 falling back to pathinfo is more stable
-	private function dirsToArray_New($path) {
-		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
-				RecursiveIteratorIterator::SELF_FIRST,
-				RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
-		);
-		$files = iterator_to_array($iterator);
-		$items = array();
-		foreach ($files as $file) {
-			if ($file->isDir()) {
-				$items[] = DUP_Util::SafePath($file->getRealPath());
-			}
-		}
-		return $items;
-	}
-
 }
 ?>
