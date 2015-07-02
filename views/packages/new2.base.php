@@ -236,12 +236,12 @@ TOOL BAR: STEPS -->
 				FILE NAME LENGTHS -->
 				<div>
 					<div class='dup-scan-title'>
-						<a><?php DUP_Util::_e('Invalid Names');?></a> <div id="data-arc-status-names"></div>
+						<a><?php DUP_Util::_e('Name Checks');?></a> <div id="data-arc-status-names"></div>
 					</div>
 					<div class='dup-scan-info dup-info-box'>
 						<small>
 						<?php 
-							DUP_Util::_e('Invalid file or folder names can cause issues when extracting an archive across different environments.  Invalid file names consist of lengths over 250 characters and illegal characters that may not work on all operating systems such as * ? > < : / \ |  .  It is recommended to remove or filter these files before building the archive or else you might have issues at install time.');
+							DUP_Util::_e('File or directory names may cause issues when working across different environments and servers.  Names that are over 250 characters, contain special characters (such as * ? > < : / \ |) or are unicode might cause issues in a remote enviroment.  It is recommended to remove or filter these files before building the archive if you have issues at install time.');
 						?>
 						</small><br/>
 						<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php DUP_Util::_e('Show Paths');?>]</a>							
@@ -447,7 +447,6 @@ jQuery(document).ready(function($) {
 		
 		var errMsg = "unable to read";
 		$('#dup-progress-bar-area').hide(); 
-		$('#dup-msg-success').show();
 		
 		//****************
 		//REPORT
@@ -506,22 +505,36 @@ jQuery(document).ready(function($) {
 		$('#data-arc-size2').text(data.ARC.Size || errMsg);
 		$('#data-arc-files').text(data.ARC.FileCount || errMsg);
 		$('#data-arc-dirs').text(data.ARC.DirCount || errMsg);
-	
-		//Invalid Names
-		html = '<?php DUP_Util::_e("No name length issues.") ?>';
-		if (data.ARC.WarnFileName != undefined && data.ARC.WarnFileName.length > 0) {
-			html = '';
-			$.each(data.ARC.WarnFileName, function(key, val) {html += '<?php DUP_Util::_e("FILE") ?> ' + key + ':<br/>[' + val  + ']<br/>';});
-		}
-		$('#data-arc-names-data').html(html);
 		
+		//Name Checks
+		html = '';
+		//Dirs
+		if (data.ARC.FilterInfo.Dirs.Warning !== undefined && data.ARC.FilterInfo.Dirs.Warning.length > 0) {
+			$.each(data.ARC.FilterInfo.Dirs.Warning, function (key, val) {
+				html += '<?php DUP_Util::_e("DIR") ?> ' + key + ':<br/>[' + val + ']<br/>';
+			});
+		}
+		//Files
+		if (data.ARC.FilterInfo.Files.Warning !== undefined && data.ARC.FilterInfo.Files.Warning.length > 0) {
+			$.each(data.ARC.FilterInfo.Files.Warning, function (key, val) {
+				html += '<?php DUP_Util::_e("FILE") ?> ' + key + ':<br/>[' + val + ']<br/>';
+			});
+		}
+		html = (html.length == 0) ? '<?php DUP_Util::_e("No name warning issues found.") ?>' : html;
+
+
+		$('#data-arc-names-data').html(html);
+
 		//Large Files
 		html = '<?php DUP_Util::_e("No large files found.") ?>';
-		if (data.ARC.WarnFileSize != undefined && data.ARC.WarnFileSize.length > 0) {
+		if (data.ARC.FilterInfo.Files.Size !== undefined && data.ARC.FilterInfo.Files.Size.length > 0) {
 			html = '';
-			$.each(data.ARC.WarnFileSize, function(key, val) {html += '<?php DUP_Util::_e("FILE") ?> ' + key + ':<br/>' + val  + '<br/>' ;});	
+			$.each(data.ARC.FilterInfo.Files.Size, function (key, val) {
+				html += '<?php DUP_Util::_e("FILE") ?> ' + key + ':<br/>' + val + '<br/>';
+			});
 		}
 		$('#data-arc-big-data').html(html);
+		$('#dup-msg-success').show();
 		
 	}
 	

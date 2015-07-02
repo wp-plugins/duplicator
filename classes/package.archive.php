@@ -3,26 +3,20 @@ if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 
 require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.archive.zip.php');
 
-
-
 /**
- * Defines the scope from which a filter item was created/retreived from
- * @package DupicatorPro\classes
+ * The base class for all filter types Directories/Files/Extentions
  */
 class DUP_Archive_Filter_Scope_Base
 {
-	//All internal storage items that we decide to filter
+	//All internal storage items that duplicator decides to filter
 	public $Core = array();
 	
-	//Items when creating a package or template
+	//Items when creating a package or template that a user decides to filter
 	public $Instance = array();
-	
-
 }
 
 /**
- * Defines the scope from which a filter item was created/retreived from
- * @package DupicatorPro\classes
+ * The filter types that belong to directories
  */
 class DUP_Archive_Filter_Scope_Directory extends DUP_Archive_Filter_Scope_Base
 {
@@ -31,23 +25,20 @@ class DUP_Archive_Filter_Scope_Directory extends DUP_Archive_Filter_Scope_Base
 	
 	//Items that are not readable
 	public $Unreadable = array();
-	
 }
 
 /**
- * Defines the scope from which a filter item was created/retreived from
- * @package DupicatorPro\classes
+ * The filter types that belong to files
  */
 class DUP_Archive_Filter_Scope_File extends DUP_Archive_Filter_Scope_Directory
 {
 	//Items that are too large
 	public $Size = array();
-	
 }
 
 /**
- * Defines the filtered items that are pulled from there various scopes
- * @package DupicatorPro\classes
+ * The filter information object which store all information about the filtered
+ * data that is gathered to the execution of a scan process
  */
 class DUP_Archive_Filter_Info
 {
@@ -73,8 +64,8 @@ class DUP_Archive_Filter_Info
 }
 
 
-class DUP_Archive {
-	
+class DUP_Archive 
+{
 	//PUBLIC
 	public $FilterDirs;
 	public $FilterExts;
@@ -85,43 +76,39 @@ class DUP_Archive {
 	public $Format;
 	public $PackDir;		
 	public $Size = 0;
-	public $WarnFileSize = array();
-	public $WarnFileName = array();
 	public $Dirs  = array();
 	public $Files = array();
-	
 	public $FilterInfo;
 	
 	//PROTECTED
 	protected $Package;
 	
-
-	public function __construct($package) {
+	public function __construct($package) 
+	{
 		$this->Package   = $package;
 		$this->FilterOn  = false;
-		
 		$this->FilterInfo = new DUP_Archive_Filter_Info();
 	}
 	
-	public function Build($package) {
-		try {
-			
+	public function Build($package) 
+	{
+		try 
+		{
 			$this->Package = $package;
-			
 			if (!isset($this->PackDir) && ! is_dir($this->PackDir)) throw new Exception("The 'PackDir' property must be a valid diretory.");
 			if (!isset($this->File)) throw new Exception("A 'File' property must be set.");
 		
 			$this->Package->SetStatus(DUP_PackageStatus::ARCSTART);
-			switch ($this->Format) {
+			switch ($this->Format) 
+			{
 				case 'TAR':			break;
 				case 'TAR-GZIP': 	break;
 				default:
-					if (class_exists(ZipArchive)) {
+					if (class_exists(ZipArchive))
+					{
 						$this->Format = 'ZIP';
 						DUP_Zip::Create($this);
-					} else {
-						//TODO:PECL and SHELL FORMATS
-					}
+					} 
 					break;
 			}
 			
@@ -129,24 +116,25 @@ class DUP_Archive {
 			$this->Size   = @filesize($storePath);
 			$this->Package->SetStatus(DUP_PackageStatus::ARCDONE);
 		
-		} catch (Exception $e) {
+		} 
+		catch (Exception $e) 
+		{
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 		}
 	}
 	
-	public function GetFilterDirAsArray() {
+	public function GetFilterDirAsArray() 
+	{
 		return array_map('DUP_Util::SafePath', explode(";", $this->FilterDirs, -1));
 	}
 	
-	public function GetFilterExtsAsArray() {
+	public function GetFilterExtsAsArray() 
+	{
 		return explode(";", $this->FilterExts, -1);
 	}
 	
 	/**
-	 *  DIRSTATS
 	 *  Get the directory size recursively, but don't calc the snapshot directory, exclusion diretories
-	 *  @param string $directory		The directory to calculate
-	 *  @returns array					An array of values for the directory stats
 	 *  @link http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx Windows filename restrictions
 	 */	
 	public function Stats() 
@@ -156,7 +144,6 @@ class DUP_Archive {
 		$this->getFiles();
 		return $this;
 	}
-	
 	
 	//Build Filter Data
 	private function createFilterInfo()
@@ -179,7 +166,6 @@ class DUP_Archive {
 		$this->FilterExtsAll = array_merge($this->FilterInfo->Exts->Instance,
 				                           $this->FilterInfo->Exts->Core);
 	}
-	
 	
 	
 	//Get All Directories then filter
@@ -208,7 +194,8 @@ class DUP_Archive {
 			//Remove path filter directories
 			foreach($this->FilterDirsAll as $item) 
 			{ 
-				if (strstr($val, $item . '/') || $val == $item) {
+				if (strstr($val, $item . '/') || $val == $item) 
+				{
 					unset($this->Dirs[$key]);
 					continue 2;
 				}
@@ -221,17 +208,15 @@ class DUP_Archive {
 							|| 	trim($name) == "" 
 							||  (strrpos($name, '.') == strlen($name) - 1  && substr($name, -1) == '.');
 			
-			if ($invalid_test || preg_match('/[^\x20-\x7f]/', $name)) {
-				$this->WarnFileName[] = $val;
+			if ($invalid_test || preg_match('/[^\x20-\x7f]/', $name)) 
+			{
 				$this->FilterInfo->Dirs->Warning[] = utf8_encode($val);
 			} 
-			
 			
 			//Dir is not readble remove and flag
 			if (! is_readable($this->Dirs[$key])) 
 			{
 				unset($this->Dirs[$key]);
-				$this->WarnInfo['DirName'][] =  $val;
 				$this->FilterInfo->Dirs->Unreadable[] = $val;
 				$this->FilterDirsAll[] = $val;
 			}
@@ -267,7 +252,6 @@ class DUP_Archive {
 						if ($invalid_test || preg_match('/[^\x20-\x7f]/', $fileName))
 						{
 							$this->FilterInfo->Files->Warning[] = utf8_encode($filePath);
-							array_push($this->WarnFileName, $filePath);
 						} 
 						else 
 						{
@@ -278,7 +262,6 @@ class DUP_Archive {
 						if ($fileSize > DUPLICATOR_SCAN_WARNFILESIZE) 
 						{
 							$this->FilterInfo->Files->Size[] = $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']';
-							array_push($this->WarnFileSize, $filePath . ' [' . DUP_Util::ByteSize($fileSize) . ']');
 						}
 					} 
 				}

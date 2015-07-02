@@ -97,19 +97,23 @@ class DUP_Package {
 		
 		//FILES
 		$this->Archive->Stats();
-		$report['ARC']['Size']				= DUP_Util::ByteSize($this->Archive->Size)  or "unknown";
-		$report['ARC']['DirCount']			= number_format(count($this->Archive->Dirs));
-		$report['ARC']['FileCount']			= number_format(count($this->Archive->Files));
+		$dirCount = count($this->Archive->Dirs); 
+		$fileCount = count($this->Archive->Files);
+		$fullCount = $dirCount + $fileCount;
+		
+		$report['ARC']['Size']		 = DUP_Util::ByteSize($this->Archive->Size)  or "unknown";
+		$report['ARC']['DirCount']	 = number_format($dirCount);
+		$report['ARC']['FileCount']	 = number_format($fileCount);
+		$report['ARC']['FullCount']	 = number_format($fullCount);
 		
 		$report['ARC']['FilterInfo']['Dirs'] = $this->Archive->FilterInfo->Dirs;
 		$report['ARC']['FilterInfo']['Files'] = $this->Archive->FilterInfo->Files;
 		$report['ARC']['FilterInfo']['Exts'] = $this->Archive->FilterInfo->Exts;
+				
+		$report['ARC']['Status']['Size'] = ($this->Archive->Size > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
+		$report['ARC']['Status']['Names'] = (count($this->Archive->FilterInfo->Files->Warning) + count($this->Archive->FilterInfo->Dirs->Warning))  ? 'Warn' : 'Good';
+		$report['ARC']['Status']['Big'] = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
 		
-		$report['ARC']['WarnFileName']		= is_array($this->Archive->WarnFileName) ? $this->Archive->WarnFileName : "unknown";
-		$report['ARC']['WarnFileSize']		= is_array($this->Archive->WarnFileSize)  ? $this->Archive->WarnFileSize  : "unknown";
-		$report['ARC']['Status']['Size']	= ($this->Archive->Size > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
-		$report['ARC']['Status']['Names']	= count($this->Archive->WarnFileName) ? 'Warn' : 'Good';
-		$report['ARC']['Status']['Big']		= count($this->Archive->WarnFileSize)  ? 'Warn' : 'Good';
 		$report['ARC']['Dirs']				= $this->Archive->Dirs;
 		$report['ARC']['Files']				= $this->Archive->Files;
 
