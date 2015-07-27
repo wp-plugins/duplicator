@@ -7,6 +7,13 @@ $action_response = __("Settings Saved", 'wpduplicator');
 
 //SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
+	
+	//Nonce Check
+	if (! isset( $_POST['dup_settings_save_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_settings_save_nonce_field'], 'dup_settings_save' ) ) 
+	{
+		die('Invalid token permissions to perform this request.');
+	}
+	
     //General Tab
     //Plugin
     DUP_Settings::Set('uninstall_settings', isset($_POST['uninstall_settings']) ? "1" : "0");
@@ -20,7 +27,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
 	DUP_Settings::Set('package_mysqldump', $enable_mysqldump ? "1" : "0");
 	DUP_Settings::Set('package_phpdump_qrylimit', isset($_POST['package_phpdump_qrylimit']) ? $_POST['package_phpdump_qrylimit'] : "100");
-    DUP_Settings::Set('package_mysqldump_path', trim($_POST['package_mysqldump_path']));
+    DUP_Settings::Set('package_mysqldump_path', trim(esc_sql(strip_tags($_POST['package_mysqldump_path']))));
 
     //WPFront
     DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
@@ -61,7 +68,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
 <form id="dup-settings-form" action="<?php echo admin_url('admin.php?page=duplicator-settings&tab=general'); ?>" method="post">
 
-    <?php wp_nonce_field('duplicator_settings_page'); ?>
+    <?php wp_nonce_field('dup_settings_save', 'dup_settings_save_nonce_field'); ?>
     <input type="hidden" name="action" value="save">
     <input type="hidden" name="page"   value="duplicator-settings">
 

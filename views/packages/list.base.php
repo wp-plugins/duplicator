@@ -4,6 +4,8 @@
 	$totalElements = count($qryResult);
 	$statusCount   = count($qryStatus);
 	$package_debug = DUP_Settings::Get('package_debug');
+        
+        $ajax_nonce = wp_create_nonce('package_list');
 ?>
 
 <style>
@@ -302,7 +304,7 @@ jQuery(document).ready(function($) {
 				type: "POST",
 				url: ajaxurl,
 				dataType: "json",
-				data: {action : 'duplicator_package_delete', duplicator_delid : list },
+				data: {action : 'duplicator_package_delete', duplicator_delid : list, nonce: '<?php echo $ajax_nonce; ?>' },
 				success: function(data) { 
 					//console.log(data); //Debug return
 					Duplicator.ReloadWindow(data); 

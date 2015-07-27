@@ -2,9 +2,25 @@
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/javascript.php'); 
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
 
+        $nonce = wp_create_nonce('duplicator_cleanup_page');
+        
 	$_GET['action'] = isset($_GET['action']) ? $_GET['action'] : 'display';
-	switch ($_GET['action']) {
-		case 'installer' : 	
+        
+        if(isset($_GET['action']))
+        {
+            if(($_GET['action'] == 'installer') || ($_GET['action'] == 'legacy') || ($_GET['action'] == 'tmp-cache'))
+            {
+                $verify_nonce = $_REQUEST['_wpnonce'];
+
+                if ( ! wp_verify_nonce( $verify_nonce, 'duplicator_cleanup_page' ) ) {
+                    exit; // Get out of here, the nonce is rotten!
+                }
+            }   
+        }
+        
+	switch ($_GET['action']) {            
+		case 'installer' :
+                        
 			$action_response = __('Installer File Cleanup Ran.', 'wpduplicator');		
 			break;		
 		case 'legacy': 
@@ -29,7 +45,6 @@
 
 
 <form id="dup-settings-form" action="?page=duplicator-tools&tab=cleanup" method="post">
-	<?php wp_nonce_field( 'duplicator_cleanup_page' ); ?>
 	
 	<?php if ($_GET['action'] != 'display')  :	?>
 		<div id="message" class="updated below-h2">
@@ -82,7 +97,7 @@
 	<h3><?php _e('Data Cleanup', 'wpduplicator')?><hr size="1"/></h3>
 	<table class="dup-reset-opts">
 		<tr>
-			<td><a href="?page=duplicator-tools&tab=cleanup&action=installer"><?php _e("Delete Reserved Files", 'wpduplicator'); ?></a></td>
+			<td><a href="?page=duplicator-tools&tab=cleanup&action=installer&_wpnonce=<?php echo $nonce; ?>"><?php _e("Delete Reserved Files", 'wpduplicator'); ?></a></td>
 			<td><?php _e("Removes all installer files from a previous install", 'wpduplicator'); ?></td>
 		</tr>
 		<tr>
@@ -112,7 +127,7 @@ jQuery(document).ready(function($) {
 	   if (! result) 
 		   return;
 		
-	   window.location = '?page=duplicator-tools&tab=cleanup&action=legacy';
+	   window.location = '?page=duplicator-tools&tab=cleanup&action=legacy&_wpnonce=<?php echo $nonce; ?>';
    }
    
    Duplicator.Tools.ClearBuildCache = function () {
@@ -123,7 +138,8 @@ jQuery(document).ready(function($) {
 	   var result = confirm('<?php echo $msg ?>');
 	   if (! result) 
 		   return;
-	   window.location = '?page=duplicator-tools&tab=cleanup&action=tmp-cache';
+               
+	   window.location = '?page=duplicator-tools&tab=cleanup&action=tmp-cache&_wpnonce=<?php echo $nonce; ?>';
    }   
   
 	

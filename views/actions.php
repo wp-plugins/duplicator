@@ -88,8 +88,9 @@ function duplicator_package_report() {
  */
 function duplicator_package_delete() {
 	
-	DUP_Util::CheckPermissions('export');
-	
+    DUP_Util::CheckPermissions('export');    
+    check_ajax_referer( 'package_list', 'nonce' );
+    
     try {
 		global $wpdb;
 		$json		= array();

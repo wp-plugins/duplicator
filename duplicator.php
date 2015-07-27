@@ -188,15 +188,16 @@ if (is_admin() == true) {
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_help = add_submenu_page('duplicator', __('Help', 'wpduplicator'), __('Help', 'wpduplicator'), $perms, 'duplicator-help', 'duplicator_get_menu');
+        $page_help = add_submenu_page('duplicator', DUP_Util::__('Help'), DUP_Util::__('Help'), $perms, 'duplicator-help', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_about = add_submenu_page('duplicator', __('About', 'wpduplicator'), __('About', 'wpduplicator'), $perms, 'duplicator-about', 'duplicator_get_menu');
+        $page_about = add_submenu_page('duplicator', DUP_Util::__('About'), DUP_Util::__('About'), $perms, 'duplicator-about', 'duplicator_get_menu');
 		
-		//$perms = 'manage_options';
-        //$perms = apply_filters($wpfront_caps_translator, $perms);
-        //$page_gopro = add_submenu_page('duplicator', __('Go Pro!', 'wpduplicator'), __('Go Pro!', 'wpduplicator'), $perms, 'duplicator-gopro', 'duplicator_get_menu');
+		$perms = 'manage_options';
+		$go_pro_link = '<span style="color:#f18500">' . DUP_Util::__('Go Pro!') . '</span>';
+        $perms = apply_filters($wpfront_caps_translator, $perms);
+        $page_gopro = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
@@ -204,7 +205,7 @@ if (is_admin() == true) {
         add_action('admin_print_scripts-' . $page_help, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_about, 'duplicator_scripts');
-		//add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
 
         //Apply Styles
         add_action('admin_print_styles-' . $page_packages, 'duplicator_styles');
@@ -212,7 +213,7 @@ if (is_admin() == true) {
         add_action('admin_print_styles-' . $page_help, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_about, 'duplicator_styles');
-		//add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
+		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
     }
 
     /**

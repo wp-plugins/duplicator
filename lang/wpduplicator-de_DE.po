@@ -1,21 +1,22 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Duplicator v0.5.18\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-27 01:36+0100\n"
-"PO-Revision-Date: 2015-06-27 02:47+0100\n"
+"Project-Id-Version: Duplicator v0.5.23\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/duplicator\n"
+"POT-Creation-Date: 2015-07-26 23:52+0200\n"
+"PO-Revision-Date: 2015-07-27 00:07+0200\n"
 "Last-Translator: Ralf Koller <r.koller@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.1\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
-"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
-"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.2\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: duplicator.php\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -1339,26 +1340,25 @@ msgstr ""
 "festgelegten Elemente. Die aktuellen Grenzwerte, die Warnungen auslösen, "
 "sind %1$s für die gesamte Site und %2$s für große Dateien."
 
-# @ wpduplicator
 #: views/packages/new2.base.php:239
-msgid "Invalid Names"
-msgstr "Ungültige Namen"
+msgid "Name Checks"
+msgstr "Namenüberprüfung"
 
-# @ wpduplicator
 #: views/packages/new2.base.php:244
 msgid ""
-"Invalid file or folder names can cause issues when extracting an archive "
-"across different environments.  Invalid file names consist of lengths over "
-"250 characters and illegal characters that may not work on all operating "
-"systems such as * ? > < : / \\ |  .  It is recommended to remove or filter "
-"these files before building the archive or else you might have issues at "
-"install time."
+"File or directory names may cause issues when working across different "
+"environments and servers.  Names that are over 250 characters, contain "
+"special characters (such as * ? > < : / \\ |) or are unicode might cause "
+"issues in a remote enviroment.  It is recommended to remove or filter these "
+"files before building the archive if you have issues at install time."
 msgstr ""
-"Ungültige Datei-oder Ordnernamen können bei einigen Umgebungen zu Problemen "
-"führen. Ungültige Dateinamen bestehen aus Längen über 250 Zeichen und "
-"illegalen Zeichen, die nicht auf allen Betriebssystemen wie * ? > < : / \\ "
-"|  arbeiten können. Es wird empfohlen, diese Dateien vor dem Erstellen des "
-"Archivs zu entfernen oder durch Filtereinstellungen auszublenden."
+"Datei- oder Verzeichnis-Namen können zu Problemen führen wenn in "
+"unterschiedlichen Umgebungen und Servern gearbeitet wird. Namen die mehr als "
+"250 Zeichen lang sind, Sonderzeichen wie z.B. * ? > < : / \\ | enthalten "
+"oder aber Unicode sind können zu Problemen in entfernten Umgebungen führen. "
+"Es wird empfohlen diese Dateien vor der Erstellung des Archivs zu entfernen "
+"oder zu filtern, sollte es zu Problemen bei der Installation im Anschluss "
+"kommen."
 
 # @ wpduplicator
 #: views/packages/new2.base.php:247 views/packages/new2.base.php:265
@@ -1498,27 +1498,30 @@ msgid "Rescan"
 msgstr "Erneuter Scan"
 
 # @ wpduplicator
-#: views/packages/new2.base.php:487
+#: views/packages/new2.base.php:486
 msgid "Unable to report on any tables"
 msgstr "Kein Bericht über die Tabellen"
 
 # @ wpduplicator
-#: views/packages/new2.base.php:496
+#: views/packages/new2.base.php:495
 msgid "Unable to report on database stats"
 msgstr "Kein Bericht zum Datenbank-Status"
 
-# @ wpduplicator
-#: views/packages/new2.base.php:511
-msgid "No name length issues."
-msgstr "Keine lange oder ungültige Namen."
+#: views/packages/new2.base.php:514
+msgid "DIR"
+msgstr "DIR"
 
 # @ wpduplicator
-#: views/packages/new2.base.php:514 views/packages/new2.base.php:522
+#: views/packages/new2.base.php:520 views/packages/new2.base.php:533
 msgid "FILE"
 msgstr "Datei"
 
+#: views/packages/new2.base.php:523
+msgid "No name warning issues found."
+msgstr "Es sind keine Probleme bei der Namensüberprüfung aufgetreten."
+
 # @ wpduplicator
-#: views/packages/new2.base.php:519
+#: views/packages/new2.base.php:529
 msgid "No large files found."
 msgstr "Keine großen Dateien gefunden."
 
@@ -2203,6 +2206,30 @@ msgstr "LifeInTheGrid"
 #. Author URI of the plugin/theme
 msgid "http://www.lifeinthegrid.com"
 msgstr "http://www.lifeinthegrid.com"
+
+# @ wpduplicator
+#~ msgid "Invalid Names"
+#~ msgstr "Ungültige Namen"
+
+# @ wpduplicator
+#~ msgid ""
+#~ "Invalid file or folder names can cause issues when extracting an archive "
+#~ "across different environments.  Invalid file names consist of lengths "
+#~ "over 250 characters and illegal characters that may not work on all "
+#~ "operating systems such as * ? > < : / \\ |  .  It is recommended to "
+#~ "remove or filter these files before building the archive or else you "
+#~ "might have issues at install time."
+#~ msgstr ""
+#~ "Ungültige Datei-oder Ordnernamen können bei einigen Umgebungen zu "
+#~ "Problemen führen. Ungültige Dateinamen bestehen aus Längen über 250 "
+#~ "Zeichen und illegalen Zeichen, die nicht auf allen Betriebssystemen wie "
+#~ "* ? > < : / \\ |  arbeiten können. Es wird empfohlen, diese Dateien vor "
+#~ "dem Erstellen des Archivs zu entfernen oder durch Filtereinstellungen "
+#~ "auszublenden."
+
+# @ wpduplicator
+#~ msgid "No name length issues."
+#~ msgstr "Keine lange oder ungültige Namen."
 
 # @ wpduplicator
 #~ msgid "PHP Settings"
