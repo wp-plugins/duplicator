@@ -12,11 +12,11 @@
 	/** **********************************************
 	* METHOD: Posts to page to remove install files */	
 	Duplicator.removeInstallerFiles = function(package_name) {
-		var msg = "Delete all installer files now? \n\nThis will remove the page you are now viewing.\nThe page will stay active until you navigate away.";
-		if (confirm(msg)) {
-			var nurl = '<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/admin.php?page=duplicator-tools&tab=cleanup&action=installer&package=' + package_name;
-			window.open(nurl, "_blank");
-		}
+		var msg = "You will now be redirected to the cleanup page.\nSelect 'Delete Reserved Files' to remove installer files.";
+		alert(msg);
+        
+        var nurl = '<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/admin.php?page=duplicator-tools&tab=cleanup';
+		window.open(nurl, "_blank");
 	};
 </script>
 

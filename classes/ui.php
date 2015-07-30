@@ -103,12 +103,15 @@ class DUP_UI {
              self::SaveViewState($metaKey, true);
 		}
 
-		if (! self::GetViewStateValue($metaKey, false)) {
+		if ( self::GetViewStateValue($metaKey) != null) {
 			if (DUP_Server::InstallerFilesFound()) {
 				$queryStr = $_SERVER['QUERY_STRING'];
 				echo '<div class="updated"><p>';
-				@printf("%s <br/> <a href='admin.php?page=duplicator-tools&tab=cleanup&action=installer'>%s</a> | <a href='?{$queryStr}&{$metaKey}=1'>%s</a>",
+                $duplicator_nonce = wp_create_nonce('duplicator_cleanup_page');
+
+				@printf("%s <br/> <a href='admin.php?page=duplicator-tools&tab=cleanup&action=installer&_wpnonce=%s'>%s</a> | <a href='?{$queryStr}&{$metaKey}=1'>%s</a>",
 						__('Reserved Duplicator install file(s) still exists in the root directory.  Please delete these file(s) to avoid possible security issues.', 'wpduplicator'),
+                        $duplicator_nonce,
 						__('Remove file(s) now', 'wpduplicator'),
 						__('Dismiss this notice', 'wpduplicator'));
 				echo "</p></div>";
