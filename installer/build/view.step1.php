@@ -120,7 +120,7 @@
 			url: window.location.href + '?' + 'dbtest=1',
 			data: $('#dup-step1-input-form').serialize(),
 			success: function(data){ $('#dbconn-test-msg').html(data); },
-			error:   function(data){ alert('An error occurred while testing the database connection!  Be sure the install file and package are both in the same directory.'); }
+			error:   function(data){ alert('An error occurred while testing the database connection!  Contact your server admin to make sure the connection inputs are correct!'); }
 		});
 		
 		$('#dbconn-test-msg').html("Attempting Connection.  Please wait...");

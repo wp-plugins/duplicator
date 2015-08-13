@@ -126,6 +126,14 @@ class DUP_Package {
 		$report['DB']['TableCount']	= $db['TableCount']					or "unknown";
 		$report['DB']['TableList']	= $db['TableList']					or "unknown";
 		
+		$warnings = array($report['SRV']['WEB']['ALL'],  
+						  $report['SRV']['PHP']['ALL'], 
+						  $report['SRV']['WP']['ALL'], 
+						  $report['ARC']['Status']['Size'], 
+						  $report['ARC']['Status']['Names'], 
+						  $report['ARC']['Status']['Big'], 
+						  $db['Status']);
+		$report['RPT']['Warnings'] = count(array_filter($warnings, function ($n) { return $n == 'Warn'; }));
 		$report['RPT']['ScanTime'] = DUP_Util::ElapsedTime(DUP_Util::GetMicrotime(), $timerStart);
 		$fp = fopen(DUPLICATOR_SSDIR_PATH_TMP . "/{$this->ScanFile}", 'w');
 		fwrite($fp, json_encode($report));

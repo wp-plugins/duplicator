@@ -130,7 +130,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         </div>
         <br style="clear:both" />
         <p style="text-align:center">
-            <a href="http://snapcreek.com/duplicator?go-pro" target="_blank" class="button button-primary button-large dup-check-it-btn" >
+            <a href="http://snapcreek.com/duplicator?free-go-pro" target="_blank" class="button button-primary button-large dup-check-it-btn" >
                 <?php DUP_Util::_e('Check It Out!') ?>
             </a>
         </p>
