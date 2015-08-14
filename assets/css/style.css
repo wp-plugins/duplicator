@@ -8,7 +8,7 @@
 input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
 input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
 fieldset {border:1px solid gray; padding:0px 5px 5px 5px; }
-label {font-size:13px !important}
+label {font-size:13px}
 .no-select {user-select:none; -o-user-select:none;  -moz-user-select:none; -khtml-user-select:none; -webkit-user-select:none;}
 hr {border: 0; border-top: 1px solid #ddd; border-bottom: 1px solid #fafafa; margin: 10px 0px 2px 0px;}
 

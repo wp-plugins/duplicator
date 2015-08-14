@@ -106,11 +106,11 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 				<a href="javascript:void(0)" class="dup-info-click"><?php DUP_Util::_e('Scheduled Backups') ?></a>
 				<div class="info"><?php DUP_Util::_e('Automate the creation of your packages to run at various scheduled intervals.') ?></div>
 			</div>
-                        <div class="feature">
+            <div class="feature">
 				<a href="javascript:void(0)" class="dup-info-click"><?php DUP_Util::_e('Dropbox Support') ?></a>
 				<div class="info"><?php DUP_Util::_e('Backup up your entire site to Dropbox.') ?></div>
 			</div>
-                        <div class="feature">
+            <div class="feature">
 				<a href="javascript:void(0)" class="dup-info-click"><?php DUP_Util::_e('FTP Support') ?></a>
 				<div class="info"><?php DUP_Util::_e('Backup up your entire site to an FTP server.') ?></div>
 			</div>

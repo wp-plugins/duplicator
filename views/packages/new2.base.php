@@ -1,5 +1,6 @@
 <?php
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
+	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/utility.php');
 	global $wp_version;
 	$Package = new DUP_Package();
 	$Package->SaveActive($_POST);
@@ -45,8 +46,9 @@
 		{word-wrap: break-word;font-size:10px; border:1px dashed silver; padding:5px; display: none}
 		
 	div#dup-scan-warning-continue {display:none; text-align: center; padding: 0 0 15px 0}
-	div#dup-scan-warning-continue div.msg1 {font-size:14px; color:maroon}
+	div#dup-scan-warning-continue div.msg1 label{font-size:16px; color:maroon}
 	div#dup-scan-warning-continue div.msg2 {padding:2px}
+	div#dup-scan-warning-continue div.msg2 label {font-size:11px !important}
 	
 	/*Footer*/
 	div.dup-button-footer {text-align:center; margin:0}
@@ -227,13 +229,17 @@ TOOL BAR: STEPS -->
 						<b><?php DUP_Util::_e('Directory Count');?>:</b> <span id="data-arc-dirs"></span> 
 						<small>
 						<?php 
-							printf(DUP_Util::__('Total size represents all files minus any filters that have been setup.  The current thresholds that trigger warnings are %1$s for the entire site and %2$s for large files.  Consider using a file filter in step 1 to shrink and filter the overall size of your package.'), 
+							printf(DUP_Util::__('Total size represents all files minus any filters that have been setup.  The current thresholds that triggers a warning is %1$s for the total size.  Some budget hosts limit the amount of time a PHP/Web request process can run.  When working with larger sites this can cause timeout issues. Consider using a file filter in step 1 to shrink and filter the overall size of your package.'), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 							echo '<br/><br/>';
-							DUP_Util::_e('Some budget hosts limit the amount of time a PHP/Web request process can run.  When working with larger sites this can cause timeout issues.  If you have a larger site that is upto 2GB then you might consider looking at Duplicator Pro as it can handle timeout requests for most hosts.');
 							
-							echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-size-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
+							$zip_check = DUP_Util::GetZipPath();
+							if ($zip_check != null) {
+								DUP_Util::_e('Package support up to 2GB available in Duplicator Pro.');
+								echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-size-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
+							}
+
 						?>
 						</small>
 					</div>
@@ -383,7 +389,13 @@ TOOL BAR: STEPS -->
 				<label for="dup-scan-warning-continue-checkbox"><?php DUP_Util::_e('A warning status was detected, are you sure you want to continue?');?></label>
 			</div>
 			<div class="msg2">
-				<label for="dup-scan-warning-continue-checkbox"><?php DUP_Util::_e("Scan checks are not required to pass, however they could cause issues on some systems."); ?></label>
+				<label for="dup-scan-warning-continue-checkbox">
+					<?php 
+						DUP_Util::_e("Scan checks are not required to pass, however they could cause issues on some systems."); 
+						echo '<br/>';
+						DUP_Util::_e("Please review the details for each warning by clicking on the detail link."); 
+					?>
+				</label>
 			</div>
 		</div>
 		

@@ -289,7 +289,7 @@ class DUP_Util {
 	/**
 	*  Creates the snapshot directory if it doesn't already exisit
 	*/
-	static public function InitSnapshotDirectory() {
+	public static function InitSnapshotDirectory() {
 		$path_wproot	= DUP_Util::SafePath(DUPLICATOR_WPROOTPATH);
 		$path_ssdir		= DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH);
 		$path_plugin	= DUP_Util::SafePath(DUPLICATOR_PLUGIN_PATH);
@@ -344,6 +344,42 @@ class DUP_Util {
 		@fwrite($tokenfile2, '<?php @error_reporting(0); @require_once("../../../../wp-admin/admin.php"); global $wp_query; $wp_query->set_404(); header("HTTP/1.1 404 Not Found", true, 404); header("Status: 404 Not Found"); @include(get_template_directory () . "/404.php"); ?>');
 		@fclose($tokenfile2);
 	}
+	
+	/**
+	*  Attempts to file zip on a users system
+	*/
+	public static function GetZipPath()
+    {
+        $filepath = null;
+        
+        if(self::IsShellExecAvailable())
+        {            
+            if (shell_exec('hash zip 2>&1') == NULL)
+            {
+                $filepath = 'zip';
+            }
+            else
+            {
+                $possible_paths = array(
+					'/usr/bin/zip', 
+					'/opt/local/bin/zip'
+					//'C:/Program\ Files\ (x86)/GnuWin32/bin/zip.exe');
+                );
+                
+                foreach ($possible_paths as $path)
+                {
+                    if (file_exists($path))
+                    {
+                        $filepath = $path;
+                        break;  
+                    }
+                }
+            }
+        }
+
+        return $filepath;
+    }
+
 
 }
 ?>
