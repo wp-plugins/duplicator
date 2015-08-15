@@ -159,7 +159,7 @@ TOOL BAR: STEPS -->
                             echo '<span style="font-weight:bold">';
                             DUP_Util::_e('Get faster builds with Duplicator Pro.');
                             echo '</span>';
-                            echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?max-execution-time-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
+                            echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-max-execution-time-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
                     }
                     
 					echo '</small>';
