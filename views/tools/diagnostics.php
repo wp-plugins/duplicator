@@ -192,6 +192,10 @@
 			<tr>
 				<td><a href="http://us3.php.net/shell_exec" target="_blank"><?php _e("Shell Exec", 'wpduplicator'); ?></a></td>
 				<td><?php echo (DUP_Util::IsShellExecAvailable()) ? _e("Is Supported", 'wpduplicator') : _e("Not Supported", 'wpduplicator'); ?></td>
+			</tr>            
+            <tr>
+				<td><?php _e("Shell Exec Zip", 'wpduplicator'); ?></td>
+				<td><?php echo (DUP_Util::GetZipPath() != null) ? _e("Is Supported", 'wpduplicator') : _e("Not Supported", 'wpduplicator'); ?></td>
 			</tr>
 			<tr>
 				<td class='dup-settings-diag-header' colspan="2">MySQL</td>

@@ -9,6 +9,8 @@
 	$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
 	$mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
 	$build_mode = ($mysqlDumpPath && $package_mysqldump) ? 'mysqldump (fast)' : 'PHP (slow)';
+    
+    $zip_check = DUP_Util::GetZipPath();
 ?>
 
 <style>
@@ -151,6 +153,15 @@ TOOL BAR: STEPS -->
 					echo '<br/><br/>';
 					DUP_Util::_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build interrupt messages, then your web server could be killing the process.   If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.');
 					echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" .DUP_Util::__('details')  . "]</a></i>";
+                    
+                    if ($zip_check != null) {
+                            echo '<br/><br/>';
+                            echo '<span style="font-weight:bold">';
+                            DUP_Util::_e('Get faster builds with Duplicator Pro.');
+                            echo '</span>';
+                            echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?max-execution-time-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
+                    }
+                    
 					echo '</small>';
 					
 					//MYSQLI
@@ -232,11 +243,12 @@ TOOL BAR: STEPS -->
 							printf(DUP_Util::__('Total size represents all files minus any filters that have been setup.  The current thresholds that triggers a warning is %1$s for the total size.  Some budget hosts limit the amount of time a PHP/Web request process can run.  When working with larger sites this can cause timeout issues. Consider using a file filter in step 1 to shrink and filter the overall size of your package.'), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
-							echo '<br/><br/>';
-							
-							$zip_check = DUP_Util::GetZipPath();
+																					
 							if ($zip_check != null) {
-								DUP_Util::_e('Package support up to 2GB available in Duplicator Pro.');
+                                echo '<br/><br/>';
+								echo '<span style="font-weight:bold">';
+                                DUP_Util::_e('Package support up to 2GB available in Duplicator Pro.');
+                                echo '</span>';
 								echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-size-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
 							}
 
@@ -285,7 +297,7 @@ TOOL BAR: STEPS -->
 				<?php if ($Package->Archive->FilterOn) : ?>
 					<div>
 						<div class='dup-scan-title'>
-							<a><?php DUP_Util::_e('Archive Details');?></a> 
+							<a style='font-weight: normal'><?php DUP_Util::_e('Archive Details');?></a> 
 						</div>
 						<div class='dup-scan-info  dup-info-box'>	
 							<b>[<?php DUP_Util::_e('Root Directory');?>]</b><br/>
@@ -583,6 +595,9 @@ jQuery(document).ready(function($) {
 		if (warnCount > 0) {
 			$('#dup-scan-warning-continue').show();
 			$('#dup-build-button').prop("disabled",true).removeClass('button-primary');
+		} else {
+			$('#dup-scan-warning-continue').hide();
+			$('#dup-build-button').prop("disabled",false).addClass('button-primary');
 		}
 		
 	}
