@@ -9,12 +9,13 @@
 		@chmod(DUP_Util::SafePath($logs[0]), 0644);
 	} 
 	
-	$logname	 = (isset($_GET['logname'])) ? trim($_GET['logname']) : "";
+	$logname	 = (isset($_GET['logname'])) ? trim(sanitize_text_field($_GET['logname'])) : "";
+      
 	$refresh	 = (isset($_POST['refresh']) && $_POST['refresh'] == 1) ? 1 : 0;
 	$auto		 = (isset($_POST['auto'])    && $_POST['auto'] == 1)    ? 1 : 0;
 
 	//Check for invalid file
-	if (isset($_GET['logname'])) {
+	if (!empty($logname)) {
 		$validFiles = array_map('basename', $logs);
 		if (validate_file($logname, $validFiles) > 0) {
 			unset($logname);
