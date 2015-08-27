@@ -62,8 +62,8 @@ RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
-RewriteRule ^(wp-(admin|includes|snapshots).*) wp/$1 [L]
-RewriteRule ^(.*\.php)$ wp/$1 [L]
+RewriteRule ^(wp-(admin|includes|snapshots).*) ${wp_subfolder}/$1 [L]
+RewriteRule ^(.*\.php)$ ${wp_subfolder}/$1 [L]
 RewriteRule . {$newpath}index.php [L]
 </IfModule>
 # END WordPress

@@ -292,8 +292,9 @@ class DUP_Package {
 				$this->Archive->PackDir			= rtrim(DUPLICATOR_WPROOTPATH, '/');
 			} else {
 				// something like this should be in wp-config.php
+				//$wp_subfolder = "wp";
 				// if ( !defined('ROOTPATH') )
-				//	define('ROOTPATH', ABSPATH . '/..');
+				//	    define('ROOTPATH', str_replace($wp_subfolder, '', dirname(__FILE__)));
 				$this->Archive->PackDir			= rtrim(ROOTPATH, '/');
 			}
 			$this->Archive->Format			= 'ZIP';

@@ -176,8 +176,9 @@ class DUP_Archive
 			$rootPath = DUP_Util::SafePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
 		} else {
 			// something like this should be in wp-config.php
-  			// if ( !defined('ROOTPATH') )
-  			//	define('ROOTPATH', ABSPATH . '/..');
+			//$wp_subfolder = "wp";
+			// if ( !defined('ROOTPATH') )
+  			//	    define('ROOTPATH', str_replace($wp_subfolder, '', dirname(__FILE__)));
 			$rootPath = DUP_Util::SafePath(rtrim(ROOTPATH));
 	    }
 		$this->Dirs = array();
