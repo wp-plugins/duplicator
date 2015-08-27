@@ -2,8 +2,8 @@
 Contributors: corylamleorg, bobriley
 Donate link: www.lifeinthegrid.com/partner
 Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche  
-Requires at least: 3.8
-Tested up to: 4.2
+Requires at least: 3.9
+Tested up to: 4.3
 Stable tag: 0.5.28
 License: GPLv2
 
