@@ -52,14 +52,18 @@ class DUPX_Config {
 		$currpath = DupUtil::add_slash(isset($currdata['path']) ? $currdata['path'] : "");
 		$newpath  = DupUtil::add_slash(isset($newdata['path'])  ? $newdata['path'] : "");
 
-		$tmp_htaccess = <<<HTACCESS
+        //CKL this is just for me, had to change it for WP in subdir
+        $tmp_htaccess = <<<HTACCESS
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase {$newpath}
 RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+RewriteRule ^(wp-(admin|includes|snapshots).*) wp/$1 [L]
+RewriteRule ^(.*\.php)$ wp/$1 [L]
 RewriteRule . {$newpath}index.php [L]
 </IfModule>
 # END WordPress

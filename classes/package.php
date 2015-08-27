@@ -287,7 +287,15 @@ class DUP_Package {
 			$this->NameHash		= "{$this->Name}_{$this->Hash}";;
 			$this->Notes		= esc_html($post['package-notes']);
 			//ARCHIVE
-			$this->Archive->PackDir			= rtrim(DUPLICATOR_WPROOTPATH, '/');
+			if ( !defined('ROOTPATH') )
+			{
+				$this->Archive->PackDir			= rtrim(DUPLICATOR_WPROOTPATH, '/');
+			} else {
+				// something like this should be in wp-config.php
+				// if ( !defined('ROOTPATH') )
+				//	define('ROOTPATH', ABSPATH . '/..');
+				$this->Archive->PackDir			= rtrim(ROOTPATH, '/');
+			}
 			$this->Archive->Format			= 'ZIP';
 			$this->Archive->FilterOn		= isset($post['filter-on'])   ? 1 : 0;
 			$this->Archive->FilterDirs		= esc_html($filter_dirs);
