@@ -171,8 +171,16 @@ class DUP_Archive
 	//Get All Directories then filter
 	private function getDirs() 
 	{
-		
-		$rootPath = DUP_Util::SafePath(rtrim(DUPLICATOR_WPROOTPATH, '//' ));
+		if ( !defined('ROOTPATH') )
+		{
+			$rootPath = DUP_Util::SafePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
+		} else {
+			// something like this should be in wp-config.php
+			//$wp_subfolder = "wp";
+			// if ( !defined('ROOTPATH') )
+  			//	    define('ROOTPATH', str_replace($wp_subfolder, '', dirname(__FILE__)));
+			$rootPath = DUP_Util::SafePath(rtrim(ROOTPATH));
+	    }
 		$this->Dirs = array();
 		
 		//If the root directory is a filter then we will only need the root files
