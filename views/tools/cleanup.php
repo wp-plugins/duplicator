@@ -60,11 +60,11 @@
 					$html = "";
 					$package_name   	= (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
 
-					$html .= (@unlink($installer_file)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_file}</div>"	:  "";
-					$html .= (@unlink($installer_bak))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_bak}</div>"	:  "";
-					$html .= (@unlink($installer_sql1)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql1}</div>"  :  "";
-					$html .= (@unlink($installer_sql2)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql2}</div>"  :  "";
-					$html .= (@unlink($installer_log))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_log}</div>"	:  "";
+					$html .= (@unlink($installer_file)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_file}</div>"	:  "<div>Does not exist or unable to remove file: {$installer_file}</div>";
+					$html .= (@unlink($installer_bak))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_bak}</div>"	:  "<div>Does not exist or unable to remove file: {$installer_bak}</div>";
+					$html .= (@unlink($installer_sql1)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql1}</div>"  :  "<div>Does not exist or unable to remove file: {$installer_sql1}</div>";
+					$html .= (@unlink($installer_sql2)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql2}</div>"  :  "<div>Does not exist or unable to remove file: {$installer_sql2}</div>";
+					$html .= (@unlink($installer_log))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_log}</div>"	:  "<div>Does not exist or unable to remove file: {$installer_log}</div>";
 
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be remove is from installer
