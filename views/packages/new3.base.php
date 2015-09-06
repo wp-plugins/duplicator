@@ -133,7 +133,7 @@ TOOL BAR: STEPS -->
 				<!-- LOGS -->
 				<div id="dup-logs">
 					<div style="font-weight:bold">
-						<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a>						
+						<i class="fa fa-list-alt"></i> <a href='javascript:void(0)' style="color:#A62426" onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a>						
 					</div> 
 					<br/>
 				</div>

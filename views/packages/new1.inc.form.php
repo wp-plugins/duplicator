@@ -112,6 +112,11 @@ META-BOX: STORAGE -->
                         <?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'wpduplicator'); ?> <br/>
                         <?php _e("Use the full path for directories and semicolons to separate all items.", 'wpduplicator'); ?>
                     </div>
+					<br/>
+					<span style="font-style:italic; font-size:12px ">
+						<?php echo sprintf(DUP_Util::__('%1$s, are available in'), 'Individual file filters'); ?>
+						<a href="http://snapcreek.com/duplicator/?free-file-filters" target="_blank">Duplicator Pro</a>
+					</span>
                 </div>
             </div>
 

@@ -63,6 +63,7 @@ class DUP_Zip  extends DUP_Archive {
 			DUP_Log::Info("SIZE:\t" . self::$scanReport->ARC->Size);
 			DUP_Log::Info("STATS:\tDirs " . self::$scanReport->ARC->DirCount . " | Files " . self::$scanReport->ARC->FileCount);
 			
+			
 			//ADD SQL 
 			$isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, "database.sql");
 			if ($isSQLInZip)  {

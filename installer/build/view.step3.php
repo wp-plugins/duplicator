@@ -30,12 +30,12 @@ VIEW: STEP 3- INPUT -->
 	<hr size="1" /><br />
 	
 	<div class="title-header">
-		<div class="dup-step3-final-title">IMPORTANT FINAL STEPS!</div>
+		<div class="dup-step3-final-title">VERY IMPORTANT FINAL STEPS!</div>
 	</div>
 		
 	<table class="dup-step3-final-step">
 		<tr>
-			<td>1. <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Install Report</a>
+			<td>1. <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Review Install Report</a>
 			</td>
 			<td>
 				<i id="dup-step3-install-report-count">
@@ -57,7 +57,7 @@ VIEW: STEP 3- INPUT -->
 			<td><i>Validate all pages, links images and plugins</i></td>
 		</tr>		
 		<tr>
-			<td>4. <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">File Cleanup</a></td>
+			<td>4. <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">Security Cleanup</a></td>
 			<td><i>Removes all installer files (requires login)</i></td>
 		</tr>	
 	</table><br/>

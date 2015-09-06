@@ -53,18 +53,17 @@ class DUP_Log {
 		$source = self::getStack(debug_backtrace());
 		
 		$err_msg  = "\n==================================================================================\n";
-		$err_msg .= "!!DUPLICATOR ERROR!!\n";
-		$err_msg .= "Please Try Again! If the error persists please see the Duplicator 'Support' link.\n";
+		$err_msg .= "DUPLICATOR ERROR\n";
+		$err_msg .= "Please try again! If the error persists see the Duplicator 'Help' menu.\n";
 		$err_msg .= "---------------------------------------------------------------------------------\n";
-		$err_msg .= "MESSAGE:\n{$msg}\n";
+		$err_msg .= "MESSAGE:\n\t{$msg}\n";
 		if (strlen($detail)) {
-			$err_msg .= "DETAILS:\n{$detail}\n";
+			$err_msg .= "DETAILS:\n\t{$detail}\n";
 		}
-		$err_msg .= "---------------------------------------------------------------------------------\n";
 		$err_msg .= "TRACE:\n{$source}";
 		$err_msg .= "==================================================================================\n\n";
-		@fwrite(self::$logFileHandle, "\n{$err_msg}"); 
-		die("DUPLICATOR ERROR: Please see the duplicator log file.");
+		@fwrite(self::$logFileHandle, "{$err_msg}"); 
+		die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
 	}
 	
 	
@@ -77,7 +76,7 @@ class DUP_Log {
         $output = "";
         $i = 1;
         foreach($stacktrace as $node) {
-            $output .= "$i. ".basename($node['file']) ." : " .$node['function'] ." (" .$node['line'].")\n";
+            $output .= "\t $i. ".basename($node['file']) ." : " .$node['function'] ." (" .$node['line'].")\n";
             $i++;
         }
 		return $output;

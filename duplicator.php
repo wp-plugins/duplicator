@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 0.5.28
+  Version: 0.5.29
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   Text Domain: wpduplicator
@@ -177,15 +177,15 @@ if (is_admin() == true) {
 
         $perms = 'export';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_packages = add_submenu_page('duplicator', __('Packages', 'wpduplicator'), __('Packages', 'wpduplicator'), $perms, 'duplicator', 'duplicator_get_menu');
+        $page_packages = add_submenu_page('duplicator', DUP_Util::__('Packages'), DUP_Util::__('Packages'), $perms, 'duplicator', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_settings = add_submenu_page('duplicator', __('Settings', 'wpduplicator'), __('Settings', 'wpduplicator'), $perms, 'duplicator-settings', 'duplicator_get_menu');
+        $page_settings = add_submenu_page('duplicator', DUP_Util::__('Settings'), DUP_Util::__('Settings'), $perms, 'duplicator-settings', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_tools = add_submenu_page('duplicator', __('Tools', 'wpduplicator'), __('Tools', 'wpduplicator'), $perms, 'duplicator-tools', 'duplicator_get_menu');
+        $page_tools = add_submenu_page('duplicator', DUP_Util::__('Tools'), DUP_Util::__('Tools'), $perms, 'duplicator-tools', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);

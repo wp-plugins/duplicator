@@ -218,12 +218,12 @@ META-BOX1: SYSTEM REQUIREMENTS -->
             </div>
             <div class="dup-sys-info dup-info-box">
                 <?php if ($dup_tests['RES']['INSTALL'] == 'Pass') : ?>
-                        <?php _e('None of the reserved files (installer.php, installer-data.sql and installer-log.txt) where found from a previous install.  This means you are clear to create a new package.', 'wpduplicator'); ?>
+                        <?php _e('None of the reserved files (installer.php, installer-data.sql, database.sql and installer-log.txt) where found from a previous install.  This means you are clear to create a new package.', 'wpduplicator'); ?>
                     <?php else: 
                         $duplicator_nonce = wp_create_nonce('duplicator_cleanup_page');
                     ?> 
                     <form method="post" action="admin.php?page=duplicator-tools&tab=cleanup&action=installer&_wpnonce=<?php echo $duplicator_nonce; ?>">
-                    <?php _e('A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.', 'wpduplicator'); ?>
+                    <?php _e('A reserved file(s) was found in the WordPress root directory. Reserved file names are installer.php, database.sql installer-data.sql and installer-log.txt.  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.', 'wpduplicator'); ?>
                         <br/><input type='submit' class='button action' value='<?php _e('Remove Files Now', 'wpduplicator') ?>' style='font-size:10px; margin-top:5px;' />
                     </form>
 				<?php endif; ?>

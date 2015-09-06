@@ -35,24 +35,33 @@ class DUP_Database {
 			
 			$time_start = DUP_Util::GetMicrotime();
 			$this->Package->SetStatus(DUP_PackageStatus::DBSTART);
+			$this->dbStorePath  = "{$this->Package->StorePath}/{$this->File}";
 			
 			$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
 			$package_phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
 			
-			$this->dbStorePath  = "{$this->Package->StorePath}/{$this->File}";
 			$mysqlDumpPath = self::GetMySqlDumpPath();
 			$mode = ($mysqlDumpPath && $package_mysqldump) ? 'MYSQLDUMP' : 'PHP';
-			$mysqlDumpSupport = ($mysqlDumpPath) ? 'Is Supported' : 'Not Supported';
+			$reserved_db_filepath = DUPLICATOR_WPROOTPATH . 'database.sql';
+
 			
 			$log  = "\n********************************************************************************\n";
 			$log .= "DATABASE:\n";
 			$log .= "********************************************************************************\n";
-			$log .= "BUILD MODE:   {$mode} ";
+			$log .= "BUILD MODE:   {$mode}";
 			$log .= ($mode == 'PHP') ? "(query limit - {$package_phpdump_qrylimit})\n" : "\n";
-			$log .= "MYSQLDUMP:    {$mysqlDumpSupport}\n";
-			$log .= "MYSQLTIMEOUT: " . DUPLICATOR_DB_MAX_TIME;
+			$log .= "MYSQLTIMEOUT: " . DUPLICATOR_DB_MAX_TIME . "\n";
+			$log .= "MYSQLDUMP:    ";
+			$log .= ($mysqlDumpPath) ? "Is Supported" : "Not Supported";
 			DUP_Log::Info($log);
 			$log = null;
+			
+			//Reserved file found
+			if (file_exists($reserved_db_filepath)) {
+				DUP_Log::Error("Reserverd SQL file detected", 
+						"The file database.sql was found at [{$reserved_db_filepath}].\n"
+						. "\tPlease remove/rename this file to continue with the package creation.");
+			}
 			
 			switch ($mode) {
 				case 'MYSQLDUMP': $this->mysqlDump($mysqlDumpPath); 	break;
@@ -62,10 +71,12 @@ class DUP_Database {
 			DUP_Log::Info("SQL CREATED: {$this->File}");
 			$time_end = DUP_Util::GetMicrotime();
 			$time_sum = DUP_Util::ElapsedTime($time_end, $time_start);
-
+			
+			//File below 10k will be incomplete
 			$sql_file_size = filesize($this->dbStorePath);
-			if ($sql_file_size <= 0) {
-				DUP_Log::Error("SQL file generated zero bytes.", "No data was written to the sql file.  Check permission on file and parent directory at [{$this->dbStorePath}]");
+			DUP_Log::Info('file size:' . $sql_file_size);
+			if ($sql_file_size < 10000) {
+				DUP_Log::Error("SQL file size too low.", "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]");
 			}
 			DUP_Log::Info("SQL FILE SIZE: " . DUP_Util::ByteSize($sql_file_size));
 			DUP_Log::Info("SQL FILE TIME: " . date("Y-m-d H:i:s"));
