@@ -57,45 +57,42 @@
 		<div id="message" class="updated below-h2">
 			<p><?php echo $action_response; ?></p>
 			<?php if ( $_GET['action'] == 'installer') :  ?>
-			
-			<?php	
-				$html = "";
+				<?php	
+					$html = "";
+					$package_name   	= (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
 
-				$package_name   	= (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
-				
-				//Uncommon to see $installer_sql2 so don't display message
-				$html .= (@unlink($installer_file)) ?  "<div class='success'>Successfully removed {$installer_file}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_file}</div>";
-				$html .= (@unlink($installer_bak))  ?  "<div class='success'>Successfully removed {$installer_bak}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_bak}</div>";
-				$html .= (@unlink($installer_sql1)) ?  "<div class='success'>Successfully removed {$installer_sql1}</div>"  :  "<div class='failed'>Does not exist or unable to remove file: {$installer_sql1}</div>";
-				$html .= (@unlink($installer_sql2)) ?  "<div class='success'>Successfully removed {$installer_sql2}</div>"  :  "<div class='failed'>Does not exist or unable to remove file: {$installer_sql2}</div>";
-				$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_log}</div>";
+					//Uncommon to see $installer_sql2 so don't display message
+					$html .= (@unlink($installer_file)) ?  "<div class='success'>Successfully removed {$installer_file}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_file}</div>";
+					$html .= (@unlink($installer_bak))  ?  "<div class='success'>Successfully removed {$installer_bak}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_bak}</div>";
+					$html .= (@unlink($installer_sql1)) ?  "<div class='success'>Successfully removed {$installer_sql1}</div>"  :  "<div class='failed'>Does not exist or unable to remove file: {$installer_sql1}</div>";
+					$html .= (@unlink($installer_sql2)) ?  "<div class='success'>Successfully removed {$installer_sql2}</div>"  :  "<div class='failed'>Does not exist or unable to remove file: {$installer_sql2}</div>";
+					$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_log}</div>";
 
-				//No way to know exact name of archive file except from installer.
-				//The only place where the package can be remove is from installer
-				//So just show a message if removing from plugin.
-				if (! empty($package_name) ){
-					$path_parts = pathinfo($package_name);
-					$path_parts = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
-					if ($path_parts  == "zip"  && ! is_dir($package_name)) {
-						$html .= (@unlink($package_name))   
-							?  "<div class='success'>Successfully removed {$package_name}</div>"   
-							:  "<div class='failed'>Does not exist or unable to remove archive file.</div>";
+					//No way to know exact name of archive file except from installer.
+					//The only place where the package can be remove is from installer
+					//So just show a message if removing from plugin.
+					if (! empty($package_name) ){
+						$path_parts = pathinfo($package_name);
+						$path_parts = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
+						if ($path_parts  == "zip"  && ! is_dir($package_name)) {
+							$html .= (@unlink($package_name))   
+								?  "<div class='success'>Successfully removed {$package_name}</div>"   
+								:  "<div class='failed'>Does not exist or unable to remove archive file.</div>";
+						} else {
+							$html .= "<div class='failed'>Does not exist or unable to remove archive file.  Please validate that an archive file exists.</div>";
+						}
 					} else {
-						$html .= "<div class='failed'>Does not exist or unable to remove archive file.  Please validate that an archive file exists.</div>";
+						$html .= '<br/><div>It is recommended to remove your archive file from the root of your WordPress install.  This will need to be done manually.</div>';
 					}
-				} else {
-					$html .= '<div>It is <u>recommended</u> to remove your archive file from the root of your WordPress install.  This will need to be done manually.</div>';
-				}
+					echo $html;
+				 ?>
 
-				echo $html;
-			 ?>
+				<i><br/>
+				 <?php DUP_Util::_e('If the installer files did not successfully get removed, then you WILL need to remove them manually')?>. <br/>
+				 <?php DUP_Util::_e('Please remove all installer files to avoid leaving open security issues on your server')?>. <br/><br/>
+				</i>
 			
-			<i> <br/>
-			 <?php DUP_Util::_e('If the installer files did not successfully get removed, then you WILL need to remove them manually')?>. <br/>
-			 <?php DUP_Util::_e('Please remove all installer files to avoid leaving open security issues on your server')?>. <br/><br/>
-			</i>
-			
-		<?php endif; ?>
+			<?php endif; ?>
 		</div>
 	<?php endif; ?>	
 	
@@ -114,17 +111,22 @@
 				<br/>
 				<div id="dup-tools-delete-moreinfo">
 					<?php
-
+						$installer_file_exists 	= file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP) ? true : false;
+						$installer_bak_exists	= file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK) ? true : false;
+						$installer_sql1_exists  = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL) ? true : false;
+						$installer_sql2_exists 	= file_exists(DUPLICATOR_WPROOTPATH . 'database.sql')		  ? true : false;
+						$installer_log_exists  	= file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG) ? true : false;					
+					
+						$found = DUP_Util::__("Found");
 						DUP_Util::_e("Duplicator will attempt to removed the following reserved files.  These files are typically from a previous Duplicator install, "
 								. "but may be from other sources. If you are unsure of the source, please validate the files.  These files should never be left on "
 								. "production systems as they can leave a security hole for your site.");
-						
-						echo "<br/><br/>"
-							. "<div>{$installer_file}</div>"
-							. "<div>{$installer_bak}</div>"
-							. "<div>{$installer_sql1}</div>" 
-							. "<div>{$installer_sql2}</div>"
-							. "<div>{$installer_log}</div>";
+						echo "<br/><br/>";
+						echo $installer_file_exists  ? "<div class='failed'>{$installer_file} [{$found}] </div>"  : "<div class='success'>{$installer_file} </div>";
+						echo $installer_bak_exists   ? "<div class='failed'>{$installer_bak}  [{$found}] </div>"  : "<div class='success'>{$installer_bak} </div>";
+						echo $installer_sql1_exists  ? "<div class='failed'>{$installer_sql1} [{$found}] </div>"  : "<div class='success'>{$installer_sql1} </div>";
+						echo $installer_sql2_exists  ? "<div class='failed'>{$installer_sql2} [{$found}] </div>"  : "<div class='success'>{$installer_sql2} </div>";
+						echo $installer_log_exists   ? "<div class='failed'>{$installer_log}  [{$found}] </div>"  : "<div class='success'>{$installer_log} </div>";
 					?>
 				</div>
 			</td>
@@ -133,19 +135,15 @@
 			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.DeleteLegacy()"><?php DUP_Util::_e("Delete Legacy Data"); ?></a></td>
 			<td><?php DUP_Util::_e("Removes all legacy data and settings prior to version"); ?> [<?php echo DUPLICATOR_VERSION ?>].</td>
 		</tr>
-				<tr>
+		<tr>
 			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.ClearBuildCache()"><?php DUP_Util::_e("Clear Build Cache"); ?></a></td>
 			<td><?php DUP_Util::_e("Removes all build data from:"); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
 		</tr>	
 	</table>
-
-	
 </form>
 
 <script>	
 jQuery(document).ready(function($) {
-	
-
    Duplicator.Tools.DeleteLegacy = function () {
 	   <?php
 		   $msg  = __('This action will remove all legacy settings prior to version %1$s.  ');
@@ -167,11 +165,9 @@ jQuery(document).ready(function($) {
 	   var result = confirm('<?php echo $msg ?>');
 	   if (! result) 
 		   return;
-               
+          
 	   window.location = '?page=duplicator-tools&tab=cleanup&action=tmp-cache&_wpnonce=<?php echo $nonce; ?>';
-   }   
-  
-	
+   }
 });	
 </script>
 
