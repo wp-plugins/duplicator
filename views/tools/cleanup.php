@@ -60,12 +60,11 @@
 					$html = "";
 					$package_name   	= (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
 
-					//Uncommon to see $installer_sql2 so don't display message
-					$html .= (@unlink($installer_file)) ?  "<div class='success'>Successfully removed {$installer_file}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_file}</div>";
-					$html .= (@unlink($installer_bak))  ?  "<div class='success'>Successfully removed {$installer_bak}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_bak}</div>";
-					$html .= (@unlink($installer_sql1)) ?  "<div class='success'>Successfully removed {$installer_sql1}</div>"  :  "<div class='failed'>Does not exist or unable to remove file: {$installer_sql1}</div>";
-					$html .= (@unlink($installer_sql2)) ?  "<div class='success'>Successfully removed {$installer_sql2}</div>"  :  "<div class='failed'>Does not exist or unable to remove file: {$installer_sql2}</div>";
-					$html .= (@unlink($installer_log))  ?  "<div class='success'>Successfully removed {$installer_log}</div>"	:  "<div class='failed'>Does not exist or unable to remove file: {$installer_log}</div>";
+					$html .= (@unlink($installer_file)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_file}</div>"	:  "";
+					$html .= (@unlink($installer_bak))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_bak}</div>"	:  "";
+					$html .= (@unlink($installer_sql1)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql1}</div>"  :  "";
+					$html .= (@unlink($installer_sql2)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql2}</div>"  :  "";
+					$html .= (@unlink($installer_log))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_log}</div>"	:  "";
 
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be remove is from installer
@@ -118,9 +117,8 @@
 					
 						$found = DUP_Util::__("Found");
 						$not_found = DUP_Util::__("Not Found");
-						DUP_Util::_e("Clicking on the 'Delete Reserved Files' button will attempt to removed the following reserved files.  These files are typically from a previous Duplicator install, "
-								. "but may be from other sources. If you are unsure of the source, please validate the files.  These files should never be left on "
-								. "production systems as they can leave a security hole for your site.");
+						DUP_Util::_e("Clicking on the 'Delete Reserved Files' button will remove the following reserved files.  These files are typically from a previous Duplicator install. "
+								. "If you are unsure of the source, please validate the files.  These files should never be left on  production systems as they can leave a security hole for your site.");
 						echo "<br/><br/>";
 						echo $installer_file_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_file}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_file}	</div>";
 						echo $installer_bak_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_bak}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_bak}	</div>";
