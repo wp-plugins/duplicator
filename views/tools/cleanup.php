@@ -47,9 +47,8 @@
 	table.dup-reset-opts td {padding:10px}
 	form#dup-settings-form {padding: 0px 10px 0px 10px}
 	a.dup-fixed-btn {min-width: 150px; text-align: center}
-	div#dup-tools-delete-moreinfo {display: none; padding: 5px 0 0 20px; border:1px solid silver; background-color: #fff; border-radius: 5px; padding:10px; margin:5px; width:700px }
+	div#dup-tools-delete-moreinfo {display: none; padding: 5px 0 0 20px; border:1px solid silver; background-color: #fff; border-radius: 5px; padding:10px; margin:5px; width:750px }
 </style>
-
 
 <form id="dup-settings-form" action="?page=duplicator-tools&tab=cleanup" method="post">
 	
@@ -118,15 +117,16 @@
 						$installer_log_exists  	= file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG) ? true : false;					
 					
 						$found = DUP_Util::__("Found");
-						DUP_Util::_e("Duplicator will attempt to removed the following reserved files.  These files are typically from a previous Duplicator install, "
+						$not_found = DUP_Util::__("Not Found");
+						DUP_Util::_e("Clicking on the 'Delete Reserved Files' button will attempt to removed the following reserved files.  These files are typically from a previous Duplicator install, "
 								. "but may be from other sources. If you are unsure of the source, please validate the files.  These files should never be left on "
 								. "production systems as they can leave a security hole for your site.");
 						echo "<br/><br/>";
-						echo $installer_file_exists  ? "<div class='failed'>{$installer_file} [{$found}] </div>"  : "<div class='success'>{$installer_file} </div>";
-						echo $installer_bak_exists   ? "<div class='failed'>{$installer_bak}  [{$found}] </div>"  : "<div class='success'>{$installer_bak} </div>";
-						echo $installer_sql1_exists  ? "<div class='failed'>{$installer_sql1} [{$found}] </div>"  : "<div class='success'>{$installer_sql1} </div>";
-						echo $installer_sql2_exists  ? "<div class='failed'>{$installer_sql2} [{$found}] </div>"  : "<div class='success'>{$installer_sql2} </div>";
-						echo $installer_log_exists   ? "<div class='failed'>{$installer_log}  [{$found}] </div>"  : "<div class='success'>{$installer_log} </div>";
+						echo $installer_file_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_file}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_file}	</div>";
+						echo $installer_bak_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_bak}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_bak}	</div>";
+						echo $installer_sql1_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql1}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql1}	</div>";
+						echo $installer_sql2_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql2}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql2}	</div>";
+						echo $installer_log_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_log}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_log}	</div>";
 					?>
 				</div>
 			</td>
