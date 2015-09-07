@@ -58,7 +58,7 @@ VIEW: STEP 3- INPUT -->
 		</tr>		
 		<tr>
 			<td>4. <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">Security Cleanup</a></td>
-			<td><i>Removes all installer files (requires login)</i></td>
+			<td><i>Validate installer files are removed (requires login)</i></td>
 		</tr>	
 	</table><br/>
 	

@@ -5,27 +5,36 @@
     $nonce = wp_create_nonce('duplicator_cleanup_page');    
 	$_GET['action'] = isset($_GET['action']) ? $_GET['action'] : 'display';
 	
-	$installer_file 	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP;
-	$installer_bak		= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK;
-	$installer_sql1  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL;
-	$installer_sql2  	= DUPLICATOR_WPROOTPATH . 'database.sql';
-	$installer_log  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG;
-	
 	if(isset($_GET['action']))
 	{
 		if(($_GET['action'] == 'installer') || ($_GET['action'] == 'legacy') || ($_GET['action'] == 'tmp-cache'))
 		{
 			$verify_nonce = $_REQUEST['_wpnonce'];
-			if ( ! wp_verify_nonce( $verify_nonce, 'duplicator_cleanup_page' ) ) {
+			if ( ! wp_verify_nonce( $verify_nonce, 'duplicator_cleanup_page' ) ) 
+			{
 				exit; // Get out of here, the nonce is rotten!
 			}
 		}   
 	}
+	
+	$found = DUP_Util::__("Found");
+	$not_found = DUP_Util::__("Not Found");
+	
+	$installer_file 	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP;
+	$installer_bak		= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK;
+	$installer_sql1  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL;
+	$installer_sql2  	= DUPLICATOR_WPROOTPATH . 'database.sql';
+	$installer_log  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG;
         
 	switch ($_GET['action']) {            
 		case 'installer' :     
 			$action_response = __('Installer file cleanup ran!');
 			$css_hide_msg = 'div.dup-header div.error {display:none}';
+			@unlink($installer_file);
+			@unlink($installer_bak);
+			@unlink($installer_sql1);
+			@unlink($installer_sql2);
+			@unlink($installer_log); 			
 			break;		
 		case 'legacy': 
 			DUP_Settings::LegacyClean();			
@@ -36,7 +45,12 @@
 			$action_response = __('Build cache removed.');
 			break;		
 	} 
-	
+
+	$installer_file_exists 	= file_exists($installer_file)	? true : false;
+	$installer_bak_exists	= file_exists($installer_bak)	? true : false;
+	$installer_sql1_exists  = file_exists($installer_sql1)	? true : false;
+	$installer_sql2_exists 	= file_exists($installer_sql2)	? true : false;
+	$installer_log_exists  	= file_exists($installer_log)	? true : false;
 ?>
 
 <style type="text/css">
@@ -59,12 +73,12 @@
 				<?php	
 					$html = "";
 					$package_name   	= (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
-
-					$html .= (@unlink($installer_file)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_file}</div>"	:  "<div>Does not exist or unable to remove file: {$installer_file}</div>";
-					$html .= (@unlink($installer_bak))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_bak}</div>"	:  "<div>Does not exist or unable to remove file: {$installer_bak}</div>";
-					$html .= (@unlink($installer_sql1)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql1}</div>"  :  "<div>Does not exist or unable to remove file: {$installer_sql1}</div>";
-					$html .= (@unlink($installer_sql2)) ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_sql2}</div>"  :  "<div>Does not exist or unable to remove file: {$installer_sql2}</div>";
-					$html .= (@unlink($installer_log))  ?  "<div><i class='fa fa-check'></i> Successfully removed {$installer_log}</div>"	:  "<div>Does not exist or unable to remove file: {$installer_log}</div>";
+					
+					echo $installer_file_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_file}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_file}	</div>";
+					echo $installer_bak_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_bak}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_bak}	</div>";
+					echo $installer_sql1_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql1}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql1}	</div>";
+					echo $installer_sql2_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql2}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql2}	</div>";
+					echo $installer_log_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_log}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_log}	</div>";
 
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be remove is from installer
@@ -109,14 +123,6 @@
 				<br/>
 				<div id="dup-tools-delete-moreinfo">
 					<?php
-						$installer_file_exists 	= file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP) ? true : false;
-						$installer_bak_exists	= file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK) ? true : false;
-						$installer_sql1_exists  = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL) ? true : false;
-						$installer_sql2_exists 	= file_exists(DUPLICATOR_WPROOTPATH . 'database.sql')		  ? true : false;
-						$installer_log_exists  	= file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG) ? true : false;					
-					
-						$found = DUP_Util::__("Found");
-						$not_found = DUP_Util::__("Not Found");
 						DUP_Util::_e("Clicking on the 'Delete Reserved Files' button will remove the following reserved files.  These files are typically from a previous Duplicator install. "
 								. "If you are unsure of the source, please validate the files.  These files should never be left on  production systems as they can leave a security hole for your site.");
 						echo "<br/><br/>";
