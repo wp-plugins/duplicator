@@ -12,7 +12,7 @@
 			$verify_nonce = $_REQUEST['_wpnonce'];
 			if ( ! wp_verify_nonce( $verify_nonce, 'duplicator_cleanup_page' ) ) 
 			{
-				exit; // Get out of here, the nonce is rotten!
+				exit; // Get out of here bad nounce!
 			}
 		}   
 	}
