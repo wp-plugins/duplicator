@@ -124,7 +124,8 @@
 				<div id="dup-tools-delete-moreinfo">
 					<?php
 						DUP_Util::_e("Clicking on the 'Delete Reserved Files' button will remove the following reserved files.  These files are typically from a previous Duplicator install. "
-								. "If you are unsure of the source, please validate the files.  These files should never be left on  production systems as they can leave a security hole for your site.");
+								. "If you are unsure of the source, please validate the files.  These files should never be left on production systems for security reasons.  "
+								. "Below is a list of all the reserved files used by Duplicator.  Please be sure these are removed from your server.");
 						echo "<br/><br/>";
 						echo $installer_file_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_file}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_file}	</div>";
 						echo $installer_bak_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_bak}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_bak}	</div>";
