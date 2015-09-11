@@ -113,12 +113,33 @@ class DUP_Server
 	*/
 	public static function InstallerFilesFound() 
 	{
-		$phpFile  = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP);
-		$logFile  = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG);
-		$sqlFile1 = file_exists(DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL);
-		$sqlFile2 = file_exists(DUPLICATOR_WPROOTPATH . 'database.sql');	
-		return  ($phpFile || $logFile || $sqlFile1 || $sqlFile2);
+		$files = self::GetInstallerFiles();
+		foreach($files as $file => $path) 
+		{
+			if (file_exists($path))
+				return true;
+		}
+		return false;
 	}
+	
+	
+	/** 
+	* Gets a list of all the installer files by name and full path
+	* @return array [file_name, file_path]
+	*/
+	public static function GetInstallerFiles() 
+	{
+		/* Files:
+		 * installer.php, installer-backup.php, installer-data.sql, installer-log.txt, database.sql */
+		return array(
+			DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP,  
+			DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK, 
+			DUPLICATOR_INSTALL_SQL => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL,
+			DUPLICATOR_INSTALL_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG,
+			DUPLICATOR_INSTALL_DB  => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_DB
+		);
+	}
+	
 	
 	/** 
 	* Get the IP of a client machine

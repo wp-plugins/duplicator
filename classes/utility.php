@@ -216,17 +216,26 @@ class DUP_Util {
 		return $size;
 	}
 	
-	
-	public static function IsShellExecAvailable() {
+	/** 
+	 * Can shell_exec be called on this server
+	 */
+	public static function IsShellExecAvailable() 
+	{
+		$cmds = array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded');
 		
-		if (array_intersect(array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded'), array_map('trim', explode(',', @ini_get('disable_functions')))))
+		//Function disabled at server level
+		if (array_intersect($cmds, array_map('trim', explode(',', @ini_get('disable_functions')))))
 			return false;
 		
 		//Suhosin: http://www.hardened-php.net/suhosin/
-		//Will cause PHP to silently fail.
-		if (extension_loaded('suhosin'))
-		  return false;
-
+		//Will cause PHP to silently fail
+		if (extension_loaded('suhosin')) 
+		{
+			$suhosin_ini = @ini_get("suhosin.executor.func.blacklist");
+			if (array_intersect($cmds, array_map('trim', explode(',', $suhosin_ini))))
+				return false;
+		}
+		
 		// Can we issue a simple echo command?
 		if (!@shell_exec('echo duplicator'))
 			return false;

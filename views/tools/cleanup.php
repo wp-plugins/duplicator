@@ -17,24 +17,14 @@
 		}   
 	}
 	
-	$found = DUP_Util::__("Found");
-	$not_found = DUP_Util::__("Not Found");
-	
-	$installer_file 	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP;
-	$installer_bak		= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK;
-	$installer_sql1  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL;
-	$installer_sql2  	= DUPLICATOR_WPROOTPATH . 'database.sql';
-	$installer_log  	= DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG;
+	$txt_found = DUP_Util::__("Found");
+	$txt_not_found = DUP_Util::__("Not Found");
+	$installer_files = DUP_Server::GetInstallerFiles();
         
 	switch ($_GET['action']) {            
 		case 'installer' :     
 			$action_response = __('Installer file cleanup ran!');
-			$css_hide_msg = 'div.dup-header div.error {display:none}';
-			@unlink($installer_file);
-			@unlink($installer_bak);
-			@unlink($installer_sql1);
-			@unlink($installer_sql2);
-			@unlink($installer_log); 			
+			$css_hide_msg = 'div.dup-header div.error {display:none}';		
 			break;		
 		case 'legacy': 
 			DUP_Settings::LegacyClean();			
@@ -46,11 +36,6 @@
 			break;		
 	} 
 
-	$installer_file_exists 	= file_exists($installer_file)	? true : false;
-	$installer_bak_exists	= file_exists($installer_bak)	? true : false;
-	$installer_sql1_exists  = file_exists($installer_sql1)	? true : false;
-	$installer_sql2_exists 	= file_exists($installer_sql2)	? true : false;
-	$installer_log_exists  	= file_exists($installer_log)	? true : false;
 ?>
 
 <style type="text/css">
@@ -72,13 +57,15 @@
 			<?php if ( $_GET['action'] == 'installer') :  ?>
 				<?php	
 					$html = "";
-					$package_name   	= (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
-					
-					echo $installer_file_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_file}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_file}	</div>";
-					echo $installer_bak_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_bak}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_bak}	</div>";
-					echo $installer_sql1_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql1}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql1}	</div>";
-					echo $installer_sql2_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql2}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql2}	</div>";
-					echo $installer_log_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_log}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_log}	</div>";
+
+					$package_name = (isset($_GET['package'])) ? DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
+					foreach($installer_files as $file => $path) 
+					{
+						@unlink($path);		
+						echo (file_exists($path)) 
+							? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$path}  </div>"
+							: "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$path}	</div>";	
+					}
 
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be remove is from installer
@@ -127,11 +114,13 @@
 								. "If you are unsure of the source, please validate the files.  These files should never be left on production systems for security reasons.  "
 								. "Below is a list of all the reserved files used by Duplicator.  Please be sure these are removed from your server.");
 						echo "<br/><br/>";
-						echo $installer_file_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_file}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_file}	</div>";
-						echo $installer_bak_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_bak}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_bak}	</div>";
-						echo $installer_sql1_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql1}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql1}	</div>";
-						echo $installer_sql2_exists  ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_sql2}  </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_sql2}	</div>";
-						echo $installer_log_exists   ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$found} - {$installer_log}   </div>"  : "<div class='success'> <i class='fa fa-check'></i> {$not_found} - {$installer_log}	</div>";
+						
+						foreach($installer_files as $file => $path) 
+						{
+							echo (file_exists($path)) 
+								? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file}  </div>"
+								: "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$file}	</div>";		
+						}
 					?>
 				</div>
 			</td>

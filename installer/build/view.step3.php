@@ -188,7 +188,7 @@ VIEW: STEP 3- INPUT -->
 		<a href="installer.php?help=1#troubleshoot" target="_blank">Troubleshoot</a> | 
 		<a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> | 
 		<a href='http://lifeinthegrid.com/duplicator' target='_blank'>Support</a> | 
-		<a href='http://lifeinthegrid.com/partner/' target='_blank'>Donate</a>
+		<a href='http://snapcreek.com/duplicator/' target='_blank'>Go Pro!</a>
 	</div><br/>
 </form>
 

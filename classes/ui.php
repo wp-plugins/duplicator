@@ -101,7 +101,7 @@ class DUP_UI {
 			$screen = get_current_screen();
 			$on_active_tab =  isset($_GET['tab']) && $_GET['tab'] == 'cleanup' ? true : false;
 			
-			echo '<div class="error"><p>';
+			echo '<div class="error" id="dup-global-error-reserved-files"><p>';
 			if ($screen->id == 'duplicator_page_duplicator-tools' && $on_active_tab) 
 			{
 				DUP_Util::_e('Reserved Duplicator install files have been detected in the root directory.  Please delete these reserved files to avoid security issues.');
