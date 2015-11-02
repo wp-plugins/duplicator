@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 0.5.32
+  Version: 0.5.34
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   Text Domain: wpduplicator
@@ -118,7 +118,6 @@ if (is_admin() == true) {
     add_action('wp_ajax_duplicator_package_scan', 'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_build', 'duplicator_package_build');
     add_action('wp_ajax_duplicator_package_delete', 'duplicator_package_delete');
-    add_action('wp_ajax_duplicator_package_report', 'duplicator_package_report');
     add_action('wp_ajax_DUP_UI_SaveViewStateByPost', array('DUP_UI', 'SaveViewStateByPost'));
     add_action('admin_notices', array('DUP_UI', 'ShowReservedFilesNotice'));
     add_action('plugins_loaded', 'duplicator_wpfront_integrate');

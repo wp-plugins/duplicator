@@ -66,19 +66,6 @@ function duplicator_package_build() {
     die($json_response);
 }
 
-
-function duplicator_package_report() {
-	
-	DUP_Util::CheckPermissions('export');
-	
-	$scanReport = $_GET['scanfile'];
-	header('Content-Type: application/json');
-	header("Location: " . DUPLICATOR_SSDIR_URL . "/tmp/" . $scanReport);
-	echo DUPLICATOR_SSDIR_URL . "/tmp/" . $scanReport;
-	
-    die();
-}
-
 /**
  *  DUPLICATOR_PACKAGE_DELETE
  *  Deletes the files and database record entries

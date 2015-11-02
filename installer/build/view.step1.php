@@ -31,7 +31,7 @@
 	$safe_ini = strtolower(@ini_get('safe_mode'));
 	$req02    =  $safe_ini  != 'on' || $safe_ini != 'yes' || $safe_ini != 'true' || ini_get("safe_mode") != 1 ? 'Pass' : 'Fail';
 	$req03    = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
-	$php_compare  = version_compare(phpversion(), '5.2.17');
+	$php_compare  = version_compare(phpversion(), '5.2.9');
 	$req04 = $php_compare >= 0 ? 'Pass' : 'Fail';
 	$total_req = ($req01 == 'Pass' && $req02 == 'Pass' && $req03 == 'Pass' && $req04 == 'Pass') ? 'Pass' : 'Fail';
 ?>
@@ -410,7 +410,7 @@ PANEL: SERVER CHECKS  -->
 	<tr>
 		<td valign="top">
 		PHP Version: <?php echo phpversion(); ?><br/>
-		<i style="font-size:10px">(PHP 5.2.17+ is required)</i>
+		<i style="font-size:10px">(PHP 5.2.9+ is required)</i>
 		</td>
 		<td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
 	</tr>
