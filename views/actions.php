@@ -92,6 +92,7 @@ function duplicator_package_delete() {
             foreach ($list as $id) {
 				
 				$getResult = $wpdb->get_results($wpdb->prepare("SELECT name, hash FROM `{$tblName}` WHERE id = %d", $id), ARRAY_A);
+				
 				if ($getResult) {
 					$row		=  $getResult[0];
 					$nameHash	= "{$row['name']}_{$row['hash']}";
@@ -117,7 +118,9 @@ function duplicator_package_delete() {
 						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"));
 						//Unfinished Zip files
 						$tmpZip = DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip.*";
-						array_map('unlink', glob($tmpZip));
+						if ($tmpZip !== false) {
+							array_map('unlink', glob($tmpZip));
+						}
 						@unlink(DUP_Util::SafePath());
 						$delCount++;
 					} 
