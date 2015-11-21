@@ -30,18 +30,18 @@ TOOL BAR: STEPS -->
 		<td style="white-space: nowrap">
 			<div id="dup-wiz">
 				<div id="dup-wiz-steps">
-					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
-					<div class="completed-step"><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
-					<div class="active-step"><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
+					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'duplicator'); ?></a></div>
+					<div class="completed-step"><a><span>2</span> <?php _e('Scan', 'duplicator'); ?> </a></div>
+					<div class="active-step"><a><span>3</span> <?php _e('Build', 'duplicator'); ?> </a></div>
 				</div>
 				<div id="dup-wiz-title">
-					<?php _e('Step 3: Build Package', 'wpduplicator'); ?>
+					<?php _e('Step 3: Build Package', 'duplicator'); ?>
 				</div> 
 			</div>
 		</td>
 		<td class="dup-toolbar-btns">
-			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
-			<span> <?php _e("Create New", 'wpduplicator'); ?></span>
+			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'duplicator'); ?></a> &nbsp;
+			<span> <?php _e("Create New", 'duplicator'); ?></span>
 		</td>
 	</tr>
 </table>		
@@ -52,42 +52,42 @@ TOOL BAR: STEPS -->
 
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">
-		<h2><i class="fa fa-cog fa-spin"></i> <?php _e('Building Package', 'wpduplicator'); ?></h2>
+		<h2><i class="fa fa-cog fa-spin"></i> <?php _e('Building Package', 'duplicator'); ?></h2>
 		<div id="dup-progress-bar"></div>
-		<b><?php _e('Please Wait...', 'wpduplicator'); ?></b><br/><br/>
-		<i><?php _e('Keep this window open during the build process.', 'wpduplicator'); ?></i><br/>
-		<i><?php _e('This may take several minutes.', 'wpduplicator'); ?></i><br/>
+		<b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
+		<i><?php _e('Keep this window open during the build process.', 'duplicator'); ?></i><br/>
+		<i><?php _e('This may take several minutes.', 'duplicator'); ?></i><br/>
 	</div>
 	
 	<div id="dup-progress-area" class="dup-panel" style="display:none">
-		<div class="dup-panel-title dup-box-title-fancy"><b style="font-size:18px"><?php _e('Build Status', 'wpduplicator'); ?></b></div>
+		<div class="dup-panel-title dup-box-title-fancy"><b style="font-size:18px"><?php _e('Build Status', 'duplicator'); ?></b></div>
 		<div class="dup-panel-panel">
 
 			<!--  =========================
 			SUCCESS MESSAGE -->
 			<div id="dup-msg-success" style="display:none">
 				<div class="dup-hdr-success">
-					<i class="fa fa-check-square-o fa-lg"></i> <?php _e('Package Completed', 'wpduplicator'); ?>
+					<i class="fa fa-check-square-o fa-lg"></i> <?php _e('Package Completed', 'duplicator'); ?>
 				</div>
 				
 				<div class="dup-msg-success-stats">
-					<b><?php _e('Name', 'wpduplicator'); ?>:</b> <span id="data-name-hash"></span><br/>
-					<b><?php _e('Process Time', 'wpduplicator'); ?>:</b> <span id="data-time"></span><br/>
+					<b><?php _e('Name', 'duplicator'); ?>:</b> <span id="data-name-hash"></span><br/>
+					<b><?php _e('Process Time', 'duplicator'); ?>:</b> <span id="data-time"></span><br/>
 				</div><br/>
 				
 				<button id="dup-btn-installer" class="button button-primary button-large">
-					<i class="fa fa-bolt"></i> <?php _e("Installer", 'wpduplicator') ?>
+					<i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?>
 					<span id="dup-btn-installer-size" class="dup-btn-size"></span>
 				</button> &nbsp;
 				<button id="dup-btn-archive" class="button button-primary button-large">
-					<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'wpduplicator') ?>
+					<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
 					<span id="dup-btn-archive-size" class="dup-btn-size"></span>
 				</button><br/><br/>
 
 	
 				<div class="dup-msg-success-links">
-					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'wpduplicator'));?> 
-					<?php //printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create Another Package', 'wpduplicator'));?> 
+					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'duplicator'));?> 
+					<?php //printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create Another Package', 'duplicator'));?> 
 				</div><br/>
 				
 				<!-- Used for iMacros testing do not remove -->
@@ -97,34 +97,34 @@ TOOL BAR: STEPS -->
 			<!--  =========================
 			ERROR MESSAGE -->
 			<div id="dup-msg-error" style="display:none">
-				<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Build Interrupt', 'wpduplicator'); ?></div>
-				<b><?php _e('The current build has experienced an issue.', 'wpduplicator'); ?></b><br/>
+				<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Build Interrupt', 'duplicator'); ?></div>
+				<b><?php _e('The current build has experienced an issue.', 'duplicator'); ?></b><br/>
 			
-				<i><?php _e('Please try the process again.', 'wpduplicator'); ?></i><br/><br/>
+				<i><?php _e('Please try the process again.', 'duplicator'); ?></i><br/><br/>
 				  
-				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'wpduplicator'); ?>" onclick="window.open('http://lifeinthegrid.com/support/knowledgebase.php?article=12#faq-trouble-timeout', '_blank');return false;" />
-                                <input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />                                
+				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'duplicator'); ?>" onclick="window.open('http://lifeinthegrid.com/support/knowledgebase.php?article=12#faq-trouble-timeout', '_blank');return false;" />
+                                <input type="button" class="button" value="<?php _e('Try Again', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />                                
 				<fieldset>
-					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'wpduplicator'); ?></b></legend>
+					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'duplicator'); ?></b></legend>
 					<div class="dup-msg-error-area">
 						<div id="dup-msg-error-response-status">
-							<span class="label"><?php _e("Server Status:", 'wpduplicator'); ?></span>
+							<span class="label"><?php _e("Server Status:", 'duplicator'); ?></span>
 							<span class="data"></span>
 						</div>
 						<div id="dup-msg-error-response-text">
-							<span class="label"><?php _e("Error Message:", 'wpduplicator'); ?></span><br/>
+							<span class="label"><?php _e("Error Message:", 'duplicator'); ?></span><br/>
 							<span class="data"></span>
 						</div>
 					</div>
 				</fieldset><br/>
 				
 				<fieldset style="color:#777">
-					<legend><b> <?php _e('Notice', 'wpduplicator'); ?></b></legend>
+					<legend><b> <?php _e('Notice', 'duplicator'); ?></b></legend>
 					<div class="dup-msg-error-area">
 						<?php printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s',
 							__('Build Folder:'),
 								DUPLICATOR_SSDIR_PATH_TMP,
-							__("Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.  Please visit the support page for additional resources.", 'wpduplicator')
+							__("Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.  Please visit the support page for additional resources.", 'duplicator')
 							);
 						?> <br/>
 					</div>
@@ -133,7 +133,7 @@ TOOL BAR: STEPS -->
 				<!-- LOGS -->
 				<div id="dup-logs">
 					<div style="font-weight:bold">
-						<i class="fa fa-list-alt"></i> <a href='javascript:void(0)' style="color:#A62426" onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a>						
+						<i class="fa fa-list-alt"></i> <a href='javascript:void(0)' style="color:#A62426" onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'duplicator');?> </a>						
 					</div> 
 					<br/>
 				</div>

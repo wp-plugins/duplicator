@@ -3,7 +3,7 @@ global $wp_version;
 global $wpdb;
 
 $action_updated = null;
-$action_response = __("Settings Saved", 'wpduplicator');
+$action_response = __("Settings Saved", 'duplicator');
 
 //SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
@@ -79,33 +79,33 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
     <!-- ===============================
     PLUG-IN SETTINGS -->
-    <h3 class="title"><?php _e("Plugin", 'wpduplicator') ?> </h3>
+    <h3 class="title"><?php _e("Plugin", 'duplicator') ?> </h3>
     <hr size="1" />
     <table class="form-table">
         <tr valign="top">
-            <th scope="row"><label><?php _e("Version", 'wpduplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Version", 'duplicator'); ?></label></th>
             <td><?php echo DUPLICATOR_VERSION ?></td>
         </tr>	
         <tr valign="top">
-            <th scope="row"><label><?php _e("Uninstall", 'wpduplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Uninstall", 'duplicator'); ?></label></th>
             <td>
                 <input type="checkbox" name="uninstall_settings" id="uninstall_settings" <?php echo ($uninstall_settings) ? 'checked="checked"' : ''; ?> /> 
-                <label for="uninstall_settings"><?php _e("Delete Plugin Settings", 'wpduplicator') ?> </label><br/>
+                <label for="uninstall_settings"><?php _e("Delete Plugin Settings", 'duplicator') ?> </label><br/>
 
                 <input type="checkbox" name="uninstall_files" id="uninstall_files" <?php echo ($uninstall_files) ? 'checked="checked"' : ''; ?> /> 
-                <label for="uninstall_files"><?php _e("Delete Entire Storage Directory", 'wpduplicator') ?></label><br/>
+                <label for="uninstall_files"><?php _e("Delete Entire Storage Directory", 'duplicator') ?></label><br/>
 
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row"><label><?php _e("Storage", 'wpduplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Storage", 'duplicator'); ?></label></th>
             <td>
-                <?php _e("Full Path", 'wpduplicator'); ?>: 
+                <?php _e("Full Path", 'duplicator'); ?>: 
                 <?php echo DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH); ?><br/><br/>
                 <input type="checkbox" name="storage_htaccess_off" id="storage_htaccess_off" <?php echo ($storage_htaccess_off) ? 'checked="checked"' : ''; ?> /> 
-                <label for="storage_htaccess_off"><?php _e("Disable .htaccess File In Storage Directory", 'wpduplicator') ?> </label>
+                <label for="storage_htaccess_off"><?php _e("Disable .htaccess File In Storage Directory", 'duplicator') ?> </label>
                 <p class="description">
-                    <?php _e("Disable if issues occur when downloading installer/archive files.", 'wpduplicator'); ?>
+                    <?php _e("Disable if issues occur when downloading installer/archive files.", 'duplicator'); ?>
                 </p>
             </td>
         </tr>	
@@ -114,28 +114,28 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
     <!-- ===============================
     PACKAGE SETTINGS -->
-    <h3 class="title"><?php _e("Package", 'wpduplicator') ?> </h3>
+    <h3 class="title"><?php _e("Package", 'duplicator') ?> </h3>
     <hr size="1" />
     <table class="form-table">
         <tr>
-            <th scope="row"><label><?php _e("Archive Flush", 'wpduplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Archive Flush", 'duplicator'); ?></label></th>
             <td>
                 <input type="checkbox" name="package_zip_flush" id="package_zip_flush" <?php echo ($package_zip_flush) ? 'checked="checked"' : ''; ?> />
-                <label for="package_zip_flush"><?php _e("Attempt Network Keep Alive", 'wpduplicator'); ?></label>
-                <i style="font-size:12px">(<?php _e("recommended only for large archives", 'wpduplicator'); ?>)</i> 
+                <label for="package_zip_flush"><?php _e("Attempt Network Keep Alive", 'duplicator'); ?></label>
+                <i style="font-size:12px">(<?php _e("recommended only for large archives", 'duplicator'); ?>)</i> 
                 <p class="description">
-                    <?php _e("This will attempt to keep a network connection established for large archives.", 'wpduplicator'); ?>
+                    <?php _e("This will attempt to keep a network connection established for large archives.", 'duplicator'); ?>
                 </p>
             </td>
         </tr>		
         <tr>
-            <th scope="row"><label><?php _e("Database Build", 'wpduplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Database Build", 'duplicator'); ?></label></th>
             <td>
 				<input type="radio" name="package_dbmode" id="package_phpdump" value="php" <?php echo (! $package_mysqldump) ? 'checked="checked"' : ''; ?> />
-                <label for="package_phpdump"><?php _e("Use PHP", 'wpduplicator'); ?></label> &nbsp;
+                <label for="package_phpdump"><?php _e("Use PHP", 'duplicator'); ?></label> &nbsp;
 				
 				<div style="margin:5px 0px 0px 25px">
-					<label for="package_phpdump_qrylimit"><?php _e("Query Limit Size", 'wpduplicator'); ?></label> &nbsp;
+					<label for="package_phpdump_qrylimit"><?php _e("Query Limit Size", 'duplicator'); ?></label> &nbsp;
 					<select name="package_phpdump_qrylimit" id="package_phpdump_qrylimit">
 						<?php 
 							foreach($phpdump_chunkopts as $value) {
@@ -144,42 +144,42 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 							}
 						?>
 					</select>
-					 <i style="font-size:12px">(<?php _e("higher values speed up build times but uses more memory", 'wpduplicator'); ?>)</i> 
+					 <i style="font-size:12px">(<?php _e("higher values speed up build times but uses more memory", 'duplicator'); ?>)</i> 
 					
 				</div><br/>
 
                 <?php if (!DUP_Util::IsShellExecAvailable()) : ?>
                     <p class="description">
                         <?php
-                        _e("This server does not have shell_exec configured to run.", 'wpduplicator');
+                        _e("This server does not have shell_exec configured to run.", 'duplicator');
                         echo '<br/>';
-                        _e("Please contact the server administrator to enable this feature.", 'wpduplicator');
+                        _e("Please contact the server administrator to enable this feature.", 'duplicator');
                         ?>
                     </p>
                 <?php else : ?>
                     <input type="radio" name="package_dbmode" value="mysql" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
-                    <label for="package_mysqldump"><?php _e("Use mysqldump", 'wpduplicator'); ?></label> &nbsp;
-                    <i style="font-size:12px">(<?php _e("recommended for large databases", 'wpduplicator'); ?>)</i> <br/><br/>
+                    <label for="package_mysqldump"><?php _e("Use mysqldump", 'duplicator'); ?></label> &nbsp;
+                    <i style="font-size:12px">(<?php _e("recommended for large databases", 'duplicator'); ?>)</i> <br/><br/>
 
                     <div style="margin:5px 0px 0px 25px">
                         <?php if ($mysqlDumpFound) : ?>
                             <div class="dup-feature-found">
-                                <?php _e("Working Path:", 'wpduplicator'); ?> &nbsp;
+                                <?php _e("Working Path:", 'duplicator'); ?> &nbsp;
                                 <i><?php echo $mysqlDumpPath ?></i>
                             </div><br/>
                         <?php else : ?>
                             <div class="dup-feature-notfound">
                                 <?php
-                                _e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.', 'wpduplicator');
+                                _e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.', 'duplicator');
                                 ?>
                             </div><br/>
                         <?php endif; ?>
 
-                        <label><?php _e("Add Custom Path:", 'wpduplicator'); ?></label><br/>
+                        <label><?php _e("Add Custom Path:", 'duplicator'); ?></label><br/>
                         <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?> " />
                         <p class="description">
                             <?php
-                            _e("This is the path to your mysqldump program.", 'wpduplicator');
+                            _e("This is the path to your mysqldump program.", 'duplicator');
                             ?>
                         </p>
                     </div>
@@ -188,10 +188,10 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             </td>
         </tr>	
         <tr>
-            <th scope="row"><label><?php _e("Package Debug", 'wpduplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Package Debug", 'duplicator'); ?></label></th>
             <td>
                 <input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
-                <label for="package_debug"><?php _e("Show Package Debug Status in Packages Screen", 'wpduplicator'); ?></label>
+                <label for="package_debug"><?php _e("Show Package Debug Status in Packages Screen", 'duplicator'); ?></label>
             </td>
         </tr>	
 
@@ -199,27 +199,27 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
     <!-- ===============================
     WPFRONT SETTINGS -->
-    <h3 class="title"><?php _e("Roles & Capabilities", 'wpduplicator') ?> </h3>
+    <h3 class="title"><?php _e("Roles & Capabilities", 'duplicator') ?> </h3>
     <hr size="1" />
 
     <table class="form-table">
         <tr>
-            <th scope="row"><label><?php _e("Custom Roles", 'wpduplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Custom Roles", 'duplicator'); ?></label></th>
             <td>
                 <input type="checkbox" name="wpfront_integrate" id="wpfront_integrate" <?php echo ($wpfront_integrate) ? 'checked="checked"' : ''; ?> <?php echo $wpfront_ready ? '' : 'disabled'; ?> />
-                <label for="wpfront_integrate"><?php _e("Enable User Role Editor Plugin Integration", 'wpduplicator'); ?></label>
+                <label for="wpfront_integrate"><?php _e("Enable User Role Editor Plugin Integration", 'duplicator'); ?></label>
 				
 				<div style="margin:15px 0px 0px 25px">
 					<p class="description">
 						<?php printf('%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
 									 . ' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s ' 
 									 . ' <a href="https://wpfront.com/integrations/duplicator-integration/" target="_blank">%s</a>',
-								__('The User Role Editor Plugin', 'wpduplicator'),
-								__('Free', 'wpduplicator'),
-								__('or', 'wpduplicator'),
-								__('Professional', 'wpduplicator'),
-								__('must be installed to use', 'wpduplicator'),
-								__('this feature.', 'wpduplicator')
+								__('The User Role Editor Plugin', 'duplicator'),
+								__('Free', 'duplicator'),
+								__('or', 'duplicator'),
+								__('Professional', 'duplicator'),
+								__('must be installed to use', 'duplicator'),
+								__('this feature.', 'duplicator')
 								); 
 						?> 
 					</p>
@@ -231,7 +231,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
     <p class="submit" style="margin: 20px 0px 0xp 5px;">
 		<br/>
-		<input type="submit" name="submit" id="submit" class="button-primary" value="<?php _e("Save Settings", 'wpduplicator') ?>" style="display: inline-block;" />
+		<input type="submit" name="submit" id="submit" class="button-primary" value="<?php _e("Save Settings", 'duplicator') ?>" style="display: inline-block;" />
 	</p>
 	
 </form>

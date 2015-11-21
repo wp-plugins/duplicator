@@ -10,7 +10,7 @@ if (isset($_POST['action']))
     $action_result = DUP_Settings::DeleteWPOption($_POST['action']);
     switch ($_POST['action'])
     {
-        case 'duplicator_package_active' : $action_response = __('Package settings have been reset.', 'wpduplicator');
+        case 'duplicator_package_active' : $action_response = __('Package settings have been reset.', 'duplicator');
             break;
     }
 }
@@ -85,18 +85,18 @@ TOOL BAR: STEPS -->
         <td style="white-space: nowrap">
             <div id="dup-wiz">
                 <div id="dup-wiz-steps">
-                    <div class="active-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
-                    <div><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
-                    <div><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
+                    <div class="active-step"><a><span>1</span> <?php _e('Setup', 'duplicator'); ?></a></div>
+                    <div><a><span>2</span> <?php _e('Scan', 'duplicator'); ?> </a></div>
+                    <div><a><span>3</span> <?php _e('Build', 'duplicator'); ?> </a></div>
                 </div>
                 <div id="dup-wiz-title">
-					<?php _e('Step 1: Package Setup', 'wpduplicator'); ?>
+					<?php _e('Step 1: Package Setup', 'duplicator'); ?>
                 </div> 
             </div>	
         </td>
         <td class="dup-toolbar-btns">
-            <a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
-            <span> <?php _e("Create New", 'wpduplicator'); ?></span>
+            <a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'duplicator'); ?></a> &nbsp;
+            <span> <?php _e("Create New", 'duplicator'); ?></span>
         </td>
     </tr>
 </table>	
@@ -114,7 +114,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
     <div class="dup-box-title dup-box-title-fancy">
         <i class="fa fa-check-square-o"></i>
         <?php
-        _e("Requirements:", 'wpduplicator');
+        _e("Requirements:", 'duplicator');
         echo ($dup_tests['Success']) ? ' <div class="dup-sys-pass">Pass</div>' : ' <div class="dup-sys-fail">Fail</div>';
         ?>
         <div class="dup-box-arrow"></div>
@@ -123,44 +123,44 @@ META-BOX1: SYSTEM REQUIREMENTS -->
     <div class="dup-box-panel" style="<?php echo ($dup_tests['Success']) ? 'display:none' : ''; ?>">
 
         <div class="dup-sys-section">
-            <i><?php _e("System requirements must pass for the Duplicator to work properly.  Click each link for details.", 'wpduplicator'); ?></i>
+            <i><?php _e("System requirements must pass for the Duplicator to work properly.  Click each link for details.", 'duplicator'); ?></i>
         </div>
 
         <!-- PHP SUPPORT -->
         <div class='dup-sys-req'>
             <div class='dup-sys-title'>
-                <a><?php _e('PHP Support', 'wpduplicator'); ?></a>
+                <a><?php _e('PHP Support', 'duplicator'); ?></a>
                 <div><?php echo $dup_tests['PHP']['ALL']; ?></div>
             </div>
             <div class="dup-sys-info dup-info-box">
                 <table class="dup-sys-info-results">
                     <tr>
-                        <td><?php printf("%s [%s]", __("PHP Version", 'wpduplicator'), phpversion()); ?></td>
+                        <td><?php printf("%s [%s]", __("PHP Version", 'duplicator'), phpversion()); ?></td>
                         <td><?php echo $dup_tests['PHP']['VERSION'] ?></td>
                     </tr>
                     <tr>
-                        <td><?php _e('Zip Archive Enabled', 'wpduplicator'); ?></td>
+                        <td><?php _e('Zip Archive Enabled', 'duplicator'); ?></td>
                         <td><?php echo $dup_tests['PHP']['ZIP'] ?></td>
                     </tr>					
                     <tr>
-                        <td><?php _e('Safe Mode Off', 'wpduplicator'); ?></td>
+                        <td><?php _e('Safe Mode Off', 'duplicator'); ?></td>
                         <td><?php echo $dup_tests['PHP']['SAFE_MODE'] ?></td>
                     </tr>					
                     <tr>
-                        <td><?php _e('Function', 'wpduplicator'); ?> <a href="http://php.net/manual/en/function.file-get-contents.php" target="_blank">file_get_contents</a></td>
+                        <td><?php _e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/function.file-get-contents.php" target="_blank">file_get_contents</a></td>
                         <td><?php echo $dup_tests['PHP']['FUNC_1'] ?></td>
                     </tr>					
                     <tr>
-                        <td><?php _e('Function', 'wpduplicator'); ?> <a href="http://php.net/manual/en/function.file-put-contents.php" target="_blank">file_put_contents</a></td>
+                        <td><?php _e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/function.file-put-contents.php" target="_blank">file_put_contents</a></td>
                         <td><?php echo $dup_tests['PHP']['FUNC_2'] ?></td>
                     </tr>
                     <tr>
-                        <td><?php _e('Function', 'wpduplicator'); ?> <a href="http://php.net/manual/en/mbstring.installation.php" target="_blank">mb_strlen</a></td>
+                        <td><?php _e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/mbstring.installation.php" target="_blank">mb_strlen</a></td>
                         <td><?php echo $dup_tests['PHP']['FUNC_3'] ?></td>
                     </tr>					
                 </table>
                 <small>
-					<?php _e("PHP versions 5.2.9+ or higher is required.  For compression to work the ZipArchive extension for PHP is required. Safe Mode should be set to 'Off' in you php.ini file and is deprecated as of PHP 5.3.0.  For any issues in this section please contact your hosting provider or server administrator.  For additional information see our online documentation.", 'wpduplicator'); ?>
+					<?php _e("PHP versions 5.2.9+ or higher is required.  For compression to work the ZipArchive extension for PHP is required. Safe Mode should be set to 'Off' in you php.ini file and is deprecated as of PHP 5.3.0.  For any issues in this section please contact your hosting provider or server administrator.  For additional information see our online documentation.", 'duplicator'); ?>
                 </small>
             </div>
         </div>		
@@ -168,21 +168,21 @@ META-BOX1: SYSTEM REQUIREMENTS -->
         <!-- PERMISSIONS -->
         <div class='dup-sys-req'>
             <div class='dup-sys-title'>
-                <a><?php _e('Permissions', 'wpduplicator'); ?></a> <div><?php echo $dup_tests['IO']['ALL']; ?></div>
+                <a><?php _e('Permissions', 'duplicator'); ?></a> <div><?php echo $dup_tests['IO']['ALL']; ?></div>
             </div>
             <div class="dup-sys-info dup-info-box">
-                <b><?php _e("Required Paths", 'wpduplicator'); ?></b>
+                <b><?php _e("Required Paths", 'duplicator'); ?></b>
                 <div style="padding:3px 0px 0px 15px">
                     <?php
                     printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['WPROOT'], DUPLICATOR_WPROOTPATH);
                     printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSDIR'], DUPLICATOR_SSDIR_PATH);
                     printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSTMP'], DUPLICATOR_SSDIR_PATH_TMP);
-                    //printf("<b>%s:</b> [%s] <br/>", __('PHP Script Owner', 'wpduplicator'), DUP_Util::GetCurrentUser());	
-                    //printf("<b>%s:</b> [%s] <br/>", __('PHP Process Owner', 'wpduplicator'), DUP_Util::GetProcessOwner());	
+                    //printf("<b>%s:</b> [%s] <br/>", __('PHP Script Owner', 'duplicator'), DUP_Util::GetCurrentUser());	
+                    //printf("<b>%s:</b> [%s] <br/>", __('PHP Process Owner', 'duplicator'), DUP_Util::GetProcessOwner());	
                     ?>
                 </div>
                 <small>
-					<?php _e("Permissions can be difficult to resolve on some systems. If the plugin can not read the above paths here are a few things to try. 1) Set the above paths to have permissions of 755 for directories and 644 for files. You can temporarily try 777 however, be sure you don’t leave them this way. 2) Check the owner/group settings for both files and directories. The PHP script owner and the process owner are different. The script owner owns the PHP script but the process owner is the user the script is running as, thus determining its capabilities/privileges in the file system. For more details contact your host or server administrator or visit the 'Help' menu under Duplicator for additional online resources.", 'wpduplicator'); ?>
+					<?php _e("Permissions can be difficult to resolve on some systems. If the plugin can not read the above paths here are a few things to try. 1) Set the above paths to have permissions of 755 for directories and 644 for files. You can temporarily try 777 however, be sure you don’t leave them this way. 2) Check the owner/group settings for both files and directories. The PHP script owner and the process owner are different. The script owner owns the PHP script but the process owner is the user the script is running as, thus determining its capabilities/privileges in the file system. For more details contact your host or server administrator or visit the 'Help' menu under Duplicator for additional online resources.", 'duplicator'); ?>
                 </small>					
             </div>
         </div>
@@ -190,24 +190,24 @@ META-BOX1: SYSTEM REQUIREMENTS -->
         <!-- SERVER SUPPORT -->
         <div class='dup-sys-req'>
             <div class='dup-sys-title'>
-                <a><?php _e('Server Support', 'wpduplicator'); ?></a>
+                <a><?php _e('Server Support', 'duplicator'); ?></a>
                 <div><?php echo $dup_tests['SRV']['ALL']; ?></div>
             </div>
             <div class="dup-sys-info dup-info-box">
                 <table class="dup-sys-info-results">
                     <tr>
-                        <td><?php printf("%s [%s]", __("MySQL Version", 'wpduplicator'), $wpdb->db_version()); ?></td>
+                        <td><?php printf("%s [%s]", __("MySQL Version", 'duplicator'), $wpdb->db_version()); ?></td>
                         <td><?php echo $dup_tests['SRV']['MYSQL_VER'] ?></td>
                     </tr>
                     <tr>
-                        <td><?php printf("%s", __("MySQLi Support", 'wpduplicator')); ?></td>
+                        <td><?php printf("%s", __("MySQLi Support", 'duplicator')); ?></td>
                         <td><?php echo $dup_tests['SRV']['MYSQLi'] ?></td>
                     </tr>
                 </table>
                 <small>
                     <?php
-                    _e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed. Please note in future versions support for other databases and extensions will be added.", 'wpduplicator');
-                    echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('more info', 'wpduplicator') . "]</a></i>";
+                    _e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed. Please note in future versions support for other databases and extensions will be added.", 'duplicator');
+                    echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('more info', 'duplicator') . "]</a></i>";
                     ?>										
                 </small>
             </div>
@@ -216,17 +216,17 @@ META-BOX1: SYSTEM REQUIREMENTS -->
         <!-- RESERVED FILES -->
         <div class='dup-sys-req'>
             <div class='dup-sys-title'>
-                <a><?php _e('Reserved Files', 'wpduplicator'); ?></a> <div><?php echo $dup_tests['RES']['INSTALL']; ?></div>
+                <a><?php _e('Reserved Files', 'duplicator'); ?></a> <div><?php echo $dup_tests['RES']['INSTALL']; ?></div>
             </div>
             <div class="dup-sys-info dup-info-box">
                 <?php if ($dup_tests['RES']['INSTALL'] == 'Pass') : ?>
-                        <?php _e("None of the reserved files [{$dup_intaller_files}] where found from a previous install.  This means you are clear to create a new package.", 'wpduplicator'); ?>
+                        <?php _e("None of the reserved files [{$dup_intaller_files}] where found from a previous install.  This means you are clear to create a new package.", 'duplicator'); ?>
                     <?php else: 
                         $duplicator_nonce = wp_create_nonce('duplicator_cleanup_page');
                     ?> 
                     <form method="post" action="admin.php?page=duplicator-tools&tab=cleanup&action=installer&_wpnonce=<?php echo $duplicator_nonce; ?>">
-                    <?php _e("A reserved file(s) was found in the WordPress root directory. Reserved file names are [{$dup_intaller_files}].  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.", 'wpduplicator'); ?>
-                        <br/><input type='submit' class='button action' value='<?php _e('Remove Files Now', 'wpduplicator') ?>' style='font-size:10px; margin-top:5px;' />
+                    <?php _e("A reserved file(s) was found in the WordPress root directory. Reserved file names are [{$dup_intaller_files}].  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.", 'duplicator'); ?>
+                        <br/><input type='submit' class='button action' value='<?php _e('Remove Files Now', 'duplicator') ?>' style='font-size:10px; margin-top:5px;' />
                     </form>
 				<?php endif; ?>
             </div>
@@ -235,7 +235,7 @@ META-BOX1: SYSTEM REQUIREMENTS -->
         <!-- ONLINE SUPPORT -->
         <div class="dup-sys-contact">
             <?php
-            printf("<i class='fa fa-question-circle'></i> %s <a href='admin.php?page=duplicator-help'>[%s]</a>", __("For additional help please see the ", 'wpduplicator'), __("help page", 'wpduplicator'));
+            printf("<i class='fa fa-question-circle'></i> %s <a href='admin.php?page=duplicator-help'>[%s]</a>", __("For additional help please see the ", 'duplicator'), __("help page", 'duplicator'));
             ?>
         </div>
 

@@ -38,7 +38,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 <div class="wrap dup-wrap dup-support-all">
 	
-    <?php duplicator_header(__("About", 'wpduplicator')) ?>
+    <?php duplicator_header(__("About", 'duplicator')) ?>
     <hr size="1" />
 
     <div style="width:850px; margin:auto; margin-top: 20px">
@@ -51,7 +51,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 </td>
                 <td valign="top" style="padding-top:10px; font-size:14px">
                     <?php
-                    _e("Created for Admins, Developers and Designers the Duplicator can streamline your workflows and help you quickly clone a WordPress application.  Migrating a WordPress site manually can be very time consuming.  The Duplicator was made to help you speed up the migration process. Please help us to continue the development effort of this plugin.", 'wpduplicator');
+                    _e("Created for Admins, Developers and Designers the Duplicator can streamline your workflows and help you quickly clone a WordPress application.  Migrating a WordPress site manually can be very time consuming.  The Duplicator was made to help you speed up the migration process. Please help us to continue the development effort of this plugin.", 'duplicator');
                     ?>
                 </td>
             </tr>
@@ -61,14 +61,14 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         <!--  ==================================================
         SUPPORT DUPLICATOR
         ==================================================== -->
-        <h2><?php _e('Support Duplicator', 'wpduplicator') ?></h2>
+        <h2><?php _e('Support Duplicator', 'duplicator') ?></h2>
 
         <!-- PARTNER WITH US -->
         <div class="dup-support-give-area">
             <table class="dup-support-hlp-hdrs">
                 <tr >
                     <td style="height:30px; text-align: center;">
-                        <span style="display: inline-block; margin-top: 5px"><?php _e('Partner with Us', 'wpduplicator') ?></span>
+                        <span style="display: inline-block; margin-top: 5px"><?php _e('Partner with Us', 'duplicator') ?></span>
                     </td>
                 </tr>
             </table>
@@ -80,14 +80,14 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                                 <input name="cmd" type="hidden" value="_s-xclick" /> 
                                 <input name="hosted_button_id" type="hidden" value="EYJ7AV43RTZJL" /> 
                                 <input alt="PayPal - The safer, easier way to pay online!" name="submit" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/paypal.png" type="image" />
-                                <div style="margin-top:-5px"><?php _e('Keep Active and Online', 'wpduplicator') ?></div>
+                                <div style="margin-top:-5px"><?php _e('Keep Active and Online', 'duplicator') ?></div>
                                 <img src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /> 
                             </form>
                         </div>
                     </td>
                     <td style="padding-right:40px;" valign="top">
                         <a href="http://wordpress.org/extend/plugins/duplicator" target="_blank"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
-                        <div  style="margin-top:-4px"><?php _e('Leave 5 Stars', 'wpduplicator') ?></div></a>
+                        <div  style="margin-top:-4px"><?php _e('Leave 5 Stars', 'duplicator') ?></div></a>
                     </td>
                 </tr>
                 <tr>
@@ -104,14 +104,14 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             <table class="dup-support-hlp-hdrs">
                 <tr>
                     <td style="height:30px; text-align: center;">
-                        <span style="display: inline-block; margin-top: 5px"><?php _e('Spread the Word', 'wpduplicator') ?></span>
+                        <span style="display: inline-block; margin-top: 5px"><?php _e('Spread the Word', 'duplicator') ?></span>
                     </td>
                 </tr>
             </table>
             <div class="dup-support-hlp-txt">
                 <?php
-                $title = __("Duplicate Your WordPress", 'wpduplicator');
-                $summary = __("Rapid WordPress Duplication by LifeInTheGrid.com", 'wpduplicator');
+                $title = __("Duplicate Your WordPress", 'duplicator');
+                $summary = __("Rapid WordPress Duplication by LifeInTheGrid.com", 'duplicator');
                 $share_this_data = "st_url='" . DUPLICATOR_HOMEPAGE . "' st_title='{$title}' st_summary='{$summary}'";
                 ?>
                 <div style="width:100%; padding:20px 10px 0px 10px" align="center">
@@ -128,7 +128,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		
 		<div style='margin: auto; text-align: center; margin-top: 20px'>
 				<a href="http://lifeinthegrid.com/tools" target="_blank" style="font-size:22px;">
-				   <i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Tools', 'wpduplicator') ?>...
+				   <i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Tools', 'duplicator') ?>...
 				</a>
 		</div>
 

@@ -3,14 +3,14 @@
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
 <input type="hidden" id="dup-form-opts-hash" name="package-hash" value="<?php echo $package_hash; ?>">
 <div>
-	<label for="package-name"><b><?php _e('Name', 'wpduplicator') ?>:</b> </label>
+	<label for="package-name"><b><?php _e('Name', 'duplicator') ?>:</b> </label>
 		<div class="dup-notes-add">
-		<button class="button button-small" type="button" onclick="jQuery('#dup-notes-area').toggle()"><i class="fa fa-pencil-square-o"></i> <?php _e('Notes', 'wpduplicator') ?></button>
+		<button class="button button-small" type="button" onclick="jQuery('#dup-notes-area').toggle()"><i class="fa fa-pencil-square-o"></i> <?php _e('Notes', 'duplicator') ?></button>
 	</div>
-	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Create a new default name', 'wpduplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
+	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Create a new default name', 'duplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
 	<input id="package-name"  name="package-name" type="text" value="<?php echo $Package->Name ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>
 	<div id="dup-notes-area">
-		<label><b><?php _e('Notes', 'wpduplicator') ?>:</b></label> <br/>
+		<label><b><?php _e('Notes', 'duplicator') ?>:</b></label> <br/>
 		<textarea id="package-notes" name="package-notes" maxlength="300" /><?php echo $Package->Notes ?></textarea>
 	</div>
 </div>
@@ -20,7 +20,7 @@
 META-BOX: STORAGE -->
 <div class="dup-box">
 	<div class="dup-box-title">
-		<i class="fa fa-database"></i>&nbsp;<?php  _e("Storage", 'wpduplicator'); ?> 
+		<i class="fa fa-database"></i>&nbsp;<?php  _e("Storage", 'duplicator'); ?> 
 		<div class="dup-box-arrow"></div>
 	</div>			
 
@@ -28,15 +28,15 @@ META-BOX: STORAGE -->
 		<table class="widefat package-tbl">
 			<thead>
 				<tr>
-					<th style='width:275px'><?php _e("Name", 'wpduplicator'); ?></th>
-					<th style='width:100px'><?php _e("Type", 'wpduplicator'); ?></th>
-					<th style="white-space: nowrap"><?php _e("Location", 'wpduplicator'); ?></th>
+					<th style='width:275px'><?php _e("Name", 'duplicator'); ?></th>
+					<th style='width:100px'><?php _e("Type", 'duplicator'); ?></th>
+					<th style="white-space: nowrap"><?php _e("Location", 'duplicator'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr class="package-row">
-					<td><i class="fa fa-server"></i>&nbsp;<?php  _e('Default', 'wpduplicator');?></td>
-					<td><?php _e("Local", 'wpduplicator'); ?></td>
+					<td><i class="fa fa-server"></i>&nbsp;<?php  _e('Default', 'duplicator');?></td>
+					<td><?php _e("Local", 'duplicator'); ?></td>
 					<td><?php echo DUPLICATOR_SSDIR_PATH; ?></td>				
 				</tr>
 				<tr>
@@ -46,7 +46,7 @@ META-BOX: STORAGE -->
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/google_drive_64px.png" style='height:16px; width:16px; vertical-align: text-top'  /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px; vertical-align: text-top'  /> 
 							
-							<?php echo sprintf(__('%1$s, %2$s, %3$s and other storage options available in', 'wpduplicator'), 'Dropbox', 'Google Drive', 'FTP'); ?>
+							<?php echo sprintf(__('%1$s, %2$s, %3$s and other storage options available in', 'duplicator'), 'Dropbox', 'Google Drive', 'FTP'); ?>
                             <a href="http://snapcreek.com/duplicator/?free-storage" target="_blank">Duplicator Pro</a> 
                         </div>                            
 					</td>
@@ -60,10 +60,10 @@ META-BOX: STORAGE -->
 <!-- META-BOX: ARCHIVE -->
 <div class="dup-box">
     <div class="dup-box-title">
-        <i class="fa fa-file-archive-o"></i> <?php _e('Archive', 'wpduplicator') ?> &nbsp;
+        <i class="fa fa-file-archive-o"></i> <?php _e('Archive', 'duplicator') ?> &nbsp;
         <span style="font-size:13px">
-            <span id="dup-archive-filter-file" title="<?php _e('File filter enabled', 'wpduplicator') ?>"><i class="fa fa-files-o"></i> <i class="fa fa-filter"></i> &nbsp;&nbsp;</span> 
-            <span id="dup-archive-filter-db" title="<?php _e('Database filter enabled', 'wpduplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>	
+            <span id="dup-archive-filter-file" title="<?php _e('File filter enabled', 'duplicator') ?>"><i class="fa fa-files-o"></i> <i class="fa fa-filter"></i> &nbsp;&nbsp;</span> 
+            <span id="dup-archive-filter-db" title="<?php _e('Database filter enabled', 'duplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>	
         </span>
         <div class="dup-box-arrow"></div>
     </div>		
@@ -72,8 +72,8 @@ META-BOX: STORAGE -->
         <!-- NESTED TABS -->
         <div class="categorydiv" id="dup-pack-opts-tabs">
             <ul class="category-tabs">
-                <li class="tabs"><a href="javascript:void(0)" onclick="Duplicator.Pack.ToggleOptTabs(1, this)"><?php _e('Files', 'wpduplicator') ?></a></li>
-                <li><a href="javascript:void(0)"onclick="Duplicator.Pack.ToggleOptTabs(2, this)"><?php _e('Database', 'wpduplicator') ?></a></li>
+                <li class="tabs"><a href="javascript:void(0)" onclick="Duplicator.Pack.ToggleOptTabs(1, this)"><?php _e('Files', 'duplicator') ?></a></li>
+                <li><a href="javascript:void(0)"onclick="Duplicator.Pack.ToggleOptTabs(2, this)"><?php _e('Database', 'duplicator') ?></a></li>
             </ul>
 
             <!-- TAB1: PACKAGE -->
@@ -85,29 +85,29 @@ META-BOX: STORAGE -->
                 ?>
                 <div class="dup-enable-filters">
                     <input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" : ""; ?> />	
-                    <label for="filter-on"><?php _e("Enable File Filters", 'wpduplicator') ?></label>
+                    <label for="filter-on"><?php _e("Enable File Filters", 'duplicator') ?></label>
                 </div>
 
                 <div id="dup-file-filter-items">
-                    <label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'wpduplicator'); ?>"><?php _e("Directories", 'wpduplicator') ?>: </label>
+                    <label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("Directories", 'duplicator') ?>: </label>
                     <div class='dup-quick-links'>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'wpduplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php _e("wp-uploads", 'wpduplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo DUP_Util::SafePath(WP_CONTENT_DIR); ?>/cache')">[<?php _e("cache", 'wpduplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
+                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'duplicator') ?>]</a>
+                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php _e("wp-uploads", 'duplicator') ?>]</a>
+                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo DUP_Util::SafePath(WP_CONTENT_DIR); ?>/cache')">[<?php _e("cache", 'duplicator') ?>]</a>
+                        <a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'duplicator') ?></a>
                     </div>
                     <textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterDirs)) ?></textarea><br/>
-                    <label class="no-select" title="<?php _e("Separate all filters by semicolon", 'wpduplicator'); ?>"><?php _e("File extensions", 'wpduplicator') ?>:</label>
+                    <label class="no-select" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("File extensions", 'duplicator') ?>:</label>
                     <div class='dup-quick-links'>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php _e("media", 'wpduplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php _e("archive", 'wpduplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="jQuery('#filter-exts').val('')"><?php _e("(clear)", 'wpduplicator') ?></a>
+                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php _e("media", 'duplicator') ?>]</a>
+                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php _e("archive", 'duplicator') ?>]</a>
+                        <a href="javascript:void(0)" onclick="jQuery('#filter-exts').val('')"><?php _e("(clear)", 'duplicator') ?></a>
                     </div>
                     <textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
 
                     <div class="dup-tabs-opts-help">
-                        <?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'wpduplicator'); ?> <br/>
-                        <?php _e("Use the full path for directories and semicolons to separate all items.", 'wpduplicator'); ?>
+                        <?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'duplicator'); ?> <br/>
+                        <?php _e("Use the full path for directories and semicolons to separate all items.", 'duplicator'); ?>
                     </div>
 					<br/>
 					<span style="font-style:italic; font-size:12px ">
@@ -123,14 +123,14 @@ META-BOX: STORAGE -->
                     <table>
                         <tr>
                             <td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" : ""; ?> /></td>
-                            <td><label for="dbfilter-on"><?php _e("Enable Table Filters", 'wpduplicator') ?> &nbsp;</label> </td>
-                            <td><div class="dup-tabs-opts-help" style="margin:5px 0px 0px 0px"><?php _e("checked tables are excluded", 'wpduplicator') ?></div></td>
+                            <td><label for="dbfilter-on"><?php _e("Enable Table Filters", 'duplicator') ?> &nbsp;</label> </td>
+                            <td><div class="dup-tabs-opts-help" style="margin:5px 0px 0px 0px"><?php _e("checked tables are excluded", 'duplicator') ?></div></td>
                         </tr>
                     </table>
                 </div>
                 <div id="dup-db-filter-items">
-                    <a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e('Include All', 'wpduplicator'); ?> ]</a> &nbsp; 
-                    <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e('Exclude All', 'wpduplicator'); ?> ]</a>
+                    <a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e('Include All', 'duplicator'); ?> ]</a> &nbsp; 
+                    <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e('Exclude All', 'duplicator'); ?> ]</a>
                     <div style="font-stretch:ultra-condensed; font-family: Calibri; white-space: nowrap">
                         <?php
                         $tables = $wpdb->get_results("SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N);
@@ -163,7 +163,7 @@ META-BOX: STORAGE -->
                         ?>
                     </div>
                     <div class="dup-tabs-opts-help">
-						<?php _e("Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!", 'wpduplicator'); ?>
+						<?php _e("Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!", 'duplicator'); ?>
                     </div>	
                 </div>
             </div>
@@ -176,58 +176,58 @@ META-BOX: STORAGE -->
 <!-- META-BOX: INSTALLER -->
 <div class="dup-box">
     <div class="dup-box-title">
-        <i class="fa fa-bolt"></i> <?php _e('Installer', 'wpduplicator') ?>
+        <i class="fa fa-bolt"></i> <?php _e('Installer', 'duplicator') ?>
         <div class="dup-box-arrow"></div>
     </div>			
 
     <div class="dup-box-panel" id="dup-pack-installer-panel" style="<?php echo $ui_css_installer ?>">
-        <div class="dup-installer-header-1"><?php echo _e('STEP 1 - INPUTS', 'wpduplicator'); ?></div><br/>
+        <div class="dup-installer-header-1"><?php echo _e('STEP 1 - INPUTS', 'duplicator'); ?></div><br/>
         <table class="dup-installer-tbl">
             <tr>
-                <td colspan="2"><div class="dup-installer-header-2"><?php _e("MySQL Server", 'wpduplicator') ?></div></td>
+                <td colspan="2"><div class="dup-installer-header-2"><?php _e("MySQL Server", 'duplicator') ?></div></td>
             </tr>
             <tr>
-                <td style="width:130px"><?php _e("Host", 'wpduplicator') ?></td>
+                <td style="width:130px"><?php _e("Host", 'duplicator') ?></td>
                 <td><input type="text" name="dbhost" id="dbhost" value="<?php echo $Package->Installer->OptsDBHost ?>"  maxlength="200" placeholder="localhost"/></td>
             </tr>
 			<tr>
-                <td style="width:130px"><?php _e("Host Port", 'wpduplicator') ?></td>
+                <td style="width:130px"><?php _e("Host Port", 'duplicator') ?></td>
                 <td><input type="text" name="dbport" id="dbport" value="<?php echo $Package->Installer->OptsDBPort ?>"  maxlength="200" placeholder="3306"/></td>
             </tr>
             <tr>
-                <td><?php _e("Database", 'wpduplicator') ?></td>
+                <td><?php _e("Database", 'duplicator') ?></td>
                 <td><input type="text" name="dbname" id="dbname" value="<?php echo $Package->Installer->OptsDBName ?>" maxlength="100" placeholder="mydatabaseName" /></td>
             </tr>							
             <tr>
-                <td><?php _e("User", 'wpduplicator') ?></td>
+                <td><?php _e("User", 'duplicator') ?></td>
                 <td><input type="text" name="dbuser" id="dbuser" value="<?php echo $Package->Installer->OptsDBUser ?>"  maxlength="100" placeholder="databaseUserName" /></td>
             </tr>
             <tr>
-                <td colspan="2"><div class="dup-installer-header-2"><?php _e("Advanced Options", 'wpduplicator') ?></div></td>
+                <td colspan="2"><div class="dup-installer-header-2"><?php _e("Advanced Options", 'duplicator') ?></div></td>
             </tr>						
             <tr>
                 <td colspan="2">
                     <table>
                         <tr>
-                            <td style="width:130px"><?php _e("SSL", 'wpduplicator') ?></td>
+                            <td style="width:130px"><?php _e("SSL", 'duplicator') ?></td>
                             <td style="padding-right: 20px; white-space: nowrap">
                                 <input type="checkbox" name="ssl-admin" id="ssl-admin" <?php echo ($Package->Installer->OptsSSLAdmin) ? "checked='checked'" : ""; ?>  />
-                                <label class="chk-labels" for="ssl-admin"><?php _e("Enforce on Admin", 'wpduplicator') ?></label>
+                                <label class="chk-labels" for="ssl-admin"><?php _e("Enforce on Admin", 'duplicator') ?></label>
                             </td>
                             <td>
                                 <input type="checkbox" name="ssl-login" id="ssl-login" <?php echo ($Package->Installer->OptsSSLLogin) ? "checked='checked'" : ""; ?>  />
-                                <label class="chk-labels" for="ssl-login"><?php _e("Enforce on Logins", 'wpduplicator') ?></label>
+                                <label class="chk-labels" for="ssl-login"><?php _e("Enforce on Logins", 'duplicator') ?></label>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php _e("Cache", 'wpduplicator') ?></td>									
+                            <td><?php _e("Cache", 'duplicator') ?></td>									
                             <td style="padding-right: 20px; white-space: nowrap">
                                 <input type="checkbox" name="cache-wp" id="cache-wp" <?php echo ($Package->Installer->OptsCacheWP) ? "checked='checked'" : ""; ?>  />
-                                <label class="chk-labels" for="cache-wp"><?php _e("Keep Enabled", 'wpduplicator') ?></label>	
+                                <label class="chk-labels" for="cache-wp"><?php _e("Keep Enabled", 'duplicator') ?></label>	
                             </td>
                             <td>
                                 <input type="checkbox" name="cache-path" id="cache-path" <?php echo ($Package->Installer->OptsCachePath) ? "checked='checked'" : ""; ?>  />
-                                <label class="chk-labels" for="cache-path"><?php _e("Keep Home Path", 'wpduplicator') ?></label>			
+                                <label class="chk-labels" for="cache-path"><?php _e("Keep Home Path", 'duplicator') ?></label>			
                             </td>
                         </tr>
                     </table>
@@ -235,17 +235,17 @@ META-BOX: STORAGE -->
             </tr>
         </table><br />
 
-        <div class="dup-installer-header-1"><?php echo _e('STEP 2 - INPUTS', 'wpduplicator'); ?></div>
+        <div class="dup-installer-header-1"><?php echo _e('STEP 2 - INPUTS', 'duplicator'); ?></div>
 
         <table class="dup-installer-tbl">
             <tr>
-                <td style="width:130px"><?php _e("New URL", 'wpduplicator') ?></td>
+                <td style="width:130px"><?php _e("New URL", 'duplicator') ?></td>
                 <td><input type="text" name="url-new" id="url-new" value="<?php echo $Package->Installer->OptsURLNew ?>" placeholder="http://mynewsite.com" /></td>
             </tr>
         </table>
 		
         <div class="dup-tabs-opts-help">
-			<?php _e("The installer can have these fields pre-filled at install time.", 'wpduplicator'); ?> <b><?php _e('All values are optional.', 'wpduplicator'); ?></b>
+			<?php _e("The installer can have these fields pre-filled at install time.", 'duplicator'); ?> <b><?php _e('All values are optional.', 'duplicator'); ?></b>
         </div>		
 
     </div>		
@@ -254,8 +254,8 @@ META-BOX: STORAGE -->
 
 
 <div class="dup-button-footer">
-    <input type="button" value="<?php _e("Reset", 'wpduplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> onclick="Duplicator.Pack.ResetSettings()" />
-    <input type="submit" value="<?php _e("Next", 'wpduplicator') ?> &#9658;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> />
+    <input type="button" value="<?php _e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> onclick="Duplicator.Pack.ResetSettings()" />
+    <input type="submit" value="<?php _e("Next", 'duplicator') ?> &#9658;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> />
 </div>
 
 </form>

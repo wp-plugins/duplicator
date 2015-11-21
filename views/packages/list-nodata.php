@@ -4,15 +4,15 @@
 
 <div id='dup-list-alert-nodata'>
 	<i class="fa fa-archive"></i> 
-		<?php _e("No Packages Found.", 'wpduplicator'); ?><br/>
-		<?php _e("Click the 'Create New' button to build a package.", 'wpduplicator'); ?> <br/><br/>
+		<?php _e("No Packages Found.", 'duplicator'); ?><br/>
+		<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?> <br/><br/>
 
 	<i>
 		<?php
 			printf("%s <a href='admin.php?page=duplicator-help'>%s</a> %s",
-				__("Please visit the", 'wpduplicator'), 
-				__("help page", 'wpduplicator'),
-				__("for additional support", 'wpduplicator'));
+				__("Please visit the", 'duplicator'), 
+				__("help page", 'duplicator'),
+				__("for additional support", 'duplicator'));
 		?>
 	</i>
 	
@@ -21,16 +21,16 @@
 		<div id="dup-notice-01" class='dup-notice-msg'>
 			<i class="fa fa-exclamation-triangle fa-lg"></i>
 			<?php 
-				_e("Older packages prior to 0.5.0 are no longer supported in this version.", 'wpduplicator'); 
+				_e("Older packages prior to 0.5.0 are no longer supported in this version.", 'duplicator'); 
 
 				printf("  %s <a href='admin.php?page=duplicator-help'>%s</a> %s",
-					__("To get an older package please visit the", 'wpduplicator'), 
-					__("help page", 'wpduplicator'),
-					__("and look for the Change Log link for additional instructions.", 'wpduplicator'));
+					__("To get an older package please visit the", 'duplicator'), 
+					__("help page", 'duplicator'),
+					__("and look for the Change Log link for additional instructions.", 'duplicator'));
 			?><br/>
 			<label for="dup-notice01-chk">
 				<input type="checkbox" class="dup-notice-chk" id="dup-notice01-chk" name="dup-notice01-chk" onclick="Duplicator.UI.SaveViewStateByPost('dup-notice01-chk', 1); jQuery('#dup-notice-01').hide()" /> 
-				<?php _e("Hide this message", 'wpduplicator'); ?>
+				<?php _e("Hide this message", 'duplicator'); ?>
 			</label>
 		</div><br/><br/>
 	<?php else : ?>			

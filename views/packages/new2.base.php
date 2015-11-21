@@ -1,6 +1,15 @@
 <?php
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/utility.php');
+	
+	if(empty($_POST))
+	{
+		//F5 Refresh Check
+		$redirect = admin_url('?page=duplicator&tab=new1');
+		echo "<script>window.location.href = '{$redirect}'</script>";
+		exit;
+	}
+	
 	global $wp_version;
 	$Package = new DUP_Package();
 	$Package->SaveActive($_POST);
@@ -322,14 +331,16 @@ TOOL BAR: STEPS -->
 									DUP_Util::_e('No file extension filters have been set.');
 								}
 							?>	
-													<small>
-							<?php DUP_Util::_e('The root directory above is where Duplicator will start archiving files.  The excluded directories and file extension will be skipped during the archive process.'); ?>
-						</small><br/>
+							<small>
+								<?php 
+									DUP_Util::_e('The root directory is where Duplicator starts archiving files.  The excluded sections will be skipped during the archive process.  '); 
+									DUP_Util::_e('All results are stored in a json file. ');
+								?>
+								<a href="<?php echo DUPLICATOR_SITE_URL ?>/wp-admin/admin-ajax.php?action=duplicator_package_scan" target="dup_report"><?php DUP_Util::_e('[view json report]');?></a>														
+							</small><br/>
 						</div>
-
 					</div>	
 				<?php endif;  ?>	
-
 			</div><!-- end .dup-panel -->
 			<br/>
 

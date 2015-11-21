@@ -132,10 +132,13 @@ class DUP_Package {
 						  $report['ARC']['Status']['Size'], 
 						  $report['ARC']['Status']['Names'], 
 						  $report['ARC']['Status']['Big'], 
-						  $db['Status']);
+						  $db['Status']['Size'],
+						  $db['Status']['Rows']);
 		
-		$warn_counts = array_count_values($warnings);						  
+		$warn_counts = array_count_values($warnings);	
+
 		$report['RPT']['Warnings'] = $warn_counts['Warn'];
+		$report['RPT']['Success']  = $warn_counts['Good'];
 		$report['RPT']['ScanTime'] = DUP_Util::ElapsedTime(DUP_Util::GetMicrotime(), $timerStart);
 		$fp = fopen(DUPLICATOR_SSDIR_PATH_TMP . "/{$this->ScanFile}", 'w');
 		fwrite($fp, json_encode($report));

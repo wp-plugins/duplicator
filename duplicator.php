@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 0.5.34
+  Version: 1.1.0
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   Text Domain: wpduplicator
@@ -84,7 +84,7 @@ if (is_admin() == true) {
         if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
             duplicator_activate();
         }
-        load_plugin_textdomain('wpduplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
+        load_plugin_textdomain('duplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
     }
 
     /* DEACTIVATION / UNINSTALL 
@@ -100,8 +100,8 @@ if (is_admin() == true) {
         $plugin = plugin_basename(__FILE__);
         // create link
         if ($file == $plugin) {
-            $links[] = '<a href="admin.php?page=duplicator-help" title="' . __('Get Help', 'wpduplicator') . '" >' . __('Help', 'wpduplicator') . '</a>';
-            $links[] = '<a href="admin.php?page=duplicator-about" title="' . __('Support the Plugin', 'wpduplicator') . '">' . __('About', 'wpduplicator') . '</a>';
+            $links[] = '<a href="admin.php?page=duplicator-help" title="' . __('Get Help', 'duplicator') . '" >' . __('Help', 'duplicator') . '</a>';
+            $links[] = '<a href="admin.php?page=duplicator-about" title="' . __('Support the Plugin', 'duplicator') . '">' . __('About', 'duplicator') . '</a>';
             return $links;
         }
         return $links;
@@ -244,7 +244,7 @@ if (is_admin() == true) {
             $this_plugin = plugin_basename(__FILE__);
 
         if ($file == $this_plugin) {
-            $settings_link = '<a href="admin.php?page=duplicator">' . __("Manage", 'wpduplicator') . '</a>';
+            $settings_link = '<a href="admin.php?page=duplicator">' . __("Manage", 'duplicator') . '</a>';
             array_unshift($links, $settings_link);
         }
         return $links;

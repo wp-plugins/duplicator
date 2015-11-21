@@ -138,14 +138,14 @@ jQuery(document).ready(function($) {
 <input type="hidden" id="auto" name="auto" value="<?php echo ($auto) ? 1 : 0 ?>" />
 <?php if (! $logfound)  :	?>
 	<div style="padding:20px">
-		<h2><?php _e("Log file not found or unreadable", 'wpduplicator') ?>.</h2>
+		<h2><?php _e("Log file not found or unreadable", 'duplicator') ?>.</h2>
 
-		<?php _e("Try to create a package, since no log files were found in the snapshots directory with the extension *.log", 'wpduplicator') ?>.<br/><br/>
+		<?php _e("Try to create a package, since no log files were found in the snapshots directory with the extension *.log", 'duplicator') ?>.<br/><br/>
 
-		<?php _e("Reasons for log file not showing", 'wpduplicator') ?>: <br/>
-		- <?php _e("The web server does not support returning .log file extentions", 'wpduplicator') ?>. <br/>
-		- <?php _e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'wpduplicator') ?>. <br/>
-		- <?php _e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'wpduplicator') ?>. <br/>
+		<?php _e("Reasons for log file not showing", 'duplicator') ?>: <br/>
+		- <?php _e("The web server does not support returning .log file extentions", 'duplicator') ?>. <br/>
+		- <?php _e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'duplicator') ?>. <br/>
+		- <?php _e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'duplicator') ?>. <br/>
 	</div>
 
 <?php else: ?>	
@@ -154,25 +154,25 @@ jQuery(document).ready(function($) {
 		<tr>
 			<td id="dup-log-panel-left">
 				<div class="name"><i class='fa fa-list-alt'></i> <?php echo basename($logurl); ?></div>
-				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php _e("Options", 'wpduplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
+				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php _e("Options", 'duplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
 				<br style="clear:both" />
 				<iframe id="dup-log-content" src="<?php echo $logurl ?>" ></iframe>							
 			</td>
 			<td id="dup-log-panel-right">
-				<h2><?php _e("Options", 'wpduplicator') ?> </h2>
+				<h2><?php _e("Options", 'duplicator') ?> </h2>
 				<div class="dup-opts-items">
-					<input type="button" class="button" id="dup-refresh" value="<?php _e("Refresh", 'wpduplicator') ?>" /> &nbsp; 
+					<input type="button" class="button" id="dup-refresh" value="<?php _e("Refresh", 'duplicator') ?>" /> &nbsp; 
 					<div style="display:inline-block; margin-top:5px">
 						<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" /> 
 						<label id="dup-auto-refresh-lbl" for="dup-auto-refresh">
 
-							<?php _e("Auto Refresh", 'wpduplicator') ?>
+							<?php _e("Auto Refresh", 'duplicator') ?>
 							[<div id="dup-refresh-count"></div>]
 						</label>
 					</div>
 				</div>
 
-				<b><?php _e("Last 20 Logs", 'wpduplicator') ?> </b><br/>
+				<b><?php _e("Last 20 Logs", 'duplicator') ?> </b><br/>
 
 				<div class="dup-log-file-list">
 					<?php 

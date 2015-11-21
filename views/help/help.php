@@ -26,7 +26,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 <div class="wrap dup-wrap dup-support-all">
 	
-    <?php duplicator_header(__("Help", 'wpduplicator')) ?>
+    <?php duplicator_header(__("Help", 'duplicator')) ?>
     <hr size="1" />
 
     <div style="width:800px; margin:auto; margin-top: 20px">
@@ -35,7 +35,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 <td style="width:70px"><i class="fa fa-question-circle fa-5x"></i></td>
                 <td valign="top" style="padding-top:10px; font-size:13px">
                     <?php
-                    _e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below.", 'wpduplicator');
+                    _e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below.", 'duplicator');
                     ?>
                 </td>
 
@@ -47,17 +47,17 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         <div class="dup-support-hlp-area">
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-cube fa-2x pull-left"></i>
-                <div><?php _e('Knowledgebase', 'wpduplicator') ?></div>
+                <div><?php _e('Knowledgebase', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
-                <?php _e('Complete Online Documentation', 'wpduplicator'); ?><br/>
+                <?php _e('Complete Online Documentation', 'duplicator'); ?><br/>
                 <select id="dup-support-kb-lnks" style="margin-top:18px; font-size:16px; min-width: 170px">
-                    <option> <?php _e('Choose A Section', 'wpduplicator') ?> </option>
-                    <option value="http://lifeinthegrid.com/duplicator-quick"><?php _e('Quick Start', 'wpduplicator') ?></option>
-                    <option value="http://lifeinthegrid.com/duplicator-guide"><?php _e('User Guide', 'wpduplicator') ?></option>
-                    <option value="http://lifeinthegrid.com/duplicator-faq"><?php _e('FAQs', 'wpduplicator') ?></option>
-                    <option value="http://lifeinthegrid.com/duplicator-log"><?php _e('Change Log', 'wpduplicator') ?></option>
-                    <option value="http://lifeinthegrid.com/labs/duplicator"><?php _e('Product Page', 'wpduplicator') ?></option>
+                    <option> <?php _e('Choose A Section', 'duplicator') ?> </option>
+                    <option value="http://lifeinthegrid.com/duplicator-quick"><?php _e('Quick Start', 'duplicator') ?></option>
+                    <option value="http://lifeinthegrid.com/duplicator-guide"><?php _e('User Guide', 'duplicator') ?></option>
+                    <option value="http://lifeinthegrid.com/duplicator-faq"><?php _e('FAQs', 'duplicator') ?></option>
+                    <option value="http://lifeinthegrid.com/duplicator-log"><?php _e('Change Log', 'duplicator') ?></option>
+                    <option value="http://lifeinthegrid.com/labs/duplicator"><?php _e('Product Page', 'duplicator') ?></option>
                 </select>
             </div>
         </div>
@@ -66,14 +66,14 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         <div class="dup-support-hlp-area">
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-lightbulb-o fa-2x pull-left"></i>
-                <div><?php _e('Online Support', 'wpduplicator') ?></div>
+                <div><?php _e('Online Support', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
-                <?php _e("Get Help From IT Professionals", 'wpduplicator'); ?> 
+                <?php _e("Get Help From IT Professionals", 'duplicator'); ?> 
                 <br/><br/>
                 <div class="dup-support-txts-links">
                     <button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow();
-                                                return false;"><?php _e('Get Support!', 'wpduplicator') ?></button> &nbsp; 
+                                                return false;"><?php _e('Get Support!', 'duplicator') ?></button> &nbsp; 
                 </div>	
             </div>
         </div> 
@@ -85,13 +85,13 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-bolt fa-2x pull-left"></i>
-                <div><?php _e('Approved Hosting', 'wpduplicator') ?></div>
+                <div><?php _e('Approved Hosting', 'duplicator') ?></div>
             </div>			
             <div class="dup-support-hlp-txt">
-                <?php _e('Servers That Work With Duplicator', 'wpduplicator'); ?>
+                <?php _e('Servers That Work With Duplicator', 'duplicator'); ?>
                 <br/><br/>
                 <div class="dup-support-txts-links">
-                    <button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-hosts', 'litg');"><?php _e('Trusted Providers!', 'wpduplicator') ?></button> &nbsp; 
+                    <button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-hosts', 'litg');"><?php _e('Trusted Providers!', 'duplicator') ?></button> &nbsp; 
                 </div>
             </div>
         </div>
@@ -101,13 +101,13 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-code-fork fa-2x pull-left"></i>
-                <div><?php _e('Alternatives', 'wpduplicator') ?></div>
+                <div><?php _e('Alternatives', 'duplicator') ?></div>
             </div>			
             <div class="dup-support-hlp-txt">
-                <?php _e('Other Commercial Resources', 'wpduplicator'); ?>
+                <?php _e('Other Commercial Resources', 'duplicator'); ?>
                 <br/><br/>
                 <div class="dup-support-txts-links">
-                    <button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-getalts', 'litg');"><?php _e('Pro Solutions!', 'wpduplicator') ?></button> &nbsp; 
+                    <button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-getalts', 'litg');"><?php _e('Pro Solutions!', 'duplicator') ?></button> &nbsp; 
                 </div>
             </div>
         </div>

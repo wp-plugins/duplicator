@@ -73,7 +73,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'list';
 
 <div class="wrap">
 <?php
-	duplicator_header(__("Packages", 'wpduplicator'));
+	duplicator_header(__("Packages", 'duplicator'));
 
 	switch ($current_tab) {
 		case 'list': include('list.base.php');

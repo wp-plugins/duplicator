@@ -255,7 +255,7 @@ class DUP_Util {
 		$capability = apply_filters('wpfront_user_role_editor_duplicator_translate_capability', $capability);
 
 		if(!current_user_can($capability)) {
-			wp_die(__('You do not have sufficient permissions to access this page.', 'wpduplicator'));
+			wp_die(__('You do not have sufficient permissions to access this page.', 'duplicator'));
 			return;
 		}
 	}
