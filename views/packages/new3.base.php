@@ -1,6 +1,9 @@
 <?php
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
 	$Package = DUP_Package::GetActive();
+	
+	
+	
 ?>
 
 <style>
@@ -82,12 +85,12 @@ TOOL BAR: STEPS -->
 				<button id="dup-btn-archive" class="button button-primary button-large">
 					<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
 					<span id="dup-btn-archive-size" class="dup-btn-size"></span>
-				</button><br/><br/>
-
-	
+				</button>
+				<div style='margin: 7px 0 20px 0'>
+					<small><i><?php _e("click buttons to download", 'duplicator') ?></i></small>
+				</div>
 				<div class="dup-msg-success-links">
 					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'duplicator'));?> 
-					<?php //printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create Another Package', 'duplicator'));?> 
 				</div><br/>
 				
 				<!-- Used for iMacros testing do not remove -->
@@ -103,7 +106,7 @@ TOOL BAR: STEPS -->
 				<i><?php _e('Please try the process again.', 'duplicator'); ?></i><br/><br/>
 				  
 				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'duplicator'); ?>" onclick="window.open('http://lifeinthegrid.com/support/knowledgebase.php?article=12#faq-trouble-timeout', '_blank');return false;" />
-                                <input type="button" class="button" value="<?php _e('Try Again', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />                                
+                <input type="button" class="button" value="<?php _e('Try Again', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1'" />                                
 				<fieldset>
 					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'duplicator'); ?></b></legend>
 					<div class="dup-msg-error-area">
