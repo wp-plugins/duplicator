@@ -216,14 +216,15 @@ class DUP_Database {
 		$cmd .= ' --hex-blob';
 		$cmd .= ' --skip-add-drop-table';
 		
+		//Compatibility mode
 		if ($mysqlcompat_on) {
 			DUP_Log::Info("COMPATIBLE: [{$this->Compatible}]");	
 			$cmd .= " --compatible={$this->Compatible}";	
 		}
 		
 		//Filter tables
-		$tables		= $wpdb->get_col('SHOW TABLES');
-		$filterTables  = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
+		$tables			= $wpdb->get_col('SHOW TABLES');
+		$filterTables	= isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
 		$tblAllCount	= count($tables);
 		$tblFilterOn	= ($this->FilterOn) ? 'ON' : 'OFF';
 
