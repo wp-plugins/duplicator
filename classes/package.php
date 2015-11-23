@@ -279,9 +279,10 @@ class DUP_Package {
 			$name = substr(sanitize_file_name($name), 0 , 40);
 			$name = str_replace($name_chars, '', $name);
 
-			$filter_dirs   = isset($post['filter-dirs']) ? $this->parseDirectoryFilter($post['filter-dirs']) : '';
-			$filter_exts   = isset($post['filter-exts']) ? $this->parseExtensionFilter($post['filter-exts']) : '';
-			$tablelist     = isset($post['dbtables'])    ? implode(',', $post['dbtables']) : '';
+			$filter_dirs	= isset($post['filter-dirs']) ? $this->parseDirectoryFilter($post['filter-dirs']) : '';
+			$filter_exts	= isset($post['filter-exts']) ? $this->parseExtensionFilter($post['filter-exts']) : '';
+			$tablelist		= isset($post['dbtables'])    ? implode(',', $post['dbtables']) : '';
+			$compatlist		= isset($post['dbcompat'])    ? implode(',', $post['dbcompat']) : '';
 
 			//PACKAGE
 			$this->Version		= DUPLICATOR_VERSION;
@@ -308,6 +309,7 @@ class DUP_Package {
 			//DATABASE
 			$this->Database->FilterOn		= isset($post['dbfilter-on'])   ? 1 : 0;
 			$this->Database->FilterTables	= esc_html($tablelist);
+			$this->Database->Compatible  = $compatlist;
 
 			update_option(self::OPT_ACTIVE, $this);
 		}

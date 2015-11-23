@@ -121,17 +121,30 @@ META-BOX: STORAGE -->
             <div class="tabs-panel" id="dup-pack-opts-tabs-panel-2" style="display: none;">
                 <div class="dup-enable-filters">						
                     <table>
+						<tr>
+							<td colspan="2">
+								<div style="margin:0 0 10px 0">
+									<?php _e("Build Mode", 'duplicator') ?>: &nbsp;
+									<a href="?page=duplicator-settings"><?php echo $dbbuild_mode; ?></a>
+								</div>
+							</td>
+						</tr>
                         <tr>
                             <td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" : ""; ?> /></td>
-                            <td><label for="dbfilter-on"><?php _e("Enable Table Filters", 'duplicator') ?> &nbsp;</label> </td>
-                            <td><div class="dup-tabs-opts-help" style="margin:5px 0px 0px 0px"><?php _e("checked tables are excluded", 'duplicator') ?></div></td>
+                            <td >
+								<label for="dbfilter-on"><?php _e("Enable Table Filters", 'duplicator') ?> &nbsp;</label> 
+								<i class="fa fa-question-circle" 
+								   data-tooltip-title="<?php DUP_Util::_e("Enable Table Filters:"); ?>" 
+								   data-tooltip="<?php DUP_Util::_e('Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!'); ?>">
+								</i>
+							</td>
                         </tr>
                     </table>
                 </div>
                 <div id="dup-db-filter-items">
                     <a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e('Include All', 'duplicator'); ?> ]</a> &nbsp; 
                     <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e('Exclude All', 'duplicator'); ?> ]</a>
-                    <div style="font-stretch:ultra-condensed; font-family: Calibri; white-space: nowrap">
+                    <div style="white-space: nowrap">
                         <?php
                         $tables = $wpdb->get_results("SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N);
                         $num_rows = count($tables);
@@ -161,11 +174,47 @@ META-BOX: STORAGE -->
                         }
                         echo '</td></tr></table>';
                         ?>
-                    </div>
-                    <div class="dup-tabs-opts-help">
-						<?php _e("Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!", 'duplicator'); ?>
                     </div>	
                 </div>
+				<br/>
+				<?php DUP_Util::_e("Compatibility Mode") ?> &nbsp;
+				<i class="fa fa-question-circle" 
+				   data-tooltip-title="<?php DUP_Util::_e("mysqldump compatibility mode:"); ?>" 
+				   data-tooltip="<?php DUP_Util::_e('Use if having problems installing packages on an older MySQL server (< 5.5.3). Only affects mysqldump database mode. Setting always unchecked for new package.'); ?>">
+				</i><br/>
+				
+				<?php if ($dbbuild_mode == 'mysqldump') :?>
+					<?php
+						$modes = explode(',', $Package->Database->Compatible);
+						$is_mysql40		= in_array('mysql40',	$modes);
+						$is_no_table	= in_array('no_table_options',  $modes);
+						$is_no_key		= in_array('no_key_options',	$modes);
+						$is_no_field	= in_array('no_field_options',	$modes);
+					?>
+					<table class="dbmysql-compatibility">
+						<tr>
+							<td>
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-mysql40" value="mysql40" <?php echo $is_mysql40 ? 'checked="true"' : ''; ?> > 
+								<label for="dbcompat-mysql40"><?php DUP_Util::_e("mysql40") ?></label> 
+							</td>
+							<td>
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_table_options" value="no_table_options" <?php echo $is_no_table ? 'checked="true"' : ''; ?>> 
+								<label for="dbcompat-no_table_options"><?php DUP_Util::_e("no_table_options") ?></label>
+							</td>
+							<td>
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_key_options" value="no_key_options" <?php echo $is_no_key ? 'checked="true"' : ''; ?>> 
+								<label for="dbcompat-no_key_options"><?php DUP_Util::_e("no_key_options") ?></label>
+							</td>
+							<td>
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_field_options" value="no_field_options" <?php echo $is_no_field ? 'checked="true"' : ''; ?>> 
+								<label for="dbcompat-no_field_options"><?php DUP_Util::_e("no_field_options") ?></label>
+							</td>
+						</tr>					
+					</table>
+				<?php else : ?>
+					<i><?php DUP_Util::_e("This option is only availbe with mysqldump mode."); ?></i>
+				<?php endif; ?>
+
             </div>
         </div>		
     </div>

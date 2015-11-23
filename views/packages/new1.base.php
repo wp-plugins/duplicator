@@ -29,6 +29,7 @@ $ui_css_storage = (isset($view_state['dup-pack-storage-panel']) && $view_state['
 $ui_css_archive = (isset($view_state['dup-pack-archive-panel']) && $view_state['dup-pack-archive-panel']) ? 'display:block' : 'display:none';
 $ui_css_installer = (isset($view_state['dup-pack-installer-panel']) && $view_state['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
 $dup_intaller_files = implode(", ", array_keys(DUP_Server::GetInstallerFiles()));
+$dbbuild_mode = (DUP_Settings::Get('package_mysqldump') && DUP_Database::GetMySqlDumpPath()) ? 'mysqldump' : 'PHP';
 
 ?>
 
@@ -65,11 +66,12 @@ $dup_intaller_files = implode(", ", array_keys(DUP_Server::GetInstallerFiles()))
     select#archive-format {min-width:100px; margin:1px 0px 4px 0px}
     span#dup-archive-filter-file {color:#A62426; display:none}
     span#dup-archive-filter-db {color:#A62426; display:none}
-    div#dup-file-filter-items, div#dup-db-filter-items {padding:5px 0px 0px 0px}
+    div#dup-file-filter-items, div#dup-db-filter-items {padding:2px 0px 0px 15px; font-stretch:ultra-condensed; font-family: Calibri; }
     label.dup-enable-filters {display:inline-block; margin:-5px 0px 5px 0px}
     div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
     div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0px 0px 10px; color:#777}
     table#dup-dbtables td {padding:1px 15px 1px 4px}
+	table.dbmysql-compatibility td{padding:2px 20px 2px 2px}
 
     /*INSTALLER SECTION*/
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}

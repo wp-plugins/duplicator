@@ -11,6 +11,7 @@ class DUP_Database {
 	public $FilterTables;
 	public $FilterOn;
 	public $Name;
+	public $Compatible;
 	
 	//PROTECTED
 	protected $Package;
@@ -74,11 +75,11 @@ class DUP_Database {
 			
 			//File below 10k will be incomplete
 			$sql_file_size = filesize($this->dbStorePath);
-			DUP_Log::Info('file size:' . $sql_file_size);
+			DUP_Log::Info("SQL FILE SIZE: " . DUP_Util::ByteSize($sql_file_size) . " ({$sql_file_size})");
 			if ($sql_file_size < 10000) {
 				DUP_Log::Error("SQL file size too low.", "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]");
 			}
-			DUP_Log::Info("SQL FILE SIZE: " . DUP_Util::ByteSize($sql_file_size));
+			
 			DUP_Log::Info("SQL FILE TIME: " . date("Y-m-d H:i:s"));
 			DUP_Log::Info("SQL RUNTIME: {$time_sum}");
 			
@@ -206,12 +207,19 @@ class DUP_Database {
 		$host = reset($host);
 		$port = strpos(DB_HOST, ':') ? end(explode( ':', DB_HOST ) ) : '';
 		$name = DB_NAME;
+		$mysqlcompat_on  = isset($this->Compatible) && strlen($this->Compatible);
+		
 		//Build command
 		$cmd = escapeshellarg($exePath);
 		$cmd .= ' --no-create-db';
 		$cmd .= ' --single-transaction';
 		$cmd .= ' --hex-blob';
 		$cmd .= ' --skip-add-drop-table';
+		
+		if ($mysqlcompat_on) {
+			DUP_Log::Info("COMPATIBLE: [{$this->Compatible}]");	
+			$cmd .= " --compatible={$this->Compatible}";	
+		}
 		
 		//Filter tables
 		$tables		= $wpdb->get_col('SHOW TABLES');
@@ -227,9 +235,7 @@ class DUP_Database {
 				}
 			}
 		}
-		$tblCreateCount = count($tables);
-		$tblFilterCount = $tblAllCount - $tblCreateCount;
-
+		
 		$cmd .= ' -u ' . escapeshellarg(DB_USER);
 		$cmd .= (DB_PASSWORD) ? 
 				' -p'  . escapeshellarg(DB_PASSWORD) : '';
@@ -248,9 +254,12 @@ class DUP_Database {
 		}
 		$output = (strlen($output)) ? $output : "Ran from {$exePath}";
 		
-		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
-		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");		
+		$tblCreateCount = count($tables);
+		$tblFilterCount = $tblAllCount - $tblCreateCount;
+		
+		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");	
 		DUP_Log::Info("RESPONSE: {$output}");
+		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
 	
 		$sql_footer  = "\n\n/* Duplicator WordPress Timestamp: " . date("Y-m-d H:i:s") . "*/\n";
 		$sql_footer .= "/* " . DUPLICATOR_DB_EOF_MARKER . " */\n";

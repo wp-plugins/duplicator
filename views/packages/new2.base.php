@@ -5,7 +5,7 @@
 	if(empty($_POST))
 	{
 		//F5 Refresh Check
-		$redirect = admin_url('?page=duplicator&tab=new1');
+		$redirect = admin_url('admin.php?page=duplicator&tab=new1');
 		echo "<script>window.location.href = '{$redirect}'</script>";
 		exit;
 	}
@@ -15,9 +15,10 @@
 	$Package->SaveActive($_POST);
 	$Package = DUP_Package::GetActive();
 	
-	$package_mysqldump	= DUP_Settings::Get('package_mysqldump');
-	$mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
-	$build_mode = ($mysqlDumpPath && $package_mysqldump) ? 'mysqldump (fast)' : 'PHP (slow)';
+	$mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_Database::GetMySqlDumpPath();
+	$mysqlcompat_on  = isset($Package->Database->Compatible) && strlen($Package->Database->Compatible);
+	$mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
+	$dbbuild_mode    = ($mysqldump_on) ? 'mysqldump (fast)' : 'PHP (slow)';
     
     $zip_check = DUP_Util::GetZipPath();
 ?>
@@ -399,7 +400,21 @@ TOOL BAR: STEPS -->
 				<table id="dup-scan-db-details">
 					<tr><td><b><?php DUP_Util::_e('Name:');?></b></td><td><?php echo DB_NAME ;?> </td></tr>
 					<tr><td><b><?php DUP_Util::_e('Host:');?></b></td><td><?php echo DB_HOST ;?> </td></tr>
-					<tr><td><b><?php DUP_Util::_e('Build Mode:');?></b></td><td><a href="?page=duplicator-settings" target="_blank"><?php echo $build_mode ;?></a> </td></tr>
+					<tr>
+						<td style="vertical-align: top"><b><?php DUP_Util::_e('Build Mode:');?></b></td>
+						<td style="line-height:18px">
+							<a href="?page=duplicator-settings" target="_blank"><?php echo $dbbuild_mode ;?></a>
+							<?php if ($mysqlcompat_on) :?>
+								<br/>
+								<small style="font-style:italic">
+									<?php DUP_Util::_e('MySQL Compatibility Mode Enabled'); ?>
+									<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">
+										[<?php DUP_Util::_e('details'); ?>]
+									</a>
+								</small>										
+							<?php endif;?>
+						</td>
+					</tr>
 				</table>	
 
 			</div><!-- end .dup-panel -->
