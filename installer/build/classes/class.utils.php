@@ -164,7 +164,7 @@ class DupUtil {
             while ($table = @mysqli_fetch_array($query)) {
                 $all_tables[] = $table[0];
             }
-            if (is_array($all_tables)) {
+            if (isset($all_tables) && is_array($all_tables)) {
                 return $all_tables;
             }
         }

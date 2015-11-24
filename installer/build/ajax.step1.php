@@ -393,8 +393,9 @@ if ($result = mysqli_query($dbh, "SHOW TABLES")) {
 }
 
 if ($dbtable_count == 0) {
-	DUPX_Log::Info("NOTICE: You may have to manually run the installer-data.sql to validate data input. Also check to make sure your installer file is correct and the
-		table prefix '{$GLOBALS['FW_TABLEPREFIX']}' is correct for this particular version of WordPress. \n");
+	DUPX_Log::Error("No tables where created during step 1 of the install.  Please review the installer-log.txt file for sql error messages.
+		You may have to manually run the installer-data.sql with a tool like phpmyadmin to validate the data input.  If you have enabled compatibility mode
+		during the package creation process then the database server version your using may not be compatible with this script.\n");
 }
 
 

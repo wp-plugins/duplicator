@@ -180,7 +180,9 @@ META-BOX: STORAGE -->
 				<?php DUP_Util::_e("Compatibility Mode") ?> &nbsp;
 				<i class="fa fa-question-circle" 
 				   data-tooltip-title="<?php DUP_Util::_e("mysqldump compatibility mode:"); ?>" 
-				   data-tooltip="<?php DUP_Util::_e('This is an advanced feature that can only be used with mysqldump mode. Use only if having problems installing packages where database install errors occur.'); ?>">
+				   data-tooltip="<?php DUP_Util::_e('This is an advanced database backwards compatibility feature that should only be used if having problems installing packages.'
+						   . ' If the database version is lower than the version where the package was built then these options may help generate a script that is more compliant'
+						   . ' with the older database server.'); ?>">
 				</i><br/>
 				
 				<?php if ($dbbuild_mode == 'mysqldump') :?>
