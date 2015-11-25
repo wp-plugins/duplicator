@@ -183,7 +183,11 @@ META-BOX: STORAGE -->
 				   data-tooltip="<?php DUP_Util::_e('This is an advanced database backwards compatibility feature that should only be used if having problems installing packages.'
 						   . ' If the database version is lower than the version where the package was built then these options may help generate a script that is more compliant'
 						   . ' with the older database server.'); ?>">
-				</i><br/>
+				</i> &nbsp;
+				<small style="font-style:italic">
+					<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php DUP_Util::_e('details'); ?>]</a>
+				</small>
+				<br/>
 				
 				<?php if ($dbbuild_mode == 'mysqldump') :?>
 					<?php

@@ -408,9 +408,7 @@ TOOL BAR: STEPS -->
 								<br/>
 								<small style="font-style:italic">
 									<?php DUP_Util::_e('MySQL Compatibility Mode Enabled'); ?>
-									<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">
-										[<?php DUP_Util::_e('details'); ?>]
-									</a>
+									<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php DUP_Util::_e('details'); ?>]</a>
 								</small>										
 							<?php endif;?>
 						</td>
