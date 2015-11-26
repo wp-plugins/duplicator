@@ -18,7 +18,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 	div.dup-compare-area div.feature div.info {display:none; padding:7px 7px 5px 7px; font-style: italic; color: #555; font-size: 14px}
 	div.dup-gopro-header {text-align: center; margin: 5px 0 15px 0; font-size:18px; line-height: 30px}
 	div.dup-gopro-header b {font-size: 35px}
-	a.dup-check-it-btn {box-shadow: 5px 5px 5px 0px #999 !important; font-size: 20px !important; height:50px !important;   padding:10px 40px 0 40px !important;}
+	a.dup-check-it-btn {box-shadow: 5px 5px 5px 0px #999 !important; font-size: 20px !important; height:45px !important;   padding:7px 30px 0 30px !important;}
 
 	#comparison-table { margin-top:25px; border-spacing: 0px;  width: 100%}
 	#comparison-table th { color: #E21906;}
