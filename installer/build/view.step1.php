@@ -8,14 +8,15 @@
 		exit; 
 	}
 	//DETECT ARCHIVE FILES
-	$zip_file_name  = "No package file found";
-	$zip_file_count = 0;
-	foreach (glob("*.zip") as $filename) {
-		$zip_file_name = $filename;
-		$zip_file_count++;
-	}
-	if ($zip_file_count > 1) {
-		$zip_file_name = "Too many zip files in directory";
+	$zip_files = DupUtil::get_zip_files();
+	$zip_count = count($zip_files);
+	
+	if ($zip_count > 1) {
+		$zip_name = "Too many zip files in directory";
+	} else if ($zip_count == 1) {
+		$zip_name = $zip_files[0];
+	} else {
+		$zip_name  = "No package file found";
 	}
 	
 	$req01a = @is_writeable($GLOBALS["CURRENT_ROOT_PATH"]) 	? 'Pass' : 'Fail';
@@ -26,7 +27,7 @@
 			$req01a = 'Fail';
 		}
 	}
-	$req01b   = ($zip_file_count == 1) ? 'Pass' : 'Fail';
+	$req01b   = ($zip_count == 1) ? 'Pass' : 'Fail';
 	$req01    = ($req01a == 'Pass' && $req01b == 'Pass') ? 'Pass' : 'Fail';
 	$safe_ini = strtolower(@ini_get('safe_mode'));
 	$req02    =  $safe_ini  != 'on' || $safe_ini != 'yes' || $safe_ini != 'true' || ini_get("safe_mode") != 1 ? 'Pass' : 'Fail';
@@ -156,7 +157,7 @@ VIEW: STEP 1- INPUT -->
 <form id='dup-step1-input-form' method="post" class="content-form"  parsley-validate>
 	<input type="hidden" name="action_ajax" value="1" />
 	<input type="hidden" name="action_step" value="1" />
-	<input type="hidden" name="package_name"  value="<?php echo $zip_file_name ?>" />
+	<input type="hidden" name="package_name"  value="<?php echo $zip_name ?>" />
 	
 	<div class="dup-logfile-link">
 		<select name="logging" id="logging">
@@ -336,7 +337,7 @@ VIEW: STEP 1 - AJAX RESULT
 Auto Posts to view.step2.php  -->
 <form id='dup-step1-result-form' method="post" class="content-form" style="display:none">
 	<input type="hidden" name="action_step" value="2" />
-	<input type="hidden" name="package_name" value="<?php echo $zip_file_name ?>" />
+	<input type="hidden" name="package_name" value="<?php echo $zip_name ?>" />
 	<input type="hidden" name="logging" id="ajax-logging"  />	
 	<input type="hidden" name="dbhost" id="ajax-dbhost" />
 	<input type="hidden" name="dbport" id="ajax-dbport" />
@@ -379,7 +380,7 @@ PANEL: SERVER CHECKS  -->
 <div id="dup-step1-dialog" title="System Status" style="display:none">
 <div id="dup-step1-dialog-data" style="padding: 0px 10px 10px 10px;">
 	
-	<b>Archive Name:</b> <?php echo $zip_file_name; ?> <br/>
+	<b>Archive Name:</b> <?php echo $zip_name; ?> <br/>
 	<b>Package Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?><br/><br/>
 					
 	<!-- SYSTEM REQUIREMENTS -->
@@ -395,7 +396,7 @@ PANEL: SERVER CHECKS  -->
 		<?php
 		echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
 		printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable by PHP");
-		printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_file_name} <br/> <i>Note: Manual extraction still requires the archive.zip file</i> </div> ");
+		printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_name} <br/> <i>Note: Manual extraction still requires the archive.zip file</i> </div> ");
 		?>
 		</td>
 	</tr>

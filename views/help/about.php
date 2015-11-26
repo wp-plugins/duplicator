@@ -46,7 +46,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             <tr>
                 <td style="width:90px">
                     <a href="http://lifeinthegrid.com/labs/duplicator" target="_blank">
-                        <img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-box.png" style='text-align:top; margin:-15px 0px 0px 0px'  />
+                        <img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-box.png" style='text-align:top; margin:0'  />
                     </a>
                 </td>
                 <td valign="top" style="padding-top:10px; font-size:14px">
