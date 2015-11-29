@@ -406,7 +406,7 @@ TOOL BAR: STEPS -->
 							<a href="?page=duplicator-settings" target="_blank"><?php echo $dbbuild_mode ;?></a>
 							<?php if ($mysqlcompat_on) :?>
 								<br/>
-								<small style="font-style:italic">
+								<small style="font-style:italic; color:maroon">
 									<?php DUP_Util::_e('MySQL Compatibility Mode Enabled'); ?>
 									<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php DUP_Util::_e('details'); ?>]</a>
 								</small>										
