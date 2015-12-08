@@ -73,16 +73,24 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'list';
 
 <div class="wrap">
 <?php
-	duplicator_header(__("Packages", 'duplicator'));
+	
 
 	switch ($current_tab) {
-		case 'list': include('list.base.php');
+		case 'list': 
+			duplicator_header(__("Packages &raquo; All", 'duplicator'));
+			include('list.base.php');
 			break;
-		case 'new1': include('new1.base.php');
+		case 'new1': 
+			duplicator_header(__("Packages &raquo; New", 'duplicator'));
+			include('new1.base.php');
 			break;
-		case 'new2': include('new2.base.php');
+		case 'new2': 
+			duplicator_header(__("Packages &raquo; New", 'duplicator'));
+			include('new2.base.php');
 			break;
-		case 'new3': include('new3.base.php');
+		case 'new3': 
+			duplicator_header(__("Packages &raquo; New", 'duplicator'));
+			include('new3.base.php');
 			break;
 	}
 ?>

@@ -10,6 +10,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'logging';
 ?>
 <div class="wrap">
+	
     <?php duplicator_header(__("Tools", 'duplicator')) ?>
 
     <h2 class="nav-tab-wrapper">  

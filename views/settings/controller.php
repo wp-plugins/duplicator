@@ -16,11 +16,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
 
 <div class="wrap">
 	
-    <?php duplicator_header(__("Settings", 'duplicator')) ?>
-
-    <!--h2 class="nav-tab-wrapper">  
-        <a href="?page=duplicator-settings&tab=general" class="nav-tab <?php echo ($current_tab == 'general') ? 'nav-tab-active' : '' ?>"> <?php _e('General', 'duplicator'); ?></a>  
-    </h2--> 	
+    <?php duplicator_header(__("Settings", 'duplicator')) ?>	
 
     <?php
     switch ($current_tab) {
