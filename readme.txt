@@ -17,10 +17,10 @@ Duplicate, clone, backup, move and transfer an entire site from one location to 
 http://www.youtube.com/watch?v=yZ7pHmR9JC8
 
 = Admins/Developers/Designers =
- This tool is great to move WordPress or backup Wordpress sites and for pulling a production site down onto your local machine for testing and validation. It also works good for developing locally and then pushing up to a production server for a first time site release or just demoing a site.
+ This tool is great to move or backup Wordpress sites and for pulling production sites down to your local machine for testing and validation. It also works good for developing locally and then pushing up to a production server for site releases/updates or just demoing a site.
 
 = Duplicator Pro =
-Take Duplicator to the next level with the [premium version](http://snapcreek.com/duplicator) of the plugin.  With professional features like, scheduling, cloud storage to Dropbox, Google Drive, FTP and a long list of other enhancements.  For a full breakdown of the features found in the professional version checkout the [comparison page](https://snapcreek.com/duplicator/comparison/) .
+Take Duplicator to the next level with the [premium version](http://snapcreek.com/duplicator?wpo-premium) of the plugin.  With professional features like, scheduling, cloud storage to Dropbox, Google Drive, FTP and a long list of other enhancements.  For a full breakdown of the features found in the professional version checkout the [comparison page](https://snapcreek.com/duplicator/comparison?wpo-compare) .
 
 = Please Note =
 The underlying logic to backup WordPress, move WordPress and transfer WordPress are very complex. It's impossible to know how each system is setup; this is why your feedback is important to us.  Thanks for helping us to make WordPress the best blogging platform in the world.
