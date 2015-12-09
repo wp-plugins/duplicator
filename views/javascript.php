@@ -85,7 +85,7 @@ Duplicator.UI.AnimateProgressBar = function(id) {
 	function runAnimation($pb) {
 		$pb.css({ "padding-left": "0%", "padding-right": "90%" });
 		$pb.progressbar("option", "value", 100);
-		$pb.animate({ paddingLeft: "90%", paddingRight: "0%" }, 3500, "linear", function () { runAnimation($pb); });
+		$pb.animate({ paddingLeft: "90%", paddingRight: "0%" }, 3000, "linear", function () { runAnimation($pb); });
 	}
 }
 

@@ -27,6 +27,7 @@
 	/* ============----------
 	PROGRESS ARES-CHECKS */
 	div#dup-progress-area {text-align:center; max-width:650px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
+	div.dup-progress-title {font-size:22px;padding:5px 0 20px 0; font-weight: bold}
 	div#dup-msg-success {color:#18592A; padding:5px; text-align: left}	
 	div#dup-msg-success-subtitle {font-style: italic; margin:7px 0px}	
 	div#dup-msg-error {color:#A62426; padding:5px; max-width: 790px;}
@@ -96,7 +97,7 @@ TOOL BAR: STEPS -->
 <div id="dup-progress-area">
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">
-		<h2><i class="fa fa-spinner fa-spin"></i> <?php DUP_Util::_e('Scanning Site'); ?></h2>
+		<div class="dup-progress-title"><i class="fa fa-spinner fa-spin"></i> <?php DUP_Util::_e('Scanning Site'); ?></div>
 		<div id="dup-progress-bar"></div>
 		<b><?php DUP_Util::_e('Please Wait...'); ?></b>
 	</div>

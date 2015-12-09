@@ -13,11 +13,6 @@ label {font-size:13px}
 hr {border: 0; border-top: 1px solid #ddd; border-bottom: 1px solid #fafafa; margin: 10px 0px 2px 0px;}
 i[data-tooltip].fa-question-circle {cursor: pointer; color:gray}
 
-/* HEADER BAR */
-div.dup-header {padding:0px 0px 0px 0px; margin:0px 0px 7px 0px;}
-div.dup-header input {border:1px solid silver; border-radius:4px}
-div.dup-header input:hover {border:1px solid black;}
-
 /*BOXES: Expandable sections */
 div.dup-box {padding:0px; display: block; background-color: #fff; border: 1px solid #e5e5e5; box-shadow: 0 1px 1px rgba(0,0,0,.04);}
 div.dup-box-title {font-size: 14px; padding: 10px 0px 0px 15px; font-weight: bold; cursor: pointer; height:28px; margin:0px; }

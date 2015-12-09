@@ -24,7 +24,7 @@
 	switch ($_GET['action']) {            
 		case 'installer' :     
 			$action_response = __('Installer file cleanup ran!');
-			$css_hide_msg = 'div.dup-header div.error {display:none}';		
+			$css_hide_msg = 'div.error {display:none}';		
 			break;		
 		case 'legacy': 
 			DUP_Settings::LegacyClean();			

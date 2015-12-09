@@ -8,6 +8,7 @@
 
 <style>
 	div#dup-progress-area {text-align:center; max-width:800px; min-height:200px;  border:1px solid silver; border-radius:5px; margin:25px auto 10px auto; padding:0px; box-shadow: 0 8px 6px -6px #999;}
+	div.dup-progress-title {font-size:22px;padding:5px 0 20px 0; font-weight: bold}
 	div#dup-progress-area div.inner {padding:10px; line-height:22px}
 	div#dup-progress-area h2.title {background-color:#efefef; margin:0px}
 	div#dup-progress-area span.label {font-weight:bold}
@@ -55,7 +56,7 @@ TOOL BAR: STEPS -->
 
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">
-		<h2><i class="fa fa-cog fa-spin"></i> <?php _e('Building Package', 'duplicator'); ?></h2>
+		<div class="dup-progress-title"><i class="fa fa-cog fa-spin"></i> <?php _e('Building Package', 'duplicator'); ?></div>
 		<div id="dup-progress-bar"></div>
 		<b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
 		<i><?php _e('Keep this window open during the build process.', 'duplicator'); ?></i><br/>
