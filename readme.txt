@@ -18,7 +18,7 @@ Duplicate, clone, backup, move and transfer an entire site from one location to 
 http://www.youtube.com/watch?v=yZ7pHmR9JC8
 
 = Disclaimer =
- This plugin does require above average technical knowledge.  If you plan to move WordPress or backup WordPress please use it at your own risk and do not forget to back up your files and databases beforehand with other backup system.  If you're new to WordPress or have a limited technical background you may consider seeking out professional help your first time using the plugin.  If you need to move or backup WordPress and you don't have a firm grasp on using WordPress then you can get additional help from the Duplicator [resources page](http://lifeinthegrid.com/labs/duplicator/) .
+ This plugin does require above average technical knowledge.  If you plan to move WordPress or backup WordPress please use it at your own risk and do not forget to back up your files and databases beforehand.  If you're new to WordPress or have a limited technical background you may consider seeking out professional help your first time using the plugin.  If you need to move or backup WordPress and you don't have a firm grasp on using WordPress then you can get additional help from the Duplicator [resources page](http://lifeinthegrid.com/labs/duplicator/) .
 
 = Developers =
  This tool is great to move WordPress or backup Wordpress sites and for pulling a production site down onto your local machine for testing and validation. It also works good for developing locally and then pushing up to a production server for a first time site release.
