@@ -322,7 +322,7 @@ META-BOX: STORAGE -->
 
         Duplicator.Pack.ResetSettings = function () {
             var key = 'duplicator_package_active';
-            var result = confirm('<?php _e("This will reset all of the current package settings.  Would you like to continue?", "wpduplicator"); ?>');
+            var result = confirm('<?php _e("This will reset all of the current package settings.  Would you like to continue?", "duplicator"); ?>');
             if (!result)
                 return;
 

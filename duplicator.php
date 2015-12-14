@@ -3,10 +3,10 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 1.1.0
+  Version: 1.1.1
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
-  Text Domain: wpduplicator
+  Text Domain: duplicator
   Domain Path: /lang
   License: GPLv2 or later
  */
@@ -84,7 +84,7 @@ if (is_admin() == true) {
         if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
             duplicator_activate();
         }
-        load_plugin_textdomain('duplicator', FALSE, dirname(plugin_basename(__FILE__)) . '/lang/');
+        load_plugin_textdomain('duplicator', false, dirname(plugin_basename(__FILE__)) . '/lang/');
     }
 
     /* DEACTIVATION / UNINSTALL 

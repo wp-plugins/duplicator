@@ -301,7 +301,7 @@ jQuery(document).ready(function($) {
 	
 	Duplicator.Settings.DeleteOption = function (anchor) {
 		var key = $(anchor).text();
-		var result = confirm('<?php _e("Delete this option value", "wpduplicator"); ?> [' + key + '] ?');
+		var result = confirm('<?php _e("Delete this option value", "duplicator"); ?> [' + key + '] ?');
 		if (! result) 	return;
 		
 		jQuery('#dup-settings-form-action').val(key);

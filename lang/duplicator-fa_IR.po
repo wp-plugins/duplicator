@@ -1,0 +1,1808 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WPDuplicator v0.5.23\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/duplicator\n"
+"POT-Creation-Date: 2015-07-26 23:54+0200\n"
+"PO-Revision-Date: 2015-07-26 23:54+0200\n"
+"Last-Translator: Ralf Koller <r.koller@gmail.com>\n"
+"Language-Team: Amoozesh98.com <Amoozesh98@gmail.com | Info@Amoozesh98.com>\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: duplicator.php\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: assets\n"
+
+#: classes/ui.php:111
+msgid ""
+"Reserved Duplicator install file(s) still exists in the root directory.  "
+"Please delete these file(s) to avoid possible security issues."
+msgstr ""
+
+#: classes/ui.php:112
+msgid "Remove file(s) now"
+msgstr "پاک کردن پرونده"
+
+#: classes/ui.php:113
+msgid "Dismiss this notice"
+msgstr "نمایش ندادن این پیام"
+
+#: classes/utility.php:249
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: duplicator.php:102
+msgid "Get Help"
+msgstr "رفتن به راهنما"
+
+#: duplicator.php:102 duplicator.php:191 views/help/help.php:29
+msgid "Help"
+msgstr "راهنما"
+
+#: duplicator.php:103
+msgid "Support the Plugin"
+msgstr "پشتیبان افزونه"
+
+#: duplicator.php:103 duplicator.php:195 views/help/about.php:41
+msgid "About"
+msgstr "درباره"
+
+#: duplicator.php:179 views/packages/controller.php:76
+#: views/packages/list.base.php:235
+msgid "Packages"
+msgstr "بسته های نصبی"
+
+#: duplicator.php:183 views/settings/controller.php:19
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: duplicator.php:187 views/tools/controller.php:13
+msgid "Tools"
+msgstr "ابزارها"
+
+#: duplicator.php:246
+msgid "Manage"
+msgstr "مدیریت"
+
+#: views/help/about.php:54
+msgid ""
+"Created for Admins, Developers and Designers the Duplicator can streamline "
+"your workflows and help you quickly clone a WordPress application.  "
+"Migrating a WordPress site manually can be very time consuming.  The "
+"Duplicator was made to help you speed up the migration process. Please help "
+"us to continue the development effort of this plugin."
+msgstr ""
+"برای مدیران و توسعه دهندگان و طراحان ایجاد تکثیر گردش کار و کمک شما به سرعت "
+"کلون برنامه وردپرس ساده می تواند.  انتقال سایت وردپرس به صورت دستی می تواند "
+"بسیار وقت گیر است.  تکثیر شده است برای کمک به شما سرعت بخشیدن به فرایند "
+"انتقال. لطفا کمک به ما برای ادامه تلاش توسعه این پلاگین."
+
+#: views/help/about.php:64
+msgid "Support Duplicator"
+msgstr "پشتیبان ایجاد کننده بسته نصبی"
+
+#: views/help/about.php:71
+msgid "Partner with Us"
+msgstr "همکاری با ما"
+
+#: views/help/about.php:83
+msgid "Keep Active and Online"
+msgstr "نگه دارید فعال و آنلاین"
+
+#: views/help/about.php:90
+msgid "Leave 5 Stars"
+msgstr ""
+
+#: views/help/about.php:107
+msgid "Spread the Word"
+msgstr "ارتقا دهید (لطفا!)"
+
+#: views/help/about.php:113
+msgid "Duplicate Your WordPress"
+msgstr "تولید بسته آسان نصبی وردپرس"
+
+#: views/help/about.php:114
+msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
+msgstr ""
+
+#: views/help/about.php:131
+msgid "Get More Great Tools"
+msgstr "دریافت ابزارهای بیشتر"
+
+#: views/help/gopro.php:37
+msgid "Go Pro!"
+msgstr "نسخه تجاری!"
+
+#: views/help/gopro.php:46
+msgid "Duplicator Pro Has Arrived!"
+msgstr ""
+
+#: views/help/gopro.php:49
+msgid "The simplicity of Duplicator"
+msgstr ""
+
+#: views/help/gopro.php:50
+msgid "with the power the professional requires."
+msgstr ""
+
+#: views/help/gopro.php:57
+msgid "Duplicator Free"
+msgstr "ایجاد کننده بسته نصبی رایگان"
+
+#: views/help/gopro.php:60 views/help/gopro.php:88
+msgid "Backup Files &amp; Database"
+msgstr "فایل های پشتیبان و پایگاه داده"
+
+#: views/help/gopro.php:61 views/help/gopro.php:89
+msgid ""
+"Compresses all your WordPress files and database into a compressed snapshot "
+"archive file."
+msgstr ""
+
+#: views/help/gopro.php:64 views/help/gopro.php:92
+msgid "Directory Filters"
+msgstr "فیلتر های پوشه"
+
+#: views/help/gopro.php:65 views/help/gopro.php:93
+msgid ""
+"Filter out the directories and file extensions you want to include/exclude "
+"in your in your archive file."
+msgstr ""
+
+#: views/help/gopro.php:68 views/help/gopro.php:96
+msgid "Database Table Filters"
+msgstr "فعال کردن فیلتر های جدول"
+
+#: views/help/gopro.php:69 views/help/gopro.php:97
+msgid ""
+"Filter out only the database tables you want to include/exclude in your "
+"database creation script."
+msgstr ""
+
+#: views/help/gopro.php:72 views/help/gopro.php:100
+msgid "Migration Wizard"
+msgstr "برنامه جادویی انتقال"
+
+#: views/help/gopro.php:73 views/help/gopro.php:101
+msgid ""
+"With just two files (archive &amp; installer.php) move your site to a new "
+"location."
+msgstr ""
+
+#: views/help/gopro.php:85 views/packages/new1.inc.form.php:50
+msgid "Duplicator Pro"
+msgstr "ایجاد کننده بسته نصبی تجاری یا همان پولی"
+
+#: views/help/gopro.php:104
+msgid "Scheduled Backups"
+msgstr ""
+
+#: views/help/gopro.php:105
+msgid ""
+"Automate the creation of your packages to run at various scheduled intervals."
+msgstr ""
+
+#: views/help/gopro.php:108
+msgid "Dropbox Support"
+msgstr ""
+
+#: views/help/gopro.php:109
+msgid "Backup up your entire site to Dropbox."
+msgstr ""
+
+#: views/help/gopro.php:112
+msgid "FTP Support"
+msgstr ""
+
+#: views/help/gopro.php:113
+msgid "Backup up your entire site to an FTP server."
+msgstr ""
+
+#: views/help/gopro.php:116
+msgid "Customer Support"
+msgstr "پشتیبانی 24 ساعته"
+
+#: views/help/gopro.php:117
+msgid ""
+"Server setups can be quite complex, with pro you get prompt help to get your "
+"site backed up and moved."
+msgstr ""
+
+#: views/help/gopro.php:124
+msgid "Check It Out!"
+msgstr "بررسی"
+
+#: views/help/help.php:38
+msgid ""
+"Migrating WordPress is a complex process and the logic to make all the magic "
+"happen smoothly may not work quickly with every site.  With over 30,000 "
+"plugins and a very complex server eco-system some migrations may run into "
+"issues.  This is why the Duplicator includes a detailed knowledgebase that "
+"can help with many common issues.  Resources to additional support, approved "
+"hosting, and alternatives to fit your needs can be found below."
+msgstr ""
+"مهاجرت وردپرس، یک فرآیند پیچیده و منطق را به همه سحر و جادو اتفاق می افتد "
+"هموار ممکن است به سرعت با هر سایت کار نمی کند. با بیش از 30000 پلاگین ها و "
+"سرور اکو سیستم بسیار پیچیده برخی از مهاجرت ممکن است به مسائل اجرا شود. به "
+"همین دلیل است نسخه برداری شامل یک مرکز آموزش دقیق است که می تواند با بسیاری "
+"از مسائل مشترک کمک کند. منابع برای حمایت از اضافی، میزبانی تایید، و جایگزین "
+"های مناسب نیازهای شما می تواند زیر آمده است."
+
+#: views/help/help.php:50
+msgid "Knowledgebase"
+msgstr "مرکز آموزش"
+
+#: views/help/help.php:53
+msgid "Complete Online Documentation"
+msgstr "مستندات کامل آنلاین"
+
+#: views/help/help.php:55
+msgid "Choose A Section"
+msgstr "یک بخش را انتخاب کنید"
+
+#: views/help/help.php:56
+msgid "Quick Start"
+msgstr "شروع سریع"
+
+#: views/help/help.php:57
+msgid "User Guide"
+msgstr "راهنمای کاربر"
+
+#: views/help/help.php:58
+msgid "FAQs"
+msgstr "پرسش و پاسخ"
+
+#: views/help/help.php:59
+msgid "Change Log"
+msgstr "تغییر گزارشات"
+
+#: views/help/help.php:60
+msgid "Product Page"
+msgstr "صفحه محصولات"
+
+#: views/help/help.php:69
+msgid "Online Support"
+msgstr "پشتیبانی آنلاین"
+
+#: views/help/help.php:72
+msgid "Get Help From IT Professionals"
+msgstr "کمک گرفتن از حرفه ای های IT"
+
+#: views/help/help.php:76
+msgid "Get Support!"
+msgstr "گرفتن پشتیبانی"
+
+#: views/help/help.php:88
+msgid "Approved Hosting"
+msgstr "هاستینگ های تایید شده"
+
+#: views/help/help.php:91
+msgid "Servers That Work With Duplicator"
+msgstr "سرور های هاستینگی که از افزونه ایجاد کننده بسته نصبی پشتیبانی می کنند"
+
+#: views/help/help.php:94
+msgid "Trusted Providers!"
+msgstr "ارائه دهندگان خدمات قابل اعتماد!"
+
+#: views/help/help.php:104
+msgid "Alternatives"
+msgstr "جایگزین"
+
+#: views/help/help.php:107
+msgid "Other Commercial Resources"
+msgstr "سایر منابع تجاری"
+
+#: views/help/help.php:110
+msgid "Pro Solutions!"
+msgstr "راه حل های حرفه ای!"
+
+#: views/packages/list-nodata.php:7
+msgid "No Packages Found."
+msgstr "هیچ بسته آسان نصبی وجود ندارد."
+
+#: views/packages/list-nodata.php:8
+msgid "Click the 'Create New' button to build a package."
+msgstr ""
+"برای ایجاد بسته آسان نصبی از دکمه بالای صفحه یعنی ( ایجاد بسته آسان نصبی "
+"جدید ) استفاده نمایید."
+
+#: views/packages/list-nodata.php:13
+msgid "Please visit the"
+msgstr "در صورت نیاز لطفا از "
+
+#: views/packages/list-nodata.php:14 views/packages/list-nodata.php:28
+#: views/packages/new1.base.php:234
+msgid "help page"
+msgstr "صفحه راهنما"
+
+#: views/packages/list-nodata.php:15
+msgid "for additional support"
+msgstr ""
+"برای پیشتیبانی بیشتر استفاده کنید.<p>برای رفتن به صفحه راهنما از منو های "
+"داخل افزونه کپی کننده به گزینه راهنما مراجعه نمایید!</p>"
+
+#: views/packages/list-nodata.php:24
+msgid "Older packages prior to 0.5.0 are no longer supported in this version."
+msgstr ""
+
+#: views/packages/list-nodata.php:27
+msgid "To get an older package please visit the"
+msgstr ""
+
+#: views/packages/list-nodata.php:29
+msgid "and look for the Change Log link for additional instructions."
+msgstr ""
+
+#: views/packages/list-nodata.php:33
+msgid "Hide this message"
+msgstr "این پیغام را ببند"
+
+#: views/packages/list.base.php:39
+msgid "Help Support Duplicator"
+msgstr "پشتیبان ایجاد کننده بسته نصبی"
+
+#: views/packages/list.base.php:50
+msgid "Bulk Actions"
+msgstr "انجام عملیات کلی"
+
+#: views/packages/list.base.php:51
+msgid "Delete selected package(s)"
+msgstr "حذف بسته های نصبی انتخاب شده(s)"
+
+#: views/packages/list.base.php:51
+msgid "Delete"
+msgstr "حذف"
+
+#: views/packages/list.base.php:53
+msgid "Apply"
+msgstr "اعمال"
+
+#: views/packages/list.base.php:58
+msgid "Package Logs"
+msgstr "گزارش بسته نصبی"
+
+#: views/packages/list.base.php:61 views/packages/new1.base.php:96
+#: views/packages/new2.base.php:69 views/packages/new3.base.php:43
+#: views/packages/new3.base.php:89
+msgid "All Packages"
+msgstr "تمام بسته های نصبی"
+
+#: views/packages/list.base.php:62 views/packages/new1.base.php:97
+#: views/packages/new2.base.php:70 views/packages/new3.base.php:44
+msgid "Create New"
+msgstr "ایجاد بسته نصبی جدید"
+
+#: views/packages/list.base.php:87
+msgid "Select all packages"
+msgstr "انتخاب همه بسته"
+
+#: views/packages/list.base.php:88 views/packages/new3.base.php:108
+msgid "Details"
+msgstr "جزئیات"
+
+#: views/packages/list.base.php:89
+msgid "Created"
+msgstr "زمان ایجاد"
+
+#: views/packages/list.base.php:90 views/packages/new2.base.php:222
+#: views/packages/new2.base.php:334
+msgid "Size"
+msgstr "حجم"
+
+#: views/packages/list.base.php:91 views/packages/new1.inc.form.php:6
+#: views/packages/new1.inc.form.php:31 views/packages/new3.base.php:74
+msgid "Name"
+msgstr "نام بسته "
+
+#: views/packages/list.base.php:93 views/settings/general.php:110
+msgid "Package"
+msgstr "بسته"
+
+#: views/packages/list.base.php:124
+msgid "(No Notes Taken)"
+msgstr "(بدون یادداشت ها گرفته شده)"
+
+#: views/packages/list.base.php:142 views/packages/list.base.php:187
+msgid "View"
+msgstr "مشاهده شده"
+
+#: views/packages/list.base.php:147 views/packages/new1.inc.form.php:176
+#: views/packages/new3.base.php:79
+msgid "Installer"
+msgstr "نصب کننده"
+
+#: views/packages/list.base.php:150 views/packages/new1.inc.form.php:65
+#: views/packages/new2.base.php:195 views/packages/new3.base.php:83
+msgid "Archive"
+msgstr "آرشیو بسته نصبی"
+
+#: views/packages/list.base.php:155 views/packages/list.base.php:200
+#: views/settings/general.php:79 views/tools/diagnostics.php:141
+#: views/tools/diagnostics.php:160 views/tools/diagnostics.php:200
+msgid "Version"
+msgstr "نسخه"
+
+#: views/packages/list.base.php:156 views/packages/list.base.php:201
+#: views/packages/new1.inc.form.php:199 views/tools/diagnostics.php:168
+msgid "User"
+msgstr "کاربر دیتابیس"
+
+#: views/packages/list.base.php:157 views/packages/list.base.php:202
+msgid "Hash"
+msgstr "Hash"
+
+#: views/packages/list.base.php:158 views/packages/list.base.php:207
+#: views/packages/new1.inc.form.php:8 views/packages/new1.inc.form.php:13
+msgid "Notes"
+msgstr "توضیحات"
+
+#: views/packages/list.base.php:160
+msgid "Links"
+msgstr "لینک‌ها"
+
+#: views/packages/list.base.php:161
+msgid "SQL"
+msgstr "اس‌کیوال"
+
+#: views/packages/list.base.php:162
+msgid "Log"
+msgstr "گزارش"
+
+#: views/packages/list.base.php:165
+msgid "Open Scan Report"
+msgstr "گزارش اسکن باز"
+
+#: views/packages/list.base.php:166
+msgid "View Package Object"
+msgstr "مشاهده بسته شی"
+
+#: views/packages/list.base.php:193
+msgid "View Error Details"
+msgstr "مشاهده جزئیات خطا"
+
+#: views/packages/list.base.php:205
+msgid "Unrecoverable Error! Please remove this package."
+msgstr ""
+
+#: views/packages/list.base.php:210
+msgid ""
+"This package has encountered errors.  Click 'View Log' for more details.  "
+"For additional support see the "
+msgstr ""
+
+#: views/packages/list.base.php:211
+msgid "online knowledgebase"
+msgstr ""
+
+#: views/packages/list.base.php:213
+msgid "View Log"
+msgstr "نمایش گزارش"
+
+#: views/packages/list.base.php:236 views/packages/new2.base.php:219
+#: views/packages/new2.base.php:328
+msgid "Total Size"
+msgstr "اندازه کل"
+
+#: views/packages/list.base.php:255
+msgid "Download Links"
+msgstr "لینک دانلود"
+
+#: views/packages/list.base.php:258
+msgid "The following links contain sensitive data.  Please share with caution!"
+msgstr ""
+
+#: views/packages/list.base.php:264
+msgid ""
+"The database SQL script is a quick link to your database backup script.  An "
+"exact copy is also stored in the package."
+msgstr ""
+
+#: views/packages/list.base.php:287
+msgid ""
+"Please select an action from the bulk action drop down menu to perform a "
+"specific action."
+msgstr ""
+
+#: views/packages/list.base.php:295
+msgid "Please select at least one package to delete."
+msgstr ""
+
+#: views/packages/list.base.php:299
+msgid "Are you sure, you want to delete the selected package(s)?"
+msgstr "آیا مطمئنید که مایلید package(s) منتخب را حذف کنید؟"
+
+#: views/packages/list.base.php:333
+msgid "Package File Links"
+msgstr "لینک فایل های بسته"
+
+#: views/packages/list.base.php:336
+msgid "DATABASE"
+msgstr "پایگاه داده"
+
+#: views/packages/list.base.php:337
+msgid "PACKAGE"
+msgstr "بسته"
+
+#: views/packages/list.base.php:338
+msgid "INSTALLER"
+msgstr "نصب کننده"
+
+#: views/packages/list.base.php:339
+msgid "LOG"
+msgstr "گزارش"
+
+#: views/packages/list.base.php:340
+msgid "REPORT"
+msgstr "گزارش"
+
+#: views/packages/new1.base.php:13
+msgid "Package settings have been reset."
+msgstr ""
+
+#: views/packages/new1.base.php:86 views/packages/new2.base.php:59
+#: views/packages/new3.base.php:33
+msgid "Setup"
+msgstr "نصب"
+
+#: views/packages/new1.base.php:87 views/packages/new2.base.php:60
+#: views/packages/new3.base.php:34
+msgid "Scan"
+msgstr "آنالیز ( اسکن )"
+
+#: views/packages/new1.base.php:88 views/packages/new2.base.php:61
+#: views/packages/new2.base.php:388 views/packages/new3.base.php:35
+msgid "Build"
+msgstr "ایجاد بسته"
+
+#: views/packages/new1.base.php:91
+msgid "Step 1: Package Setup"
+msgstr "بخش 1 : تنظیمات بسته "
+
+#: views/packages/new1.base.php:115
+msgid "Requirements:"
+msgstr "موارد مورد نیاز:"
+
+#: views/packages/new1.base.php:124
+msgid ""
+"System requirements must pass for the Duplicator to work properly.  Click "
+"each link for details."
+msgstr ""
+
+#: views/packages/new1.base.php:130
+msgid "PHP Support"
+msgstr "پشتیبان پی اچ پی"
+
+#: views/packages/new1.base.php:136
+msgid "PHP Version"
+msgstr "نسخه پی اچ پی"
+
+#: views/packages/new1.base.php:140
+msgid "Zip Archive Enabled"
+msgstr ""
+
+#: views/packages/new1.base.php:144
+msgid "Safe Mode Off"
+msgstr ""
+
+#: views/packages/new1.base.php:148 views/packages/new1.base.php:152
+#: views/packages/new1.base.php:156
+msgid "Function"
+msgstr "تابع"
+
+#: views/packages/new1.base.php:161
+msgid ""
+"PHP versions 5.2.17+ or higher is required. Please note that in versioning "
+"logic a value such as 5.2.9 is less than 5.2.17. For compression to work the "
+"ZipArchive extension for PHP is required. Safe Mode should be set to 'Off' "
+"in you php.ini file and is deprecated as of PHP 5.3.0.  For any issues in "
+"this section please contact your hosting provider or server administrator.  "
+"For additional information see our online documentation."
+msgstr ""
+
+#: views/packages/new1.base.php:169
+msgid "Permissions"
+msgstr "دسترسی‌ها"
+
+#: views/packages/new1.base.php:172
+msgid "Required Paths"
+msgstr "مسیرهای مورد نیاز"
+
+#: views/packages/new1.base.php:183
+msgid ""
+"Permissions can be difficult to resolve on some systems. If the plugin can "
+"not read the above paths here are a few things to try. 1) Set the above "
+"paths to have permissions of 755 for directories and 644 for files. You can "
+"temporarily try 777 however, be sure you don’t leave them this way. 2) Check "
+"the owner/group settings for both files and directories. The PHP script "
+"owner and the process owner are different. The script owner owns the PHP "
+"script but the process owner is the user the script is running as, thus "
+"determining its capabilities/privileges in the file system. For more details "
+"contact your host or server administrator or visit the 'Help' menu under "
+"Duplicator for additional online resources."
+msgstr ""
+
+#: views/packages/new1.base.php:191
+msgid "Server Support"
+msgstr "پشتیبانی سرور"
+
+#: views/packages/new1.base.php:197
+msgid "MySQL Version"
+msgstr "نسخه MySQL"
+
+#: views/packages/new1.base.php:201
+msgid "MySQLi Support"
+msgstr "پشتیبانی از MySQLi"
+
+#: views/packages/new1.base.php:207
+msgid ""
+"MySQL version 5.0+ or better is required and the PHP MySQLi extension (note "
+"the trailing 'i') is also required.  Contact your server administrator and "
+"request that mysqli extension and MySQL Server 5.0+ be installed. Please "
+"note in future versions support for other databases and extensions will be "
+"added."
+msgstr ""
+
+#: views/packages/new1.base.php:208
+msgid "more info"
+msgstr "اطلاعات بیشتر"
+
+#: views/packages/new1.base.php:217
+msgid "Reserved Files"
+msgstr "فایل محافظت شده"
+
+#: views/packages/new1.base.php:221
+msgid ""
+"None of the reserved files (installer.php, installer-data.sql and installer-"
+"log.txt) where found from a previous install.  This means you are clear to "
+"create a new package."
+msgstr ""
+
+#: views/packages/new1.base.php:224
+msgid ""
+"A reserved file(s) was found in the WordPress root directory. Reserved file "
+"names are installer.php, installer-data.sql and installer-log.txt.  To "
+"archive your data correctly please remove any of these files from your "
+"WordPress root directory.  Then try creating your package again."
+msgstr ""
+
+#: views/packages/new1.base.php:225
+msgid "Remove Files Now"
+msgstr "حذف فایل های حال حاضر"
+
+#: views/packages/new1.base.php:234
+msgid "For additional help please see the "
+msgstr ""
+
+#: views/packages/new1.inc.form.php:10
+msgid "Create a new default name"
+msgstr "ایجاد یک نام پیشفرض"
+
+#: views/packages/new1.inc.form.php:23 views/settings/general.php:94
+msgid "Storage"
+msgstr "ذخیره سازی"
+
+#: views/packages/new1.inc.form.php:32
+msgid "Type"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:33
+msgid "Location"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:38
+msgid "Default"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:39
+msgid "Local"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:45
+msgid ""
+"All packages including the archive, installer and SQL script are stored in "
+"the location above. "
+msgstr ""
+
+#: views/packages/new1.inc.form.php:48
+msgid "Dropbox, FTP and other multiple storage options available in "
+msgstr ""
+
+#: views/packages/new1.inc.form.php:67
+msgid "File filter enabled"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:68
+msgid "Database filter enabled"
+msgstr "بانک اطلاعات فیلتر فعال"
+
+#: views/packages/new1.inc.form.php:77 views/packages/new2.base.php:203
+msgid "Files"
+msgstr "فایل ها"
+
+#: views/packages/new1.inc.form.php:78 views/packages/new1.inc.form.php:195
+#: views/packages/new2.base.php:312
+msgid "Database"
+msgstr "پایگاه داده"
+
+#: views/packages/new1.inc.form.php:90
+msgid "Enable File Filters"
+msgstr "فعال کردن فیلتر های پرونده"
+
+#: views/packages/new1.inc.form.php:94 views/packages/new1.inc.form.php:102
+msgid "Separate all filters by semicolon"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:94 views/packages/new2.base.php:278
+msgid "Directories"
+msgstr "پوشه ها"
+
+#: views/packages/new1.inc.form.php:96
+msgid "root path"
+msgstr "مسیر ریشه"
+
+#: views/packages/new1.inc.form.php:97
+msgid "wp-uploads"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:98
+msgid "cache"
+msgstr "کش"
+
+#: views/packages/new1.inc.form.php:99 views/packages/new1.inc.form.php:106
+msgid "(clear)"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:102
+msgid "File extensions"
+msgstr "پسوند فایل ها"
+
+#: views/packages/new1.inc.form.php:104
+msgid "media"
+msgstr "فیلم یا آهنگ"
+
+#: views/packages/new1.inc.form.php:105
+msgid "archive"
+msgstr "بسته فشرده"
+
+#: views/packages/new1.inc.form.php:111
+msgid ""
+"The directory paths and extensions above will be be excluded from the "
+"archive file if enabled is checked."
+msgstr ""
+"مسیر دایرکتوری و پسوند بالا خواهد شد می شود محروم از آرشیو فایل اگر فعال "
+"بررسی می شود."
+
+#: views/packages/new1.inc.form.php:112
+msgid "Use the full path for directories and semicolons to separate all items."
+msgstr "مسیر کامل دایرکتوری و ویرگول برای جدا کردن همه موارد استفاده کنید."
+
+#: views/packages/new1.inc.form.php:123
+msgid "Enable Table Filters"
+msgstr "فعال کردن فیلتر های جدول"
+
+#: views/packages/new1.inc.form.php:124
+msgid "checked tables are excluded"
+msgstr "انتخاب جداول محروم شده"
+
+#: views/packages/new1.inc.form.php:129
+msgid "Include All"
+msgstr "حذف همه"
+
+#: views/packages/new1.inc.form.php:130
+msgid "Exclude All"
+msgstr "انتخاب همه"
+
+#: views/packages/new1.inc.form.php:163
+msgid ""
+"Checked tables will not be added to the database script.  Excluding certain "
+"tables can possibly cause your site or plugins to not work correctly after "
+"install!"
+msgstr ""
+"بررسی جداول به اسکریپت بانک اطلاعاتی اضافه خواهد شد.  جداول خاصی به جز "
+"احتمالا سایت یا افزونه هنوز کار درست پس از نصب می تواند باعث شود!"
+
+#: views/packages/new1.inc.form.php:181
+msgid "STEP 1 - INPUTS"
+msgstr "بخش 1 - ورودی ها"
+
+#: views/packages/new1.inc.form.php:184
+msgid "MySQL Server"
+msgstr "سرور مای اسکیوال"
+
+#: views/packages/new1.inc.form.php:187
+msgid "Host"
+msgstr "میزبان"
+
+#: views/packages/new1.inc.form.php:191
+msgid "Host Port"
+msgstr ""
+
+#: views/packages/new1.inc.form.php:203
+msgid "Advanced Options"
+msgstr "تنظیمات بیشتر"
+
+#: views/packages/new1.inc.form.php:209
+msgid "SSL"
+msgstr "گواهینامه SSL"
+
+#: views/packages/new1.inc.form.php:212
+msgid "Enforce on Admin"
+msgstr "اجرا توسط مدیر"
+
+#: views/packages/new1.inc.form.php:216
+msgid "Enforce on Logins"
+msgstr "اجرا بعد از ورود"
+
+#: views/packages/new1.inc.form.php:220
+msgid "Cache"
+msgstr "کش"
+
+#: views/packages/new1.inc.form.php:223
+msgid "Keep Enabled"
+msgstr "فعال نگه داشتن"
+
+#: views/packages/new1.inc.form.php:227
+msgid "Keep Home Path"
+msgstr "نگه داشتن مسیر خانه"
+
+#: views/packages/new1.inc.form.php:235
+msgid "STEP 2 - INPUTS"
+msgstr "بخش 2 - ورودی ها"
+
+#: views/packages/new1.inc.form.php:239
+msgid "New URL"
+msgstr "آدرس جدید"
+
+#: views/packages/new1.inc.form.php:245
+msgid "The installer can have these fields pre-filled at install time."
+msgstr "نصب می توانید این زمینه ها در زمان نصب از پیش پر شده است."
+
+#: views/packages/new1.inc.form.php:245
+msgid "All values are optional."
+msgstr "همه مقادیر اختیاری هستند."
+
+#: views/packages/new1.inc.form.php:254
+msgid "Reset"
+msgstr "بازگشت به تنظیمات اولیه"
+
+#: views/packages/new1.inc.form.php:255
+msgid "Next"
+msgstr "ادامه"
+
+#: views/packages/new1.inc.form.php:267
+msgid ""
+"This will reset all of the current package settings.  Would you like to "
+"continue?"
+msgstr ""
+
+#: views/packages/new2.base.php:64
+msgid "Step 2: System Scan"
+msgstr "بخش 2 : آنالیز سیستم"
+
+#: views/packages/new2.base.php:81
+msgid "Scanning Site"
+msgstr "آنالیز ( اسکن ) در سایت"
+
+#: views/packages/new2.base.php:83 views/packages/new3.base.php:57
+msgid "Please Wait..."
+msgstr "لطفا منتظر بمانید ...."
+
+#: views/packages/new2.base.php:89
+msgid "Scan Complete"
+msgstr "آنالیز ( اسکن ) کامل شده"
+
+#: views/packages/new2.base.php:91
+msgid ""
+"Scan checks are not required to pass, however they could cause issues on "
+"some systems."
+msgstr ""
+"آنالیز ( اسکن ) انجام شد تمام موارد مورد تایید می باشد با این حال بسته به "
+"سیستم های مختلف می تواند موارد تغییر کند."
+
+#: views/packages/new2.base.php:92
+msgid "Process Time:"
+msgstr "زمان اجرا:"
+
+#: views/packages/new2.base.php:101
+msgid "Server"
+msgstr "سرور"
+
+#: views/packages/new2.base.php:103 views/tools/controller.php:17
+msgid "Diagnostics"
+msgstr "تشخیص"
+
+#: views/packages/new2.base.php:112 views/packages/new2.base.php:117
+#: views/tools/diagnostics.php:106
+msgid "Web Server"
+msgstr "سرور وب"
+
+#: views/packages/new2.base.php:119
+msgid "Supported web servers:"
+msgstr ""
+
+#: views/packages/new2.base.php:129
+msgid "PHP Setup"
+msgstr ""
+
+#: views/packages/new2.base.php:135
+msgid "Open Base Dir"
+msgstr ""
+
+#: views/packages/new2.base.php:137
+msgid ""
+"Issues might occur when [open_basedir] is enabled. Work with your server "
+"admin to disable this value in the php.ini file if you’re having issues "
+"building a package."
+msgstr ""
+
+#: views/packages/new2.base.php:138 views/packages/new2.base.php:148
+#: views/packages/new2.base.php:155
+msgid "details"
+msgstr ""
+
+#: views/packages/new2.base.php:143 views/tools/diagnostics.php:189
+msgid "Max Execution Time"
+msgstr "حداکثر زمان اجرا"
+
+#: views/packages/new2.base.php:145
+#, php-format
+msgid ""
+"Issues might occur for larger packages when the [max_execution_time] value "
+"in the php.ini is too low.  The minimum recommended timeout is \"%1$s\" "
+"seconds or higher. An attempt is made to override this value if the server "
+"allows it.  A value of 0 (recommended) indicates that PHP has no time limits."
+msgstr ""
+
+#: views/packages/new2.base.php:147
+msgid ""
+"Note: Timeouts can also be set at the web server layer, so if the PHP max "
+"timeout passes and you still see a build interrupt messages, then your web "
+"server could be killing the process.   If you are limited on processing "
+"time, consider using the database or file filters to shrink the size of your "
+"overall package.   However use caution as excluding the wrong resources can "
+"cause your install to not work properly."
+msgstr ""
+
+#: views/packages/new2.base.php:152
+msgid "MySQLi"
+msgstr ""
+
+#: views/packages/new2.base.php:154
+msgid ""
+"Creating the package does not require the mysqli module.  However the "
+"installer.php file requires that the PHP module mysqli be installed on the "
+"server it is deployed on."
+msgstr ""
+
+#: views/packages/new2.base.php:164
+msgid "WordPress"
+msgstr "وردپرس"
+
+#: views/packages/new2.base.php:169
+msgid "WordPress Version"
+msgstr "ورژن وردپرس"
+
+#: views/packages/new2.base.php:171
+#, php-format
+msgid ""
+"It is recommended to have a version of WordPress that is greater than %1$s"
+msgstr ""
+
+#: views/packages/new2.base.php:175
+msgid "Core Files"
+msgstr "فایل های هسته ای"
+
+#: views/packages/new2.base.php:177
+msgid ""
+"If the scanner is unable to locate the wp-config.php file in the root "
+"directory, then you will need to manually copy it to its new location."
+msgstr ""
+
+#: views/packages/new2.base.php:183
+msgid "Cache Path"
+msgstr ""
+
+#: views/packages/new2.base.php:185
+msgid ""
+"Cached data will lead to issues at install time and increases your archive "
+"size. It is recommended to empty your cache directory at build time. Use "
+"caution when removing data from the cache directory. If you have a cache "
+"plugin review the documentation for how to empty it; simply removing files "
+"might cause errors on your site. The cache size minimum threshold is "
+"currently set at "
+msgstr ""
+
+#: views/packages/new2.base.php:208 views/packages/new2.base.php:317
+msgid "Enabled"
+msgstr "فعال"
+
+#: views/packages/new2.base.php:223
+msgid "File Count"
+msgstr "تعداد پرونده"
+
+#: views/packages/new2.base.php:224
+msgid "Directory Count"
+msgstr "تعداد دایرکتوری"
+
+#: views/packages/new2.base.php:227
+#, php-format
+msgid ""
+"Total size represents all files minus any filters that have been setup.  The "
+"current thresholds that trigger warnings are %1$s for the entire site and "
+"%2$s for large files."
+msgstr ""
+
+#: views/packages/new2.base.php:239
+msgid "Name Checks"
+msgstr ""
+
+#: views/packages/new2.base.php:244
+msgid ""
+"File or directory names may cause issues when working across different "
+"environments and servers.  Names that are over 250 characters, contain "
+"special characters (such as * ? > < : / \\ |) or are unicode might cause "
+"issues in a remote enviroment.  It is recommended to remove or filter these "
+"files before building the archive if you have issues at install time."
+msgstr ""
+
+#: views/packages/new2.base.php:247 views/packages/new2.base.php:265
+msgid "Show Paths"
+msgstr "نشان دادن مسیر"
+
+#: views/packages/new2.base.php:256
+msgid "Large Files"
+msgstr "فایل های بزرگ"
+
+#: views/packages/new2.base.php:261
+#, php-format
+msgid ""
+"Large files such as movies or other backuped data can cause issues with "
+"timeouts.  The current check for large files is %1$s per file.  If your "
+"having issues creating a package consider excluding these files with the "
+"files filter and manually moving them to your new location."
+msgstr ""
+
+#: views/packages/new2.base.php:275
+msgid "View Filters"
+msgstr "مشاهده فیلتر ها"
+
+#: views/packages/new2.base.php:283
+msgid "No directory filters have been set."
+msgstr ""
+
+#: views/packages/new2.base.php:288
+msgid "File Extensions"
+msgstr "پسوند فایل ها"
+
+#: views/packages/new2.base.php:293
+msgid "No file extension filters have been set."
+msgstr ""
+
+#: views/packages/new2.base.php:297
+msgid ""
+"The lists above are the directories and file extension that will be excluded "
+"from the archive."
+msgstr ""
+
+#: views/packages/new2.base.php:332
+msgid "Tables"
+msgstr "جدول"
+
+#: views/packages/new2.base.php:333
+msgid "Records"
+msgstr "رکورد"
+
+#: views/packages/new2.base.php:336
+msgid "repair and optimization"
+msgstr "تعمیر و بهینه سازی"
+
+#: views/packages/new2.base.php:337
+#, php-format
+msgid ""
+"Total size and row count for all database tables are approximate values.  "
+"The thresholds that trigger warnings are %1$s and %2$s records.  Large "
+"databases take time to process and can cause issues with server timeout and "
+"memory settings.  Running a %3$s on your database can also help improve the "
+"overall size and performance.  If your server supports shell_exec and "
+"mysqldump you can try to enable this option from the settings menu."
+msgstr ""
+
+#: views/packages/new2.base.php:349
+msgid "Table Details"
+msgstr "جدول جزئیات"
+
+#: views/packages/new2.base.php:360
+msgid "Name:"
+msgstr "نام:"
+
+#: views/packages/new2.base.php:361
+msgid "Host:"
+msgstr "میزبان:"
+
+#: views/packages/new2.base.php:362
+msgid "Build Mode:"
+msgstr "نحوه ساخت:"
+
+#: views/packages/new2.base.php:373
+msgid "Scan Error"
+msgstr "خطا در آنالیز ( اسکن )"
+
+#: views/packages/new2.base.php:374
+msgid "Please try again!"
+msgstr "لطفا دوباره سعی کنید"
+
+#: views/packages/new2.base.php:376 views/packages/new3.base.php:111
+msgid "Server Status:"
+msgstr "وضعیت سرور:"
+
+#: views/packages/new2.base.php:379 views/packages/new3.base.php:115
+msgid "Error Message:"
+msgstr "پیام خطا:"
+
+#: views/packages/new2.base.php:386
+msgid "Back"
+msgstr "بازگشت"
+
+#: views/packages/new2.base.php:387
+msgid "Rescan"
+msgstr "آنالیز یا ( اسکن ) مجدد"
+
+#: views/packages/new2.base.php:486
+msgid "Unable to report on any tables"
+msgstr "قادر به گزارش هیچ کدام از جداول نمی باشم"
+
+#: views/packages/new2.base.php:495
+msgid "Unable to report on database stats"
+msgstr "قادر به گزارش آمار پایگاه داده نمی باشم"
+
+#: views/packages/new2.base.php:514
+msgid "DIR"
+msgstr ""
+
+#: views/packages/new2.base.php:520 views/packages/new2.base.php:533
+msgid "FILE"
+msgstr "پرونده"
+
+#: views/packages/new2.base.php:523
+msgid "No name warning issues found."
+msgstr ""
+
+#: views/packages/new2.base.php:529
+msgid "No large files found."
+msgstr "هیچ فایلی یافت یا انتخاب نشد"
+
+#: views/packages/new3.base.php:38
+msgid "Step 3: Build Package"
+msgstr "بخش 3 : ساخت بسته آسان نصبی"
+
+#: views/packages/new3.base.php:55
+msgid "Building Package"
+msgstr "در حال ساخت بسته آسان نصبی"
+
+#: views/packages/new3.base.php:58
+msgid "Keep this window open during the build process."
+msgstr "این پنجره را در طول فرایند ساخت هرگز نبندید."
+
+#: views/packages/new3.base.php:59
+msgid "This may take several minutes."
+msgstr "این ممکن است چند دقیقه طول بکشد."
+
+#: views/packages/new3.base.php:63
+msgid "Build Status"
+msgstr "وضعیت ساخت بسته آسان نصبی"
+
+#: views/packages/new3.base.php:70
+msgid "Package Completed"
+msgstr "بسته آسان نصبی با موفقییت تولید شد"
+
+#: views/packages/new3.base.php:75
+msgid "Process Time"
+msgstr "فرایند تولید بسته"
+
+#: views/packages/new3.base.php:100
+msgid "Build Interrupt"
+msgstr "ایجاد وقفه"
+
+#: views/packages/new3.base.php:101
+msgid "The current build has experienced an issue."
+msgstr ""
+
+#: views/packages/new3.base.php:103
+msgid "Please try the process again."
+msgstr "لطفا این فرآیند را دوباره امتحان کنید."
+
+#: views/packages/new3.base.php:105
+msgid "Diagnose"
+msgstr ""
+
+#: views/packages/new3.base.php:106
+msgid "Try Again"
+msgstr "دوباره امتحان کردن"
+
+#: views/packages/new3.base.php:122
+msgid "Notice"
+msgstr "هشدار"
+
+#: views/packages/new3.base.php:125
+msgid "Build Folder:"
+msgstr "پوشه ایجاد:"
+
+#: views/packages/new3.base.php:127
+msgid ""
+"Some servers close connections quickly; yet the build can continue to run in "
+"the background. To validate if a build is still running; open the 'tmp' "
+"folder above and see if the archive file is growing in size. If it is not "
+"then your server has strict timeout constraints.  Please visit the support "
+"page for additional resources."
+msgstr ""
+
+#: views/packages/new3.base.php:136
+msgid "Package Log"
+msgstr "گزارش بسته نصبی"
+
+#: views/settings/controller.php:22 views/tools/diagnostics.php:87
+msgid "General"
+msgstr "عمومی"
+
+#: views/settings/general.php:6
+msgid "Settings Saved"
+msgstr "تنظیمات ذخیره شد"
+
+#: views/settings/general.php:75
+msgid "Plugin"
+msgstr "افزونه"
+
+#: views/settings/general.php:83
+msgid "Uninstall"
+msgstr "پاک کردن افزونه"
+
+#: views/settings/general.php:86
+msgid "Delete Plugin Settings"
+msgstr "حذف تنظیمات افزونه"
+
+#: views/settings/general.php:89
+msgid "Delete Entire Storage Directory"
+msgstr "حذف دایرکتوری ذخیره سازی کل"
+
+#: views/settings/general.php:96
+msgid "Full Path"
+msgstr "مسیر کامل"
+
+#: views/settings/general.php:99
+msgid "Disable .htaccess File In Storage Directory"
+msgstr "غیر فعال کردن فایل htaccess در دایرکتوری ذخیره سازی"
+
+#: views/settings/general.php:101
+msgid "Disable if issues occur when downloading installer/archive files."
+msgstr "اگر مسائل را رخ می دهد که دانلود نصب و آرشیو فایل ها را غیر فعال کنید."
+
+#: views/settings/general.php:114
+msgid "Archive Flush"
+msgstr "آرشیو بسته نصبی"
+
+#: views/settings/general.php:117
+msgid "Attempt Network Keep Alive"
+msgstr "زنده نگه داشتن شبکه تلاش"
+
+#: views/settings/general.php:118
+msgid "recommended only for large archives"
+msgstr "توصیه می شود تنها برای آرشیو بزرگ"
+
+#: views/settings/general.php:120
+msgid ""
+"This will attempt to keep a network connection established for large "
+"archives."
+msgstr "این تلاش برای حفظ یک اتصال شبکه برای آرشیو بزرگ است."
+
+#: views/settings/general.php:125
+msgid "Database Build"
+msgstr "ساخت پایگاه داده"
+
+#: views/settings/general.php:128
+msgid "Use PHP"
+msgstr "استفاده از پی اچ پی"
+
+#: views/settings/general.php:131
+msgid "Query Limit Size"
+msgstr "پرس و جو حد اندازه"
+
+#: views/settings/general.php:140
+msgid "higher values speed up build times but uses more memory"
+msgstr "مقادیر بالاتر سرعت بار ساخت اما با استفاده از حافظه بیشتر"
+
+#: views/settings/general.php:147
+msgid "This server does not have shell_exec configured to run."
+msgstr ""
+
+#: views/settings/general.php:149
+msgid "Please contact the server administrator to enable this feature."
+msgstr ""
+
+#: views/settings/general.php:154
+msgid "Use mysqldump"
+msgstr "استفاده از mysqldump"
+
+#: views/settings/general.php:155
+msgid "recommended for large databases"
+msgstr "توصیه می شود برای پایگاه های داده بزرگ"
+
+#: views/settings/general.php:160
+msgid "Working Path:"
+msgstr "مسیر در حال کار:"
+
+#: views/settings/general.php:166
+msgid ""
+"Mysqldump was not found at its default location or the location provided.  "
+"Please enter a path to a valid location where mysqldump can run.  If the "
+"problem persist contact your server administrator."
+msgstr ""
+
+#: views/settings/general.php:171
+msgid "Add Custom Path:"
+msgstr "مسیر سفارشی اضافه کنید:"
+
+#: views/settings/general.php:175
+msgid "This is the path to your mysqldump program."
+msgstr "این مسیر برای برنامه mysqldump شما است."
+
+#: views/settings/general.php:184
+msgid "Package Debug"
+msgstr "اشکال زدایی بسته"
+
+#: views/settings/general.php:187
+msgid "Show Package Debug Status in Packages Screen"
+msgstr "نمایش وضعیت اشکال زدایی بسته در صفحه نمایش بسته"
+
+#: views/settings/general.php:195
+msgid "Roles & Capabilities"
+msgstr "نقش ها و قابلیت ها"
+
+#: views/settings/general.php:200
+msgid "Custom Roles"
+msgstr "نقش های سفارشی"
+
+#: views/settings/general.php:203
+msgid "Enable User Role Editor Plugin Integration"
+msgstr "فعال کردن قابلیت هماهنگ سازی با پلاگین User Role Editor"
+
+#: views/settings/general.php:210
+msgid "The User Role Editor Plugin"
+msgstr "پلاگین ویرایش نقش کاربران"
+
+#: views/settings/general.php:211
+msgid "Free"
+msgstr "رایگان"
+
+#: views/settings/general.php:212
+msgid "or"
+msgstr "یا"
+
+#: views/settings/general.php:213
+msgid "Professional"
+msgstr "تجاری"
+
+#: views/settings/general.php:214
+msgid "must be installed to use"
+msgstr "باید نصب کنید برای استفاده از"
+
+#: views/settings/general.php:215
+msgid "this feature."
+msgstr "این ویژگی"
+
+#: views/settings/general.php:227
+msgid "Save Settings"
+msgstr "ذخیره تغییرات"
+
+#: views/tools/cleanup.php:8
+msgid "Installer File Cleanup Ran."
+msgstr "نصب فایل پاک کردن ران."
+
+#: views/tools/cleanup.php:12 views/tools/diagnostics.php:44
+msgid "Legacy data removed."
+msgstr "حذف داده های میراث."
+
+#: views/tools/cleanup.php:16
+msgid "Build cache removed."
+msgstr "پاک کردن کش"
+
+#: views/tools/cleanup.php:73
+msgid ""
+"If the installer files did not successfully get removed, then you WILL need "
+"to remove them manually"
+msgstr ""
+
+#: views/tools/cleanup.php:74
+msgid ""
+"Please remove all installer files to avoid leaving open security issues on "
+"your server"
+msgstr ""
+
+#: views/tools/cleanup.php:82
+msgid "Data Cleanup"
+msgstr "پاک کردن داده ها"
+
+#: views/tools/cleanup.php:85
+msgid "Delete Reserved Files"
+msgstr "حذف فایلها و پوشه های محافظت شده"
+
+#: views/tools/cleanup.php:86
+msgid "Removes all installer files from a previous install"
+msgstr "تمام فایل های نصب را از یک نصب قبلی حذف می کند"
+
+#: views/tools/cleanup.php:89
+msgid "Delete Legacy Data"
+msgstr "حذف داده های میراث"
+
+#: views/tools/cleanup.php:90
+msgid "Removes all legacy data and settings prior to version"
+msgstr "حذف همه داده های میراث و تنظیمات قبل از نسخه"
+
+#: views/tools/cleanup.php:93
+msgid "Clear Build Cache"
+msgstr "پاک کردن کش"
+
+#: views/tools/cleanup.php:94
+msgid "Removes all build data from:"
+msgstr "حذف همه داده ها از ساخت:"
+
+#: views/tools/cleanup.php:107
+#, php-format
+msgid "This action will remove all legacy settings prior to version %1$s.  "
+msgstr ""
+
+#: views/tools/cleanup.php:108
+msgid ""
+"Legacy settings are only needed if you plan to migrate back to an older "
+"version of this plugin."
+msgstr ""
+
+#: views/tools/cleanup.php:120
+msgid ""
+"This process will remove all build cache files.  Be sure no packages are "
+"currently building or else they will be cancelled."
+msgstr ""
+
+#: views/tools/controller.php:16
+msgid "Logging"
+msgstr "گزارشات"
+
+#: views/tools/controller.php:18
+msgid "Cleanup"
+msgstr "گزارش های پاکسازی"
+
+#: views/tools/diagnostics.php:18 views/tools/diagnostics.php:19
+msgid "unknow"
+msgstr ""
+
+#: views/tools/diagnostics.php:39
+msgid "Plugin settings reset."
+msgstr "بازگشت به تنظیمات اولیه"
+
+#: views/tools/diagnostics.php:40
+msgid "View state settings reset."
+msgstr "تنظیمات بازنشانی شد"
+
+#: views/tools/diagnostics.php:41
+msgid "Active package settings reset."
+msgstr "تنظیم مجدد تنظیمات فعال بسته."
+
+#: views/tools/diagnostics.php:81
+msgid "Server Settings"
+msgstr "تنظیمات سرور"
+
+#: views/tools/diagnostics.php:90
+msgid "Duplicator Version"
+msgstr "نسخه ایجاد کننده بسته نصبی"
+
+#: views/tools/diagnostics.php:94
+msgid "Operating System"
+msgstr "سیستم عامل"
+
+#: views/tools/diagnostics.php:98
+msgid "Timezone"
+msgstr "منطقه زمانی"
+
+#: views/tools/diagnostics.php:102
+msgid "Server Time"
+msgstr "زمان سرور"
+
+#: views/tools/diagnostics.php:110
+msgid "APC Enabled"
+msgstr "APC فعال"
+
+#: views/tools/diagnostics.php:114
+msgid "Root Path"
+msgstr "مسیر ریشه"
+
+#: views/tools/diagnostics.php:118
+msgid "ABSPATH"
+msgstr "مسیر کامل دایرکتوری وردپرس"
+
+#: views/tools/diagnostics.php:122
+msgid "Plugins Path"
+msgstr "مسیر پلاگین ها"
+
+#: views/tools/diagnostics.php:126
+msgid "Loaded PHP INI"
+msgstr "مسیر php.ini"
+
+#: views/tools/diagnostics.php:130
+msgid "Server IP"
+msgstr "آی پی سرور"
+
+#: views/tools/diagnostics.php:134
+msgid "Client IP"
+msgstr "آی پی کاربر"
+
+#: views/tools/diagnostics.php:145
+msgid "Langugage"
+msgstr "زبان"
+
+#: views/tools/diagnostics.php:149 views/tools/diagnostics.php:204
+msgid "Charset"
+msgstr "انکودینگ"
+
+#: views/tools/diagnostics.php:153
+msgid "Memory Limit "
+msgstr "محدوديت حافظه وردپرس"
+
+#: views/tools/diagnostics.php:154
+msgid "Max"
+msgstr "بیشترین"
+
+#: views/tools/diagnostics.php:172
+msgid "Safe Mode"
+msgstr ""
+
+#: views/tools/diagnostics.php:176
+msgid "On"
+msgstr "روشن"
+
+#: views/tools/diagnostics.php:176
+msgid "Off"
+msgstr "خاموش"
+
+#: views/tools/diagnostics.php:181
+msgid "Memory Limit"
+msgstr "محدوديت حافظه"
+
+#: views/tools/diagnostics.php:185
+msgid "Memory In Use"
+msgstr "حافظه در حال استفاده"
+
+#: views/tools/diagnostics.php:193
+msgid "Shell Exec"
+msgstr ""
+
+#: views/tools/diagnostics.php:194
+msgid "Is Supported"
+msgstr "پشتیبانی می شود"
+
+#: views/tools/diagnostics.php:194
+msgid "Not Supported"
+msgstr "پشتیبانی نمی شود"
+
+#: views/tools/diagnostics.php:208
+msgid "Wait Timeout"
+msgstr "زمان تمام شدن"
+
+#: views/tools/diagnostics.php:212
+msgid "Max Allowed Packets"
+msgstr "حداکثر مجاز بسته"
+
+#: views/tools/diagnostics.php:216
+msgid "msyqldump Path"
+msgstr "مسیر msyqldump"
+
+#: views/tools/diagnostics.php:220
+msgid "Server Disk"
+msgstr "دیسک سرویس دهنده"
+
+#: views/tools/diagnostics.php:223
+msgid "Free space"
+msgstr "فضای خالی"
+
+#: views/tools/diagnostics.php:226
+msgid "Note: This value is the physical servers hard-drive allocation."
+msgstr "توجه: این مقدار تخصیص هارد دیسک سرور فیزیکی است."
+
+#: views/tools/diagnostics.php:227
+msgid ""
+"On shared hosts check your control panel for the 'TRUE' disk space quota "
+"value."
+msgstr ""
+"در میزبان مشترک کنترل پنل خود را برای ارزش ظرفیت فضای دیسک 'واقعی' را بررسی "
+"کنید."
+
+#: views/tools/diagnostics.php:243
+msgid "Stored Data"
+msgstr "داده های ذخیره شده"
+
+#: views/tools/diagnostics.php:248
+msgid "Options Values"
+msgstr "تنظیمات"
+
+#: views/tools/diagnostics.php:281
+msgid "PHP Information"
+msgstr "اطلاعات مربوط به پی اچ پی"
+
+#: views/tools/diagnostics.php:300
+msgid "Delete this option value"
+msgstr "حذف مقادیر این تنظیمات"
+
+#: views/tools/logging.php:140
+msgid "Log file not found or unreadable"
+msgstr ""
+"فایل گزارشات یافت نشد یا قابل خواندن نیست و احتمال می رود که مشکلی در حال "
+"حاظر وجود نداشته که گزارش شود."
+
+#: views/tools/logging.php:142
+msgid ""
+"Try to create a package, since no log files were found in the snapshots "
+"directory with the extension *.log"
+msgstr ""
+"سعی کنید به ایجاد یک بسته، بدون ورود به سیستم فایل در دایرکتوری فوری با فرمت "
+"*.log یافت شد"
+
+#: views/tools/logging.php:144
+msgid "Reasons for log file not showing"
+msgstr "دلایلی برای نمایش ندادن فایل گزارشات"
+
+#: views/tools/logging.php:145
+msgid "The web server does not support returning .log file extentions"
+msgstr ""
+"سرور وب شما از پسوند .log پشتیبانی نمی کند. بنا بر این می توانید به سرور خود "
+"اطلاع دهید تا مشکل را بررسی و رفع نمایند"
+
+#: views/tools/logging.php:146
+msgid ""
+"The snapshots directory does not have the correct permissions to write "
+"files.  Try setting the permissions to 755"
+msgstr ""
+"احتمالا دایکرکتوری wp-snapshots سطح دسترسی لازم را ندارد برای نوشتن را "
+"ندارد. بنا بر این به هاست خود بروید و سطح دسترسی این پوشه را روی 755 تنظیم "
+"کنید"
+
+#: views/tools/logging.php:147
+msgid ""
+"The process that PHP runs under does not have enough permissions to create "
+"files.  Please contact your hosting provider for more details"
+msgstr ""
+"پی اچی پی امکان اجرای دستورات لازم را ندارد بنا بر این با هاستینگ خود تماس "
+"بگیرید و مشکل را جهت رفع آن ارجاع دهید"
+
+#: views/tools/logging.php:156 views/tools/logging.php:161
+msgid "Options"
+msgstr "تنظیمات"
+
+#: views/tools/logging.php:163
+msgid "Refresh"
+msgstr "بازسازی"
+
+#: views/tools/logging.php:168
+msgid "Auto Refresh"
+msgstr "بازسازی اتوماتیک"
+
+#: views/tools/logging.php:174
+msgid "Last 20 Logs"
+msgstr "20 گزارش اخیر"
+
+#. Plugin Name of the plugin/theme
+msgid "Duplicator"
+msgstr "ایجاد کننده بسته نصبی"
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.lifeinthegrid.com/duplicator/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Create a backup of your WordPress files and database. Duplicate and move an "
+"entire site from one location to another in a few steps. Create a full "
+"snapshot of your site at any point in time."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "LifeInTheGrid"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.lifeinthegrid.com"
+msgstr ""
+
+#~ msgid "PHP Version:"
+#~ msgstr "نسخه پی اچ پی"
+
+#~ msgid "Backup and Move Made Easy!"
+#~ msgstr "پشتیبان گیری و حرکت آسان ساخته شده!"
+
+#~ msgid "The top-rated Duplicator plugin is going professional!"
+#~ msgstr "دارای امتیاز بالا تکثیر پلاگین حرفه ای می گذرد!"
+
+#~ msgid "Schedules"
+#~ msgstr "زمان‌بندی"
+
+#~ msgid "Custom Templates"
+#~ msgstr "قالب های سفارشی"
+
+#~ msgid "Cloud Storage"
+#~ msgstr "ذخیره سازی ابری"
+
+#~ msgid "Queued Processing"
+#~ msgstr "صف پردازش"
+
+#~ msgid "Pass"
+#~ msgstr "همه چیز مورد تایید می باشد"
+
+#~ msgid "Fail"
+#~ msgstr "مواردی مورد تایید نمی باشد"
+
+#~ msgid "Format"
+#~ msgstr "نوع"
+
+#~ msgid "localhost"
+#~ msgstr ""
+#~ "سرور محلی مثال ( localhost یا 127.0.0.1 یا آی پی که هاستینگ برای لوکال "
+#~ "هاست به شما داده )"
+
+#~ msgid "mydatabaseName"
+#~ msgstr "نام پایگاه داده"
+
+#~ msgid "databaseUserName"
+#~ msgstr "نام کاربری پایگاه داده"
+
+#~ msgid "http://mynewsite.com"
+#~ msgstr "https://www.amoozesh98.com"
+
+#~ msgid "PHP Settings"
+#~ msgstr "تنظیمات پی اچ پی"
+
+#~ msgid "WordPress Settings"
+#~ msgstr "تنظیمات وردپرس"
+
+#~ msgid "Missing"
+#~ msgstr "گم"
+
+#~ msgid "Invalid Names"
+#~ msgstr "نامهای بی اعتبار"
+
+#~ msgid "No name length issues."
+#~ msgstr "بدون مسائل طول نام."
+
+#~ msgid "Support"
+#~ msgstr "پشتیبانی"
+
+#~ msgid "Yes"
+#~ msgstr "بله"
+
+#~ msgid "No"
+#~ msgstr "نه"
+
+#~ msgid "PHP"
+#~ msgstr "پی اچ پی"
+
+#~ msgid "MySQL"
+#~ msgstr "مای اس کیوال"
+
+#~ msgid "Good"
+#~ msgstr "خوب"
+
+#~ msgid "Warn"
+#~ msgstr ""
+#~ "اخطار ( البته به این معنی نمی باشد که مشکل در ایجاد بسته نصبی وجود خواهد "
+#~ "داشت )"
+
+#~ msgid "unable to read"
+#~ msgstr "قادر به خواندن نمی باشم"
+
+#~ msgid "Goods"
+#~ msgstr "خوب"
