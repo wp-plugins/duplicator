@@ -5,7 +5,7 @@ DUP_Util::CheckPermissions('manage_options');
 global $wpdb;
 
 //COMMON HEADER DISPLAY
-require_once(DUPLICATOR_PLUGIN_PATH . '/views/javascript.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
 ?>

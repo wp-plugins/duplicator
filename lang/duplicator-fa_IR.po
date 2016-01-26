@@ -57,7 +57,7 @@ msgid "About"
 msgstr "درباره"
 
 #: duplicator.php:179 views/packages/controller.php:76
-#: views/packages/list.base.php:235
+#: views/packages/packages.php:235
 msgid "Packages"
 msgstr "بسته های نصبی"
 
@@ -346,201 +346,201 @@ msgstr ""
 msgid "Hide this message"
 msgstr "این پیغام را ببند"
 
-#: views/packages/list.base.php:39
+#: views/packages/packages.php:39
 msgid "Help Support Duplicator"
 msgstr "پشتیبان ایجاد کننده بسته نصبی"
 
-#: views/packages/list.base.php:50
+#: views/packages/packages.php:50
 msgid "Bulk Actions"
 msgstr "انجام عملیات کلی"
 
-#: views/packages/list.base.php:51
+#: views/packages/packages.php:51
 msgid "Delete selected package(s)"
 msgstr "حذف بسته های نصبی انتخاب شده(s)"
 
-#: views/packages/list.base.php:51
+#: views/packages/packages.php:51
 msgid "Delete"
 msgstr "حذف"
 
-#: views/packages/list.base.php:53
+#: views/packages/packages.php:53
 msgid "Apply"
 msgstr "اعمال"
 
-#: views/packages/list.base.php:58
+#: views/packages/packages.php:58
 msgid "Package Logs"
 msgstr "گزارش بسته نصبی"
 
-#: views/packages/list.base.php:61 views/packages/new1.base.php:96
+#: views/packages/packages.php:61 views/packages/new1.base.php:96
 #: views/packages/new2.base.php:69 views/packages/new3.base.php:43
 #: views/packages/new3.base.php:89
 msgid "All Packages"
 msgstr "تمام بسته های نصبی"
 
-#: views/packages/list.base.php:62 views/packages/new1.base.php:97
+#: views/packages/packages.php:62 views/packages/new1.base.php:97
 #: views/packages/new2.base.php:70 views/packages/new3.base.php:44
 msgid "Create New"
 msgstr "ایجاد بسته نصبی جدید"
 
-#: views/packages/list.base.php:87
+#: views/packages/packages.php:87
 msgid "Select all packages"
 msgstr "انتخاب همه بسته"
 
-#: views/packages/list.base.php:88 views/packages/new3.base.php:108
+#: views/packages/packages.php:88 views/packages/new3.base.php:108
 msgid "Details"
 msgstr "جزئیات"
 
-#: views/packages/list.base.php:89
+#: views/packages/packages.php:89
 msgid "Created"
 msgstr "زمان ایجاد"
 
-#: views/packages/list.base.php:90 views/packages/new2.base.php:222
+#: views/packages/packages.php:90 views/packages/new2.base.php:222
 #: views/packages/new2.base.php:334
 msgid "Size"
 msgstr "حجم"
 
-#: views/packages/list.base.php:91 views/packages/new1.inc.form.php:6
+#: views/packages/packages.php:91 views/packages/new1.inc.form.php:6
 #: views/packages/new1.inc.form.php:31 views/packages/new3.base.php:74
 msgid "Name"
 msgstr "نام بسته "
 
-#: views/packages/list.base.php:93 views/settings/general.php:110
+#: views/packages/packages.php:93 views/settings/general.php:110
 msgid "Package"
 msgstr "بسته"
 
-#: views/packages/list.base.php:124
+#: views/packages/packages.php:124
 msgid "(No Notes Taken)"
 msgstr "(بدون یادداشت ها گرفته شده)"
 
-#: views/packages/list.base.php:142 views/packages/list.base.php:187
+#: views/packages/packages.php:142 views/packages/packages.php:187
 msgid "View"
 msgstr "مشاهده شده"
 
-#: views/packages/list.base.php:147 views/packages/new1.inc.form.php:176
+#: views/packages/packages.php:147 views/packages/new1.inc.form.php:176
 #: views/packages/new3.base.php:79
 msgid "Installer"
 msgstr "نصب کننده"
 
-#: views/packages/list.base.php:150 views/packages/new1.inc.form.php:65
+#: views/packages/packages.php:150 views/packages/new1.inc.form.php:65
 #: views/packages/new2.base.php:195 views/packages/new3.base.php:83
 msgid "Archive"
 msgstr "آرشیو بسته نصبی"
 
-#: views/packages/list.base.php:155 views/packages/list.base.php:200
+#: views/packages/packages.php:155 views/packages/packages.php:200
 #: views/settings/general.php:79 views/tools/diagnostics.php:141
 #: views/tools/diagnostics.php:160 views/tools/diagnostics.php:200
 msgid "Version"
 msgstr "نسخه"
 
-#: views/packages/list.base.php:156 views/packages/list.base.php:201
+#: views/packages/packages.php:156 views/packages/packages.php:201
 #: views/packages/new1.inc.form.php:199 views/tools/diagnostics.php:168
 msgid "User"
 msgstr "کاربر دیتابیس"
 
-#: views/packages/list.base.php:157 views/packages/list.base.php:202
+#: views/packages/packages.php:157 views/packages/packages.php:202
 msgid "Hash"
 msgstr "Hash"
 
-#: views/packages/list.base.php:158 views/packages/list.base.php:207
+#: views/packages/packages.php:158 views/packages/packages.php:207
 #: views/packages/new1.inc.form.php:8 views/packages/new1.inc.form.php:13
 msgid "Notes"
 msgstr "توضیحات"
 
-#: views/packages/list.base.php:160
+#: views/packages/packages.php:160
 msgid "Links"
 msgstr "لینک‌ها"
 
-#: views/packages/list.base.php:161
+#: views/packages/packages.php:161
 msgid "SQL"
 msgstr "اس‌کیوال"
 
-#: views/packages/list.base.php:162
+#: views/packages/packages.php:162
 msgid "Log"
 msgstr "گزارش"
 
-#: views/packages/list.base.php:165
+#: views/packages/packages.php:165
 msgid "Open Scan Report"
 msgstr "گزارش اسکن باز"
 
-#: views/packages/list.base.php:166
+#: views/packages/packages.php:166
 msgid "View Package Object"
 msgstr "مشاهده بسته شی"
 
-#: views/packages/list.base.php:193
+#: views/packages/packages.php:193
 msgid "View Error Details"
 msgstr "مشاهده جزئیات خطا"
 
-#: views/packages/list.base.php:205
+#: views/packages/packages.php:205
 msgid "Unrecoverable Error! Please remove this package."
 msgstr ""
 
-#: views/packages/list.base.php:210
+#: views/packages/packages.php:210
 msgid ""
 "This package has encountered errors.  Click 'View Log' for more details.  "
 "For additional support see the "
 msgstr ""
 
-#: views/packages/list.base.php:211
+#: views/packages/packages.php:211
 msgid "online knowledgebase"
 msgstr ""
 
-#: views/packages/list.base.php:213
+#: views/packages/packages.php:213
 msgid "View Log"
 msgstr "نمایش گزارش"
 
-#: views/packages/list.base.php:236 views/packages/new2.base.php:219
+#: views/packages/packages.php:236 views/packages/new2.base.php:219
 #: views/packages/new2.base.php:328
 msgid "Total Size"
 msgstr "اندازه کل"
 
-#: views/packages/list.base.php:255
+#: views/packages/packages.php:255
 msgid "Download Links"
 msgstr "لینک دانلود"
 
-#: views/packages/list.base.php:258
+#: views/packages/packages.php:258
 msgid "The following links contain sensitive data.  Please share with caution!"
 msgstr ""
 
-#: views/packages/list.base.php:264
+#: views/packages/packages.php:264
 msgid ""
 "The database SQL script is a quick link to your database backup script.  An "
 "exact copy is also stored in the package."
 msgstr ""
 
-#: views/packages/list.base.php:287
+#: views/packages/packages.php:287
 msgid ""
 "Please select an action from the bulk action drop down menu to perform a "
 "specific action."
 msgstr ""
 
-#: views/packages/list.base.php:295
+#: views/packages/packages.php:295
 msgid "Please select at least one package to delete."
 msgstr ""
 
-#: views/packages/list.base.php:299
+#: views/packages/packages.php:299
 msgid "Are you sure, you want to delete the selected package(s)?"
 msgstr "آیا مطمئنید که مایلید package(s) منتخب را حذف کنید؟"
 
-#: views/packages/list.base.php:333
+#: views/packages/packages.php:333
 msgid "Package File Links"
 msgstr "لینک فایل های بسته"
 
-#: views/packages/list.base.php:336
+#: views/packages/packages.php:336
 msgid "DATABASE"
 msgstr "پایگاه داده"
 
-#: views/packages/list.base.php:337
+#: views/packages/packages.php:337
 msgid "PACKAGE"
 msgstr "بسته"
 
-#: views/packages/list.base.php:338
+#: views/packages/packages.php:338
 msgid "INSTALLER"
 msgstr "نصب کننده"
 
-#: views/packages/list.base.php:339
+#: views/packages/packages.php:339
 msgid "LOG"
 msgstr "گزارش"
 
-#: views/packages/list.base.php:340
+#: views/packages/packages.php:340
 msgid "REPORT"
 msgstr "گزارش"
 

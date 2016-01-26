@@ -1,5 +1,5 @@
 <?php
-	require_once(DUPLICATOR_PLUGIN_PATH . '/views/javascript.php'); 
+	require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php'); 
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
 
 	global $wp_version;
@@ -142,7 +142,7 @@
 				<td><?php echo $wp_version ?></td>
 			</tr>
 			<tr>
-				<td><?php _e("Langugage", 'duplicator'); ?></td>
+				<td><?php _e("Language", 'duplicator'); ?></td>
 				<td><?php echo get_bloginfo('language') ?></td>
 			</tr>	
 			<tr>

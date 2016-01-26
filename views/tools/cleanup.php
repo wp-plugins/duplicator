@@ -1,5 +1,5 @@
 <?php
-	require_once(DUPLICATOR_PLUGIN_PATH . '/views/javascript.php'); 
+	require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php'); 
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
 
     $nonce = wp_create_nonce('duplicator_cleanup_page');    
@@ -17,8 +17,8 @@
 		}   
 	}
 	
-	$txt_found = DUP_Util::__("Found");
-	$txt_not_found = DUP_Util::__("Not Found");
+	$txt_found = DUP_Util::__("File Found");
+	$txt_not_found = DUP_Util::__("File Removed");
 	$installer_files = DUP_Server::GetInstallerFiles();
         
 	switch ($_GET['action']) {            
