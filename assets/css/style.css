@@ -12,10 +12,11 @@ label {font-size:13px}
 .no-select {user-select:none; -o-user-select:none;  -moz-user-select:none; -khtml-user-select:none; -webkit-user-select:none;}
 hr {border: 0; border-top: 1px solid #ddd; border-bottom: 1px solid #fafafa; margin: 10px 0px 2px 0px;}
 i[data-tooltip].fa-question-circle {cursor: pointer; color:gray}
+i[data-tooltip].fa-lightbulb-o {cursor: pointer; color:gray}
 
 /*BOXES: Expandable sections */
 div.dup-box {padding:0px; display: block; background-color: #fff; border: 1px solid #e5e5e5; box-shadow: 0 1px 1px rgba(0,0,0,.04);}
-div.dup-box-title {font-size: 14px; padding: 10px 0px 0px 15px; font-weight: bold; cursor: pointer; height:28px; margin:0px; }
+div.dup-box-title {font-size: 14px; padding: 10px 0 0 15px; font-weight: bold; cursor: pointer; height:28px; margin:0px; }
 div.dup-box-title:hover {background-color: #FCFCFC;}
 div.dup-box-arrow {text-decoration:none!important; float:right; width:27px; height:30px; font-size:16px; cursor:pointer; padding:1px 0px 0px 0px; white-space: nowrap}
 div.dup-box-panel {padding:10px 15px 10px 15px;  border-top:1px solid #EEEEEE; margin:-1px 0px 0px 0px;}
