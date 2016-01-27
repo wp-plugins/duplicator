@@ -108,6 +108,38 @@ Duplicator.UI.ToggleMetaBox = function()
 //Init
 jQuery(document).ready(function($) 
 {
+	
+	//INIT: Duplicator Tabs
+	$("div[data-dup-tabs='true']").each(function () {
+
+		//Load Tab Setup
+		var $root   = $(this);
+		var $lblRoot = $root.find('ul:first-child')
+		var $lblKids = $lblRoot.children('li');
+		var $pnls	 = $root.children('div');
+
+		//Apply Styles
+		$lblKids.css('cursor', 'pointer')
+		$root.addClass('categorydiv');
+		$lblRoot.addClass('category-tabs');
+		$pnls.addClass('tabs-panel').css('display', 'none');
+		$lblKids.eq(0).addClass('tabs');
+		$pnls.eq(0).show();
+
+		//Attach Events
+		$lblKids.click(function(evt) 
+		{
+			var $lbls = $(evt.target).parent().children('li');
+			var $pnls = $(evt.target).parent().parent().children('div');
+			var index = ($(evt.target).index());
+			
+			$lbls.removeClass('tabs');
+			$lbls.eq(index).addClass('tabs');
+			$pnls.hide();
+			$pnls.eq(index).show();
+		});
+	 });
+	
 	//Init: Toggle MetaBoxes
 	$('div.dup-box div.dup-box-title').each(function() { 
 		var $title = $(this);

@@ -10,43 +10,43 @@ input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
 fieldset {border:1px solid gray; padding:0px 5px 5px 5px; }
 label {font-size:13px}
 .no-select {user-select:none; -o-user-select:none;  -moz-user-select:none; -khtml-user-select:none; -webkit-user-select:none;}
-hr {border: 0; border-top: 1px solid #ddd; border-bottom: 1px solid #fafafa; margin: 10px 0px 2px 0px;}
-i[data-tooltip].fa-question-circle {cursor: pointer; color:gray}
-i[data-tooltip].fa-lightbulb-o {cursor: pointer; color:gray}
+hr {border:0; border-top:1px solid #ddd; border-bottom:1px solid #fafafa; margin:10px 0px 2px 0px;}
+i[data-tooltip].fa-question-circle {cursor:pointer; color:gray}
+i[data-tooltip].fa-lightbulb-o {cursor:pointer; color:gray}
 
-/*BOXES: Expandable sections */
-div.dup-box {padding:0px; display: block; background-color: #fff; border: 1px solid #e5e5e5; box-shadow: 0 1px 1px rgba(0,0,0,.04);}
-div.dup-box-title {font-size: 14px; padding: 10px 0 0 15px; font-weight: bold; cursor: pointer; height:28px; margin:0px; }
-div.dup-box-title:hover {background-color: #FCFCFC;}
-div.dup-box-arrow {text-decoration:none!important; float:right; width:27px; height:30px; font-size:16px; cursor:pointer; padding:1px 0px 0px 0px; white-space: nowrap}
+/*BOXES:Expandable sections */
+div.dup-box {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}
+div.dup-box-title {font-size:15px; padding:10px 0 0 15px; font-weight:bold; cursor:pointer; height:28px; margin:0px; }
+div.dup-box-title:hover {background-color:#FCFCFC;}
+div.dup-box-arrow {text-decoration:none!important; float:right; width:27px; height:30px; font-size:16px; cursor:pointer; padding:1px 0px 0px 0px; white-space:nowrap}
 div.dup-box-panel {padding:10px 15px 10px 15px;  border-top:1px solid #EEEEEE; margin:-1px 0px 0px 0px;}
 
-/*PANELS: Boxes that do not exapand */
-div.dup-panel {padding:0px; display: block; background-color: #fff; border: 1px solid #e5e5e5; box-shadow: 0 1px 1px rgba(0,0,0,.04);}
-div.dup-panel-title {font-size: 14px; padding: 10px 0px 0px 15px; font-weight: 600; height:28px; margin:0px; }
+/*PANELS:Boxes that do not exapand */
+div.dup-panel {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}
+div.dup-panel-title {font-size:14px; padding:10px 0px 0px 15px; font-weight:600; height:28px; margin:0px; }
 div.dup-panel-panel {padding:10px 15px 10px 15px;  border-top:1px solid #EEEEEE; margin:-1px 0px 0px 0px;}
 
-/*PANELS: Fancy */
+/*PANELS:Fancy */
 div.dup-box-title-fancy {
-	border-color: #DFDFDF;
-	background: #eeeeee;
-	background: -moz-linear-gradient(top,  #eeeeee 0%, #e0e0e0 100%);
-	background: -ms-linear-gradient(top,  #eeeeee 0%,#e0e0e0 100%);
-	background: linear-gradient(to bottom,  #eeeeee 0%,#e0e0e0 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#e0e0e0',GradientType=0 );
+	border-color:#DFDFDF;
+	background:#eeeeee;
+	background:-moz-linear-gradient(top,  #eeeeee 0%, #e0e0e0 100%);
+	background:-ms-linear-gradient(top,  #eeeeee 0%,#e0e0e0 100%);
+	background:linear-gradient(to bottom,  #eeeeee 0%,#e0e0e0 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#e0e0e0',GradientType=0 );
 }
 
-/*INFO-BOX: Simple box with no title */
-div.dup-info-box {padding:8px; border:1px solid #ccc; border-radius:4px; background-color:#F7FCFE;  margin: 0px 0px 5px 20px; line-height:16px}
+/*INFO-BOX:Simple box with no title */
+div.dup-info-box {padding:8px; border:1px solid #ccc; border-radius:4px; background-color:#F7FCFE;  margin:0px 0px 5px 20px; line-height:16px}
 div.dup-info-box small {margin-top:10px; display:block}
 
-/*PACKAGE: Progress Boxes */
+/*PACKAGE:Progress Boxes */
 div#dup-progress-bar-area {width:500px; margin:40px auto 0px auto; padding:25px 50px 35px 50px; border:1px solid #ccc; box-shadow:0 8px 6px -6px #999; text-align:center; border-radius:4px;}
-div#dup-progress-bar-area h2 {margin-bottom: 15px}
+div#dup-progress-bar-area h2 {margin-bottom:15px}
 
 /*HEADER MESSAGES*/
-div.dup-hdr-success {color:#196512; font-size: 20px; font-weight: bold}
-div.dup-hdr-error {color:#A62426; font-size: 20px; font-weight: bold}
+div.dup-hdr-success {color:#196512; font-size:20px; font-weight:bold}
+div.dup-hdr-error {color:#A62426; font-size:20px; font-weight:bold}
 
 /*================================================
 JQUERY UI:Overrides */

@@ -6,7 +6,7 @@
     form#dup-form-opts fieldset {border-radius:4px;  border-top:1px solid #dfdfdf;  line-height:20px}
     form#dup-form-opts fieldset{padding:10px 15px 15px 15px; min-height:275px; margin:0 10px 10px 10px}
     form#dup-form-opts textarea, input[type="text"] {width:100%}
-    form#dup-form-opts textarea#filter-dirs {height:85px}
+    form#dup-form-opts textarea#filter-dirs {height:100px}
     form#dup-form-opts textarea#filter-exts {height:27px}
     textarea#package_notes {height:37px;}
 	div.dup-notes-add {float:right; margin:-4px 2px 4px 0;}
@@ -19,16 +19,16 @@
     select#archive-format {min-width:100px; margin:1px 0px 4px 0px}
     span#dup-archive-filter-file {color:#A62426; display:none}
     span#dup-archive-filter-db {color:#A62426; display:none}
-    div#dup-file-filter-items, div#dup-db-filter-items {padding:2px 0px 0px 15px; font-stretch:ultra-condensed; font-family: Calibri; }
+    div#dup-file-filter-items, div#dup-db-filter-items {padding:2px 0px 0px 15px; font-stretch:ultra-condensed; font-family:Calibri; }
     label.dup-enable-filters {display:inline-block; margin:-5px 0px 5px 0px}
     div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
     div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0px 0px 10px; color:#777}
     table#dup-dbtables td {padding:1px 15px 1px 4px}
 	table.dbmysql-compatibility td{padding:2px 20px 2px 2px}
 	div.dup-store-pro {font-size:12px; font-style:italic;}
-	div.dup-store-pro img {height:14px; width:14px; vertical-align: text-top}
-	div.dup-store-pro a {text-decoration: underline}
-	span.dup-tabs-opts-filter {font-style:italic; font-size:12px; color:#555; font-style: italic }
+	div.dup-store-pro img {height:14px; width:14px; vertical-align:text-top}
+	div.dup-store-pro a {text-decoration:underline}
+	span.dup-pro-text {font-style:italic; font-size:12px; color:#555; font-style:italic }
 
     /*INSTALLER SECTION*/
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}
@@ -55,50 +55,51 @@
 <br/>
 
 <!-- ===================
-META-BOX: STORAGE -->
+STORAGE -->
 <div class="dup-box">
 	<div class="dup-box-title">
 		<i class="fa fa-database"></i>&nbsp;<?php  _e("Storage", 'duplicator'); ?> 
 		<div class="dup-box-arrow"></div>
 	</div>			
-
 	<div class="dup-box-panel" id="dup-pack-storage-panel" style="<?php echo $ui_css_storage ?>">
-		<table class="widefat package-tbl">
-			<thead>
-				<tr>
-					<th style='width:275px'><?php _e("Name", 'duplicator'); ?></th>
-					<th style='width:100px'><?php _e("Type", 'duplicator'); ?></th>
-					<th style="white-space: nowrap"><?php _e("Location", 'duplicator'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="package-row">
-					<td><i class="fa fa-server"></i>&nbsp;<?php  _e('Default', 'duplicator');?></td>
-					<td><?php _e("Local", 'duplicator'); ?></td>
-					<td><?php echo DUPLICATOR_SSDIR_PATH; ?></td>				
-				</tr>
-				<tr>
-					<td colspan="4">
-						<div class="dup-store-pro"> 
+	<table class="widefat package-tbl">
+		<thead>
+			<tr>
+				<th style='width:275px'><?php _e("Name", 'duplicator'); ?></th>
+				<th style='width:100px'><?php _e("Type", 'duplicator'); ?></th>
+				<th style="white-space:nowrap"><?php _e("Location", 'duplicator'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="package-row">
+				<td><i class="fa fa-server"></i>&nbsp;<?php  _e('Default', 'duplicator');?></td>
+				<td><?php _e("Local", 'duplicator'); ?></td>
+				<td><?php echo DUPLICATOR_SSDIR_PATH; ?></td>				
+			</tr>
+			<tr>
+				<td colspan="4" style="padding:0 0 7px 7px">
+					<div class="dup-store-pro"> 
+						<span class="dup-pro-text">
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/amazon-64.png" /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/dropbox-64.png" /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/google_drive_64px.png" /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" /> 
 							<?php echo sprintf(__('%1$s, %2$s, %3$s, %4$s and other storage options available in', 'duplicator'), 'Amazon', 'Dropbox', 'Google Drive', 'FTP'); ?>
-                            <a href="http://snapcreek.com/duplicator/?free-storage" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
+							<a href="http://snapcreek.com/duplicator/?free-storage" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
 							<i class="fa fa-lightbulb-o" 
 								data-tooltip-title="<?php DUP_Util::_e("Additional Storage:"); ?>" 
 								data-tooltip="<?php DUP_Util::_e('Professional allows you to create a package and then store it at a custom location on this server or to a cloud '
 										. 'based location such as Google Drive, Amazon, Dropbox or FTP.'); ?>">
 							 </i>
-                        </div>                            
-					</td>
-				</tr>
-			</tbody>
-		</table>
+						</span>
+					</div>                            
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	</div>
 </div><br/>
-<!-- end meta-box storage  -->
+
 
 <!-- ============================
 ARCHIVE -->
@@ -113,27 +114,28 @@ ARCHIVE -->
     </div>		
     <div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo $ui_css_archive ?>">
         <input type="hidden" name="archive-format" value="ZIP" />
+		
         <!-- NESTED TABS -->
-        <div class="categorydiv" id="dup-pack-opts-tabs">
+        <div class="categorydiv" data-dup-tabs='true'>
             <ul class="category-tabs">
-                <li class="tabs"><a href="javascript:void(0)" onclick="Duplicator.Pack.ToggleOptTabs(1, this)"><?php _e('Files', 'duplicator') ?></a></li>
-                <li><a href="javascript:void(0)" onclick="Duplicator.Pack.ToggleOptTabs(2, this)"><?php _e('Database', 'duplicator') ?></a></li>
+                <li class="tabs"><?php _e('Files', 'duplicator') ?></li>
+                <li><?php _e('Database', 'duplicator') ?></li>
             </ul>
 
-            <!-- TAB1: PACKAGE -->
-            <div class="tabs-panel" id="dup-pack-opts-tabs-panel-1">
+            <!-- TAB1:PACKAGE -->
+            <div class="tabs-panel">
                 <!-- FILTERS -->
                 <?php
-                $uploads = wp_upload_dir();
-                $upload_dir = DUP_Util::SafePath($uploads['basedir']);
+					$uploads = wp_upload_dir();
+					$upload_dir = DUP_Util::SafePath($uploads['basedir']);
                 ?>
                 <div class="dup-enable-filters">
-                    <input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" : ""; ?> />	
+                    <input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" :""; ?> />	
                     <label for="filter-on"><?php _e("Enable File Filters", 'duplicator') ?></label>
                 </div>
 
                 <div id="dup-file-filter-items">
-                    <label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("Directories", 'duplicator') ?>: </label>
+                    <label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("Directories", 'duplicator') ?>:</label>
                     <div class='dup-quick-links'>
                         <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'duplicator') ?>]</a>
                         <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php _e("wp-uploads", 'duplicator') ?>]</a>
@@ -154,7 +156,7 @@ ARCHIVE -->
                         <?php _e("Use the full path for directories and semicolons to separate all items.", 'duplicator'); ?>
                     </div>
 					<br/>
-					<span class="dup-tabs-opts-filter">
+					<span class="dup-pro-text">
 						<?php echo sprintf(DUP_Util::__('%1$s are available in'), 'Individual file filters'); ?>
 						<a href="http://snapcreek.com/duplicator/?free-file-filters" target="_blank"><?php _e('Professional', 'duplicator');?></a>
 						<i class="fa fa-lightbulb-o" 
@@ -166,20 +168,17 @@ ARCHIVE -->
             </div>
 
             <!-- TAB2: DATABASE -->
-            <div class="tabs-panel" id="dup-pack-opts-tabs-panel-2" style="display: none;">
+            <div class="tabs-panel">
                 <div class="dup-enable-filters">						
                     <table>
 						<tr>
-							<td colspan="2">
-								<div style="margin:0 0 10px 0">
-									<?php _e("Build Mode", 'duplicator') ?>: &nbsp;
-									<a href="?page=duplicator-settings"><?php echo $dbbuild_mode; ?></a>
-								</div>
+							<td colspan="2" style="padding:0 0 10px 0">
+								<?php _e("Build Mode", 'duplicator') ?>:&nbsp; <a href="?page=duplicator-settings" target="settings"><?php echo $dbbuild_mode; ?></a>
 							</td>
 						</tr>
                         <tr>
-                            <td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" : ""; ?> /></td>
-                            <td >
+                            <td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" :""; ?> /></td>
+                            <td>
 								<label for="dbfilter-on"><?php _e("Enable Table Filters", 'duplicator') ?> &nbsp;</label> 
 								<i class="fa fa-question-circle" 
 								   data-tooltip-title="<?php DUP_Util::_e("Enable Table Filters:"); ?>" 
@@ -192,36 +191,36 @@ ARCHIVE -->
                 <div id="dup-db-filter-items">
                     <a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e('Include All', 'duplicator'); ?> ]</a> &nbsp; 
                     <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e('Exclude All', 'duplicator'); ?> ]</a>
-                    <div style="white-space: nowrap">
-                        <?php
-                        $tables = $wpdb->get_results("SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N);
-                        $num_rows = count($tables);
-                        echo '<table id="dup-dbtables"><tr><td valign="top">';
-                        $next_row = round($num_rows / 3, 0);
-                        $counter = 0;
-                        $tableList = explode(',', $Package->Database->FilterTables);
-                        foreach ($tables as $table)
-                        {
-                            if (in_array($table[0], $tableList))
-                            {
-                                $checked = 'checked="checked"';
-                                $css = 'text-decoration:line-through';
-                            }
-                            else
-                            {
-                                $checked = '';
-                                $css = '';
-                            }
-                            echo "<label for='dbtables-{$table[0]}' style='{$css}'><input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />&nbsp;{$table[0]}</label><br />";
-                            $counter++;
-                            if ($next_row <= $counter)
-                            {
-                                echo '</td><td valign="top">';
-                                $counter = 0;
-                            }
-                        }
-                        echo '</td></tr></table>';
-                        ?>
+                    <div style="white-space:nowrap">
+					<?php
+						$tables = $wpdb->get_results("SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N);
+						$num_rows = count($tables);
+						echo '<table id="dup-dbtables"><tr><td valign="top">';
+						$next_row = round($num_rows / 3, 0);
+						$counter = 0;
+						$tableList = explode(',', $Package->Database->FilterTables);
+						foreach ($tables as $table)
+						{
+							if (in_array($table[0], $tableList))
+							{
+								$checked = 'checked="checked"';
+								$css = 'text-decoration:line-through';
+							}
+							else
+							{
+								$checked = '';
+								$css = '';
+							}
+							echo "<label for='dbtables-{$table[0]}' style='{$css}'><input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />&nbsp;{$table[0]}</label><br />";
+							$counter++;
+							if ($next_row <= $counter)
+							{
+								echo '</td><td valign="top">';
+								$counter = 0;
+							}
+						}
+						echo '</td></tr></table>';
+					?>
                     </div>	
                 </div>
 				<br/>
@@ -248,24 +247,24 @@ ARCHIVE -->
 					<table class="dbmysql-compatibility">
 						<tr>
 							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-mysql40" value="mysql40" <?php echo $is_mysql40 ? 'checked="true"' : ''; ?> > 
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-mysql40" value="mysql40" <?php echo $is_mysql40 ? 'checked="true"' :''; ?> > 
 								<label for="dbcompat-mysql40"><?php DUP_Util::_e("mysql40") ?></label> 
 							</td>
 							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_table_options" value="no_table_options" <?php echo $is_no_table ? 'checked="true"' : ''; ?>> 
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_table_options" value="no_table_options" <?php echo $is_no_table ? 'checked="true"' :''; ?>> 
 								<label for="dbcompat-no_table_options"><?php DUP_Util::_e("no_table_options") ?></label>
 							</td>
 							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_key_options" value="no_key_options" <?php echo $is_no_key ? 'checked="true"' : ''; ?>> 
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_key_options" value="no_key_options" <?php echo $is_no_key ? 'checked="true"' :''; ?>> 
 								<label for="dbcompat-no_key_options"><?php DUP_Util::_e("no_key_options") ?></label>
 							</td>
 							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_field_options" value="no_field_options" <?php echo $is_no_field ? 'checked="true"' : ''; ?>> 
+								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_field_options" value="no_field_options" <?php echo $is_no_field ? 'checked="true"' :''; ?>> 
 								<label for="dbcompat-no_field_options"><?php DUP_Util::_e("no_field_options") ?></label>
 							</td>
 						</tr>					
 					</table>
-				<?php else : ?>
+				<?php else :?>
 					<i><?php DUP_Util::_e("This option is only availbe with mysqldump mode."); ?></i>
 				<?php endif; ?>
 
@@ -273,7 +272,6 @@ ARCHIVE -->
         </div>		
     </div>
 </div><br/>
-
 
 <!-- ============================
 INSTALLER -->
@@ -294,7 +292,7 @@ INSTALLER -->
                 <td><input type="text" name="dbhost" id="dbhost" value="<?php echo $Package->Installer->OptsDBHost ?>"  maxlength="200" placeholder="localhost"/></td>
             </tr>
 			<tr>
-                <td style="width:130px"><?php _e("Host Port", 'duplicator') ?></td>
+                <td><?php _e("Host Port", 'duplicator') ?></td>
                 <td><input type="text" name="dbport" id="dbport" value="<?php echo $Package->Installer->OptsDBPort ?>"  maxlength="200" placeholder="3306"/></td>
             </tr>
             <tr>
@@ -313,23 +311,23 @@ INSTALLER -->
                     <table>
                         <tr>
                             <td style="width:130px"><?php _e("SSL", 'duplicator') ?></td>
-                            <td style="padding-right: 20px; white-space: nowrap">
-                                <input type="checkbox" name="ssl-admin" id="ssl-admin" <?php echo ($Package->Installer->OptsSSLAdmin) ? "checked='checked'" : ""; ?>  />
+                            <td style="padding-right:20px; white-space:nowrap">
+                                <input type="checkbox" name="ssl-admin" id="ssl-admin" <?php echo ($Package->Installer->OptsSSLAdmin) ? "checked='checked'" :""; ?>  />
                                 <label class="chk-labels" for="ssl-admin"><?php _e("Enforce on Admin", 'duplicator') ?></label>
                             </td>
                             <td>
-                                <input type="checkbox" name="ssl-login" id="ssl-login" <?php echo ($Package->Installer->OptsSSLLogin) ? "checked='checked'" : ""; ?>  />
+                                <input type="checkbox" name="ssl-login" id="ssl-login" <?php echo ($Package->Installer->OptsSSLLogin) ? "checked='checked'" :""; ?>  />
                                 <label class="chk-labels" for="ssl-login"><?php _e("Enforce on Logins", 'duplicator') ?></label>
                             </td>
                         </tr>
                         <tr>
                             <td><?php _e("Cache", 'duplicator') ?></td>									
-                            <td style="padding-right: 20px; white-space: nowrap">
-                                <input type="checkbox" name="cache-wp" id="cache-wp" <?php echo ($Package->Installer->OptsCacheWP) ? "checked='checked'" : ""; ?>  />
+                            <td style="padding-right:20px; white-space:nowrap">
+                                <input type="checkbox" name="cache-wp" id="cache-wp" <?php echo ($Package->Installer->OptsCacheWP) ? "checked='checked'" :""; ?>  />
                                 <label class="chk-labels" for="cache-wp"><?php _e("Keep Enabled", 'duplicator') ?></label>	
                             </td>
                             <td>
-                                <input type="checkbox" name="cache-path" id="cache-path" <?php echo ($Package->Installer->OptsCachePath) ? "checked='checked'" : ""; ?>  />
+                                <input type="checkbox" name="cache-path" id="cache-path" <?php echo ($Package->Installer->OptsCachePath) ? "checked='checked'" :""; ?>  />
                                 <label class="chk-labels" for="cache-path"><?php _e("Keep Home Path", 'duplicator') ?></label>			
                             </td>
                         </tr>
@@ -339,7 +337,6 @@ INSTALLER -->
         </table><br />
 
         <div class="dup-installer-header-1"><i class="fa fa-caret-square-o-right"></i> <?php echo _e('STEP 2 - INPUTS', 'duplicator'); ?></div>
-
         <table class="dup-installer-tbl">
             <tr>
                 <td style="width:130px"><?php _e("New URL", 'duplicator') ?></td>
@@ -349,15 +346,27 @@ INSTALLER -->
 		
         <div class="dup-tabs-opts-help">
 			<?php _e("The installer can have these fields pre-filled at install time.", 'duplicator'); ?> <b><?php _e('All values are optional.', 'duplicator'); ?></b>
-        </div>		
+        </div>	
+		
+		<div style="padding:10px 0 0 12px; display:none">
+			<span class="dup-pro-text">
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
+				<?php _e("Connect to a cPanel database with.", 'duplicator'); ?> 
+				<a href="http://snapcreek.com/duplicator/?free-file-filters" target="_blank"><?php _e('Professional', 'duplicator');?></a>
+				<i class="fa fa-lightbulb-o" 
+					data-tooltip-title="<?php DUP_Util::_e("cPanel Access:"); ?>" 
+					data-tooltip="<?php DUP_Util::_e('If your server supports cPanel API access then you can create new databases and select existing ones with Duplicator Professional.'); ?>">
+				</i>
+			</span>
+		</div>
 
     </div>		
 </div><br/>
 
 
 <div class="dup-button-footer">
-    <input type="button" value="<?php _e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> onclick="Duplicator.Pack.ResetSettings()" />
-    <input type="submit" value="<?php _e("Next", 'duplicator') ?> &#9658;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> />
+    <input type="button" value="<?php _e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> onclick="Duplicator.Pack.ResetSettings()" />
+    <input type="submit" value="<?php _e("Next", 'duplicator') ?> &#9658;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> />
 </div>
 
 </form>
@@ -367,33 +376,18 @@ jQuery(document).ready(function ($)
 {
 	var DUP_NAMEDEFAULT = '<?php echo $default_name ?>';
 	var DUP_NAMELAST = $('#package-name').val();
-	
-	
-	/* Toggle Options tabs*/
-	Duplicator.Pack.ToggleOptTabs = function (tab, label) 
-	{
-		$('.category-tabs li').removeClass('tabs');
-		$(label).parent().addClass('tabs');
-		if (tab == 1) {
-			$('#dup-pack-opts-tabs-panel-1').show();
-			$('#dup-pack-opts-tabs-panel-2').hide();
-		} else {
-			$('#dup-pack-opts-tabs-panel-2').show();
-			$('#dup-pack-opts-tabs-panel-1').hide();
-		}
-	}
 
 	/* Enable/Disable the file filter elements */
 	Duplicator.Pack.ToggleFileFilters = function () 
 	{
 		var $filterItems = $('#dup-file-filter-items');
 		if ($("#filter-on").is(':checked')) {
-			$filterItems.removeAttr('disabled').css({color: '#000'});
-			$('#filter-exts,#filter-dirs').removeAttr('readonly').css({color: '#000'});
+			$filterItems.removeAttr('disabled').css({color:'#000'});
+			$('#filter-exts,#filter-dirs').removeAttr('readonly').css({color:'#000'});
 			$('#dup-archive-filter-file').show();
 		} else {
-			$filterItems.attr('disabled', 'disabled').css({color: '#999'});
-			$('#filter-dirs, #filter-exts').attr('readonly', 'readonly').css({color: '#999'});
+			$filterItems.attr('disabled', 'disabled').css({color:'#999'});
+			$('#filter-dirs, #filter-exts').attr('readonly', 'readonly').css({color:'#999'});
 			$('#dup-archive-filter-file').hide();
 		}
 	};
@@ -402,14 +396,13 @@ jQuery(document).ready(function ($)
 	Duplicator.Pack.ToggleDBFilters = function () 
 	{
 		var $filterItems = $('#dup-db-filter-items');
-
 		if ($("#dbfilter-on").is(':checked')) {
-			$filterItems.removeAttr('disabled').css({color: '#000'});
-			$('#dup-dbtables input').removeAttr('readonly').css({color: '#000'});
+			$filterItems.removeAttr('disabled').css({color:'#000'});
+			$('#dup-dbtables input').removeAttr('readonly').css({color:'#000'});
 			$('#dup-archive-filter-db').show();
 		} else {
-			$filterItems.attr('disabled', 'disabled').css({color: '#999'});
-			$('#dup-dbtables input').attr('readonly', 'readonly').css({color: '#999'});
+			$filterItems.attr('disabled', 'disabled').css({color:'#999'});
+			$('#dup-dbtables input').attr('readonly', 'readonly').css({color:'#999'});
 			$('#dup-archive-filter-db').hide();
 		}
 	};
@@ -445,7 +438,7 @@ jQuery(document).ready(function ($)
 	Duplicator.Pack.ResetName = function () 
 	{
 		var current = $('#package-name').val();
-		$('#package-name').val((current == DUP_NAMELAST) ? DUP_NAMEDEFAULT : DUP_NAMELAST)
+		$('#package-name').val((current == DUP_NAMELAST) ? DUP_NAMEDEFAULT :DUP_NAMELAST)
 	}
 
 	Duplicator.Pack.ExcludeTable = function (check) 
@@ -458,7 +451,7 @@ jQuery(document).ready(function ($)
 		}
 	}
 	
-	//Init: Toggle OptionTabs
+	//Init:Toggle OptionTabs
 	Duplicator.Pack.ToggleFileFilters();
 	Duplicator.Pack.ToggleDBFilters();
 });
