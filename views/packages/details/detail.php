@@ -40,7 +40,7 @@ $dbbuild_mode    = ($mysqldump_on) ? 'mysqldump (fast)' : 'PHP (slow)';
 	div.dup-store-pro a {text-decoration: underline}
 	
 	/*GENERAL*/
-	div#dup-name-info {display: none; font-size:11px; line-height:20px; margin:4px 0 0 0}
+	div#dup-name-info, div#dup-version-info {display: none; font-size:11px; line-height:20px; margin:4px 0 0 0}
 	div#dup-downloads-area {padding: 5px 0 5px 0; }
 	div#dup-downloads-msg {margin-bottom:-5px; font-style: italic}
 </style>
@@ -78,10 +78,16 @@ GENERAL -->
 			<td><?php DUP_Util::_e("Notes") ?>:</td>
 			<td><?php echo strlen($package->Notes) ? $package->Notes : DUP_Util::__("- no notes -") ?></td>
 		</tr>
-			
 		<tr>
-			<td><?php DUP_Util::_e("Version") ?>:</td>
-			<td><?php echo $package->Version ?></td>
+			<td><?php DUP_Util::_e("Versions") ?>:</td>
+			<td>
+				<a href="javascript:void(0);" onclick="jQuery('#dup-version-info').toggle()"><?php echo $package->Version ?></a> 
+				<div id="dup-version-info">
+					<b><?php DUP_Util::_e("WordPress") ?>:</b> <?php echo strlen($package->VersionWP) ? $package->VersionWP : DUP_Util::__("- unknown -") ?><br/>
+					<b><?php DUP_Util::_e("Mysql") ?>:</b> <?php echo strlen($package->VersionDB) ? $package->VersionDB : DUP_Util::__("- unknown -") ?><br/>
+					<b><?php DUP_Util::_e("PHP") ?>:</b> <?php echo strlen($package->VersionPHP) ? $package->VersionPHP : DUP_Util::__("- unknown -") ?><br/>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><?php DUP_Util::_e("Runtime") ?>:</td>

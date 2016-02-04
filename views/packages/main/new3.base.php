@@ -1,8 +1,7 @@
 <?php
 	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
-	$Package = DUP_Package::GetActive();
-	
-	
+	$Package = DUP_Package::GetActive();	
+	$ajax_nonce	= wp_create_nonce('dup_package_build');
 	
 ?>
 
@@ -155,7 +154,7 @@ jQuery(document).ready(function($) {
 	*	Timeout (10000000 = 166 minutes)  */
 	Duplicator.Pack.Create = function() {
 		
-		var data = {action : 'duplicator_package_build'}
+		var data = {action : 'duplicator_package_build', nonce: '<?php echo $ajax_nonce; ?>'}
 
 		$.ajax({
 			type: "POST",

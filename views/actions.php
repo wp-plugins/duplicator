@@ -36,8 +36,11 @@ function duplicator_package_scan() {
  */
 function duplicator_package_build() {
 	
-	header('Content-Type: application/json');
 	DUP_Util::CheckPermissions('export');
+	
+	check_ajax_referer( 'dup_package_build', 'nonce');
+	
+	header('Content-Type: application/json');
 	
 	@set_time_limit(0);
 	$errLevel = error_reporting();

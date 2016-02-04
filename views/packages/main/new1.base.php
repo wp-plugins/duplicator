@@ -18,7 +18,7 @@ if (isset($_POST['action']))
 DUP_Util::InitSnapshotDirectory();
 
 $Package = DUP_Package::GetActive();
-$package_hash = $Package->MakeHash();
+//RSR REMOVED $package_hash = $Package->MakeHash();	
 
 $dup_tests = array();
 $dup_tests = DUP_Server::GetRequirements();

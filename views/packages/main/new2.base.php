@@ -12,6 +12,13 @@
 	
 	global $wp_version;
 	$Package = new DUP_Package();
+			
+	if(isset($_POST['package-hash']))
+	{
+		// If someone is trying to pass the hasn into us that is illegal so stop it immediately.
+		die('Unauthorized');
+	}
+	
 	$Package->SaveActive($_POST);
 	$Package = DUP_Package::GetActive();
 	
