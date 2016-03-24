@@ -11,18 +11,17 @@ if (! defined('DUPLICATOR_INIT')) {
 /** * *****************************************************
  *  CLASS::DupUtil
  *  Various Static Utility methods for working with the installer */
-class DupUtil {
+class DupUtil 
+{
 
-
-
-    /** METHOD: GET_MICROTIME
+    /** 
      * Get current microtime as a float. Can be used for simple profiling.
      */
     static public function get_microtime() {
         return microtime(true);
     }
 
-    /** METHOD: ELAPSED_TIME
+    /** 
      * Return a string with the elapsed time.
      * Order of $end and $start can be switched. 
      */
@@ -30,7 +29,7 @@ class DupUtil {
         return sprintf("%.4f sec.", abs($end - $start));
     }
 
-    /** METHOD: ESC_HTML_ATTR
+    /** 
      * @param string $string Thing that needs escaping
      * @param bool $echo   Do we echo or return?
      * @return string    Escaped string. 
@@ -43,7 +42,7 @@ class DupUtil {
             return $output;
     }
 
-    /** METHOD: TABLE_COUNT
+    /** 
      *  Count the tables in a given database
      *  @param string $_POST['dbname']		Database to count tables in 
      */
@@ -53,7 +52,7 @@ class DupUtil {
         return is_null($row) ? 0 : $row[0];
     }
 
-    /** METHOD: TABLE_ROW_COUNT
+    /** 
      *  Returns the table count
      *  @param string $conn	        A valid link resource
      *  @param string $table_name	A valid table name
@@ -68,7 +67,7 @@ class DupUtil {
         }
     }
 
-    /** METHOD: ADD_ENDING_SLASH
+    /** 
      *  Adds a slash to the end of a path
      *  @param string $path		A path
      */
@@ -80,7 +79,7 @@ class DupUtil {
         return $path;
     }
 
-    /** METHOD: SET_SAFE_PATH
+    /** 
      *  Makes path safe for any OS
      *  Paths should ALWAYS READ be "/"
      * 		uni: /home/path/file.xt
@@ -95,7 +94,7 @@ class DupUtil {
         return str_replace("/", "\\", $path);
     }
 
-    /** METHOD: FCGI_FLUSH
+    /** 
      *  PHP_SAPI for fcgi requires a data flush of at least 256
      *  bytes every 40 seconds or else it forces a script hault
      */
@@ -104,7 +103,7 @@ class DupUtil {
         @flush();
     }
 
-    /** METHOD: COPY_FILE
+    /** 
      *  A safe method used to copy larger files
      *  @param string $source		The path to the file being copied
      *  @param string $destination	The path to the file being made
@@ -122,7 +121,7 @@ class DupUtil {
         fclose($sp);
     }
 
-    /** METHOD: string_has_value
+    /** 
      *  Finds a string in a file and returns true if found
      *  @param array  $list		A list of strings to search for
      *  @param string $haystack	The string to search in
@@ -153,7 +152,7 @@ class DupUtil {
         return array();
     }
 
-    /** METHOD: get_database_tables
+    /** 
      *  Returns the tables for a database
      *  @param  conn   $dbh	 A database connection handle	 
      *  @return array  $list A list of all table names
@@ -261,7 +260,6 @@ class DupUtil {
     }
 
     /**
-     *  READABLE_BYTESIZE
      *  Display human readable byte sizes
      *  @param string $size		The size in bytes
      */
@@ -277,7 +275,6 @@ class DupUtil {
     }
 	
 	/**
-     *  PREG_REPLACEMENT_QUOTE
      *  The characters that are special in the replacement value of preg_replace are not the 
 	 *  same characters that are special in the pattern
      *  @param string $str		The string to replace on
@@ -288,30 +285,31 @@ class DupUtil {
 	
 	
 	/**
-     *  IS_WEB_CONNECTED
      *  Check to see if the internet is accessable
+	 *  NOTE: fsocketopen on windows doesn't seem to honor $timeout setting.
+	 * 
 	 *  @param string $url		A url e.g without prefix "ajax.googleapis.com"
 	 *  @param string $port		A valid port number
 	 *  @return bool
      */
-	static public function is_url_active($url, $port) {
-		if (function_exists('fsockopen')) {
+	public static function is_url_active($url, $port, $timeout=5) 
+	{
+		if (function_exists('fsockopen')) 
+		{
+			@ini_set("default_socket_timeout", 5);
 			$port = isset($port) && is_integer($port) ? $port : 80;
-			$connected = @fsockopen($url, $port); //website and port
+			$connected = @fsockopen($url, $port, $errno, $errstr, $timeout); //website and port
 			if ($connected){
-				$is_conn = true;
 				@fclose($connected);
-			} else {
-				$is_conn = false; 
-			}
-			return $is_conn;
+				return true;
+			} 
+			return false;
 		} else {
 			return false;
 		}
 	}
 	
 	/**
-     *  GET_ZIP_FILES
      *  Returns an array of zip files found in the current directory
 	 *  @return array of zip files
      */
