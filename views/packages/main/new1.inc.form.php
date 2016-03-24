@@ -6,7 +6,7 @@
     form#dup-form-opts fieldset {border-radius:4px;  border-top:1px solid #dfdfdf;  line-height:20px}
     form#dup-form-opts fieldset{padding:10px 15px 15px 15px; min-height:275px; margin:0 10px 10px 10px}
     form#dup-form-opts textarea, input[type="text"] {width:100%}
-    form#dup-form-opts textarea#filter-dirs {height:100px}
+    form#dup-form-opts textarea#filter-dirs {height:85px}
     form#dup-form-opts textarea#filter-exts {height:27px}
     textarea#package_notes {height:37px;}
 	div.dup-notes-add {float:right; margin:-4px 2px 4px 0;}
@@ -16,13 +16,14 @@
     form#dup-form-opts div.tabs-panel{max-height:550px; padding:10px; min-height:280px}
     form#dup-form-opts ul li.tabs{font-weight:bold}
     ul.category-tabs li {padding:4px 15px 4px 15px}
-    select#archive-format {min-width:100px; margin:1px 0px 4px 0px}
+    select#archive-format {min-width:100px; margin:1px 0 4px 0}
     span#dup-archive-filter-file {color:#A62426; display:none}
     span#dup-archive-filter-db {color:#A62426; display:none}
-    div#dup-file-filter-items, div#dup-db-filter-items {padding:2px 0px 0px 15px; font-stretch:ultra-condensed; font-family:Calibri; }
-    label.dup-enable-filters {display:inline-block; margin:-5px 0px 5px 0px}
+    div#dup-file-filter-items, div#dup-db-filter-items {padding:5px 0;}
+	div#dup-db-filter-items {font-stretch:ultra-condensed; font-family:Calibri; }
+    label.dup-enable-filters {display:inline-block; margin:-5px 0 5px 0}
     div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
-    div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0px 0px 10px; color:#777}
+    div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0 0 10px; color:#777}
     table#dup-dbtables td {padding:1px 15px 1px 4px}
 	table.dbmysql-compatibility td{padding:2px 20px 2px 2px}
 	div.dup-store-pro {font-size:12px; font-style:italic;}
@@ -35,12 +36,13 @@
     div.dup-installer-header-2 {font-weight:bold; border-bottom:1px solid #dfdfdf; padding-bottom:2px; width:100%}
     label.chk-labels {display:inline-block; margin-top:1px}
     table.dup-installer-tbl {width:95%; margin-left:20px}
+	
+	/*TABS*/
+	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
 </style>
 
 <form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2" data-validate="parsley">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
-<!-- RSR Removed the following -->
-<!-- <input type="hidden" id="dup-form-opts-hash" name="package-hash" value="<?php echo $package_hash; ?>">-->
 <div>
 	<label for="package-name"><b><?php _e('Name', 'duplicator') ?>:</b> </label>
 		<div class="dup-notes-add">
@@ -117,14 +119,14 @@ ARCHIVE -->
         <input type="hidden" name="archive-format" value="ZIP" />
 		
         <!-- NESTED TABS -->
-        <div class="categorydiv" data-dup-tabs='true'>
-            <ul class="category-tabs">
-                <li class="tabs"><?php _e('Files', 'duplicator') ?></li>
+        <div data-dup-tabs='true'>
+            <ul>
+                <li><?php _e('Files', 'duplicator') ?></li>
                 <li><?php _e('Database', 'duplicator') ?></li>
             </ul>
 
             <!-- TAB1:PACKAGE -->
-            <div class="tabs-panel">
+            <div>
                 <!-- FILTERS -->
                 <?php
 					$uploads = wp_upload_dir();
@@ -133,6 +135,11 @@ ARCHIVE -->
                 <div class="dup-enable-filters">
                     <input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" :""; ?> />	
                     <label for="filter-on"><?php _e("Enable File Filters", 'duplicator') ?></label>
+					<i class="fa fa-question-circle" 
+					   data-tooltip-title="<?php _e("File Filters:", 'duplicator'); ?>" 
+					   data-tooltip="<?php _e('File filters allow you to ignore directories and file extensions.  When creating a package only include the data you '
+					   . 'want and need.  This helps to improve the overall archive build time and keep your backups simple and clean.', 'duplicator'); ?>">
+					</i>
                 </div>
 
                 <div id="dup-file-filter-items">
@@ -169,7 +176,7 @@ ARCHIVE -->
             </div>
 
             <!-- TAB2: DATABASE -->
-            <div class="tabs-panel">
+            <div>
                 <div class="dup-enable-filters">						
                     <table>
 						<tr>
@@ -349,14 +356,14 @@ INSTALLER -->
 			<?php _e("The installer can have these fields pre-filled at install time.", 'duplicator'); ?> <b><?php _e('All values are optional.', 'duplicator'); ?></b>
         </div>	
 		
-		<div style="padding:10px 0 0 12px; display:none">
+		<div style="padding:10px 0 0 12px;">
 			<span class="dup-pro-text">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
 				<?php _e("Connect to a cPanel database with.", 'duplicator'); ?> 
 				<a href="http://snapcreek.com/duplicator/?free-file-filters" target="_blank"><?php _e('Professional', 'duplicator');?></a>
 				<i class="fa fa-lightbulb-o" 
 					data-tooltip-title="<?php DUP_Util::_e("cPanel Access:"); ?>" 
-					data-tooltip="<?php DUP_Util::_e('If your server supports cPanel API access then you can create new databases and select existing ones with Duplicator Professional.'); ?>">
+					data-tooltip="<?php DUP_Util::_e('If your server supports cPanel API access then you can create new databases and select existing ones with Duplicator Professional at install time.'); ?>">
 				</i>
 			</span>
 		</div>

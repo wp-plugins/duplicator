@@ -188,6 +188,9 @@ $mu_newDomain = parse_url($_POST['url_new']);
 $mu_oldDomain = parse_url($_POST['url_old']);
 $mu_newDomainHost = $mu_newDomain['host'];
 $mu_oldDomainHost = $mu_oldDomain['host'];
+$mu_newUrlPath = parse_url($_POST['url_new'], PHP_URL_PATH);
+$mu_oldUrlPath = parse_url($_POST['url_old'], PHP_URL_PATH);
+
 $mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 if ($mu_updates) {
 	DUPX_Log::Info("Update MU table blogs: domain {$mu_newDomainHost} ");
@@ -195,20 +198,18 @@ if ($mu_updates) {
 	DUPX_Log::Info("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 }
 
-
 /*UPDATE WP-CONFIG FILE */
-$patterns = array("/'WP_HOME',\s*'.*?'/", 
-				  "/'WP_SITEURL',\s*'.*?'/",
-				  "/'DOMAIN_CURRENT_SITE',\s*'.*?'/");
-
-$replace = array("'WP_HOME', "    . '\''		  . $_POST['url_new'] . '\'',
-				 "'WP_SITEURL', " . '\''		  . $_POST['url_new'] . '\'',
-				 "'DOMAIN_CURRENT_SITE', " . '\'' . $mu_newDomainHost     . '\'');
-
+$patterns = array("/('|\")WP_HOME.*?\)\s*;/", 
+				  "/('|\")WP_SITEURL.*?\)\s*;/",
+				  "/('|\")DOMAIN_CURRENT_SITE.*?\)\s*;/",
+				  "/('|\")PATH_CURRENT_SITE.*?\)\s*;/");						
+$replace  = array("'WP_HOME', '{$_POST['url_new']}');",
+				  "'WP_SITEURL', '{$_POST['url_new']}');",
+				  "'DOMAIN_CURRENT_SITE', {$mu_newDomainHost}');",
+				  "'PATH_CURRENT_SITE', {$mu_newUrlPath}');");
 $config_file = @file_get_contents('wp-config.php', true);
 $config_file = preg_replace($patterns, $replace, $config_file);
 file_put_contents('wp-config.php', $config_file);
-
 
 //Create Snapshots directory
 if (!file_exists(DUPLICATOR_SSDIR_NAME)) {

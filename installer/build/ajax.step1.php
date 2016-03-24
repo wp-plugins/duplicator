@@ -225,6 +225,14 @@ if (! $_POST['cache_path']) {
 	array_push($replace,  "'WPCACHEHOME', ''");
 }
 
+if (! is_writable("{$root_path}/wp-config.php") ) 
+{
+	chmod("{$root_path}/wp-config.php", 0644)
+		? DUPX_Log::Info('File Permission Update: wp-config.php set to 0644')
+		: DUPX_Log::Error('Unable to update file permissions and write to wp-config.php.  Please visit the online FAQ for setting file permissions and work with your hosting provider or server administrator to enable this installer.php script to write to the wp-config.php file.');
+}
+
+
 $wpconfig = preg_replace($patterns, $replace, $wpconfig);
 file_put_contents('wp-config.php', $wpconfig);
 $wpconfig = null;

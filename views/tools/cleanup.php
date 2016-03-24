@@ -96,7 +96,7 @@
 	<?php endif; ?>	
 	
 
-	<h3><?php DUP_Util::_e('Data Cleanup')?><hr size="1"/></h3>
+	<h2><?php DUP_Util::_e('Data Cleanup')?><hr size="1"/></h2>
 	<table class="dup-reset-opts">
 		<tr style="vertical-align:text-top">
 			<td>

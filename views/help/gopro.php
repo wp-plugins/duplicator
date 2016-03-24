@@ -92,6 +92,14 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+		<tr>
+			<td class="feature-column">
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
+				<?php _e('cPanel Database API', 'duplicator') ?>
+			</td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>			
 		<tr>
 			<td class="feature-column"><?php _e('Scheduled Backups', 'duplicator') ?></td>
@@ -99,7 +107,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>			
 		<tr>
-			<td class="feature-column"><?php _e('Large Package Support', 'duplicator') ?></td>
+			<td class="feature-column"><?php _e('Larger Package Support', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
@@ -108,14 +116,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-		<!--tr>
-			<td class="feature-column">
-				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
-				<?php _e('cPanel Connectivity', 'duplicator') ?>
-			</td>
-			<td class="check-column"></td>
-			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr-->		
+	
 		<tr>
 			<td class="feature-column"><?php _e('Email Alerts', 'duplicator') ?></td>
 			<td class="check-column"></td>

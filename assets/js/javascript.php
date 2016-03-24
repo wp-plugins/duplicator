@@ -109,7 +109,7 @@ Duplicator.UI.ToggleMetaBox = function()
 jQuery(document).ready(function($) 
 {
 	
-	//INIT: Duplicator Tabs
+	//INIT: Tabs
 	$("div[data-dup-tabs='true']").each(function () {
 
 		//Load Tab Setup
@@ -119,11 +119,10 @@ jQuery(document).ready(function($)
 		var $pnls	 = $root.children('div');
 
 		//Apply Styles
-		$lblKids.css('cursor', 'pointer')
 		$root.addClass('categorydiv');
 		$lblRoot.addClass('category-tabs');
 		$pnls.addClass('tabs-panel').css('display', 'none');
-		$lblKids.eq(0).addClass('tabs');
+		$lblKids.eq(0).addClass('tabs').css('font-weight', 'bold');
 		$pnls.eq(0).show();
 
 		//Attach Events
@@ -133,8 +132,8 @@ jQuery(document).ready(function($)
 			var $pnls = $(evt.target).parent().parent().children('div');
 			var index = ($(evt.target).index());
 			
-			$lbls.removeClass('tabs');
-			$lbls.eq(index).addClass('tabs');
+			$lbls.removeClass('tabs').css('font-weight', 'normal');
+			$lbls.eq(index).addClass('tabs').css('font-weight', 'bold');
 			$pnls.hide();
 			$pnls.eq(index).show();
 		});

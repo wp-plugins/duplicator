@@ -1,12 +1,6 @@
 <?php
 /**
  * Fired when the plugin is uninstalled.
- *
- * @package   Duplicator
- * @author    Cory Lamle
- * @license   GPL-2.0+
- * @link      http://lifeinthegrid.com
- * @copyright 2013 LifeInTheGrid.com
  */
 
 // If uninstall not called from WordPress, then exit
