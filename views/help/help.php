@@ -38,7 +38,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                     _e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below.", 'duplicator');
                     ?>
                 </td>
-
             </tr>
         </table>
         <br/><br/>
@@ -70,11 +69,13 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             </div>
             <div class="dup-support-hlp-txt">
                 <?php _e("Get Help From IT Professionals", 'duplicator'); ?> 
-                <br/><br/>
-                <div class="dup-support-txts-links">
-                    <button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow();
-                                                return false;"><?php _e('Get Support!', 'duplicator') ?></button> &nbsp; 
+                <br/>
+                <div class="dup-support-txts-links" style="margin:10px 0 10px 0">
+                    <button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow();return false;">
+						<?php _e('Get Support!', 'duplicator') ?>
+					</button> <br/>
                 </div>	
+				<small>Pro Users <a href="https://snapcreek.com/ticket" target="_blank">Support Here</a></small>
             </div>
         </div> 
         <br style="clear:both" /><br/><br/>
@@ -111,9 +112,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </div><br/><br/><br/><br/>
 
