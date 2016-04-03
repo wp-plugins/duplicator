@@ -328,14 +328,16 @@ class DupUtil
 		
 		//FALL BACK: Windows XP has bug with glob, 
 		//add secondary check for PHP lameness
-		$dh    = opendir('.');
-		while (false !== ($name = readdir($dh))) {
-			$ext = substr($name, strrpos($name, '.') + 1);
-			if(in_array($ext, array("zip"))) {
-				$files[] = $name;
+		if ($dh = opendir('.')) 
+		{
+			while (false !== ($name = readdir($dh))) {
+				$ext = substr($name, strrpos($name, '.') + 1);
+				if(in_array($ext, array("zip"))) {
+					$files[] = $name;
+				}
 			}
+			closedir($dh);
 		}
-		closedir($dh);
 		
 		return $files;
 	}

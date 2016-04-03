@@ -205,8 +205,8 @@ $patterns = array("/('|\")WP_HOME.*?\)\s*;/",
 				  "/('|\")PATH_CURRENT_SITE.*?\)\s*;/");						
 $replace  = array("'WP_HOME', '{$_POST['url_new']}');",
 				  "'WP_SITEURL', '{$_POST['url_new']}');",
-				  "'DOMAIN_CURRENT_SITE', {$mu_newDomainHost}');",
-				  "'PATH_CURRENT_SITE', {$mu_newUrlPath}');");
+				  "'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');",
+				  "'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
 $config_file = @file_get_contents('wp-config.php', true);
 $config_file = preg_replace($patterns, $replace, $config_file);
 file_put_contents('wp-config.php', $config_file);

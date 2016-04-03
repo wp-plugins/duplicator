@@ -16,7 +16,7 @@
 			echo '<h2>' . DUP_Util::__('This option is available only in Duplicator Professional.') . '</h2>';
 			DUP_Util::_e('Manual transfer lets you copy a package to Amazon S3, Dropbox, Google Drive, FTP or another directory.');
 			echo '<br/>';
-			DUP_Util::_e('Simply choose your destination and hit the transfer button and your done.');
+			DUP_Util::_e('Simply choose your destination and hit the transfer button.');
 		?>
 	</div>
 	<p style="text-align:center">
