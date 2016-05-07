@@ -12,7 +12,6 @@ $link_log			= "{$package->StoreURL}{$package->NameHash}.log";
 $err_link_log		= "<a target='_blank' href='{$link_log}' >" . DUP_Util::__('package log') . '</a>';
 $err_link_faq		= '<a target="_blank" href="http://lifeinthegrid.com/duplicator-faq">' . DUP_Util::__('FAQ') . '</a>';		
 $err_link_ticket	= '<a target="_blank" href="http://lifeinthegrid.com/labs/duplicator/resources/">' . DUP_Util::__('resources page') . '</a>';	
-
 ?>
 
 <style>
@@ -39,7 +38,7 @@ $err_link_ticket	= '<a target="_blank" href="http://lifeinthegrid.com/labs/dupli
 	
     <h2 class="nav-tab-wrapper">  
         <a href="?page=duplicator&action=detail&tab=detail&id=<?php echo $package_id ?>" class="nav-tab <?php echo ($current_tab == 'detail') ? 'nav-tab-active' : '' ?>"> <?php DUP_Util::_e('Details'); ?></a> 
-		<a <?php if($enable_transfer_tab === false) { echo 'onclick="Duplicator.Pack.TransferDisabled(); return false;"';} ?> href="?page=duplicator&action=detail&tab=transfer&id=<?php echo $package_id ?>" class="nav-tab <?php echo ($current_tab == 'transfer') ? 'nav-tab-active' : '' ?>"> <?php DUP_Util::_e('Transfer'); ?></a> 		
+		<a href="?page=duplicator&action=detail&tab=transfer&id=<?php echo $package_id ?>" class="nav-tab <?php echo ($current_tab == 'transfer') ? 'nav-tab-active' : '' ?>"> <?php DUP_Util::_e('Transfer'); ?></a> 		
     </h2>
 	<div class="all-packages"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php DUP_Util::_e('All Packages'); ?></a></div>
 	

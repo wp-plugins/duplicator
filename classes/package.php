@@ -301,9 +301,7 @@ class DUP_Package {
 			$this->VersionPHP   = phpversion();
 			$this->VersionDB	= $dbversion;
 			$this->Name			= $name;
-			$this->Hash			= $this->MakeHash();// $post['package-hash'];
-			//RSR
-			//$this->Hash			= $post['package-hash'];
+			$this->Hash			= $this->MakeHash();
 			$this->NameHash		= "{$this->Name}_{$this->Hash}";;
 			$this->Notes		= esc_html($post['package-notes']);
 			//ARCHIVE
