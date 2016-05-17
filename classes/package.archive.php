@@ -254,11 +254,9 @@ class DUP_Archive
 						{
 							$this->FilterInfo->Files->Warning[] = DUP_Encoding::toUTF8($filePath);
 						} 
-						else 
-						{
-							$this->Size += $fileSize;
-							$this->Files[] = $filePath;
-						}
+						$this->Size += $fileSize;
+						$this->Files[] = $filePath;
+					
 						
 						if ($fileSize > DUPLICATOR_SCAN_WARNFILESIZE) 
 						{

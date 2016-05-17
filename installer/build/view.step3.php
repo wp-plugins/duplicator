@@ -26,43 +26,43 @@ VIEW: STEP 3- INPUT -->
 <form id='dup-step3-input-form' method="post" class="content-form" style="line-height:20px">
 	<input type="hidden" name="url_new" id="url_new" value="<?php echo rtrim($_POST['url_new'], "/"); ?>" />	
 	<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	<h3>Step 3: Test Site</h3>
-	<hr size="1" /><br />
+
+	<div class="hdr-main">
+		Step 3: Test Site
+	</div><br />
 	
 	<div class="title-header">
-		<div class="dup-step3-final-title">VERY IMPORTANT FINAL STEPS!</div>
+		<div class="s3-final-title">IMPORTANT FINAL STEPS!</div>
 	</div>
 		
-	<table class="dup-step3-final-step">
+	<table class="s3-final-step">
 		<tr>
-			<td>1. <a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Review Install Report</a>
-			</td>
-			<td>
-				<i id="dup-step3-install-report-count">
-					<b>Errors:</b>
-					<span data-bind="with: status.step1">Deploy (<span data-bind="text: query_errs"></span>)</span> &nbsp;
-					<span data-bind="with: status.step2">Update (<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
-					<span data-bind="with: status.step2" style="color:#888"><b>Warnings:</b> (<span data-bind="text: warn_all"></span>)</span>
-				</i>
-			</td>
-		</tr>	
-		<tr>
-			<td style="width:170px">
-				2. <a href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Save Permalinks</a> 
-			</td>
+			<td style="width:170px"><a  class="s3-final-btns" href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Save Permalinks</a></td>
 			<td><i>Updates URL rewrite rules in .htaccess (requires login)</i></td>
 		</tr>	
 		<tr>
-			<td>3. <a href='<?php echo $_POST['url_new']; ?>' target='_blank'>Test Site</a></td>
+			<td><a  class="s3-final-btns" href='<?php echo $_POST['url_new']; ?>' target='_blank'>Test Site</a></td>
 			<td><i>Validate all pages, links images and plugins</i></td>
 		</tr>		
 		<tr>
-			<td>4. <a href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">Security Cleanup</a></td>
+			<td><a  class="s3-final-btns" href="javascript:void(0)" onclick="Duplicator.removeInstallerFiles('<?php echo $_POST['package_name'] ?>')">Security Cleanup</a></td>
 			<td><i>Validate installer files are removed (requires login)</i></td>
 		</tr>	
+		<tr>
+			<td><a class="s3-final-btns" href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Show Report</a></td>
+			<td>
+				<i id="dup-step3-install-report-count">
+					<span data-bind="with: status.step1">Deploy Errors: (<span data-bind="text: query_errs"></span>)</span> &nbsp;
+					<span data-bind="with: status.step2">Update Notices: (<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
+					<span data-bind="with: status.step2" style="color:#888"><b>Warnings:</b> (<span data-bind="text: warn_all"></span>)</span>
+				</i>
+			</td>
+		</tr>			
 	</table><br/>
 	
-	<div class="dup-step3-go-back">
+	<div class="s3-btns-msg">Click buttons above to complete process</div>
+	
+	<div class="s3-go-back">
 		<i style='font-size:11px'>To re-install <a href="javascript:history.go(-2)">start over at step 1</a>.</i><br/>
 		<i style="font-size:11px;">The .htaccess file was reset.  Resave plugins that write to this file.</i>
 	</div>
@@ -71,7 +71,7 @@ VIEW: STEP 3- INPUT -->
 	<!-- ========================
 	INSTALL REPORT -->
 	<div id="dup-step3-install-report" style='display:none'>
-		<table class='dup-step3-report-results' style="width:100%">
+		<table class='s3-report-results' style="width:100%">
 			<tr><th colspan="4">Database Results</th></tr>
 			<tr style="font-weight:bold">
 				<td style="width:150px"></td>
@@ -99,14 +99,14 @@ VIEW: STEP 3- INPUT -->
 			</tr>
 		</table>
 		
-		<table class='dup-step3-report-errs' style="width:100%; border-top:none">
+		<table class='s3-report-errs' style="width:100%; border-top:none">
 			<tr><th colspan="4">Errors &amp; Warnings <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
 			<tr>
 				<td data-bind="with: status.step1">
-					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Step1: Deploy Errors (<span data-bind="text: query_errs"></span>)</a><br/>
+					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Step1: Deploy Results (<span data-bind="text: query_errs"></span>)</a><br/>
 				</td>
 				<td data-bind="with: status.step2">
-					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Step2: Update Errors (<span data-bind="text: err_all"></span>)</a>
+					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Step2: Update Results (<span data-bind="text: err_all"></span>)</a>
 				</td>
 				<td data-bind="with: status.step2">
 					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
@@ -116,34 +116,50 @@ VIEW: STEP 3- INPUT -->
 		</table>
 		
 		
-		<div id="dup-step3-errs-create" class="dup-step3-err-msg">
-		
+		<div id="dup-step3-errs-create" class="s3-err-msg">
 			<b data-bind="with: status.step1">STEP 1: DEPLOY ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
-			<div class="info">Queries that error during the deploy process are logged to the <a href="installer-log.txt" target="_blank">install-log.txt</a> file.  
-			To view the error result look under the section titled 'DATABASE RESULTS'.  If errors are present they will be marked with '**ERROR**'. <br/><br/>  For errors titled
-			'Query size limit' you will need to manually post the values or update your mysql server with the max_allowed_packet setting to handle larger payloads.
-			If your on a hosted server you will need to contact the server admin, for more details see: https://dev.mysql.com/doc/refman/5.5/en/packet-too-large.html. <br/><br/>
-			</div>
+			<div class="info-error">
+				Queries that error during the deploy step are logged to the <a href="installer-log.txt" target="_blank">install-log.txt</a> file  and marked '**ERROR**'. 
+				<br/><br/>  
 			
+				<b><u>Common Fixes:</u></b>
+				<br/>
+				
+				<b>Query size limits:</b> Update your MySQL server with the <a href="https://dev.mysql.com/doc/refman/5.5/en/packet-too-large.html" target="_blank">max_allowed_packet</a> 
+				setting to handle larger payloads. <br/>
+				
+				<b>Unknown collation:</b> The MySQL Version is too old see: 
+				<a href="https://lifeinthegrid.com/duplicator-faq" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a> 
+				<br/>
+			</div>
 		</div>
 		
 
-		<div id="dup-step3-errs-upd" class="dup-step3-err-msg">
+		<div id="dup-step3-errs-upd" class="s3-err-msg">
 		
 			<!-- MYSQL QUERY ERRORS -->
 			<b data-bind="with: status.step2">STEP2: UPDATE ERRORS (<span data-bind="text: errsql_sum"></span>) </b><br/>
-			<div class="info">Errors that show here are the result of queries that could not be performed.</div>
+			<div class="info-error">
+				Update errors that show here are queries that could not be performed because the database server being used has issues running it.  Please validate the query, if
+				it looks to be of concern please try to run the query manually.  In many cases if your site performs well without any issues you can ignore the error.			
+			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step2.errsql"><div data-bind="text: $data"></div></div>
 				<div data-bind="visible: status.step2.errsql.length == 0">No MySQL query errors found</div>
 			</div>
 			
 			<!-- TABLE KEY ERRORS -->
-			<b data-bind="with: status.step2">TABLE KEY ERRORS (<span data-bind="text: errkey_sum"></span>)</b><br/>
-			<div class="info">
-				A primary key is required on a table to efficiently run the update engine. Below is a list of tables and the rows that will need to 
-				be manually updated.  Use the query below to find the data.<br/>
-				<i>SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r</i>
+			<b data-bind="with: status.step2">TABLE KEY NOTICES (<span data-bind="text: errkey_sum"></span>)</b><br/>
+			<div class="info-notice">
+				Notices should be ignored unless issues are found after you have tested an installed site. This notice indicates that a primary key is required to run the 
+				update engine. Below is a list of tables and the rows that were not updated.  On some databases you can remove these notices by checking the box 'Enable Full Search'
+				under advanced options in step2 of the installer.  
+				<br/><br/>
+				<small>
+					<b>Advanced Searching:</b><br/>
+					Use the following query to locate the table that was not updated: <br/>
+					<i>SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r</i>
+				</small>
 			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step2.errkey"><div data-bind="text: $data"></div></div>
@@ -151,9 +167,10 @@ VIEW: STEP 3- INPUT -->
 			</div>
 			
 			<!-- SERIALIZE ERRORS -->
-			<b data-bind="with: status.step2">SERIALIZATION ERRORS  (<span data-bind="text: errser_sum"></span>)</b><br/>
-			<div class="info">
-				Use the SQL below to display data that may have not been updated correctly during the serialization process.
+			<b data-bind="with: status.step2">SERIALIZATION NOTICES  (<span data-bind="text: errser_sum"></span>)</b><br/>
+			<div class="info-notice">
+				Notices should be ignored unless issues are found after you have tested an installed site.  The SQL below will show data that may have not been 
+				updated during the serialization process.  Best practices for serialization notices is to just re-save the plugin/post/page in question.
 			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step2.errser"><div data-bind="text: $data"></div></div>
@@ -164,7 +181,7 @@ VIEW: STEP 3- INPUT -->
 		
 		
 		<!-- WARNINGS-->
-		<div id="dup-step3-warnlist" class="dup-step3-err-msg">
+		<div id="dup-step3-warnlist" class="s3-err-msg">
 			<a href="#" id="dup-step2-errs-warn-anchor"></a>
 			<b>GENERAL WARNINGS</b><br/>
 			<div class="info">
@@ -184,7 +201,7 @@ VIEW: STEP 3- INPUT -->
 		
 	</div><br/><br/>
 		
-	<div class='dup-step3-connect'>
+	<div class='s3-connect'>
 		<a href="installer.php?help=1#troubleshoot" target="_blank">Troubleshoot</a> | 
 		<a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> | 
 		<a href='http://lifeinthegrid.com/duplicator' target='_blank'>Support</a> | 
@@ -195,7 +212,7 @@ VIEW: STEP 3- INPUT -->
 <script type="text/javascript">
 	MyViewModel = function() { 
 		this.status = <?php echo urldecode($_POST['json']); ?>;
-		var errorCount =  this.status.step2.err_all || 0;
+		var errorCount =  this.status.step2.query_errs || 0;
 		(errorCount >= 1 )
 			? $('#dup-step3-install-report-count').css('color', '#BE2323')
 			: $('#dup-step3-install-report-count').css('color', '#197713')

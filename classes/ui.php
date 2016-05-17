@@ -110,7 +110,7 @@ class DUP_UI {
 			{
 				$duplicator_nonce = wp_create_nonce('duplicator_cleanup_page');
 				DUP_Util::_e('Reserved Duplicator install files have been detected in the root directory.  Please delete these reserved files to avoid security issues.');
-				@printf("<br/><a href='admin.php?page=duplicator-tools&tab=cleanup&_wpnonce=%s'>%s</a>", $duplicator_nonce, DUP_Util::__('Take me to the cleanup page!'));
+				@printf("<br/><a href='admin.php?page=duplicator-tools&tab=cleanup&_wpnonce=%s'>%s</a>", $duplicator_nonce, __('Take me to the cleanup page!', 'duplicator'));
 			}			
 			echo "</p></div>";
 		} 

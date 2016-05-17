@@ -180,26 +180,32 @@ if (is_admin() == true) {
 
         $perms = 'export';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_packages = add_submenu_page('duplicator', DUP_Util::__('Packages'), DUP_Util::__('Packages'), $perms, 'duplicator', 'duplicator_get_menu');
+		$lang_txt = __('Packages', 'duplicator');
+        $page_packages = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_settings = add_submenu_page('duplicator', DUP_Util::__('Settings'), DUP_Util::__('Settings'), $perms, 'duplicator-settings', 'duplicator_get_menu');
+		$lang_txt = __('Settings', 'duplicator');
+        $page_settings = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-settings', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_tools = add_submenu_page('duplicator', DUP_Util::__('Tools'), DUP_Util::__('Tools'), $perms, 'duplicator-tools', 'duplicator_get_menu');
+		$lang_txt = __('Tools', 'duplicator');
+        $page_tools = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-tools', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_help = add_submenu_page('duplicator', DUP_Util::__('Help'), DUP_Util::__('Help'), $perms, 'duplicator-help', 'duplicator_get_menu');
+		$lang_txt = __('Help', 'duplicator');
+        $page_help = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-help', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-        $page_about = add_submenu_page('duplicator', DUP_Util::__('About'), DUP_Util::__('About'), $perms, 'duplicator-about', 'duplicator_get_menu');
+		$lang_txt = __('About', 'duplicator');
+        $page_about = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-about', 'duplicator_get_menu');
 		
 		$perms = 'manage_options';
-		$go_pro_link = '<span style="color:#f18500">' . DUP_Util::__('Go Pro!') . '</span>';
+		$lang_txt = __('Go Pro!', 'duplicator');
+		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_gopro = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
 

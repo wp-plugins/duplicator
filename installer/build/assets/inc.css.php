@@ -55,6 +55,7 @@
 	div#progress-area {padding:5px; margin:150px 0 0 0px; text-align:center;}
 	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:12px; overflow-y:scroll}
 	div.title-header {padding:2px; border-bottom:1px solid silver; font-weight:bold; margin-bottom:5px;}
+	div.hdr-main {font-size:18px; padding:0 0 5px 0; border-bottom:1px solid #999; font-weight:bold; margin:5px 0 10px 0;}
 	
 	/*BOXES:Expandable sections */
 	div.dup-box {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}
@@ -79,7 +80,7 @@
 	div.dup-db-test label{display:inline-block; width:150px; font-weight:bold; white-space:nowrap;}
 	div.dup-db-test small{display:block; margin:5px 0 5px 0px; font-style:italic; color:#444}
 	div#dbconn-test-msg {font-size:12px}
-	div#dup-step1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:10px; margin-top:10px; height:125px; overflow-y: scroll}
+	div#dup-step1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:125px; overflow-y: scroll}
 	
 	/*Warning Area and Message */
 	div#dup-step1-warning {margin-top:40px;padding:5px;font-size:11px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:75px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
@@ -107,24 +108,28 @@
 
 	/* ============================
 	STEP 3 VIEW */
-	div.dup-step3-final-msg {height:110px; border:1px solid #CDCDCD; padding:8px;font-size:12px; border-radius:5px;box-shadow:0 4px 2px -2px #777;}
-	div.dup-step3-final-title {color:#BE2323;}
-	div.dup-step3-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
-	table.dup-step3-report-results,
-	table.dup-step3-report-errs {border-collapse:collapse; border:1px solid #dfdfdf; }
-	table.dup-step3-report-errs  td {text-align:center; width:33%}
-	table.dup-step3-report-results th, table.dup-step3-report-errs th {background-color:#efefef; padding:0px; font-size:12px; padding:0px}
-	table.dup-step3-report-results td, table.dup-step3-report-errs td {padding:0px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:11px}
-	table.dup-step3-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
+	div.s3-final-title {color:#BE2323;}
+	div.s3-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
+	table.s3-report-results,
+	table.s3-report-errs {border-collapse:collapse; border:1px solid #dfdfdf; }
+	table.s3-report-errs  td {text-align:center; width:33%}
+	table.s3-report-results th, table.s3-report-errs th {background-color:#efefef; padding:0px; font-size:12px; padding:0px}
+	table.s3-report-results td, table.s3-report-errs td {padding:0px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:11px}
+	table.s3-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
 
-	div.dup-step3-err-title a {}
-	div.dup-step3-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px;}
-	div.dup-step3-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
-	div.dup-step3-err-msg div.info{padding:2px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:11px; line-height:16px }
-	table.dup-step3-final-step {width:100%;}
-	table.dup-step3-final-step td {padding:5px 15px 5px 5px}
-	table.dup-step3-final-step td:first-child {white-space:nowrap; font-weight:bold}
-	div.dup-step3-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center}
+	div.s3-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px;}
+	div.s3-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
+	div.s3-err-msg div.info-error{padding:7px; background-color:#EAA9AA; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px }
+	div.s3-err-msg div.info-notice{padding:7px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px;}
+	table.s3-final-step {width:100%;}
+	table.s3-final-step td {padding:5px 15px 5px 5px}
+	table.s3-final-step td:first-child {white-space:nowrap; font-weight:bold}
+	div.s3-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center}
+	div.s3-btns-msg {text-align: center; font-size:10px; color:#777; margin:5px 0 15px 0}
+	a.s3-final-btns {display: block; width:135; padding:5px; line-height: 1.4; background-color:#F1F1F1; border:1px solid silver;
+		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
+	}
+	a.s3-final-btns:hover {background-color: #dfdfdf;}
 
 	/* ============================
 	BUTTONS */	

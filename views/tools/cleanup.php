@@ -17,8 +17,9 @@
 		}   
 	}
 	
-	$txt_found = DUP_Util::__("File Found");
-	$txt_not_found = DUP_Util::__("File Removed");
+	
+	$txt_found = __('File Found', 'duplicator');
+	$txt_not_found = __('File Removed', 'duplicator');
 	$installer_files = DUP_Server::GetInstallerFiles();
         
 	switch ($_GET['action']) {            

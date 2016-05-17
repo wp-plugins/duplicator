@@ -342,6 +342,12 @@ class DupUtil
 		return $files;
 	}
 	
-	
+	/**
+	*  Does a string have non ascii characters
+	*/
+	public static function is_non_ascii($string)
+    {
+		return preg_match('/[^\x20-\x7f]/', $string);
+    }
 }
 ?>

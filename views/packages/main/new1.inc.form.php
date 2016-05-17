@@ -165,7 +165,7 @@ ARCHIVE -->
                     </div>
 					<br/>
 					<span class="dup-pro-text">
-						<?php echo sprintf(DUP_Util::__('%1$s are available in'), 'Individual file filters'); ?>
+						<?php echo sprintf(__('%1$s are available in', 'duplicator'), 'Individual file filters'); ?>
 						<a href="http://snapcreek.com/duplicator/?free-file-filters" target="_blank"><?php _e('Professional', 'duplicator');?></a>
 						<i class="fa fa-lightbulb-o" 
 							data-tooltip-title="<?php DUP_Util::_e("File Filters:"); ?>" 

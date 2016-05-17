@@ -166,10 +166,9 @@ VIEW: STEP 1- INPUT -->
 			<!--option value="3">Debug Logging</option-->
 		</select>
 	</div>
-	<h3 style="margin-bottom:5px">
-	    Step 1: Files &amp; Database
-	</h3>
-	<hr size="1" />
+	<div class="hdr-main">
+		Step 1: Deploy Files &amp; Database
+	</div>
 	
 	<!-- CHECKS: FAIL -->
 	<?php if ( $total_req == 'Fail')  :	?>
@@ -349,8 +348,9 @@ Auto Posts to view.step2.php  -->
 	<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 	
     <div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	<h3>Step 1: Files &amp; Database</h3>
-	<hr size="1" />
+	<div class="hdr-main">
+		Step 1: Deploy Files &amp; Database
+	</div>
 	    
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">

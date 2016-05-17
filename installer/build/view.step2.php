@@ -140,10 +140,10 @@ VIEW: STEP 2- INPUT -->
 	<input type="hidden" name="dbcharset" 	 value="<?php echo $_POST['dbcharset'] ?>" />
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
 	
-	
 	<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	<h3>Step 2: Files &amp; Database</h3>
-	<hr size="1" /><br />
+	<div class="hdr-main">
+		Step 2: Update Files &amp; Database
+	</div><br />
 
 	<div class="title-header">Old Settings</div>
 	<table class="table-inputs-step2">
@@ -272,8 +272,9 @@ VIEW: STEP 2 - AJAX RESULT  -->
 	<input type="hidden" name="json"    id="ajax-json" />	
 	
 	<div class="dup-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
-	<h3>Step 2: Update Table Data</h3>
-	<hr size="1" />
+	<div class="hdr-main">
+		Step 2: Update Files &amp; Database
+	</div><br />
 	
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
