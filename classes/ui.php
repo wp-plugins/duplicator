@@ -104,12 +104,12 @@ class DUP_UI {
 			echo '<div class="error" id="dup-global-error-reserved-files"><p>';
 			if ($screen->id == 'duplicator_page_duplicator-tools' && $on_active_tab) 
 			{
-				DUP_Util::_e('Reserved Duplicator install files have been detected in the root directory.  Please delete these reserved files to avoid security issues.');
+				_e('Reserved Duplicator install files have been detected in the root directory.  Please delete these reserved files to avoid security issues.', 'duplicator');
 			}
 			else 
 			{
 				$duplicator_nonce = wp_create_nonce('duplicator_cleanup_page');
-				DUP_Util::_e('Reserved Duplicator install files have been detected in the root directory.  Please delete these reserved files to avoid security issues.');
+				_e('Reserved Duplicator install files have been detected in the root directory.  Please delete these reserved files to avoid security issues.', 'duplicator');
 				@printf("<br/><a href='admin.php?page=duplicator-tools&tab=cleanup&_wpnonce=%s'>%s</a>", $duplicator_nonce, __('Take me to the cleanup page!', 'duplicator'));
 			}			
 			echo "</p></div>";

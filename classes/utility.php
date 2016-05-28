@@ -25,19 +25,6 @@ class DUP_Util
 	}
 
 	/**
-	*  Language slug
-	*/
-	static public function _e($text)
-	{
-		_e($text, DUPLICATOR_LANG_SLUG);
-	}
-
-	static public function __($text)
-	{
-		return __($text, DUPLICATOR_LANG_SLUG);
-	}
-	
-	/**
 	*  returns the snapshot url
 	*/
 	static public function SSDirURL() {
@@ -93,7 +80,6 @@ class DUP_Util
 	}
 
 	
-
 	/**
 	*  Runs the APC cache to pre-cache the php files
 	*  returns true if all files where cached

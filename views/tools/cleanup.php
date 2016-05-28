@@ -88,8 +88,8 @@
 				 ?>
 
 				<i><br/>
-				 <?php DUP_Util::_e('If the installer files did not successfully get removed, then you WILL need to remove them manually')?>. <br/>
-				 <?php DUP_Util::_e('Please remove all installer files to avoid leaving open security issues on your server')?>. <br/><br/>
+				 <?php _e('If the installer files did not successfully get removed, then you WILL need to remove them manually', 'duplicator')?>. <br/>
+				 <?php _e('Please remove all installer files to avoid leaving open security issues on your server', 'duplicator')?>. <br/><br/>
 				</i>
 			
 			<?php endif; ?>
@@ -97,23 +97,23 @@
 	<?php endif; ?>	
 	
 
-	<h2><?php DUP_Util::_e('Data Cleanup')?><hr size="1"/></h2>
+	<h2><?php _e('Data Cleanup', 'duplicator')?><hr size="1"/></h2>
 	<table class="dup-reset-opts">
 		<tr style="vertical-align:text-top">
 			<td>
 				<a class="button button-small dup-fixed-btn" href="?page=duplicator-tools&tab=cleanup&action=installer&_wpnonce=<?php echo $nonce; ?>">
-					<?php DUP_Util::_e("Delete Reserved Files"); ?>
+					<?php _e("Delete Reserved Files", 'duplicator'); ?>
 				</a>
 			</td>
 			<td>
-				<?php DUP_Util::_e("Removes all reserved installer files."); ?>
-				<a href="javascript:void(0)" onclick="jQuery('#dup-tools-delete-moreinfo').toggle()">[<?php DUP_Util::_e("more info"); ?>]</a>
+				<?php _e("Removes all reserved installer files.", 'duplicator'); ?>
+				<a href="javascript:void(0)" onclick="jQuery('#dup-tools-delete-moreinfo').toggle()">[<?php _e("more info", 'duplicator'); ?>]</a>
 				<br/>
 				<div id="dup-tools-delete-moreinfo">
 					<?php
-						DUP_Util::_e("Clicking on the 'Delete Reserved Files' button will remove the following reserved files.  These files are typically from a previous Duplicator install. "
+							_e("Clicking on the 'Delete Reserved Files' button will remove the following reserved files.  These files are typically from a previous Duplicator install. "
 								. "If you are unsure of the source, please validate the files.  These files should never be left on production systems for security reasons.  "
-								. "Below is a list of all the reserved files used by Duplicator.  Please be sure these are removed from your server.");
+								. "Below is a list of all the reserved files used by Duplicator.  Please be sure these are removed from your server.", 'duplicator');
 						echo "<br/><br/>";
 						
 						foreach($installer_files as $file => $path) 
@@ -127,12 +127,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.DeleteLegacy()"><?php DUP_Util::_e("Delete Legacy Data"); ?></a></td>
-			<td><?php DUP_Util::_e("Removes all legacy data and settings prior to version"); ?> [<?php echo DUPLICATOR_VERSION ?>].</td>
+			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.DeleteLegacy()"><?php _e("Delete Legacy Data", 'duplicator'); ?></a></td>
+			<td><?php _e("Removes all legacy data and settings prior to version", 'duplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</td>
 		</tr>
 		<tr>
-			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.ClearBuildCache()"><?php DUP_Util::_e("Clear Build Cache"); ?></a></td>
-			<td><?php DUP_Util::_e("Removes all build data from:"); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
+			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.ClearBuildCache()"><?php _e("Clear Build Cache", 'duplicator'); ?></a></td>
+			<td><?php _e("Removes all build data from:", 'duplicator'); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
 		</tr>	
 	</table>
 </form>

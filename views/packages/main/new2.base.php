@@ -82,18 +82,18 @@ TOOL BAR: STEPS -->
 		<td style="white-space: nowrap">
 			<div id="dup-wiz">
 				<div id="dup-wiz-steps">
-					<div class="completed-step"><a><span>1</span> <?php DUP_Util::_e('Setup'); ?></a></div>
-					<div class="active-step"><a><span>2</span> <?php DUP_Util::_e('Scan'); ?> </a></div>
-					<div><a><span>3</span> <?php DUP_Util::_e('Build'); ?> </a></div>
+					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'duplicator'); ?></a></div>
+					<div class="active-step"><a><span>2</span> <?php _e('Scan', 'duplicator'); ?> </a></div>
+					<div><a><span>3</span> <?php _e('Build', 'duplicator'); ?> </a></div>
 				</div>
 				<div id="dup-wiz-title">
-					<?php DUP_Util::_e('Step 2: System Scan'); ?>
+					<?php _e('Step 2: System Scan', 'duplicator'); ?>
 				</div> 
 			</div>	
 		</td>
 		<td class="dup-toolbar-btns">
-			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php DUP_Util::_e("All Packages"); ?></a> &nbsp;
-			<span> <?php DUP_Util::_e("Create New"); ?></span>
+			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e('All Packages', 'duplicator'); ?></a> &nbsp;
+			<span> <?php _e('Create New', 'duplicator'); ?></span>
 		</td>
 	</tr>
 </table>		
@@ -104,17 +104,17 @@ TOOL BAR: STEPS -->
 <div id="dup-progress-area">
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">
-		<div class="dup-progress-title"><i class="fa fa-spinner fa-spin"></i> <?php DUP_Util::_e('Scanning Site'); ?></div>
+		<div class="dup-progress-title"><i class="fa fa-spinner fa-spin"></i> <?php _e('Scanning Site', 'duplicator'); ?></div>
 		<div id="dup-progress-bar"></div>
-		<b><?php DUP_Util::_e('Please Wait...'); ?></b>
+		<b><?php _e('Please Wait...', 'duplicator'); ?></b>
 	</div>
 
 	<!--  SUCCESS MESSAGE -->
 	<div id="dup-msg-success" style="display:none">
 		<div style="text-align:center">
-			<div class="dup-hdr-success"><i class="fa fa-check-square-o fa-lg"></i> <?php DUP_Util::_e('Scan Complete'); ?></div>
+			<div class="dup-hdr-success"><i class="fa fa-check-square-o fa-lg"></i> <?php _e('Scan Complete', 'duplicator'); ?></div>
 			<div id="dup-msg-success-subtitle">
-				<?php DUP_Util::_e("Process Time:"); ?> <span id="data-rpt-scantime"></span>
+				<?php _e('Process Time:', 'duplicator'); ?> <span id="data-rpt-scantime"></span>
 			</div>
 		</div><br/>
 		
@@ -123,9 +123,9 @@ TOOL BAR: STEPS -->
 		================================================================ -->
 		<div class="dup-panel">
 		<div class="dup-panel-title">
-			<i class="fa fa-hdd-o"></i> <?php 	DUP_Util::_e("Server");	?>
+			<i class="fa fa-hdd-o"></i> <?php 	_e("Server", 'duplicator');	?>
 			<div style="float:right; margin:-1px 10px 0px 0px">
-				<small><a href="?page=duplicator-tools&tab=diagnostics" target="_blank"><?php DUP_Util::_e('Diagnostics');?></a></small>
+				<small><a href="?page=duplicator-tools&tab=diagnostics" target="_blank"><?php _e('Diagnostics', 'duplicator');?></a></small>
 			</div>
 		
 		</div>
@@ -134,14 +134,14 @@ TOOL BAR: STEPS -->
 			WEB SERVER -->
 			<div>
 				<div class='dup-scan-title'>
-					<a><?php DUP_Util::_e('Web Server');?></a> <div id="data-srv-web-all"></div>
+					<a><?php _e('Web Server', 'duplicator');?></a> <div id="data-srv-web-all"></div>
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php
 					$web_servers = implode(', ', $GLOBALS['DUPLICATOR_SERVER_LIST']);
-					echo '<span id="data-srv-web-model"></span>&nbsp;<b>' . DUP_Util::__('Web Server') . ":</b>&nbsp; '{$_SERVER['SERVER_SOFTWARE']}'";	
+					echo '<span id="data-srv-web-model"></span>&nbsp;<b>' . __('Web Server', 'duplicator') . ":</b>&nbsp; '{$_SERVER['SERVER_SOFTWARE']}'";	
 					echo '<small>';
-					DUP_Util::_e("Supported web servers:");
+					_e("Supported web servers:", 'duplicator');
 					echo "{$web_servers}";
 					echo '</small>';
 					?>
@@ -151,42 +151,42 @@ TOOL BAR: STEPS -->
 			PHP SETTINGS -->
 			<div>
 				<div class='dup-scan-title'>
-					<a><?php DUP_Util::_e('PHP Setup');?></a> <div id="data-srv-php-all"></div>
+					<a><?php _e('PHP Setup', 'duplicator');?></a> <div id="data-srv-php-all"></div>
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
 					//OPEN_BASEDIR
 					$test = ini_get("open_basedir");
-					echo '<span id="data-srv-php-openbase"></span>&nbsp;<b>' . DUP_Util::__('Open Base Dir') . ":</b>&nbsp; '{$test}' <br/>";
+					echo '<span id="data-srv-php-openbase"></span>&nbsp;<b>' . __('Open Base Dir', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
 					echo '<small>';
-					DUP_Util::_e('Issues might occur when [open_basedir] is enabled. Work with your server admin to disable this value in the php.ini file if you’re having issues building a package.');
-					echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . DUP_Util::__('details') . "]</a></i><br/>";
+					_e('Issues might occur when [open_basedir] is enabled. Work with your server admin to disable this value in the php.ini file if you’re having issues building a package.', 'duplicator');
+					echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('details', 'duplicator') . "]</a></i><br/>";
 					echo '</small>';
 
 					//MAX_EXECUTION_TIME
 					$test = (set_time_limit(0)) ? 0 : ini_get("max_execution_time");
-					echo '<hr size="1" /><span id="data-srv-php-maxtime"></span>&nbsp;<b>' . DUP_Util::__('Max Execution Time') . ":</b>&nbsp; '{$test}' <br/>";
+					echo '<hr size="1" /><span id="data-srv-php-maxtime"></span>&nbsp;<b>' . __('Max Execution Time', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
 					echo '<small>';
-					printf(DUP_Util::__('Issues might occur for larger packages when the [max_execution_time] value in the php.ini is too low.  The minimum recommended timeout is "%1$s" seconds or higher. An attempt is made to override this value if the server allows it.  A value of 0 (recommended) indicates that PHP has no time limits.'), DUPLICATOR_SCAN_TIMEOUT);
+					printf(__('Issues might occur for larger packages when the [max_execution_time] value in the php.ini is too low.  The minimum recommended timeout is "%1$s" seconds or higher. An attempt is made to override this value if the server allows it.  A value of 0 (recommended) indicates that PHP has no time limits.', 'duplicator'), DUPLICATOR_SCAN_TIMEOUT);
 					echo '<br/><br/>';
-					DUP_Util::_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build interrupt messages, then your web server could be killing the process.   If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.');
-					echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" .DUP_Util::__('details')  . "]</a></i>";
+					_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build interrupt messages, then your web server could be killing the process.   If you are limited on processing time, consider using the database or file filters to shrink the size of your overall package.   However use caution as excluding the wrong resources can cause your install to not work properly.', 'duplicator');
+					echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('details', 'duplicator')  . "]</a></i>";
                     
                     if ($zip_check != null) {
                             echo '<br/><br/>';
                             echo '<span style="font-weight:bold">';
-                            DUP_Util::_e('Get faster builds with Duplicator Pro.');
+                            _e('Get faster builds with Duplicator Pro.', 'duplicator');
                             echo '</span>';
-                            echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-max-execution-time-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
+                            echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-max-execution-time-warn' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
                     }
                     
 					echo '</small>';
 					
 					//MYSQLI
-					echo '<hr size="1" /><span id="data-srv-php-mysqli"></span>&nbsp;<b>' . DUP_Util::__('MySQLi') . "</b> <br/>";
+					echo '<hr size="1" /><span id="data-srv-php-mysqli"></span>&nbsp;<b>' . __('MySQLi', 'duplicator') . "</b> <br/>";
 					echo '<small>';
-					DUP_Util::_e('Creating the package does not require the mysqli module.  However the installer.php file requires that the PHP module mysqli be installed on the server it is deployed on.');
-					echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
+					_e('Creating the package does not require the mysqli module.  However the installer.php file requires that the PHP module mysqli be installed on the server it is deployed on.', 'duplicator');
+					echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
 					echo '</small>';
 					?>
 				</div>
@@ -195,28 +195,28 @@ TOOL BAR: STEPS -->
 			WORDPRESS SETTINGS -->
 			<div>
 				<div class='dup-scan-title'>
-					<a><?php DUP_Util::_e('WordPress');?></a> <div id="data-srv-wp-all"></div>
+					<a><?php _e('WordPress', 'duplicator');?></a> <div id="data-srv-wp-all"></div>
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
 					//VERSION CHECK
-					echo '<span id="data-srv-wp-version"></span>&nbsp;<b>' . DUP_Util::__('WordPress Version') . ":</b>&nbsp; '{$wp_version}' <br/>";
+					echo '<span id="data-srv-wp-version"></span>&nbsp;<b>' . __('WordPress Version', 'duplicator') . ":</b>&nbsp; '{$wp_version}' <br/>";
 					echo '<small>';
-					printf(DUP_Util::__('It is recommended to have a version of WordPress that is greater than %1$s'), DUPLICATOR_SCAN_MIN_WP);
+					printf(__('It is recommended to have a version of WordPress that is greater than %1$s', 'duplicator'), DUPLICATOR_SCAN_MIN_WP);
 					echo '</small>';
 				
 					//CORE FILES
-					echo '<hr size="1" /><span id="data-srv-wp-core"></span>&nbsp;<b>' . DUP_Util::__('Core Files') . "</b> <br/>";
+					echo '<hr size="1" /><span id="data-srv-wp-core"></span>&nbsp;<b>' . __('Core Files', 'duplicator') . "</b> <br/>";
 					echo '<small>';
-					DUP_Util::_e("If the scanner is unable to locate the wp-config.php file in the root directory, then you will need to manually copy it to its new location.");
+					_e("If the scanner is unable to locate the wp-config.php file in the root directory, then you will need to manually copy it to its new location.", 'duplicator');
 					echo '</small>';
 
 					//CACHE DIR
 					$cache_path = $cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) . '/cache';
 					$cache_size = DUP_Util::ByteSize(DUP_Util::GetDirectorySize($cache_path));
-					echo '<hr size="1" /><span id="data-srv-wp-cache"></span>&nbsp;<b>' . DUP_Util::__('Cache Path') . ":</b>&nbsp; '{$cache_path}' ({$cache_size}) <br/>";
+					echo '<hr size="1" /><span id="data-srv-wp-cache"></span>&nbsp;<b>' . __('Cache Path', 'duplicator') . ":</b>&nbsp; '{$cache_path}' ({$cache_size}) <br/>";
 					echo '<small>';
-					DUP_Util::_e("Cached data will lead to issues at install time and increases your archive size. It is recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you have a cache plugin review the documentation for how to empty it; simply removing files might cause errors on your site. The cache size minimum threshold is currently set at ");
+					_e("Cached data will lead to issues at install time and increases your archive size. It is recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you have a cache plugin review the documentation for how to empty it; simply removing files might cause errors on your site. The cache size minimum threshold is currently set at ", 'duplicator');
 					echo DUP_Util::ByteSize(DUPLICATOR_SCAN_CACHESIZE) . '.';
 					echo '</small>';
 						
@@ -226,7 +226,7 @@ TOOL BAR: STEPS -->
 		</div><!-- end .dup-panel -->
 		</div><!-- end .dup-panel-panel -->
 	
-		<h2 style="font-size:18px; font-weight:bold; margin:-15px 0 0 10px"><i class="fa fa-file-archive-o"></i>&nbsp;<?php DUP_Util::_e('Archive');?> </h2>
+		<h2 style="font-size:18px; font-weight:bold; margin:-15px 0 0 10px"><i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'duplicator');?> </h2>
 		
 		<!-- ================================================================
 		FILES
@@ -234,12 +234,12 @@ TOOL BAR: STEPS -->
 		<div class="dup-panel">
 			<div class="dup-panel-title">
 				<i class="fa fa-files-o"></i>
-				<?php DUP_Util::_e("Files"); ?> 
+				<?php _e("Files", 'duplicator'); ?> 
 				<div id="data-arc-size1"></div>
 				<div class="dup-scan-filter-status">
 					<?php 
 						if ($Package->Archive->FilterOn) {
-							echo '<i class="fa fa-filter"></i> '; DUP_Util::_e('Enabled');
+							echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
 						} 
 					?> 
 				</div>
@@ -250,24 +250,24 @@ TOOL BAR: STEPS -->
 				TOTAL SIZE -->
 				<div>
 					<div class='dup-scan-title'>
-						<a><?php DUP_Util::_e('Total Size');?></a> <div id="data-arc-status-size"></div>
+						<a><?php _e('Total Size', 'duplicator');?></a> <div id="data-arc-status-size"></div>
 					</div>
 					<div class='dup-scan-info  dup-info-box'>
-						<b><?php DUP_Util::_e('Size');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
-						<b><?php DUP_Util::_e('File Count');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
-						<b><?php DUP_Util::_e('Directory Count');?>:</b> <span id="data-arc-dirs"></span> 
+						<b><?php _e('Size', 'duplicator');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
+						<b><?php _e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
+						<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> 
 						<small>
 						<?php 
-							printf(DUP_Util::__('Total size represents all files minus any filters that have been setup.  The current thresholds that triggers a warning is %1$s for the total size.  Some budget hosts limit the amount of time a PHP/Web request process can run.  When working with larger sites this can cause timeout issues. Consider using a file filter in step 1 to shrink and filter the overall size of your package.'), 
+							printf(__('Total size represents all files minus any filters that have been setup.  The current thresholds that triggers a warning is %1$s for the total size.  Some budget hosts limit the amount of time a PHP/Web request process can run.  When working with larger sites this can cause timeout issues. Consider using a file filter in step 1 to shrink and filter the overall size of your package.', 'duplicator'), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 																					
 							if ($zip_check != null) {
                                 echo '<br/><br/>';
 								echo '<span style="font-weight:bold">';
-                                DUP_Util::_e('Package support up to 2GB available in Duplicator Pro.');
+                                _e('Package support up to 2GB available in Duplicator Pro.', 'duplicator');
                                 echo '</span>';
-								echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-size-warn' target='_blank'>[" . DUP_Util::__('details') . "]</a></i>";
+								echo "&nbsp;<i><a href='http://snapcreek.com/duplicator?free-size-warn' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
 							}
 
 						?>
@@ -279,15 +279,15 @@ TOOL BAR: STEPS -->
 				FILE NAME LENGTHS -->
 				<div>
 					<div class='dup-scan-title'>
-						<a><?php DUP_Util::_e('Name Checks');?></a> <div id="data-arc-status-names"></div>
+						<a><?php _e('Name Checks', 'duplicator');?></a> <div id="data-arc-status-names"></div>
 					</div>
 					<div class='dup-scan-info dup-info-box'>
 						<small>
 						<?php 
-							DUP_Util::_e('File or directory names may cause issues when working across different environments and servers.  Names that are over 250 characters, contain special characters (such as * ? > < : / \ |) or are unicode might cause issues in a remote enviroment.  It is recommended to remove or filter these files before building the archive if you have issues at install time.');
+							_e('File or directory names may cause issues when working across different environments and servers.  Names that are over 250 characters, contain special characters (such as * ? > < : / \ |) or are unicode might cause issues in a remote enviroment.  It is recommended to remove or filter these files before building the archive if you have issues at install time.', 'duplicator');
 						?>
 						</small><br/>
-						<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php DUP_Util::_e('Show Paths');?>]</a>							
+						<a href="javascript:void(0)" onclick="jQuery('#data-arc-names-data').toggle()">[<?php _e('Show Paths', 'duplicator');?>]</a>							
 						<div id="data-arc-names-data"></div>
 					</div>
 				</div>		
@@ -296,16 +296,16 @@ TOOL BAR: STEPS -->
 				LARGE FILES -->
 				<div>
 					<div class='dup-scan-title'>
-						<a><?php DUP_Util::_e('Large Files');?></a> <div id="data-arc-status-big"></div>
+						<a><?php _e('Large Files', 'duplicator');?></a> <div id="data-arc-status-big"></div>
 					</div>
 					<div class='dup-scan-info  dup-info-box'>
 						<small>
 						<?php 
-							printf(DUP_Util::__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.'), 
+							printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'duplicator'), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 						?>
 						</small><br/>
-						<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php DUP_Util::_e('Show Paths');?>]</a>
+						<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show Paths', 'duplicator');?>]</a>
 						<div id="data-arc-big-data"></div>
 					</div>
 				</div>	
@@ -315,37 +315,37 @@ TOOL BAR: STEPS -->
 				<?php if ($Package->Archive->FilterOn) : ?>
 					<div>
 						<div class='dup-scan-title'>
-							<a style='font-weight: normal'><?php DUP_Util::_e('Archive Details');?></a> 
+							<a style='font-weight: normal'><?php _e('Archive Details', 'duplicator');?></a> 
 						</div>
 						<div class='dup-scan-info  dup-info-box'>	
-							<b>[<?php DUP_Util::_e('Root Directory');?>]</b><br/>
+							<b>[<?php _e('Root Directory', 'duplicator');?>]</b><br/>
 							<?php echo DUPLICATOR_WPROOTPATH;?>
 							<br/><br/>
 							
-							<b>[<?php DUP_Util::_e('Excluded Directories');?>]</b><br/>
+							<b>[<?php _e('Excluded Directories', 'duplicator');?>]</b><br/>
 							<?php
 								if (strlen( $Package->Archive->FilterDirs)) {
 									echo str_replace(";", "<br/>", $Package->Archive->FilterDirs); 
 								} else {
-									DUP_Util::_e('No directory filters have been set.');
+									_e('No directory filters have been set.', 'duplicator');
 								}
 							?>
 							<br/>
 							
-							<b>[<?php DUP_Util::_e('Excluded File Extensions');?>]</b><br/>
+							<b>[<?php _e('Excluded File Extensions', 'duplicator');?>]</b><br/>
 							<?php
 								if (strlen( $Package->Archive->FilterExts)) {
 									echo $Package->Archive->FilterExts; 
 								} else {
-									DUP_Util::_e('No file extension filters have been set.');
+									_e('No file extension filters have been set.', 'duplicator');
 								}
 							?>	
 							<small>
 								<?php 
-									DUP_Util::_e('The root directory is where Duplicator starts archiving files.  The excluded sections will be skipped during the archive process.  '); 
-									DUP_Util::_e('All results are stored in a json file. ');
+									_e('The root directory is where Duplicator starts archiving files.  The excluded sections will be skipped during the archive process.  ', 'duplicator'); 
+									_e('All results are stored in a json file. ', 'duplicator');
 								?>
-								<a href="<?php echo DUPLICATOR_SITE_URL ?>/wp-admin/admin-ajax.php?action=duplicator_package_scan" target="dup_report"><?php DUP_Util::_e('[view json report]');?></a>														
+								<a href="<?php echo DUPLICATOR_SITE_URL ?>/wp-admin/admin-ajax.php?action=duplicator_package_scan" target="dup_report"><?php _e('[view json report]', 'duplicator');?></a>														
 							</small><br/>
 						</div>
 					</div>	
@@ -358,12 +358,12 @@ TOOL BAR: STEPS -->
 			================================================================ -->
 			<div class="dup-panel-title">
 				<i class="fa fa-table"></i>
-				<?php DUP_Util::_e("Database");	?>
+				<?php _e("Database", 'duplicator');	?>
 				<div id="data-db-size1"></div>
 				<div class="dup-scan-filter-status">
 					<?php 
 						if ($Package->Database->FilterOn) {
-							echo '<i class="fa fa-filter"></i> '; DUP_Util::_e('Enabled');
+							echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
 						} 
 					?> 
 				</div>
@@ -374,16 +374,16 @@ TOOL BAR: STEPS -->
 				TOTAL SIZE -->
 				<div>
 					<div class='dup-scan-title'>
-						<a><?php DUP_Util::_e('Total Size');?></a>
+						<a><?php _e('Total Size', 'duplicator');?></a>
 						<div id="data-db-status-size1"></div>
 					</div>
 					<div class='dup-scan-info  dup-info-box'>
-						<b><?php DUP_Util::_e('Tables');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
-						<b><?php DUP_Util::_e('Records');?>:</b> <span id="data-db-rows"></span> &nbsp; | &nbsp;
-						<b><?php DUP_Util::_e('Size');?>:</b> <span id="data-db-size2"></span> <br/><br/>
+						<b><?php _e('Tables', 'duplicator');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
+						<b><?php _e('Records', 'duplicator');?>:</b> <span id="data-db-rows"></span> &nbsp; | &nbsp;
+						<b><?php _e('Size', 'duplicator');?>:</b> <span id="data-db-size2"></span> <br/><br/>
 						<?php 
-							$lnk = '<a href="maint/repair.php" target="_blank">' . DUP_Util::__('repair and optimization') . '</a>';
-							printf(DUP_Util::__('Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu.'), 
+							$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'duplicator') . '</a>';
+							printf(__('Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s and %2$s records.  Large databases take time to process and can cause issues with server timeout and memory settings.  Running a %3$s on your database can also help improve the overall size and performance.  If your server supports shell_exec and mysqldump you can try to enable this option from the settings menu.', 'duplicator'), 
 									DUP_Util::ByteSize(DUPLICATOR_SCAN_DBSIZE), 
 									number_format(DUPLICATOR_SCAN_DBROWS),
 									$lnk);
@@ -395,7 +395,7 @@ TOOL BAR: STEPS -->
 				TABLE DETAILS -->
 				<div>
 					<div class='dup-scan-title'>
-						<a><?php DUP_Util::_e('Table Details');?></a>
+						<a><?php _e('Table Details', 'duplicator');?></a>
 						<div id="data-db-status-size2"></div>
 					</div>
 					<div class='dup-scan-info dup-info-box'>
@@ -406,17 +406,17 @@ TOOL BAR: STEPS -->
 				</div>
 
 				<table id="dup-scan-db-details">
-					<tr><td><b><?php DUP_Util::_e('Name:');?></b></td><td><?php echo DB_NAME ;?> </td></tr>
-					<tr><td><b><?php DUP_Util::_e('Host:');?></b></td><td><?php echo DB_HOST ;?> </td></tr>
+					<tr><td><b><?php _e('Name:', 'duplicator');?></b></td><td><?php echo DB_NAME ;?> </td></tr>
+					<tr><td><b><?php _e('Host:', 'duplicator');?></b></td><td><?php echo DB_HOST ;?> </td></tr>
 					<tr>
-						<td style="vertical-align: top"><b><?php DUP_Util::_e('Build Mode:');?></b></td>
+						<td style="vertical-align: top"><b><?php _e('Build Mode:', 'duplicator');?></b></td>
 						<td style="line-height:18px">
 							<a href="?page=duplicator-settings" target="_blank"><?php echo $dbbuild_mode ;?></a>
 							<?php if ($mysqlcompat_on) :?>
 								<br/>
 								<small style="font-style:italic; color:maroon">
-									<i class="fa fa-exclamation-circle"></i> <?php DUP_Util::_e('MySQL Compatibility Mode Enabled'); ?>
-									<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php DUP_Util::_e('details'); ?>]</a>
+									<i class="fa fa-exclamation-circle"></i> <?php _e('MySQL Compatibility Mode Enabled', 'duplicator'); ?>
+									<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php _e('details', 'duplicator'); ?>]</a>
 								</small>										
 							<?php endif;?>
 						</td>
@@ -430,14 +430,14 @@ TOOL BAR: STEPS -->
 		<div id="dup-scan-warning-continue">
 			<div class="msg1">
 				<input type="checkbox" id="dup-scan-warning-continue-checkbox" onclick="Duplicator.Pack.WarningContinue(this)"/>
-				<label for="dup-scan-warning-continue-checkbox"><?php DUP_Util::_e('A warning status was detected, are you sure you want to continue?');?></label>
+				<label for="dup-scan-warning-continue-checkbox"><?php _e('A warning status was detected, are you sure you want to continue?', 'duplicator');?></label>
 			</div>
 			<div class="msg2">
 				<label for="dup-scan-warning-continue-checkbox">
 					<?php 
-						DUP_Util::_e("Scan checks are not required to pass, however they could cause issues on some systems."); 
+						_e("Scan checks are not required to pass, however they could cause issues on some systems.", 'duplicator'); 
 						echo '<br/>';
-						DUP_Util::_e("Please review the details for each warning by clicking on the detail link."); 
+						_e("Please review the details for each warning by clicking on the detail link.", 'duplicator'); 
 					?>
 				</label>
 			</div>
@@ -449,22 +449,22 @@ TOOL BAR: STEPS -->
 
 	<!--  ERROR MESSAGE -->
 	<div id="dup-msg-error" style="display:none">
-		<div class="dup-hdr-error"><i class="fa fa-exclamation-circle"></i> <?php DUP_Util::_e('Scan Error'); ?></div>
-		<i><?php DUP_Util::_e('Please try again!'); ?></i><br/>
+		<div class="dup-hdr-error"><i class="fa fa-exclamation-circle"></i> <?php _e('Scan Error', 'duplicator'); ?></div>
+		<i><?php _e('Please try again!', 'duplicator'); ?></i><br/>
 		<div style="text-align:left">
-			<b><?php DUP_Util::_e("Server Status:"); ?></b> &nbsp;
+			<b><?php _e("Server Status:", 'duplicator'); ?></b> &nbsp;
 			<div id="dup-msg-error-response-status" style="display:inline-block"></div><br/>
 
-			<b><?php DUP_Util::_e("Error Message:"); ?></b>
+			<b><?php _e("Error Message:", 'duplicator'); ?></b>
 			<div id="dup-msg-error-response-text"></div>
 		</div>
 	</div>			
 </div> <!-- end #dup-progress-area -->
 
 <div class="dup-button-footer" style="display:none">
-	<input type="button" value="&#9668; <?php DUP_Util::_e("Back") ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
-	<input type="button" value="<?php DUP_Util::_e("Rescan") ?>" onclick="Duplicator.Pack.Rescan()" class="button button-large" />
-	<input type="submit" value="<?php DUP_Util::_e("Build") ?> &#9658" class="button button-primary button-large" id="dup-build-button" />
+	<input type="button" value="&#9668; <?php _e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
+	<input type="button" value="<?php _e("Rescan", 'duplicator') ?>" onclick="Duplicator.Pack.Rescan()" class="button button-large" />
+	<input type="submit" value="<?php _e("Build", 'duplicator') ?> &#9658" class="button button-primary button-large" id="dup-build-button" />
 	<!-- Used for iMacros testing do not remove -->
 	<div id="dup-automation-imacros"></div>
 </div>
@@ -567,7 +567,7 @@ jQuery(document).ready(function($) {
 			$('#data-db-tablecount').text(data.DB.TableCount || errMsg);
 			//Table Details
 			if (data.DB.TableList == undefined || data.DB.TableList.length == 0) {
-				html = '<?php DUP_Util::_e("Unable to report on any tables") ?>';
+				html = '<?php _e("Unable to report on any tables", 'duplicator') ?>';
 			} else {
 				$.each(data.DB.TableList, function(i) {
 					html += '<b>' + i  + '</b><br/>';
@@ -576,7 +576,7 @@ jQuery(document).ready(function($) {
 			}
 			$('#data-db-tablelist').append(html);
 		} else {
-			html = '<?php DUP_Util::_e("Unable to report on database stats") ?>';
+			html = '<?php _e("Unable to report on database stats", 'duplicator') ?>';
 			$('#dup-scan-db').html(html);
 		}
 		
@@ -597,26 +597,26 @@ jQuery(document).ready(function($) {
 		//Dirs
 		if (data.ARC.FilterInfo.Dirs.Warning !== undefined && data.ARC.FilterInfo.Dirs.Warning.length > 0) {
 			$.each(data.ARC.FilterInfo.Dirs.Warning, function (key, val) {
-				html += '<?php DUP_Util::_e("DIR") ?> ' + key + ':<br/>[' + val + ']<br/>';
+				html += '<?php _e("DIR", 'duplicator') ?> ' + key + ':<br/>[' + val + ']<br/>';
 			});
 		}
 		//Files
 		if (data.ARC.FilterInfo.Files.Warning !== undefined && data.ARC.FilterInfo.Files.Warning.length > 0) {
 			$.each(data.ARC.FilterInfo.Files.Warning, function (key, val) {
-				html += '<?php DUP_Util::_e("FILE") ?> ' + key + ':<br/>[' + val + ']<br/>';
+				html += '<?php _e("FILE", 'duplicator') ?> ' + key + ':<br/>[' + val + ']<br/>';
 			});
 		}
-		html = (html.length == 0) ? '<?php DUP_Util::_e("No name warning issues found.") ?>' : html;
+		html = (html.length == 0) ? '<?php _e("No name warning issues found.", 'duplicator') ?>' : html;
 
 
 		$('#data-arc-names-data').html(html);
 
 		//Large Files
-		html = '<?php DUP_Util::_e("No large files found.") ?>';
+		html = '<?php _e("No large files found.", 'duplicator') ?>';
 		if (data.ARC.FilterInfo.Files.Size !== undefined && data.ARC.FilterInfo.Files.Size.length > 0) {
 			html = '';
 			$.each(data.ARC.FilterInfo.Files.Size, function (key, val) {
-				html += '<?php DUP_Util::_e("FILE") ?> ' + key + ':<br/>' + val + '<br/>';
+				html += '<?php _e("FILE", 'duplicator') ?> ' + key + ':<br/>' + val + '<br/>';
 			});
 		}
 		$('#data-arc-big-data').html(html);

@@ -150,7 +150,7 @@ TOOL-BAR -->
 						<button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $packagepath; ?>', this); return false;">
 							<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
 						</button>
-						<button type="button" class="button no-select" title="<?php DUP_Util::_e("Package Details") ?>" onclick="Duplicator.Pack.OpenPackageDetails(<?php echo "{$row['id']}"; ?>);">
+						<button type="button" class="button no-select" title="<?php _e("Package Details", 'duplicator') ?>" onclick="Duplicator.Pack.OpenPackageDetails(<?php echo "{$row['id']}"; ?>);">
 							<i class="fa fa-archive" ></i> 
 						</button>
 					</td>
@@ -179,7 +179,7 @@ TOOL-BAR -->
 							<i class="fa fa-exclamation-triangle"></i>
 							<a href="<?php echo $error_url; ?>"><?php _e("Error Processing", 'duplicator') ?></a>
 						</span>			
-						<a class="button no-select" title="<?php DUP_Util::_e("Package Details") ?>" href="<?php echo $error_url; ?>">
+						<a class="button no-select" title="<?php _e("Package Details", 'duplicator') ?>" href="<?php echo $error_url; ?>">
 							<i class="fa fa-archive"></i> 
 						</a>						
 					</td>

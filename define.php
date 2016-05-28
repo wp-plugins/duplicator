@@ -10,7 +10,6 @@ if (function_exists('plugin_dir_url')) {
     define("DUPLICATOR_CERTIFIED",      "http://lifeinthegrid.com/duplicator-hosts");
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
-	define('DUPLICATOR_LANG_SLUG',		'duplicator');
 	
     /* Paths should ALWAYS read "/"
       uni: /home/path/file.txt
