@@ -84,7 +84,8 @@ if (is_admin() == true) {
         if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
             duplicator_activate();
         }
-        load_plugin_textdomain('duplicator', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+        //load_plugin_textdomain('duplicator', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+		load_plugin_textdomain( 'duplicator' );
     }
 
     /* DEACTIVATION / UNINSTALL 
