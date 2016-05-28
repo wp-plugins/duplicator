@@ -43,11 +43,12 @@
 	* Timeout (10000000 = 166 minutes) */
 	Duplicator.runDeployment = function() {
 		
-		var $form = $('#dup-step1-input-form');
-		$form.parsley('validate');
-		if (! $form.parsley('isValid')) {
-			return;
-		}
+        var $form = $('#dup-step1-input-form');
+        $form.parsley().validate();
+        if (!$form.parsley().isValid()) {
+            return;
+        }
+
 	
 		var msg =  "Continue installation with the following settings?\n\n";
 			msg += "Server: " + $("#dbhost").val() + "\nDatabase: " + $("#dbname").val() + "\n\n";
@@ -154,7 +155,7 @@
 
 <!-- =========================================
 VIEW: STEP 1- INPUT -->
-<form id='dup-step1-input-form' method="post" class="content-form"  parsley-validate>
+<form id='dup-step1-input-form' method="post" class="content-form"  data-parsley-validate="true" data-parsley-excluded="input[type=hidden], [disabled], :hidden">
 	<input type="hidden" name="action_ajax" value="1" />
 	<input type="hidden" name="action_step" value="1" />
 	<input type="hidden" name="package_name"  value="<?php echo $zip_name ?>" />
@@ -229,18 +230,24 @@ VIEW: STEP 1- INPUT -->
     	    <tr>
 				<td>Host</td>
 				<td>
-					<input type="text" name="dbhost" id="dbhost" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:410px" />
-					<input id="dup-step1-dbport-btn" type="button" onclick="Duplicator.togglePort()" style="" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
-					<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+					<table class="dup-step1-inputs-dbhost">
+						<tr>
+							<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:410px" /></td>
+							<td style="vertical-align:top">
+								<input id="dup-step1-dbport-btn" type="button" onclick="Duplicator.togglePort()" style="" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+								<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
 			<tr>
 				<td>Name</td>
-				<td><input type="text" name="dbname" id="dbname"  parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  /></td>
+				<td><input type="text" name="dbname" id="dbname"  required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  /></td>
 			</tr>
 			<tr>
 				<td>User</td>
-				<td><input type="text" name="dbuser" id="dbuser" parsley-required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td>
+				<td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td>
 			</tr>
     	    <tr>
 				<td>Password</td>

@@ -1,7 +1,19 @@
 <?php
 if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 
-class DUP_Util {
+class DUP_Util 
+{
+	public static $on_php_529_plus;
+	public static $on_php_53_plus;
+	public static $on_php_54_plus;
+	
+	
+	public static function init()
+	{
+		self::$on_php_529_plus = version_compare(PHP_VERSION, '5.2.9') >= 0;
+		self::$on_php_53_plus  = version_compare(PHP_VERSION, '5.3.0') >= 0;
+		self::$on_php_54_plus  = version_compare(PHP_VERSION, '5.4.0') >= 0;
+	}
 	
 	/**
 	*  PHP_SAPI for fcgi requires a data flush of at least 256
@@ -158,19 +170,18 @@ class DUP_Util {
 	 * List all of the files of a path
 	 * @path path to a system directory
 	 * @return array of all files in that path
+	 * 
+	 * Compatibility Notes:
+	 *		- Avoid using glob() as GLOB_BRACE is not an option on some operating systems
+	 *		- Pre PHP 5.3 DirectoryIterator will crash on unreadable files
 	 */
-	static public function ListFiles($path = '.') {
+	static public function ListFiles($path = '.') 
+	{
 		$files = array();
-		
-		//GLOB_BRACE is not an option on some systems
-		//{,.}*  allows for hidden files to be shown
-		/*if (defined("GLOB_BRACE")) {
-			$files	= glob("{$path}/{,.}*", GLOB_NOSORT | GLOB_BRACE);
-		} else {*/
-			foreach (new DirectoryIterator($path) as $file) {
-				$files[] = str_replace("\\", '/', $file->getPathname());
-			}
-		//}
+		foreach (new DirectoryIterator($path) as $file)
+		{
+			$files[] = str_replace("\\", '/', $file->getPathname());
+		}
 		return $files;
 	}
 	
@@ -389,6 +400,8 @@ class DUP_Util {
         return $filepath;
     }
 
-
 }
+
+
+DUP_Util::init();
 ?>

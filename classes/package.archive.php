@@ -192,29 +192,30 @@ class DUP_Archive
 		//empty string and directories ending with period (Windows incompatable)
 		foreach ($this->Dirs as $key => $val) 
 		{
-			//Remove path filter directories
-			foreach($this->FilterDirsAll as $item) 
-			{ 
-				if (strstr($val, $item . '/') || $val == $item) 
+			//INSTANCE: Remove path filter directories
+            foreach ($this->FilterDirsAll as $item)
+            {
+                $trimmed_item = rtrim($item, '/');
+                if ($val == $trimmed_item || strstr($val, $trimmed_item . '/')) 
 				{
-					unset($this->Dirs[$key]);
-					continue 2;
-				}
-			}
+                    unset($this->Dirs[$key]);
+                    continue 2;
+                }
+            }
 			
-			//Locate invalid directories and warn
+			//WARNING: Find OS items that may have issues
 			$name = basename($val); 
-			$invalid_test = strlen($val) > 250 
-							|| 	preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name) 
-							|| 	trim($name) == "" 
-							||  (strrpos($name, '.') == strlen($name) - 1  && substr($name, -1) == '.');
-			
-			if ($invalid_test || preg_match('/[^\x20-\x7f]/', $name)) 
+			$warn_test  =  strlen($val) > 250 
+						|| preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name) 
+						|| trim($name) == "" 
+						|| (strrpos($name, '.') == strlen($name) - 1  && substr($name, -1) == '.')
+						|| preg_match('/[^\x20-\x7f]/', $name);
+			if ($warn_test) 
 			{
 				$this->FilterInfo->Dirs->Warning[] = DUP_Encoding::toUTF8($val);
 			} 
 			
-			//Dir is not readble remove and flag
+			//UNREADABLE: Directory is unreadable flag it
 			if (! is_readable($this->Dirs[$key])) 
 			{
 				unset($this->Dirs[$key]);
@@ -252,7 +253,8 @@ class DUP_Archive
 
 						if ($invalid_test || preg_match('/[^\x20-\x7f]/', $fileName))
 						{
-							$this->FilterInfo->Files->Warning[] = DUP_Encoding::toUTF8($filePath);
+							$filePath = DUP_Encoding::toUTF8($filePath);
+							$this->FilterInfo->Files->Warning[] = $filePath;
 						} 
 						$this->Size += $fileSize;
 						$this->Files[] = $filePath;

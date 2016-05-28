@@ -75,8 +75,9 @@
 	table.dup-step1-inputs td:first-child{width:125px}
 	div.dup-step1-modes {padding:0px 15px 0 0px;}
 	div#dup-step1-dbconn {margin:auto; text-align:center; margin:15px 0 20px 0px}
+	table.dup-step1-inputs-dbhost td {padding:0; margin:0}
 	input#dup-step1-dbconn-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}
-	input#dup-step1-dbport-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer; width:85px}
+	input#dup-step1-dbport-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer; width:80px}
 	div.dup-db-test label{display:inline-block; width:150px; font-weight:bold; white-space:nowrap;}
 	div.dup-db-test small{display:block; margin:5px 0 5px 0px; font-style:italic; color:#444}
 	div#dbconn-test-msg {font-size:12px}
@@ -161,10 +162,10 @@
 	
 	/*================================================
 	PARSLEY:Overrides*/
-	input.parsley-error, textarea.parsley-error {
+	input.parsley-error, textarea.parsley-error, select.parsley-error {
 	  color:#B94A48 !important;
 	  background-color:#F2DEDE !important;
 	  border:1px solid #EED3D7 !important;
 	}
-	ul.parsley-error-list {margin:1px 0 0 -40px; list-style-type:none; font-size:10px}
+	ul.parsley-errors-list {margin:1px 0 0 -40px; list-style-type:none; font-size:10px}
 </style>
