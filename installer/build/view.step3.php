@@ -8,6 +8,7 @@
 		exit; 
 	}
 ?>
+<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 <script type="text/javascript">		
 	/** **********************************************
 	* METHOD: Posts to page to remove install files */	
@@ -32,7 +33,7 @@ VIEW: STEP 3- INPUT -->
 	</div><br />
 	
 	<div class="title-header">
-		<div class="s3-final-title">IMPORTANT FINAL STEPS!</div>
+		<div class="s3-final-title">FINAL STEPS!</div>
 	</div>
 		
 	<table class="s3-final-step">
@@ -198,14 +199,17 @@ VIEW: STEP 3- INPUT -->
 			</div>
 		</div><br/>
 		
+	</div><br/>
+	
+	<div class="s3-gopro-btn">
+		<a style="width:100%" class="s3-final-btns" href="https://snapcreek.com/duplicator/comparison/" target="_blank">&#10097;&#10097; Want More Power?</a> 
+	</div>
 		
-	</div><br/><br/>
 		
 	<div class='s3-connect'>
 		<a href="installer.php?help=1#troubleshoot" target="_blank">Troubleshoot</a> | 
 		<a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> | 
-		<a href='http://lifeinthegrid.com/duplicator' target='_blank'>Support</a> | 
-		<a href='http://snapcreek.com/duplicator/' target='_blank'>Go Pro!</a>
+		<a href='http://lifeinthegrid.com/labs/duplicator/resources/' target='_blank'>Support</a>
 	</div><br/>
 </form>
 

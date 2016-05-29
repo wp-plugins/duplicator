@@ -56,6 +56,7 @@
 	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:12px; overflow-y:scroll}
 	div.title-header {padding:2px; border-bottom:1px solid silver; font-weight:bold; margin-bottom:5px;}
 	div.hdr-main {font-size:18px; padding:0 0 5px 0; border-bottom:1px solid #999; font-weight:bold; margin:5px 0 10px 0;}
+	div.hdr-sub {font-size:14px; padding:2px 2px 2px 0; border-bottom:1px solid #dfdfdf; font-weight:bold; margin-bottom:5px;}
 	
 	/*BOXES:Expandable sections */
 	div.dup-box {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}
@@ -66,16 +67,19 @@
 
 	/* ============================
 	STEP 1 VIEW */
+	table.s1-opts {width:100%; border:0px;}
+	table.s1-opts td{white-space:nowrap; padding:3px;}
+	table.s1-opts td:first-child{width:125px;}
+	table.s1-opts-dbhost td {padding:0; margin:0}
+	table.s1-advopts td:first-child{width:125px; font-weight:bold}
+	
 	i#dup-step1-sys-req-msg {font-weight:normal; display:block; padding:0px 0 0 20px;}
 	div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-align:center;text-decoration:none;box-shadow:1px 1px 2px #000;background:#207D1D;opacity:0.95; display:inline-block;}
 	div.circle-fail {background:#9A0D1D !important;}
 	select#logging {font-size:11px}
-	table.dup-step1-inputs {width:100%; border:0px;}
-	table.dup-step1-inputs td{white-space:nowrap; padding:2px;}
-	table.dup-step1-inputs td:first-child{width:125px}
 	div.dup-step1-modes {padding:0px 15px 0 0px;}
 	div#dup-step1-dbconn {margin:auto; text-align:center; margin:15px 0 20px 0px}
-	table.dup-step1-inputs-dbhost td {padding:0; margin:0}
+	
 	input#dup-step1-dbconn-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}
 	input#dup-step1-dbport-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer; width:80px}
 	div.dup-db-test label{display:inline-block; width:150px; font-weight:bold; white-space:nowrap;}
@@ -131,6 +135,21 @@
 		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
 	}
 	a.s3-final-btns:hover {background-color: #dfdfdf;}
+	div.s3-gopro-btn {text-align:center; font-family: 'Oswald', sans-serif; font-size:14px; margin:auto; width:200px}
+	div.s3-gopro-btn a {
+		background: #e2e2e2;
+		background: -moz-linear-gradient(top,  #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
+		background: -webkit-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
+		background: linear-gradient(to bottom,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe',GradientType=0 );
+	}
+	div.s3-gopro-btn a:hover {
+		background: #ebf1f6;
+		background: -moz-linear-gradient(top,  #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%);
+		background: -webkit-linear-gradient(top,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+		background: linear-gradient(to bottom,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 );
+	}
 
 	/* ============================
 	BUTTONS */	
@@ -155,11 +174,7 @@
 	.top_goodPass{background:#ffffe0; border:1px solid #e6db55;	display:block;}
 	.top_strongPass{background:#d3edab;	border:1px solid #73bc00; display:block;}
 
-	/* ============================
-	CUSTOME OVERIDE */
-	/*Hide X button on close dialog*/
-	div.ui-dialog-titlebar button.ui-dialog-titlebar-close {display:none !important}
-	
+
 	/*================================================
 	PARSLEY:Overrides*/
 	input.parsley-error, textarea.parsley-error, select.parsley-error {

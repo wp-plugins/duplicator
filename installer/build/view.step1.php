@@ -78,7 +78,7 @@
 						$("#ajax-dbname").val($("#dbname").val());
 						$("#ajax-dbcharset").val($("#dbcharset").val());
 						$("#ajax-dbcollate").val($("#dbcollate").val());
-						$("#ajax-logging").val($("#logging").val());
+						$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
 						$("#ajax-json").val(escape(JSON.stringify(data)));
 						setTimeout(function() {$('#dup-step1-result-form').submit();}, 1000);
 						$('#progress-area').fadeOut(700);
@@ -160,13 +160,12 @@ VIEW: STEP 1- INPUT -->
 	<input type="hidden" name="action_step" value="1" />
 	<input type="hidden" name="package_name"  value="<?php echo $zip_name ?>" />
 	
-	<div class="dup-logfile-link">
+	<!--div class="dup-logfile-link">
 		<select name="logging" id="logging">
 		    <option value="1" selected="selected">Light Logging</option>
 		    <option value="2">Detailed Logging</option>
-			<!--option value="3">Debug Logging</option-->
 		</select>
-	</div>
+	</div-->
 	<div class="hdr-main">
 		Step 1: Deploy Files &amp; Database
 	</div>
@@ -213,7 +212,7 @@ VIEW: STEP 1- INPUT -->
     	<div class="title-header">
     	    MySQL Database
     	</div>
-    	<table class="dup-step1-inputs">
+    	<table class="s1-opts">
 			<tr>
 				<td>Action</td>
 				<td>
@@ -230,7 +229,7 @@ VIEW: STEP 1- INPUT -->
     	    <tr>
 				<td>Host</td>
 				<td>
-					<table class="dup-step1-inputs-dbhost">
+					<table class="s1-opts-dbhost">
 						<tr>
 							<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:410px" /></td>
 							<td style="vertical-align:top">
@@ -281,17 +280,43 @@ VIEW: STEP 1- INPUT -->
     		    
     	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
     	<div id='dup-step1-adv-opts' style="display:none">
-    	    <table class="dup-step1-inputs">
-    		<tr><td colspan="2"><input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
-    		<tr><td colspan="2"><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce SSL on Admin</label></td></tr>
-			<tr><td colspan="2"><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce SSL on Login</label></td></tr>
-			<tr><td colspan="2"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Cache Enabled</label></td></tr>
-			<tr><td colspan="2"><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Cache Home Path</label></td></tr>
-    		<tr><td colspan="2"><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
-    		<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-    		<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+			<table class="s1-opts">
+				<tr><td><input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
+				<tr><td><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
+			</table>
+			
+			
+    	    <table class="s1-opts s1-advopts">
+				<tr>
+					<td>Logging</td>
+					<td colspan="2">
+						<input type="radio" name="logging" id="logging-light" value="1" checked="true"> <label for="logging-light">Light</label> &nbsp; 
+						<input type="radio" name="logging" id="logging-detailed" value="2"> <label for="logging-detailed">Detailed</label> &nbsp; 
+						<input type="radio" name="logging" id="logging-debug" value="3"> <label for="logging-debug">Debug</label>
+					</td>
+				</tr>	
+				<tr>
+					<td>Config Cache</td>
+					<td style="width:125px"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Enabled</label></td>
+					<td><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Home Path</label></td>
+				</tr>	
+				<tr>
+					<td>Config SSL</td>
+					<td><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce on Admin</label></td>
+					<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
+				</tr>				
     	    </table>
+			
+			<table class="s1-opts s1-advopts">
+				<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
+				<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+    	    </table>
+			<small><i>For an overview of these settings see the <a href="?help=1" target="_blank">help page</a></i></small><br/>
+			
     	</div>
+		
+		
+		
 
 		<!-- NOTICES  -->
     	<div id="dup-step1-warning">

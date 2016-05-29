@@ -44,21 +44,25 @@ class DUPX_Serializer {
 		}
 	}
 
-	/**
-	 * LOG STATS
-	 */
-	static public function log_stats($report) {
-		if (!empty($report) && is_array($report)) {
+
+	public static function log_stats($report) 
+	{
+		if (!empty($report) && is_array($report)) 
+		{
 			$stats  = "--------------------------------------\n";
-			$stats .= sprintf("SEARCH1:\t'%s' \nREPLACE1:\t'%s' \n", $_POST['url_old'], $_POST['url_new']);
-			$stats .= sprintf("SEARCH2:\t'%s' \nREPLACE2:\t'%s' \n", $_POST['path_old'], $_POST['path_new']);
-			$stats .= sprintf("SCANNED:\tTables:%d | Rows:%d | Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
-			$stats .= sprintf("UPDATED:\tTables:%d | Rows:%d |Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
+			$srchnum = 0;
+			foreach ($GLOBALS['REPLACE_LIST'] as $item) 
+			{
+				$srchnum++;
+				$stats .= sprintf("Search{$srchnum}:\t'%s' \nChange{$srchnum}:\t'%s' \n", $item['search'], $item['replace']);
+			}
+			$stats .= sprintf("SCANNED:\tTables:%d \t|\t Rows:%d \t|\t Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
+			$stats .= sprintf("UPDATED:\tTables:%d \t|\t Rows:%d \t|\t Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
 			$stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
 			DUPX_Log::Info($stats);
 		}
 	}
-	
+
 	/**
 	 * Returns only the text type columns of a table ignoring all numeric types
 	 */
@@ -178,8 +182,9 @@ class DUPX_Serializer {
 						$report['errsql'][] = mysqli_error($conn);
 					
 					$scan_count = ($row_count < $end) ? $row_count : $end;
-					DUPX_Log::Info("\tScan => {$start} of {$scan_count}", 2);
-					//DEBUG ONLY:
+					
+					//CUSTOM DEBUG ONLY:
+					//DUPX_Log::Info("\tScan => {$start} of {$scan_count}", 3);
 					//DUPX_Log::Info("\t{$sql}", 3);
 
 					//Loops every row
@@ -263,7 +268,7 @@ class DUPX_Serializer {
 							$sql = "UPDATE `{$table}` SET " . implode(', ', $upd_sql) . ' WHERE ' . implode(' AND ', array_filter($where_sql));
 							$result = mysqli_query($conn, $sql) or $report['errsql'][] = mysqli_error($conn);
 							//DEBUG ONLY:
-							DUPX_Log::Info("\t{$sql}", 3);
+							DUPX_Log::Info("\t{$sql}\n\n", 3);
 							if ($result) {
 								if ($serial_err > 0) {
 									$report['errser'][] = "SELECT " . implode(', ', $upd_col) . " FROM `{$table}`  WHERE " . implode(' AND ', array_filter($where_sql)) . ';';
