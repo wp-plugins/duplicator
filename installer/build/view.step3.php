@@ -204,7 +204,7 @@ VIEW: STEP 3- INPUT -->
 	<div class="s3-gopro-btn">
 		<a style="width:100%" class="s3-final-btns" href="https://snapcreek.com/duplicator/comparison/" target="_blank">&#10097;&#10097; Want More Power?</a> 
 	</div>
-		
+	<br/><br/>
 		
 	<div class='s3-connect'>
 		<a href="installer.php?help=1#troubleshoot" target="_blank">Troubleshoot</a> | 

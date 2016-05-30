@@ -141,7 +141,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="feature-column"><?php _e('Active Customer Support', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>				
+		</tr>
+		<tr>
+			<td class="feature-column"><?php _e('Plus Many Other Features...', 'duplicator') ?></td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>			
 	</table>
 
 	<br style="clear:both" />

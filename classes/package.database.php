@@ -258,6 +258,8 @@ class DUP_Database {
 		$tblCreateCount = count($tables);
 		$tblFilterCount = $tblAllCount - $tblCreateCount;
 		
+		//DEBUG
+		//DUP_Log::Info("COMMAND: {$cmd}");
 		DUP_Log::Info("FILTERED: [{$this->FilterTables}]");	
 		DUP_Log::Info("RESPONSE: {$output}");
 		DUP_Log::Info("TABLES: total:{$tblAllCount} | filtered:{$tblFilterCount} | create:{$tblCreateCount}");
