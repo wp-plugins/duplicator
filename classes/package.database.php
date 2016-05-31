@@ -239,7 +239,7 @@ class DUP_Database {
 		
 		$cmd .= ' -u ' . escapeshellarg(DB_USER);
 		$cmd .= (DB_PASSWORD) ? 
-				' -p'  . "{DB_PASSWORD}" : '';
+				' -p'  . escapeshellarg(DB_PASSWORD) : '';
 		$cmd .= ' -h ' . escapeshellarg($host);
 		$cmd .= ( ! empty($port) && is_numeric($port) ) ?
 				' -P ' . $port : '';
