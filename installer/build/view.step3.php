@@ -201,8 +201,25 @@ VIEW: STEP 3- INPUT -->
 		
 	</div><br/>
 	
+	<?php  
+		$num = rand(1,2);  
+		switch ($num) {
+			case 1: 
+				$key = 'free-inst-s3btn1';
+				$txt = 'Want More Power?';
+				break;
+			case 2: 
+				$key = 'free-inst-s3btn2';
+				$txt = 'Go Pro Today!';
+				break;	
+			default :
+				$key = 'free-inst-s3btn2';
+				$txt = 'Go Pro Today!';
+		}
+	?>
+	
 	<div class="s3-gopro-btn">
-		<a style="width:100%" class="s3-final-btns" href="https://snapcreek.com/duplicator/comparison/" target="_blank">&#10097;&#10097; Want More Power?</a> 
+		<a style="width:100%" class="s3-final-btns" href="https://snapcreek.com/duplicator/comparison?<?php echo $key;?>" target="_blank">&#10097;&#10097; <?php echo $txt;?></a> 
 	</div>
 	<br/><br/>
 		
