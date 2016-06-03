@@ -3,7 +3,7 @@
 if (function_exists('plugin_dir_url')) {
 	 
 		
-    define('DUPLICATOR_VERSION',        '1.1.8');
+    define('DUPLICATOR_VERSION',        '1.1.9');
     define("DUPLICATOR_HOMEPAGE",       "http://lifeinthegrid.com/labs/duplicator");
     define("DUPLICATOR_GIVELINK",       "http://lifeinthegrid.com/partner");
     define("DUPLICATOR_HELPLINK",       "http://lifeinthegrid.com/duplicator-docs");
@@ -33,7 +33,7 @@ if (function_exists('plugin_dir_url')) {
 	define("DUPLICATOR_INSTALL_DB",     'database.sql');
 	
 	//RESTRAINT CONSTANTS
-    define("DUPLICATOR_PHP_MAX_MEMORY",  '5000M');
+    define("DUPLICATOR_PHP_MAX_MEMORY",  '2048M');
     define("DUPLICATOR_DB_MAX_TIME",     5000);
 	define("DUPLICATOR_DB_EOF_MARKER",   'DUPLICATOR_MYSQLDUMP_EOF');
 	define("DUPLICATOR_SCAN_SITE",			157286400);	//150MB

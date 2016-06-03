@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright 2011-12 Cory Lamle  lifeinthegrid.com
+  Copyright 2011-16  lifeinthegrid.com
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
