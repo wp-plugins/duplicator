@@ -90,7 +90,7 @@ STORAGE -->
 							<?php echo sprintf(__('%1$s, %2$s, %3$s, %4$s and other storage options available in', 'duplicator'), 'Amazon', 'Dropbox', 'Google Drive', 'FTP'); ?>
 							<a href="http://snapcreek.com/duplicator/?free-storage" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
 							<i class="fa fa-lightbulb-o" 
-								data-tooltip-title="<?php _e("Additional Storage:", 'duplicator', 'duplicator'); ?>" 
+								data-tooltip-title="<?php _e("Additional Storage:", 'duplicator'); ?>" 
 								data-tooltip="<?php _e('Professional allows you to create a package and then store it at a custom location on this server or to a cloud '
 										. 'based location such as Google Drive, Amazon, Dropbox or FTP.', 'duplicator'); ?>">
 							 </i>

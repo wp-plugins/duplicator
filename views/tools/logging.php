@@ -36,7 +36,7 @@
 	div#dup-refresh-count {display: inline-block}
 	table#dup-log-panels {width:100%; }
 	td#dup-log-panel-left {width:75%;}
-	td#dup-log-panel-left div.name {float:left; margin: 0px 0px 5px 5px; font-weight: bold}
+	td#dup-log-panel-left div.name {float:left; margin: 0px 0px 5px 5px;}
 	td#dup-log-panel-left div.opts {float:right;}
 	td#dup-log-panel-right {vertical-align: top; padding-left:15px; max-width: 375px}
 	div.dup-log-file-list a, span{display: inline-block; white-space: nowrap; text-overflow: ellipsis; max-width: 375px; line-height:20px; overflow:hidden}
@@ -153,7 +153,20 @@ jQuery(document).ready(function($) {
 	<table id="dup-log-panels">
 		<tr>
 			<td id="dup-log-panel-left">
-				<div class="name"><i class='fa fa-list-alt'></i> <?php echo basename($logurl); ?></div>
+				<div class="name">
+					<i class='fa fa-list-alt'></i> <b><?php echo basename($logurl); ?></b> &nbsp; | &nbsp;
+					<i style="cursor: pointer" 
+						data-tooltip-title="<?php _e("Host Recommendation:", 'duplicator'); ?>" 
+						data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from Bluehost.com', 'duplicator'); ?>">
+						 <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+						 <?php 
+							 printf("%s <a href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a> %s",
+								 __("Duplicator Recommends ", 'duplicator'), 
+								 __("Bluehost", 'duplicator'),
+								 __("for more reliable conversions", 'duplicator'));
+						 ?>
+					</i>					
+				</div>
 				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php _e("Options", 'duplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
 				<br style="clear:both" />
 				<iframe id="dup-log-content" src="<?php echo $logurl ?>" ></iframe>							

@@ -101,6 +101,7 @@ array_push($GLOBALS['REPLACE_LIST'],
 		array('search' => $url_old_json,	  'replace' => $url_new_json), 
 		array('search' => $path_old_json,	  'replace' => $path_new_json), 	
 		array('search' => urlencode($_POST['path_old']), 'replace' => urlencode($_POST['path_new'])), 
+		array('search' => urlencode($_POST['url_old']),  'replace' => urlencode($_POST['url_new'])),
 		array('search' => rtrim(DupUtil::unset_safe_path($_POST['path_old']), '\\'), 'replace' => rtrim($_POST['path_new'], '/'))
 );
 

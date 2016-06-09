@@ -24,16 +24,16 @@
         
 	switch ($_GET['action']) {            
 		case 'installer' :     
-			$action_response = __('Installer file cleanup ran!');
+			$action_response = __('Installer file cleanup ran!', 'duplicator');
 			$css_hide_msg = 'div.error {display:none}';		
 			break;		
 		case 'legacy': 
 			DUP_Settings::LegacyClean();			
-			$action_response = __('Legacy data removed.');
+			$action_response = __('Legacy data removed.', 'duplicator');
 			break;
 		case 'tmp-cache': 
 			DUP_Package::TmpCleanup(true);
-			$action_response = __('Build cache removed.');
+			$action_response = __('Build cache removed.', 'duplicator');
 			break;		
 	} 
 
@@ -71,18 +71,26 @@
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be remove is from installer
 					//So just show a message if removing from plugin.
-					if (! empty($package_name) ){
+					if (! empty($package_name) )
+					{
 						$path_parts = pathinfo($package_name);
 						$path_parts = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
-						if ($path_parts  == "zip"  && ! is_dir($package_name)) {
+						if ($path_parts  == "zip"  && ! is_dir($package_name)) 
+						{
+							$lang1 = __('Successfully removed', 'duplicator');
+							$lang2 = __('Does not exist or unable to remove archive file.', 'duplicator');
 							$html .= (@unlink($package_name))   
-								?  "<div class='success'>Successfully removed {$package_name}</div>"   
-								:  "<div class='failed'>Does not exist or unable to remove archive file.</div>";
-						} else {
-							$html .= "<div class='failed'>Does not exist or unable to remove archive file.  Please validate that an archive file exists.</div>";
+								?  "<div class='success'>{$lang1} {$package_name}</div>"   
+								:  "<div class='failed'>{$lang2}</div>";
+						} 
+						else 
+						{
+							$lang = __('Does not exist or unable to remove archive file.  Please validate that an archive file exists.', 'duplicator');
+							$html .= "<div class='failed'>{$lang}</div>";
 						}
 					} else {
-						$html .= '<br/><div>It is recommended to remove your archive file from the root of your WordPress install.  This will need to be done manually.</div>';
+						$lang = __('It is recommended to remove your archive file from the root of your WordPress install.  This will need to be done manually', 'duplicator');
+						$html .= "<br/><div>{$lang}</div>";
 					}
 					echo $html;
 				 ?>
@@ -141,11 +149,11 @@
 jQuery(document).ready(function($) {
    Duplicator.Tools.DeleteLegacy = function () {
 	   <?php
-		   $msg  = __('This action will remove all legacy settings prior to version %1$s.  ');
-		   $msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.'); 
+		   $msg  = __('This action will remove all legacy settings prior to version %1$s.  ', 'duplicator');
+		   $msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.', 'duplicator'); 
 	   ?>
 	   var result = true;
-	   var result = confirm('<?php printf(__($msg), DUPLICATOR_VERSION) ?>');
+	   var result = confirm('<?php printf(__($msg, 'duplicator'), DUPLICATOR_VERSION) ?>');
 	   if (! result) 
 		   return;
 		
@@ -154,7 +162,7 @@ jQuery(document).ready(function($) {
    
    Duplicator.Tools.ClearBuildCache = function () {
 	   <?php
-		   $msg  = __('This process will remove all build cache files.  Be sure no packages are currently building or else they will be cancelled.');
+		   $msg  = __('This process will remove all build cache files.  Be sure no packages are currently building or else they will be cancelled.', 'duplicator');
 	   ?>
 	   var result = true;
 	   var result = confirm('<?php echo $msg ?>');

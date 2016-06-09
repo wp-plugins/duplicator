@@ -433,12 +433,12 @@ PANEL: SERVER CHECKS  -->
 		</td>
 	</tr>
 	<tr>
-		<td>Safe Mode Off</td>
-		<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
-	</tr>
-	<tr>
 		<td><a href="http://us2.php.net/manual/en/mysqli.installation.php" target="_blank">MySQLi Support</a></td>
 		<td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
+	</tr>	
+	<tr>
+		<td>Safe Mode Off</td>
+		<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
 	</tr>
 	<tr>
 		<td valign="top">

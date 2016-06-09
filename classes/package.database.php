@@ -103,36 +103,79 @@ class DUP_Database {
 		$tables	 = $wpdb->get_results("SHOW TABLE STATUS", ARRAY_A);
 		$info = array();
 		$info['Status']['Success'] = is_null($tables) ? false : true;
-		$info['Status']['Size']    = 'Good';
-		$info['Status']['Rows']    = 'Good';
+		//DB_Case for the database name is never checked on
+		$info['Status']['DB_Case']    = 'Good';
+		$info['Status']['DB_Rows']    = 'Good';
+		$info['Status']['DB_Size']    = 'Good';
+		$info['Status']['TBL_Case']   = 'Good';
+		$info['Status']['TBL_Rows']   = 'Good';
+		$info['Status']['TBL_Size']   = 'Good';
 		
 		$info['Size']   = 0;
 		$info['Rows']   = 0;
 		$info['TableCount'] = 0;
 		$info['TableList']	= array();
+		$tblCaseFound = 0;
+		$tblRowsFound = 0;
+		$tblSizeFound = 0;
 		
-		//Only return what we really need
-		foreach ($tables as $table) {
-			
+		//Grab Table Stats
+		foreach ($tables as $table) 
+		{
 			$name = $table["Name"];
-			if ($this->FilterOn  && is_array($filterTables)) {
+			if ($this->FilterOn  && is_array($filterTables)) 
+			{
 				if (in_array($name, $filterTables)) {
 					continue;
 				}
 			}
+			
 			$size = ($table["Data_length"] +  $table["Index_length"]);
+			$rows = empty($table["Rows"]) ? '0' : $table["Rows"];
 			
 			$info['Size'] += $size;
 			$info['Rows'] += ($table["Rows"]);
-			$info['TableList'][$name]['Rows']	= empty($table["Rows"]) ? '0' : number_format($table["Rows"]);
+			$info['TableList'][$name]['Case']   = preg_match('/[A-Z]/', $name) ? 1 : 0;
+			$info['TableList'][$name]['Rows']	= number_format($rows);
 			$info['TableList'][$name]['Size']	= DUP_Util::ByteSize($size);
 			$tblCount++;
+			
+			//Table Uppercase
+			if ($info['TableList'][$name]['Case']) {
+				if (! $tblCaseFound) {
+					$tblCaseFound = 1;
+				}
+			}
+			
+			//Table Row Count
+			if ($rows > DUPLICATOR_SCAN_DB_TBL_ROWS) {
+				if (! $tblRowsFound) {
+					$tblRowsFound = 1;
+				}
+			}
+			
+			//Table Size
+			if ($size  > DUPLICATOR_SCAN_DB_TBL_SIZE) {
+				if (! $tblSizeFound) {
+					$tblSizeFound = 1;
+				}
+			}
 		}
 		
-		$info['Status']['Size']   = ($info['Size'] > 100000000) ? 'Warn' : 'Good';
-		$info['Status']['Rows']   = ($info['Rows'] > 1000000)   ? 'Warn' : 'Good';
-		$info['TableCount']		  = $tblCount;
+		$info['Status']['DB_Case']   = preg_match('/[A-Z]/', $wpdb->dbname) ? 'Warn' : 'Good';
+		$info['Status']['DB_Rows']   = ($info['Rows'] > DUPLICATOR_SCAN_DB_ALL_ROWS) ? 'Warn' : 'Good';
+		$info['Status']['DB_Size']   = ($info['Size'] > DUPLICATOR_SCAN_DB_ALL_SIZE) ? 'Warn' : 'Good';
 		
+		
+		$info['Status']['TBL_Case']   = ($tblCaseFound) ? 'Warn' : 'Good';
+		$info['Status']['TBL_Rows']   = ($tblRowsFound) ? 'Warn' : 'Good';
+		$info['Status']['TBL_Size']   = ($tblSizeFound) ? 'Warn' : 'Good';
+		
+		$info['Size']		= DUP_Util::ByteSize($info['Size'])	or "unknown";
+		$info['Rows']		= number_format($info['Rows'])		or "unknown";
+		$info['TableList']	= $info['TableList']				or "unknown";
+		$info['TableCount'] = $tblCount;
+	
 		return $info;
 	}	
 
