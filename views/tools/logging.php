@@ -160,8 +160,8 @@ jQuery(document).ready(function($) {
 						data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from Bluehost.com', 'duplicator'); ?>">
 						 <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
 						 <?php 
-							 printf("%s <a href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a> %s",
-								 __("Duplicator Recommends ", 'duplicator'), 
+							 printf("%s <a target='_blank' href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a> %s",
+								 __("Duplicator recommends ", 'duplicator'), 
 								 __("Bluehost", 'duplicator'),
 								 __("for more reliable conversions", 'duplicator'));
 						 ?>

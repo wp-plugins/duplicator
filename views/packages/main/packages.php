@@ -78,15 +78,15 @@ TOOL-BAR -->
 				<div id='dup-list-alert-nodata'>
 					<i class="fa fa-archive"></i> 
 					<?php _e("No Packages Found.", 'duplicator'); ?><br/>
-					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?> <br/><br/>
-						<div style='font-style: italic'>
+					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?> 
+						<!--div style='font-style: italic'>
 						<?php
-							printf("%s <a href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a> %s",
-								__("Duplicator Recommends ", 'duplicator'), 
+							/*printf("%s <a target='_blank' href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a> %s",
+								__("Duplicator recommends ", 'duplicator'), 
 								__("Bluehost", 'duplicator'),
-								__("for a better optimized experience!", 'duplicator'));
+								__("for a more optimized experience!", 'duplicator'));*/
 						?>
-						</div>
+						</div-->
 					<div style="height:75px">&nbsp;</div>
 				</div>
 				</td>
@@ -198,7 +198,7 @@ TOOL-BAR -->
 				   data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from Bluehost.com', 'duplicator'); ?>">
 				<i class="fa fa-lightbulb-o"></i>		
 					<?php
-						printf("%s <a href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a>",
+						printf("%s <a target='_blank' href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a>",
 						__("Duplicator Recommends ", 'duplicator'), 
 						__("Bluehost", 'duplicator'));
 					?>

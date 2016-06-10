@@ -316,7 +316,9 @@ VIEW: STEP 1- INPUT -->
     	</div>
 		
 		
-		
+		<div class="dup-step1-gopro">
+			*Create the database and users <b>from the installer</b> with <a target="_blank" href="https://snapcreek.com/?free-install-step1">Duplicator Pro!</a> - Requires cPanel.
+		</div>	
 
 		<!-- NOTICES  -->
     	<div id="dup-step1-warning">
@@ -358,7 +360,8 @@ VIEW: STEP 1- INPUT -->
     		    
     	<div class="dup-footer-buttons">
     	    <input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.runDeployment()" />
-    	</div>				
+    	</div>		
+
 	<?php endif; ?>	
 </form>
 
