@@ -34,6 +34,17 @@ HELP FORM -->
 			<b>Password:</b><br/>
 			The password of the MySQL database server user.
 			<br/><br/>
+			
+			<b>Test Connection:</b><br/>
+			The test connection button will help validate if the connection parameters are correct for this server.  There are three separate validation parameters: 
+			<ul>
+				<li><b>Host:</b> Returns a status to indicate if the server host name is a valid host name <br/><br/></li>
+				<li><b>Database:</b> Returns a status to indicate if the database name is a valid <br/><br/></li>
+				<li><b>Compatibility:</b> Shows the difference in database engine version numbers. If the package was created on a newer database version than where its trying to 
+				be installed then you can run into issues.  Its best to make sure the server where the installer is running has the same or higher version number than 
+				where it was built.</li>
+			</ul>
+			<br/>			
 
 			<b>Name:</b><br/>
 			The name of the database to which this installation will connect and install the new tables onto.

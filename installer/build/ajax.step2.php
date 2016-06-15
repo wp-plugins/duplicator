@@ -222,17 +222,17 @@ fclose($fp);
 
 
 //===============================
-//WARNING TESTS
+//NOTICE TESTS
 //===============================
 DUPX_Log::Info("\n--------------------------------------");
-DUPX_Log::Info("WARNINGS");
+DUPX_Log::Info("NOTICES");
 DUPX_Log::Info("--------------------------------------");
 $config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
 $config_found = DupUtil::string_has_value($config_vars, $config_file);
 
 //Files
 if ($config_found) {
-	$msg = 'WP-CONFIG WARNING: The wp-config.php has one or more of these values "' . implode(", ", $config_vars) . '" which may cause issues please validate these values by opening the file.';
+	$msg = 'WP-CONFIG NOTICE: The wp-config.php has one or more of the following values set [' . implode(", ", $config_vars) . '].  Please validate these values are correct by opening the file and checking the values.';
 	$JSON['step2']['warnlist'][] = $msg;
 	DUPX_Log::Info($msg);
 }
@@ -242,7 +242,7 @@ $result = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREF
 if ($result) {
 	while ($row = mysqli_fetch_row($result)) {
 		if (strlen($row[0])) {
-			$msg = "MEDIA SETTINGS WARNING: The table '{$GLOBALS['FW_TABLEPREFIX']}options' has at least one the following values ['upload_url_path','upload_path'] set please validate settings. These settings can be changed in the wp-admin by going to Settings->Media area see 'Uploading Files'";
+			$msg = "MEDIA SETTINGS NOTICE: The table '{$GLOBALS['FW_TABLEPREFIX']}options' has at least one the following values ['upload_url_path','upload_path'] set please validate settings. These settings can be changed in the wp-admin by going to Settings->Media area see 'Uploading Files'";
 			$JSON['step2']['warnlist'][] = $msg;
 			DUPX_Log::Info($msg);
 			break;
@@ -251,7 +251,7 @@ if ($result) {
 }
 
 if (empty($JSON['step2']['warnlist'])) {
-	DUPX_Log::Info("No Warnings Found\n");
+	DUPX_Log::Info("No Notices Found\n");
 }
 
 $JSON['step2']['warn_all'] = empty($JSON['step2']['warnlist']) ? 0 : count($JSON['step2']['warnlist']);

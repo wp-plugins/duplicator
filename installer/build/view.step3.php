@@ -55,7 +55,7 @@ VIEW: STEP 3- INPUT -->
 				<i id="dup-step3-install-report-count">
 					<span data-bind="with: status.step1">Deploy Errors: (<span data-bind="text: query_errs"></span>)</span> &nbsp;
 					<span data-bind="with: status.step2">Update Notices: (<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
-					<span data-bind="with: status.step2" style="color:#888"><b>Warnings:</b> (<span data-bind="text: warn_all"></span>)</span>
+					<span data-bind="with: status.step2" style="color:#888"><b>General Notices:</b> (<span data-bind="text: warn_all"></span>)</span>
 				</i>
 			</td>
 		</tr>			
@@ -110,7 +110,7 @@ VIEW: STEP 3- INPUT -->
 					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-upd').toggle(400)">Step2: Update Results (<span data-bind="text: err_all"></span>)</a>
 				</td>
 				<td data-bind="with: status.step2">
-					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Warnings (<span data-bind="text: warn_all"></span>)</a>
+					<a href="#dup-step2-errs-warn-anchor" onclick="$('#dup-step3-warnlist').toggle(400)">General Notices (<span data-bind="text: warn_all"></span>)</a>
 				</td>
 			</tr>
 			<tr><td colspan="4"></td></tr>
@@ -184,17 +184,17 @@ VIEW: STEP 3- INPUT -->
 		<!-- WARNINGS-->
 		<div id="dup-step3-warnlist" class="s3-err-msg">
 			<a href="#" id="dup-step2-errs-warn-anchor"></a>
-			<b>GENERAL WARNINGS</b><br/>
+			<b>GENERAL NOTICES</b><br/>
 			<div class="info">
-				The following is a list of warnings that may need to be fixed in order to finalize your setup.  For more details about
-				warnings see the <a href="http://codex.wordpress.org/" target="_blank">wordpress codex.</a>.
+				The following is a list of notices that may need to be fixed in order to finalize your setup.  These values should only be investigated if your running into
+				issues with your site. For more details see the <a href="https://codex.wordpress.org/Editing_wp-config.php" target="_blank">WordPress Codex</a>.
 			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step2.warnlist">
 					 <div data-bind="text: $data"></div>
 				</div>
 				<div data-bind="visible: status.step2.warnlist.length == 0">
-					No warnings found
+					No notices found
 				</div>
 			</div>
 		</div><br/>

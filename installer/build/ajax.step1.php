@@ -52,11 +52,34 @@ if (isset($_GET['dbtest']))
 
 	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
-	$html	 .= "<div class='dup-db-test'>";
-	$html	 .= "<small style='display:block; padding:0 5px'>Using Connection String:<br/>Host={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; {$port_view}</small>";
-	$html	 .= "<label>Server Connected:</label> {$tstSrv} <br/>";
-	$html	 .= "<label>Database Found:</label>   {$tstDB} <br/>";
-
+	
+	$dbvar_version = DupUtil::mysql_version($dbConn);
+	$tstCompat = (version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0) 
+				? "<div class='dup-fail'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
+				: "<div class='dup-pass'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
+	
+	$html	 .= <<<DATA
+	<div class='dup-db-test'>
+		<small>
+			Using Connection String:<br/>
+			Host={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; {$port_view}
+		</small>
+		<table class='dup-db-test-dtls'>
+			<tr>
+				<td>Host:</td>
+				<td>{$tstSrv}</td>
+			</tr>
+			<tr>
+				<td>Database:</td>
+				<td>{$tstDB}</td>
+			</tr>	
+			<tr>
+				<td>Compatibility:</td>
+				<td>{$tstCompat}</td>
+			</tr>		
+		</table>
+DATA;
+	
 	//WARNING: DB not empty message
 	if ($_POST['dbaction'] == 'create'){
 		$tblcount = DupUtil::dbtable_count($dbConn, $_POST['dbname']);
@@ -319,6 +342,7 @@ $dbvar_maxtime = DupUtil::mysql_variable_value($dbh, 'wait_timeout');
 $dbvar_maxpacks = DupUtil::mysql_variable_value($dbh, 'max_allowed_packet');
 $dbvar_maxtime = is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
 $dbvar_maxpacks = is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
+$dbvar_version = DupUtil::mysql_version($dbh);
 
 
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
@@ -327,7 +351,7 @@ DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info("--------------------------------------");
 DUPX_Log::Info("SERVER ENVIROMENT");
 DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info("MYSQL VERSION:\t" . mysqli_get_server_info($dbh));
+DUPX_Log::Info("MYSQL VERSION:\tThis Server: {$dbvar_version} -- Build Server: {$GLOBALS['FW_VERSION_DB']}");
 DUPX_Log::Info("TIMEOUT:\t{$dbvar_maxtime}");
 DUPX_Log::Info("MAXPACK:\t{$dbvar_maxpacks}");
 

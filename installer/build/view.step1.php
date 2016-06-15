@@ -126,7 +126,7 @@
 		});
 		
 		$('#dbconn-test-msg').html("Attempting Connection.  Please wait...");
-		$("#dup-step1-dbconn-status").show(500);
+		$("#s1-dbconn-status").show(500);
 		
 	};
 	
@@ -138,7 +138,7 @@
 	
 	Duplicator.togglePort = function () {
 		
-		$('#dup-step1-dbport-btn').hide();
+		$('#s1-dbport-btn').hide();
 		$('#dbport').show();
 	}
 	
@@ -183,7 +183,7 @@ VIEW: STEP 1- INPUT -->
 			</div> 
 		</div><br/>
 	
-    	<i id="dup-step1-sys-req-msg">
+    	<i id="s1-sys-req-msg">
 			This installation will not be able to proceed until the system requirements pass. Please validate your system requirements by clicking on the button above. 
 			In order to get these values to pass please contact your server administrator, hosting provider or visit the online FAQ.
 		</i><br/>
@@ -216,11 +216,11 @@ VIEW: STEP 1- INPUT -->
 			<tr>
 				<td>Action</td>
 				<td>
-					<div class="dup-step1-modes">
+					<div class="s1-modes">
 						<input type="radio" name="dbaction" id="dbaction-create" value="create" checked="checked" />
 						<label for="dbaction-create">Create New Database</label>
 					</div>
-					<div class="dup-step1-modes">
+					<div class="s1-modes">
 						<input type="radio" name="dbaction" id="dbaction-empty" value="empty" />
 						<label for="dbaction-empty">Connect and Remove All Data</label>						
 					</div>
@@ -233,7 +233,7 @@ VIEW: STEP 1- INPUT -->
 						<tr>
 							<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:410px" /></td>
 							<td style="vertical-align:top">
-								<input id="dup-step1-dbport-btn" type="button" onclick="Duplicator.togglePort()" style="" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+								<input id="s1-dbport-btn" type="button" onclick="Duplicator.togglePort()" class="s1-small-btn" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
 								<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
 							</td>
 						</tr>
@@ -257,13 +257,13 @@ VIEW: STEP 1- INPUT -->
 		
 		<!-- =========================================
 		DIALOG: DB CONNECTION CHECK  -->
-		<div id="dup-step1-dbconn">
-			<input id="dup-step1-dbconn-btn" type="button" onclick="Duplicator.dlgTestDB()" style="" value="Test Connection" />
-			<div id="dup-step1-dbconn-status" style="display:none">
+		<div id="s1-dbconn">
+			<input type="button" onclick="Duplicator.dlgTestDB()" class="s1-small-btn" value="Test Connection" />
+			<div id="s1-dbconn-status" style="display:none">
 				<div style="padding: 0px 10px 10px 10px;">		
 					<div id="dbconn-test-msg" style="min-height:80px"></div>
 				</div>
-				<small><a href="javascript:void()" onclick="$('#dup-step1-dbconn-status').hide(1000)">Hide Connection Details</a></small>
+				<small><input type="button" onclick="$('#s1-dbconn-status').hide(500)" class="s1-small-btn" value="Hide Message" /></small>
 			</div>
 		</div>
 

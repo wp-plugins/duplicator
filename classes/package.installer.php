@@ -125,6 +125,14 @@ class DUP_Installer {
 		$deleteOpts = $GLOBALS['DUPLICATOR_OPTS_DELETE'];
 
 		$replace_items = Array(
+			//COMPARE VALUES
+			"fwrite_created"			=> $this->Package->Created,
+			"fwrite_version_dup"		=> DUPLICATOR_VERSION,
+			"fwrite_version_wp"			=> $this->Package->VersionWP,
+			"fwrite_version_db"			=> $this->Package->VersionDB,
+			"fwrite_version_php"		=> $this->Package->VersionPHP,
+			"fwrite_version_os"			=> $this->Package->VersionOS,	
+			//GENERAL
 			"fwrite_url_old"			=> get_option('siteurl'),
 			"fwrite_package_name"		=> "{$this->Package->NameHash}_archive.zip",
 			"fwrite_package_notes"		=> $this->Package->Notes,
