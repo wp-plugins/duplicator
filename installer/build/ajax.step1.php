@@ -74,7 +74,7 @@ if (isset($_GET['dbtest']))
 				<td>{$tstDB}</td>
 			</tr>	
 			<tr>
-				<td>Compatibility:</td>
+				<td>Version:</td>
 				<td>{$tstCompat}</td>
 			</tr>		
 		</table>

@@ -40,7 +40,7 @@ HELP FORM -->
 			<ul>
 				<li><b>Host:</b> Returns a status to indicate if the server host name is a valid host name <br/><br/></li>
 				<li><b>Database:</b> Returns a status to indicate if the database name is a valid <br/><br/></li>
-				<li><b>Compatibility:</b> Shows the difference in database engine version numbers. If the package was created on a newer database version than where its trying to 
+				<li><b>Version:</b> Shows the difference in database engine version numbers. If the package was created on a newer database version than where its trying to 
 				be installed then you can run into issues.  Its best to make sure the server where the installer is running has the same or higher version number than 
 				where it was built.</li>
 			</ul>
