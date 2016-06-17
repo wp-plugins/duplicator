@@ -356,7 +356,7 @@ VIEW: STEP 1- INPUT -->
 			<div id="dup-step1-warning-emptydb">
 				The remove action will delete <u>all</u> tables and data from the database!
 			</div>
-    	</div><br/><br/><br/>
+    	</div><br/><br/>
     		    
     	<div class="dup-footer-buttons">
     	    <input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.runDeployment()" />

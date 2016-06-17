@@ -255,7 +255,7 @@ VIEW: STEP 2- INPUT -->
 		
 	</div>
 
-	<div class="dup-footer-buttons">
+	<div class="dup-footer-buttons" style='position: absolute; bottom:20px'>
 		<input id="dup-step2-next" type="button" value=" Run Update " onclick="Duplicator.runUpdate()"  />
 	</div>	
 </form>

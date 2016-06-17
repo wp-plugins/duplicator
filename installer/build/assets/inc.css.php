@@ -155,7 +155,7 @@
 
 	/* ============================
 	BUTTONS */	
-	div.dup-footer-buttons {position:absolute; bottom:20px; padding:10px; width:100%; text-align:right;}
+	div.dup-footer-buttons {padding:10px; width:100%; text-align:right;}
 	div.dup-footer-buttons  input, button {
 		color:#000; font-size:12px; border-radius:5px;	padding:6px 8px 4px 8px; border:1px solid #999;
 		background-color:#F1F1F1;
