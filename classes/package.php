@@ -291,7 +291,7 @@ class DUP_Package {
 			$filter_exts	= isset($post['filter-exts']) ? $this->parseExtensionFilter($post['filter-exts']) : '';
 			$tablelist		= isset($post['dbtables'])    ? implode(',', $post['dbtables']) : '';
 			$compatlist		= isset($post['dbcompat'])    ? implode(',', $post['dbcompat']) : '';
-			$dbversion		= DUP_Util::MysqlVariableValue('version');
+			$dbversion		= preg_replace('/[^0-9.].*/', '', DUP_Util::MysqlVariableValue('version'));
 			$dbversion		= is_null($dbversion) ? '- unknown -' : $dbversion;
 
 			//PACKAGE

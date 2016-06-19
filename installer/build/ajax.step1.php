@@ -107,7 +107,7 @@ DATA;
 	
 	//WARNING Version Incompat
 	$html .=  ($dbvar_version_fail)  
-		? "<div class='warn-msg'><b>WARNING:</b> " . ERR_TESTDB_VERSION . "</div>" 
+		? "<div class='warn-msg'><b>NOTICE:</b> " . ERR_TESTDB_VERSION . "</div>" 
 		: '';
 
 	$html .= "</div>";
