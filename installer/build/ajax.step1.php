@@ -54,9 +54,10 @@ if (isset($_GET['dbtest']))
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	
 	$dbvar_version = DupUtil::mysql_version($dbConn);
-	$tstCompat = (version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0) 
-				? "<div class='dup-fail'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
-				: "<div class='dup-pass'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
+	$dbvar_version_fail = version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0;
+	$tstCompat = ($dbvar_version_fail)
+		? "<div class='dup-fail'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
+		: "<div class='dup-pass'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
 	
 	$html	 .= <<<DATA
 	<div class='dup-db-test'>
@@ -80,14 +81,16 @@ if (isset($_GET['dbtest']))
 		</table>
 DATA;
 	
-	//WARNING: DB not empty message
-	if ($_POST['dbaction'] == 'create'){
+	//--------------------------------
+	//WARNING: DB has tables with create option
+	if ($_POST['dbaction'] == 'create')
+	{
 		$tblcount = DupUtil::dbtable_count($dbConn, $_POST['dbname']);
-		$html .= ($tblcount > 0)
-		? "<div class='dup-fail'><b>WARNING</b></div><br/>" . sprintf(ERR_DBEMPTY, $_POST['dbname'], $tblcount) . '<br/>'
-		: "";
-	}
-	
+		$html .= ($tblcount > 0) 
+			? "<div class='warn-msg'><b>WARNING:</b> " . sprintf(ERR_DBEMPTY, $_POST['dbname'], $tblcount) . "</div>"
+			: '';
+	}				
+
 	//WARNNG: Input has utf8
 	$dbConnItems = array($_POST['dbhost'], $_POST['dbuser'], $_POST['dbname'],$_POST['dbpass']);
 	$dbUTF8_tst  = false;
@@ -98,13 +101,15 @@ DATA;
 			break;
 		}
 	}
+	$html .=  (! $dbConn && $dbUTF8_tst) 
+		? "<div class='warn-msg'><b>WARNING:</b> " . ERR_TESTDB_UTF8 .  "</div>"	
+		: '';
 	
-	if (! $dbConn && $dbUTF8_tst) 
-	{
-		$html .=  "<div class='dup-fail'><b>WARNING</b></div><br/>UTF8 Characters were detected as part of the database connection string. If your connection fails be sure  to update "
-			  .   "the MySQL my.ini configuration file setting to support UTF8 characters by enabling this option 'character_set_server=utf8' and restarting the database server.";
-	}
-	
+	//WARNING Version Incompat
+	$html .=  ($dbvar_version_fail)  
+		? "<div class='warn-msg'><b>WARNING:</b> " . ERR_TESTDB_VERSION . "</div>" 
+		: '';
+
 	$html .= "</div>";
 	die($html);
 }

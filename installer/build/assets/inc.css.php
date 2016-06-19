@@ -87,6 +87,8 @@
 	table.dup-db-test-dtls td:first-child {font-weight: bold}
 	div#dbconn-test-msg {font-size:12px}
 	div#s1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:165px; overflow-y: scroll}
+	div#s1-dbconn-status div.warn-msg {text-align: left; padding:5px; margin:10px 0 10px 0}
+	div#s1-dbconn-status div.warn-msg b{color:maroon}
 	
 	/*Warning Area and Message */
 	div.dup-step1-gopro {color: black;font-style: italic;margin-top: 11px; text-align:center;margin-top:30px; padding:5px}

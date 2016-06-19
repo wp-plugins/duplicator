@@ -21,6 +21,8 @@ define('ERR_DBCONNECT_CREATE',  'DATABASE CREATION FAILURE!<br/> Unable to creat
 define('ERR_DBTRYCLEAN',		'DATABASE CREATION FAILURE!<br/> Unable to remove all tables from database "%s".<br/>  Please remove all tables from this database and try the installation again.');
 define('ERR_DBCREATE',			'The database "%s" does not exists.<br/>  Change mode to create in order to create a new database.');
 define('ERR_DBEMPTY',			'The database "%s" has "%s" tables.  The Duplicator only works with an EMPTY database.  Enable the action "Connect and Remove All Data" radio button to remove all tables and or create a new database. Some hosting providers do not allow table removal from scripts.  In this case you will need to login to your hosting providers control panel and remove the tables manually.  Please contact your hosting provider for further details.  Always backup all your data before proceeding!');
+define('ERR_TESTDB_UTF8',		'UTF8 Characters were detected as part of the database connection string. If your connection fails be sure  to update the MySQL my.ini configuration file setting to support UTF8 characters by enabling this option [character_set_server=utf8] and restarting the database server.');
+define('ERR_TESTDB_VERSION',	'Database version do not need to match however the further apart the versions the more issues that can arise during the import. If the package was created on a newer database version than where its trying to be installed then you can run into issues. Its best to make sure the server where the installer is running has the same or higher version number than where it was built.');
 
 /** * *****************************************************
  * DUPX_Log  
