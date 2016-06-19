@@ -56,8 +56,8 @@ if (isset($_GET['dbtest']))
 	$dbvar_version = DupUtil::mysql_version($dbConn);
 	$dbvar_version_fail = version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0;
 	$tstCompat = ($dbvar_version_fail)
-		? "<div class='dup-fail'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
-		: "<div class='dup-pass'>This Server: [{$dbvar_version}] -- Package Build Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
+		? "<div class='dup-fail'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
+		: "<div class='dup-pass'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
 	
 	$html	 .= <<<DATA
 	<div class='dup-db-test'>
