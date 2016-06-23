@@ -106,13 +106,14 @@ class DUPX_Serializer {
 	/**
 	 * LOAD
 	 * Begins the processing for replace logic
-	 * @param mysql  $conn 		 The db connection object
-	 * @param array  $list       Key value pair of 'search' and 'replace' arrays
-	 * @param array  $tables     The tables we want to look at.
+	 * @param mysql  $conn			The db connection object
+	 * @param array  $list			Key value pair of 'search' and 'replace' arrays
+	 * @param array  $tables		The tables we want to look at.
+	 * @param array  $fullsearch    Include every cell in every table
 	 * @return array Collection of information gathered during the run.
 	 */
-	static public function load($conn, $list = array(), $tables = array(), $cols = array(), $fullsearch = false) {
-		$exclude_cols = $cols;
+	static public function load($conn, $list = array(), $tables = array(), $fullsearch = false) 
+	{
 
 		$report = array('scan_tables' => 0, 'scan_rows' => 0, 'scan_cells' => 0,
 			'updt_tables' => 0, 'updt_rows' => 0, 'updt_cells' => 0,
@@ -188,7 +189,8 @@ class DUPX_Serializer {
 					//DUPX_Log::Info("\t{$sql}", 3);
 
 					//Loops every row
-					while ($row = mysqli_fetch_array($data)) {
+					while ($row = mysqli_fetch_array($data)) 
+					{
 						$report['scan_rows']++;
 						$current_row++;
 						$upd_col = array();
@@ -198,10 +200,8 @@ class DUPX_Serializer {
 						$serial_err = 0;
 
 						//Loops every cell
-						foreach ($columns as $column => $primary_key) {
-							if (in_array($column, $exclude_cols)) {
-								continue;
-							}
+						foreach ($columns as $column => $primary_key) 
+						{
 
 							$report['scan_cells']++;
 							$edited_data = $data_to_fix = $row[$column];

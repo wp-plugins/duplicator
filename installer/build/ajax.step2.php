@@ -104,8 +104,14 @@ array_push($GLOBALS['REPLACE_LIST'],
 		array('search' => rtrim(DUPX_Util::unset_safe_path($_POST['path_old']), '\\'), 'replace' => rtrim($_POST['path_new'], '/'))
 );
 
+//Remove trailing slashes
+function _dupx_array_rtrim(&$value) {
+    $value = rtrim($value, '\/');
+}
+array_walk_recursive($GLOBALS['REPLACE_LIST'], _dupx_array_rtrim);
+
 @mysqli_autocommit($dbh, false);
-$report = DUPX_Serializer::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $GLOBALS['TABLES_SKIP_COLS'], $_POST['fullsearch']);
+$report = DUPX_Serializer::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $_POST['fullsearch']);
 @mysqli_commit($dbh);
 @mysqli_autocommit($dbh, true);
 

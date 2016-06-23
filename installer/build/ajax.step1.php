@@ -36,9 +36,9 @@ cause errors in the JSON data Here we hide the status so warning level is reset 
 $ajax1_error_level = error_reporting();
 error_reporting(E_ERROR);
 
-//===============================
+//====================================================================================================
 //DATABASE TEST CONNECTION
-//===============================
+//====================================================================================================
 if (isset($_GET['dbtest'])) 
 {
 	$html     = "";
@@ -224,9 +224,10 @@ if ($_POST['zip_manual']) {
 DUPX_WPConfig::UpdateStep1();
 DUPX_ServerConfig::Reset();
 
-//===============================
-//DATABASE SCRIPT
-//===============================
+
+//====================================================================================================
+//DATABASE ROUTINES
+//====================================================================================================
 @chmod("{$root_path}/database.sql", 0777);
 if (filesize("{$root_path}/database.sql") > 100000000) {
 	DUPX_Log::Info("\nWARNING: Database Script is larger than 100MB this may lead to PHP memory allocation issues on some budget hosts.");
@@ -267,11 +268,8 @@ DUPX_Log::Info("\nARCHIVE RUNTIME: " . DUPX_Util::elapsed_time($zip_end, $zip_st
 DUPX_Log::Info("\n");
 DUPX_Util::fcgi_flush();
 
-
-//====================================================================================================
-//DATABASE ROUTINES
-//====================================================================================================
-
+//=================================
+//START DB RUN
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 @mysqli_query($dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
 DUPX_Util::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
