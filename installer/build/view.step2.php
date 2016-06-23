@@ -1,21 +1,20 @@
 <?php
 	// Exit if accessed directly
 	if (! defined('DUPLICATOR_INIT')) {
-		$_baseURL =  strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
-		$_baseURL =  "http://" . $_baseURL;
+		$_baseURL = "http://" . strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];;
 		header("HTTP/1.1 301 Moved Permanently");
 		header("Location: $_baseURL");
 		exit; 
 	}
-	$dbh = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
+	$dbh = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 
-	$all_tables     = DupUtil::get_database_tables($dbh);
-	$active_plugins = DupUtil::get_active_plugins($dbh);
+	$all_tables     = DUPX_Util::get_database_tables($dbh);
+	$active_plugins = DUPX_Util::get_active_plugins($dbh);
 	
 
 	$old_path = $GLOBALS['FW_WPROOT'];
-	$new_path = DupUtil::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
-	$new_path = ((strrpos($old_path, '/') + 1) == strlen($old_path)) ? DupUtil::add_slash($new_path) : $new_path; 
+	$new_path = DUPX_Util::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
+	$new_path = ((strrpos($old_path, '/') + 1) == strlen($old_path)) ? DUPX_Util::add_slash($new_path) : $new_path; 
 ?>
 
 <script type="text/javascript">
@@ -225,7 +224,7 @@ VIEW: STEP 2- INPUT -->
 					<select id="tables" name="tables[]" multiple="multiple" style="width:315px; height:100px">
 						<?php
 						foreach( $all_tables as $table ) {
-							echo '<option selected="selected" value="' . DupUtil::esc_html_attr( $table ) . '">' . $table . '</option>';
+							echo '<option selected="selected" value="' . DUPX_Util::esc_html_attr( $table ) . '">' . $table . '</option>';
 						} 
 						?>
 					</select>
@@ -240,7 +239,7 @@ VIEW: STEP 2- INPUT -->
 					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px">
 						<?php
 						foreach ($active_plugins as $plugin) {
-							echo '<option selected="selected" value="' . DupUtil::esc_html_attr( $plugin ) . '">' . dirname($plugin) . '</option>';
+							echo '<option selected="selected" value="' . DUPX_Util::esc_html_attr( $plugin ) . '">' . dirname($plugin) . '</option>';
 						} 
 						?>
 					</select>

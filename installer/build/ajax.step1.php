@@ -1,8 +1,7 @@
 <?php
 // Exit if accessed directly
 if (! defined('DUPLICATOR_INIT')) {
-	$_baseURL =  strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
-	$_baseURL =  "http://" . $_baseURL;
+	$_baseURL = "http://" . strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
 	header("HTTP/1.1 301 Moved Permanently");
 	header("Location: $_baseURL");
 	exit;
@@ -24,10 +23,10 @@ unset($POST_LOG['dbpass']);
 ksort($POST_LOG);
 
 //PAGE VARS
-$root_path		= DupUtil::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
+$root_path		= DUPX_Util::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
 $package_path	= "{$root_path}/{$_POST['package_name']}";
 $package_size	= @filesize($package_path);
-$ajax1_start	= DupUtil::get_microtime();
+$ajax1_start	= DUPX_Util::get_microtime();
 $zip_support	= class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $JSON = array();
 $JSON['pass'] = 0;
@@ -44,7 +43,7 @@ if (isset($_GET['dbtest']))
 {
 	$html     = "";
 	$baseport =  parse_url($_POST['dbhost'], PHP_URL_PORT);
-	$dbConn   = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
+	$dbConn   = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
 	$dbErr	  = mysqli_connect_error();
 
 	$dbFound  = mysqli_select_db($dbConn, $_POST['dbname']);
@@ -53,10 +52,10 @@ if (isset($_GET['dbtest']))
 	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	
-	$dbvar_version = DupUtil::mysql_version($dbConn);
+	$dbvar_version = DUPX_Util::mysql_version($dbConn);
 	$dbvar_version_fail = version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0;
 	$tstCompat = ($dbvar_version_fail)
-		? "<div class='dup-fail'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
+		? "<div class='dup-notice'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
 		: "<div class='dup-pass'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
 	
 	$html	 .= <<<DATA
@@ -85,7 +84,7 @@ DATA;
 	//WARNING: DB has tables with create option
 	if ($_POST['dbaction'] == 'create')
 	{
-		$tblcount = DupUtil::dbtable_count($dbConn, $_POST['dbname']);
+		$tblcount = DUPX_Util::dbtable_count($dbConn, $_POST['dbname']);
 		$html .= ($tblcount > 0) 
 			? "<div class='warn-msg'><b>WARNING:</b> " . sprintf(ERR_DBEMPTY, $_POST['dbname'], $tblcount) . "</div>"
 			: '';
@@ -96,7 +95,7 @@ DATA;
 	$dbUTF8_tst  = false;
 	foreach ($dbConnItems as $value)
 	{
-		if (DupUtil::is_non_ascii($value)) {
+		if (DUPX_Util::is_non_ascii($value)) {
 			$dbUTF8_tst = true;
 			break;
 		}
@@ -124,7 +123,7 @@ DATA;
 function_exists('mysqli_connect') or DUPX_Log::Error(ERR_MYSQLI_SUPPORT);
 
 //ERR_DBCONNECT
-$dbh = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
+$dbh = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 ($dbh) or DUPX_Log::Error(ERR_DBCONNECT . mysqli_connect_error());
 if ($_POST['dbaction'] == 'empty') {
@@ -132,7 +131,7 @@ if ($_POST['dbaction'] == 'empty') {
 }
 //ERR_DBEMPTY
 if ($_POST['dbaction'] == 'create' ) {
-	$tblcount = DupUtil::dbtable_count($dbh, $_POST['dbname']);
+	$tblcount = DUPX_Util::dbtable_count($dbh, $_POST['dbname']);
 	if ($tblcount > 0) {
 		DUPX_Log::Error(sprintf(ERR_DBEMPTY, $_POST['dbname'], $tblcount));
 	}
@@ -180,11 +179,11 @@ $log  = "\n*********************************************************************
 $log .= "ARCHIVE SETUP\n";
 $log .= "********************************************************************************\n";
 $log .= "NAME:\t{$_POST['package_name']}\n";
-$log .= "SIZE:\t" . DupUtil::readable_bytesize(@filesize($_POST['package_name'])) . "\n";
+$log .= "SIZE:\t" . DUPX_Util::readable_bytesize(@filesize($_POST['package_name'])) . "\n";
 $log .= "ZIP:\t{$zip_support} (ZipArchive Support)";
 DUPX_Log::Info($log);
 
-$zip_start = DupUtil::get_microtime();
+$zip_start = DUPX_Util::get_microtime();
 
 if ($_POST['zip_manual']) {
 	DUPX_Log::Info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
@@ -220,83 +219,18 @@ if ($_POST['zip_manual']) {
 	$zip = null;
 }
 
-//===============================
-//WP-CONFIG: wp-config
-//===============================
-$wpconfig = @file_get_contents('wp-config.php', true);
-
-$patterns = array(
-	"/'DB_NAME',\s*'.*?'/",
-	"/'DB_USER',\s*'.*?'/",
-	"/'DB_PASSWORD',\s*'.*?'/",
-	"/'DB_HOST',\s*'.*?'/");
-
-$db_host = ($_POST['dbport'] == 3306) ? $_POST['dbhost'] : "{$_POST['dbhost']}:{$_POST['dbport']}";
-
-$replace = array(
-	"'DB_NAME', "	  . '\'' . $_POST['dbname']				. '\'',
-	"'DB_USER', "	  . '\'' . $_POST['dbuser']				. '\'',
-	"'DB_PASSWORD', " . '\'' . DupUtil::preg_replacement_quote($_POST['dbpass']) . '\'',
-	"'DB_HOST', "	  . '\'' . $db_host				. '\'');
-
-//SSL CHECKS
-if ($_POST['ssl_admin']) {
-	if (! strstr($wpconfig, 'FORCE_SSL_ADMIN')) {
-		$wpconfig = $wpconfig . PHP_EOL . "define('FORCE_SSL_ADMIN', true);";
-	}
-} else {
-	array_push($patterns, "/'FORCE_SSL_ADMIN',\s*true/");
-	array_push($replace,  "'FORCE_SSL_ADMIN', false");
-}
-
-if ($_POST['ssl_login']) {
-	if (! strstr($wpconfig, 'FORCE_SSL_LOGIN')) {
-		$wpconfig = $wpconfig . PHP_EOL . "define('FORCE_SSL_LOGIN', true);";
-	}
-} else {
-	array_push($patterns, "/'FORCE_SSL_LOGIN',\s*true/");
-	array_push($replace, "'FORCE_SSL_LOGIN', false");
-}
-
-//CACHE CHECKS
-if ($_POST['cache_wp']) {
-	if (! strstr($wpconfig, 'WP_CACHE')) {
-		$wpconfig = $wpconfig . PHP_EOL . "define('WP_CACHE', true);";
-	}
-} else {
-	array_push($patterns, "/'WP_CACHE',\s*true/");
-	array_push($replace,  "'WP_CACHE', false");
-}
-if (! $_POST['cache_path']) {
-	array_push($patterns, "/'WPCACHEHOME',\s*'.*?'/");
-	array_push($replace,  "'WPCACHEHOME', ''");
-}
-
-if (! is_writable("{$root_path}/wp-config.php") ) 
-{
-	if (file_exists("{$root_path}/wp-config.php")) 
-	{
-		chmod("{$root_path}/wp-config.php", 0644)
-			? DUPX_Log::Info('File Permission Update: wp-config.php set to 0644')
-			: DUPX_Log::Info('WARNING: Unable to update file permissions and write to wp-config.php.  Please visit the online FAQ for setting file permissions and work with your hosting provider or server administrator to enable this installer.php script to write to the wp-config.php file.');
-	} else {
-		DUPX_Log::Info('WARNING: Unable to locate wp-config.php file.  Be sure the file is present in your archive.');
-	}
-}
-
-
-$wpconfig = preg_replace($patterns, $replace, $wpconfig);
-file_put_contents('wp-config.php', $wpconfig);
-$wpconfig = null;
 
 //CONFIG FILE RESETS
-DUPX_Config::Reset();
-
+DUPX_WPConfig::UpdateStep1();
+DUPX_ServerConfig::Reset();
 
 //===============================
 //DATABASE SCRIPT
 //===============================
 @chmod("{$root_path}/database.sql", 0777);
+if (filesize("{$root_path}/database.sql") > 100000000) {
+	DUPX_Log::Info("\nWARNING: Database Script is larger than 100MB this may lead to PHP memory allocation issues on some budget hosts.");
+}
 $sql_file = @file_get_contents('database.sql', true);
 if ($sql_file == false || strlen($sql_file) < 10) {
 	$sql_file = file_get_contents('installer-data.sql', true);
@@ -328,10 +262,10 @@ if (!is_readable($sql_result_file_path) || filesize($sql_result_file_path) == 0)
 DUPX_Log::Info("\nUPDATED FILES:");
 DUPX_Log::Info("- SQL FILE:  '{$sql_result_file_path}'");
 DUPX_Log::Info("- WP-CONFIG: '{$root_path}/wp-config.php'");
-$zip_end = DupUtil::get_microtime();
-DUPX_Log::Info("\nARCHIVE RUNTIME: " . DupUtil::elapsed_time($zip_end, $zip_start));
+$zip_end = DUPX_Util::get_microtime();
+DUPX_Log::Info("\nARCHIVE RUNTIME: " . DUPX_Util::elapsed_time($zip_end, $zip_start));
 DUPX_Log::Info("\n");
-DupUtil::fcgi_flush();
+DUPX_Util::fcgi_flush();
 
 
 //====================================================================================================
@@ -340,14 +274,14 @@ DupUtil::fcgi_flush();
 
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 @mysqli_query($dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
-DupUtil::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
+DUPX_Util::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 //Set defaults incase the variable could not be read
-$dbvar_maxtime = DupUtil::mysql_variable_value($dbh, 'wait_timeout');
-$dbvar_maxpacks = DupUtil::mysql_variable_value($dbh, 'max_allowed_packet');
+$dbvar_maxtime = DUPX_Util::mysql_variable_value($dbh, 'wait_timeout');
+$dbvar_maxpacks = DUPX_Util::mysql_variable_value($dbh, 'max_allowed_packet');
 $dbvar_maxtime = is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
 $dbvar_maxpacks = is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
-$dbvar_version = DupUtil::mysql_version($dbh);
+$dbvar_version = DUPX_Util::mysql_version($dbh);
 
 
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
@@ -394,7 +328,7 @@ switch ($_POST['dbaction']) {
 DUPX_Log::Info("--------------------------------------");
 DUPX_Log::Info("DATABASE RESULTS");
 DUPX_Log::Info("--------------------------------------");
-$profile_start = DupUtil::get_microtime();
+$profile_start = DUPX_Util::get_microtime();
 $fcgi_buffer_pool = 5000;
 $fcgi_buffer_count = 0;
 $dbquery_rows = 0;
@@ -416,10 +350,10 @@ while ($counter < $sql_result_file_length) {
 
 			if (!mysqli_ping($dbh)) {
 				mysqli_close($dbh);
-				$dbh = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport'] );
+				$dbh = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport'] );
 				// Reset session setup
 				@mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
-				DupUtil::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
+				DUPX_Util::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 			}
 			DUPX_Log::Info("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
 			$dbquery_errs++;
@@ -428,7 +362,7 @@ while ($counter < $sql_result_file_length) {
 		} else {
 			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
 				$fcgi_buffer_count = 0;
-				DupUtil::fcgi_flush();
+				DUPX_Util::fcgi_flush();
 			}
 			$dbquery_rows++;
 		}
@@ -445,7 +379,7 @@ DUPX_Log::Info("QUERIES RAN:\t{$dbquery_rows}\n");
 $dbtable_count = 0;
 if ($result = mysqli_query($dbh, "SHOW TABLES")) {
 	while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
-		$table_rows = DupUtil::table_row_count($dbh, $row[0]);
+		$table_rows = DUPX_Util::table_row_count($dbh, $row[0]);
 		$dbtable_rows += $table_rows;
 		DUPX_Log::Info("{$row[0]}: ({$table_rows})");
 		$dbtable_count++;
@@ -476,12 +410,12 @@ foreach ($GLOBALS['FW_OPTS_DELETE'] as $value) {
 
 @mysqli_close($dbh);
 
-$profile_end = DupUtil::get_microtime();
-DUPX_Log::Info("\nSECTION RUNTIME: " . DupUtil::elapsed_time($profile_end, $profile_start));
+$profile_end = DUPX_Util::get_microtime();
+DUPX_Log::Info("\nSECTION RUNTIME: " . DUPX_Util::elapsed_time($profile_end, $profile_start));
 
 //FINAL RESULTS
-$ajax1_end = DupUtil::get_microtime();
-$ajax1_sum = DupUtil::elapsed_time($ajax1_end, $ajax1_start);
+$ajax1_end = DUPX_Util::get_microtime();
+$ajax1_sum = DUPX_Util::elapsed_time($ajax1_end, $ajax1_start);
 DUPX_Log::Info("\n{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info('STEP1 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax1_sum}");
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");

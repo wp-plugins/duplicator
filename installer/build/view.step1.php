@@ -1,14 +1,13 @@
 <?php
 	// Exit if accessed directly
 	if (! defined('DUPLICATOR_INIT')) {
-		$_baseURL =  strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
-		$_baseURL =  "http://" . $_baseURL;
+		$_baseURL = "http://" . strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
 		header("HTTP/1.1 301 Moved Permanently");
 		header("Location: $_baseURL");
 		exit; 
 	}
 	//DETECT ARCHIVE FILES
-	$zip_files = DupUtil::get_zip_files();
+	$zip_files = DUPX_Util::get_zip_files();
 	$zip_count = count($zip_files);
 	
 	if ($zip_count > 1) {
@@ -498,7 +497,7 @@ PANEL: SERVER CHECKS  -->
 	<!-- SAPI -->
 	<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
 	<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
-	<b>CDN Accessible:</b> <?php echo ( DupUtil::is_url_active("ajax.aspnetcdn.com", 443) && DupUtil::is_url_active("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> <br/>
+	<b>CDN Accessible:</b> <?php echo ( DUPX_Util::is_url_active("ajax.aspnetcdn.com", 443) && DUPX_Util::is_url_active("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> <br/>
 	Need an <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>approved</a> Duplicator hosting provider?
 
 </div>

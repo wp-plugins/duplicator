@@ -122,7 +122,7 @@ class DUPX_Serializer {
 		
 		$walk_function = create_function('&$str', '$str = "`$str`";');
 
-		$profile_start = DupUtil::get_microtime();
+		$profile_start = DUPX_Util::get_microtime();
 		if (is_array($tables) && !empty($tables)) {
 			
 			foreach ($tables as $table) {
@@ -279,7 +279,7 @@ class DUPX_Serializer {
 							$report['errkey'][] = sprintf("Row [%s] on Table [%s] requires a manual update.", $current_row, $table);
 						}
 					}
-					DupUtil::fcgi_flush();
+					DUPX_Util::fcgi_flush();
 					@mysqli_free_result($data);
 				}
 
@@ -288,8 +288,8 @@ class DUPX_Serializer {
 				}
 			}
 		}
-		$profile_end = DupUtil::get_microtime();
-		$report['time'] = DupUtil::elapsed_time($profile_end, $profile_start);
+		$profile_end = DUPX_Util::get_microtime();
+		$report['time'] = DUPX_Util::elapsed_time($profile_end, $profile_start);
 		$report['errsql_sum'] = empty($report['errsql']) ? 0 : count($report['errsql']);
 		$report['errser_sum'] = empty($report['errser']) ? 0 : count($report['errser']);
 		$report['errkey_sum'] = empty($report['errkey']) ? 0 : count($report['errkey']);

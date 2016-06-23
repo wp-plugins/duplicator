@@ -1,8 +1,7 @@
 <?php
 	// Exit if accessed directly 
 	if (! defined('DUPLICATOR_INIT')) {
-		$_baseURL =  strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] :$_SERVER['HTTP_HOST'];
-		$_baseURL =  "http://" . $_baseURL;
+		$_baseURL = "http://" . strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
 		header("HTTP/1.1 301 Moved Permanently");
 		header("Location:$_baseURL");
 		exit; 
@@ -104,6 +103,7 @@
 	.dup-pass {display:inline-block; color:green;}
 	.dup-ok {display:inline-block; color:#5860C7;}
 	.dup-fail {display:inline-block; color:#AF0000;}
+	.dup-notice {display:inline-block; color:#000;}
 	hr.dup-dots { border:none; border-top:1px dotted silver; height:1px; width:100%;}
 	div.dup-ui-error {padding-top:2px; font-size:14px}
 	div.help {color:#555; font-style:italic; font-size:11px}
