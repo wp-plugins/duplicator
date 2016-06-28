@@ -111,7 +111,7 @@ function _dupx_array_rtrim(&$value) {
 array_walk_recursive($GLOBALS['REPLACE_LIST'], _dupx_array_rtrim);
 
 @mysqli_autocommit($dbh, false);
-$report = DUPX_Serializer::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $_POST['fullsearch']);
+$report = DUPX_UpdateEngine::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $_POST['fullsearch']);
 @mysqli_commit($dbh);
 @mysqli_autocommit($dbh, true);
 
@@ -123,8 +123,8 @@ $JSON['step2'] = $report;
 $JSON['step2']['warn_all'] = 0;
 $JSON['step2']['warnlist'] = array();
 
-DUPX_Serializer::log_stats($report);
-DUPX_Serializer::log_errors($report);
+DUPX_UpdateEngine::log_stats($report);
+DUPX_UpdateEngine::log_errors($report);
 
 //Reset the postguid data
 if ($_POST['postguid']) {

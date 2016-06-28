@@ -5,6 +5,27 @@
 	$statusCount	= count($qryStatus);
 	$package_debug	= DUP_Settings::Get('package_debug');
     $ajax_nonce		= wp_create_nonce('package_list');
+	
+	/*-- AFFILIATES --*/
+	$aff_urls = array();
+	$aff_urls[0] = '//www.bluehost.com/track/snapcreek/';											 // Bluehost
+	$aff_urls[1] = 'http://www.elegantthemes.com/affiliates/idevaffiliate.php?id=35534';			 // Elegant Themes
+	$aff_urls[2] = 'https://secure1.inmotionhosting.com/cgi-bin/gby/clickthru.cgi?id=snapcreek';	 // InMotion
+	$aff_urls[3] = 'https://managewp.com/?utm_source=A&utm_medium=Link&utm_campaign=A&utm_mrl=3668'; // ManageWP
+	$aff_urls[4] = 'http://tracking.maxcdn.com/c/269498/3982/378';									 // MaxCDN
+	$aff_urls[5] = 'http://www.shareasale.com/r.cfm?b=812809&u=1324180&m=63061&urllink=&afftrack=';	 // Ninja Forms
+	$aff_urls[6] = 'http://www.shareasale.com/r.cfm?b=601672&u=1324180&m=49337&urllink=&afftrack=';	 // Optinmonster
+	
+	$aff_text = array();
+	$aff_text[0] = __('Bluehost Hosting works well with Duplicator. Click here for check them out!', 'duplicator');	// Bluehost
+	$aff_text[1] = __('Time to change that old and crusty theme? Get an Elegant Theme today!', 'duplicator');		// Elegant Themes
+	$aff_text[2] = __('Site slow? Speed it up with InMotion - with FREE SSDs!', 'duplicator');						// InMotion
+	$aff_text[3] = __('Manage all your WP sites from one dashboard! Click to find out how.', 'duplicator');			// ManageWP
+	$aff_text[4] = __('Speed up your website content. Get MaxCDN Today!', 'duplicator');							// MaxCDN
+	$aff_text[5] = __('Download the ultimate FREE WordPress form builder now!', 'duplicator');						// Ninja Forms
+	$aff_text[6] = __('Don\'t let visitors get away. Snag them with Optinmonster!', 'duplicator');					// Optinmonster
+	
+	$aff_index = rand(0, count($aff_urls) - 1);
 ?>
 
 <style>
@@ -193,14 +214,10 @@ TOOL-BAR -->
 	<tfoot>
 		<tr>
 			<th colspan="4">
-				<i style="font-size:12px; cursor: pointer" 
-				   data-tooltip-title="<?php _e("Host Recommendation:", 'duplicator'); ?>" 
-				   data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from Bluehost.com', 'duplicator'); ?>">
+				<i style="font-size:12px; cursor: pointer">
 				<i class="fa fa-lightbulb-o"></i>		
 					<?php
-						printf("%s <a target='_blank' href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a>",
-						__("Duplicator Recommends ", 'duplicator'), 
-						__("Bluehost", 'duplicator'));
+						printf("<a target='_blank' href='%s'>%s</a>", $aff_urls[$aff_index], $aff_text[$aff_index]);
 					?>
 				</i>
 			</th>
