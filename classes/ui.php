@@ -18,7 +18,7 @@ class DUP_UI {
 	 * @param string $key A unique key to define the ui element
 	 * @param string $value A generic value to use for the view state
      */
-	static public function SaveViewState($key, $value) {
+	public static function SaveViewState($key, $value) {
 	   
 		$view_state = array();
 		$view_state = get_option(self::$OptionsTableKey);
@@ -41,7 +41,7 @@ class DUP_UI {
 	 * $ui_css_archive   = ($view_state == 1)   ? 'display:block' : 'display:none';
 	 * </code>
      */
-    static public function SaveViewStateByPost() {
+    public static function SaveViewStateByPost() {
 		
 		DUP_Util::CheckPermissions('read');
 		
@@ -63,7 +63,7 @@ class DUP_UI {
      *	Gets all the values from the settings array
 	 *  @return array Returns and array of all the values stored in the settings array
      */
-    static public function GetViewStateArray() {
+    public static function GetViewStateArray() {
 		return get_option(self::$OptionsTableKey);
 	}
 	
@@ -72,7 +72,7 @@ class DUP_UI {
 	  * @param type $searchKey The key to search on
 	  * @return string Returns the value of the key searched or null if key is not found
 	  */
-    static public function GetViewStateValue($searchKey) {
+    public static function GetViewStateValue($searchKey) {
 		$view_state = get_option(self::$OptionsTableKey);
 		if (is_array($view_state)) {
 			foreach ($view_state as $key => $value) {
@@ -88,7 +88,7 @@ class DUP_UI {
 	 * Shows a display message in the wp-admin if any researved files are found
 	 * @return type void
 	 */
-	static public function ShowReservedFilesNotice() 
+	public static function ShowReservedFilesNotice() 
 	{
 		//Show only on Duplicator pages and Dashboard when plugin is active
 		$dup_active = is_plugin_active('duplicator/duplicator.php');
@@ -114,6 +114,45 @@ class DUP_UI {
 			}			
 			echo "</p></div>";
 		} 
+	}
+	
+	/**
+	 * Shows a random affilate link
+	 * @return type string
+	 */
+	public static function ShowRandomAffilateLink() 
+	{
+		/*-- AFFILIATES --*/
+		$aff_urls = array();
+		$aff_urls[0] = 'https://snapcreek.com/visit/bluehost';
+		$aff_urls[1] = 'https://snapcreek.com/visit/inmotion';
+		$aff_urls[2] = 'https://snapcreek.com/visit/elegantthemes';
+		$aff_urls[3] = 'https://snapcreek.com/visit/ninjaforms';
+		$aff_urls[4] = 'https://snapcreek.com/visit/optinmonster';
+		$aff_urls[5] = 'https://snapcreek.com/visit/managewp';
+		$aff_urls[6] = 'https://snapcreek.com/visit/maxcdn';	
+
+		$aff_text = array();
+		$aff_text[0] = __('Need a new host? Try Duplicator-approved Bluehost today!', 'duplicator');	// Bluehost
+		$aff_text[1] = __('On a bad host? Trade up to InMotion - with FREE SSDs!', 'duplicator');		// InMotion
+		$aff_text[2] = __('Have a cheesy theme? Change to an Elegant Theme today!', 'duplicator');		// Elegant Themes
+		$aff_text[3] = __('Need a great formbuilder? Get Ninja Forms!', 'duplicator');					// Ninja Forms
+		$aff_text[4] = __('Visitors leaving too quickly? Snag \'em with Optinmonster!', 'duplicator');	// Optinmonster	
+		$aff_text[5] = __('Juggling multiple sites? Control them all from ONE dashboard!', 'duplicator');	// ManageWP
+		$aff_text[6] = __('Slow site? Supercharge it with MaxCDN today!', 'duplicator');				// MaxCDN
+		
+		$aff_icon = array();
+		$aff_fa[0] = "fa-thumbs-up";
+		$aff_fa[1] = "fa-cube";
+		$aff_fa[2] = "fa-plug";
+		$aff_fa[3] = "fa-check-square-o";
+		$aff_fa[4] = "fa-envelope";
+		$aff_fa[5] = "fa-sitemap";
+		$aff_fa[6] = "fa-maxcdn";
+
+		$aff_index = rand(0, count($aff_urls) - 1);
+		
+		return 	"<i class='fa {$aff_fa[$aff_index]}'></i>&nbsp; <a style='font-style:italic;font-size:15px;font-weight:normal' target='_blank' href='{$aff_urls[$aff_index]}'>$aff_text[$aff_index]</a>";
 	}
 	
 }
