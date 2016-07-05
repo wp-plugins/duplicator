@@ -160,9 +160,13 @@ if (is_admin() == true) {
             case 'duplicator-help': include('views/help/help.php');
                 break;
             case 'duplicator-about': include('views/help/about.php');
+				break;
+			case 'duplicator-perks': include('views/help/perks.php');
+                				
                 break;
 			case 'duplicator-gopro': include('views/help/gopro.php');
                 break;
+
         }
     }
 
@@ -203,12 +207,19 @@ if (is_admin() == true) {
         $perms = apply_filters($wpfront_caps_translator, $perms);
 		$lang_txt = __('About', 'duplicator');
         $page_about = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-about', 'duplicator_get_menu');
+
+		$perms = 'manage_options';
+		$lang_txt = __('Perks', 'duplicator');
+        $perms = apply_filters($wpfront_caps_translator, $perms);
+        $page_perks = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-perks', 'duplicator_get_menu');
 		
 		$perms = 'manage_options';
 		$lang_txt = __('Go Pro!', 'duplicator');
 		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_gopro = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
+		
+
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
@@ -216,6 +227,7 @@ if (is_admin() == true) {
         add_action('admin_print_scripts-' . $page_help, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_about, 'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_perks, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
 
         //Apply Styles
@@ -224,7 +236,9 @@ if (is_admin() == true) {
         add_action('admin_print_styles-' . $page_help, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_about, 'duplicator_styles');
+		add_action('admin_print_styles-' . $page_perks, 'duplicator_styles');
 		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
+		
     }
 
     /**
