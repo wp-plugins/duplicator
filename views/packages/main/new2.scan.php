@@ -34,11 +34,12 @@
 	/* ============----------
 	PROGRESS ARES-CHECKS */
 	div#dup-progress-area {text-align:center; max-width:650px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
-	div.dup-progress-title {font-size:22px;padding:5px 0 20px 0; font-weight: bold}
+	div.dup-progress-title {font-size:22px; padding:5px 0 20px 0; font-weight: bold}
 	div#dup-msg-success {color:#18592A; padding:5px; text-align: left}	
 	div#dup-msg-success-subtitle {font-style: italic; margin:7px 0px}	
 	div#dup-msg-error {color:#A62426; padding:5px; max-width: 790px;}
-	div#dup-msg-error-response-text { max-height:350px; overflow-y:scroll; border:1px solid silver; border-radius: 3px; padding:8px;background:#fff}
+	div#dup-msg-error-response-text { max-height:500px; overflow-y:scroll; border:1px solid silver; border-radius:3px; padding:10px;background:#fff}
+	div.dup-hdr-error-details {text-align: left; margin:20px 0}
 
 	div.dup-panel {margin-bottom: 25px}
 	div.dup-scan-filter-status {display:inline; float: right; font-size:11px; margin-right:10px; color:#AF0000; font-style: italic}
@@ -487,7 +488,7 @@ TOOL BAR: STEPS -->
 	<div id="dup-msg-error" style="display:none">
 		<div class="dup-hdr-error"><i class="fa fa-exclamation-circle"></i> <?php _e('Scan Error', 'duplicator'); ?></div>
 		<i><?php _e('Please try again!', 'duplicator'); ?></i><br/>
-		<div style="text-align:left">
+		<div class="dup-hdr-error-details">
 			<b><?php _e("Server Status:", 'duplicator'); ?></b> &nbsp;
 			<div id="dup-msg-error-response-status" style="display:inline-block"></div><br/>
 
@@ -508,9 +509,9 @@ TOOL BAR: STEPS -->
 jQuery(document).ready(function($) {
 		
 	/*	Performs Ajax post to create check system  */
-	Duplicator.Pack.Scan = function() {
+	Duplicator.Pack.Scan = function() 
+	{
 		var data = {action : 'duplicator_package_scan'}
-
 		$.ajax({
 			type: "POST",
 			url: ajaxurl,
@@ -534,20 +535,22 @@ jQuery(document).ready(function($) {
 		});
 	}
 	
-	Duplicator.Pack.Rescan = function() {
+	Duplicator.Pack.Rescan = function() 
+	{
 		$('#dup-msg-success,#dup-msg-error,.dup-button-footer').hide();
 		$('#dup-progress-bar-area').show(); 
 		Duplicator.Pack.Scan();
 	}
 	
-	Duplicator.Pack.WarningContinue = function(checkbox) {
+	Duplicator.Pack.WarningContinue = function(checkbox) 
+	{
 		($(checkbox).is(':checked')) 
 			?	$('#dup-build-button').prop('disabled',false).addClass('button-primary')
 			:	$('#dup-build-button').prop('disabled',true).removeClass('button-primary');
-
 	}
 	
-	Duplicator.Pack.LoadScanStatus = function(status) {
+	Duplicator.Pack.LoadScanStatus = function(status) 
+	{
 		var result;
 		switch (status) {
 			case false :    result = '<div class="dup-scan-warn"><i class="fa fa-exclamation-triangle"></i></div>';      break;
@@ -561,10 +564,32 @@ jQuery(document).ready(function($) {
 	}
 	
 	/*	Load Scan Data   */
-	Duplicator.Pack.LoadScanData = function(data) {
-		
+	Duplicator.Pack.LoadScanData = function(data) 
+	{
 		var errMsg = "unable to read";
 		$('#dup-progress-bar-area').hide(); 
+		
+		//****************
+		//ERROR: Data object is corrupt or empty return error
+		if (data == undefined || data.RPT == undefined)
+		{
+			var html_msg;
+			html_msg  = '<?php _e("Unable to perform a full scan, please try the following actions:", 'duplicator') ?><br/><br/>';
+			html_msg += '<?php _e("1. Go back and create a root path directory filter to validate the site is scan-able.", 'duplicator') ?><br/>';
+			html_msg += '<?php _e("2. Continue to add/remove filters to isolate which path is causing issues.", 'duplicator') ?><br/>';
+			html_msg += '<?php _e("3. This message will go away once the correct filters are applied.", 'duplicator') ?><br/><br/>';
+			
+			html_msg += '<?php _e("Common Issues:", 'duplicator') ?><ul>';
+			html_msg += '<li><?php _e("- On some budget hosts scanning over 30k files can lead to timeout/gateway issues. Consider scanning only your main WordPress site and avoid trying to backup other external directories.", 'duplicator') ?></li>';
+			html_msg += '<li><?php _e("- Symbolic link recursion can cause timeouts.  Ask your server admin if any are present in the scan path.  If they are add the full path as a filter and try running the scan again.", 'duplicator') ?></li>';
+			html_msg += '</ul>';
+			$('#dup-msg-error-response-status').html('Scan Path Error [<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>]');
+			$('#dup-msg-error-response-text').html(html_msg);	
+			$('#dup-msg-error').show(200);
+			console.log('JSON Report Data:');
+			console.log(data);
+			return;
+		}
 		
 		//****************
 		//REPORT
@@ -572,7 +597,6 @@ jQuery(document).ready(function($) {
 		$('#data-rpt-scanfile').attr('href',  base + '&scanfile=' + data.RPT.ScanFile);
 		$('#data-rpt-scantime').text(data.RPT.ScanTime || 0);
 		
-
 		//****************
 		//SERVER
 		$('#data-srv-web-model').html(Duplicator.Pack.LoadScanStatus(data.SRV.WEB.model));
@@ -636,8 +660,6 @@ jQuery(document).ready(function($) {
 		$('#data-arc-files').text(data.ARC.FileCount || errMsg);
 		$('#data-arc-dirs').text(data.ARC.DirCount || errMsg);
 		
-		
-		
 		//Name Checks
 		html = '';
 		//Dirs
@@ -685,7 +707,8 @@ jQuery(document).ready(function($) {
 	Duplicator.Pack.Scan();
 	
 	//Init: Toogle for system requirment detial links
-	$('.dup-scan-title a').each(function() {
+	$('.dup-scan-title a').each(function() 
+	{
 		$(this).attr('href', 'javascript:void(0)');
 		$(this).click({selector : '.dup-scan-info'}, Duplicator.Pack.ToggleSystemDetails);
 		$(this).prepend("<span class='ui-icon ui-icon-triangle-1-e dup-toggle' />");

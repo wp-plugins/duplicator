@@ -56,13 +56,6 @@ TOOL-BAR -->
 		<td align="center" >
 			<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'duplicator') ?>..."><i class="fa fa-list-alt"></i>
 		</td>
-		<td style="min-width:600px" valign="middle">
-			<span style="font-style:italic; margin-left:10px; font-size:16px;">
-				<?php if($statusCount >= 3)  :	?>
-					<!--a href="admin.php?page=duplicator-about"><i><i class="fa fa-check-circle"></i> <?php _e("Help Support Duplicator", 'duplicator') ?></i> </a-->
-				<?php endif; ?>	
-			</span>
-		</td>
 		<td class="dup-toolbar-btns">						
 			<span><i class="fa fa-archive"></i> <?php _e("All Packages", 'duplicator'); ?></span> &nbsp;
 			<a id="dup-pro-create-new"  href="?page=duplicator&tab=new1" class="add-new-h2"><?php _e("Create New", 'duplicator'); ?></a>
