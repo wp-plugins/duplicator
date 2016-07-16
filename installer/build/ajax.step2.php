@@ -95,10 +95,10 @@ $path_old_json = str_replace('"', "", json_encode($_POST['path_old']));
 $path_new_json = str_replace('"', "", json_encode($_POST['path_new']));
 
 array_push($GLOBALS['REPLACE_LIST'], 
-		array('search' => $_POST['url_old'],  'replace' => $_POST['url_new']), 
-		array('search' => $_POST['path_old'], 'replace' => $_POST['path_new']), 
-		array('search' => $url_old_json,	  'replace' => $url_new_json), 
-		array('search' => $path_old_json,	  'replace' => $path_new_json), 	
+		array('search' => $_POST['url_old'],			 'replace' => $_POST['url_new']), 
+		array('search' => $_POST['path_old'],			 'replace' => $_POST['path_new']), 
+		array('search' => $url_old_json,				 'replace' => $url_new_json), 
+		array('search' => $path_old_json,				 'replace' => $path_new_json), 	
 		array('search' => urlencode($_POST['path_old']), 'replace' => urlencode($_POST['path_new'])), 
 		array('search' => urlencode($_POST['url_old']),  'replace' => urlencode($_POST['url_new'])),
 		array('search' => rtrim(DUPX_Util::unset_safe_path($_POST['path_old']), '\\'), 'replace' => rtrim($_POST['path_new'], '/'))

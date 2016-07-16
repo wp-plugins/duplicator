@@ -95,7 +95,8 @@ class DUPX_UpdateEngine
 		} 
 		
 		//Return Primary which is needed for index lookup
-		$result = mysqli_query($conn, "SHOW INDEX FROM `{$table}` WHERE KEY_NAME LIKE '%PRIMARY%'");
+		//$result = mysqli_query($conn, "SHOW INDEX FROM `{$table}` WHERE KEY_NAME LIKE '%PRIMARY%'"); 1.1.15 updated
+		$result = mysqli_query($conn, "SHOW INDEX FROM `{$table}`");
 		if (mysqli_num_rows($result) > 0) { 
 			while ($row = mysqli_fetch_assoc($result)) { 
 				$fields[] = $row['Column_name']; 
