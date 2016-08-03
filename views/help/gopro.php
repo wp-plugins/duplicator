@@ -18,7 +18,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 	div.dup-compare-area div.feature div.info {display:none; padding:7px 7px 5px 7px; font-style:italic; color:#555; font-size:14px}
 	div.dup-gopro-header {text-align:center; margin:5px 0 15px 0; font-size:18px; line-height:30px}
 	div.dup-gopro-header b {font-size:35px}
-	a.dup-check-it-btn {box-shadow:5px 5px 5px 0px #999 !important; font-size:20px !important; height:45px !important;   padding:7px 30px 0 30px !important;}
+	button.dup-check-it-btn {box-shadow:5px 5px 5px 0px #999 !important; font-size:20px !important; height:45px !important;   padding:7px 30px 7px 30px !important;   color:white!important;  background-color: #3e8f3e!important; font-weight: bold!important;
+    color: white;
+    font-weight: bold;}
 
 	#comparison-table { margin-top:25px; border-spacing:0px;  width:100%}
 	#comparison-table th { color:#E21906;}
@@ -151,9 +153,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 	<br style="clear:both" />
 	<p style="text-align:center">
-		<a href="http://snapcreek.com/duplicator?free-go-pro" target="_blank" class="button button-primary button-large dup-check-it-btn" >
+		<button onclick="window.open('https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro&utm_campaign=open_source');" class="button button-large dup-check-it-btn" >
 			<?php _e('Check It Out!', 'duplicator') ?>
-		</a>
+		</button>
 	</p>
 	<br/><br/>
 </div>

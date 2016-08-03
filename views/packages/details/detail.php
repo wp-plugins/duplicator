@@ -188,7 +188,7 @@ STORAGE -->
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/google_drive_64px.png" /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" /> 
 							<?php echo sprintf(__('%1$s, %2$s, %3$s, %4$s and more storage options available in', 'duplicator'), 'Amazon', 'Dropbox', 'Google Drive', 'FTP'); ?>
-                            <a href="http://snapcreek.com/duplicator/?free-storage-detail" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
+                            <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage_detail&utm_campaign=open_source" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
 							 <i class="fa fa-lightbulb-o" 
 								data-tooltip-title="<?php _e('Additional Storage:', 'duplicator'); ?>" 
 								data-tooltip="<?php _e('Professional allows you to create a package and then store it at a custom location on this server or to a cloud '
@@ -252,7 +252,7 @@ ARCHIVE -->
 			<td>
 				<i>
 					<?php _e('Available in', 'duplicator') ?> 
-					<a href="http://snapcreek.com/duplicator/?free-file-filters" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
+					<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=open_source" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
 				</i>
 				<i class="fa fa-lightbulb-o" 
 				   data-tooltip-title="<?php _e('File Filters:', 'duplicator'); ?>" 

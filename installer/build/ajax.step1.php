@@ -53,6 +53,7 @@ if (isset($_GET['dbtest']))
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	
 	$dbvar_version = DUPX_Util::mysql_version($dbConn);
+	$dbvar_version = ($dbvar_version == 0) ? 'no connection' : $dbvar_version;
 	$dbvar_version_fail = version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0;
 	$tstCompat = ($dbvar_version_fail)
 		? "<div class='dup-notice'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 

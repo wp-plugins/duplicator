@@ -316,7 +316,7 @@ VIEW: STEP 1- INPUT -->
 		
 		
 		<div class="dup-step1-gopro">
-			*Create the database and users <b>from the installer</b> with <a target="_blank" href="https://snapcreek.com/?free-install-step1">Duplicator Pro!</a> - Requires cPanel.
+			*Create the database and users <b>from the installer</b> with <a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step1&utm_campaign=open_source">Duplicator Pro!</a> - Requires cPanel.
 		</div>	
 
 		<!-- NOTICES  -->

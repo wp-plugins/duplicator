@@ -23,20 +23,24 @@ class DUPX_ServerConfig {
 		//Apache
 		@copy('.htaccess', '.htaccess.orig');
 		@unlink('.htaccess');
+		
 		//IIS
 		@copy('web.config', 'web.config.orig');
 		@unlink('web.config');
 
+		//.user.ini - For WordFence
+		@copy('.user.ini', '.user.ini.orig');
+		@unlink('.user.ini');
+		
 		DUPX_Log::Info("- Backup of .htaccess/web.config made to .orig");
 		DUPX_Log::Info("- Reset of .htaccess/web.config files");
 		$tmp_htaccess = '# RESET FOR DUPLICATOR INSTALLER USEAGE';
 		file_put_contents('.htaccess', $tmp_htaccess);
-		@chmod('.htaccess', 0644);
-    }
-	
-	
-	    /** METHOD: ResetHTACCESS
-     *  Resetst the .htaccess file
+		@chmod('.htaccess', 0644);    		
+	}		
+		
+	/** METHOD: ResetHTACCESS
+     *  Resets the .htaccess file
      */
     static public function Setup() {
 		
