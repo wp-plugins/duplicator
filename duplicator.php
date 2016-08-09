@@ -47,13 +47,13 @@ if (is_admin() == true) {
 
     /* ACTIVATION 
       Only called when plugin is activated */
-    function duplicator_activate() {
-
+    function duplicator_activate() 
+	{
         global $wpdb;
-		$wp_path = get_home_path();
-
+		
         //Only update database on version update
-        if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
+        if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) 
+		{
             $table_name = $wpdb->prefix . "duplicator_packages";
 
             //PRIMARY KEY must have 2 spaces before for dbDelta to work
@@ -67,7 +67,7 @@ if (is_admin() == true) {
 			   `package`	MEDIUMBLOB		NOT NULL,
 			    KEY `hash` (`hash`))";
 
-            require_once( $wp_path . 'wp-admin/includes/upgrade.php');
+            require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
             @dbDelta($sql);
         }
 
