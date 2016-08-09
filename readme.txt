@@ -20,7 +20,21 @@ http://www.youtube.com/watch?v=yZ7pHmR9JC8
  This tool is great to move or backup Wordpress sites and for pulling production sites down to your local machine for testing and validation. It also works good for developing locally and then pushing up to a production server for site releases/updates or just demoing a site.
 
 = Duplicator Pro =
-Take Duplicator to the next level with the [premium version](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=wpo_premium&utm_campaign=open_source) of the plugin.  With professional features like, scheduling, cloud storage to Dropbox, Google Drive, FTP and a long list of other enhancements.  For a full breakdown of the features found in the professional version checkout the [comparison page](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=wpo_compare&utm_campaign=open_source) .
+Take Duplicator to the next level with the premium version of the plugin.  
+
+You'll get professional features like:
+
+* Scheduled backups
+* Cloud Storage to Dropbox, Google Drive, Amazon S3 and FTP
+* Multisite support
+* Large site support
+* Large database support
+* Database creation *in the installer*
+* Email notifications
+* Professional support
+* ..and much more!
+
+Check out [Duplicator Pro](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=wpo_premium&utm_campaign=open_source) today!
 
 = Please Note =
 The underlying logic to backup WordPress, move WordPress and transfer WordPress are very complex. It's impossible to know how each system is setup; this is why your feedback is important to us.  Thanks for helping us to make WordPress the best blogging platform in the world.
@@ -97,16 +111,3 @@ http://lifeinthegrid.com/duplicator-log
 == Upgrade Notice ==
 
 Please use our ticketing system when submitting your logs.  Please do not post to the forums.
-
-
-
-
-
-
-
-
-
-
-
-
-
