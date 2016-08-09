@@ -20,9 +20,7 @@ http://www.youtube.com/watch?v=yZ7pHmR9JC8
  This tool is great to move or backup Wordpress sites and for pulling production sites down to your local machine for testing and validation. It also works good for developing locally and then pushing up to a production server for site releases/updates or just demoing a site.
 
 = Duplicator Pro =
-Take Duplicator to the next level with the premium version of the plugin.  
-
-You'll get professional features like:
+Duplicator Pro takes Duplicator to the next level with features you'll really appreciate, such as:
 
 * Scheduled backups
 * Cloud Storage to Dropbox, Google Drive, Amazon S3 and FTP
