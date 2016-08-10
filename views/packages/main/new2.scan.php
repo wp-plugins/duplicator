@@ -177,7 +177,7 @@ TOOL BAR: STEPS -->
                             echo '<span style="font-weight:bold">';
                             _e('Get faster builds with Duplicator Pro.', 'duplicator');
                             echo '</span>';
-                            echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_max_execution_time_warn&utm_campaign=open_source' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+                            echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_max_execution_time_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
                     }
                     
 					echo '</small>';
@@ -267,7 +267,7 @@ TOOL BAR: STEPS -->
 								echo '<span style="font-weight:bold">';
                                 _e('Package support up to 2GB available in Duplicator Pro.', 'duplicator');
                                 echo '</span>';
-								echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=open_source' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+								echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
 							}
 
 						?>

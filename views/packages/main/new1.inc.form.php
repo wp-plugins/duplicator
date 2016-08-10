@@ -89,7 +89,7 @@ STORAGE -->
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/google_drive_64px.png" /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" /> 
 							<?php echo sprintf(__('%1$s, %2$s, %3$s, %4$s and other storage options available in', 'duplicator'), 'Amazon', 'Dropbox', 'Google Drive', 'FTP'); ?>
-							<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage&utm_campaign=open_source" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
+							<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
 							<i class="fa fa-lightbulb-o" 
 								data-tooltip-title="<?php _e("Additional Storage:", 'duplicator'); ?>" 
 								data-tooltip="<?php _e('Professional allows you to create a package and then store it at a custom location on this server or to a cloud '
@@ -167,7 +167,7 @@ ARCHIVE -->
 					<br/>
 					<span class="dup-pro-text">
 						<?php echo sprintf(__('%1$s are available in', 'duplicator'), 'Individual file filters'); ?>
-						<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=open_source" target="_blank"><?php _e('Professional', 'duplicator');?></a>
+						<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
 						<i class="fa fa-lightbulb-o" 
 							data-tooltip-title="<?php _e("File Filters:", 'duplicator'); ?>" 
 							data-tooltip="<?php _e('File filters allows you to select individual files and add them to an exclusion list that will filter them from the package.', 'duplicator'); ?>">
@@ -363,7 +363,7 @@ INSTALLER -->
 			<span class="dup-pro-text">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
 				<?php _e("Connect to a cPanel database with.", 'duplicator'); ?> 
-				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_cpanel&utm_campaign=open_source" target="_blank"><?php _e('Professional', 'duplicator');?></a>
+				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_cpanel&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
 				<i class="fa fa-lightbulb-o" 
 					data-tooltip-title="<?php _e("cPanel Access:", 'duplicator'); ?>" 
 					data-tooltip="<?php _e('If your server supports cPanel API access then you can create new databases and select existing ones with Duplicator Professional at install time.', 'duplicator'); ?>">

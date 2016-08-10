@@ -153,7 +153,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 	<br style="clear:both" />
 	<p style="text-align:center">
-		<button onclick="window.open('https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro&utm_campaign=open_source');" class="button button-large dup-check-it-btn" >
+		<button onclick="window.open('https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro&utm_campaign=duplicator_pro');" class="button button-large dup-check-it-btn" >
 			<?php _e('Check It Out!', 'duplicator') ?>
 		</button>
 	</p>

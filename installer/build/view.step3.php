@@ -218,7 +218,7 @@ VIEW: STEP 3- INPUT -->
 	?>
 	
 	<div class="s3-gopro-btn">
-		<a style="width:100%" class="s3-final-btns" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=open_source&utm_content="<?php echo $key;?>" target="_blank">&#10097;&#10097; <?php echo $txt;?></a> 
+		<a style="width:100%" class="s3-final-btns" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content="<?php echo $key;?>" target="_blank">&#10097;&#10097; <?php echo $txt;?></a> 
 	</div>
 	<br/><br/>
 		
