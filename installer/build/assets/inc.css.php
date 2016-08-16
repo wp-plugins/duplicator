@@ -98,7 +98,7 @@
 
 	/*Dialog*/
 	div#dup-step1-dialog-data {height:90%; font-size:11px; padding:5px; line-height:16px; }
-	td.dup-step1-dialog-data-details {padding:0px 0 0 30px; border-radius:4px; line-height:14px; font-size:11px; display:none}
+	td.dup-step1-dialog-data-details {padding:1px 0 10px 30px; border-radius:4px; line-height:14px; font-size:11px; display:none}
 	td.dup-step1-dialog-data-details b {width:50px;display:inline-block}
 	.dup-pass {display:inline-block; color:green;}
 	.dup-ok {display:inline-block; color:#5860C7;}

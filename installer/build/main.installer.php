@@ -131,7 +131,7 @@ $GLOBALS['DB_MAX_PACKETS'] = 268435456;
 ini_set('mysql.connect_timeout', '5000');
 
 //PHP SETUP: all time in seconds
-ini_set('memory_limit', '5000M');
+ini_set('memory_limit', '2048M');
 ini_set("max_execution_time", '5000');
 ini_set("max_input_time", '5000');
 ini_set('default_socket_timeout', '5000');

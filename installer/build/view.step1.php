@@ -414,45 +414,65 @@ PANEL: SERVER CHECKS  -->
 <div id="dup-step1-dialog" title="System Status" style="display:none">
 <div id="dup-step1-dialog-data" style="padding: 0px 10px 10px 10px;">
 	
-	<b>Archive Name:</b> <?php echo $zip_name; ?> <br/>
-	<b>Package Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?><br/><br/>
-					
+	<div style="font-size:12px">
+		<b>Archive Name:</b> <?php echo $zip_name; ?> <br/>
+		<b>Package Notes:</b> <?php echo empty($GLOBALS['FW_PACKAGE_NOTES']) ? 'No notes provided for this pakcage.' : $GLOBALS['FW_PACKAGE_NOTES']; ?>
+	</div>
+	<br/>
+	
 	<!-- SYSTEM REQUIREMENTS -->
 	<b>REQUIREMENTS</b> &nbsp; <i style='font-size:11px'>click links for details</i>
 	<hr size="1"/>
+	
 	<table style="width:100%">
 	<tr>
-		<td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-SRV01').toggle(400)">Root Directory</a></td>
+		<td style="width:300px"><a href="javascript:void(0)" onclick="$('#dup-req-rootdir').toggle(200)">Root Directory</a></td>
 		<td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
 	</tr>
 	<tr>
-		<td colspan="2" id="dup-SRV01" class='dup-step1-dialog-data-details'>
+		<td colspan="2" id="dup-req-rootdir" class='dup-step1-dialog-data-details'>
 		<?php
 		echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
 		printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable by PHP");
-		printf("<b>[%s]</b> %s <br/>", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_name} <br/> <i>Note: Manual extraction still requires the archive.zip file</i> </div> ");
+		printf("<b>[%s]</b> %s ", $req01b, "Contains only one zip file<div style='padding-left:70px'>Result = {$zip_name} <br/> <i>Note: Manual extraction still requires the archive.zip file</i> </div> ");
 		?>
 		</td>
 	</tr>
 	<tr>
-		<td><a href="http://us2.php.net/manual/en/mysqli.installation.php" target="_blank">MySQLi Support</a></td>
+		<td><a href="javascript:void(0)" onclick="$('#dup-req-mysqli').toggle(200)">MySQLi Support</a></td>
 		<td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
 	</tr>	
 	<tr>
-		<td>Safe Mode Off</td>
+		<td colspan="2" id="dup-req-mysqli" class='dup-step1-dialog-data-details'>
+			The Duplicator needs the PHP mysqli extension installed to run properly.  This is a very common extension and can be easily installed by your
+			host or server administrator.  For more details see the <a href="http://us2.php.net/manual/en/mysqli.installation.php" target="_blank" >online overview</a>.
+		</td>
+	</tr>
+	<tr>
+		<td><a href="javascript:void(0)" onclick="$('#dup-req-safemode').toggle(200)">Safe Mode Off</a></td>
 		<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
 	</tr>
 	<tr>
-		<td valign="top">
-		PHP Version: <?php echo phpversion(); ?><br/>
-		<i style="font-size:10px">(PHP 5.2.9+ is required)</i>
+		<td colspan="2" id="dup-req-safemode" class='dup-step1-dialog-data-details'>
+			The Duplicator requires that PHP safe mode be turned off.  Safe mode is a very uncommon setting and can be easily turned off by your
+			host or server administrator.  For more details see the <a href="http://php.net/manual/en/features.safe-mode.php" target="_blank" >online overview</a>.
 		</td>
+	</tr>	
+	<tr>
+		<td valign="top"><a href="javascript:void(0)" onclick="$('#dup-req-phpver').toggle(200)">PHP Version</a> </td>
 		<td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
 	</tr>
+	<tr>
+		<td colspan="2" id="dup-req-phpver" class='dup-step1-dialog-data-details'>
+			This server is currently running PHP version: <b><?php echo phpversion(); ?></b>. The Duplicator requires a version of 5.2.9+ or better. 
+			To upgrade your PHP version contact your host or server administrator.  
+		</td>
+	</tr>		
 	</table>
+	<br/>
 
 	<!-- SYSTEM CHECKS -->
-	<b>CHECKS</b><hr style='margin-top:-2px' size="1"/>
+	<b>CHECKS</b><hr  size="1"/>
 	<table style="width:100%">
 	<tr>
 		<td style="width:300px"></td>
@@ -481,8 +501,8 @@ PANEL: SERVER CHECKS  -->
 	</tr>
 	<tr>
 		<?php
-		$open_basedir_set = ini_get("open_basedir");
-		if (empty($open_basedir_set)):
+			$open_basedir_set = ini_get("open_basedir");
+			if (empty($open_basedir_set)):
 		?>
 			<td><b>Open Base Dir:</b> Off
 			<td><div class='dup-pass'>Good</div>
@@ -495,9 +515,11 @@ PANEL: SERVER CHECKS  -->
 
 	<hr class='dup-dots' />
 	<!-- SAPI -->
+	<b>PHP MAX MEMORY:</b> <?php echo @ini_get('memory_limit') ?><br/>
 	<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
 	<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
-	<b>CDN Accessible:</b> <?php echo ( DUPX_Util::is_url_active("ajax.aspnetcdn.com", 443) && DUPX_Util::is_url_active("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> <br/>
+	<b>CDN Accessible:</b> <?php echo ( DUPX_Util::is_url_active("ajax.aspnetcdn.com", 443) && DUPX_Util::is_url_active("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> 
+	<br/><br/>
 	Need an <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>approved</a> Duplicator hosting provider?
 
 </div>
