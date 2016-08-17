@@ -428,7 +428,7 @@ TOOL BAR: STEPS -->
 							_e('2. Remove stale date from tables such as logging, statistical or other non-critical data.', 'duplicator');
 							echo '<br/><br/>';
 							$lnk = '<a href="http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names" target="_blank">' . __('lower_case_table_names', 'duplicator') . '</a>';
-							printf(__('3. For table name case sensitivity issues either rename the table with lower case characters or be pre-paired to work with the %1$s system variable setting.', 'duplicator'), $lnk);
+							printf(__('3. For table name case sensitivity issues either rename the table with lower case characters or be prepared to work with the %1$s system variable setting.', 'duplicator'), $lnk);
 							echo '<br/><br/>';
 							
 							echo '<b>' . __('Tables:', 'duplicator') . '</b><br/>';
