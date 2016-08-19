@@ -132,22 +132,23 @@ SYSTEM REQUIREMENTS -->
         <!-- PERMISSIONS -->
         <div class='dup-sys-req'>
             <div class='dup-sys-title'>
-                <a><?php _e('Permissions', 'duplicator'); ?></a> <div><?php echo $dup_tests['IO']['ALL']; ?></div>
+                <a><?php _e('Required Paths', 'duplicator'); ?></a> <div><?php echo $dup_tests['IO']['ALL']; ?></div>
             </div>
             <div class="dup-sys-info dup-info-box">
-                <b><?php _e("Required Paths", 'duplicator'); ?></b>
-                <div style="padding:3px 0px 0px 15px">
-                    <?php
-                    printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['WPROOT'], DUPLICATOR_WPROOTPATH);
-                    printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSDIR'], DUPLICATOR_SSDIR_PATH);
-                    printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSTMP'], DUPLICATOR_SSDIR_PATH_TMP);
-                    //printf("<b>%s:</b> [%s] <br/>", __('PHP Script Owner', 'duplicator'), DUP_Util::GetCurrentUser());	
-                    //printf("<b>%s:</b> [%s] <br/>", __('PHP Process Owner', 'duplicator'), DUP_Util::GetProcessOwner());	
-                    ?>
-                </div>
-                <small>
-					<?php _e("Permissions can be difficult to resolve on some systems. If the plugin can not read the above paths here are a few things to try. 1) Set the above paths to have permissions of 755 for directories and 644 for files. You can temporarily try 777 however, be sure you don’t leave them this way. 2) Check the owner/group settings for both files and directories. The PHP script owner and the process owner are different. The script owner owns the PHP script but the process owner is the user the script is running as, thus determining its capabilities/privileges in the file system. For more details contact your host or server administrator or visit the 'Help' menu under Duplicator for additional online resources.", 'duplicator'); ?>
-                </small>					
+				<?php
+				printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSDIR'], DUPLICATOR_SSDIR_PATH);
+				printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSTMP'], DUPLICATOR_SSDIR_PATH_TMP);
+				?>
+				<br/>
+				<div style="font-size:11px">
+					<?php 
+						_e("If Duplicator does not have enough permissions then you will need to manually create the paths above. &nbsp; ", 'duplicator'); 
+						if ($dup_tests['IO']['WPROOT'] == 'Fail')
+						{
+							echo sprintf( __('The root WordPress path [%s] is currently not writable by PHP.', 'duplicator'), 	DUPLICATOR_WPROOTPATH);
+						}
+					?>
+				</div>
             </div>
         </div>
 

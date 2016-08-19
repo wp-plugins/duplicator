@@ -30,10 +30,18 @@ class DUP_Server
 		$dup_tests['PHP']['FUNC_3']  = function_exists("mb_strlen")				? 'Pass' : 'Fail';
 		$dup_tests['PHP']['ALL']	 = ! in_array('Fail', $dup_tests['PHP'])	? 'Pass' : 'Fail';		
 		
-		//PERMISSIONS
-		$handle_test = @opendir(DUPLICATOR_WPROOTPATH);		
-		$dup_tests['IO']['WPROOT']	= is_writeable(DUPLICATOR_WPROOTPATH) && $handle_test ? 'Pass' : 'Fail';
-		$dup_tests['IO']['SSDIR']	= is_writeable(DUPLICATOR_SSDIR_PATH)		? 'Pass' : 'Fail';
+		//REQUIRED PATHS
+		if (file_exists(DUPLICATOR_SSDIR_PATH) && is_writeable(DUPLICATOR_SSDIR_PATH)) 
+		{
+			$dup_tests['IO']['SSDIR']	= 'Pass';
+			$dup_tests['IO']['WPROOT']	= 'Pass';
+		}
+		else 
+		{	
+			$dup_tests['IO']['WPROOT']	= is_writeable(DUPLICATOR_WPROOTPATH) && @opendir(DUPLICATOR_WPROOTPATH) ? 'Pass' : 'Fail';
+			$dup_tests['IO']['SSDIR']	= 'Fail';
+		}
+		
 		$dup_tests['IO']['SSTMP']	= is_writeable(DUPLICATOR_SSDIR_PATH_TMP)	? 'Pass' : 'Fail';
 		$dup_tests['IO']['ALL']		= ! in_array('Fail', $dup_tests['IO'])		? 'Pass' : 'Fail'; 
 		@closedir($handle_test);
