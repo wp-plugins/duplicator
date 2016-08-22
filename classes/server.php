@@ -38,13 +38,15 @@ class DUP_Server
 		}
 		else 
 		{	
-			$dup_tests['IO']['WPROOT']	= is_writeable(DUPLICATOR_WPROOTPATH) && @opendir(DUPLICATOR_WPROOTPATH) ? 'Pass' : 'Fail';
+			$handle_test = @opendir(DUPLICATOR_WPROOTPATH);
+			$dup_tests['IO']['WPROOT']	= is_writeable(DUPLICATOR_WPROOTPATH) && $handle_test ? 'Pass' : 'Fail';
 			$dup_tests['IO']['SSDIR']	= 'Fail';
+			@closedir($handle_test);
 		}
 		
 		$dup_tests['IO']['SSTMP']	= is_writeable(DUPLICATOR_SSDIR_PATH_TMP)	? 'Pass' : 'Fail';
 		$dup_tests['IO']['ALL']		= ! in_array('Fail', $dup_tests['IO'])		? 'Pass' : 'Fail'; 
-		@closedir($handle_test);
+	
 		
 		//SERVER SUPPORT
 		$dup_tests['SRV']['MYSQLi']		= function_exists('mysqli_connect')					? 'Pass' : 'Fail'; 
