@@ -44,14 +44,11 @@ TOOL-BAR -->
 <table id="dup-toolbar">
 	<tr valign="top">
 		<td style="white-space: nowrap">
-			<div class="alignleft actions">
-				<select id="dup-pack-bulk-actions">
-					<option value="-1" selected="selected"><?php _e("Bulk Actions", 'duplicator') ?></option>
-					<option value="delete" title="<?php _e("Delete selected package(s)", 'duplicator') ?>"><?php _e("Delete", 'duplicator') ?></option>
-				</select>
-				<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.Delete()">
-			</div>
-			<br class="clear">
+			<select id="dup-pack-bulk-actions">
+				<option value="-1" selected="selected"><?php _e("Bulk Actions", 'duplicator') ?></option>
+				<option value="delete" title="<?php _e("Delete selected package(s)", 'duplicator') ?>"><?php _e("Delete", 'duplicator') ?></option>
+			</select>
+			<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.Delete()">
 		</td>
 		<td align="center" >
 			<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'duplicator') ?>..."><i class="fa fa-list-alt"></i>
