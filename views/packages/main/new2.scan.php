@@ -67,7 +67,7 @@
 		
 	div#dup-scan-warning-continue {display:none; text-align: center; padding: 0 0 15px 0}
 	div#dup-scan-warning-continue div.msg1 label{font-size:16px; color:maroon}
-	div#dup-scan-warning-continue div.msg2 {padding:2px}
+	div#dup-scan-warning-continue div.msg2 {padding:2px; line-height: 13px}
 	div#dup-scan-warning-continue div.msg2 label {font-size:11px !important}
 	
 	/*Footer*/
@@ -466,8 +466,14 @@ TOOL BAR: STEPS -->
 		<!-- WARNING CONTINUE -->
 		<div id="dup-scan-warning-continue">
 			<div class="msg1">
-				<input type="checkbox" id="dup-scan-warning-continue-checkbox" onclick="Duplicator.Pack.WarningContinue(this)"/>
-				<label for="dup-scan-warning-continue-checkbox"><?php _e('A warning status was detected, are you sure you want to continue?', 'duplicator');?></label>
+				
+				<label for="dup-scan-warning-continue-checkbox">
+					<?php _e('A warning status was detected, are you sure you want to continue?', 'duplicator');?>
+				</label>
+				<div style="padding:8px 0">
+					<input type="checkbox" id="dup-scan-warning-continue-checkbox" onclick="Duplicator.Pack.WarningContinue(this)"/>
+					<label for="dup-scan-warning-continue-checkbox"><?php _e('Yes.  Continue with the build process!', 'duplicator');?></label>
+				</div>
 			</div>
 			<div class="msg2">
 				<label for="dup-scan-warning-continue-checkbox">
