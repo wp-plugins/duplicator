@@ -282,6 +282,7 @@ VIEW: STEP 1- INPUT -->
 			<table class="s1-opts">
 				<tr><td><input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
 				<tr><td><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
+				<tr><td><input type="checkbox" name="dbmysqlmode" id="dbmysqlmode" value="1" /> <label for="dbmysqlmode">Run this session with MySQL sql_mode disabled</label></td></tr>
 			</table>
 			
 			

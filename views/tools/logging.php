@@ -39,11 +39,14 @@
 	td#dup-log-panel-left div.name {float:left; margin: 0px 0px 5px 5px;}
 	td#dup-log-panel-left div.opts {float:right;}
 	td#dup-log-panel-right {vertical-align: top; padding-left:15px; max-width: 375px}
-	div.dup-log-file-list a, span{display: inline-block; white-space: nowrap; text-overflow: ellipsis; max-width: 375px; line-height:20px; overflow:hidden}
+	
+	div.dup-log-file-list a, span.dup-log{display: inline-block; white-space: nowrap; text-overflow: ellipsis; max-width: 375px; line-height:20px; overflow:hidden}
 	div.dup-log-file-list span {font-weight: bold}
+	
 	div.dup-opts-items {border:1px solid silver; background: #efefef; padding: 5px; border-radius: 4px; margin:2px 0px 10px -2px;}
 	label#dup-auto-refresh-lbl {display: inline-block;}
 	iframe#dup-log-content {padding:5px; background: #fff; min-height:500px; width:99%; border:1px solid silver}
+
 </style>
 
 <script type="text/javascript">
@@ -196,7 +199,7 @@ jQuery(document).ready(function($) {
 							$name = esc_html(basename($log));
 							$url  = '?page=duplicator-tools&logname=' . $name;
 							echo ($active == $name) 
-								? "<span title='{$name}'>{$time} - {$name}</span><br/>"
+								? "<span class='dup-log' title='{$name}'>{$time} - {$name}</span><br/>"
 								: "<a href='javascript:void(0)'  title='{$name}' onclick='Duplicator.Tools.GetLog(\"{$url}\")'>{$time} - {$name}</a><br/>";
 							if ($count > 20) break;
 						} 

@@ -133,27 +133,13 @@
 	table.s3-final-step {width:100%;}
 	table.s3-final-step td {padding:5px 15px 5px 5px}
 	table.s3-final-step td:first-child {white-space:nowrap; font-weight:bold}
-	div.s3-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center}
+	div.s3-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center; font-size: 12px}
 	div.s3-btns-msg {text-align: center; font-size:10px; color:#777; margin:5px 0 15px 0}
 	a.s3-final-btns {display: block; width:135; padding:5px; line-height: 1.4; background-color:#F1F1F1; border:1px solid silver;
 		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
 	}
 	a.s3-final-btns:hover {background-color: #dfdfdf;}
-	div.s3-gopro-btn {text-align:center; font-family: 'Oswald', sans-serif; font-size:14px; margin:auto; width:200px}
-	div.s3-gopro-btn a {
-		background: #e2e2e2;
-		background: -moz-linear-gradient(top,  #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
-		background: -webkit-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
-		background: linear-gradient(to bottom,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe',GradientType=0 );
-	}
-	div.s3-gopro-btn a:hover {
-		background: #ebf1f6;
-		background: -moz-linear-gradient(top,  #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%);
-		background: -webkit-linear-gradient(top,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
-		background: linear-gradient(to bottom,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 );
-	}
+	div.s3-gopro-btn {text-align:center; font-size:14px; margin:auto; width:200px; font-style: italic}
 
 	/* ============================
 	BUTTONS */	

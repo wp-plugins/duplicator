@@ -10,6 +10,7 @@ if (! defined('DUPLICATOR_INIT')) {
 //POST PARAMS
 $_POST['dbaction']		= isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
 $_POST['dbnbsp']		= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
+$_POST['dbmysqlmode']	= (isset($_POST['dbmysqlmode']) && $_POST['dbmysqlmode'] == '1') ? true : false;
 $_POST['ssl_admin']		= (isset($_POST['ssl_admin'])) ? true : false;
 $_POST['ssl_login']		= (isset($_POST['ssl_login'])) ? true : false;
 $_POST['cache_wp']		= (isset($_POST['cache_wp'])) ? true : false;
@@ -275,13 +276,22 @@ DUPX_Util::fcgi_flush();
 @mysqli_query($dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
 DUPX_Util::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
-//Set defaults incase the variable could not be read
-$dbvar_maxtime = DUPX_Util::mysql_variable_value($dbh, 'wait_timeout');
-$dbvar_maxpacks = DUPX_Util::mysql_variable_value($dbh, 'max_allowed_packet');
-$dbvar_maxtime = is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
-$dbvar_maxpacks = is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
-$dbvar_version = DUPX_Util::mysql_version($dbh);
+//Will set mode to null only for this db handle session
+//sql_mode can cause db create issues on some systems
+if ($_POST['dbmysqlmode'])
+{
+	@mysqli_query($dbh, "SET SESSION sql_mode = ''");
+}
 
+//Set defaults incase the variable could not be read
+$dbvar_maxtime		= DUPX_Util::mysql_variable_value($dbh, 'wait_timeout');
+$dbvar_maxpacks		= DUPX_Util::mysql_variable_value($dbh, 'max_allowed_packet');
+$dbvar_sqlmode		= DUPX_Util::mysql_variable_value($dbh, 'sql_mode');
+$dbvar_maxtime		= is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
+$dbvar_maxpacks		= is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
+$dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET' : $dbvar_sqlmode;
+$dbvar_version		= DUPX_Util::mysql_version($dbh);
+$dbwarning_modes	= explode(',','NO_ENGINE_SUBSTITUTION,MYSQL323');
 
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info('DATABASE-ROUTINES');
@@ -292,6 +302,16 @@ DUPX_Log::Info("--------------------------------------");
 DUPX_Log::Info("MYSQL VERSION:\tThis Server: {$dbvar_version} -- Build Server: {$GLOBALS['FW_VERSION_DB']}");
 DUPX_Log::Info("TIMEOUT:\t{$dbvar_maxtime}");
 DUPX_Log::Info("MAXPACK:\t{$dbvar_maxpacks}");
+DUPX_Log::Info("SQLMODE:\t{$dbvar_sqlmode}");
+
+
+if (in_array($dbvar_sqlmode, $dbwarning_modes)) 
+{
+	$log  = "WARNING: A sql_mode has been detected that may cause issues with this install.\n";
+	$log .= "Please use the advanced options in Step 1 to disable the sql_mode or disable it the my.ini file\n";
+	$log .= "For more details on this topic please visit: http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html\n";
+	DUPX_Log::Info("\n{$log}\n");
+}
 
 //CREATE DB
 switch ($_POST['dbaction']) {
