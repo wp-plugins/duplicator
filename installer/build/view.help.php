@@ -89,6 +89,46 @@ HELP FORM -->
 			<b>Fix non-breaking space characters:</b><br/>
 			The process will remove utf8 characters represented as 'xC2' 'xA0' and replace with a uniform space.  Use this option if you find strange question marks in you posts
 			<br/><br/>	
+			
+			<div id="help-mysql-mode">
+				<b>Mysql Mode:</b><br/>
+				The sql_mode option controls additional options you can pass to the MySQL server during the	database import process.  This option is only set <i>per session</i> 
+				(during the Duplicator step 1 install process) and the modes here will return to their original state after step one runs.  The sql_mode options will vary 
+				based on each version of mysql.  Below is a list list of links to the most recent MySQL versions.<br/>
+				
+				<ul>
+					<li><a href="http://dev.mysql.com/doc/refman/5.5/en/sql-mode.html" target="_blank">MySQL Server 5.5 sql_mode options</a></li>
+					<li><a href="http://dev.mysql.com/doc/refman/5.6/en/sql-mode.html" target="_blank">MySQL Server 5.6 sql_mode options</a></li>
+					<li><a href="http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html" target="_blank">MySQL Server 5.7 sql_mode options</a></li>
+				</ul>
+				
+				This option creates a SET SESSION query such as <i>SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE'</i> and passes it to the MySQL server before any tables
+				or data are created.	The following options are available:
+				<br/>
+				<ul>
+					<li>
+						<b>Default:</b> This option will not do anything and uses the default setting specified by the my.ini sql_mode value or the server's default sql_mode setting. 
+						The installer-log.txt SQL_MODE value will show as NOT_SET if the my.ini sql_mode is not present or is set to empty.
+						<br/><br/>
+					</li>
+					<li>
+						<b>Disable:</b> This sets the sql_mode to an empty string which results in <i>SET SESSION sql_mode = ''</i>. 
+						The installer-log.txt SQL_MODE value will show as NOT_SET<br/><br/>
+					</li>
+					<li>
+						<b>Custom:</b> This setting allows you to pass in a custom set of sql_mode options such as <i>SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE'</i>.
+						In the custom field input box enter in the sql_mode optionsthat you need for
+						your particular server setup. 
+						<br/><br/>
+						Enter the sql mode as comma-separated values with no spaces, and <i>do not</i> include the 'SET SESSION' instruction. Be sure to pay attention to the MySQL server version and ensure it supports the specified options.
+						The installer-log.txt file will record any errors that may occur while using this advanced option.
+					</li>
+				</ul>	
+
+				Please note that if the SQL_MODE in the installer-log.txt is not showing correctly that you may need to check your database users privileges.  Also be sure that your MySQL
+				server version supports all the the sql_mode options you're trying to pass. 
+			</div>
+			<br/>
 
 			<b>MySQL Charset &amp; MySQL Collation:</b><br/>
 			When the database is populated from the SQL script it will use this value as part of its connection.  Only change this value if you know what your databases character set should be.

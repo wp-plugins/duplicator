@@ -148,6 +148,20 @@
 		$( "input[name='dbaction']").click(Duplicator.showDeleteWarning);
 		Duplicator.acceptWarning();
 		Duplicator.showDeleteWarning();		
+		
+		//MySQL Mode
+		$("input[name=dbmysqlmode]").click(function() {
+			if ($(this).val() == 'CUSTOM') {
+				$('#dbmysqlmode_3_view').show();
+			} else {
+				$('#dbmysqlmode_3_view').hide();
+			}
+		});
+		
+		if ($("input[name=dbmysqlmode]:checked").val() == 'CUSTOM') {
+			$('#dbmysqlmode_3_view').show();
+		}
+		
 	});
 </script>
 
@@ -282,7 +296,6 @@ VIEW: STEP 1- INPUT -->
 			<table class="s1-opts">
 				<tr><td><input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
 				<tr><td><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
-				<tr><td><input type="checkbox" name="dbmysqlmode" id="dbmysqlmode" value="1" /> <label for="dbmysqlmode">Run this session with MySQL sql_mode disabled</label></td></tr>
 			</table>
 			
 			
@@ -304,7 +317,20 @@ VIEW: STEP 1- INPUT -->
 					<td>Config SSL</td>
 					<td><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce on Admin</label></td>
 					<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
-				</tr>				
+				</tr>		
+				<tr>
+					<td style="vertical-align:top">MySQL Mode</td>
+					<td colspan="2">
+						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
+						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
+						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
+						<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
+							<input type="text" name="dbmysqlmode_opts" value="" /><br/>
+							<small>Separate additional <a href="?help#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
+								Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
+						</div>
+					</td>
+				</tr>					
     	    </table>
 			
 			<table class="s1-opts s1-advopts">
@@ -312,7 +338,6 @@ VIEW: STEP 1- INPUT -->
 				<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
     	    </table>
 			<small><i>For an overview of these settings see the <a href="?help=1" target="_blank">help page</a></i></small><br/>
-			
     	</div>
 		
 		

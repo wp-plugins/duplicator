@@ -82,9 +82,9 @@ TOOL BAR: STEPS -->
 		<td style="white-space: nowrap">
 			<div id="dup-wiz">
 				<div id="dup-wiz-steps">
-					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'duplicator'); ?></a></div>
-					<div class="active-step"><a><span>2</span> <?php _e('Scan', 'duplicator'); ?> </a></div>
-					<div><a><span>3</span> <?php _e('Build', 'duplicator'); ?> </a></div>
+					<div class="completed-step"><a>1-<?php _e('Setup', 'duplicator'); ?></a></div>
+					<div class="active-step"><a>2-<?php _e('Scan', 'duplicator'); ?> </a></div>
+					<div><a>3-<?php _e('Build', 'duplicator'); ?> </a></div>
 				</div>
 				<div id="dup-wiz-title">
 					<?php _e('Step 2: System Scan', 'duplicator'); ?>
@@ -505,9 +505,9 @@ TOOL BAR: STEPS -->
 </div> <!-- end #dup-progress-area -->
 
 <div class="dup-button-footer" style="display:none">
-	<input type="button" value="&#9668; <?php _e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
+	<input type="button" value="&#9664; <?php _e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
 	<input type="button" value="<?php _e("Rescan", 'duplicator') ?>" onclick="Duplicator.Pack.Rescan()" class="button button-large" />
-	<input type="submit" value="<?php _e("Build", 'duplicator') ?> &#9658" class="button button-primary button-large" id="dup-build-button" />
+	<input type="submit" value="<?php _e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
 </div>
 </form>
 

@@ -49,7 +49,8 @@
 	select#dup-hlp-lnk {border-radius:3px; font-size:11px; margin:3px 5px 0 0px; background-color:#efefef; border:1px solid silver}
 	div.dup-help-page {padding:5px 0 0 5px}
 	div.dup-help-page fieldset {margin-bottom:25px}
-	div#dup-main-help h3 {background-color:#dfdfdf; border:1px solid silver; border-radius:5px; padding:3px; margin-bottom:8px}
+	div#dup-main-help {line-height:18px}
+	div#dup-main-help h3 {background-color:#dfdfdf; border:1px solid silver; border-radius:5px; padding:3px; margin-bottom:8px;}
 
 	div#progress-area {padding:5px; margin:150px 0 0 0px; text-align:center;}
 	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:12px; overflow-y:scroll}

@@ -48,7 +48,7 @@ $charset_client = @mysqli_character_set_name($dbh);
 $log = <<<LOG
 \n\n
 ********************************************************************************
-DUPLICATOR INSTALL-LOG
+DUPLICATOR-LITE INSTALL-LOG
 STEP2 START @ {$date}
 NOTICE: Do not post to public sites or forums
 ********************************************************************************
@@ -190,13 +190,18 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 	}
 }
 
-/*MU Updates*/
+/* ==============================
+ * MU Updates*/
 $mu_newDomain = parse_url($_POST['url_new']);
 $mu_oldDomain = parse_url($_POST['url_old']);
 $mu_newDomainHost = $mu_newDomain['host'];
 $mu_oldDomainHost = $mu_oldDomain['host'];
 $mu_newUrlPath = parse_url($_POST['url_new'], PHP_URL_PATH);
 $mu_oldUrlPath = parse_url($_POST['url_old'], PHP_URL_PATH);
+
+//Force a path for PATH_CURRENT_SITE
+$mu_newUrlPath = (empty($mu_newUrlPath) || ($mu_newUrlPath == '/')) ? '/'  : rtrim($mu_newUrlPath, '/') . '/';
+$mu_oldUrlPath = (empty($mu_oldUrlPath) || ($mu_oldUrlPath == '/')) ? '/'  : rtrim($mu_oldUrlPath, '/') . '/';
 
 $mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 if ($mu_updates) {
@@ -205,20 +210,13 @@ if ($mu_updates) {
 	DUPX_Log::Info("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 }
 
-/*UPDATE WP-CONFIG FILE */
-$patterns = array("/('|\")WP_HOME.*?\)\s*;/", 
-				  "/('|\")WP_SITEURL.*?\)\s*;/",
-				  "/('|\")DOMAIN_CURRENT_SITE.*?\)\s*;/",
-				  "/('|\")PATH_CURRENT_SITE.*?\)\s*;/");						
-$replace  = array("'WP_HOME', '{$_POST['url_new']}');",
-				  "'WP_SITEURL', '{$_POST['url_new']}');",
-				  "'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');",
-				  "'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
-$config_file = @file_get_contents('wp-config.php', true);
-$config_file = preg_replace($patterns, $replace, $config_file);
-file_put_contents('wp-config.php', $config_file);
 
-//Create Snapshots directory
+/* ==============================
+ * UPDATE WP-CONFIG FILE */
+$config_file = DUPX_WPConfig::UpdateStep2();
+
+//Create snapshots directory in order to
+//compensate for permissions on some servers
 if (!file_exists(DUPLICATOR_SSDIR_NAME)) {
 	mkdir(DUPLICATOR_SSDIR_NAME, 0755);
 }
@@ -226,28 +224,29 @@ $fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 fclose($fp);
 
 
-//===============================
-//NOTICE TESTS
-//===============================
+/* ==============================
+NOTICE TESTS */
 DUPX_Log::Info("\n--------------------------------------");
 DUPX_Log::Info("NOTICES");
 DUPX_Log::Info("--------------------------------------");
 $config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
-$config_found = DUPX_Util::string_has_value($config_vars, $config_file);
+$config_items = DUPX_Util::search_list_values($config_vars, $config_file);
 
-//Files
-if ($config_found) {
-	$msg = 'WP-CONFIG NOTICE: The wp-config.php has one or more of the following values set [' . implode(", ", $config_vars) . '].  Please validate these values are correct by opening the file and checking the values.';
+//Files:
+if (! empty($config_items)) {
+	$msg  = 'NOTICE: The wp-config.php has one or more of the following values set [' . implode(", ", $config_items) . '].  ';
+	$msg .= 'Please validate these values are correct by opening the file and checking the values.  To validate the meaning and proper usage of each parameter used the codex link above.';
 	$JSON['step2']['warnlist'][] = $msg;
 	DUPX_Log::Info($msg);
 }
 
-//Database
+//Database: 
 $result = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name IN ('upload_url_path','upload_path')");
 if ($result) {
 	while ($row = mysqli_fetch_row($result)) {
 		if (strlen($row[0])) {
-			$msg = "MEDIA SETTINGS NOTICE: The table '{$GLOBALS['FW_TABLEPREFIX']}options' has at least one the following values ['upload_url_path','upload_path'] set please validate settings. These settings can be changed in the wp-admin by going to Settings->Media area see 'Uploading Files'";
+			$msg  = "NOTICE: The media settings values in the table '{$GLOBALS['FW_TABLEPREFIX']}options' has at least one the following values ['upload_url_path','upload_path'] set.  ";
+			$msg .= "Please validate these settings by logging into your wp-admin and going to Settings->Media area and validating the 'Uploading Files' section";
 			$JSON['step2']['warnlist'][] = $msg;
 			DUPX_Log::Info($msg);
 			break;

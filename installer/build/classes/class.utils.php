@@ -120,17 +120,18 @@ class DUPX_Util
     }
 
     /** 
-     *  Finds a string in a file and returns true if found
+     *  Looks for a list of strings in a string and returns each list item that is found
      *  @param array  $list		A list of strings to search for
      *  @param string $haystack	The string to search in
      */
-    static public function string_has_value($list, $file) {
+    static public function search_list_values($list, $haystack) {
+		$found = array();
         foreach ($list as $var) {
-            if (strstr($file, $var) !== false) {
-                return true;
+            if (strstr($haystack, $var) !== false) {
+				array_push($found, $var);
             }
         }
-        return false;
+        return $found;
     }
 
     /** METHOD: get_active_plugins

@@ -33,9 +33,9 @@ TOOL BAR: STEPS -->
 		<td style="white-space: nowrap">
 			<div id="dup-wiz">
 				<div id="dup-wiz-steps">
-					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'duplicator'); ?></a></div>
-					<div class="completed-step"><a><span>2</span> <?php _e('Scan', 'duplicator'); ?> </a></div>
-					<div class="active-step"><a><span>3</span> <?php _e('Build', 'duplicator'); ?> </a></div>
+					<div class="completed-step"><a>1-<?php _e('Setup', 'duplicator'); ?></a></div>
+					<div class="completed-step"><a>2-<?php _e('Scan', 'duplicator'); ?> </a></div>
+					<div class="active-step"><a>3-<?php _e('Build', 'duplicator'); ?> </a></div>
 				</div>
 				<div id="dup-wiz-title">
 					<?php _e('Step 3: Build Package', 'duplicator'); ?>
@@ -90,7 +90,8 @@ TOOL BAR: STEPS -->
 					<small><i><?php _e("click buttons to download", 'duplicator') ?></i></small>
 				</div>
 				<div class="dup-msg-success-links">
-					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'duplicator'));?> 
+					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'duplicator'));?>  &nbsp;
+					<?php printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create New', 'duplicator'));?> 
 				</div><br/>
 				
 				<!-- Used for iMacros testing do not remove -->

@@ -377,7 +377,7 @@ INSTALLER -->
 
 <div class="dup-button-footer">
     <input type="button" value="<?php _e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> onclick="Duplicator.Pack.ResetSettings()" />
-    <input type="submit" value="<?php _e("Next", 'duplicator') ?> &#9658;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> />
+    <input type="submit" value="<?php _e("Next", 'duplicator') ?> &#9654;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> />
 </div>
 
 </form>

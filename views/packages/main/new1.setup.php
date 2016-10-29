@@ -52,9 +52,9 @@ TOOL BAR: STEPS -->
         <td style="white-space: nowrap">
             <div id="dup-wiz">
                 <div id="dup-wiz-steps">
-                    <div class="active-step"><a><span>1</span> <?php _e('Setup', 'duplicator'); ?></a></div>
-                    <div><a><span>2</span> <?php _e('Scan', 'duplicator'); ?> </a></div>
-                    <div><a><span>3</span> <?php _e('Build', 'duplicator'); ?> </a></div>
+                    <div class="active-step"><a>1-<?php _e('Setup', 'duplicator'); ?></a></div>
+                    <div><a>2-<?php _e('Scan', 'duplicator'); ?> </a></div>
+                    <div><a>3-<?php _e('Build', 'duplicator'); ?> </a></div>
                 </div>
                 <div id="dup-wiz-title">
 					<?php _e('Step 1: Package Setup', 'duplicator'); ?>

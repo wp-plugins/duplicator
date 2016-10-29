@@ -8,15 +8,14 @@ if (! defined('DUPLICATOR_INIT')) {
 }
 
 //POST PARAMS
-$_POST['dbaction']		= isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
-$_POST['dbnbsp']		= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
-$_POST['dbmysqlmode']	= (isset($_POST['dbmysqlmode']) && $_POST['dbmysqlmode'] == '1') ? true : false;
-$_POST['ssl_admin']		= (isset($_POST['ssl_admin'])) ? true : false;
-$_POST['ssl_login']		= (isset($_POST['ssl_login'])) ? true : false;
-$_POST['cache_wp']		= (isset($_POST['cache_wp'])) ? true : false;
-$_POST['cache_path']	= (isset($_POST['cache_path'])) ? true : false;
-$_POST['package_name']	= isset($_POST['package_name']) ? $_POST['package_name'] : null;
-$_POST['zip_manual']	= (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
+$_POST['dbaction']			= isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
+$_POST['dbnbsp']			= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
+$_POST['ssl_admin']			= (isset($_POST['ssl_admin']))  ? true : false;
+$_POST['ssl_login']			= (isset($_POST['ssl_login']))  ? true : false;
+$_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
+$_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
+$_POST['package_name']		= isset($_POST['package_name']) ? $_POST['package_name'] : null;
+$_POST['zip_manual']		= (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -154,7 +153,7 @@ if ($_POST['zip_manual']) {
 }
 
 DUPX_Log::Info("********************************************************************************");
-DUPX_Log::Info('DUPLICATOR INSTALL-LOG');
+DUPX_Log::Info('DUPLICATOR-LITE INSTALL-LOG');
 DUPX_Log::Info('STEP1 START @ ' . @date('h:i:s'));
 DUPX_Log::Info('NOTICE: Do NOT post to public sites or forums');
 DUPX_Log::Info("********************************************************************************");
@@ -264,7 +263,7 @@ if (!is_readable($sql_result_file_path) || filesize($sql_result_file_path) == 0)
 
 DUPX_Log::Info("\nUPDATED FILES:");
 DUPX_Log::Info("- SQL FILE:  '{$sql_result_file_path}'");
-DUPX_Log::Info("- WP-CONFIG: '{$root_path}/wp-config.php'");
+DUPX_Log::Info("- WP-CONFIG: '{$root_path}/wp-config.php' (if present)");
 $zip_end = DUPX_Util::get_microtime();
 DUPX_Log::Info("\nARCHIVE RUNTIME: " . DUPX_Util::elapsed_time($zip_end, $zip_start));
 DUPX_Log::Info("\n");
@@ -278,20 +277,30 @@ DUPX_Util::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 //Will set mode to null only for this db handle session
 //sql_mode can cause db create issues on some systems
-if ($_POST['dbmysqlmode'])
-{
-	@mysqli_query($dbh, "SET SESSION sql_mode = ''");
+switch ($_POST['dbmysqlmode']) {
+    case 'DISABLE':
+        @mysqli_query($dbh, "SET SESSION sql_mode = ''");
+        break;
+    case 'CUSTOM':
+		$dbmysqlmode_opts = $_POST['dbmysqlmode_opts'];
+		$qry_session_custom = @mysqli_query($dbh, "SET SESSION sql_mode = '{$dbmysqlmode_opts}'");
+        if ($qry_session_custom == false) 
+		{
+			$sql_error = mysqli_error($dbh);
+			$log  = "WARNING: A custom sql_mode setting issue has been detected:\n{$sql_error}.\n";
+			$log .= "For more details visit: http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html\n";
+		}
+        break;
 }
 
-//Set defaults incase the variable could not be read
+//Set defaults in-case the variable could not be read
 $dbvar_maxtime		= DUPX_Util::mysql_variable_value($dbh, 'wait_timeout');
 $dbvar_maxpacks		= DUPX_Util::mysql_variable_value($dbh, 'max_allowed_packet');
 $dbvar_sqlmode		= DUPX_Util::mysql_variable_value($dbh, 'sql_mode');
 $dbvar_maxtime		= is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
 $dbvar_maxpacks		= is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
-$dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET' : $dbvar_sqlmode;
+$dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET'  : $dbvar_sqlmode;
 $dbvar_version		= DUPX_Util::mysql_version($dbh);
-$dbwarning_modes	= explode(',','NO_ENGINE_SUBSTITUTION,MYSQL323');
 
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info('DATABASE-ROUTINES');
@@ -304,12 +313,8 @@ DUPX_Log::Info("TIMEOUT:\t{$dbvar_maxtime}");
 DUPX_Log::Info("MAXPACK:\t{$dbvar_maxpacks}");
 DUPX_Log::Info("SQLMODE:\t{$dbvar_sqlmode}");
 
-
-if (in_array($dbvar_sqlmode, $dbwarning_modes)) 
+if ($qry_session_custom == false) 
 {
-	$log  = "WARNING: A sql_mode has been detected that may cause issues with this install.\n";
-	$log .= "Please use the advanced options in Step 1 to disable the sql_mode or disable it the my.ini file\n";
-	$log .= "For more details on this topic please visit: http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html\n";
 	DUPX_Log::Info("\n{$log}\n");
 }
 

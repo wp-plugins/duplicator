@@ -278,7 +278,7 @@ if (isset($_POST['action_ajax'])) {
 			<td style="white-space:nowrap">
 
 				<i style='font-size:11px; color:#999'>
-					version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?>&nbsp;&nbsp;<a href="installer.php?help=1" target="_blank">[Help]</a>
+					version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?>&nbsp;&nbsp;<a href="?help=1" target="_blank">[Help]</a>
 				</i> &nbsp;
 				
 			</td>

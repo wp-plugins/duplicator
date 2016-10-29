@@ -9,10 +9,8 @@ if (! defined('DUPLICATOR_INIT')) {
 
 /** * *****************************************************
  * Class used to update and edit web server configuration files  */
-
 class DUPX_ServerConfig {
 	
-
     /** 
      *  Clear .htaccess and web.config files and backup
      */
