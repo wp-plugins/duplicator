@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 1.1.20
+  Version: 1.1.21
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   Text Domain: duplicator
@@ -57,15 +57,17 @@ if (is_admin() == true) {
             $table_name = $wpdb->prefix . "duplicator_packages";
 
             //PRIMARY KEY must have 2 spaces before for dbDelta to work
+			//see: https://codex.wordpress.org/Creating_Tables_with_Plugins
             $sql = "CREATE TABLE `{$table_name}` (
-			   `id`			BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-			   `name`		VARCHAR(250)	NOT NULL,
-			   `hash`		VARCHAR(50)		NOT NULL,
-			   `status`		INT(11)			NOT NULL,
-			   `created`	DATETIME		NOT NULL DEFAULT '0000-00-00 00:00:00',
-			   `owner`		VARCHAR(60)		NOT NULL,
-			   `package`	MEDIUMBLOB		NOT NULL,
-			    KEY `hash` (`hash`))";
+			   id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			   name VARCHAR(250) NOT NULL,
+			   hash VARCHAR(50) NOT NULL,
+			   status INT(11) NOT NULL,
+			   created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+			   owner VARCHAR(60) NOT NULL,
+			   package MEDIUMBLOB NOT NULL,
+			   PRIMARY KEY  (id),
+			   KEY hash (hash))";
 
             require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
             @dbDelta($sql);
