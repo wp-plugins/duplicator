@@ -140,7 +140,10 @@ class DUP_Package {
 						  $db['Status']['Rows'],
 						  $db['Status']['Case']);
 		
-		$warn_counts = array_count_values($warnings);	
+		//array_count_values will throw a warning message if it has null values, 
+		//so lets replace all nulls with empty string
+		$warnings_safe = array_replace($warnings, array_fill_keys(array_keys($warnings, null),''));
+		$warn_counts   = is_array($warnings_safe) ? array_count_values($warnings_safe) : 0;	
 
 		$report['RPT']['Warnings'] = $warn_counts['Warn'];
 		$report['RPT']['Success']  = $warn_counts['Good'];
