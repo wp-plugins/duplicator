@@ -183,7 +183,7 @@ class DUP_Archive
         }
         else
         {
-            $this->Dirs = $this->dirsToArray($rootPath);
+			$this->Dirs = $this->dirsToArray($rootPath, $this->FilterDirsAll);
             $this->Dirs[] = $this->PackDir;
         }
 		
@@ -191,20 +191,11 @@ class DUP_Archive
 		//Invalid test contains checks for: characters over 250, invlaid characters, 
 		//empty string and directories ending with period (Windows incompatable)
 		foreach ($this->Dirs as $key => $val) 
-		{
-			//INSTANCE: Remove path filter directories
-            foreach ($this->FilterDirsAll as $item)
-            {
-                $trimmed_item = rtrim($item, '/');
-                if ($val == $trimmed_item || strstr($val, $trimmed_item . '/')) 
-				{
-                    unset($this->Dirs[$key]);
-                    continue 2;
-                }
-            }
-			
+		{		
 			//WARNING: Find OS items that may have issues
+			// was commented out in pro
 			$name = basename($val); 
+			
 			$warn_test  =  strlen($val) > 250 
 						|| preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name) 
 						|| trim($name) == "" 
@@ -279,9 +270,10 @@ class DUP_Archive
 	// - basic conclusion wait on the SPL libs untill after php 5.4 is a requiremnt
 	// - since we are in a tight recursive loop lets remove the utiltiy call DUP_Util::SafePath("{$path}/{$file}") and 
 	//   squeeze out as much performance as we possible can
-	private function dirsToArray($path) 
-	{
-		$items = array();
+	
+	private function dirsToArray($path, $filterDirsAll)
+    {
+        $items = array();
         $handle = @opendir($path);
         if ($handle)
         {
@@ -290,17 +282,35 @@ class DUP_Archive
                 if ($file != '.' && $file != '..')
                 {
 					$fullPath = str_replace("\\", '/', "{$path}/{$file}");
-                    if (is_dir($fullPath))
+
+					if (is_dir($fullPath))
                     {
-                        $items = array_merge($items, $this->dirsToArray($fullPath));
-                        $items[] = $fullPath;
+						$addDir = true;
+						
+						//Remove path filter directories
+						foreach ($filterDirsAll as $filterDir)
+						{
+							$trimmedFilterDir = rtrim($filterDir, '/');
+							
+							if ($fullPath == $trimmedFilterDir || strstr($fullPath, $trimmedFilterDir . '/')) 
+							{
+								$addDir = false;
+								break;
+							}														
+						}
+																				
+						if($addDir)
+						{
+							$items = array_merge($items, $this->dirsToArray($fullPath, $filterDirsAll));
+							$items[] = $fullPath;
+						}
                     }
                 }
             }
             closedir($handle);
         }
+		
         return $items;
-	}
-	
+    }
 }
 ?>
