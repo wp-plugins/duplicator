@@ -112,7 +112,7 @@ No.  Hopefully in future versions we will support MU
 == Changelog ==
 
 Please see the following url:
-http://lifeinthegrid.com/duplicator-log
+https://snapcreek.com/duplicator/docs/changelog/?lite
 
 
 
