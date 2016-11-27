@@ -79,6 +79,8 @@ class DUP_Package {
 	/**
 	 * Generates a scan report
 	 * @return array of scan results
+	 * 
+	 * @notes: Testing = /wp-admin/admin-ajax.php?action=duplicator_package_scan
 	 */
 	public function Scan() {
 		
@@ -141,10 +143,13 @@ class DUP_Package {
 						  $db['Status']['Case']);
 		
 		//array_count_values will throw a warning message if it has null values, 
-		//so lets replace all nulls with empty string
-		$warnings_safe = array_replace($warnings, array_fill_keys(array_keys($warnings, null),''));
-		$warn_counts   = is_array($warnings_safe) ? array_count_values($warnings_safe) : 0;	
-
+		//so lets replace all nulls with empty string		
+		foreach ($warnings as $i => $value) {
+				if (is_null($value)) {
+					$warnings[$i] = '';
+				}
+		}
+		$warn_counts = is_array($warnings) ? array_count_values($warnings) : 0;
 		$report['RPT']['Warnings'] = $warn_counts['Warn'];
 		$report['RPT']['Success']  = $warn_counts['Good'];
 		$report['RPT']['ScanTime'] = DUP_Util::ElapsedTime(DUP_Util::GetMicrotime(), $timerStart);
