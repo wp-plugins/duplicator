@@ -5,6 +5,76 @@
 	global $wp_version;
 	global $wpdb;
 	
+	class DUP_ScanChecker 
+	{
+		public $FileCount = 0;
+		public $DirCount = 0;
+		public $LimitReached = false;
+		public $MaxFiles = 1000000;
+		public $MaxDirs = 75000;
+		
+		public function GetDirContents($dir, &$results = array())
+		{
+			if ($this->FileCount > $this->MaxFiles || $this->DirCount > $this->MaxDirs) 
+			{	
+				$this->LimitReached = true;
+				return $results;
+			}
+			
+			$files = @scandir($dir);
+			if (is_array($files)) 
+			{
+				foreach($files as $key => $value)
+				{
+					$path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+					if ($path) {
+						if(!is_dir($path)) {
+							if (!is_readable($path))
+							{
+								$results[] = $path;
+							} 
+							else if ($this->_is_link($path)) 
+							{
+								$results[] = $path;
+							}
+							$this->FileCount++;
+						} 
+						else if($value != "." && $value != "..") 
+						{
+							if (! $this->_is_link($path)) 
+							{
+								$this->GetDirContents($path, $results);
+							}
+
+							if (!is_readable($path))
+							{
+								 $results[] = $path;
+							}
+							else if ($this->_is_link($path)) {
+								$results[] = $path;
+							}
+							$this->DirCount++;
+						}
+					}
+				}
+			}
+			return $results;
+		}
+		
+		//Supports windows and linux
+		private function _is_link($target) 
+		{ 
+			if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+				if(file_exists($target) && @readlink($target) != $target) {
+					return true;
+				}
+			} elseif (is_link($target)) {
+				return true;
+			}
+			return false;
+		}
+	}
+	
 	ob_start();
 	phpinfo();
 	$serverinfo = ob_get_contents();
@@ -28,14 +98,15 @@
 	$ui_css_srv_panel   = (isset($view_state['dup-settings-diag-srv-panel'])  && $view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
 	$ui_css_opts_panel  = (isset($view_state['dup-settings-diag-opts-panel']) && $view_state['dup-settings-diag-opts-panel'])  ? 'display:block' : 'display:none';
 	
-
+	$scan_run = (isset($_POST['action']) && $_POST['action'] == 'duplicator_recursion') ? true :false;
+			
 	$client_ip_address = DUP_Server::GetClientIP();
 	
 	//POST BACK
-	$action_updated = null;
 	if (isset($_POST['action'])) {
 		$action_result = DUP_Settings::DeleteWPOption($_POST['action']);
-		switch ($_POST['action']) {
+		switch ($_POST['action']) 
+		{
 			case 'duplicator_settings'		 : 	$action_response = __('Plugin settings reset.', 'duplicator');		break;
 			case 'duplicator_ui_view_state'  : 	$action_response = __('View state settings reset.', 'duplicator');	 break;
 			case 'duplicator_package_active' : 	$action_response = __('Active package settings reset.', 'duplicator'); break;		
@@ -281,6 +352,38 @@
 	</div> <!-- end .dup-box -->	
 	<br/>
 	
+	
+	<!-- ==============================
+	SCAN VALIDATOR -->
+	<div class="dup-box">
+		<div class="dup-box-title">
+			<i class="fa fa-check-square-o"></i>
+			<?php _e("Scan Validator", 'duplicator'); ?>
+			<div class="dup-box-arrow"></div>
+		</div>
+		<div class="dup-box-panel" style="display: <?php echo $scan_run ? 'block' : 'none';  ?>">	
+			<?php 
+				_e("This utility will help to find unreadable files and sys-links in your environment  that can lead to issues during the scan process.  ", "duplicator"); 
+				_e("The utility  will also show how many files and directories you have in your system.  This process may take several minutes to run.  ", "duplicator"); 
+				_e("If there is a recursive loop on your system then the process has a built in check to stop after a large set of files and directories have been scanned.  ", "duplicator"); 
+				_e("A message will show indicated that that a scan depth has been reached. ", "duplicator"); 
+			?> 
+			<br/><br/>
+				
+			<?php if ($scan_run) : ?>
+				<div id="duplicator-scan-results-1">
+					<i class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
+					<b style="font-size: 14px"><?php _e('Scan integrity validation detection is running please wait...', 'duplicator'); ?></b>
+					<br/><br/>
+				</div>
+			<?php else :?>
+				<button id="scan-run-btn" class="button button-large button-primary" onclick="Duplicator.Settings.Recursion()"><?php _e("Run Scan Integrity Validation", "duplicator"); ?></button>
+			<?php endif; ?>
+				
+		</div> 
+	</div> 
+	<br/>
+	
 	<!-- ==============================
 	PHP INFORMATION -->
 	<div class="dup-box">
@@ -290,20 +393,54 @@
 			<div class="dup-box-arrow"></div>
 		</div>
 		<div class="dup-box-panel" style="display:none">	
-
-		<div id="dup-phpinfo" style="width:95%">
-			<?php 	echo "<div id='dup-server-info-area'>{$serverinfo}</div>"; ?>
-		</div><br/>	
-
-		</div> <!-- end .dup-box-panel -->	
-	</div> <!-- end .dup-box -->	
-
+			<div id="dup-phpinfo" style="width:95%">
+				<?php echo "<div id='dup-server-info-area'>{$serverinfo}</div>"; ?>
+			</div><br/>	
+		</div> 
+	</div> 
+	<br/>
+	
+	<div id="duplicator-scan-results-2" style="display:none">
+		<?php
+			if ($scan_run) 
+			{
+				$ScanChecker = new DUP_ScanChecker();
+				$Files = $ScanChecker->GetDirContents(DUPLICATOR_WPROOTPATH);
+				$MaxFiles = number_format($ScanChecker->MaxFiles);
+				$MaxDirs= number_format($ScanChecker->MaxDirs);
+				
+				if ($ScanChecker->LimitReached) {
+					echo "<i style='color:red'>Recursion limit reached of {$MaxFiles} files &amp; {$MaxDirs} directories.</i> <br/>";
+				}
+				
+				echo "Dirs Scanned: " . number_format($ScanChecker->DirCount) . " <br/>";
+				echo "Files Scanned: " . number_format($ScanChecker->FileCount) . " <br/>";
+				echo "Found Items: <br/>";
+				
+				if (count($Files)) 
+				{
+					$count = 0;
+					foreach($Files as $file) 
+					{
+						$count++;
+						echo "&nbsp; &nbsp; &nbsp; {$count}. {$file} <br/>";
+					}
+				} else {
+					echo "&nbsp; &nbsp; &nbsp; No items found in scan <br/>";
+				}
+				
+				echo "<br/><a href='admin.php?page=duplicator-tools&tab=diagnostics'>" . __("Try Scan Again", "duplicator")  . "</a>";
+				
+			} 
+		?>
+	</div>
 </form>
 
 <script>	
 jQuery(document).ready(function($) {
 	
-	Duplicator.Settings.DeleteOption = function (anchor) {
+	Duplicator.Settings.DeleteOption = function (anchor) 
+	{
 		var key = $(anchor).text();
 		var result = confirm('<?php _e("Delete this option value", "duplicator"); ?> [' + key + '] ?');
 		if (! result) 	return;
@@ -312,6 +449,23 @@ jQuery(document).ready(function($) {
 		jQuery('#dup-settings-form').submit();
 	}
 	
+	Duplicator.Settings.Recursion = function() 
+	{
+		var result = confirm('<?php _e('This will run the scan validation check.  This may take several minutes.\nDo you want to Continue?', 'duplicator'); ?>');
+		if (! result) 	return;
+		
+		jQuery('#dup-settings-form-action').val('duplicator_recursion');
+		jQuery('#scan-run-btn').html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Running Please Wait...');
+		jQuery('#dup-settings-form').submit();
+		
+	}
+	
+	<?php 
+		if ($scan_run) {
+			echo "$('#duplicator-scan-results-1').html($('#duplicator-scan-results-2').html())";
+		}
+	?>
 });	
 </script>
+
 

@@ -203,9 +203,9 @@ VIEW: STEP 1- INPUT -->
     		    
     	<div style="line-height:28px; font-size:14px; padding:0px 0px 0px 30px; font-weight:normal">
     	    <b>Helpful Resources:</b><br/>
-    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-faq" target="_blank">Common FAQs</a> <br/>
-    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-guide" target="_blank">User Guide</a> <br/>
-    	    &raquo; <a href="http://lifeinthegrid.com/duplicator-hosts" target="_blank">Approved Hosts</a> <br/>
+    	    &raquo; <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">Common FAQs</a> <br/>
+    	    &raquo; <a href="https://snapcreek.com/duplicator/docs/guide/" target="_blank">User Guide</a> <br/>
+    	    &raquo; <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-040-q" target="_blank">Approved Hosts</a> <br/>
     	</div><br/>
 	
 	<!-- CHECKS: PASS -->
@@ -282,12 +282,12 @@ VIEW: STEP 1- INPUT -->
 
     	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
     	If your interested in Private Label Rights please contact us at the URL below to discuss
-    	customizations to product labeling: http://lifeinthegrid.com	-->
+    	customizations to product labeling: http://snapcreek.com	-->
     	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Need Setup Help...</b></a>
     	<div id='dup-step1-cpanel' style="display:none">
     	    <div style="padding:10px 0px 0px 10px;line-height:22px">
-    		&raquo; Check out the <a href="http://lifeinthegrid.com/duplicator-tutorials" target="_blank">video tutorials &amp; guides</a> <br/>
-    		&raquo; Get help from our <a href="http://lifeinthegrid.com/labs/duplicator/resources/" target="_blank">resources page</a>
+    		&raquo; Check out the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q" target="_blank">video tutorials &amp; guides</a> <br/>
+    		&raquo; Get help from our <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource" target="_blank">resources section</a>
     	    </div>
     	</div><br/><br/>
     		    
@@ -428,7 +428,7 @@ Auto Posts to view.step2.php  -->
 			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" onclick='Duplicator.hideErrorResult()' value="&laquo; Try Again" /><br/><br/>
-				<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket' target='_blank'>snapcreek.com</a></i>
 			</div>
 	    </div>
 	</div>
@@ -546,7 +546,7 @@ PANEL: SERVER CHECKS  -->
 	<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
 	<b>CDN Accessible:</b> <?php echo ( DUPX_Util::is_url_active("ajax.aspnetcdn.com", 443) && DUPX_Util::is_url_active("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> 
 	<br/><br/>
-	Need an <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>approved</a> Duplicator hosting provider?
+	Need an <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-040-q' target='_blank'>approved</a> Duplicator hosting provider?
 
 </div>
 </div>

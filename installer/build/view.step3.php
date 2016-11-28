@@ -129,7 +129,7 @@ VIEW: STEP 3- INPUT -->
 				setting to handle larger payloads. <br/>
 				
 				<b>Unknown collation:</b> The MySQL Version is too old see: 
-				<a href="https://lifeinthegrid.com/duplicator-faq" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a> 
+				<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a> 
 				<br/>
 			</div>
 		</div>
@@ -224,8 +224,8 @@ VIEW: STEP 3- INPUT -->
 		
 	<div class='s3-connect'>
 		<a href="installer.php?help=1#troubleshoot" target="_blank">Troubleshoot</a> | 
-		<a href='http://support.lifeinthegrid.com/knowledgebase.php' target='_blank'>FAQs</a> | 
-		<a href='http://lifeinthegrid.com/labs/duplicator/resources/' target='_blank'>Support</a>
+		<a href='https://snapcreek.com/duplicator/docs/faqs-tech/' target='_blank'>FAQs</a> | 
+		<a href='https://snapcreek.com/ticket' target='_blank'>Support</a>
 	</div><br/>
 </form>
 

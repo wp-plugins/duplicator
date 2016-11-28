@@ -10,7 +10,7 @@
 <!-- =========================================
 HELP FORM -->
 <div id="dup-main-help">
-	<div style="text-align:center">For in-depth help please see the <a href="http://lifeinthegrid.com/duplicator-docs" target="_blank">online resources</a></div>
+	<div style="text-align:center">For in-depth help please see the <a href="https://snapcreek.com/duplicator/docs/" target="_blank">online resources</a></div>
 
 	<h3>Step 1 - Deploy</h3>
 	<div id="dup-help-step1" class="dup-help-page">
@@ -221,7 +221,7 @@ HELP FORM -->
 			<div style="padding: 0px 10px 10px 10px;">		
 				<b>Common Quick Fix Issues:</b>
 				<ul>
-					<li>Use an <a href='http://lifeinthegrid.com/duplicator-hosts' target='_blank'>approved hosting provider</a></li>
+					<li>Use an <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-040-q' target='_blank'>approved hosting provider</a></li>
 					<li>Validate directory and file permissions (see below)</li>
 					<li>Validate web server configuration file (see below)</li>
 					<li>Clear your browsers cache</li>
@@ -256,7 +256,7 @@ HELP FORM -->
 		</fieldset>
 	</div>
 
-	<div style="text-align:center">For in-depth help please see the <a href="http://lifeinthegrid.com/duplicator-docs" target="_blank">online resources</a></div>
+	<div style="text-align:center">For in-depth help please see the <a href="https://snapcreek.com/duplicator/docs/" target="_blank">online resources</a></div>
 
 	<br/><br/>
 </div>

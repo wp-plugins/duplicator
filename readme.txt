@@ -15,7 +15,7 @@ Duplicate, clone, backup, move and transfer an entire site from one location to 
 
 Duplicator supports both serialized and base64 serialized string replacement.  If you need to move WordPress or backup WordPress this plugin can help simplify the process.
 
-For complete details visit [lifeinthegrid.com](http://lifeinthegrid.com/).  
+For complete details visit [snapcreek.com](http://snapcreek.com/).  
 
 = Quick Video Demo =
 http://www.youtube.com/watch?v=yZ7pHmR9JC8
@@ -77,11 +77,11 @@ The Duplicator requires php 5.3 or higher.
 
 = I'm having issues getting the plugin to work what should I do? =
 
-See the [FAQs](http://lifeinthegrid.com/duplicator-faq) page for a detailed rundown of common issues
+See the [FAQs](https://snapcreek.com/duplicator/docs/faqs-tech) page for a detailed rundown of common issues
 
 = Are there any videos I can watch? =
 
-Yes.  Please see the [tutorial section](http://lifeinthegrid.com/duplicator-tutorials] on the user guide for videos.
+Yes.  Please see the [tutorial section](https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q) on the user guide for videos.
 
 
 = Where can I get more information and support for this plugin? =

@@ -10,8 +10,8 @@ $package			= DUP_Package::GetByID($package_id);
 $err_found		    = ($package == null || $package->Status < 100);
 $link_log			= "{$package->StoreURL}{$package->NameHash}.log";
 $err_link_log		= "<a target='_blank' href='{$link_log}' >" . __('package log', 'duplicator') . '</a>';
-$err_link_faq		= '<a target="_blank" href="http://lifeinthegrid.com/duplicator-faq">' . __('FAQ', 'duplicator') . '</a>';		
-$err_link_ticket	= '<a target="_blank" href="http://lifeinthegrid.com/labs/duplicator/resources/">' . __('resources page', 'duplicator') . '</a>';	
+$err_link_faq		= '<a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/">' . __('FAQ', 'duplicator') . '</a>';		
+$err_link_ticket	= '<a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource">' . __('resources page', 'duplicator') . '</a>';	
 ?>
 
 <style>

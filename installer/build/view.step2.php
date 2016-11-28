@@ -290,7 +290,7 @@ VIEW: STEP 2 - AJAX RESULT  -->
 			<div id="ajaxerr-data">An unknown issue has occurred with the data replacement setup process.  Please see the installer-log.txt file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" onclick='Duplicator.hideErrorResult2()' value="&laquo; Try Again" /><br/><br/>
-				<i style='font-size:11px'>See online help for more details at <a href='http://lifeinthegrid.com/support' target='_blank'>support.lifeinthegrid.com</a></i>
+				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket' target='_blank'>snapcreek.com</a></i>
 			</div>
 		</div>
 	</div>

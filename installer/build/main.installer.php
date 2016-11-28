@@ -1,6 +1,6 @@
 <?php
 /*
-  Copyright 2011-16  lifeinthegrid.com
+  Copyright 2011-16  snapcreek.com
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -233,17 +233,17 @@ if (isset($_POST['action_ajax'])) {
 				<div style="font-size:22px; padding:5px 0px 0px 0px">
 					<!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
 					If your interested in Private Label Rights please contact us at the URL below to discuss
-					customizations to product labeling: http://lifeinthegrid.com	-->
+					customizations to product labeling: http://snapcreek.com	-->
 					&nbsp; Duplicator - Installer
 				</div>
 			</td>
 			<td style="white-space:nowrap; text-align:right">
 				<select id="dup-hlp-lnk">
 					<option value="null"> - Online Resources -</option>
-					<option value="http://lifeinthegrid.com/duplicator-docs">&raquo; Knowledge Base</option>
-					<option value="http://lifeinthegrid.com/duplicator-guide">&raquo; User Guide</option>
-					<option value="http://lifeinthegrid.com/duplicator-faq">&raquo; Common FAQs</option>
-					<option value="http://lifeinthegrid.com/duplicator-hosts">&raquo; Approved Hosts</option>
+					<option value="https://snapcreek.com/duplicator/docs/">&raquo; Knowledge Base</option>
+					<option value="https://snapcreek.com/duplicator/docs/guide/">&raquo; User Guide</option>
+					<option value="https://snapcreek.com/duplicator/docs/faqs-tech/">&raquo; Common FAQs</option>
+					<option value="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-040-q">&raquo; Approved Hosts</option>
 				</select>
 			</td>
 		</tr>

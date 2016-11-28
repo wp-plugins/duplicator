@@ -106,7 +106,7 @@ TOOL BAR: STEPS -->
 			
 				<i><?php _e('Please try the process again.', 'duplicator'); ?></i><br/><br/>
 				  
-				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'duplicator'); ?>" onclick="window.open('http://lifeinthegrid.com/support/knowledgebase.php?article=12#faq-trouble-timeout', '_blank');return false;" />
+				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'duplicator'); ?>" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q', '_blank');return false;" />
                 <input type="button" class="button" value="<?php _e('Try Again', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1'" />                                
 				<fieldset>
 					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'duplicator'); ?></b></legend>

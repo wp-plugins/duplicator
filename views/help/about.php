@@ -45,9 +45,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         <table style="width:825px">
             <tr>
                 <td style="width:90px">
-                    <a href="http://lifeinthegrid.com/labs/duplicator" target="_blank">
-                        <img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-box.png" style='text-align:top; margin:0'  />
-                    </a>
+                    <img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-box.png" style='text-align:top; margin:0'  />
                 </td>
                 <td valign="top" style="padding-top:10px; font-size:14px">
                     <?php
@@ -97,7 +95,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             <div class="dup-support-hlp-txt">
                 <?php
                 $title = __("Duplicate Your WordPress", 'duplicator');
-                $summary = __("Rapid WordPress Duplication by LifeInTheGrid.com", 'duplicator');
+                $summary = __("Rapid WordPress Duplication by snapcreek.com", 'duplicator');
                 $share_this_data = "st_url='" . DUPLICATOR_HOMEPAGE . "' st_title='{$title}' st_summary='{$summary}'";
                 ?>
                 <div style="width:100%; padding:20px 10px 0px 10px" align="center">

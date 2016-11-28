@@ -163,12 +163,6 @@ $_GET['a'] = isset($_GET['a']) ? $_GET['a'] : -1;
 <script type="text/javascript">
     jQuery(document).ready(function($) 
 	{
-
-        Duplicator.OpenSupportWindow = function() {
-            var url = 'http://lifeinthegrid.com/duplicator/resources/';
-            window.open(url, 'litg');
-        }
-
         //ATTACHED EVENTS
         jQuery('#dup-perks-kb-lnks').change(function() {
             if (jQuery(this).val() != "null")
