@@ -55,7 +55,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                     <option value="https://snapcreek.com/duplicator/docs/quick-start/"><?php _e('Quick Start', 'duplicator') ?></option>
                     <option value="https://snapcreek.com/duplicator/docs/guide/"><?php _e('User Guide', 'duplicator') ?></option>
                     <option value="https://snapcreek.com/duplicator/docs/faqs-tech/"><?php _e('FAQs', 'duplicator') ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/faqs-tech/?lite"><?php _e('Change Log', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/changelog/?lite"><?php _e('Change Log', 'duplicator') ?></option>
                 </select>
             </div>
         </div>
