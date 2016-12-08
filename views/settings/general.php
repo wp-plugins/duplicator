@@ -153,8 +153,22 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                         <?php
                         _e("This server does not have shell_exec configured to run.", 'duplicator');
                         echo '<br/>';
-                        _e("Please contact the server administrator to enable this feature.", 'duplicator');
+                        _e("Contact the server administrator to enable this feature.", 'duplicator');
                         ?>
+						<br/>
+						<small>
+							<i style="cursor: pointer" 
+								data-tooltip-title="<?php _e("Host Recommendation:", 'duplicator'); ?>" 
+								data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
+							<i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+								<?php
+									printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+										__("Please visit our recommended", 'duplicator'), 
+										__("host list", 'duplicator'),
+										__("for reliable access to mysqldump", 'duplicator'));
+								?>
+							</i>
+						</small>
                     </p>
                 <?php else : ?>
                     <input type="radio" name="package_dbmode" value="mysql" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
@@ -165,12 +179,12 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 							<small>
 								<i style="cursor: pointer" 
 									data-tooltip-title="<?php _e("Host Recommendation:", 'duplicator'); ?>" 
-									data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from Bluehost.com', 'duplicator'); ?>">
+									data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
 								<i class="fa fa-lightbulb-o" aria-hidden="true"></i>
 									<?php
-										printf("%s <a target='_blank' href='//www.bluehost.com/track/snapcreek/?page=wordpress'>%s</a> %s",
-											__("Duplicator recommends ", 'duplicator'), 
-											__("Bluehost", 'duplicator'),
+										printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+											__("Please visit our recommended", 'duplicator'), 
+											__("host list", 'duplicator'),
 											__("for reliable access to mysqldump", 'duplicator'));
 									?>
 								</i>
