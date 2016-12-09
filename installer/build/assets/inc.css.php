@@ -123,9 +123,10 @@
 	table.s3-report-results,
 	table.s3-report-errs {border-collapse:collapse; border:1px solid #dfdfdf; }
 	table.s3-report-errs  td {text-align:center; width:33%}
-	table.s3-report-results th, table.s3-report-errs th {background-color:#efefef; padding:0px; font-size:12px; padding:0px}
-	table.s3-report-results td, table.s3-report-errs td {padding:0px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:11px}
+	table.s3-report-results th, table.s3-report-errs th {background-color:#efefef; padding:0px; font-size:14px; padding:0px}
+	table.s3-report-results td, table.s3-report-errs td {padding:0px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:12px}
 	table.s3-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
+	div.dup-step3-err-title {width:100%; background-color: #dfdfdf; font-weight: bold; margin:-5px 0 15px 0; padding:3px 0 1px 3px; border-radius: 4px; font-size:14px}
 
 	div.s3-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px;}
 	div.s3-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }

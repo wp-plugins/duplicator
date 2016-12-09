@@ -52,8 +52,8 @@ VIEW: STEP 3- INPUT -->
 			<td><a class="s3-final-btns" href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Show Report</a></td>
 			<td>
 				<i id="dup-step3-install-report-count">
-					<span data-bind="with: status.step1">Deploy Errors: (<span data-bind="text: query_errs"></span>)</span> &nbsp;
-					<span data-bind="with: status.step2">Update Notices: (<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
+					<span data-bind="with: status.step1">Deploy Results: (<span data-bind="text: query_errs"></span>)</span> &nbsp;
+					<span data-bind="with: status.step2">Update Results: (<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
 					<span data-bind="with: status.step2" style="color:#888"><b>General Notices:</b> (<span data-bind="text: warn_all"></span>)</span>
 				</i>
 			</td>
@@ -117,7 +117,8 @@ VIEW: STEP 3- INPUT -->
 		
 		
 		<div id="dup-step3-errs-create" class="s3-err-msg">
-			<b data-bind="with: status.step1">STEP 1: DEPLOY ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
+			<div class="dup-step3-err-title">STEP 1 DEPLOY RESULTS</div>
+			<b data-bind="with: status.step1">DEPLOY ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
 			<div class="info-error">
 				Queries that error during the deploy step are logged to the <a href="installer-log.txt" target="_blank">install-log.txt</a> file  and marked '**ERROR**'. 
 				<br/><br/>  
@@ -136,9 +137,9 @@ VIEW: STEP 3- INPUT -->
 		
 
 		<div id="dup-step3-errs-upd" class="s3-err-msg">
-		
+			<div class="dup-step3-err-title">STEP 2 UPDATE RESULTS</div>
 			<!-- MYSQL QUERY ERRORS -->
-			<b data-bind="with: status.step2">STEP2: UPDATE ERRORS (<span data-bind="text: errsql_sum"></span>) </b><br/>
+			<b data-bind="with: status.step2">UPDATE ERRORS (<span data-bind="text: errsql_sum"></span>) </b><br/>
 			<div class="info-error">
 				Update errors that show here are queries that could not be performed because the database server being used has issues running it.  Please validate the query, if
 				it looks to be of concern please try to run the query manually.  In many cases if your site performs well without any issues you can ignore the error.			
