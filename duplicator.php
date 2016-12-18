@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 1.1.25
+  Version: 1.1.26
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   Text Domain: duplicator
@@ -12,7 +12,7 @@
  */
 
 /* ================================================================================ 
-  Copyright 2011-2013  Cory Lamle
+  Copyright 2011-2017  Cory Lamle
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
