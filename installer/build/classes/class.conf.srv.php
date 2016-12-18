@@ -17,20 +17,21 @@ class DUPX_ServerConfig {
     static public function Reset() {
 		
 		DUPX_Log::Info("\nWEB SERVER CONFIGURATION FILE RESET:");
+		$timeStamp = date("ymdHis");
 
 		//Apache
-		@copy('.htaccess', '.htaccess.orig');
+		@copy('.htaccess', ".htaccess.{$timeStamp}.orig");
 		@unlink('.htaccess');
 		
 		//IIS
-		@copy('web.config', 'web.config.orig');
+		@copy('web.config', "web.config.{$timeStamp}.orig");
 		@unlink('web.config');
 
 		//.user.ini - For WordFence
-		@copy('.user.ini', '.user.ini.orig');
+		@copy('.user.ini', ".user.ini.{$timeStamp}.orig");
 		@unlink('.user.ini');
 		
-		DUPX_Log::Info("- Backup of .htaccess/web.config made to .orig");
+		DUPX_Log::Info("- Backup of .htaccess/web.config made to *.{$timeStamp}.orig");
 		DUPX_Log::Info("- Reset of .htaccess/web.config files");
 		$tmp_htaccess = '# RESET FOR DUPLICATOR INSTALLER USEAGE';
 		file_put_contents('.htaccess', $tmp_htaccess);

@@ -131,8 +131,8 @@
 	
 	Duplicator.showDeleteWarning = function () {
 		($('#dbaction-empty').prop('checked')) 
-			? $('#dup-step1-warning-emptydb').show(300)
-			: $('#dup-step1-warning-emptydb').hide(300);
+			? $('#dup-s1-warning-emptydb').show(300)
+			: $('#dup-s1-warning-emptydb').hide(300);
 	};
 	
 	Duplicator.togglePort = function () {
@@ -144,7 +144,7 @@
 	
 	//DOCUMENT LOAD
 	$(document).ready(function() {
-		$('#dup-step1-dialog-data').appendTo('#dup-step1-result-container');
+		$('#dup-s1-dialog-data').appendTo('#dup-s1-result-container');
 		$( "input[name='dbaction']").click(Duplicator.showDeleteWarning);
 		Duplicator.acceptWarning();
 		Duplicator.showDeleteWarning();		
@@ -173,12 +173,6 @@ VIEW: STEP 1- INPUT -->
 	<input type="hidden" name="action_step" value="1" />
 	<input type="hidden" name="package_name"  value="<?php echo $zip_name ?>" />
 	
-	<!--div class="dup-logfile-link">
-		<select name="logging" id="logging">
-		    <option value="1" selected="selected">Light Logging</option>
-		    <option value="2">Detailed Logging</option>
-		</select>
-	</div-->
 	<div class="hdr-main">
 		Step 1: Deploy Files &amp; Database
 	</div>
@@ -192,7 +186,7 @@ VIEW: STEP 1- INPUT -->
 				<div class="dup-box-arrow"></div>
 			</div>
 			<div class="dup-box-panel" style="display:none">	
-				<div id="dup-step1-result-container"></div>
+				<div id="dup-s1-result-container"></div>
 			</div> 
 		</div><br/>
 	
@@ -211,18 +205,17 @@ VIEW: STEP 1- INPUT -->
 	<!-- CHECKS: PASS -->
 	<?php else : ?>	
 	
-	
 		<div class="dup-box">
 			<div class="dup-box-title">
 				<div id="system-circle" class="circle-pass"></div> &nbsp; Requirements: Pass
 				<div class="dup-box-arrow"></div>
 			</div>
 			<div class="dup-box-panel" style="display:none">	
-				<div id="dup-step1-result-container"></div>
+				<div id="dup-s1-result-container"></div>
 			</div> 
 		</div><br/>
 	
-    	<div class="title-header">
+    	<div class="hdr-sub">
     	    MySQL Database
     	</div>
     	<table class="s1-opts">
@@ -283,70 +276,88 @@ VIEW: STEP 1- INPUT -->
     	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
     	If your interested in Private Label Rights please contact us at the URL below to discuss
     	customizations to product labeling: http://snapcreek.com	-->
-    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b>Need Setup Help...</b></a>
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b style="font-size: 14px">Need Setup Help...</b></a>
     	<div id='dup-step1-cpanel' style="display:none">
     	    <div style="padding:10px 0px 0px 10px;line-height:22px">
     		&raquo; Check out the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q" target="_blank">video tutorials &amp; guides</a> <br/>
-    		&raquo; Get help from our <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource" target="_blank">resources section</a>
+    		&raquo; Get help from our <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">resources section</a>
     	    </div>
     	</div><br/><br/>
     		    
-    	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b>Advanced Options...</b></a>
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b style="font-size:14px">Advanced Options...</b></a>
     	<div id='dup-step1-adv-opts' style="display:none">
-			<table class="s1-opts">
-				<tr><td><input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label></td></tr>
-				<tr><td><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td></tr>
-			</table>
+
+			<!-- GENERAL -->
+			<div class="s1-advopts-section">
+				<div class="hdr-sub">General</div>
+				<table class="s1-opts s1-advopts">
+					<tr>
+						<td>Extraction</td>
+						<td colspan="2">
+							<input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label><br/>
+						</td>
+					</tr>
+					<tr>
+						<td>Logging</td>
+						<td colspan="2">
+							<input type="radio" name="logging" id="logging-light" value="1" checked="true"> <label for="logging-light">Light</label> &nbsp; 
+							<input type="radio" name="logging" id="logging-detailed" value="2"> <label for="logging-detailed">Detailed</label> &nbsp; 
+							<input type="radio" name="logging" id="logging-debug" value="3"> <label for="logging-debug">Debug</label>
+						</td>
+					</tr>	
+					<tr>
+						<td>WP-Config Cache</td>
+						<td style="width:125px"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Enabled</label></td>
+						<td><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Home Path</label></td>
+					</tr>	
+					<tr>
+						<td>WP-Config SSL</td>
+						<td><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce on Admin</label></td>
+						<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
+					</tr>
+				</table>
+			</div>				
 			
+			<!-- MYSQL -->
+			<div class="s1-advopts-section">
+				<div class="hdr-sub">MySQL</div>			
+				<table class="s1-opts s1-advopts">
+					<tr>
+						<td>Spacing</td>
+						<td colspan="2">
+							<input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label>
+						</td>
+					</tr>				
+					<tr>
+						<td style="vertical-align:top">Mode</td>
+						<td colspan="2">
+							<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
+							<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
+							<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
+							<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
+								<input type="text" name="dbmysqlmode_opts" value="" /><br/>
+								<small>Separate additional <a href="?help#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
+									Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
+							</div>
+						</td>
+					</tr>				
+					<tr><td style="width:130px">Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
+					<tr><td>Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+				</table>
+			</div>
 			
-    	    <table class="s1-opts s1-advopts">
-				<tr>
-					<td>Logging</td>
-					<td colspan="2">
-						<input type="radio" name="logging" id="logging-light" value="1" checked="true"> <label for="logging-light">Light</label> &nbsp; 
-						<input type="radio" name="logging" id="logging-detailed" value="2"> <label for="logging-detailed">Detailed</label> &nbsp; 
-						<input type="radio" name="logging" id="logging-debug" value="3"> <label for="logging-debug">Debug</label>
-					</td>
-				</tr>	
-				<tr>
-					<td>Config Cache</td>
-					<td style="width:125px"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Enabled</label></td>
-					<td><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Home Path</label></td>
-				</tr>	
-				<tr>
-					<td>Config SSL</td>
-					<td><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce on Admin</label></td>
-					<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
-				</tr>		
-				<tr>
-					<td style="vertical-align:top">MySQL Mode</td>
-					<td colspan="2">
-						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
-						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
-						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
-						<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
-							<input type="text" name="dbmysqlmode_opts" value="" /><br/>
-							<small>Separate additional <a href="?help#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
-								Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
-						</div>
-					</td>
-				</tr>					
-    	    </table>
-			
-			<table class="s1-opts s1-advopts">
-				<tr><td style="width:130px">MySQL Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-				<tr><td>MySQL Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
-    	    </table>
-			<small><i>For an overview of these settings see the <a href="?help=1" target="_blank">help page</a></i></small><br/>
+			<div class="s1-advopts-help">
+				<small><i>For an overview of these settings see the <a href="?help=1" target="_blank">help page</a></i></small>
+			</div>
     	</div>
 		
 		
-		<div class="dup-step1-gopro">
+		<div class="dup-s1-gopro">
 			*Create the database and users <b>from the installer</b> with <a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step1&utm_campaign=duplicator_pro">Duplicator Pro!</a> - Requires cPanel.
 		</div>	
 
 		<!-- NOTICES  -->
-    	<div id="dup-step1-warning">
+    	<div id="dup-s1-warning">
     	    <b>WARNINGS &amp; NOTICES</b> 
     	    <p>
 				<b>Disclaimer:</b> 
@@ -376,9 +387,9 @@ VIEW: STEP 1- INPUT -->
 			</p><br/>
     	</div>
     		    
-    	<div id="dup-step1-warning-check">
+    	<div id="dup-s1-warning-check">
     	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
-			<div id="dup-step1-warning-emptydb">
+			<div id="dup-s1-warning-emptydb">
 				The remove action will delete <u>all</u> tables and data from the database!
 			</div>
     	</div><br/><br/>
@@ -437,8 +448,8 @@ Auto Posts to view.step2.php  -->
 
 <!-- =========================================
 PANEL: SERVER CHECKS  -->
-<div id="dup-step1-dialog" title="System Status" style="display:none">
-<div id="dup-step1-dialog-data" style="padding: 0px 10px 10px 10px;">
+<div id="dup-s1-dialog" title="System Status" style="display:none">
+<div id="dup-s1-dialog-data" style="padding: 0px 10px 10px 10px;">
 	
 	<div style="font-size:12px">
 		<b>Archive Name:</b> <?php echo $zip_name; ?> <br/>
@@ -456,7 +467,7 @@ PANEL: SERVER CHECKS  -->
 		<td class="<?php echo ($req01 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req01; ?></td>
 	</tr>
 	<tr>
-		<td colspan="2" id="dup-req-rootdir" class='dup-step1-dialog-data-details'>
+		<td colspan="2" id="dup-req-rootdir" class='dup-s1-dialog-data-details'>
 		<?php
 		echo "<i>Path: {$GLOBALS['CURRENT_ROOT_PATH']} </i><br/>";
 		printf("<b>[%s]</b> %s <br/>", $req01a, "Is Writable by PHP");
@@ -469,7 +480,7 @@ PANEL: SERVER CHECKS  -->
 		<td class="<?php echo ($req03 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req03; ?></td>
 	</tr>	
 	<tr>
-		<td colspan="2" id="dup-req-mysqli" class='dup-step1-dialog-data-details'>
+		<td colspan="2" id="dup-req-mysqli" class='dup-s1-dialog-data-details'>
 			The Duplicator needs the PHP mysqli extension installed to run properly.  This is a very common extension and can be easily installed by your
 			host or server administrator.  For more details see the <a href="http://us2.php.net/manual/en/mysqli.installation.php" target="_blank" >online overview</a>.
 		</td>
@@ -479,7 +490,7 @@ PANEL: SERVER CHECKS  -->
 		<td class="<?php echo ($req02 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req02; ?></td>
 	</tr>
 	<tr>
-		<td colspan="2" id="dup-req-safemode" class='dup-step1-dialog-data-details'>
+		<td colspan="2" id="dup-req-safemode" class='dup-s1-dialog-data-details'>
 			The Duplicator requires that PHP safe mode be turned off.  Safe mode is a very uncommon setting and can be easily turned off by your
 			host or server administrator.  For more details see the <a href="http://php.net/manual/en/features.safe-mode.php" target="_blank" >online overview</a>.
 		</td>
@@ -489,7 +500,7 @@ PANEL: SERVER CHECKS  -->
 		<td class="<?php echo ($req04 == 'Pass') ? 'dup-pass' : 'dup-fail' ?>"><?php echo $req04; ?> </td>
 	</tr>
 	<tr>
-		<td colspan="2" id="dup-req-phpver" class='dup-step1-dialog-data-details'>
+		<td colspan="2" id="dup-req-phpver" class='dup-s1-dialog-data-details'>
 			This server is currently running PHP version: <b><?php echo phpversion(); ?></b>. The Duplicator requires a version of 5.2.9+ or better. 
 			To upgrade your PHP version contact your host or server administrator.  
 		</td>

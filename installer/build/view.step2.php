@@ -144,8 +144,8 @@ VIEW: STEP 2- INPUT -->
 		Step 2: Update Files &amp; Database
 	</div><br />
 
-	<div class="title-header">Old Settings</div>
-	<table class="table-inputs-step2">
+	<div class="hdr-sub">Old Settings</div>
+	<table class="table-inputs-s2">
 		<tr valign="top">
 			<td style="width:80px">URL</td>
 			<td>
@@ -162,8 +162,8 @@ VIEW: STEP 2- INPUT -->
 		</tr>
 	</table>
 
-	<div class="title-header" style="margin-top:8px">New Settings</div>
-	<table class="table-inputs-step2">		
+	<div class="hdr-sub" style="margin-top:8px">New Settings</div>
+	<table class="table-inputs-s2">		
 		<tr>
 			<td style="width:80px">URL</td>
 			<td>
@@ -184,12 +184,12 @@ VIEW: STEP 2- INPUT -->
 		
 	<!-- ==========================
     ADVANCED OPTIONS -->
-	<a href="javascript:void(0)" onclick="$('#dup-step2-adv-opts').toggle(0)"><b>Advanced Options...</b></a>
-	<div id='dup-step2-adv-opts' style="display:none;">
+	<a href="javascript:void(0)" onclick="$('#dup-s2-adv-opts').toggle(0)"><b style="font-size:14px">Advanced Options...</b></a>
+	<div id='dup-s2-adv-opts' style="display:none;">
 		
 		<br/>
 		<div class="hdr-sub">Add New Admin Account</div>
-		<table class="table-inputs-step2" style="margin-top:7px">
+		<table class="table-inputs-s2" style="margin-top:7px">
 			<tr><td colspan="2"><i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i></td></tr>
 			<tr>
 				<td>Username </td>
@@ -217,7 +217,7 @@ VIEW: STEP 2- INPUT -->
 			<tr>
 				<td style="padding-right:10px">
 					Scan Tables
-					<div class="dup-step2-allnonelinks">
+					<div class="dup-s2-allnonelinks">
 						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',true);">[All]</a> 
 						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
@@ -232,7 +232,7 @@ VIEW: STEP 2- INPUT -->
 				</td>
 				<td valign="top">
 					Activate Plugins
-					<div class="dup-step2-allnonelinks">
+					<div class="dup-s2-allnonelinks">
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a> 
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />

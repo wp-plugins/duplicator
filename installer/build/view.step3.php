@@ -31,7 +31,7 @@ VIEW: STEP 3- INPUT -->
 		Step 3: Test Site
 	</div><br />
 	
-	<div class="title-header">
+	<div class="hdr-sub">
 		<div class="s3-final-title">FINAL STEPS!</div>
 	</div>
 		
@@ -100,7 +100,7 @@ VIEW: STEP 3- INPUT -->
 		</table>
 		
 		<table class='s3-report-errs' style="width:100%; border-top:none">
-			<tr><th colspan="4">Errors &amp; Warnings <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
+			<tr><th colspan="4">Report Details <br/> <i style="font-size:10px; font-weight:normal">(click links below to view details)</i></th></tr>
 			<tr>
 				<td data-bind="with: status.step1">
 					<a href="javascript:void(0);" onclick="$('#dup-step3-errs-create').toggle(400)">Step1: Deploy Results (<span data-bind="text: query_errs"></span>)</a><br/>

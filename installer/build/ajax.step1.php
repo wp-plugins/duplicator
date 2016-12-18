@@ -233,9 +233,11 @@ DUPX_ServerConfig::Reset();
 if (filesize("{$root_path}/database.sql") > 100000000) {
 	DUPX_Log::Info("\nWARNING: Database Script is larger than 100MB this may lead to PHP memory allocation issues on some budget hosts.");
 }
+
 $sql_file = file_get_contents('database.sql', true);
-if ($sql_file == false || strlen($sql_file) < 10) {
-	$sql_file = file_get_contents('installer-data.sql', true);
+if ($sql_file == false || strlen($sql_file) < 10) 
+{
+	$sql_file = file_get_contents($GLOBALS['SQL_FILE_NAME'], true);
 	if ($sql_file == false || strlen($sql_file) < 10) {
 		DUPX_Log::Info("ERROR: Unable to read from the extracted database.sql file .\nValidate the permissions and/or group-owner rights on directory '{$root_path}'\n");
 	}
@@ -243,18 +245,19 @@ if ($sql_file == false || strlen($sql_file) < 10) {
 
 //Complex Subject See: http://webcollab.sourceforge.net/unicode.html
 //Removes invalid space characters
-if ($_POST['dbnbsp']) {
-	DUPX_Log::Info("ran fix non-breaking space characters\n");
+if ($_POST['dbnbsp']) 
+{
+	DUPX_Log::Info("NOTICE: Ran fix non-breaking space characters\n");
 	$sql_file = preg_replace('/\xC2\xA0/', ' ', $sql_file);
 }
 
 //Write new contents to install-data.sql
-@chmod($sql_result_file_path, 0777);
 file_put_contents($GLOBALS['SQL_FILE_NAME'], $sql_file);
 
-$sql_result_file_data = explode(";\n", $sql_file);
+$sql_result_file_data	= explode(";\n", $sql_file);
 $sql_result_file_length = count($sql_result_file_data);
-$sql_result_file_path = "{$root_path}/{$GLOBALS['SQL_FILE_NAME']}";
+$sql_result_file_path	= "{$root_path}/{$GLOBALS['SQL_FILE_NAME']}";
+@chmod($sql_result_file_path, 0777);
 $sql_file = null;
 
 if (!is_readable($sql_result_file_path) || filesize($sql_result_file_path) == 0) {

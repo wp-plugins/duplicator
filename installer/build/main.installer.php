@@ -166,8 +166,8 @@ $_POST['dbcharset'] = isset($_POST['dbcharset'])  ? trim($_POST['dbcharset']) : 
 $_POST['dbcollate'] = isset($_POST['dbcollate'])  ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
 
 //GLOBALS
-$GLOBALS["SQL_FILE_NAME"] = "installer-data.sql";
-$GLOBALS["LOG_FILE_NAME"] = "installer-log.txt";
+$GLOBALS['SQL_FILE_NAME'] = "installer-data.sql";
+$GLOBALS['LOG_FILE_NAME'] = "installer-log.txt";
 $GLOBALS['SEPERATOR1'] = str_repeat("********", 10);
 $GLOBALS['LOGGING'] = isset($_POST['logging']) ? $_POST['logging'] : 1;
 $GLOBALS['CURRENT_ROOT_PATH'] = dirname(__FILE__);
