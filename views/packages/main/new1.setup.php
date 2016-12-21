@@ -61,13 +61,13 @@ TOOL BAR: STEPS -->
                 </div> 
             </div>	
         </td>
-        <td class="dup-toolbar-btns">
-            <a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'duplicator'); ?></a> &nbsp;
-            <span> <?php _e("Create New", 'duplicator'); ?></span>
+        <td>
+            <a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'duplicator'); ?></a>
+			<span> <?php _e("Create New", 'duplicator'); ?></span>
         </td>
     </tr>
 </table>	
-<hr style="margin-bottom:8px">
+<hr class="dup-toolbar-line">
 
 <?php if (!empty($action_response)) : ?>
     <div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>

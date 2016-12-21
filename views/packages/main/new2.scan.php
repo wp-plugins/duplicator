@@ -35,7 +35,7 @@
 	PROGRESS ARES-CHECKS */
 	div#dup-progress-area {text-align:center; max-width:650px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
 	div.dup-progress-title {font-size:22px; padding:5px 0 20px 0; font-weight: bold}
-	div#dup-msg-success {color:#18592A; padding:5px; text-align: left}	
+	div#dup-msg-success {padding:5px; text-align: left}	
 	div#dup-msg-success-subtitle {font-style: italic; margin:7px 0px}	
 	div#dup-msg-error {color:#A62426; padding:5px; max-width: 790px;}
 	div#dup-msg-error-response-text { max-height:500px; overflow-y:scroll; border:1px solid silver; border-radius:3px; padding:10px;background:#fff}
@@ -91,13 +91,13 @@ TOOL BAR: STEPS -->
 				</div> 
 			</div>	
 		</td>
-		<td class="dup-toolbar-btns">
-			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e('All Packages', 'duplicator'); ?></a> &nbsp;
+		<td>
+			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e('All Packages', 'duplicator'); ?></a> 
 			<span> <?php _e('Create New', 'duplicator'); ?></span>
 		</td>
 	</tr>
 </table>		
-<hr style="margin-bottom:10px">
+<hr class="dup-toolbar-line">
 
 
 <form id="form-duplicator" method="post" action="?page=duplicator&tab=new3">
@@ -226,7 +226,7 @@ TOOL BAR: STEPS -->
 		</div><!-- end .dup-panel -->
 		</div><!-- end .dup-panel-panel -->
 	
-		<h2 style="font-size:18px; font-weight:bold; margin:-15px 0 0 10px"><i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'duplicator');?> </h2>
+		<h2 style="font-size:18px; font-weight:bold; margin:-10px 0 5px 10px"><i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'duplicator');?> </h2>
 		
 		<!-- ================================================================
 		FILES
@@ -351,7 +351,6 @@ TOOL BAR: STEPS -->
 					</div>	
 				<?php endif;  ?>	
 			</div><!-- end .dup-panel -->
-			<br/>
 
 			<!-- ================================================================
 			DATABASE

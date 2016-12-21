@@ -42,13 +42,13 @@ TOOL BAR: STEPS -->
 				</div> 
 			</div>
 		</td>
-		<td class="dup-toolbar-btns">
+		<td>
 			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'duplicator'); ?></a> &nbsp;
 			<span> <?php _e("Create New", 'duplicator'); ?></span>
 		</td>
 	</tr>
 </table>		
-<hr style="margin-bottom:10px">
+<hr class="dup-toolbar-line">
 
 
 <form id="form-duplicator" method="post" action="?page=duplicator">
@@ -90,7 +90,7 @@ TOOL BAR: STEPS -->
 					<small><i><?php _e("click buttons to download", 'duplicator') ?></i></small>
 				</div>
 				<div class="dup-msg-success-links">
-					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'duplicator'));?>  &nbsp;
+					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'duplicator'));?>
 					<?php printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create New', 'duplicator'));?> 
 				</div><br/>
 				
