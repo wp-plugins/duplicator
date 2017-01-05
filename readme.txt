@@ -83,7 +83,7 @@ Yes.  Please see the [video section](https://snapcreek.com/duplicator/docs/faqs-
 
 = Is this plugin compatible with WordPress Multi-Site (MU)? =
 
-No.  However the Pro version does have minor support for MU
+No.  However the Pro version can duplicate entire Multisite networks.
 
 = Where can I get more help and support for this plugin? =
 
