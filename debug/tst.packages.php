@@ -1,14 +1,16 @@
-<div class="section-hdr">PACKAGE CONTROLLERS</div>
+<div class="section-hdr">PACKAGE CTRLS</div>
 
 <?php 
-	$ctrl_key = 'duplicator_package_scan'; 
-	$ctrl_testable = false;
+	$CTRL['Title']   = 'duplicator_package_scan';
+	$CTRL['Action']  = 'duplicator_package_scan'; 
+	$CTRL['Test']	 = false;
 ?>
-<form action="admin-ajax.php" method="post" target="duplicator_debug" class="<?php echo $ctrl_testable ? 'testable' : 'not-testable';?>" >
+<form action="admin-ajax.php" method="post" target="duplicator_debug" class="<?php echo $CTRL['Test'] ? 'testable' : 'not-testable';?>" >
 
-	<?php DUP_DEBUG_Make_Keys($ctrl_key, $ctrl_testable); ?>
+	<?php DUP_DEBUG_Make_Keys($CTRL); ?>
 
 	<div class="params">
+		No Params
 	</div>
 
 </form>

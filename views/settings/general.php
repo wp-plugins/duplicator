@@ -219,10 +219,10 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             </td>
         </tr>	
         <tr>
-            <th scope="row"><label><?php _e("Package Debug", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Debugging", 'duplicator'); ?></label></th>
             <td>
                 <input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
-                <label for="package_debug"><?php _e("Show Package Debug Status in Packages Screen", 'duplicator'); ?></label>
+                <label for="package_debug"><?php _e("Enable debug options throughout user interface", 'duplicator'); ?></label>
             </td>
         </tr>	
 

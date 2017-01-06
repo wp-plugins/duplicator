@@ -5,18 +5,22 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 
-function DUP_DEBUG_Make_Keys($key, $test = true) 
+function DUP_DEBUG_Make_Keys($CTRL) 
 {
-	$nonce = wp_create_nonce($key);
-	$test = $test ? '' : 'style="display:none"';
+	$title	= $CTRL['Title'];
+	$action = $CTRL['Action'];
+	$test   = $CTRL['Test'] ? '' : 'style="display:none"';
+	$nonce = wp_create_nonce($action);
+	
 	$html = <<<EOT
 		<div class="keys">
-			<input type="hidden" name="action" value="{$key}" />
+			<input type="hidden" name="action" value="{$action}" />
 			<input type="hidden" name="nonce" value="{$nonce}" />
 			<span class="result"><i class="fa fa-cube  fa-lg"></i></span>
-			<input type='checkbox' id='{$key}' name='{$key}' {$test} /> 
-			<label for='{$key}'>{$key}</label>
-			<a href="javascript:void(0)" onclick="jQuery(this).closest('form').submit()">[Manual Test]</a>
+			<input type='checkbox' id='{$action}' name='{$action}' {$test} /> 
+			<label for='{$action}'>{$title}</label> &nbsp;
+			<a href="javascript:void(0)" onclick="jQuery(this).closest('form').find('div.params').toggle()">Params</a> |
+			<a href="javascript:void(0)" onclick="jQuery(this).closest('form').submit()">Test</a>
 		</div>
 EOT;
 	echo $html;
@@ -25,8 +29,6 @@ EOT;
 ?>
 <style>
 	div.debug-area {line-height: 26px}
-
-	
 	table.debug-toolbar {width:100%; border: 1px solid silver; border-radius: 5px; background: #dfdfdf; margin: 3px 0 0 -5px }
 	table.debug-toolbar td {padding:3px; white-space: nowrap}
 	table.debug-toolbar td:last-child {width: 100%}
@@ -37,6 +39,7 @@ EOT;
 	div.debug-area input[type=text] {width:400px}
 	
 	div.section-hdr {margin: 25px 0 0 0; font-size: 18px; font-weight: bold}
+	div.params {display:none}
 	i.result-pass {color:green}
 	i.result-fail {color:red}
 </style>
@@ -48,9 +51,13 @@ EOT;
 	<table class="debug-toolbar">
 		<tr>
 			<td>
-				<i class="fa fa-cube fa-lg"></i> <input id="test-checkall" type="checkbox" onclick="Duplicator.Debug.CheckAllTests()"> 
+				<span id="results-all"><i class="fa fa-cube fa-lg"></i></span> 
+				<input id="test-checkall" type="checkbox" onclick="Duplicator.Debug.CheckAllTests()"> 
 			</td>
-			<td><input type="button" class="button button-small" value="<?php _e('Run Tests', 'duplicator'); ?>" onclick="Duplicator.Debug.RunTests()" /></td>
+			<td>
+				<input type="button" class="button button-small" value="<?php _e('Run Tests', 'duplicator'); ?>" onclick="Duplicator.Debug.RunTests()" />
+				<input type="button" class="button button-small" value="<?php _e('Refresh Tests', 'duplicator'); ?>" onclick="window.location.reload();" />
+			</td>
 		</tr>
 	</table>
 
@@ -65,23 +72,29 @@ EOT;
 <script>	
 jQuery(document).ready(function($) 
 {
+	var STATUS_PASS;
+	var STATUS_CHKS;
+	var STATUS_RUNS;
+	
 	Duplicator.Debug.RunTests = function() 
 	{
+		STATUS_PASS = true;
+		STATUS_RUNS = 0;
+		STATUS_CHKS = $("div.keys input[type='checkbox']:checked").length;
+
 		$("form.testable").each(function(index) 
 		{
 			var $form = $(this);
-			var $result  = $form.find('span.result');
-			var $title  = $form.find('div.keys label');
+			var $result = $form.find('span.result');
 			var $check  = $form.find('div.keys input[type="checkbox"]');
 			var input	= $form.serialize();
+			
+			//validate input
+			//console.log($form.serializeArray());
 
 			if ($check.is(':checked')) 
 			{
-				console.log('==============================================');
-				console.log('Starting Test: ' + $title.text() );
-				console.log('Passing Data: ');
-				console.log($form.serializeArray());
-				
+				$('#results-all').html('<i class="fa fa-cog fa-spin fa-fw fa-lg"></i>');
 				$result.html('<i class="fa fa-circle-o-notch fa-spin fa-fw fa-lg"></i>');
 				
 				$.ajax({
@@ -90,32 +103,38 @@ jQuery(document).ready(function($)
 					dataType: "json",
 					data: input,
 					success: function(data) { Duplicator.Debug.ProcessResult(data, $result) },
-					error: function(data) {console.log('error')},
-					done: function(data) {console.log('done')}
+					error: function(data) {},
+					done: function(data) {}
 				});
 			}
 		});
-		
 	}
 	
 	
 	Duplicator.Debug.ProcessResult = function(data, result) 
 	{	
+		STATUS_RUNS++;
 		var status = data.Report.Status || 0;
-		console.log(status);
+		
 		if (status > 0) {
 			result.html('<i class="fa fa-check-circle fa-lg result-pass"></i>');
 		} else {
+			STATUS_PASS = false;
 			result.html('<i class="fa fa-check-circle fa-lg result-fail"></i>');
 		}
-		console.log('Result:');
-		console.log(data);
+		
+		//Set after all tests have ran
+		if (STATUS_RUNS >= STATUS_CHKS) {
+			(STATUS_PASS)
+				? $('#results-all').html('<i class="fa fa-check-circle fa-lg result-pass"></i>')
+				: $('#results-all').html('<i class="fa fa-check-circle fa-lg result-fail"></i>');
+		}
 	}
 	
 	Duplicator.Debug.CheckAllTests = function() 
 	{
 		var checkAll = $('#test-checkall').is(':checked');
-		$("div.keys input[type='checkbox']").each(function() {
+		$("div.keys input[type='checkbox']:visible").each(function() {
 			(checkAll) 
 				? $(this).attr('checked', '1')
 				: $(this).removeAttr('checked');
