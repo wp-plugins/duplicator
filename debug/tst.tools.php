@@ -27,8 +27,8 @@
 	<form action="admin-ajax.php" method="post" target="duplicator_debug" class="<?php echo $CTRL['Test'] ? 'testable' : 'not-testable';?>" >
 		<?php DUP_DEBUG_Make_Keys($CTRL); ?>
 		<div class="params">
-			<label>Allow Recursion:</label>
-			<input type="checkbox" name="scan-recursive" checked="checked" /><br/>
+			<label>Recursion:</label> True
+			<input type="hidden" name="scan-recursive" value="true" /><br/>
 			<label>Search Path:</label> 
 			<input type="text" name="scan-path" value="<?php echo DUPLICATOR_WPROOTPATH ?>" /> <br/>
 		</div>
