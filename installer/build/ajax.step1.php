@@ -309,7 +309,7 @@ DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info('DATABASE-ROUTINES');
 DUPX_Log::Info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::Info("--------------------------------------");
-DUPX_Log::Info("SERVER ENVIROMENT");
+DUPX_Log::Info("SERVER ENVIRONMENT");
 DUPX_Log::Info("--------------------------------------");
 DUPX_Log::Info("MYSQL VERSION:\tThis Server: {$dbvar_version} -- Build Server: {$GLOBALS['FW_VERSION_DB']}");
 DUPX_Log::Info("TIMEOUT:\t{$dbvar_maxtime}");

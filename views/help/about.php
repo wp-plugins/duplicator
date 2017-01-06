@@ -49,7 +49,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 </td>
                 <td valign="top" style="padding-top:10px; font-size:14px">
                     <?php
-                    _e("Created for Admins, Developers and Designers the Duplicator can streamline your workflows and help you quickly clone a WordPress application.  Migrating a WordPress site manually can be very time consuming.  The Duplicator was made to help you speed up the migration process. Please help us to continue the development effort of this plugin.", 'duplicator');
+                    _e("Duplicator helps you streamlines your workflows and quickly clone a WordPress site. The plugin was made to help you speed up the migration process of moving a WordPress site. Please help us to continue in the development effort of this plugin with a 5 star.", 'duplicator');
                     ?>
                 </td>
             </tr>
@@ -110,11 +110,11 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         <br style="clear:both" /><br/>
 		
 		
-		<div style='margin: auto; text-align: center; margin-top: 20px'>
+		<!--div style='margin: auto; text-align: center; margin-top: 20px'>
 			<a href="http://lifeinthegrid.com/tools" target="_blank"  class="button button-large button-primary">
 				<i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Tools', 'duplicator') ?>...
 			</a>
-		</div>
+		</div-->
 
     </div>
 </div><br/><br/><br/><br/>

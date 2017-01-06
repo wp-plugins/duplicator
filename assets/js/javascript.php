@@ -8,6 +8,7 @@ Duplicator.UI		= new Object();
 Duplicator.Pack		= new Object();
 Duplicator.Settings = new Object();
 Duplicator.Tools	= new Object();
+Duplicator.Debug	= new Object();
 
 //GLOBAL CONSTANTS
 Duplicator.DEBUG_AJAX_RESPONSE = false;

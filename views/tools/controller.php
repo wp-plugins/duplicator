@@ -23,7 +23,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'logging';
     switch ($current_tab) {
         case 'logging': include('logging.php');
             break;
-		case 'diagnostics': include('diagnostics.php');
+		case 'diagnostics': include('diagnostics/main.php');
             break;
         case 'cleanup': include('cleanup.php');
             break;

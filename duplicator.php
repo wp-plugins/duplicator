@@ -4,8 +4,8 @@
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
   Version: 1.1.27
-  Author: LifeInTheGrid
-  Author URI: http://www.lifeinthegrid.com
+  Author: Snap Creek
+  Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
   Domain Path: /lang
   License: GPLv2 or later
@@ -44,6 +44,7 @@ if (is_admin() == true) {
     require_once 'classes/server.php';
     require_once 'classes/package.php';
     require_once 'views/actions.php';
+	require_once 'ctrls/ctrl.tools.php';
 
     /* ACTIVATION 
       Only called when plugin is activated */
@@ -119,10 +120,15 @@ if (is_admin() == true) {
     add_action('plugins_loaded', 'duplicator_update');
     add_action('admin_init', 'duplicator_init');
     add_action('admin_menu', 'duplicator_menu');
-    add_action('wp_ajax_duplicator_package_scan', 'duplicator_package_scan');
-    add_action('wp_ajax_duplicator_package_build', 'duplicator_package_build');
-    add_action('wp_ajax_duplicator_package_delete', 'duplicator_package_delete');
-    add_action('wp_ajax_DUP_UI_SaveViewStateByPost', array('DUP_UI', 'SaveViewStateByPost'));
+	//Controllers
+    add_action('wp_ajax_duplicator_package_scan',        'duplicator_package_scan');
+    add_action('wp_ajax_duplicator_package_build',		 'duplicator_package_build');
+    add_action('wp_ajax_duplicator_package_delete',		 'duplicator_package_delete');
+	
+    add_action('wp_ajax_DUP_CTRL_Tools_RunScanValidator', array('DUP_CTRL_Tools', 'RunScanValidator'));
+	add_action('wp_ajax_DUP_UI_SaveViewStateByPost',	  array('DUP_UI',		  'SaveViewStateByPost'));
+	
+	
     add_action('admin_notices', array('DUP_UI', 'ShowReservedFilesNotice'));
     add_action('plugins_loaded', 'duplicator_wpfront_integrate');
 
@@ -146,6 +152,7 @@ if (is_admin() == true) {
         wp_register_style('dup-plugin-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
 		wp_register_style('dup-jquery-qtip',DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.css', null, '2.2.1');
         /* JS */
+		wp_register_script('dup-handlebars', DUPLICATOR_PLUGIN_URL . 'assets/js/handlebars.min.js', array('jquery'), '4.0.6');
         wp_register_script('dup-parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley-standalone.min.js', array('jquery'), '1.1.18');
 		wp_register_script('dup-jquery-qtip', DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.js', array('jquery'), '2.2.1');
     }
@@ -154,20 +161,19 @@ if (is_admin() == true) {
     function duplicator_get_menu() {
         $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : 'duplicator';
         switch ($current_page) {
-            case 'duplicator': include('views/packages/controller.php');
+            case 'duplicator':			include('views/packages/controller.php');
                 break;
             case 'duplicator-settings': include('views/settings/controller.php');
                 break;
-            case 'duplicator-tools': include('views/tools/controller.php');
+            case 'duplicator-tools':	include('views/tools/controller.php');
                 break;
-            case 'duplicator-help': include('views/help/help.php');
+			case 'duplicator-debug':	include('debug/main.php');
                 break;
-            case 'duplicator-about': include('views/help/about.php');
+            case 'duplicator-help':		include('views/help/help.php');
+                break;
+            case 'duplicator-about':	include('views/help/about.php');
 				break;
-			case 'duplicator-perks': include('views/help/perks.php');
-                				
-                break;
-			case 'duplicator-gopro': include('views/help/gopro.php');
+			case 'duplicator-gopro':	include('views/help/gopro.php');
                 break;
 
         }
@@ -190,16 +196,16 @@ if (is_admin() == true) {
         $perms = apply_filters($wpfront_caps_translator, $perms);
 		$lang_txt = __('Packages', 'duplicator');
         $page_packages = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator', 'duplicator_get_menu');
+		
+		$perms = 'manage_options';
+        $perms = apply_filters($wpfront_caps_translator, $perms);
+		$lang_txt = __('Tools', 'duplicator');
+        $page_tools = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-tools', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
 		$lang_txt = __('Settings', 'duplicator');
         $page_settings = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-settings', 'duplicator_get_menu');
-
-        $perms = 'manage_options';
-        $perms = apply_filters($wpfront_caps_translator, $perms);
-		$lang_txt = __('Tools', 'duplicator');
-        $page_tools = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-tools', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
@@ -211,18 +217,22 @@ if (is_admin() == true) {
 		$lang_txt = __('About', 'duplicator');
         $page_about = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-about', 'duplicator_get_menu');
 
-		//$perms = 'manage_options';
-		//$lang_txt = __('Perks', 'duplicator');
-		//$perms = apply_filters($wpfront_caps_translator, $perms);
-		//$page_perks = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-perks', 'duplicator_get_menu');
-		
 		$perms = 'manage_options';
 		$lang_txt = __('Go Pro!', 'duplicator');
 		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_gopro = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
 		
-
+		$package_debug = DUP_Settings::Get('package_debug');
+		if ($package_debug != null && $package_debug == true)
+		{
+			$perms = 'manage_options';
+			$perms = apply_filters($wpfront_caps_translator, $perms);			
+			$lang_txt = __('Debug', 'duplicator');
+			$page_debug = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-debug', 'duplicator_get_menu');
+			add_action('admin_print_scripts-' . $page_debug, 'duplicator_scripts');
+			add_action('admin_print_styles-'  . $page_debug, 'duplicator_styles');
+		}
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
@@ -230,16 +240,14 @@ if (is_admin() == true) {
         add_action('admin_print_scripts-' . $page_help, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_about, 'duplicator_scripts');
-		//add_action('admin_print_scripts-' . $page_perks, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
-
+		
         //Apply Styles
         add_action('admin_print_styles-' . $page_packages, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_settings, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_help, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_about, 'duplicator_styles');
-		//add_action('admin_print_styles-' . $page_perks, 'duplicator_styles');
 		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
 		
     }
@@ -253,6 +261,7 @@ if (is_admin() == true) {
         wp_enqueue_script('jquery-ui-progressbar');
         wp_enqueue_script('dup-parsley');
 		wp_enqueue_script('dup-jquery-qtip');
+		
     }
 
     /**

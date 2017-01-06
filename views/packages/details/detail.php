@@ -25,7 +25,7 @@ $dbbuild_mode    = ($mysqldump_on) ? 'mysqldump (fast)' : 'PHP (slow)';
 	table.dup-dtl-data-tbl {width:100%}
 	table.dup-dtl-data-tbl tr {vertical-align: top}
 	table.dup-dtl-data-tbl tr:first-child td {margin:0; padding-top:0 !important;}
-	table.dup-dtl-data-tbl td {padding:0 6px 0 0; padding-top:15px !important;}
+	table.dup-dtl-data-tbl td {padding:0 6px 0 0; padding-top:10px !important;}
 	table.dup-dtl-data-tbl td:first-child {font-weight: bold; width:150px}
 	table.dup-sub-list td:first-child {white-space: nowrap; vertical-align: middle; width: 70px !important;}
 	table.dup-sub-list td {white-space: nowrap; vertical-align:top; padding:0 !important; font-size:12px}
@@ -120,15 +120,15 @@ GENERAL -->
 				<table class="dup-sub-list">
 					<tr>
 						<td><?php _e('Archive', 'duplicator') ?>: </td>
-						<td><?php echo $package->Archive->File ?></td>
+						<td><a href="<?php echo $link_archive ?>" target="_blank"><?php echo $package->Archive->File ?></a></td>
 					</tr>
 					<tr>
 						<td><?php _e('Installer', 'duplicator') ?>: </td>
-						<td><?php echo $package->Installer->File ?></td>
+						<td><a href="<?php echo $link_installer ?>" target="_blank"><?php echo $package->Installer->File ?></a></td>
 					</tr>
 					<tr>
 						<td><?php _e('Database', 'duplicator') ?>: </td>
-						<td><?php echo $package->Database->File ?></td>
+						<td><a href="<?php echo $link_sql ?>" target="_blank"><?php echo $package->Database->File ?></a></td>
 					</tr>
 				</table>
 				<?php endif; ?>
