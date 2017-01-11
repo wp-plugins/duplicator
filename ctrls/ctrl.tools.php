@@ -9,15 +9,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/scan.validator.php');
  * @package Dupicator\ctrls
  */
 class DUP_CTRL_Tools extends DUP_CTRL_Base
-{
-	 
-
-	 
-	public function __construct() 
-	{
-		
-	}
-	 
+{	 
 	/** 
      * Calls the ScanValidator and returns a JSON result
 	 * 
@@ -61,8 +53,6 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 			$result->ProcessError($exc);
 		}
     }
-	
-	
 	
 }
 ?>

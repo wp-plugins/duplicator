@@ -5,7 +5,8 @@ if ( ! defined('DUPLICATOR_VERSION') ) exit; // Exit if accessed directly
  * Helper Class for UI internactions
  * @package Dupicator\classes
  */
-class DUP_UI {
+class DUP_UI 
+{
 	
 	/**
 	 * The key used in the wp_options table
@@ -18,44 +19,13 @@ class DUP_UI {
 	 * @param string $key A unique key to define the ui element
 	 * @param string $value A generic value to use for the view state
      */
-	public static function SaveViewState($key, $value) {
-	   
+	public static function SaveViewState($key, $value) 
+	{
 		$view_state = array();
 		$view_state = get_option(self::$OptionsTableKey);
 		$view_state[$key] =  $value;
 		$success = update_option(self::$OptionsTableKey, $view_state);
-		
 		return $success;
-    }
-	
-	
-    /** 
-     * Saves the state of a UI element via post params
-	 * @return json result string
-	 * <code>
-	 * //JavaScript Ajax Request
-	 * Duplicator.UI.SaveViewStateByPost('dup-pack-archive-panel', 1);
-	 * 
-	 * //Call PHP Code
-	 * $view_state       = DUP_UI::GetViewStateValue('dup-pack-archive-panel');
-	 * $ui_css_archive   = ($view_state == 1)   ? 'display:block' : 'display:none';
-	 * </code>
-     */
-    public static function SaveViewStateByPost() {
-		
-		DUP_Util::CheckPermissions('read');
-		
-		$post  = stripslashes_deep($_POST);
-		$key   = esc_html($post['key']);
-		$value = esc_html($post['value']);
-		$success = self::SaveViewState($key, $value);
-		
-		//Show Results as JSON
-		$json = array();
-		$json['key']    = $key;
-		$json['value']  = $value;
-		$json['update-success'] = $success;
-		die(json_encode($json));
     }
 	
 	
@@ -63,7 +33,8 @@ class DUP_UI {
      *	Gets all the values from the settings array
 	 *  @return array Returns and array of all the values stored in the settings array
      */
-    public static function GetViewStateArray() {
+    public static function GetViewStateArray() 
+	{
 		return get_option(self::$OptionsTableKey);
 	}
 	
@@ -72,7 +43,8 @@ class DUP_UI {
 	  * @param type $searchKey The key to search on
 	  * @return string Returns the value of the key searched or null if key is not found
 	  */
-    public static function GetViewStateValue($searchKey) {
+    public static function GetViewStateValue($searchKey) 
+	{
 		$view_state = get_option(self::$OptionsTableKey);
 		if (is_array($view_state)) {
 			foreach ($view_state as $key => $value) {

@@ -219,7 +219,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             <td>
                 <input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
                 <label for="package_debug"><?php _e("Enable debug options throughout user interface", 'duplicator'); ?></label>
-				<p class="description"><?php  _e("After saving debug option please refresh page", 'duplicator'); ?></p>
+				<p class="description"><?php  _e("Refresh page after saving to show/hide Debug menu", 'duplicator'); ?></p>
             </td>
         </tr>	
 

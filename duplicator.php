@@ -7,12 +7,11 @@
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
-  Domain Path: /lang
   License: GPLv2 or later
  */
 
 /* ================================================================================ 
-  Copyright 2011-2017  Cory Lamle
+  Copyright 2011-2017  SnapCreek LLC
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -39,12 +38,13 @@ if (is_admin() == true) {
 
     require_once 'classes/logging.php';
     require_once 'classes/utility.php';
-    require_once 'classes/ui.php';
+    //require_once 'classes/ui.php';
     require_once 'classes/settings.php';
     require_once 'classes/server.php';
     require_once 'classes/package.php';
     require_once 'views/actions.php';
 	require_once 'ctrls/ctrl.tools.php';
+	require_once 'ctrls/ctrl.ui.php';
 
     /* ACTIVATION 
       Only called when plugin is activated */
@@ -126,10 +126,10 @@ if (is_admin() == true) {
     add_action('wp_ajax_duplicator_package_delete',		 'duplicator_package_delete');
 	
     add_action('wp_ajax_DUP_CTRL_Tools_RunScanValidator', array('DUP_CTRL_Tools', 'RunScanValidator'));
-	add_action('wp_ajax_DUP_UI_SaveViewStateByPost',	  array('DUP_UI',		  'SaveViewStateByPost'));
+	add_action('wp_ajax_DUP_CTRL_UI_SaveViewState',	      array('DUP_CTRL_UI',	  'SaveViewState'));
 	
 	
-    add_action('admin_notices', array('DUP_UI', 'ShowReservedFilesNotice'));
+    add_action('admin_notices',  array('DUP_UI', 'ShowReservedFilesNotice'));
     add_action('plugins_loaded', 'duplicator_wpfront_integrate');
 
     //FILTERS
