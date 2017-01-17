@@ -11,13 +11,21 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui.php');
 class DUP_CTRL_UI extends DUP_CTRL_Base
 {	 
 	
+	function __construct() 
+	{
+		add_action('wp_ajax_DUP_CTRL_UI_SaveViewState',	      array($this,	  'SaveViewState'));
+		add_action('wp_ajax_DUP_CTRL_UI_GetViewStateList',	  array($this,	  'GetViewStateList'));
+	}
+
+
 	/** 
      * Calls the SaveViewState and returns a JSON result
 	 * 
 	 * @param string $_POST['key']		A unique key that idetifies the state of the UI element
 	 * @param bool   $_POST['value']	The value to store for the state of the UI element
 	 * 
-	 * @notes: Testing = /wp-admin/admin-ajax.php?action=DUP_CTRL_UI_SaveViewState
+	 * @notes: Testing: See Testing Interface
+	 * URL = /wp-admin/admin-ajax.php?action=DUP_CTRL_UI_SaveViewState
 	 * 
 	 * <code>
 	 * //JavaScript Ajax Request
@@ -28,20 +36,13 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 	 * $ui_css_archive   = ($view_state == 1)   ? 'display:block' : 'display:none';
 	 * </code>
      */
-	public static function SaveViewState($post) 
+	public function SaveViewState($post) 
 	{
-		$post   = is_array($post) ? $post : array();
-		$post   = array_merge($_POST, $post);
-		$result = new DUP_CTRL_Result();
+		$post = $this->PostParamMerge($post);
+		$result = new DUP_CTRL_Result($this);
 	
 		try 
 		{
-			//SETUP		
-			DUP_Util::CheckPermissions('read');
-			//check_ajax_referer('DUP_CTRL_UI_SaveViewState', 'nonce');
-			header('Content-Type: application/json');
-			
-			//====================
 			//CONTROLLER LOGIC
 			$post  = stripslashes_deep($_POST);
 			$key   = esc_html($post['key']);
@@ -53,18 +54,48 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 			$payload['value']  = $value;
 			$payload['update-success'] = $success;
 			
-			//====================
 			//RETURN RESULT
 			$test = ($success) 
-					? DUP_CTRL_ResultStatus::SUCCESS
-					: DUP_CTRL_ResultStatus::FAILED;
-			$result->Process($payload, $test);			
+					? DUP_CTRL_Status::SUCCESS
+					: DUP_CTRL_Status::FAILED;
+			return $result->Process($payload, $test);			
 		} 
 		catch (Exception $exc) 
 		{
 			$result->ProcessError($exc);
 		}
     }
+	
+	/** 
+     * Returns a JSON list of all saved view state items
+	 * 
+	 * @notes: Testing: See Testing Interface
+	 * URL = /wp-admin/admin-ajax.php?action=DUP_CTRL_UI_GetViewStateList
+	 * 
+	 * <code>
+	 *	See SaveViewState()
+	 * </code>
+     */
+	public function GetViewStateList() 
+	{
+		$result = new DUP_CTRL_Result($this);
+		
+		try 
+		{
+			//CONTROLLER LOGIC
+			$payload = DUP_UI::GetViewStateArray();
+			
+			//RETURN RESULT
+			$test = (count($payload)) 
+					? DUP_CTRL_Status::SUCCESS
+					: DUP_CTRL_Status::FAILED;
+			return $result->Process($payload, $test);
+		} 
+		catch (Exception $exc) 
+		{
+			$result->ProcessError($exc);
+		}
+    }	
 	
 }
 ?>

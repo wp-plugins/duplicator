@@ -28,4 +28,18 @@
 		</div>
 	</form>
 	
+	
+	<!-- METHOD TEST -->
+	<form>
+		<?php 
+			$CTRL['Title']  = 'DUP_CTRL_UI_GetViewStateList';
+			$CTRL['Action'] = 'DUP_CTRL_UI_GetViewStateList'; 
+			$CTRL['Test']	= true;
+			DUP_DEBUG_TestSetup($CTRL); 
+		?>
+		
+		<div class="params">No Params</div>
+	</form>
+	
+	
 </div>

@@ -1,5 +1,16 @@
 <?php
 
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utility.php');
+
+//Enum used to define the various test statues 
+final class DUP_CTRL_Status
+{
+	const ERROR = -2;
+	const FAILED = -1;
+	const UNDEFINED = 0;
+	const SUCCESS = 1;
+}
+
 /**
  * Base class for all controllers
  * 
@@ -7,17 +18,30 @@
  */
 class DUP_CTRL_Base
 {
+	//Represents the name of the Nonce Action
+	public $Action;
+	
+	//The return type valiad options: PHP, JSON-AJAX, JSON
+	public $ReturnType = 'JSON-AJAX';
 
+	public function SetResponseType($type)
+	{
+		$opts = array('PHP', 'JSON-AJAX', 'JSON');
+		if (!in_array($type, $opts)) 
+		{
+			throw new Exception('The $type param must be one of the following: ' . implode(',', $opts) . ' for the following function [' . __FUNCTION__.']');
+		}
+		$this->ReturnType = $type;
+	}
+	
+	public function PostParamMerge($post)
+	{
+		$post   = is_array($post) ? $post : array();
+		return array_merge($_POST, $post);
+	}
 }
 
-//Enum used to define the various test statues 
-final class DUP_CTRL_ResultStatus
-{
-	const ERROR = -2;
-	const FAILED = -1;
-	const UNDEFINED = 0;
-	const SUCCESS = 1;
-}
+
 
 /**
  * A class structer used to report on controller methods
@@ -28,6 +52,7 @@ class DUP_CTRL_Report
 {
 	//Properties
 	public $RunTime;
+	public $ReturnType;
 	public $Results;
 	public $Status;
 }
@@ -45,24 +70,54 @@ class DUP_CTRL_Result
 {
 	//Properties
 	public $Report;
-	public $Payload = array();
-	
+	public $Payload;
+
 	private $time_start;
 	private $time_end;
+	private $CTRL;
 	
-	public function __construct() 
+	function __construct(DUP_CTRL_Base $CTRL_OBJ) 
 	{
-		$this->time_start = $this->microtimeFloat();
-		$this->Report   =  new DUP_CTRL_Report();
+		DUP_Util::CheckPermissions('read');
+		$this->time_start	= $this->microtimeFloat();
+		$this->CTRL			= $CTRL_OBJ;
+		
+		//Report Data
+		$this->Report		=  new DUP_CTRL_Report();
+		$this->Report->ReturnType = $CTRL_OBJ->ReturnType;
 	}
 	
-	public function Process($payload, $test = DUP_CTRL_ResultStatus::UNDEFINED) 
+	public function Process($payload, $test = DUP_CTRL_Status::UNDEFINED) 
 	{
-		$this->Payload[] = $payload;
-		$this->Report->Results = count($this->Payload);
+		if (is_array($this->Payload))
+		{
+			$this->Payload[] = $payload;
+			$this->Report->Results = count($this->Payload);
+		} else {
+			$this->Payload = $payload;
+			$this->Report->Results = 1;
+		}
+		
 		$this->Report->Status = $test;
 		$this->getProcessTime();
-		die(json_encode($this));
+		
+		switch ($this->CTRL->ReturnType) 
+		{
+			case 'JSON' :	
+				return json_encode($this);
+				break;
+			
+			case 'PHP' :
+				return $this;
+				break;			
+			
+			default:
+				if (!headers_sent())  {
+					header('Content-Type: application/json');
+				}
+				return die(json_encode($this));	
+				break;
+		}
 	}
 	
 	public function ProcessError($exception) 
@@ -72,7 +127,7 @@ class DUP_CTRL_Result
 		$payload['File']	= $exception->getFile();
 		$payload['Line']	= $exception->getLine();
 		$payload['Trace']	= $exception->getTraceAsString();
-		$this->Process($payload, DUP_CTRL_ResultStatus::ERROR);	
+		$this->Process($payload, DUP_CTRL_Status::ERROR);	
 		die(json_encode($this));
 	}
 	
@@ -87,6 +142,8 @@ class DUP_CTRL_Result
 		list($usec, $sec) = explode(" ", microtime());
 		return ((float)$usec + (float)$sec);
 	}
+	
+
 	
 }
 ?>

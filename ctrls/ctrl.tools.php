@@ -10,6 +10,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/scan.validator.php');
  */
 class DUP_CTRL_Tools extends DUP_CTRL_Base
 {	 
+		
+	function __construct() 
+	{
+		add_action('wp_ajax_DUP_CTRL_Tools_RunScanValidator', array($this, 'RunScanValidator'));
+	}
+	
 	/** 
      * Calls the ScanValidator and returns a JSON result
 	 * 
@@ -18,20 +24,15 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 	 * 
 	 * @notes: Testing = /wp-admin/admin-ajax.php?action=DUP_CTRL_Tools_RunScanValidator
      */
-	public static function RunScanValidator($post) 
+	public function RunScanValidator($post) 
 	{
-		$post   = is_array($post) ? $post : array();
-		$post   = array_merge($_POST, $post);
-		$result = new DUP_CTRL_Result();
+		$post = $this->PostParamMerge($post);
+		check_ajax_referer($post['action'], 'nonce');
+		
+		$result = new DUP_CTRL_Result($this);
 		 
 		try 
 		{
-			//SETUP		
-			DUP_Util::CheckPermissions('read');
-			check_ajax_referer('DUP_CTRL_Tools_RunScanValidator', 'nonce');
-			header('Content-Type: application/json');
-			
-			//====================
 			//CONTROLLER LOGIC
 			$path = isset($post['scan-path']) ? $post['scan-path'] : DUPLICATOR_WPROOTPATH;
 			if (!is_dir($path)) {
@@ -41,11 +42,10 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 			$scanner->Recursion = (isset($post['scan-recursive']) && $post['scan-recursive'] != 'false') ? true : false;
 			$payload = $scanner->Run($path);
 
-			//====================
 			//RETURN RESULT
 			$test = ($payload->FileCount > 0) 
-					? DUP_CTRL_ResultStatus::SUCCESS
-					: DUP_CTRL_ResultStatus::FAILED;
+					? DUP_CTRL_Status::SUCCESS
+					: DUP_CTRL_Status::FAILED;
 			$result->Process($payload, $test);			
 		} 
 		catch (Exception $exc) 

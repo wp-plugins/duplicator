@@ -8,10 +8,13 @@
 	global $wpdb;
 	
 	$action_response = null;
+	
+	$ctrl_ui = new DUP_CTRL_UI();
+	$ctrl_ui->SetResponseType('PHP');
+	$data = $ctrl_ui->GetViewStateList();
 
-	$view_state = DUP_UI::GetViewStateArray();
-	$ui_css_srv_panel   = (isset($view_state['dup-settings-diag-srv-panel'])  && $view_state['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
-	$ui_css_opts_panel  = (isset($view_state['dup-settings-diag-opts-panel']) && $view_state['dup-settings-diag-opts-panel'])  ? 'display:block' : 'display:none';
+	$ui_css_srv_panel   = (isset($data->Payload['dup-settings-diag-srv-panel'])  && $data->Payload['dup-settings-diag-srv-panel'])   ? 'display:block' : 'display:none';
+	$ui_css_opts_panel  = (isset($data->Payload['dup-settings-diag-opts-panel']) && $data->Payload['dup-settings-diag-opts-panel'])  ? 'display:block' : 'display:none';
 	
 	
 	//POST BACK
@@ -62,7 +65,6 @@
 		include_once 'inc.validator.php';
 		include_once 'inc.phpinfo.php';
 	?>
-
 </form>
 
 

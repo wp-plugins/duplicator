@@ -12,7 +12,7 @@ class DUP_UI
 	 * The key used in the wp_options table
 	 * @var string 
 	 */
-	private static $OptionsTableKey = 'duplicator_ui_view_state';
+	private static $OptionsViewStateKey = 'duplicator_ui_view_state';
 	
 	/** 
      * Save the view state of UI elements
@@ -22,9 +22,9 @@ class DUP_UI
 	public static function SaveViewState($key, $value) 
 	{
 		$view_state = array();
-		$view_state = get_option(self::$OptionsTableKey);
+		$view_state = get_option(self::$OptionsViewStateKey);
 		$view_state[$key] =  $value;
-		$success = update_option(self::$OptionsTableKey, $view_state);
+		$success = update_option(self::$OptionsViewStateKey, $view_state);
 		return $success;
     }
 	
@@ -35,7 +35,7 @@ class DUP_UI
      */
     public static function GetViewStateArray() 
 	{
-		return get_option(self::$OptionsTableKey);
+		return get_option(self::$OptionsViewStateKey);
 	}
 	
 	 /** 
@@ -45,7 +45,7 @@ class DUP_UI
 	  */
     public static function GetViewStateValue($searchKey) 
 	{
-		$view_state = get_option(self::$OptionsTableKey);
+		$view_state = get_option(self::$OptionsViewStateKey);
 		if (is_array($view_state)) {
 			foreach ($view_state as $key => $value) {
 				if ($key == $searchKey) {

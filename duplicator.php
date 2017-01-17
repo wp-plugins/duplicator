@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 1.1.27
+  Version: 1.1.28
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -34,18 +34,22 @@
 
 require_once("define.php");
 
-if (is_admin() == true) {
-
+if (is_admin() == true) 
+{
+	//Classes
     require_once 'classes/logging.php';
     require_once 'classes/utility.php';
-    //require_once 'classes/ui.php';
     require_once 'classes/settings.php';
     require_once 'classes/server.php';
     require_once 'classes/package.php';
-    require_once 'views/actions.php';
+	require_once 'classes/ui.php';
+	 
+    //Controllers
+	require_once 'views/actions.php';
 	require_once 'ctrls/ctrl.tools.php';
 	require_once 'ctrls/ctrl.ui.php';
 
+		
     /* ACTIVATION 
       Only called when plugin is activated */
     function duplicator_activate() 
@@ -113,25 +117,23 @@ if (is_admin() == true) {
     }
 
     //HOOKS 
-    register_activation_hook(__FILE__, 'duplicator_activate');
+    register_activation_hook(__FILE__,   'duplicator_activate');
     register_deactivation_hook(__FILE__, 'duplicator_deactivate');
 
     //ACTIONS
-    add_action('plugins_loaded', 'duplicator_update');
-    add_action('admin_init', 'duplicator_init');
-    add_action('admin_menu', 'duplicator_menu');
-	//Controllers
+    add_action('plugins_loaded',	'duplicator_update');
+    add_action('plugins_loaded',	'duplicator_wpfront_integrate');
+	add_action('admin_init',		'duplicator_init');
+    add_action('admin_menu',		'duplicator_menu');
+	add_action('admin_notices',		array('DUP_UI', 'ShowReservedFilesNotice'));
+	
+	//CTRL ACTIONS
     add_action('wp_ajax_duplicator_package_scan',        'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_build',		 'duplicator_package_build');
     add_action('wp_ajax_duplicator_package_delete',		 'duplicator_package_delete');
+	$GLOBALS['CTRLS_DUP_CTRL_UI']    = new DUP_CTRL_UI();
+	$GLOBALS['CTRLS_DUP_CTRL_Tools'] = new DUP_CTRL_Tools();
 	
-    add_action('wp_ajax_DUP_CTRL_Tools_RunScanValidator', array('DUP_CTRL_Tools', 'RunScanValidator'));
-	add_action('wp_ajax_DUP_CTRL_UI_SaveViewState',	      array('DUP_CTRL_UI',	  'SaveViewState'));
-	
-	
-    add_action('admin_notices',  array('DUP_UI', 'ShowReservedFilesNotice'));
-    add_action('plugins_loaded', 'duplicator_wpfront_integrate');
-
     //FILTERS
     add_filter('plugin_action_links', 'duplicator_manage_link', 10, 2);
     add_filter('plugin_row_meta', 'duplicator_meta_links', 10, 2);
