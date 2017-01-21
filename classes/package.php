@@ -477,6 +477,19 @@ class DUP_Package {
 		}
 	}
 	
+	
+	public static function FormatCreatedDate($date, $format = 1) {
+		
+		$date = new DateTime($date);
+		switch ($format) {
+			case 1:  return $date->format('Y-m-d H:i');		break;
+			case 2:  return $date->format('Y-m-d H:i:s');	break;
+			case 3:  return $date->format('m-d-y H:i');		break;
+			case 4:  return $date->format('m-d-y H:i:s');	break;
+		}
+		
+	}
+	
 	private function buildCleanup() {
 		
 		$files = DUP_Util::ListFiles(DUPLICATOR_SSDIR_PATH_TMP);

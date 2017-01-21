@@ -28,6 +28,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	DUP_Settings::Set('package_mysqldump', $enable_mysqldump ? "1" : "0");
 	DUP_Settings::Set('package_phpdump_qrylimit', isset($_POST['package_phpdump_qrylimit']) ? $_POST['package_phpdump_qrylimit'] : "100");
     DUP_Settings::Set('package_mysqldump_path', trim(esc_sql(strip_tags($_POST['package_mysqldump_path']))));
+	DUP_Settings::Set('package_ui_created', $_POST['package_ui_created']);
 
     //WPFront
     DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
@@ -49,6 +50,7 @@ $phpdump_chunkopts = array("20", "100", "500", "1000", "2000");
 $package_phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
 $package_mysqldump = DUP_Settings::Get('package_mysqldump');
 $package_mysqldump_path = trim(DUP_Settings::Get('package_mysqldump_path'));
+$package_ui_created = is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_Settings::Get('package_ui_created') : 1;
 
 $wpfront_integrate = DUP_Settings::Get('wpfront_integrate');
 $wpfront_ready = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
@@ -215,11 +217,18 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             </td>
         </tr>	
         <tr>
-            <th scope="row"><label><?php _e("Debugging", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Created Format", 'duplicator'); ?></label></th>
             <td>
-                <input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
-                <label for="package_debug"><?php _e("Enable debug options throughout user interface", 'duplicator'); ?></label>
-				<p class="description"><?php  _e("Refresh page after saving to show/hide Debug menu", 'duplicator'); ?></p>
+                <select name="package_ui_created" id="package_ui_created">
+					<option value="1">Y-m-d H:i   [2000-01-05 12:00]</option>
+					<option value="2">Y-m-d H:i:s [2000-01-05 12:00:01]</option>
+					<option value="3">m-d-y H:i   [01-05-00 12:00]</option>
+					<option value="4">m-d-y H:i:s [01-05-00 12:00:01]</option>
+				</select>
+            
+                <p class="description">
+                    <?php _e("The date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?>
+                </p>
             </td>
         </tr>	
 
@@ -236,8 +245,6 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             <td>
                 <input type="checkbox" name="wpfront_integrate" id="wpfront_integrate" <?php echo ($wpfront_integrate) ? 'checked="checked"' : ''; ?> <?php echo $wpfront_ready ? '' : 'disabled'; ?> />
                 <label for="wpfront_integrate"><?php _e("Enable User Role Editor Plugin Integration", 'duplicator'); ?></label>
-				
-				<div style="margin:15px 0px 0px 25px">
 					<p class="description">
 						<?php printf('%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
 									 . ' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s ' 
@@ -251,10 +258,16 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 								); 
 						?> 
 					</p>
-				</div>
             </td>
         </tr>	
-
+        <tr>
+            <th scope="row"><label><?php _e("Debugging", 'duplicator'); ?></label></th>
+            <td>
+                <input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
+                <label for="package_debug"><?php _e("Enable debug options throughout user interface", 'duplicator'); ?></label>
+				<p class="description"><?php  _e("Refresh page after saving to show/hide Debug menu", 'duplicator'); ?></p>
+            </td>
+        </tr>	
     </table><br/>
 
     <p class="submit" style="margin: 20px 0px 0xp 5px;">
@@ -263,3 +276,11 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 	</p>
 	
 </form>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) 
+{
+	$('#package_ui_created').val(<?php echo $package_ui_created ?> );
+	
+});
+</script>
