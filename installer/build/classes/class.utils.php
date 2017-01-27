@@ -15,7 +15,7 @@ class DUPX_Util
     /** 
      * Get current microtime as a float. Can be used for simple profiling.
      */
-    static public function get_microtime() {
+    public static function get_microtime() {
         return microtime(true);
     }
 
@@ -23,7 +23,7 @@ class DUPX_Util
      * Return a string with the elapsed time.
      * Order of $end and $start can be switched. 
      */
-    static public function elapsed_time($end, $start) {
+    public static function elapsed_time($end, $start) {
         return sprintf("%.4f sec.", abs($end - $start));
     }
 
@@ -32,7 +32,7 @@ class DUPX_Util
      * @param bool $echo   Do we echo or return?
      * @return string    Escaped string. 
      */
-    static public function esc_html_attr($string = '', $echo = false) {
+    public static function esc_html_attr($string = '', $echo = false) {
         $output = htmlentities($string, ENT_QUOTES, 'UTF-8');
         if ($echo)
             echo $output;
@@ -44,7 +44,7 @@ class DUPX_Util
      *  Count the tables in a given database
      *  @param string $_POST['dbname']		Database to count tables in 
      */
-    static public function dbtable_count($conn, $dbname) {
+    public static function dbtable_count($conn, $dbname) {
         $res = mysqli_query($conn, "SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = '{$dbname}' ");
         $row = mysqli_fetch_row($res);
         return is_null($row) ? 0 : $row[0];
@@ -55,7 +55,7 @@ class DUPX_Util
      *  @param string $conn	        A valid link resource
      *  @param string $table_name	A valid table name
      */
-    static public function table_row_count($conn, $table_name) {
+    public static function table_row_count($conn, $table_name) {
         $total = mysqli_query($conn, "SELECT COUNT(*) FROM `$table_name`");
         if ($total) {
             $total = @mysqli_fetch_array($total);
@@ -69,7 +69,7 @@ class DUPX_Util
      *  Adds a slash to the end of a path
      *  @param string $path		A path
      */
-    static public function add_slash($path) {
+    public static function add_slash($path) {
         $last_char = substr($path, strlen($path) - 1, 1);
         if ($last_char != '/') {
             $path .= '/';
@@ -84,11 +84,11 @@ class DUPX_Util
      * 		win:  D:/home/path/file.txt 
      *  @param string $path		The path to make safe
      */
-    static public function set_safe_path($path) {
+    public static function set_safe_path($path) {
         return str_replace("\\", "/", $path);
     }
 
-    static public function unset_safe_path($path) {
+    public static function unset_safe_path($path) {
         return str_replace("/", "\\", $path);
     }
 
@@ -96,7 +96,7 @@ class DUPX_Util
      *  PHP_SAPI for fcgi requires a data flush of at least 256
      *  bytes every 40 seconds or else it forces a script hault
      */
-    static public function fcgi_flush() {
+    public static function fcgi_flush() {
         echo(str_repeat(' ', 256));
         @flush();
     }
@@ -106,7 +106,7 @@ class DUPX_Util
      *  @param string $source		The path to the file being copied
      *  @param string $destination	The path to the file being made
      */
-    static public function copy_file($source, $destination) {
+    public static function copy_file($source, $destination) {
         $sp = fopen($source, 'r');
         $op = fopen($destination, 'w');
 
@@ -124,7 +124,7 @@ class DUPX_Util
      *  @param array  $list		A list of strings to search for
      *  @param string $haystack	The string to search in
      */
-    static public function search_list_values($list, $haystack) {
+    public static function search_list_values($list, $haystack) {
 		$found = array();
         foreach ($list as $var) {
             if (strstr($haystack, $var) !== false) {
@@ -139,7 +139,7 @@ class DUPX_Util
      *  @param  conn   $dbh	 A database connection handle
      *  @return array  $list A list of active plugins
      */
-    static public function get_active_plugins($dbh) {
+    public static function get_active_plugins($dbh) {
         $query = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name = 'active_plugins' ");
         if ($query) {
             $row = @mysqli_fetch_array($query);
@@ -156,7 +156,7 @@ class DUPX_Util
      *  @param  conn   $dbh	 A database connection handle	 
      *  @return array  $list A list of all table names
      */
-    static public function get_database_tables($dbh) {
+    public static function get_database_tables($dbh) {
         $query = @mysqli_query($dbh, 'SHOW TABLES');
         if ($query) {
             while ($table = @mysqli_fetch_array($query)) {
@@ -174,7 +174,7 @@ class DUPX_Util
      * @param same as mysqli_connect
      * @return database connection handle
      */	
-	static public function db_connect( $host, $username, $password, $dbname = '', $port = null ) {
+	public static function db_connect( $host, $username, $password, $dbname = '', $port = null ) {
 
 		//sock connections
 		if ( 'sock' === substr( $host, -4 ) ) 
@@ -195,7 +195,7 @@ class DUPX_Util
      * @param conn $dbh Database connection handle
      * @return false|string false on failure, version number on success
      */
-    static public function mysql_version($dbh) {
+    public static function mysql_version($dbh) {
         if (function_exists('mysqli_get_server_info')) {
             return preg_replace('/[^0-9.].*/', '', mysqli_get_server_info($dbh));
         } else {
@@ -208,7 +208,7 @@ class DUPX_Util
      * @param conn $dbh Database connection handle
      * @return string the server variable to query for
      */
-    static public function mysql_variable_value($dbh, $variable) {
+    public static function mysql_variable_value($dbh, $variable) {
         $result = @mysqli_query($dbh, "SHOW VARIABLES LIKE '{$variable}'");
         $row = @mysqli_fetch_array($result);
         @mysqli_free_result($result);
@@ -221,7 +221,7 @@ class DUPX_Util
      * @param string $feature the feature to check for
      * @return bool
      */
-    static public function mysql_has_ability($dbh, $feature) {
+    public static function mysql_has_ability($dbh, $feature) {
         $version = self::mysql_version($dbh);
 
         switch (strtolower($feature)) {
@@ -241,7 +241,7 @@ class DUPX_Util
      * @param string   $charset The character set (optional)
      * @param string   $collate The collation (optional)
      */
-    static public function mysql_set_charset($dbh, $charset = null, $collate = null) {
+    public static function mysql_set_charset($dbh, $charset = null, $collate = null) {
 
         $charset = (!isset($charset) ) ? $GLOBALS['DBCHARSET_DEFAULT'] : $charset;
         $collate = (!isset($collate) ) ? $GLOBALS['DBCOLLATE_DEFAULT'] : $collate;
@@ -262,7 +262,7 @@ class DUPX_Util
      *  Display human readable byte sizes
      *  @param string $size		The size in bytes
      */
-    static public function readable_bytesize($size) {
+    public static function readable_bytesize($size) {
         try {
             $units = array('B', 'KB', 'MB', 'GB', 'TB');
             for ($i = 0; $size >= 1024 && $i < 4; $i++)
@@ -274,11 +274,36 @@ class DUPX_Util
     }
 	
 	/**
+	* Converts shorthand memory notation value to bytes
+	* From http://php.net/manual/en/function.ini-get.php
+	*
+	* @param $val Memory size shorthand notation string
+	*/
+	public static function return_bytes($val) 
+	{
+		$val = trim($val);
+		$last = strtolower($val[strlen($val)-1]);
+		switch($last) {
+			// The 'G' modifier is available since PHP 5.1.0
+			case 'g':
+				$val *= 1024;
+			case 'm':
+				$val *= 1024;
+			case 'k':
+				$val *= 1024;
+				break;
+			default :
+				$val = null;
+		}
+		return $val;
+    }
+	
+	/**
      *  The characters that are special in the replacement value of preg_replace are not the 
 	 *  same characters that are special in the pattern
      *  @param string $str		The string to replace on
      */
-	static public function preg_replacement_quote($str) {
+	public static function preg_replacement_quote($str) {
 		return preg_replace('/(\$|\\\\)(?=\d)/', '\\\\\1', $str);
 	}
 	
@@ -312,7 +337,7 @@ class DUPX_Util
      *  Returns an array of zip files found in the current directory
 	 *  @return array of zip files
      */
-	static public function get_zip_files() {
+	public static function get_zip_files() {
 		
 		$files = array();
 		foreach (glob("*.zip") as $name) {

@@ -66,6 +66,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
     input#package_mysqldump_path_found {margin-top:5px}
     div.dup-feature-found {padding:3px; border:1px solid silver; background: #f7fcfe; border-radius: 3px; width:400px; font-size: 12px}
     div.dup-feature-notfound {padding:3px; border:1px solid silver; background: #fcf3ef; border-radius: 3px; width:400px; font-size: 12px}
+	select#package_ui_created {font-family: monospace}
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url('admin.php?page=duplicator-settings&tab=general'); ?>" method="post">
@@ -220,18 +221,16 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             <th scope="row"><label><?php _e("Created Format", 'duplicator'); ?></label></th>
             <td>
                 <select name="package_ui_created" id="package_ui_created">
-					<option value="1">Y-m-d H:i   [2000-01-05 12:00]</option>
+					<option value="1">Y-m-d H:i &nbsp; [2000-01-05 12:00]</option>
 					<option value="2">Y-m-d H:i:s [2000-01-05 12:00:01]</option>
-					<option value="3">m-d-y H:i   [01-05-00 12:00]</option>
+					<option value="3">m-d-y H:i  &nbsp; [01-05-00 12:00]</option>
 					<option value="4">m-d-y H:i:s [01-05-00 12:00:01]</option>
 				</select>
-            
                 <p class="description">
                     <?php _e("The date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?>
                 </p>
             </td>
         </tr>	
-
     </table>
 
     <!-- ===============================
@@ -281,6 +280,5 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 jQuery(document).ready(function($) 
 {
 	$('#package_ui_created').val(<?php echo $package_ui_created ?> );
-	
 });
 </script>

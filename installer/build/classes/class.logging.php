@@ -27,27 +27,28 @@ define('ERR_TESTDB_VERSION',	'In order to avoid database incompatibility issues 
  * DUPX_Log  
  * Class used to log information  */
 
-class DUPX_Log {
+class DUPX_Log 
+{
 
     /** METHOD: LOG
      *  Used to write debug info to the text log file
      *  @param string $msg		Any text data
      *  @param int $loglevel	Log level
      */
-    static public function Info($msg, $logging = 1) {
+    public static function Info($msg, $logging = 1) 
+	{
         if ($logging <= $GLOBALS["LOGGING"]) {
             @fwrite($GLOBALS["LOG_FILE_HANDLE"], "{$msg}\n");
         }
     }
-	
-	static public function Error($errorMessage) {
-		if ($logging <= $GLOBALS["LOGGING"]) {
-			$breaks = array("<br />","<br>","<br/>");  
-			$msg = str_ireplace($breaks, "\r\n", $errorMessage);  
-            @fwrite($GLOBALS["LOG_FILE_HANDLE"], "\nINSTALLER ERROR:\n{$msg}\n");
-			@fclose($GLOBALS["LOG_FILE_HANDLE"]);
-        }
-        die("<div class='dup-ui-error'><b style='color:#B80000;'>INSTALL ERROR!</b><br/>{$errorMessage}</div><br/>");
+	public static function Error($errorMessage) 
+	{
+		$breaks = array("<br />","<br>","<br/>");  
+		$log_msg = str_ireplace($breaks, "\r\n", $errorMessage);  
+		$log_msg = strip_tags($log_msg);
+		@fwrite($GLOBALS["LOG_FILE_HANDLE"], "\nINSTALLER ERROR:\n{$log_msg}\n");
+		@fclose($GLOBALS["LOG_FILE_HANDLE"]);
+        die("<div class='dup-ui-error'><hr size='1' /><b style='color:#B80000;'>INSTALL ERROR!</b><br/>{$errorMessage}</div><br/>");
     }
 }
 ?>

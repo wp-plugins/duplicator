@@ -247,7 +247,7 @@ VIEW: STEP 1- INPUT -->
 				</td>
 			</tr>
 			<tr>
-				<td>Name</td>
+				<td>Database</td>
 				<td><input type="text" name="dbname" id="dbname"  required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  /></td>
 			</tr>
 			<tr>
@@ -272,18 +272,13 @@ VIEW: STEP 1- INPUT -->
 				<small><input type="button" onclick="$('#s1-dbconn-status').hide(500)" class="s1-small-btn" value="Hide Message" /></small>
 			</div>
 		</div>
-
-    	<!-- !!DO NOT CHANGE/EDIT OR REMOVE THIS SECTION!!
-    	If your interested in Private Label Rights please contact us at the URL below to discuss
-    	customizations to product labeling: http://snapcreek.com	-->
-    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b style="font-size: 14px">Need Setup Help...</b></a>
-    	<div id='dup-step1-cpanel' style="display:none">
-    	    <div style="padding:10px 0px 0px 10px;line-height:22px">
-    		&raquo; Check out the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q" target="_blank">video tutorials &amp; guides</a> <br/>
-    		&raquo; Get help from our <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">resources section</a>
-    	    </div>
-    	</div><br/><br/>
-    		    
+		
+		<div class="dup-s1-gopro">
+			Create the database and users <b>from the installer</b> <br/> with <a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step1&utm_campaign=duplicator_pro">Duplicator Pro!</a> - Requires cPanel.
+		</div>
+		<br/>
+		
+		<!-- ADVANCED OPTIONS -->
     	<a href="javascript:void(0)" onclick="$('#dup-step1-adv-opts').toggle(250)"><b style="font-size:14px">Advanced Options...</b></a>
     	<div id='dup-step1-adv-opts' style="display:none">
 
@@ -350,47 +345,125 @@ VIEW: STEP 1- INPUT -->
 				<small><i>For an overview of these settings see the <a href="?help=1" target="_blank">help page</a></i></small>
 			</div>
     	</div>
+		<br/><br/>
 		
-		
-		<div class="dup-s1-gopro">
-			*Create the database and users <b>from the installer</b> with <a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step1&utm_campaign=duplicator_pro">Duplicator Pro!</a> - Requires cPanel.
-		</div>	
+	    <!-- SETUP HELP	-->
+    	<a href="javascript:void(0)" onclick="$('#dup-step1-cpanel').toggle(250)"><b style="font-size: 14px">Need Setup Help...</b></a>
+    	<div id='dup-step1-cpanel' style="display:none">
+    	    <div style="padding:10px 0px 0px 10px;line-height:22px">
+    		&raquo; View the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q" target="_blank">video tutorials</a> <br/>
+    		&raquo; Read helpful <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">articles</a> <br/>
+			&raquo; Visit the <a href="https://snapcreek.com/duplicator/docs/quick-start/" target="_blank">quick start guides</a>
+    	    </div>
+    	</div>
+		<br/><br/>
 
 		<!-- NOTICES  -->
-    	<div id="dup-s1-warning">
-    	    <b>WARNINGS &amp; NOTICES</b> 
-    	    <p>
-				<b>Disclaimer:</b> 
-				This plugin require above average technical knowledge. Please use it at your own risk and always back up your database and files beforehand using another backup
-				system besides the Duplicator. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  <u>Always</u> test 
-				this installer in a sandbox environment before trying to deploy into a production setting.
-			</p>    
-    	    <p>
-				<b>Database:</b>
-				Do not connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database 
-				that already exists will permanently DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated
-				database using the SQL script in the package name above.
-			</p>    
-    	    <p>
-				<b>Setup:</b>
-				Only the archive and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 
-				'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files 
-				before continuing with an installation.</p>    
-    	    <p>
-				<b>Manual Extraction:</b> 
-				Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  
-				Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
-			</p>			    
-    	    <p>
-				<b>After Install:</b>When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory. 
-				These files contain sensitive information and should not remain on a production system.
-			</p><br/>
+		<a href="javascript:void(0)" onclick="$('#dup-s1-warning').toggle(250)"><b style="font-size:14px">Warnings &amp; Notices...</b></a>
+    	<div id="dup-s1-warning" style="display: none"><pre>Duplicator
+Copyright (c) 2017 Snapcreek LLC
+
+*** WARNINGS &amp; NOTICES *** 
+
+DISCLAIMER:
+This plugin require above average technical knowledge. Please use it at your own risk and always back up your database and files beforehand using another backup 
+system besides the Duplicator. If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  Always test this installer
+in a sandbox environment before trying to deploy into a production setting.
+
+DATABASE:
+Do not connect to an existing database unless you are 100% sure you want to remove all of it's data.  Connecting to a database that already exists will permanently 
+DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the package name above.
+
+SETUP:
+Only the archive and installer.php file should be in the install directory, unless you have manually extracted the package and checked the 'Manual Package Extraction' checkbox. 
+All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files before continuing with an installation.
+
+MANUAL EXTRACTION:
+Manual extraction requires that all contents in the package are extracted to the same directory as the installer.php file.  Manual extraction is only needed when your server 
+does not support the ZipArchive extension.  Please see the online help for more details.
+
+AFTER INSTALL:
+When you are done with the installation remove the installer.php, installer-data.sql and the installer-log.txt files from your directory.  These files contain sensitive information
+ and should not remain on a production system.
+
+
+*** END USER LICENSE AGREEMENT ***
+
+IMPORTANT: PLEASE READ THIS LICENSE CAREFULLY BEFORE USING THIS SOFTWARE.
+
+1. LICENSE
+
+By receiving, opening the file package, and/or using Duplicator("Software") containing this software, you agree that this End User User License Agreement(EULA) is 
+a legally binding and valid contract and agree to be bound by it. You agree to abide by the intellectual property laws and all of the terms and conditions of this Agreement.
+
+Unless you have a different license agreement signed by Snapcreek LLC your use of Duplicator indicates your acceptance of this license agreement and warranty.
+
+Subject to the terms of this Agreement, Snapcreek LLC grants to you a limited, non-exclusive, non-transferable free license, without right to sub-license, to use Duplicator 
+in accordance with this Agreement and any other written agreement with Snapcreek LLC. Snapcreek LLC does not transfer the title of Duplicator to you; the license granted 
+to you is not a sale the plugin is given free and as is. This agreement is a binding legal agreement between Snapcreek LLC and the purchasers or users of Duplicator.
+
+If you do not agree to be bound by this agreement, remove Duplicator from your computer now and, if applicable, promptly all related documentation and files relating to 
+Duplicator in your possession.
+
+
+2. DISTRIBUTION
+
+Duplicator and the license herein granted shall not be sold, offered for re-sale, transferred or sub-licensed in whole. For information about redistribution of Duplicator 
+contact Snapcreek LLC.
+
+
+3. USER AGREEMENT
+
+3.1 Use
+
+Duplicator is a free plugin offered for download at https://wordpress.org/plugins/duplicator and https://github.com/lifeinthegrid/duplicator
+
+3.2 USE RESTRICTIONS
+
+You shall use Duplicator in compliance with all applicable laws and not for any unlawful purpose. 
+
+
+3.3 LIMITATION OF RESPONSIBILITY
+
+You will indemnify, hold harmless, and defend Snapcreek LLC , its employees, agents and distributors against any and all claims, proceedings, demand and costs resulting from or in 
+any way connected with your use of Snapcreek LLC's Software.
+
+In no event (including, without limitation, in the event of negligence) will Snapcreek LLC , its employees, agents or distributors be liable for any consequential, incidental, 
+indirect, special or punitive damages whatsoever (including, without limitation, damages for loss of profits, loss of use, business interruption, loss of information or data, 
+or pecuniary loss), in connection with or arising out of or related to this Agreement, Duplicator or the use or inability to use Duplicator or the furnishing, performance or use
+of any other matters hereunder whether based upon contract, tort or any other theory including negligence.
+
+Snapcreek LLC's entire liability, without exception, is limited to no monetary or financial costs
+
+3.4 WARRANTIES
+
+Except as expressly stated in writing, Snapcreek LLC makes no representation or warranties in respect of this Software and expressly excludes all other warranties, expressed or implied,
+oral or written, including, without limitation, any implied warranties of merchantable quality or fitness for a particular purpose.
+
+3.5 GOVERNING LAW
+
+This Agreement shall be governed by the law of the United States applicable therein. You hereby irrevocably attorn and submit to the non-exclusive jurisdiction of the courts of
+United States therefrom. If any provision shall be considered unlawful, void or otherwise unenforceable, then that provision shall be deemed severable from this License and not 
+affect the validity and enforceability of any other provisions.
+
+3.6 TERMINATION
+
+Any failure to comply with the terms and conditions of this Agreement will result in automatic and immediate termination of this license. Upon termination of this license granted 
+herein for any reason, you agree to immediately cease use of Duplicator and destroy all copies of Duplicator supplied under this Agreement. The financial obligations incurred by you
+shall survive the expiration or termination of this license.
+
+4. DISCLAIMER OF WARRANTY
+
+THIS SOFTWARE AND THE ACCOMPANYING FILES ARE FREE AND OFFERED "AS IS" AND WITHOUT WARRANTIES AS TO PERFORMANCE OR MERCHANTABILITY OR ANY OTHER WARRANTIES WHETHER EXPRESSED OR IMPLIED. 
+THIS DISCLAIMER CONCERNS ALL FILES GENERATED AND EDITED BY Duplicator AS WELL.
+</pre>	
     	</div>
     		    
     	<div id="dup-s1-warning-check">
-    	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" /> <label for="accept-warnings">I have read all warnings &amp; notices</label><br/>
+    	    <input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="Duplicator.acceptWarning()" style='vertical-align: bottom' /> 
+			<label for="accept-warnings">I have read and accept all warnings &amp; notices <small>(required to run deployment)</small></label><br/>
 			<div id="dup-s1-warning-emptydb">
-				The remove action will delete <u>all</u> tables and data from the database!
+				<label for="accept-warnings">The 'Connect and Remove All Data' action will delete <u>all</u> tables and data from the database!</label>
 			</div>
     	</div><br/><br/>
     		    
@@ -552,7 +625,7 @@ PANEL: SERVER CHECKS  -->
 
 	<hr class='dup-dots' />
 	<!-- SAPI -->
-	<b>PHP MAX MEMORY:</b> <?php echo @ini_get('memory_limit') ?><br/>
+	<b>PHP MAX MEMORY:</b> <?php echo $GLOBALS['PHP_MEMORY_LIMIT'] ?><br/>
 	<b>PHP SAPI:</b>  <?php echo php_sapi_name(); ?><br/>
 	<b>PHP ZIP Archive:</b> <?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
 	<b>CDN Accessible:</b> <?php echo ( DUPX_Util::is_url_active("ajax.aspnetcdn.com", 443) && DUPX_Util::is_url_active("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> 
