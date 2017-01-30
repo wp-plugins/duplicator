@@ -16,6 +16,7 @@ $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
 $_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
 $_POST['package_name']		= isset($_POST['package_name']) ? $_POST['package_name'] : null;
 $_POST['zip_manual']		= (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
+$_POST['zip_filetime']		= (isset($_POST['zip_filetime']) && $_POST['zip_filetime'] == '1') ? true : false;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -187,9 +188,12 @@ DUPX_Log::Info($log);
 
 $zip_start = DUPX_Util::get_microtime();
 
-if ($_POST['zip_manual']) {
+if ($_POST['zip_manual']) 
+{
 	DUPX_Log::Info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
-} else {
+} 
+else 
+{
 	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
 		$log  = "\n--------------------------------------\n";
 		$log .= "WARNING: This package set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \n";
@@ -206,12 +210,23 @@ if ($_POST['zip_manual']) {
 
 	$target = $root_path;
 	$zip = new ZipArchive();
-	if ($zip->open($_POST['package_name']) === TRUE) {
-		DUPX_Log::Info("EXTRACTING");
+	if ($zip->open($_POST['package_name']) === TRUE) 
+	{
+		DUPX_Log::Info("\nEXTRACTING");
 		if (! $zip->extractTo($target)) {
 			DUPX_Log::Error(ERR_ZIPEXTRACTION);
 		}
 		$log  = print_r($zip, true);
+		
+		//Keep original timestamp on the file
+		if ($_POST['zip_filetime']) 
+		{
+			$log .=  "File timestamp retained\n"; 
+			for ($idx = 0; $s = $zip->statIndex($idx); $idx++) {
+				touch( $target . DIRECTORY_SEPARATOR . $s['name'], $s['mtime'] );
+			}
+		}
+		
 		$close_response = $zip->close();
 		$log .= "COMPLETE: " . var_export($close_response, true);
 		DUPX_Log::Info($log);

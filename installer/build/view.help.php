@@ -68,6 +68,11 @@ HELP FORM -->
 			<legend><b>Advanced Options</b></legend>
 			<b>Manual Package Extraction:</b><br/>
 			This allows you to manually extract the zip archive on your own. This can be useful if your system does not have the ZipArchive support enabled.
+			<br/><br/>	
+			
+			<b>Keep original file timestamps:</b><br/>
+			When checked the file and directory names will retain their original datetime as they are in the archive.  If the item is not checked then each file
+			and directory will get a datetime of now.  This option will not be applied if the 'Manual package extraction' option is checked.
 			<br/><br/>		
 
 			<b>Enforce SSL on Admin:</b><br/>

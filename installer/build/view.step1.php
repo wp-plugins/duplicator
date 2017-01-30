@@ -160,9 +160,15 @@ VIEW: STEP 1- INPUT -->
 					<tr>
 						<td>Extraction</td>
 						<td colspan="2">
-							<input type="checkbox" name="zip_manual"  id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label><br/>
+							<input type="checkbox" name="zip_manual" id="zip_manual" value="1" /> <label for="zip_manual">Manual package extraction</label><br/>
 						</td>
 					</tr>
+					<tr>
+						<td>Timestamp</td>
+						<td colspan="2">
+							<input type="checkbox" name="zip_filetime" id="zip_filetime" value="1" /> <label for="zip_filetime">Keep original file timestamps</label><br/>
+						</td>
+					</tr>					
 					<tr>
 						<td>Logging</td>
 						<td colspan="2">
