@@ -52,7 +52,7 @@ if (isset($_GET['dbtest']))
 	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	
-	$dbvar_version = DUPX_Util::mysql_version($dbConn);
+	$dbvar_version = DUPX_Util::mysqldb_version($dbConn);
 	$dbvar_version = ($dbvar_version == 0) ? 'no connection' : $dbvar_version;
 	$dbvar_version_fail = version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0;
 	$tstCompat = ($dbvar_version_fail)
@@ -299,7 +299,7 @@ DUPX_Util::fcgi_flush();
 //START DB RUN
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 @mysqli_query($dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
-DUPX_Util::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
+DUPX_Util::mysqldb_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 //Will set mode to null only for this db handle session
 //sql_mode can cause db create issues on some systems
@@ -320,13 +320,13 @@ switch ($_POST['dbmysqlmode']) {
 }
 
 //Set defaults in-case the variable could not be read
-$dbvar_maxtime		= DUPX_Util::mysql_variable_value($dbh, 'wait_timeout');
-$dbvar_maxpacks		= DUPX_Util::mysql_variable_value($dbh, 'max_allowed_packet');
-$dbvar_sqlmode		= DUPX_Util::mysql_variable_value($dbh, 'sql_mode');
+$dbvar_maxtime		= DUPX_Util::mysqldb_variable_value($dbh, 'wait_timeout');
+$dbvar_maxpacks		= DUPX_Util::mysqldb_variable_value($dbh, 'max_allowed_packet');
+$dbvar_sqlmode		= DUPX_Util::mysqldb_variable_value($dbh, 'sql_mode');
 $dbvar_maxtime		= is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
 $dbvar_maxpacks		= is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
 $dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET'  : $dbvar_sqlmode;
-$dbvar_version		= DUPX_Util::mysql_version($dbh);
+$dbvar_version		= DUPX_Util::mysqldb_version($dbh);
 $sql_file_size1		= DUPX_Util::readable_bytesize(@filesize("database.sql"));
 $sql_file_size2		= DUPX_Util::readable_bytesize(@filesize("{$GLOBALS['SQL_FILE_NAME']}"));
 
@@ -407,7 +407,7 @@ while ($counter < $sql_result_file_length) {
 				$dbh = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport'] );
 				// Reset session setup
 				@mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
-				DUPX_Util::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
+				DUPX_Util::mysqldb_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 			}
 			DUPX_Log::Info("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
 			$dbquery_errs++;

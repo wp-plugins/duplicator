@@ -19,7 +19,7 @@ class DUP_Util
 	*  PHP_SAPI for fcgi requires a data flush of at least 256
 	*  bytes every 40 seconds or else it forces a script hault
 	*/
-	static public function FcgiFlush() {
+	public static function FcgiFlush() {
 		echo(str_repeat(' ', 300));
 		@flush();
 	}
@@ -27,7 +27,7 @@ class DUP_Util
 	/**
 	*  returns the snapshot url
 	*/
-	static public function SSDirURL() {
+	public static function SSDirURL() {
 		 return get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/';
 	}
 
@@ -35,7 +35,7 @@ class DUP_Util
 	*  Returns the last N lines of a file
 	*  Equivelent to tail command
 	*/
-	static public function TailFile($filepath, $lines = 2) {
+	public static function TailFile($filepath, $lines = 2) {
 
 		// Open file
 		$f = @fopen($filepath, "rb");
@@ -84,7 +84,7 @@ class DUP_Util
 	*  Runs the APC cache to pre-cache the php files
 	*  returns true if all files where cached
 	*/
-	static public function RunAPC() {
+	public static function RunAPC() {
 	   if(function_exists('apc_compile_file')){
 		   $file01 = @apc_compile_file(DUPLICATOR_PLUGIN_PATH . "duplicator.php");
 		   return ($file01);
@@ -97,7 +97,7 @@ class DUP_Util
 	*  Display human readable byte sizes
 	*  @param string $size		The size in bytes
 	*/
-	static public function ByteSize($size) {
+	public static function ByteSize($size) {
 		try {
 			$units = array('B', 'KB', 'MB', 'GB', 'TB');
 			for ($i = 0; $size >= 1024 && $i < 4; $i++)
@@ -115,21 +115,21 @@ class DUP_Util
 	* 		win:  D:/home/path/file.txt 
 	*  @param string $path		The path to make safe
 	*/
-	static public function SafePath($path) {
+	public static function SafePath($path) {
 		return str_replace("\\", "/", $path);
 	}
 
 	/** 
 	 * Get current microtime as a float. Can be used for simple profiling.
 	 */
-	static public function GetMicrotime() {
+	public static function GetMicrotime() {
 		return microtime(true);
 	}
 
 	/** 
 	 * Append the value to the string if it doesn't already exist
 	 */
-	static public function StringAppend($string, $value ) {
+	public static function StringAppend($string, $value ) {
 	   return $string . (substr($string, -1) == $value ? '' : $value);
 	}
 
@@ -137,7 +137,7 @@ class DUP_Util
 	 * Return a string with the elapsed time.
 	 * Order of $end and $start can be switched. 
 	 */
-	static public function ElapsedTime($end, $start) {
+	public static function ElapsedTime($end, $start) {
 		return sprintf("%.2f sec.", abs($end - $start));
 	}
 
@@ -146,7 +146,7 @@ class DUP_Util
 	 * @param conn $dbh Database connection handle
 	 * @return string the server variable to query for
 	 */
-	static public function MysqlVariableValue($variable) {
+	public static function MysqlVariableValue($variable) {
 		global $wpdb;
 		$row = $wpdb->get_row("SHOW VARIABLES LIKE '{$variable}'", ARRAY_N);
 		return isset($row[1]) ? $row[1] : null;
@@ -161,7 +161,7 @@ class DUP_Util
 	 *		- Avoid using glob() as GLOB_BRACE is not an option on some operating systems
 	 *		- Pre PHP 5.3 DirectoryIterator will crash on unreadable files
 	 */
-	static public function ListFiles($path = '.') 
+	public static function ListFiles($path = '.') 
 	{
 		$files = array();
 		foreach (new DirectoryIterator($path) as $file)
@@ -176,7 +176,7 @@ class DUP_Util
 	 * @path path to a system directory
 	 * @return array of all directories in that path
 	 */
-	static public function ListDirs($path = '.') {
+	public static function ListDirs($path = '.') {
 		$dirs = array();
 
 		foreach (new DirectoryIterator($path) as $file) {
@@ -190,7 +190,7 @@ class DUP_Util
 	/** 
 	 * Does the directory have content
 	 */
-	static public function IsDirectoryEmpty($dir) {
+	public static function IsDirectoryEmpty($dir) {
 		if (!is_readable($dir)) return NULL; 
 		return (count(scandir($dir)) == 2);
 	}
@@ -198,7 +198,7 @@ class DUP_Util
 	/** 
 	 * Size of the directory recuresivly in bytes
 	 */
-	static public function GetDirectorySize($dir) {
+	public static function GetDirectorySize($dir) {
 		if(!file_exists($dir)) 
 			return 0;
 		if(is_file($dir)) 

@@ -189,13 +189,12 @@ class DUPX_Util
 		return $dbh;
 	}
 	
-
     /**
      * MySQL database version number
      * @param conn $dbh Database connection handle
      * @return false|string false on failure, version number on success
      */
-    public static function mysql_version($dbh) {
+    public static function mysqldb_version($dbh) {
         if (function_exists('mysqli_get_server_info')) {
             return preg_replace('/[^0-9.].*/', '', mysqli_get_server_info($dbh));
         } else {
@@ -208,7 +207,7 @@ class DUPX_Util
      * @param conn $dbh Database connection handle
      * @return string the server variable to query for
      */
-    public static function mysql_variable_value($dbh, $variable) {
+    public static function mysqldb_variable_value($dbh, $variable) {
         $result = @mysqli_query($dbh, "SHOW VARIABLES LIKE '{$variable}'");
         $row = @mysqli_fetch_array($result);
         @mysqli_free_result($result);
@@ -221,8 +220,8 @@ class DUPX_Util
      * @param string $feature the feature to check for
      * @return bool
      */
-    public static function mysql_has_ability($dbh, $feature) {
-        $version = self::mysql_version($dbh);
+    public static function mysqldb_has_ability($dbh, $feature) {
+        $version = self::mysqldb_version($dbh);
 
         switch (strtolower($feature)) {
             case 'collation' :
@@ -241,13 +240,13 @@ class DUPX_Util
      * @param string   $charset The character set (optional)
      * @param string   $collate The collation (optional)
      */
-    public static function mysql_set_charset($dbh, $charset = null, $collate = null) {
+    public static function mysqldb_set_charset($dbh, $charset = null, $collate = null) {
 
         $charset = (!isset($charset) ) ? $GLOBALS['DBCHARSET_DEFAULT'] : $charset;
         $collate = (!isset($collate) ) ? $GLOBALS['DBCOLLATE_DEFAULT'] : $collate;
 
-        if (self::mysql_has_ability($dbh, 'collation') && !empty($charset)) {
-            if (function_exists('mysqli_set_charset') && self::mysql_has_ability($dbh, 'set_charset')) {
+        if (self::mysqldb_has_ability($dbh, 'collation') && !empty($charset)) {
+            if (function_exists('mysqli_set_charset') && self::mysqldb_has_ability($dbh, 'set_charset')) {
                 return mysqli_set_charset($dbh, $charset);
             } else {
                 $sql = " SET NAMES {$charset}";

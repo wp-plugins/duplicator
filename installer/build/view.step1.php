@@ -36,135 +36,6 @@
 	$total_req = ($req01 == 'Pass' && $req02 == 'Pass' && $req03 == 'Pass' && $req04 == 'Pass') ? 'Pass' : 'Fail';
 ?>
 
-<script type="text/javascript">
-	/** **********************************************
-	* METHOD:  Performs Ajax post to extract files and create db
-	* Timeout (10000000 = 166 minutes) */
-	Duplicator.runDeployment = function() {
-		
-        var $form = $('#dup-step1-input-form');
-        $form.parsley().validate();
-        if (!$form.parsley().isValid()) {
-            return;
-        }
-
-	
-		var msg =  "Continue installation with the following settings?\n\n";
-			msg += "Server: " + $("#dbhost").val() + "\nDatabase: " + $("#dbname").val() + "\n\n";
-			msg += "WARNING: Be sure these database parameters are correct!\n";
-			msg += "Entering the wrong information WILL overwrite an existing database.\n";
-			msg += "Make sure to have backups of all your data before proceeding.\n\n";
-			
-		var answer = confirm(msg);
-		if (answer) {
-			$.ajax({
-				type: "POST",
-				timeout: 10000000,
-				dataType: "json",
-				url: window.location.href,
-				data: $form.serialize(),
-				beforeSend: function() {
-					Duplicator.showProgressBar();
-					$form.hide();
-					$('#dup-step1-result-form').show();
-				},			
-				success: function(data, textStatus, xhr){ 
-					if (typeof(data) != 'undefined' && data.pass == 1) {
-						$("#ajax-dbhost").val($("#dbhost").val());
-						$("#ajax-dbport").val($("#dbport").val());
-						$("#ajax-dbuser").val($("#dbuser").val());
-						$("#ajax-dbpass").val($("#dbpass").val());
-						$("#ajax-dbname").val($("#dbname").val());
-						$("#ajax-dbcharset").val($("#dbcharset").val());
-						$("#ajax-dbcollate").val($("#dbcollate").val());
-						$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
-						$("#ajax-json").val(escape(JSON.stringify(data)));
-						setTimeout(function() {$('#dup-step1-result-form').submit();}, 1000);
-						$('#progress-area').fadeOut(700);
-					} else {
-						Duplicator.hideProgressBar();
-					}
-				},
-				error: function(xhr) { 
-					var status = "<b>server code:</b> " + xhr.status + "<br/><b>status:</b> " + xhr.statusText + "<br/><b>response:</b> " +  xhr.responseText;
-					$('#ajaxerr-data').html(status);
-					Duplicator.hideProgressBar();
-				}
-			});	
-		} 
-	};
-
-	/** **********************************************
-	* METHOD: Accetps Useage Warning */
-	Duplicator.acceptWarning = function() {
-		if ($("#accept-warnings").is(':checked')) {
-			$("#dup-step1-deploy-btn").removeAttr("disabled");
-		} else {
-			$("#dup-step1-deploy-btn").attr("disabled", "true");
-		}
-	};
-
-	/** **********************************************
-	* METHOD: Go back on AJAX result view */
-	Duplicator.hideErrorResult = function() {
-		$('#dup-step1-result-form').hide();			
-		$('#dup-step1-input-form').show(200);
-	};
-	
-	/** **********************************************
-	* METHOD: Shows results of database connection 
-	* Timeout (45000 = 45 secs) */
-	Duplicator.dlgTestDB = function () {		
-		$.ajax({
-			type: "POST",
-			timeout: 45000,
-			url: window.location.href + '?' + 'dbtest=1',
-			data: $('#dup-step1-input-form').serialize(),
-			success: function(data){ $('#dbconn-test-msg').html(data); },
-			error:   function(data){ alert('An error occurred while testing the database connection!  Contact your server admin to make sure the connection inputs are correct!'); }
-		});
-		
-		$('#dbconn-test-msg').html("Attempting Connection.  Please wait...");
-		$("#s1-dbconn-status").show(500);
-		
-	};
-	
-	Duplicator.showDeleteWarning = function () {
-		($('#dbaction-empty').prop('checked')) 
-			? $('#dup-s1-warning-emptydb').show(300)
-			: $('#dup-s1-warning-emptydb').hide(300);
-	};
-	
-	Duplicator.togglePort = function () {
-		
-		$('#s1-dbport-btn').hide();
-		$('#dbport').show();
-	}
-	
-	
-	//DOCUMENT LOAD
-	$(document).ready(function() {
-		$('#dup-s1-dialog-data').appendTo('#dup-s1-result-container');
-		$( "input[name='dbaction']").click(Duplicator.showDeleteWarning);
-		Duplicator.acceptWarning();
-		Duplicator.showDeleteWarning();		
-		
-		//MySQL Mode
-		$("input[name=dbmysqlmode]").click(function() {
-			if ($(this).val() == 'CUSTOM') {
-				$('#dbmysqlmode_3_view').show();
-			} else {
-				$('#dbmysqlmode_3_view').hide();
-			}
-		});
-		
-		if ($("input[name=dbmysqlmode]:checked").val() == 'CUSTOM') {
-			$('#dbmysqlmode_3_view').show();
-		}
-		
-	});
-</script>
-
 
 <!-- =========================================
 VIEW: STEP 1- INPUT -->
@@ -468,7 +339,7 @@ THIS DISCLAIMER CONCERNS ALL FILES GENERATED AND EDITED BY Duplicator AS WELL.
     	</div><br/><br/>
     		    
     	<div class="dup-footer-buttons">
-    	    <input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.runDeployment()" />
+    	    <input id="dup-step1-deploy-btn" type="button" value=" Run Deployment " onclick="Duplicator.confirmDeployment()" />
     	</div>		
 
 	<?php endif; ?>	
@@ -636,4 +507,176 @@ PANEL: SERVER CHECKS  -->
 </div>
 
 
+<!-- CONFIRM DIALOG -->
+<div id="dialog-confirm-content" style="display:none">
+	<div style="padding:0 0 25px 0">
+		<b>Run installer with these settings?</b>
+	</div>
+	
+	<b>Database Settings:</b><br/>
+	<table style="margin-left:20px">
+		<tr>
+			<td><b>Server:</b></td>
+			<td><i id="dlg-dbhost"></i></td>
+		</tr>
+		<tr>
+			<td><b>Name:</b></td>
+			<td><i id="dlg-dbname"></i></td>
+		</tr>
+		<tr>
+			<td><b>User:</b></td>
+			<td><i id="dlg-dbuser"></i></td>
+		</tr>			
+	</table>
+	<br/><br/>
 
+	<small> WARNING: Be sure these database parameters are correct! Entering the wrong information WILL overwrite an existing database.
+	Make sure to have backups of all your data before proceeding.</small><br/>
+</div>
+
+
+<script type="text/javascript">
+	
+	/* Confirm Dialog to validate run */
+	Duplicator.confirmDeployment = function() 
+	{
+		var $form = $('#dup-step1-input-form');
+        $form.parsley().validate();
+        if (!$form.parsley().isValid()) {
+            return;
+        }
+
+		$('#dlg-dbhost').html($("#dbhost").val());
+		$('#dlg-dbname').html($("#dbname").val());
+		$('#dlg-dbuser').html($("#dbuser").val());
+
+		modal({
+			type: 'confirm',
+			title: 'Install Confirmation',
+			text: $('#dialog-confirm-content').html(),
+			callback: function(result) 
+			{
+				if (result == true) {
+					Duplicator.runDeployment();
+				}
+			}
+		});
+	}
+	
+	/* Performs Ajax post to extract files and create db
+	 * Timeout (10000000 = 166 minutes) */
+	Duplicator.runDeployment = function() 
+	{
+		var $form = $('#dup-step1-input-form');
+		var dbhost = $("#dbhost").val();
+        var dbname = $("#dbname").val();
+		var dbuser = $("#dbuser").val();
+		
+		$.ajax({
+			type: "POST",
+			timeout: 10000000,
+			dataType: "json",
+			url: window.location.href,
+			data: $form.serialize(),
+			beforeSend: function() {
+				Duplicator.showProgressBar();
+				$form.hide();
+				$('#dup-step1-result-form').show();
+			},			
+			success: function(data, textStatus, xhr){ 
+				if (typeof(data) != 'undefined' && data.pass == 1) {
+					$("#ajax-dbhost").val($("#dbhost").val());
+					$("#ajax-dbport").val($("#dbport").val());
+					$("#ajax-dbuser").val($("#dbuser").val());
+					$("#ajax-dbpass").val($("#dbpass").val());
+					$("#ajax-dbname").val($("#dbname").val());
+					$("#ajax-dbcharset").val($("#dbcharset").val());
+					$("#ajax-dbcollate").val($("#dbcollate").val());
+					$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
+					$("#ajax-json").val(escape(JSON.stringify(data)));
+					setTimeout(function() {$('#dup-step1-result-form').submit();}, 1000);
+					$('#progress-area').fadeOut(700);
+				} else {
+					Duplicator.hideProgressBar();
+				}
+			},
+			error: function(xhr) { 
+				var status = "<b>server code:</b> " + xhr.status + "<br/><b>status:</b> " + xhr.statusText + "<br/><b>response:</b> " +  xhr.responseText;
+				$('#ajaxerr-data').html(status);
+				Duplicator.hideProgressBar();
+			}
+		});	
+		
+	};
+
+	/** **********************************************
+	* METHOD: Accetps Useage Warning */
+	Duplicator.acceptWarning = function() {
+		if ($("#accept-warnings").is(':checked')) {
+			$("#dup-step1-deploy-btn").removeAttr("disabled");
+		} else {
+			$("#dup-step1-deploy-btn").attr("disabled", "true");
+		}
+	};
+
+	/** **********************************************
+	* METHOD: Go back on AJAX result view */
+	Duplicator.hideErrorResult = function() {
+		$('#dup-step1-result-form').hide();			
+		$('#dup-step1-input-form').show(200);
+	};
+	
+	/** **********************************************
+	* METHOD: Shows results of database connection 
+	* Timeout (45000 = 45 secs) */
+	Duplicator.dlgTestDB = function () {		
+		$.ajax({
+			type: "POST",
+			timeout: 45000,
+			url: window.location.href + '?' + 'dbtest=1',
+			data: $('#dup-step1-input-form').serialize(),
+			success: function(data){ $('#dbconn-test-msg').html(data); },
+			error:   function(data){ alert('An error occurred while testing the database connection!  Contact your server admin to make sure the connection inputs are correct!'); }
+		});
+		
+		$('#dbconn-test-msg').html("Attempting Connection.  Please wait...");
+		$("#s1-dbconn-status").show(500);
+		
+	};
+	
+	Duplicator.showDeleteWarning = function () {
+		($('#dbaction-empty').prop('checked')) 
+			? $('#dup-s1-warning-emptydb').show(300)
+			: $('#dup-s1-warning-emptydb').hide(300);
+	};
+	
+	Duplicator.togglePort = function () {
+		
+		$('#s1-dbport-btn').hide();
+		$('#dbport').show();
+	}
+	
+	
+	//DOCUMENT LOAD
+	$(document).ready(function() {
+		$('#dup-s1-dialog-data').appendTo('#dup-s1-result-container');
+		$( "input[name='dbaction']").click(Duplicator.showDeleteWarning);
+		Duplicator.acceptWarning();
+		Duplicator.showDeleteWarning();		
+		
+		//MySQL Mode
+		$("input[name=dbmysqlmode]").click(function() {
+			if ($(this).val() == 'CUSTOM') {
+				$('#dbmysqlmode_3_view').show();
+			} else {
+				$('#dbmysqlmode_3_view').hide();
+			}
+		});
+		
+		if ($("input[name=dbmysqlmode]:checked").val() == 'CUSTOM') {
+			$('#dbmysqlmode_3_view').show();
+		}
+		
+		
+	});
+</script>
