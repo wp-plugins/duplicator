@@ -16,7 +16,7 @@ $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
 $_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
 $_POST['package_name']		= isset($_POST['package_name']) ? $_POST['package_name'] : null;
 $_POST['zip_manual']		= (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
-$_POST['zip_filetime']		= (isset($_POST['zip_filetime']) && $_POST['zip_filetime'] == '1') ? true : false;
+$_POST['zip_filetime']		= (isset($_POST['zip_filetime'])) ? $_POST['zip_filetime'] : 'current';
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -219,12 +219,17 @@ else
 		$log  = print_r($zip, true);
 		
 		//Keep original timestamp on the file
-		if ($_POST['zip_filetime']) 
+		if ($_POST['zip_filetime'] == 'original') 
 		{
-			$log .=  "File timestamp retained\n"; 
+			$log .=  "File timestamp set to Original\n"; 
 			for ($idx = 0; $s = $zip->statIndex($idx); $idx++) {
 				touch( $target . DIRECTORY_SEPARATOR . $s['name'], $s['mtime'] );
 			}
+		} 
+		else
+		{
+			$now = date("Y-m-d H:i:s");
+			$log .=  "File timestamp set to Current: {$now}\n"; 
 		}
 		
 		$close_response = $zip->close();

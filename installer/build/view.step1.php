@@ -164,17 +164,18 @@ VIEW: STEP 1- INPUT -->
 						</td>
 					</tr>
 					<tr>
-						<td>Timestamp</td>
+						<td>File Timestamp</td>
 						<td colspan="2">
-							<input type="checkbox" name="zip_filetime" id="zip_filetime" value="1" /> <label for="zip_filetime">Keep original file timestamps</label><br/>
+							<input type="radio" name="zip_filetime" id="zip_filetime_now" value="current" checked="checked" /> <label class="radio" for="zip_filetime_now" title='Set the files current date time to now'>Current</label>
+							<input type="radio" name="zip_filetime" id="zip_filetime_orginal" value="original" /> <label class="radio" for="zip_filetime_orginal" title="Keep the files date time the same">Original</label>
 						</td>
 					</tr>					
 					<tr>
 						<td>Logging</td>
 						<td colspan="2">
-							<input type="radio" name="logging" id="logging-light" value="1" checked="true"> <label for="logging-light">Light</label> &nbsp; 
-							<input type="radio" name="logging" id="logging-detailed" value="2"> <label for="logging-detailed">Detailed</label> &nbsp; 
-							<input type="radio" name="logging" id="logging-debug" value="3"> <label for="logging-debug">Debug</label>
+							<input type="radio" name="logging" id="logging-light" value="1" checked="true"> <label class="radio" for="logging-light">Light</label>
+							<input type="radio" name="logging" id="logging-detailed" value="2"> <label class="radio" for="logging-detailed">Detailed</label>
+							<input type="radio" name="logging" id="logging-debug" value="3"> <label class="radio" for="logging-debug">Debug</label>
 						</td>
 					</tr>	
 					<tr>

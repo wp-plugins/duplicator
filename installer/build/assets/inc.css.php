@@ -98,6 +98,7 @@
 	div#dup-s1-warning {padding:5px;font-size:12px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:150px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
 	div#dup-s1-warning-check {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
 	div#dup-s1-warning-emptydb {display:none; color:#AF2222; margin:0px 0 0 20px}
+	table.s1-advopts label.radio {width:50px; display:inline-block}
 
 	/*Dialog*/
 	div#dup-s1-dialog-data {height:90%; font-size:11px; padding:5px; line-height:16px; }

@@ -65,7 +65,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
     form#dup-settings-form input[type=text] {width: 400px; }
     input#package_mysqldump_path_found {margin-top:5px}
     div.dup-feature-found {padding:3px; border:1px solid silver; background: #f7fcfe; border-radius: 3px; width:400px; font-size: 12px}
-    div.dup-feature-notfound {padding:3px; border:1px solid silver; background: #fcf3ef; border-radius: 3px; width:400px; font-size: 12px}
+    div.dup-feature-notfound {padding:5px; border:1px solid silver; background: #fcf3ef; border-radius: 3px; width:500px; font-size: 13px; line-height: 18px}
 	select#package_ui_created {font-family: monospace}
 </style>
 
@@ -121,42 +121,29 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
     <hr size="1" />
     <table class="form-table">
         <tr>
-            <th scope="row"><label><?php _e("Archive Flush", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Created Format", 'duplicator'); ?></label></th>
             <td>
-                <input type="checkbox" name="package_zip_flush" id="package_zip_flush" <?php echo ($package_zip_flush) ? 'checked="checked"' : ''; ?> />
-                <label for="package_zip_flush"><?php _e("Attempt Network Keep Alive", 'duplicator'); ?></label>
-                <i style="font-size:12px">(<?php _e("recommended only for large archives", 'duplicator'); ?>)</i> 
+                <select name="package_ui_created" id="package_ui_created">
+					<option value="1">Y-m-d H:i &nbsp; [2000-01-05 12:00]</option>
+					<option value="2">Y-m-d H:i:s [2000-01-05 12:00:01]</option>
+					<option value="3">m-d-y H:i  &nbsp; [01-05-00 12:00]</option>
+					<option value="4">m-d-y H:i:s [01-05-00 12:00:01]</option>
+				</select>
                 <p class="description">
-                    <?php _e("This will attempt to keep a network connection established for large archives.", 'duplicator'); ?>
+                    <?php _e("The date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?>
                 </p>
             </td>
-        </tr>		
+        </tr>				
         <tr>
-            <th scope="row"><label><?php _e("Database Build", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Database Script", 'duplicator'); ?></label></th>
             <td>
-				<input type="radio" name="package_dbmode" id="package_phpdump" value="php" <?php echo (! $package_mysqldump) ? 'checked="checked"' : ''; ?> />
-                <label for="package_phpdump"><?php _e("Use PHP", 'duplicator'); ?></label> &nbsp;
-				
-				<div style="margin:5px 0px 0px 25px">
-					<label for="package_phpdump_qrylimit"><?php _e("Query Limit Size", 'duplicator'); ?></label> &nbsp;
-					<select name="package_phpdump_qrylimit" id="package_phpdump_qrylimit">
-						<?php 
-							foreach($phpdump_chunkopts as $value) {
-								$selected = ( $package_phpdump_qrylimit == $value ? "selected='selected'" : '' );
-								echo "<option {$selected} value='{$value}'>" . number_format($value)  . '</option>';
-							}
-						?>
-					</select>
-					 <i style="font-size:12px">(<?php _e("higher values speed up build times but uses more memory", 'duplicator'); ?>)</i> 
-					
-				</div><br/>
-
                 <?php if (!DUP_Util::IsShellExecAvailable()) : ?>
-                    <p class="description">
+					<input type="radio" disabled="true" />
+                    <label><?php _e("Use mysqldump", 'duplicator'); ?></label>
+                    <p class="description" style="width:550px; margin:5px 0 0 20px">
                         <?php
-                        _e("This server does not have shell_exec configured to run.", 'duplicator');
-                        echo '<br/>';
-                        _e("Contact the server administrator to enable this feature.", 'duplicator');
+							_e("This server does not support the PHP shell_exec function which is requred for mysqldump to run. ", 'duplicator');
+							_e("Please contact the host or server administrator to enable this feature.", 'duplicator');
                         ?>
 						<br/>
 						<small>
@@ -172,28 +159,14 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 								?>
 							</i>
 						</small>
+						<br/><br/>
                     </p>
                 <?php else : ?>
                     <input type="radio" name="package_dbmode" value="mysql" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
-                    <label for="package_mysqldump"><?php _e("Use mysqldump", 'duplicator'); ?></label> &nbsp;
-                    <i style="font-size:12px">(<?php _e("recommended for large databases", 'duplicator'); ?>)</i> <br/>
+                    <label for="package_mysqldump"><?php _e("Use mysqldump", 'duplicator'); ?></label> 
+                    <i style="font-size:12px">(<?php _e("recommended", 'duplicator'); ?>)</i> <br/>
 					
-						<div style="padding:2px 0 0 40px">
-							<small>
-								<i style="cursor: pointer" 
-									data-tooltip-title="<?php _e("Host Recommendation:", 'duplicator'); ?>" 
-									data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
-								<i class="fa fa-lightbulb-o" aria-hidden="true"></i>
-									<?php
-										printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
-											__("Please visit our recommended", 'duplicator'), 
-											__("host list", 'duplicator'),
-											__("for reliable access to mysqldump", 'duplicator'));
-									?>
-								</i>
-							</small>
-						</div>
-					<br/>
+		
 
                     <div style="margin:5px 0px 0px 25px">
                         <?php if ($mysqlDumpFound) : ?>
@@ -206,31 +179,59 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                                 <?php
 									_e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.', 'duplicator');
                                 ?>
+							
+								<?php
+									printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+										__("See the", 'duplicator'), 
+										__("host list", 'duplicator'),
+										__("for reliable access to mysqldump", 'duplicator'));
+								?>
                             </div><br/>
+							
                         <?php endif; ?>
 
-                        <label><?php _e("Add Custom Path:", 'duplicator'); ?></label><br/>
+						<i class="fa fa-question-circle" 
+								data-tooltip-title="<?php _e("mysqldump", 'duplicator'); ?>" 
+								data-tooltip="<?php _e('An optional path to the mysqldump program.  Add a custom path if the path to mysqldump is not properly detected or needs to be changed.', 'duplicator'); ?>"></i>
+                        <label><?php _e("Custom Path:", 'duplicator'); ?></label><br/>
                         <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?> " />
-                        <p class="description"><?php _e("This is the path to your mysqldump program.", 'duplicator'); ?></p>
+						<br/><br/>
                     </div>
 
                 <?php endif; ?>
+					
+				<!-- PHP MODE -->
+				<input type="radio" name="package_dbmode" id="package_phpdump" value="php" <?php echo (! $package_mysqldump) ? 'checked="checked"' : ''; ?> />
+                <label for="package_phpdump"><?php _e("Use PHP Code", 'duplicator'); ?></label> &nbsp;
+				
+				<div style="margin:5px 0px 0px 25px">
+					<i class="fa fa-question-circle" 
+					   data-tooltip-title="<?php _e("PHP Query Limit Size", 'duplicator'); ?>" 
+					   data-tooltip="<?php _e('A higher limit size will speed up the database build time, however it will use more memory.  If your host has memory caps start off low.', 'duplicator'); ?>"></i>
+					<label for="package_phpdump_qrylimit"><?php _e("Query Limit Size", 'duplicator'); ?></label> &nbsp;
+					<select name="package_phpdump_qrylimit" id="package_phpdump_qrylimit">
+						<?php 
+							foreach($phpdump_chunkopts as $value) {
+								$selected = ( $package_phpdump_qrylimit == $value ? "selected='selected'" : '' );
+								echo "<option {$selected} value='{$value}'>" . number_format($value)  . '</option>';
+							}
+						?>
+					</select>					
+				</div><br/>
+
             </td>
-        </tr>	
+        </tr>
         <tr>
-            <th scope="row"><label><?php _e("Created Format", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("Archive Flush", 'duplicator'); ?></label></th>
             <td>
-                <select name="package_ui_created" id="package_ui_created">
-					<option value="1">Y-m-d H:i &nbsp; [2000-01-05 12:00]</option>
-					<option value="2">Y-m-d H:i:s [2000-01-05 12:00:01]</option>
-					<option value="3">m-d-y H:i  &nbsp; [01-05-00 12:00]</option>
-					<option value="4">m-d-y H:i:s [01-05-00 12:00:01]</option>
-				</select>
+                <input type="checkbox" name="package_zip_flush" id="package_zip_flush" <?php echo ($package_zip_flush) ? 'checked="checked"' : ''; ?> />
+                <label for="package_zip_flush"><?php _e("Attempt Network Keep Alive", 'duplicator'); ?></label>
+                <i style="font-size:12px">(<?php _e("enable only for large archives", 'duplicator'); ?>)</i> 
                 <p class="description">
-                    <?php _e("The date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?>
+                    <?php _e("This will attempt to keep a network connection established for large archives.", 'duplicator'); ?>
                 </p>
             </td>
-        </tr>	
+        </tr>		
     </table>
 
     <!-- ===============================
