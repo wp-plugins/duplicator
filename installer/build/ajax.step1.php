@@ -243,6 +243,7 @@ else
 
 
 //CONFIG FILE RESETS
+$log = '';
 DUPX_WPConfig::UpdateStep1();
 DUPX_ServerConfig::Reset();
 
@@ -323,6 +324,7 @@ DUPX_Util::mysqldb_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 //Will set mode to null only for this db handle session
 //sql_mode can cause db create issues on some systems
+$qry_session_custom = true;
 switch ($_POST['dbmysqlmode']) {
     case 'DISABLE':
         @mysqli_query($dbh, "SET SESSION sql_mode = ''");
