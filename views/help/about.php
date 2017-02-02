@@ -24,12 +24,20 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
     div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
     div.dup-support-give-area {width:400px; height:185px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
     div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
-
+	
     img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
     form#dup-donate-form input {opacity:0.7;}
     form#dup-donate-form input:hover {opacity:1.0;}
     img#dup-img-5stars {opacity:0.7;}
     img#dup-img-5stars:hover {opacity:1.0;}
+	
+	/* EMAIL AREA */
+	div.dup-support-email-area {width:825px; height:250px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+	#mce-EMAIL {font-size:20px; height:40px; width:500px}
+	#mce-responses {width:300px}
+	#mc-embedded-subscribe { height: 35px; font-size: 16px; font-weight: bold}
+	div.mce_inline_error {width:300px; margin: auto !important}
+	div#mce-responses {margin: auto; padding: 10px; width:500px}
 </style>
 
 <script type="text/javascript">var switchTo5x = true;</script>
@@ -82,7 +90,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             </table>
         </div> 
 
-
         <!-- SPREAD THE WORD  -->
         <div class="dup-support-give-area">
             <table class="dup-support-hlp-hdrs">
@@ -109,12 +116,65 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         </div>
         <br style="clear:both" /><br/>
 		
+		<!-- STAY IN THE LOOP  -->
+        <div class="dup-support-email-area">
+            <table class="dup-support-hlp-hdrs">
+                <tr>
+                    <td style="height:30px; text-align: center;">
+                        <span style="display: inline-block; margin-top: 5px"><?php _e('Stay in the Loop', 'duplicator') ?></span>
+                    </td>
+                </tr>
+            </table>
+            <div class="dup-support-hlp-txt">
+				<div class="email-box">
+					<div class="email-area">
+						<!-- Begin MailChimp Signup Form -->
+						<div class="email-form">
+							<b>
+								Subscribe to the Duplicator and stay on top of great ideas <br/>
+								tutorials and better ways to improve your workflows... </b>
+							<br/><br/>
+
+							<div id="mc_embed_signup">
+								<form action="//snapcreek.us11.list-manage.com/subscribe/post?u=e2a9a514bfefa439bf2b7cf16&amp;id=1270a169c1" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+									<div id="mc_embed_signup_scroll">
+										<div class="mc-field-group">
+											<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Your Best Email *">
+										</div>
+										<div id="mce-responses" class="clear">
+											<div class="response" id="mce-error-response" style="display:none"></div>
+											<div class="response" id="mce-success-response" style="display:none"></div>
+										</div>
+										<div style="position:absolute; left:-5000px;"><input type="text" name="b_e2a9a514bfefa439bf2b7cf16_1270a169c1" tabindex="-1" value=""></div>
+										<div style="margin: auto; text-align: center">
+											<input type="submit" class="button-primary button-large" value="Sign me up!" name="subscribe" id="mc-embedded-subscribe" >
+										</div>
+										<!-- Forces the submission to use Duplicator group -->
+										<input style="display:none" checked="checked" type="checkbox" value="1" name="group[15741][1]" id="mce-group[15741]-15741-0">						
+									</div>
+								</form>
+							</div>
+						</div>
+	
+						<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+						<script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+						<!--End mc_embed_signup-->
+					</div>
+				</div>
+				
+				
+				
+            </div>
+        </div>
+        <br style="clear:both" /><br/>
+		
 		
 		<!--div style='margin: auto; text-align: center; margin-top: 20px'>
 			<a href="http://lifeinthegrid.com/tools" target="_blank"  class="button button-large button-primary">
 				<i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Tools', 'duplicator') ?>...
 			</a>
 		</div-->
+
 
     </div>
 </div><br/><br/><br/><br/>
