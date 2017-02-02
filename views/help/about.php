@@ -130,10 +130,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 					<div class="email-area">
 						<!-- Begin MailChimp Signup Form -->
 						<div class="email-form">
-							<b>
-								Subscribe to the Duplicator and stay on top of great ideas <br/>
-								tutorials and better ways to improve your workflows... </b>
-							<br/><br/>
+							<div style="font-size:18px; width: 525px; padding: 5px 0 15px 0; text-align: center; font-style: italic; margin: auto">
+								<?php _e('Subscribe to the Duplicator newsletter and stay on top of great ideas, tutorials, and better ways to improve your workflows', 'duplicator') ?>...
+							</div>
+							
 
 							<div id="mc_embed_signup">
 								<form action="//snapcreek.us11.list-manage.com/subscribe/post?u=e2a9a514bfefa439bf2b7cf16&amp;id=1270a169c1" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
