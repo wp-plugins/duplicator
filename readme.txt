@@ -38,7 +38,7 @@ Duplicator Pro takes Duplicator to the next level with features you'll really ap
 
 * Scheduled backups
 * Cloud Storage to Dropbox, Google Drive, Amazon S3 and FTP
-* MultiThreaded to suppoert larger web sites &amp; databases
+* MultiThreaded to support larger web sites &amp; databases
 * Multisite (MU) support
 * Database creation *in the installer*
 * Connect to cPanel directly from installer
