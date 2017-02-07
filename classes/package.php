@@ -93,18 +93,7 @@ class DUP_Package {
 
 		//SERVER
 		$srv = DUP_Server::GetChecks();
-		$report['SRV']['WEB']['ALL']	  = $srv['SRV']['WEB']['ALL'];
-		$report['SRV']['WEB']['model']	  = $srv['SRV']['WEB']['model'];
-
-		$report['SRV']['PHP']['ALL']	  = $srv['SRV']['PHP']['ALL'];
-		$report['SRV']['PHP']['openbase'] = $srv['SRV']['PHP']['openbase'];
-		$report['SRV']['PHP']['maxtime']  = $srv['SRV']['PHP']['maxtime'];
-		$report['SRV']['PHP']['mysqli']   = $srv['SRV']['PHP']['mysqli'];
-
-		$report['SRV']['WP']['ALL']		  = $srv['SRV']['WP']['ALL'];
-		$report['SRV']['WP']['version']	  = $srv['SRV']['WP']['version'];
-		$report['SRV']['WP']['core']	  = $srv['SRV']['WP']['core'];
-		$report['SRV']['WP']['cache']	  = $srv['SRV']['WP']['cache'];
+		$report['SRV'] = $srv['SRV'];
 		
 		//FILES
 		$this->Archive->Stats();

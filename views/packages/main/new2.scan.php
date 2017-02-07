@@ -60,9 +60,10 @@
 	div#data-db-tablelist {max-height: 300px; overflow-y: scroll; border: 1px dashed silver; padding: 5px; margin-top:5px}
 	div#data-db-tablelist div{padding:0px 0px 0px 15px;}
 	div#data-db-tablelist span{display:inline-block; min-width: 75px}
-	div#data-db-size1 {display: inline-block; float:right; font-size:11px; margin-right: 15px; font-style: italic}
+	div#data-db-size1 {display: inline-block; float:right; font-size:11px; margin-right:5px; font-style: italic}
 	/*FILES */
-	div#data-arc-size1 {display: inline-block; float:right; font-size:11px; margin-right: 15px; font-style: italic}
+	div#data-arc-size1 {display: inline-block; float:right; font-size:11px; margin-right:5px; font-style: italic}
+	i.data-size-help { float:right; margin-right:5px; display: block; font-size: 11px}
 	div#data-arc-names-data, div#data-arc-big-data	{word-wrap: break-word;font-size:10px; border:1px dashed silver; padding:5px; display: none}
 		
 	div#dup-scan-warning-continue {display:none; text-align: center; padding: 0 0 15px 0}
@@ -155,14 +156,29 @@ TOOL BAR: STEPS -->
 				</div>
 				<div class='dup-scan-info dup-info-box'>
 					<?php 
+					
+					//PHP VERSION
+					echo '<span id="data-srv-php-version"></span>&nbsp;<b>' . __('PHP Version', 'duplicator') . "</b> <br/>";
+					echo '<small>';
+					_e('The minium PHP version supported by Duplicator is 5.2.9, however it is highly recommended to use PHP 5.3 or higher for improved stability.', 'duplicator');
+					echo "&nbsp;<i><a href='http://php.net/ChangeLog-5.php' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+					echo '</small>';
+					
 					//OPEN_BASEDIR
 					$test = ini_get("open_basedir");
-					echo '<span id="data-srv-php-openbase"></span>&nbsp;<b>' . __('Open Base Dir', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
+					echo '<hr size="1" /><span id="data-srv-php-openbase"></span>&nbsp;<b>' . __('Open Base Dir', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
 					echo '<small>';
 					_e('Issues might occur when [open_basedir] is enabled. Work with your server admin to disable this value in the php.ini file if you’re having issues building a package.', 'duplicator');
 					echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('details', 'duplicator') . "]</a></i><br/>";
 					echo '</small>';
-
+					
+					//MYSQLI
+					echo '<hr size="1" /><span id="data-srv-php-mysqli"></span>&nbsp;<b>' . __('MySQLi', 'duplicator') . "</b> <br/>";
+					echo '<small>';
+					_e('Creating the package does not require the mysqli module.  However the installer.php file requires that the PHP module mysqli be installed on the server it is deployed on.', 'duplicator');
+					echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+					echo '</small>';
+					
 					//MAX_EXECUTION_TIME
 					$test = (set_time_limit(0)) ? 0 : ini_get("max_execution_time");
 					echo '<hr size="1" /><span id="data-srv-php-maxtime"></span>&nbsp;<b>' . __('Max Execution Time', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
@@ -173,21 +189,16 @@ TOOL BAR: STEPS -->
 					echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('details', 'duplicator')  . "]</a></i>";
                     
                     if ($zip_check != null) {
-                            echo '<br/><br/>';
-                            echo '<span style="font-weight:bold">';
-                            _e('Get faster builds with Duplicator Pro.', 'duplicator');
-                            echo '</span>';
-                            echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_max_execution_time_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+						echo '<br/><br/>';
+						echo '<span style="font-weight:bold">';
+						_e('Get faster builds with Duplicator Pro with access to shell_exec zip.', 'duplicator');
+						echo '</span>';
+						echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_max_execution_time_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
                     }
                     
 					echo '</small>';
 					
-					//MYSQLI
-					echo '<hr size="1" /><span id="data-srv-php-mysqli"></span>&nbsp;<b>' . __('MySQLi', 'duplicator') . "</b> <br/>";
-					echo '<small>';
-					_e('Creating the package does not require the mysqli module.  However the installer.php file requires that the PHP module mysqli be installed on the server it is deployed on.', 'duplicator');
-					echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
-					echo '</small>';
+
 					?>
 				</div>
 			</div>
@@ -219,6 +230,15 @@ TOOL BAR: STEPS -->
 					_e("Cached data will lead to issues at install time and increases your archive size. It is recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you have a cache plugin review the documentation for how to empty it; simply removing files might cause errors on your site. The cache size minimum threshold is currently set at ", 'duplicator');
 					echo DUP_Util::ByteSize(DUPLICATOR_SCAN_CACHESIZE) . '.';
 					echo '</small>';
+					
+					//MU SITE
+					echo '<hr size="1" /><span id="data-srv-wp-ismu"></span>&nbsp;<b>' . __('Multisite Disabled', 'duplicator') . "</b> <br/>";
+					echo '<small>';
+					_e('Duplicator does not offically support WordPress Multisite setups. However, Duplicator Pro supports Multisite Basic and Multisite Plus+.  ', 'duplicator');
+					_e('With Multisite Basic you can backup a full multisite network without custom configuration work. With Multisite Plus+ you can additionally install an MU subusite as a full standalone WordPress site at install time.', 'duplicator');
+					echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+					
+					echo '</small>';					
 						
 					?>
 				</div>
@@ -235,6 +255,9 @@ TOOL BAR: STEPS -->
 			<div class="dup-panel-title">
 				<i class="fa fa-files-o"></i>
 				<?php _e("Files", 'duplicator'); ?> 
+				<i class="fa fa-question-circle data-size-help"
+					data-tooltip-title="<?php _e("File Size:", 'duplicator'); ?>" 
+					data-tooltip="<?php _e('The files size represents only the included files before compression is applied. It does not include the size of the database script and in most cases the package size once completed will be smaller than this number.', 'duplicator'); ?>"></i>
 				<div id="data-arc-size1"></div>
 				<div class="dup-scan-filter-status">
 					<?php 
@@ -358,6 +381,9 @@ TOOL BAR: STEPS -->
 			<div class="dup-panel-title">
 				<i class="fa fa-table"></i>
 				<?php _e("Database", 'duplicator');	?>
+				<i class="fa fa-question-circle data-size-help"
+					data-tooltip-title="<?php _e("Database Size:", 'duplicator'); ?>" 
+					data-tooltip="<?php _e('The database size represents only the included tables. The process for gathering the size uses the query SHOW TABLE STATUS.  The overall size of the database file can impact the final size of the package.', 'duplicator'); ?>"></i>				
 				<div id="data-db-size1"></div>
 				<div class="dup-scan-filter-status">
 					<?php 
@@ -610,12 +636,14 @@ jQuery(document).ready(function($) {
 		$('#data-srv-php-openbase').html(Duplicator.Pack.LoadScanStatus(data.SRV.PHP.openbase));
 		$('#data-srv-php-maxtime').html(Duplicator.Pack.LoadScanStatus(data.SRV.PHP.maxtime));
 		$('#data-srv-php-mysqli').html(Duplicator.Pack.LoadScanStatus(data.SRV.PHP.mysqli));
+		$('#data-srv-php-version').html(Duplicator.Pack.LoadScanStatus(data.SRV.PHP.version));
 		$('#data-srv-php-openssl').html(Duplicator.Pack.LoadScanStatus(data.SRV.PHP.openssl));
 		$('#data-srv-php-all').html(Duplicator.Pack.LoadScanStatus(data.SRV.PHP.ALL));
 
 		$('#data-srv-wp-version').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.version));
 		$('#data-srv-wp-core').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.core));
 		$('#data-srv-wp-cache').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.cache));
+		$('#data-srv-wp-ismu').html(Duplicator.Pack.LoadScanStatus(!data.SRV.WP.ismu));
 		$('#data-srv-wp-all').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.ALL));
 		
 		//****************

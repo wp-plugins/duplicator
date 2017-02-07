@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 1.1.30
+  Version: 1.1.31
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -45,7 +45,7 @@ if (is_admin() == true)
 	require_once 'classes/ui.php';
 	 
     //Controllers
-	require_once 'views/actions.php';
+	require_once 'ctrls/ctrl.package.php';
 	require_once 'ctrls/ctrl.tools.php';
 	require_once 'ctrls/ctrl.ui.php';
 

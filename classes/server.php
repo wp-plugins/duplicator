@@ -86,11 +86,14 @@ class DUP_Server
 		$php_test2 = ini_get("max_execution_time");
 		$php_test2 = ($php_test2 > DUPLICATOR_SCAN_TIMEOUT)  || (strcmp($php_test2 , 'Off') == 0 || $php_test2  == 0) ? true : false;                
 		$php_test3	= function_exists('mysqli_connect');
+		$php_test4	= DUP_Util::$on_php_53_plus	? true : false;
                             
 		$checks['SRV']['PHP']['openbase'] = $php_test1;
 		$checks['SRV']['PHP']['maxtime']  = $php_test2;
 		$checks['SRV']['PHP']['mysqli']   = $php_test3;
-		$checks['SRV']['PHP']['ALL']      = ($php_test1 && $php_test2 && $php_test3) ? 'Good' : 'Warn';
+		$checks['SRV']['PHP']['version']  = $php_test4;
+		$checks['SRV']['PHP']['ALL']      = ($php_test1 && $php_test2 && $php_test3 && $php_test4) ? 'Good' : 'Warn';
+		
 		
 		//WORDPRESS SETTINGS
 		global $wp_version;
@@ -108,11 +111,13 @@ class DUP_Server
 		$dirSize	= DUP_Util::GetDirectorySize($cache_path); 
 		$cach_filtered = in_array($cache_path, explode(';', $Package->Archive->FilterDirs));
 		$wp_test3 = ($cach_filtered || $dirEmpty  || $dirSize < DUPLICATOR_SCAN_CACHESIZE ) ? true : false;
+		$wp_test4 = is_multisite();
 		
 		$checks['SRV']['WP']['version'] = $wp_test1;
 		$checks['SRV']['WP']['core']	= $wp_test2;
 		$checks['SRV']['WP']['cache']	= $wp_test3;
-		$checks['SRV']['WP']['ALL']		= $wp_test1 && $wp_test2 && $wp_test3 ? 'Good' : 'Warn';
+		$checks['SRV']['WP']['ismu']	= $wp_test4;
+		$checks['SRV']['WP']['ALL']		= $wp_test1 && $wp_test2 && $wp_test3 && ! $wp_test4 ? 'Good' : 'Warn';
 
 		return $checks;
 	}
