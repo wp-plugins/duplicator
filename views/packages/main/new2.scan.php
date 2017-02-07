@@ -236,7 +236,7 @@ TOOL BAR: STEPS -->
 					{
 						echo '<hr size="1" /><span><div class="dup-scan-warn"><i class="fa fa-exclamation-triangle"></i></div></span>&nbsp;<b>' . __('Multisite (Unsupported)', 'duplicator') . "</b> <br/>";
 						echo '<small>';
-							_e('Duplicator does not officially support Multisite. However, Duplicator Pro supports duplication of a full Multisite network. Duplicator Pro also has the ability to install a Multisite subsite as a standalone WordPress site.', 'duplicator');
+							_e('Duplicator does not officially support Multisite. However, Duplicator Pro supports duplication of a full Multisite network and also has the ability to install a Multisite subsite as a standalone site.', 'duplicator');
 							echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
 						echo '</small>';
 					} 
@@ -244,7 +244,7 @@ TOOL BAR: STEPS -->
 					{
 						echo '<hr size="1" /><span><div class="dup-scan-good"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . __('Multisite N/A', 'duplicator') . "</b> <br/>";
 						echo '<small>';
-							_e('This is not a Multisite install so duplication will proceed without issue.  Duplicator does not officially support Multisite however, Duplicator Pro does support duplication of a full Multisite network. Pro also has the ability to install a Multisite subsite as a standalone WordPress site.', 'duplicator');
+							_e('This is not a Multisite install so duplication will proceed without issue.  Duplicator does not officially support Multisite. However, Duplicator Pro supports duplication of a full Multisite network and also has the ability to install a Multisite subsite as a standalone site.', 'duplicator');
 							echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
 						echo '</small>';
 					}
