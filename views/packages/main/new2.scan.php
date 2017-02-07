@@ -232,13 +232,22 @@ TOOL BAR: STEPS -->
 					echo '</small>';
 					
 					//MU SITE
-					echo '<hr size="1" /><span id="data-srv-wp-ismu"></span>&nbsp;<b>' . __('Multisite Disabled', 'duplicator') . "</b> <br/>";
-					echo '<small>';
-					_e('Duplicator does not offically support WordPress Multisite setups. However, Duplicator Pro supports Multisite Basic and Multisite Plus+.  ', 'duplicator');
-					_e('With Multisite Basic you can backup a full multisite network without custom configuration work. With Multisite Plus+ you can additionally install an MU subusite as a full standalone WordPress site at install time.', 'duplicator');
-					echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
-					
-					echo '</small>';					
+					if (is_multisite()) 
+					{
+						echo '<hr size="1" /><span><div class="dup-scan-warn"><i class="fa fa-exclamation-triangle"></i></div></span>&nbsp;<b>' . __('Multisite (Unsupported)', 'duplicator') . "</b> <br/>";
+						echo '<small>';
+							_e('Duplicator does not officially support Multisite. However, Duplicator Pro supports duplication of a full Multisite network. Duplicator Pro also has the ability to install a Multisite subsite as a standalone WordPress site.', 'duplicator');
+							echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+						echo '</small>';
+					} 
+					else 
+					{
+						echo '<hr size="1" /><span><div class="dup-scan-good"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . __('Multisite N/A', 'duplicator') . "</b> <br/>";
+						echo '<small>';
+							_e('This is not a Multisite install so duplication will proceed without issue.  Duplicator does not officially support Multisite. however, Duplicator Pro supports duplication of a full Multisite network. Duplicator Pro also has the ability to install a Multisite subsite as a standalone WordPress site.', 'duplicator');
+							echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
+						echo '</small>';
+					}
 						
 					?>
 				</div>
@@ -643,7 +652,6 @@ jQuery(document).ready(function($) {
 		$('#data-srv-wp-version').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.version));
 		$('#data-srv-wp-core').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.core));
 		$('#data-srv-wp-cache').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.cache));
-		$('#data-srv-wp-ismu').html(Duplicator.Pack.LoadScanStatus(!data.SRV.WP.ismu));
 		$('#data-srv-wp-all').html(Duplicator.Pack.LoadScanStatus(data.SRV.WP.ALL));
 		
 		//****************
