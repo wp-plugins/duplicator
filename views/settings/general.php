@@ -124,10 +124,27 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             <th scope="row"><label><?php _e("Created Format", 'duplicator'); ?></label></th>
             <td>
                 <select name="package_ui_created" id="package_ui_created">
-					<option value="1">Y-m-d H:i &nbsp; [2000-01-05 12:00]</option>
-					<option value="2">Y-m-d H:i:s [2000-01-05 12:00:01]</option>
-					<option value="3">m-d-y H:i  &nbsp; [01-05-00 12:00]</option>
-					<option value="4">m-d-y H:i:s [01-05-00 12:00:01]</option>
+					<!-- YEAR -->
+					<optgroup label="<?php _e("By Year", 'duplicator'); ?>">
+						<option value="1">Y-m-d H:i &nbsp;	[2000-01-05 12:00]</option>
+						<option value="2">Y-m-d H:i:s		[2000-01-05 12:00:01]</option>
+						<option value="3">y-m-d H:i &nbsp;	[00-01-05   12:00]</option>
+						<option value="4">y-m-d H:i:s		[00-01-05   12:00:01]</option>
+					</optgroup>
+					<!-- MONTH -->
+					<optgroup label="<?php _e("By Month", 'duplicator'); ?>">
+						<option value="5">m-d-Y H:i  &nbsp; [01-05-2000 12:00]</option>
+						<option value="6">m-d-Y H:i:s		[01-05-2000 12:00:01]</option>
+						<option value="7">m-d-y H:i  &nbsp; [01-05-00   12:00]</option>
+						<option value="8">m-d-y H:i:s		[01-05-00   12:00:01]</option>
+					</optgroup>
+					<!-- DAY -->
+					<optgroup label="<?php _e("By Day", 'duplicator'); ?>">
+						<option value="9"> d-m-Y H:i &nbsp	[05-01-2000 12:00]</option>
+						<option value="10">d-m-Y H:i:s		[05-01-2000 12:00:01]</option>
+						<option value="11">d-m-y H:i &nbsp	[05-01-00	12:00]</option>
+						<option value="12">d-m-y H:i:s		[05-01-00	12:00:01]</option>
+					</optgroup>						
 				</select>
                 <p class="description">
                     <?php _e("The date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?>

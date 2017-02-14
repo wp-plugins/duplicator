@@ -477,11 +477,23 @@ class DUP_Package {
 	public static function FormatCreatedDate($date, $format = 1) 
 	{
 		$date = new DateTime($date);
-		switch ($format) {
+		switch ($format) 
+		{
+			//YEAR
 			case 1:  return $date->format('Y-m-d H:i');		break;
 			case 2:  return $date->format('Y-m-d H:i:s');	break;
-			case 3:  return $date->format('m-d-y H:i');		break;
-			case 4:  return $date->format('m-d-y H:i:s');	break;
+			case 3:  return $date->format('y-m-d H:i');		break;
+			case 4:  return $date->format('y-m-d H:i:s');	break;
+			//MONTH
+			case 5:  return $date->format('m-d-Y H:i');		break;
+			case 6:  return $date->format('m-d-Y H:i:s');	break;
+			case 7:  return $date->format('m-d-y H:i');		break;
+			case 8:  return $date->format('m-d-y H:i:s');	break;
+			//DAY
+			case 9:   return $date->format('d-m-Y H:i');	break;
+			case 10:  return $date->format('d-m-Y H:i:s');	break;
+			case 11:  return $date->format('d-m-y H:i');	break;
+			case 12:  return $date->format('d-m-y H:i:s');	break;
 		}
 	}
 	
