@@ -495,6 +495,8 @@ class DUP_Package {
 			case 10:  return $date->format('d-m-Y H:i:s');	break;
 			case 11:  return $date->format('d-m-y H:i');	break;
 			case 12:  return $date->format('d-m-y H:i:s');	break;
+			default :
+				return $date->format('Y-m-d H:i');
 		}
 	}
 	
