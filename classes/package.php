@@ -206,9 +206,10 @@ class DUP_Package {
 				'owner'	  => isset($current_user->user_login) ? $current_user->user_login : 'unknown',
 				'package' => $packageObj)
 			);
-			if ($results == false) {
-				$error_result = $wpdb->print_error();
-				DUP_Log::Error("Duplicator is unable to insert a package record into the database table.", "'{$error_result}'");
+			if ($results === false) {
+						
+				$wpdb->print_error();
+				DUP_Log::Error("Duplicator is unable to insert a package record into the database table.", "'{$wpdb->last_error}'");
 			}
 			$this->ID = $wpdb->insert_id;
 		}

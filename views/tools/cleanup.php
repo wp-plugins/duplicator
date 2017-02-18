@@ -135,42 +135,59 @@
 			</td>
 		</tr>
 		<tr>
-			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.DeleteLegacy()"><?php _e("Delete Legacy Data", 'duplicator'); ?></a></td>
+			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.ConfirmDeleteLegacy()"><?php _e("Delete Legacy Data", 'duplicator'); ?></a></td>
 			<td><?php _e("Removes all legacy data and settings prior to version", 'duplicator'); ?> [<?php echo DUPLICATOR_VERSION ?>].</td>
 		</tr>
 		<tr>
-			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.ClearBuildCache()"><?php _e("Clear Build Cache", 'duplicator'); ?></a></td>
+			<td><a class="button button-small dup-fixed-btn" href="javascript:void(0)" onclick="Duplicator.Tools.ConfirmClearBuildCache()"><?php _e("Clear Build Cache", 'duplicator'); ?></a></td>
 			<td><?php _e("Removes all build data from:", 'duplicator'); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
 		</tr>	
 	</table>
 </form>
 
+<!-- ==========================================
+THICK-BOX DIALOGS: -->
+<?php	
+	$msg  = __('This action will remove all legacy settings prior to version %1$s.  ', 'duplicator');
+	$msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.', 'duplicator'); 
+
+	$confirm1 = new DUP_Dialog();
+	$confirm1->title			= __('Delete Packages?', 'duplicator');
+	$confirm1->message			= sprintf(__($msg, 'duplicator'), DUPLICATOR_VERSION);
+	$confirm1->jscallback		= 'Duplicator.Tools.DeleteLegacy()';
+	$confirm1->init_confirm();
+	
+	$confirm2 = new DUP_Dialog();
+	$confirm2->title			= __('Clear Build Cache?', 'duplicator');
+	$confirm2->message			= __('This process will remove all build cache files.  Be sure no packages are currently building or else they will be cancelled.', 'duplicator');
+	$confirm2->jscallback		= 'Duplicator.Tools.ClearBuildCache()';
+	$confirm2->init_confirm();
+?>
+
 <script>	
-jQuery(document).ready(function($) {
-   Duplicator.Tools.DeleteLegacy = function () {
-	   <?php
-		   $msg  = __('This action will remove all legacy settings prior to version %1$s.  ', 'duplicator');
-		   $msg .= __('Legacy settings are only needed if you plan to migrate back to an older version of this plugin.', 'duplicator'); 
-	   ?>
-	   var result = true;
-	   var result = confirm('<?php printf(__($msg, 'duplicator'), DUPLICATOR_VERSION) ?>');
-	   if (! result) 
-		   return;
-		
-	   window.location = '?page=duplicator-tools&tab=cleanup&action=legacy&_wpnonce=<?php echo $nonce; ?>';
-   }
+jQuery(document).ready(function($) 
+{
+	Duplicator.Tools.ConfirmDeleteLegacy = function () 
+	{
+		 <?php $confirm1->show_confirm(); ?>
+	}
+
+
+	Duplicator.Tools.DeleteLegacy = function () 
+	{
+		window.location = '?page=duplicator-tools&tab=cleanup&action=legacy&_wpnonce=<?php echo $nonce; ?>';
+	}
    
-   Duplicator.Tools.ClearBuildCache = function () {
-	   <?php
-		   $msg  = __('This process will remove all build cache files.  Be sure no packages are currently building or else they will be cancelled.', 'duplicator');
-	   ?>
-	   var result = true;
-	   var result = confirm('<?php echo $msg ?>');
-	   if (! result) 
-		   return;
-          
-	   window.location = '?page=duplicator-tools&tab=cleanup&action=tmp-cache&_wpnonce=<?php echo $nonce; ?>';
-   }
-});	
+   
+   	Duplicator.Tools.ConfirmClearBuildCache = function () 
+	{
+		 <?php $confirm2->show_confirm(); ?>
+	}
+	
+	Duplicator.Tools.ClearBuildCache = function () 
+	{
+		window.location = '?page=duplicator-tools&tab=cleanup&action=tmp-cache&_wpnonce=<?php echo $nonce; ?>';
+	}
+})
 </script>
 

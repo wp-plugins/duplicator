@@ -7,6 +7,17 @@
 	div#hb-result {padding: 10px 5px 0 5px; line-height: 22px}
 </style>
 
+<!-- ==========================================
+THICK-BOX DIALOGS: -->
+<?php
+	$confirm1 = new DUP_Dialog();
+	$confirm1->title			= __('Run Validator', 'duplicator');
+	$confirm1->message			= __('This will run the scan validation check.  This may take several minutes.  Do you want to Continue?', 'duplicator');
+	$confirm1->progress_on		= false;
+	$confirm1->jscallback		= 'Duplicator.Tools.RunScanValidator()';
+	$confirm1->init_confirm();
+?>
+
 <!-- ==============================
 SCAN VALIDATOR -->
 <div class="dup-box">
@@ -25,7 +36,7 @@ SCAN VALIDATOR -->
 		<br/><br/>
 
 
-		<button id="scan-run-btn" type="button" class="button button-large button-primary" onclick="Duplicator.Tools.RunScanValidator()">
+		<button id="scan-run-btn" type="button" class="button button-large button-primary" onclick="Duplicator.Tools.ConfirmScanValidator()">
 			<?php _e("Run Scan Integrity Validation", "duplicator"); ?>
 		</button>
 
@@ -71,14 +82,17 @@ SCAN VALIDATOR -->
 <script>	
 jQuery(document).ready(function($) 
 {
+	Duplicator.Tools.ConfirmScanValidator = function() 
+	{
+		<?php $confirm1->show_confirm(); ?>
+	}
+	
+	
 	//Run request to: admin-ajax.php?action=DUP_CTRL_Tools_RunScanValidator
 	Duplicator.Tools.RunScanValidator = function() 
 	{
-		var result = confirm('<?php _e('This will run the scan validation check.  This may take several minutes.\nDo you want to Continue?', 'duplicator'); ?>');
+		tb_remove();
 		var data = {action : 'DUP_CTRL_Tools_RunScanValidator', nonce: '<?php echo $ajax_nonce; ?>', 'scan-recursive': true};
-		
-		if (! result) 	
-			return;
 		
 		$('#hb-result').html('<?php _e("Scanning Enviroment... This may take a few minutes.", "duplicator"); ?>');
 		$('#scan-run-btn').html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Running Please Wait...');

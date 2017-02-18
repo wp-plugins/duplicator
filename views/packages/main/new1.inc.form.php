@@ -376,12 +376,22 @@ INSTALLER -->
 
 
 <div class="dup-button-footer">
-    <input type="button" value="<?php _e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> onclick="Duplicator.Pack.ResetSettings()" />
+    <input type="button" value="<?php _e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> onclick="Duplicator.Pack.ConfirmReset()" />
     <input type="submit" value="<?php _e("Next", 'duplicator') ?> &#9654;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> />
 </div>
 
 </form>
 
+<!-- ==========================================
+THICK-BOX DIALOGS: -->
+<?php	
+
+	$confirm1 = new DUP_Dialog();
+	$confirm1->title			= __('Reset Package Settings?', 'duplicator');
+	$confirm1->message			= __('This will clear and reset all of the current package settings.  Would you like to continue?', 'duplicator');
+	$confirm1->jscallback		= 'Duplicator.Pack.ResetSettings()';
+	$confirm1->init_confirm();
+?>
 <script>
 jQuery(document).ready(function ($) 
 {
@@ -433,13 +443,14 @@ jQuery(document).ready(function ($)
 		$("#filter-exts").val(text);
 	};
 	
+	Duplicator.Pack.ConfirmReset = function () 
+	{
+		 <?php $confirm1->show_confirm(); ?>
+	}
 
 	Duplicator.Pack.ResetSettings = function () 
 	{
 		var key = 'duplicator_package_active';
-		var result = confirm('<?php _e("This will reset all of the current package settings.  Would you like to continue?", "duplicator"); ?>');
-		if (!result)
-			return;
 
 		jQuery('#dup-form-opts-action').val(key);
 		jQuery('#dup-form-opts').attr('action', '?page=duplicator&tab=new1')

@@ -1,4 +1,5 @@
 <?php
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.dialog.php');
 
 DUP_Util::CheckPermissions('manage_options');
 

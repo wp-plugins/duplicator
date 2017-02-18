@@ -2,7 +2,7 @@
 if ( ! defined('DUPLICATOR_VERSION') ) exit; // Exit if accessed directly
 
 require_once(DUPLICATOR_PLUGIN_PATH . '/ctrls/ctrl.base.php'); 
-require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui.php'); 
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/ui.php'); 
 
 /**
  * Controller for Tools 

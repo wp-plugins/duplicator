@@ -140,9 +140,9 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 					</optgroup>
 					<!-- DAY -->
 					<optgroup label="<?php _e("By Day", 'duplicator'); ?>">
-						<option value="9"> d-m-Y H:i &nbsp	[05-01-2000 12:00]</option>
+						<option value="9"> d-m-Y H:i &nbsp;	[05-01-2000 12:00]</option>
 						<option value="10">d-m-Y H:i:s		[05-01-2000 12:00:01]</option>
-						<option value="11">d-m-y H:i &nbsp	[05-01-00	12:00]</option>
+						<option value="11">d-m-y H:i &nbsp;	[05-01-00	12:00]</option>
 						<option value="12">d-m-y H:i:s		[05-01-00	12:00:01]</option>
 					</optgroup>						
 				</select>
