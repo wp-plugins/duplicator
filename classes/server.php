@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 
-require_once (DUPLICATOR_PLUGIN_PATH . 'classes/utility.php');
+require_once (DUPLICATOR_PLUGIN_PATH . 'classes/utilities/class.util.php');
 
 /**
  * Class used to get server statis

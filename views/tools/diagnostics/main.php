@@ -2,7 +2,7 @@
 	wp_enqueue_script('dup-handlebars');
 	require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php'); 
 	require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
-	require_once(DUPLICATOR_PLUGIN_PATH . '/classes/scan.validator.php'); 
+	require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.scan.check.php');
 
 	global $wp_version;
 	global $wpdb;

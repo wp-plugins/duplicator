@@ -10,15 +10,16 @@
  */
 class DUP_UI_Dialog
 {
-    //All Dialogs
+    //Public: All Dialogs
     public $title;
     public $message;
     public $width;
     public $height;
-    //Confirm Only
+    //Public: Confirm Only
     public $progressText;
     public $progressOn = true;
     public $jscallback;
+    //Private
     private $id;
     private $uniqid;
 

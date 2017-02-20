@@ -1,6 +1,6 @@
 <?php
 
-require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utility.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.util.php');
 
 //Enum used to define the various test statues 
 final class DUP_CTRL_Status
