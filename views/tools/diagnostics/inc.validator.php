@@ -10,12 +10,12 @@
 <!-- ==========================================
 THICK-BOX DIALOGS: -->
 <?php
-	$confirm1 = new DUP_Dialog();
+	$confirm1 = new DUP_UI_Dialog();
 	$confirm1->title			= __('Run Validator', 'duplicator');
 	$confirm1->message			= __('This will run the scan validation check.  This may take several minutes.  Do you want to Continue?', 'duplicator');
-	$confirm1->progress_on		= false;
+	$confirm1->progressOn		= false;
 	$confirm1->jscallback		= 'Duplicator.Tools.RunScanValidator()';
-	$confirm1->init_confirm();
+	$confirm1->initConfirm();
 ?>
 
 <!-- ==============================
@@ -84,7 +84,7 @@ jQuery(document).ready(function($)
 {
 	Duplicator.Tools.ConfirmScanValidator = function() 
 	{
-		<?php $confirm1->show_confirm(); ?>
+		<?php $confirm1->showConfirm(); ?>
 	}
 	
 	

@@ -386,11 +386,11 @@ INSTALLER -->
 THICK-BOX DIALOGS: -->
 <?php	
 
-	$confirm1 = new DUP_Dialog();
+	$confirm1 = new DUP_UI_Dialog();
 	$confirm1->title			= __('Reset Package Settings?', 'duplicator');
 	$confirm1->message			= __('This will clear and reset all of the current package settings.  Would you like to continue?', 'duplicator');
 	$confirm1->jscallback		= 'Duplicator.Pack.ResetSettings()';
-	$confirm1->init_confirm();
+	$confirm1->initConfirm();
 ?>
 <script>
 jQuery(document).ready(function ($) 
@@ -445,7 +445,7 @@ jQuery(document).ready(function ($)
 	
 	Duplicator.Pack.ConfirmReset = function () 
 	{
-		 <?php $confirm1->show_confirm(); ?>
+		 <?php $confirm1->showConfirm(); ?>
 	}
 
 	Duplicator.Pack.ResetSettings = function () 

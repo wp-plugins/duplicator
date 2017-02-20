@@ -124,7 +124,6 @@ function duplicator_package_delete() {
 						if ($tmpZip !== false) {
 							array_map('unlink', glob($tmpZip));
 						}
-						@unlink(DUP_Util::SafePath());
 						$delCount++;
 					} 
 				}

@@ -44,12 +44,12 @@ OPTIONS DATA -->
 <!-- ==========================================
 THICK-BOX DIALOGS: -->
 <?php
-	$confirm1 = new DUP_Dialog();
+	$confirm1 = new DUP_UI_Dialog();
 	$confirm1->title			= __('Delete Option?', 'duplicator');
 	$confirm1->message			= __('Delete the option value just selected?', 'duplicator');
-	$confirm1->progress_text	= __('Removing Option, Please Wait...', 'duplicator');
+	$confirm1->progressText	= __('Removing Option, Please Wait...', 'duplicator');
 	$confirm1->jscallback		= 'Duplicator.Settings.DeleteOption()';
-	$confirm1->init_confirm();
+	$confirm1->initConfirm();
 ?>
 
 <script>	
@@ -58,11 +58,11 @@ jQuery(document).ready(function($)
 	Duplicator.Settings.ConfirmDeleteOption = function (anchor) 
 	{
 		var key = $(anchor).text();
-		var msg_id = '<?php echo $confirm1->get_message_id() ?>';
+		var msg_id = '<?php echo $confirm1->getMessageID() ?>';
 		var msg    = '<?php _e('Delete the option value', 'duplicator');?>' + ' [' + key + '] ?';
 		jQuery('#dup-settings-form-action').val(key);
 		jQuery('#' + msg_id).html(msg)
-		<?php $confirm1->show_confirm(); ?>
+		<?php $confirm1->showConfirm(); ?>
 	}
 	
 	

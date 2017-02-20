@@ -2,7 +2,7 @@
 if ( ! defined('DUPLICATOR_VERSION') ) exit; // Exit if accessed directly
 
 require_once(DUPLICATOR_PLUGIN_PATH . '/ctrls/ctrl.base.php'); 
-require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/ui.php'); 
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.viewstate.php'); 
 
 /**
  * Controller for Tools 
@@ -32,7 +32,7 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 	 * Duplicator.UI.SaveViewState('dup-pack-archive-panel', 1);
 	 * 
 	 * //Call PHP Code
-	 * $view_state       = DUP_UI::GetViewStateValue('dup-pack-archive-panel');
+	 * $view_state       = DUP_UI_ViewState::getValue('dup-pack-archive-panel');
 	 * $ui_css_archive   = ($view_state == 1)   ? 'display:block' : 'display:none';
 	 * </code>
      */
@@ -47,7 +47,7 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 			$post  = stripslashes_deep($_POST);
 			$key   = esc_html($post['key']);
 			$value = esc_html($post['value']);
-			$success = DUP_UI::SaveViewState($key, $value);
+			$success = DUP_UI_ViewState::save($key, $value);
 
 			$payload = array();
 			$payload['key']    = $key;
@@ -83,7 +83,7 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 		try 
 		{
 			//CONTROLLER LOGIC
-			$payload = DUP_UI::GetViewStateArray();
+			$payload = DUP_UI_ViewState::getArray();
 			
 			//RETURN RESULT
 			$test = (count($payload)) 

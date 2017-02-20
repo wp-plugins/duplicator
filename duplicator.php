@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create and transfer a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.1.32
+  Version: 1.1.33
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -35,7 +35,8 @@ if (is_admin() == true)
     require_once 'classes/settings.php';
     require_once 'classes/server.php';
     require_once 'classes/package.php';
-	require_once 'classes/ui/ui.php';
+	require_once 'classes/ui/class.viewstate.php';
+	require_once 'classes/ui/class.notice.php';
 	 
     //Controllers
 	require_once 'ctrls/ctrl.package.php';
@@ -124,7 +125,7 @@ if (is_admin() == true)
     add_action('plugins_loaded',	'duplicator_wpfront_integrate');
 	add_action('admin_init',		'duplicator_init');
     add_action('admin_menu',		'duplicator_menu');
-	add_action('admin_notices',		array('DUP_UI', 'ShowReservedFilesNotice'));
+	add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
 	
 	//CTRL ACTIONS
     add_action('wp_ajax_duplicator_package_scan',        'duplicator_package_scan');
