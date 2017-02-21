@@ -165,7 +165,7 @@ SYSTEM REQUIREMENTS -->
             <div class="dup-sys-info dup-info-box">
                 <table class="dup-sys-info-results">
                     <tr>
-                        <td><?php printf("%s [%s]", __("MySQL Version", 'duplicator'), $wpdb->db_version()); ?></td>
+                        <td><?php printf("%s [%s]", __("MySQL Version", 'duplicator'), DUP_DB::mysqlVersion()); ?></td>
                         <td><?php echo $dup_tests['SRV']['MYSQL_VER'] ?></td>
                     </tr>
                     <tr>
@@ -175,7 +175,7 @@ SYSTEM REQUIREMENTS -->
                 </table>
                 <small>
                     <?php
-                    _e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed. Please note in future versions support for other databases and extensions will be added.", 'duplicator');
+                    _e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed.", 'duplicator');
                     echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('more info', 'duplicator') . "]</a></i>";
                     ?>										
                 </small>

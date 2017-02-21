@@ -84,8 +84,10 @@ GENERAL -->
 				<a href="javascript:void(0);" onclick="jQuery('#dup-version-info').toggle()"><?php echo $package->Version ?></a> 
 				<div id="dup-version-info">
 					<b><?php _e('WordPress', 'duplicator') ?>:</b> <?php echo strlen($package->VersionWP) ? $package->VersionWP : __('- unknown -', 'duplicator') ?><br/>
-					<b><?php _e('Mysql', 'duplicator') ?>:</b> <?php echo strlen($package->VersionDB) ? $package->VersionDB : __('- unknown -', 'duplicator') ?><br/>
 					<b><?php _e('PHP', 'duplicator') ?>:</b> <?php echo strlen($package->VersionPHP) ? $package->VersionPHP : __('- unknown -', 'duplicator') ?><br/>
+                    <b><?php _e('Mysql', 'duplicator') ?>:</b> 
+                    <?php echo strlen($package->VersionDB) ? $package->VersionDB : __('- unknown -', 'duplicator') ?> |
+                    <?php echo strlen($package->Database->Comments) ? $package->Database->Comments : __('- unknown -', 'duplicator') ?><br/>
 				</div>
 			</td>
 		</tr>

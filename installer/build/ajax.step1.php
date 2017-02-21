@@ -52,14 +52,23 @@ if (isset($_GET['dbtest']))
 
 	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
-	
-	$dbvar_version = DUPX_Util::mysqldb_version($dbConn);
-	$dbvar_version = ($dbvar_version == 0) ? 'no connection' : $dbvar_version;
-	$dbvar_version_fail = version_compare($dbvar_version, $GLOBALS['FW_VERSION_DB']) < 0;
-	$tstCompat = ($dbvar_version_fail)
-		? "<div class='dup-notice'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>" 
-		: "<div class='dup-pass'>This Server: [{$dbvar_version}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
-	
+
+    $dbversion_info         = DUPX_Util::mysqldb_version_details($dbConn);
+    $dbversion_info         = empty($dbversion_info) ? 'no connection' : $dbversion_info;
+    $dbversion_info_fail    = version_compare(DUPX_Util::mysqldb_version($dbConn), '5.5.3') < 0;
+
+    $dbversion_compat       = DUPX_Util::mysqldb_version($dbConn);
+	$dbversion_compat       = empty($dbversion_compat) ? 'no connection' : $dbversion_compat;
+    $dbversion_compat_fail  = version_compare($dbversion_compat, $GLOBALS['FW_VERSION_DB']) < 0;
+
+    $tstInfo = ($dbversion_info_fail)
+		? "<div class='dup-notice'>{$dbversion_info}</div>"
+        : "<div class='dup-pass'>{$dbversion_info}</div>";
+
+	$tstCompat = ($dbversion_compat_fail)
+		? "<div class='dup-notice'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>"
+		: "<div class='dup-pass'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
+
 	$html	 .= <<<DATA
 	<div class='dup-db-test'>
 		<small>
@@ -77,8 +86,12 @@ if (isset($_GET['dbtest']))
 			</tr>	
 			<tr>
 				<td>Version:</td>
+				<td>{$tstInfo}</td>
+			</tr>
+            <tr>
+				<td>Compatibility:</td>
 				<td>{$tstCompat}</td>
-			</tr>		
+			</tr>
 		</table>
 DATA;
 	
@@ -102,13 +115,20 @@ DATA;
 			break;
 		}
 	}
+
+    //WARNING: UTF8 Data in Connection String
 	$html .=  (! $dbConn && $dbUTF8_tst) 
 		? "<div class='warn-msg'><b>WARNING:</b> " . ERR_TESTDB_UTF8 .  "</div>"	
 		: '';
 	
-	//WARNING Version Incompat
-	$html .=  ($dbvar_version_fail)  
-		? "<div class='warn-msg'><b>NOTICE:</b> " . ERR_TESTDB_VERSION . "</div>" 
+	//NOTICE: Version Too Low
+	$html .=  ($dbversion_info_fail)
+		? "<div class='warn-msg'><b>NOTICE:</b> " . ERR_TESTDB_VERSION_INFO . "</div>"
+		: '';
+
+    //NOTICE: Version Incompatibility
+	$html .=  ($dbversion_compat_fail)
+		? "<div class='warn-msg'><b>NOTICE:</b> " . ERR_TESTDB_VERSION_COMPAT . "</div>"
 		: '';
 
 	$html .= "</div>";

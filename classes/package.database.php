@@ -12,6 +12,7 @@ class DUP_Database
     public $FilterOn;
     public $Name;
     public $Compatible;
+    public $Comments;
     //PROTECTED
     protected $Package;
     //PRIVATE

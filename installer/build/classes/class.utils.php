@@ -191,15 +191,37 @@ class DUPX_Util
 	
     /**
      * MySQL database version number
+     *
      * @param conn $dbh Database connection handle
-     * @return false|string false on failure, version number on success
+     * @param bool $full    True:  Gets the full version
+     *                      False: Gets only the numeric portion i.e. 5.5.6 or 10.1.2 (for MariaDB)
+     *
+     * @return false|string 0 on failure, version number on success
      */
-    public static function mysqldb_version($dbh) {
-        if (function_exists('mysqli_get_server_info')) {
-            return preg_replace('/[^0-9.].*/', '', mysqli_get_server_info($dbh));
+    public static function mysqldb_version($dbh, $full = false)
+    {
+        if ($full) {
+            $version = self::mysqldb_variable_value($dbh, 'version');
         } else {
-            return 0;
+            $version = preg_replace('/[^0-9.].*/', '', self::mysqldb_variable_value($dbh,'version'));
         }
+
+        $version = is_null($version) ? null : $version;
+        return  empty($version) ? 0 :  $version;
+
+    }
+
+     /**
+     * Complete Version Details
+     *
+     * @param conn $dbh Database connection handle
+
+     *
+     * @return string The full details of mysql
+     */
+    public static function mysqldb_version_details($dbh)
+    {
+        return mysqli_get_server_info($dbh);
     }
 
     /**

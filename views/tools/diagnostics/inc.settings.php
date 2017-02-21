@@ -1,6 +1,6 @@
 <?php
-	$dbvar_maxtime  = DUP_Util::MysqlVariableValue('wait_timeout');
-	$dbvar_maxpacks = DUP_Util::MysqlVariableValue('max_allowed_packet');
+	$dbvar_maxtime  = DUP_DB::mysqlVariable('wait_timeout');
+	$dbvar_maxpacks = DUP_DB::mysqlVariable('max_allowed_packet');
 	$dbvar_maxtime  = is_null($dbvar_maxtime)  ? __("unknow", 'duplicator') : $dbvar_maxtime;
 	$dbvar_maxpacks = is_null($dbvar_maxpacks) ? __("unknow", 'duplicator') : $dbvar_maxpacks;	
 	
@@ -146,7 +146,11 @@ SERVER SETTINGS -->
 		</tr>					   
 		<tr>
 			<td><?php _e("Version", 'duplicator'); ?></td>
-			<td><?php echo $wpdb->db_version() ?></td>
+			<td><?php echo DUP_DB::mysqlVersion() ?></td>
+		</tr>
+        <tr>
+			<td><?php _e("Notes", 'duplicator'); ?></td>
+            <td><?php echo DUP_DB::mysqlVariable('version_comment') ?></td>
 		</tr>
 		<tr>
 			<td><?php _e("Charset", 'duplicator'); ?></td>

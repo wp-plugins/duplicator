@@ -30,8 +30,9 @@ require_once("define.php");
 if (is_admin() == true) 
 {
 	//Classes
-    require_once 'classes/logging.php';
     require_once 'classes/utilities/class.util.php';
+    require_once 'classes/utilities/class.db.php';
+    require_once 'classes/logging.php';
     require_once 'classes/settings.php';
     require_once 'classes/server.php';
     require_once 'classes/package.php';

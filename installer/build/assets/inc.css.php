@@ -86,7 +86,7 @@
 	table.dup-db-test-dtls {text-align: left; margin: auto}
 	table.dup-db-test-dtls td:first-child {font-weight: bold}
 	div#dbconn-test-msg {font-size:12px}
-	div#s1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:165px; overflow-y: scroll}
+	div#s1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:175px; overflow-y: scroll}
 	div#s1-dbconn-status div.warn-msg {text-align: left; padding:5px; margin:10px 0 10px 0}
 	div#s1-dbconn-status div.warn-msg b{color:maroon}
 	

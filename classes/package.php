@@ -297,8 +297,10 @@ class DUP_Package
             $filter_exts = isset($post['filter-exts']) ? $this->parseExtensionFilter($post['filter-exts']) : '';
             $tablelist   = isset($post['dbtables']) ? implode(',', $post['dbtables']) : '';
             $compatlist  = isset($post['dbcompat']) ? implode(',', $post['dbcompat']) : '';
-            $dbversion   = preg_replace('/[^0-9.].*/', '', DUP_Util::MysqlVariableValue('version'));
+            $dbversion   = DUP_DB::mysqlVersion();
             $dbversion   = is_null($dbversion) ? '- unknown -' : $dbversion;
+            $dbcomments  = DUP_DB::mysqlVariable('version_comment');
+            $dbcomments  = is_null($dbcomments) ? '- unknown -' : $dbcomments;
 
             //PACKAGE
             $this->Created                  = date("Y-m-d H:i:s");
@@ -332,6 +334,7 @@ class DUP_Package
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
             $this->Database->FilterTables   = esc_html($tablelist);
             $this->Database->Compatible     = $compatlist;
+            $this->Database->Comments       = $dbcomments;
 
             update_option(self::OPT_ACTIVE, $this);
         }

@@ -50,7 +50,7 @@ class DUP_Server
 		
 		//SERVER SUPPORT
 		$dup_tests['SRV']['MYSQLi']		= function_exists('mysqli_connect')					? 'Pass' : 'Fail'; 
-		$dup_tests['SRV']['MYSQL_VER']	= version_compare($wpdb->db_version(), '5.0', '>=')	? 'Pass' : 'Fail'; 
+		$dup_tests['SRV']['MYSQL_VER']	= version_compare(DUP_DB::mysqlVersion(), '5.0', '>=')	? 'Pass' : 'Fail';
 		$dup_tests['SRV']['ALL']		= ! in_array('Fail', $dup_tests['SRV'])				? 'Pass' : 'Fail'; 
 		
 		//RESERVED FILES

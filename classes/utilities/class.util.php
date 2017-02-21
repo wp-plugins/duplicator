@@ -142,17 +142,6 @@ class DUP_Util
 	}
 
 	/**
-	 * Get the MySQL system variables
-	 * @param conn $dbh Database connection handle
-	 * @return string the server variable to query for
-	 */
-	public static function MysqlVariableValue($variable) {
-		global $wpdb;
-		$row = $wpdb->get_row("SHOW VARIABLES LIKE '{$variable}'", ARRAY_N);
-		return isset($row[1]) ? $row[1] : null;
-	}
-
-	/**
 	 * List all of the files of a path
 	 * @path path to a system directory
 	 * @return array of all files in that path
