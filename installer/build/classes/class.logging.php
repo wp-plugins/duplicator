@@ -24,31 +24,50 @@ define('ERR_TESTDB_UTF8',		'UTF8 Characters were detected as part of the databas
 define('ERR_TESTDB_VERSION_INFO',	'The current version detected was released prior to MySQL 5.5.3 which had a release date of April 8th 2010.  WordPress 4.2 included support for utf8mb4 which is only supported in MySQL server 5.5.3+.  It is highly recommended to upgrade your version of MySQL server on this server to be more compatible with recent releases of WordPress and avoid issues with install errors.');
 define('ERR_TESTDB_VERSION_COMPAT',	'In order to avoid database incompatibility issues make sure the database versions between the build and installer servers are as close as possible. If the package was created on a newer database version than where it is being installed then you might run into issues.<br/><br/> It is best to make sure the server where the installer is running has the same or higher version number than where it was built.  If the major and minor version are the same or close for example [5.7 to 5.6], then the migration should work without issues.  A version pair of [5.7 to 5.1] is more likely to cause issues unless you have a very simple setup.  If the versions are too far apart work with your hosting provider to upgrade the MySQL engine on this server.<br/><br/>   <b>MariaDB:</b> If see a version of 10.N.N then the database distribution is a MariaDB flavor of MySQL.   While the distributions are very close there are some subtle differences.   Some operating systems will report the version such as "5.5.5-10.1.21-MariaDB" showing the correlation of both.  Please visit the online <a href="https://mariadb.com/kb/en/mariadb/mariadb-vs-mysql-compatibility/" target="_blank">MariaDB versus MySQL - Compatibility</a> page for more details.<br/><br/> Please note these messages are simply notices.  It is highly recommended that you continue with the install process and closely monitor the installer-log.txt file along with the install report found on step 3 of the installer.  Be sure to look for any notices/warnings/errors in these locations to validate the install process did not detect any errors. If any issues are found please visit the FAQ pages and see the question <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-260-q" target="_blank">What if I get database errors or general warnings on the install report?</a>.');
 
-/** * *****************************************************
- * DUPX_Log  
- * Class used to log information  */
+
+/**
+ * Class used to log information to the installer-log.txt file
+ *
+ * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2 Full Documentation
+ *
+ * @package SC\DUPX\Log
+ *
+ */
 class DUPX_Log 
 {
 
-    /** METHOD: LOG
+    /** 
      *  Used to write debug info to the text log file
+     *
      *  @param string $msg		Any text data
      *  @param int $loglevel	Log level
+     *
+     *  @return string Write info to both the log and browser
      */
-    public static function Info($msg, $logging = 1) 
+    public static function info($msg, $logging = 1)
 	{
         if ($logging <= $GLOBALS["LOGGING"]) {
             @fwrite($GLOBALS["LOG_FILE_HANDLE"], "{$msg}\n");
         }
     }
-	public static function Error($errorMessage) 
+	
+    /** 
+     *  Used to write errors to the text log file
+     * 
+     *  @param string $msg		Any text data
+     *  @param int $loglevel	Log level
+     * 
+     *  @return string Write errors to both the log and browser
+     */
+    public static function error($msg)
 	{
 		$breaks = array("<br />","<br>","<br/>");  
-		$log_msg = str_ireplace($breaks, "\r\n", $errorMessage);  
+		$log_msg = str_ireplace($breaks, "\r\n", $msg);
 		$log_msg = strip_tags($log_msg);
 		@fwrite($GLOBALS["LOG_FILE_HANDLE"], "\nINSTALLER ERROR:\n{$log_msg}\n");
 		@fclose($GLOBALS["LOG_FILE_HANDLE"]);
-        die("<div class='dup-ui-error'><hr size='1' /><b style='color:#B80000;'>INSTALL ERROR!</b><br/>{$errorMessage}</div><br/>");
+        die("<div class='dup-ui-error'><hr size='1' /><b style='color:#B80000;'>INSTALL ERROR!</b><br/>{$msg}</div><br/>");
     }
 }
 ?>

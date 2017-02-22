@@ -1,4 +1,11 @@
 <?php
+// Exit if accessed directly
+if (!defined('DUPLICATOR_INIT')) {
+    $_baseURL = "http://".strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: $_baseURL");
+    exit;
+}
 
 /**
  * Lightweight abstraction layer for common simple database routines
@@ -6,7 +13,7 @@
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
- * @package SC\Dup\DB
+ * @package SC\DUPX\DB
  *
  */
 class DUPX_DB
@@ -33,6 +40,59 @@ class DUPX_DB
             $dbh = @mysqli_connect($host, $username, $password, $dbname, $port);
         }
         return $dbh;
+    }
+
+    /**
+     *  Count the tables in a given database
+     *
+     * @param obj    $dbh       A valid database link handle
+     * @param string $dbname    Database to count tables in
+     *
+     * @return int  The number of tables in the database
+     */
+    public static function countTables($dbh, $dbname)
+    {
+        $res = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = '{$dbname}' ");
+        $row = mysqli_fetch_row($res);
+        return is_null($row) ? 0 : $row[0];
+    }
+
+    /**
+     * Returns the number of rows in a table
+     *
+     * @param obj    $dbh   A valid database link handle
+     * @param string $name	A valid table name
+     */
+    public static function countTableRows($dbh, $name)
+    {
+        $total = mysqli_query($dbh, "SELECT COUNT(*) FROM `$name`");
+        if ($total) {
+            $total = @mysqli_fetch_array($total);
+            return $total[0];
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Returns the tables for a database as an array
+     *
+     * @param obj $dbh   A valid database link handle
+     *
+     * @return array  A list of all table names
+     */
+    public static function showTables($dbh)
+    {
+        $query = @mysqli_query($dbh, 'SHOW TABLES');
+        if ($query) {
+            while ($table = @mysqli_fetch_array($query)) {
+                $all_tables[] = $table[0];
+            }
+            if (isset($all_tables) && is_array($all_tables)) {
+                return $all_tables;
+            }
+        }
+        return array();
     }
 
     /**

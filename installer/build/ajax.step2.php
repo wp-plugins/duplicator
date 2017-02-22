@@ -55,7 +55,7 @@ NOTICE: Do not post to public sites or forums
 CHARSET SERVER:\t{$charset_server}
 CHARSET CLIENT:\t {$charset_client} \n
 LOG;
-DUPX_Log::Info($log);
+DUPX_Log::info($log);
 
 //Detailed logging
 $log  = "--------------------------------------\n";
@@ -74,7 +74,7 @@ $log .= "--------------------------------------\n";
 $log .= (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) 
 		? print_r($_POST['plugins'], true) 
 		: 'No plugins selected for activation';
-DUPX_Log::Info($log, 2);
+DUPX_Log::info($log, 2);
 
 //UPDATE SETTINGS
 $serial_plugin_list = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? @serialize($_POST['plugins']) : '';
@@ -87,7 +87,7 @@ $log .= "[*] scan every column\n";
 $log .= "[~] scan only text columns\n";
 $log .= "[^] no searchable columns\n";
 $log .= "--------------------------------------";
-DUPX_Log::Info($log);
+DUPX_Log::info($log);
 
 $url_old_json = str_replace('"', "", json_encode($_POST['url_old']));
 $url_new_json = str_replace('"', "", json_encode($_POST['url_new']));
@@ -123,14 +123,14 @@ $JSON['step2'] = $report;
 $JSON['step2']['warn_all'] = 0;
 $JSON['step2']['warnlist'] = array();
 
-DUPX_UpdateEngine::log_stats($report);
-DUPX_UpdateEngine::log_errors($report);
+DUPX_UpdateEngine::logStats($report);
+DUPX_UpdateEngine::logErrors($report);
 
 //Reset the postguid data
 if ($_POST['postguid']) {
 	mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}posts` SET guid = REPLACE(guid, '{$_POST['url_new']}', '{$_POST['url_old']}')");
 	$update_guid = @mysqli_affected_rows($dbh) or 0;
-	DUPX_Log::Info("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
+	DUPX_Log::info("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
 
 /* FINAL UPDATES: Must happen after the global replace to prevent double pathing
@@ -142,9 +142,9 @@ mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_valu
 //====================================================================================================
 //FINAL CLEANUP
 //====================================================================================================
-DUPX_Log::Info("\n********************************************************************************");
-DUPX_Log::Info('START FINAL CLEANUP: ' . @date('h:i:s'));
-DUPX_Log::Info("********************************************************************************");
+DUPX_Log::info("\n********************************************************************************");
+DUPX_Log::info('START FINAL CLEANUP: ' . @date('h:i:s'));
+DUPX_Log::info("********************************************************************************");
 
 /*CREATE NEW USER LOGIC */
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
@@ -176,17 +176,17 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'nickname', '{$_POST['wp_username']}')");
 
 		if ($newuser_test1 && $newuser_test2 && $newuser_test3) {
-			DUPX_Log::Info("NEW WP-ADMIN USER: New username '{$_POST['wp_username']}' was created successfully \n ");
+			DUPX_Log::info("NEW WP-ADMIN USER: New username '{$_POST['wp_username']}' was created successfully \n ");
 		} else {
 			$newuser_warnmsg = "NEW WP-ADMIN USER: Failed to create the user '{$_POST['wp_username']}' \n ";
 			$JSON['step2']['warnlist'][] = $newuser_warnmsg;
-			DUPX_Log::Info($newuser_warnmsg);
+			DUPX_Log::info($newuser_warnmsg);
 		}			
 	} 
 	else {
 		$newuser_warnmsg = "NEW WP-ADMIN USER: Username '{$_POST['wp_username']}' already exists in the database.  Unable to create new account \n";
 		$JSON['step2']['warnlist'][] = $newuser_warnmsg;
-		DUPX_Log::Info($newuser_warnmsg);
+		DUPX_Log::info($newuser_warnmsg);
 	}
 }
 
@@ -205,15 +205,15 @@ $mu_oldUrlPath = (empty($mu_oldUrlPath) || ($mu_oldUrlPath == '/')) ? '/'  : rtr
 
 $mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 if ($mu_updates) {
-	DUPX_Log::Info("Update MU table blogs: domain {$mu_newDomainHost} ");
+	DUPX_Log::info("Update MU table blogs: domain {$mu_newDomainHost} ");
 } else {
-	DUPX_Log::Info("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+	DUPX_Log::info("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
 }
 
 
 /* ==============================
  * UPDATE WP-CONFIG FILE */
-$config_file = DUPX_WPConfig::UpdateStep2();
+$config_file = DUPX_WPConfig::updateStep2();
 
 //Create snapshots directory in order to
 //compensate for permissions on some servers
@@ -226,9 +226,9 @@ fclose($fp);
 
 /* ==============================
 NOTICE TESTS */
-DUPX_Log::Info("\n--------------------------------------");
-DUPX_Log::Info("NOTICES");
-DUPX_Log::Info("--------------------------------------");
+DUPX_Log::info("\n--------------------------------------");
+DUPX_Log::info("NOTICES");
+DUPX_Log::info("--------------------------------------");
 $config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
 $config_items = DUPX_Util::search_list_values($config_vars, $config_file);
 
@@ -237,7 +237,7 @@ if (! empty($config_items)) {
 	$msg  = 'NOTICE: The wp-config.php has one or more of the following values set [' . implode(", ", $config_items) . '].  ';
 	$msg .= 'Please validate these values are correct by opening the file and checking the values.  To validate the meaning and proper usage of each parameter used the codex link above.';
 	$JSON['step2']['warnlist'][] = $msg;
-	DUPX_Log::Info($msg);
+	DUPX_Log::info($msg);
 }
 
 //Database: 
@@ -248,14 +248,14 @@ if ($result) {
 			$msg  = "NOTICE: The media settings values in the table '{$GLOBALS['FW_TABLEPREFIX']}options' has at least one the following values ['upload_url_path','upload_path'] set.  ";
 			$msg .= "Please validate these settings by logging into your wp-admin and going to Settings->Media area and validating the 'Uploading Files' section";
 			$JSON['step2']['warnlist'][] = $msg;
-			DUPX_Log::Info($msg);
+			DUPX_Log::info($msg);
 			break;
 		}
 	}
 }
 
 if (empty($JSON['step2']['warnlist'])) {
-	DUPX_Log::Info("No Notices Found\n");
+	DUPX_Log::info("No Notices Found\n");
 }
 
 $JSON['step2']['warn_all'] = empty($JSON['step2']['warnlist']) ? 0 : count($JSON['step2']['warnlist']);
@@ -264,13 +264,13 @@ mysqli_close($dbh);
 @unlink('database.sql');
 
 //CONFIG Setup
-DUPX_ServerConfig::Setup();
+DUPX_ServerConfig::setup();
 
 $ajax2_end = DUPX_Util::get_microtime();
 $ajax2_sum = DUPX_Util::elapsed_time($ajax2_end, $ajax2_start);
-DUPX_Log::Info("********************************************************************************");
-DUPX_Log::Info('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}");
-DUPX_Log::Info("********************************************************************************");
+DUPX_Log::info("********************************************************************************");
+DUPX_Log::info('STEP 2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}");
+DUPX_Log::info("********************************************************************************");
 
 $JSON['step2']['pass'] = 1;
 error_reporting($ajax2_error_level);
