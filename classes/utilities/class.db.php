@@ -10,20 +10,20 @@ if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
  *
  */
 
-class DUP_DB
+class DUP_DB extends wpdb
 {
 
     /**
      * Get the requested MySQL system variable
      *
-     * @param string $variable The database variable name to lookup
+     * @param string $name The database variable name to lookup
      *
      * @return string the server variable to query for
      */
-    public static function mysqlVariable($variable)
+    public static function mysqlVariable($name)
     {
         global $wpdb;
-        $row = $wpdb->get_row("SHOW VARIABLES LIKE '{$variable}'", ARRAY_N);
+        $row = $wpdb->get_row("SHOW VARIABLES LIKE '{$name}'", ARRAY_N);
         return isset($row[1]) ? $row[1] : null;
     }
 

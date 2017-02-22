@@ -187,6 +187,8 @@ if ($_POST['action_step'] == 1) {
 
 @@CLASS.UTILS.PHP@@
 
+@@CLASS.DB.PHP@@
+
 @@CLASS.CONF.WP.PHP@@
 
 @@CLASS.CONF.SRV.PHP@@

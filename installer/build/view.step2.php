@@ -6,7 +6,7 @@
 		header("Location: $_baseURL");
 		exit; 
 	}
-	$dbh = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
+	$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 
 	$all_tables     = DUPX_Util::get_database_tables($dbh);
 	$active_plugins = DUPX_Util::get_active_plugins($dbh);

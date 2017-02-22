@@ -362,7 +362,7 @@ INSTALLER -->
 		<div style="padding:10px 0 0 12px;">
 			<span class="dup-pro-text">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
-				<?php _e("Connect to a cPanel database with.", 'duplicator'); ?> 
+				<?php _e("Create the database and user directly from the installer with ", 'duplicator'); ?>
 				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_cpanel&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
 				<i class="fa fa-lightbulb-o" 
 					data-tooltip-title="<?php _e("cPanel Access:", 'duplicator'); ?>" 

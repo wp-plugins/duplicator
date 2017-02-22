@@ -44,7 +44,7 @@ if (isset($_GET['dbtest']))
 {
 	$html     = "";
 	$baseport =  parse_url($_POST['dbhost'], PHP_URL_PORT);
-	$dbConn   = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
+	$dbConn   = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
 	$dbErr	  = mysqli_connect_error();
 
 	$dbFound  = mysqli_select_db($dbConn, $_POST['dbname']);
@@ -53,11 +53,11 @@ if (isset($_GET['dbtest']))
 	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
 
-    $dbversion_info         = DUPX_Util::mysqldb_version_details($dbConn);
+    $dbversion_info         = DUPX_DB::mysqlInfo($dbConn);
     $dbversion_info         = empty($dbversion_info) ? 'no connection' : $dbversion_info;
-    $dbversion_info_fail    = version_compare(DUPX_Util::mysqldb_version($dbConn), '5.5.3') < 0;
+    $dbversion_info_fail    = version_compare(DUPX_DB::mysqlVersion($dbConn), '5.5.3') < 0;
 
-    $dbversion_compat       = DUPX_Util::mysqldb_version($dbConn);
+    $dbversion_compat       = DUPX_DB::mysqlVersion($dbConn);
 	$dbversion_compat       = empty($dbversion_compat) ? 'no connection' : $dbversion_compat;
     $dbversion_compat_fail  = version_compare($dbversion_compat, $GLOBALS['FW_VERSION_DB']) < 0;
 
@@ -145,7 +145,7 @@ DATA;
 function_exists('mysqli_connect') or DUPX_Log::Error(ERR_MYSQLI_SUPPORT);
 
 //ERR_DBCONNECT
-$dbh = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
+$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 ($dbh) or DUPX_Log::Error(ERR_DBCONNECT . mysqli_connect_error());
 if ($_POST['dbaction'] == 'empty') {
@@ -340,7 +340,7 @@ DUPX_Util::fcgi_flush();
 //START DB RUN
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 @mysqli_query($dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
-DUPX_Util::mysqldb_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
+DUPX_DB::mysqlSetCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 //Will set mode to null only for this db handle session
 //sql_mode can cause db create issues on some systems
@@ -362,13 +362,13 @@ switch ($_POST['dbmysqlmode']) {
 }
 
 //Set defaults in-case the variable could not be read
-$dbvar_maxtime		= DUPX_Util::mysqldb_variable_value($dbh, 'wait_timeout');
-$dbvar_maxpacks		= DUPX_Util::mysqldb_variable_value($dbh, 'max_allowed_packet');
-$dbvar_sqlmode		= DUPX_Util::mysqldb_variable_value($dbh, 'sql_mode');
+$dbvar_maxtime		= DUPX_DB::mysqlVariable($dbh, 'wait_timeout');
+$dbvar_maxpacks		= DUPX_DB::mysqlVariable($dbh, 'max_allowed_packet');
+$dbvar_sqlmode		= DUPX_DB::mysqlVariable($dbh, 'sql_mode');
 $dbvar_maxtime		= is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
 $dbvar_maxpacks		= is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
 $dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET'  : $dbvar_sqlmode;
-$dbvar_version		= DUPX_Util::mysqldb_version($dbh);
+$dbvar_version		= DUPX_DB::mysqlVersion($dbh);
 $sql_file_size1		= DUPX_Util::readable_bytesize(@filesize("database.sql"));
 $sql_file_size2		= DUPX_Util::readable_bytesize(@filesize("{$GLOBALS['SQL_FILE_NAME']}"));
 
@@ -446,10 +446,10 @@ while ($counter < $sql_result_file_length) {
 
 			if (!mysqli_ping($dbh)) {
 				mysqli_close($dbh);
-				$dbh = DUPX_Util::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport'] );
+				$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport'] );
 				// Reset session setup
 				@mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
-				DUPX_Util::mysqldb_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
+				DUPX_DB::mysqlSetCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 			}
 			DUPX_Log::Info("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
 			$dbquery_errs++;
