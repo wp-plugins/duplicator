@@ -81,7 +81,7 @@ class DUPX_DB
      *
      * @return array  A list of all table names
      */
-    public static function showTables($dbh)
+    public static function getTables($dbh)
     {
         $query = @mysqli_query($dbh, 'SHOW TABLES');
         if ($query) {
@@ -103,7 +103,7 @@ class DUPX_DB
      *
      * @return string the server variable to query for
      */
-    public static function mysqlVariable($dbh, $name)
+    public static function getVariable($dbh, $name)
     {
         $result = @mysqli_query($dbh, "SHOW VARIABLES LIKE '{$name}'");
         $row    = @mysqli_fetch_array($result);
@@ -120,12 +120,12 @@ class DUPX_DB
      *
      * @return false|string 0 on failure, version number on success
      */
-    public static function mysqlVersion($dbh, $full = false)
+    public static function getVersion($dbh, $full = false)
     {
         if ($full) {
-            $version = self::mysqlVariable($dbh, 'version');
+            $version = self::getVariable($dbh, 'version');
         } else {
-            $version = preg_replace('/[^0-9.].*/', '', self::mysqlVariable($dbh, 'version'));
+            $version = preg_replace('/[^0-9.].*/', '', self::getVariable($dbh, 'version'));
         }
 
         $version = is_null($version) ? null : $version;
@@ -141,7 +141,7 @@ class DUPX_DB
      *
      * @return string The full details of mysql
      */
-    public static function mysqlInfo($dbh)
+    public static function getServerInfo($dbh)
     {
         return mysqli_get_server_info($dbh);
     }
@@ -153,9 +153,9 @@ class DUPX_DB
      * @param string $feature the feature to check for
      * @return bool
      */
-    public static function mysqlHasAbility($dbh, $feature)
+    public static function hasAbility($dbh, $feature)
     {
-        $version = self::mysqlVersion($dbh);
+        $version = self::getVersion($dbh);
 
         switch (strtolower($feature)) {
             case 'collation' :
@@ -175,13 +175,13 @@ class DUPX_DB
      * @param string   $charset The character set (optional)
      * @param string   $collate The collation (optional)
      */
-    public static function mysqlSetCharset($dbh, $charset = null, $collate = null)
+    public static function setCharset($dbh, $charset = null, $collate = null)
     {
         $charset = (!isset($charset) ) ? $GLOBALS['DBCHARSET_DEFAULT'] : $charset;
         $collate = (!isset($collate) ) ? $GLOBALS['DBCOLLATE_DEFAULT'] : $collate;
 
-        if (self::mysqlHasAbility($dbh, 'collation') && !empty($charset)) {
-            if (function_exists('mysqli_set_charset') && self::mysqlHasAbility($dbh, 'set_charset')) {
+        if (self::hasAbility($dbh, 'collation') && !empty($charset)) {
+            if (function_exists('mysqli_set_charset') && self::hasAbility($dbh, 'set_charset')) {
                 return mysqli_set_charset($dbh, $charset);
             } else {
                 $sql = " SET NAMES {$charset}";

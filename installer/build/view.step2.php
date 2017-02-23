@@ -8,7 +8,7 @@
 	}
 	$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 
-	$all_tables     = DUPX_DB::showTables($dbh);
+	$all_tables     = DUPX_DB::getTables($dbh);
 	$active_plugins = DUPX_Util::get_active_plugins($dbh);
 	
 

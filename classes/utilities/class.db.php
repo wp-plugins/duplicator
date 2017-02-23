@@ -9,7 +9,6 @@ if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
  * @package SC\Dup\DB
  *
  */
-
 class DUP_DB extends wpdb
 {
 
