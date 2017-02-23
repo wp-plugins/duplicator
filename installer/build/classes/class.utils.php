@@ -17,21 +17,45 @@ class DUPX_Util
 {
 
     /**
-     * Get current microtime as a float.  Method is used for simple profiling
+     * Adds a slash to the end of a file or directory path
      *
-     * @see elapsed_time
+     * @param string $path		A path
      *
-     * @return  string   A float in the form "msec sec", where sec is the number of seconds since the Unix epoch
+     * @return string The orginal $path with a with '/'.
      */
-    public static function get_microtime()
+    public static function add_slash($path)
     {
-        return microtime(true);
+        $last_char = substr($path, strlen($path) - 1, 1);
+        if ($last_char != '/') {
+            $path .= '/';
+        }
+        return $path;
+    }
+
+    /**
+     *  A safe method used to copy larger files
+     *
+     *  @param string $source		The path to the file being copied
+     *  @param string $destination	The path to the file being made
+     */
+    public static function copy_file($source, $destination)
+    {
+        $sp = fopen($source, 'r');
+        $op = fopen($destination, 'w');
+
+        while (!feof($sp)) {
+            $buffer = fread($sp, 512);  // use a buffer of 512 bytes
+            fwrite($op, $buffer);
+        }
+        // close handles
+        fclose($op);
+        fclose($sp);
     }
 
     /**
      * Return a string with the elapsed time
      *
-     * @see get_microtime
+     * @see get_microtime()
      *
      * @param mixed number $end     The final time in the sequence to measure
      * @param mixed number $start   The start time in the sequence to measure
@@ -62,51 +86,6 @@ class DUPX_Util
     }
 
     /**
-     * Adds a slash to the end of a file or directory path
-     *
-     * @param string $path		A path
-     *
-     * @return string The orginal $path with a with '/'.
-     */
-    public static function add_slash($path)
-    {
-        $last_char = substr($path, strlen($path) - 1, 1);
-        if ($last_char != '/') {
-            $path .= '/';
-        }
-        return $path;
-    }
-
-    /**
-     *  Makes path safe for any OS for PHP
-     *
-     *  Paths should ALWAYS READ be "/"
-     * 		uni:  /home/path/file.xt
-     * 		win:  D:/home/path/file.txt
-     *
-     *  @param string $path		The path to make safe
-     *
-     *  @return string The orginal $path with a with all slashes facing '/'.
-     */
-    public static function set_safe_path($path)
-    {
-        return str_replace("\\", "/", $path);
-    }
-
-    /**
-     *  Makes path unsafe for any OS for PHP used primarly to show default
-     *  Winodws OS path standard
-     *
-     *  @param string $path		The path to make unsafe
-     *
-     *  @return string The orginal $path with a with all slashes facing '\'.
-     */
-    public static function unset_safe_path($path)
-    {
-        return str_replace("/", "\\", $path);
-    }
-
-    /**
      *  Returns 256 spaces
      *
      *  PHP_SAPI for fcgi requires a data flush of at least 256
@@ -121,42 +100,15 @@ class DUPX_Util
     }
 
     /**
-     *  A safe method used to copy larger files
+     * Get current microtime as a float.  Method is used for simple profiling
      *
-     *  @param string $source		The path to the file being copied
-     *  @param string $destination	The path to the file being made
+     * @see elapsed_time
+     *
+     * @return  string   A float in the form "msec sec", where sec is the number of seconds since the Unix epoch
      */
-    public static function copy_file($source, $destination)
+    public static function get_microtime()
     {
-        $sp = fopen($source, 'r');
-        $op = fopen($destination, 'w');
-
-        while (!feof($sp)) {
-            $buffer = fread($sp, 512);  // use a buffer of 512 bytes
-            fwrite($op, $buffer);
-        }
-        // close handles
-        fclose($op);
-        fclose($sp);
-    }
-
-    /**
-     *  Looks for a list of strings in a string and returns each list item that is found
-     *
-     *  @param array  $list		An array of strings to search for
-     *  @param string $haystack	The string blob to search through
-     *
-     *  @return array An array of strings from the $list array fround in the $haystack
-     */
-    public static function search_list_values($list, $haystack)
-    {
-        $found = array();
-        foreach ($list as $var) {
-            if (strstr($haystack, $var) !== false) {
-                array_push($found, $var);
-            }
-        }
-        return $found;
+        return microtime(true);
     }
 
     /** 
@@ -176,6 +128,90 @@ class DUPX_Util
             }
         }
         return array();
+    }
+
+    /**
+     *  Returns an array of zip files found in the current executing directory
+     *
+     *  @return array of zip files
+     */
+    public static function get_zip_files()
+    {
+        $files = array();
+        foreach (glob("*.zip") as $name) {
+            if (file_exists($name)) {
+                $files[] = $name;
+            }
+        }
+
+        if (count($files) > 0) {
+            return $files;
+        }
+
+        //FALL BACK: Windows XP has bug with glob,
+        //add secondary check for PHP lameness
+        if ($dh = opendir('.')) {
+            while (false !== ($name = readdir($dh))) {
+                $ext = substr($name, strrpos($name, '.') + 1);
+                if (in_array($ext, array("zip"))) {
+                    $files[] = $name;
+                }
+            }
+            closedir($dh);
+        }
+
+        return $files;
+    }
+
+    /**
+     *  Check to see if the internet is accessable
+     *
+     *  Note: fsocketopen on windows doesn't seem to honor $timeout setting.
+     *
+     *  @param string $url		A url e.g without prefix "ajax.googleapis.com"
+     *  @param string $port		A valid port number
+     *
+     *  @return bool
+     */
+    public static function is_url_active($url, $port, $timeout = 5)
+    {
+        if (function_exists('fsockopen')) {
+            @ini_set("default_socket_timeout", 5);
+            $port      = isset($port) && is_integer($port) ? $port : 80;
+            $connected = @fsockopen($url, $port, $errno, $errstr, $timeout); //website and port
+            if ($connected) {
+                @fclose($connected);
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Does a string have non ascii characters
+     *
+     * @param string $string Any string blob
+     *
+     * @return bool Returns true if any non ascii character is found in the blob
+     *
+     */
+    public static function is_non_ascii($string)
+    {
+        return preg_match('/[^\x20-\x7f]/', $string);
+    }
+
+
+    /**
+     *  The characters that are special in the replacement value of preg_replace are not the
+     *  same characters that are special in the pattern.  Allows for '$' to be safely passed.
+     *
+     *  @param string $str		The string to replace on
+     */
+    public static function preg_replacement_quote($str)
+    {
+        return preg_replace('/(\$|\\\\)(?=\d)/', '\\\\\1', $str);
     }
 
     /**
@@ -224,86 +260,53 @@ class DUPX_Util
     }
 
     /**
-     *  The characters that are special in the replacement value of preg_replace are not the
-     *  same characters that are special in the pattern.  Allows for '$' to be safely passed.
+     *  Makes path safe for any OS for PHP
      *
-     *  @param string $str		The string to replace on
+     *  Paths should ALWAYS READ be "/"
+     * 		uni:  /home/path/file.xt
+     * 		win:  D:/home/path/file.txt
+     *
+     *  @param string $path		The path to make safe
+     *
+     *  @return string The orginal $path with a with all slashes facing '/'.
      */
-    public static function preg_replacement_quote($str)
+    public static function set_safe_path($path)
     {
-        return preg_replace('/(\$|\\\\)(?=\d)/', '\\\\\1', $str);
+        return str_replace("\\", "/", $path);
     }
 
     /**
-     *  Check to see if the internet is accessable
+     *  Looks for a list of strings in a string and returns each list item that is found
      *
-     *  Note: fsocketopen on windows doesn't seem to honor $timeout setting.
+     *  @param array  $list		An array of strings to search for
+     *  @param string $haystack	The string blob to search through
      *
-     *  @param string $url		A url e.g without prefix "ajax.googleapis.com"
-     *  @param string $port		A valid port number
-     *
-     *  @return bool
+     *  @return array An array of strings from the $list array fround in the $haystack
      */
-    public static function is_url_active($url, $port, $timeout = 5)
+    public static function search_list_values($list, $haystack)
     {
-        if (function_exists('fsockopen')) {
-            @ini_set("default_socket_timeout", 5);
-            $port      = isset($port) && is_integer($port) ? $port : 80;
-            $connected = @fsockopen($url, $port, $errno, $errstr, $timeout); //website and port
-            if ($connected) {
-                @fclose($connected);
-                return true;
+        $found = array();
+        foreach ($list as $var) {
+            if (strstr($haystack, $var) !== false) {
+                array_push($found, $var);
             }
-            return false;
-        } else {
-            return false;
         }
+        return $found;
     }
 
     /**
-     *  Returns an array of zip files found in the current executing directory
+     *  Makes path unsafe for any OS for PHP used primarly to show default
+     *  Winodws OS path standard
      *
-     *  @return array of zip files
+     *  @param string $path		The path to make unsafe
+     *
+     *  @return string The orginal $path with a with all slashes facing '\'.
      */
-    public static function get_zip_files()
+    public static function unset_safe_path($path)
     {
-        $files = array();
-        foreach (glob("*.zip") as $name) {
-            if (file_exists($name)) {
-                $files[] = $name;
-            }
-        }
-
-        if (count($files) > 0) {
-            return $files;
-        }
-
-        //FALL BACK: Windows XP has bug with glob,
-        //add secondary check for PHP lameness
-        if ($dh = opendir('.')) {
-            while (false !== ($name = readdir($dh))) {
-                $ext = substr($name, strrpos($name, '.') + 1);
-                if (in_array($ext, array("zip"))) {
-                    $files[] = $name;
-                }
-            }
-            closedir($dh);
-        }
-
-        return $files;
+        return str_replace("/", "\\", $path);
     }
 
-    /**
-     * Does a string have non ascii characters
-     *
-     * @param string $string Any string blob
-     *
-     * @return bool Returns true if any non ascii character is found in the blob
-     *
-     */
-    public static function is_non_ascii($string)
-    {
-        return preg_match('/[^\x20-\x7f]/', $string);
-    }
+
 }
 ?>
