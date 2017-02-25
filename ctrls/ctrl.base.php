@@ -78,7 +78,7 @@ class DUP_CTRL_Result
 	
 	function __construct(DUP_CTRL_Base $CTRL_OBJ) 
 	{
-		DUP_Util::CheckPermissions('read');
+		DUP_Util::hasCapability('read');
 		$this->time_start	= $this->microtimeFloat();
 		$this->CTRL			= $CTRL_OBJ;
 		

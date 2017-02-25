@@ -20,7 +20,9 @@ class DUP_Database
     private $EOFMarker;
     private $networkFlush;
 
-    //CONSTRUCTOR
+    /**
+     *  Init this object
+     */
     function __construct($package)
     {
         $this->Package      = $package;
@@ -29,20 +31,27 @@ class DUP_Database
         $this->networkFlush = empty($package_zip_flush) ? false : $package_zip_flush;
     }
 
-    public function Build($package)
+    /**
+     *  Build the database script
+     *
+     *  @param obj $package A reference to the package that this database object belongs in
+     *
+     *  @return null
+     */
+    public function build($package)
     {
         try {
 
             $this->Package = $package;
 
-            $time_start        = DUP_Util::GetMicrotime();
-            $this->Package->SetStatus(DUP_PackageStatus::DBSTART);
+            $time_start        = DUP_Util::getMicrotime();
+            $this->Package->setStatus(DUP_PackageStatus::DBSTART);
             $this->dbStorePath = "{$this->Package->StorePath}/{$this->File}";
 
             $package_mysqldump        = DUP_Settings::Get('package_mysqldump');
             $package_phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
 
-            $mysqlDumpPath        = self::GetMySqlDumpPath();
+            $mysqlDumpPath        = DUP_DB::getMySqlDumpPath();
             $mode                 = ($mysqlDumpPath && $package_mysqldump) ? 'MYSQLDUMP' : 'PHP';
             $reserved_db_filepath = DUPLICATOR_WPROOTPATH.'database.sql';
 
@@ -75,12 +84,12 @@ class DUP_Database
             }
 
             DUP_Log::Info("SQL CREATED: {$this->File}");
-            $time_end = DUP_Util::GetMicrotime();
-            $time_sum = DUP_Util::ElapsedTime($time_end, $time_start);
+            $time_end = DUP_Util::getMicrotime();
+            $time_sum = DUP_Util::elapsedTime($time_end, $time_start);
 
             //File below 10k will be incomplete
             $sql_file_size = filesize($this->dbStorePath);
-            DUP_Log::Info("SQL FILE SIZE: ".DUP_Util::ByteSize($sql_file_size)." ({$sql_file_size})");
+            DUP_Log::Info("SQL FILE SIZE: ".DUP_Util::byteSize($sql_file_size)." ({$sql_file_size})");
             if ($sql_file_size < 10000) {
                 DUP_Log::Error("SQL file size too low.", "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]");
             }
@@ -89,19 +98,21 @@ class DUP_Database
             DUP_Log::Info("SQL RUNTIME: {$time_sum}");
 
             $this->Size = @filesize($this->dbStorePath);
-            $this->Package->SetStatus(DUP_PackageStatus::DBDONE);
+            $this->Package->setStatus(DUP_PackageStatus::DBDONE);
         } catch (Exception $e) {
             DUP_Log::Error("Runtime error in DUP_Database::Build", "Exception: {$e}");
         }
     }
 
     /**
-     *  Get the database stats
+     *  Get the database meta-data suc as tables as all there details
+     *
+     *  @return array Returns an array full of meta-data about the database
      */
-    public function Stats()
+    public function getScanData()
     {
-
         global $wpdb;
+
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
         $tblCount     = 0;
 
@@ -140,7 +151,7 @@ class DUP_Database
             $info['Rows'] += ($table["Rows"]);
             $info['TableList'][$name]['Case'] = preg_match('/[A-Z]/', $name) ? 1 : 0;
             $info['TableList'][$name]['Rows'] = number_format($rows);
-            $info['TableList'][$name]['Size'] = DUP_Util::ByteSize($size);
+            $info['TableList'][$name]['Size'] = DUP_Util::byteSize($size);
             $tblCount++;
 
             //Table Uppercase
@@ -174,7 +185,7 @@ class DUP_Database
         $info['Status']['TBL_Rows'] = ($tblRowsFound) ? 'Warn' : 'Good';
         $info['Status']['TBL_Size'] = ($tblSizeFound) ? 'Warn' : 'Good';
 
-        $info['Size']       = DUP_Util::ByteSize($info['Size']) or "unknown";
+        $info['Size']       = DUP_Util::byteSize($info['Size']) or "unknown";
         $info['Rows']       = number_format($info['Rows']) or "unknown";
         $info['TableList']  = $info['TableList'] or "unknown";
         $info['TableCount'] = $tblCount;
@@ -183,65 +194,10 @@ class DUP_Database
     }
 
     /**
-     * Returns the mysqldump path if the server is enabled to execute it
-     * @return boolean|string
+     *  Build the database script using mysqldump
+     *
+     *  @return bool  Returns true if the sql script was succesfully created
      */
-    public static function GetMySqlDumpPath()
-    {
-
-        //Is shell_exec possible
-        if (!DUP_Util::IsShellExecAvailable()) {
-            return false;
-        }
-
-        $custom_mysqldump_path = DUP_Settings::Get('package_mysqldump_path');
-        $custom_mysqldump_path = (strlen($custom_mysqldump_path)) ? $custom_mysqldump_path : '';
-
-        //Common Windows Paths
-        if (DUP_Util::IsOSWindows()) {
-            $paths = array(
-                $custom_mysqldump_path,
-                'C:/xampp/mysql/bin/mysqldump.exe',
-                'C:/Program Files/xampp/mysql/bin/mysqldump',
-                'C:/Program Files/MySQL/MySQL Server 6.0/bin/mysqldump',
-                'C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump',
-                'C:/Program Files/MySQL/MySQL Server 5.4/bin/mysqldump',
-                'C:/Program Files/MySQL/MySQL Server 5.1/bin/mysqldump',
-                'C:/Program Files/MySQL/MySQL Server 5.0/bin/mysqldump',
-            );
-
-            //Common Linux Paths
-        } else {
-            $path1     = '';
-            $path2     = '';
-            $mysqldump = `which mysqldump`;
-            if (@is_executable($mysqldump)) $path1     = (!empty($mysqldump)) ? $mysqldump : '';
-
-            $mysqldump = dirname(`which mysql`)."/mysqldump";
-            if (@is_executable($mysqldump)) $path2     = (!empty($mysqldump)) ? $mysqldump : '';
-
-            $paths = array(
-                $custom_mysqldump_path,
-                $path1,
-                $path2,
-                '/usr/local/bin/mysqldump',
-                '/usr/local/mysql/bin/mysqldump',
-                '/usr/mysql/bin/mysqldump',
-                '/usr/bin/mysqldump',
-                '/opt/local/lib/mysql6/bin/mysqldump',
-                '/opt/local/lib/mysql5/bin/mysqldump',
-                '/opt/local/lib/mysql4/bin/mysqldump',
-            );
-        }
-
-        // Find the one which works
-        foreach ($paths as $path) {
-            if (@is_executable($path)) return $path;
-        }
-
-        return false;
-    }
-
     private function mysqlDump($exePath)
     {
 
@@ -282,8 +238,7 @@ class DUP_Database
         }
 
         $cmd .= ' -u '.escapeshellarg(DB_USER);
-        $cmd .= (DB_PASSWORD) ?
-            ' -p'.escapeshellarg(DB_PASSWORD) : '';
+        $cmd .= (DB_PASSWORD) ? ' -p'.escapeshellarg(DB_PASSWORD) : '';
         $cmd .= ' -h '.escapeshellarg($host);
         $cmd .= (!empty($port) && is_numeric($port) ) ?
             ' -P '.$port : '';
@@ -315,6 +270,11 @@ class DUP_Database
         return ($output) ? false : true;
     }
 
+    /**
+     *  Build the database script using php
+     *
+     *  @return bool  Returns true if the sql script was succesfully created
+     */
     private function phpDump()
     {
 
@@ -398,7 +358,7 @@ class DUP_Database
 
             //Flush buffer if enabled
             if ($this->networkFlush) {
-                DUP_Util::FcgiFlush();
+                DUP_Util::fcgiFlush();
             }
             $sql  = null;
             $rows = null;

@@ -131,8 +131,8 @@ TOOL-BAR -->
 			<?php if ($row['status'] >= 100) : ?>
 				<tr class="dup-pack-info <?php echo $css_alt ?>">
 					<td class="pass"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
-					<td><?php echo DUP_Package::FormatCreatedDate($row['created'], $ui_create_frmt);?></td>
-					<td><?php echo DUP_Util::ByteSize($pack_archive_size); ?></td>
+					<td><?php echo DUP_Package::getCreatedDateFormat($row['created'], $ui_create_frmt);?></td>
+					<td><?php echo DUP_Util::byteSize($pack_archive_size); ?></td>
 					<td class='pack-name'><?php	echo  $pack_name ;?></td>
 					<td class="get-btns">
 						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $installfilelink; ?>', this); return false;">
@@ -162,8 +162,8 @@ TOOL-BAR -->
 				?>
 				<tr class="dup-pack-info  <?php echo $css_alt ?>">
 					<td class="fail"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
-					<td><?php echo DUP_Package::FormatCreatedDate($row['created'], $ui_create_frmt);?></td>
-					<td><?php echo DUP_Util::ByteSize($size); ?></td>
+					<td><?php echo DUP_Package::getCreatedDateFormat($row['created'], $ui_create_frmt);?></td>
+					<td><?php echo DUP_Util::byteSize($size); ?></td>
 					<td class='pack-name'><?php echo $pack_name ;?></td>
 					<td class="get-btns error-msg" colspan="2">		
 						<span>
@@ -185,7 +185,7 @@ TOOL-BAR -->
 		<tr>
 			<th colspan="11" style='text-align:right; font-size:12px'>						
 				<?php echo _e("Packages", 'duplicator') . ': ' . $totalElements; ?> |
-				<?php echo _e("Total Size", 'duplicator') . ': ' . DUP_Util::ByteSize($totalSize); ?> 
+				<?php echo _e("Total Size", 'duplicator') . ': ' . DUP_Util::byteSize($totalSize); ?> 
 			</th>
 		</tr>
 	</tfoot>

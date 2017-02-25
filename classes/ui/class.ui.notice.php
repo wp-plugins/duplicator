@@ -1,14 +1,23 @@
 <?php
-
 /**
  * Used to display notices in the WordPress Admin area
  * This class takes advatage of the 'admin_notice' action.
  *
  * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
  *
- * @package SC\Dup\UI\Notice
+ * @package Duplicator
+ * @subpackage classes/ui
+ * @copyright (c) 2017, Snapcreek LLC
+ * @since 1.1.0
  *
  */
+
+// Exit if accessed directly
+if (!defined('DUPLICATOR_VERSION')) {
+    exit;
+}
+
 class DUP_UI_Notice
 {
 
@@ -24,7 +33,7 @@ class DUP_UI_Notice
         $dup_perm   = current_user_can('manage_options');
         if (!$dup_active || !$dup_perm) return;
 
-        if (DUP_Server::InstallerFilesFound()) {
+        if (DUP_Server::hasInstallerFiles()) {
             $screen        = get_current_screen();
             $on_active_tab = isset($_GET['tab']) && $_GET['tab'] == 'cleanup' ? true : false;
 

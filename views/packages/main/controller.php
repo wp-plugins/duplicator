@@ -1,5 +1,5 @@
 <?php
-require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.dialog.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.dialog.php');
 $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'list';
 ?>
 

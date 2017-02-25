@@ -1,7 +1,7 @@
 <?php
-require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.dialog.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.dialog.php');
 
-DUP_Util::CheckPermissions('manage_options');
+DUP_Util::hasCapability('manage_options');
 
 global $wpdb;
 

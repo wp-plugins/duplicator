@@ -1,6 +1,5 @@
 <?php
-	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
-	$Package = DUP_Package::GetActive();	
+	$Package = DUP_Package::getActive();
 	$ajax_nonce	= wp_create_nonce('dup_package_build');
 	
 ?>

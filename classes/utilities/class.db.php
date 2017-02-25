@@ -1,14 +1,22 @@
 <?php
-if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
-
 /**
  * Lightweight abstraction layer for common simple database routines
  *
  * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
  *
- * @package SC\Dup\DB
+ * @package Duplicator
+ * @subpackage classes/utilities
+ * @copyright (c) 2017, Snapcreek LLC
+ * @since 1.1.32
  *
  */
+
+// Exit if accessed directly
+if (!defined('DUPLICATOR_VERSION')) {
+    exit;
+}
+
 class DUP_DB extends wpdb
 {
 
@@ -19,7 +27,7 @@ class DUP_DB extends wpdb
      *
      * @return string the server variable to query for
      */
-    public static function mysqlVariable($name)
+    public static function getVariable($name)
     {
         global $wpdb;
         $row = $wpdb->get_row("SHOW VARIABLES LIKE '{$name}'", ARRAY_N);
@@ -34,14 +42,76 @@ class DUP_DB extends wpdb
      *
      * @return false|string 0 on failure, version number on success
      */
-    public static function mysqlVersion($full = false)
+    public static function getVersion($full = false)
     {
         if ($full) {
-            $version = self::mysqlVariable('version');
+            $version = self::getVariable('version');
         } else {
-            $version = preg_replace('/[^0-9.].*/', '', self::mysqlVariable('version'));
+            $version = preg_replace('/[^0-9.].*/', '', self::getVariable('version'));
         }
 
         return empty($version) ? 0 : $version;
     }
+
+
+    /**
+     * Returns the mysqldump path if the server is enabled to execute it
+     * @return boolean|string
+     */
+    public static function getMySqlDumpPath()
+    {
+
+        //Is shell_exec possible
+        if (!DUP_Util::hasShellExec()) {
+            return false;
+        }
+
+        $custom_mysqldump_path = DUP_Settings::Get('package_mysqldump_path');
+        $custom_mysqldump_path = (strlen($custom_mysqldump_path)) ? $custom_mysqldump_path : '';
+
+        //Common Windows Paths
+        if (DUP_Util::isWindows()) {
+            $paths = array(
+                $custom_mysqldump_path,
+                'C:/xampp/mysql/bin/mysqldump.exe',
+                'C:/Program Files/xampp/mysql/bin/mysqldump',
+                'C:/Program Files/MySQL/MySQL Server 6.0/bin/mysqldump',
+                'C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump',
+                'C:/Program Files/MySQL/MySQL Server 5.4/bin/mysqldump',
+                'C:/Program Files/MySQL/MySQL Server 5.1/bin/mysqldump',
+                'C:/Program Files/MySQL/MySQL Server 5.0/bin/mysqldump',
+            );
+
+            //Common Linux Paths
+        } else {
+            $path1     = '';
+            $path2     = '';
+            $mysqldump = `which mysqldump`;
+            if (@is_executable($mysqldump)) $path1     = (!empty($mysqldump)) ? $mysqldump : '';
+
+            $mysqldump = dirname(`which mysql`)."/mysqldump";
+            if (@is_executable($mysqldump)) $path2     = (!empty($mysqldump)) ? $mysqldump : '';
+
+            $paths = array(
+                $custom_mysqldump_path,
+                $path1,
+                $path2,
+                '/usr/local/bin/mysqldump',
+                '/usr/local/mysql/bin/mysqldump',
+                '/usr/mysql/bin/mysqldump',
+                '/usr/bin/mysqldump',
+                '/opt/local/lib/mysql6/bin/mysqldump',
+                '/opt/local/lib/mysql5/bin/mysqldump',
+                '/opt/local/lib/mysql4/bin/mysqldump',
+            );
+        }
+
+        // Find the one which works
+        foreach ($paths as $path) {
+            if (@is_executable($path)) return $path;
+        }
+
+        return false;
+    }
+
 }

@@ -131,7 +131,7 @@ ARCHIVE -->
                 <!-- FILTERS -->
                 <?php
 					$uploads = wp_upload_dir();
-					$upload_dir = DUP_Util::SafePath($uploads['basedir']);
+					$upload_dir = DUP_Util::safePath($uploads['basedir']);
                 ?>
                 <div class="dup-enable-filters">
                     <input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" :""; ?> />	
@@ -148,7 +148,7 @@ ARCHIVE -->
                     <div class='dup-quick-links'>
                         <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'duplicator') ?>]</a>
                         <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php _e("wp-uploads", 'duplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo DUP_Util::SafePath(WP_CONTENT_DIR); ?>/cache')">[<?php _e("cache", 'duplicator') ?>]</a>
+                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo DUP_Util::safePath(WP_CONTENT_DIR); ?>/cache')">[<?php _e("cache", 'duplicator') ?>]</a>
                         <a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'duplicator') ?></a>
                     </div>
                     <textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterDirs)) ?></textarea><br/>

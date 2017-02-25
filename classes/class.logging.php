@@ -34,12 +34,12 @@ class DUP_Log {
 	 *  @param string $msg	The message to log
 	 * 
 	 *  REPLACE TO DEBUG: Memory consuption as script runs	
-	 *	$results = DUP_Util::ByteSize(memory_get_peak_usage(true)) . "\t" . $msg;
+	 *	$results = DUP_Util::byteSize(memory_get_peak_usage(true)) . "\t" . $msg;
 	 *	@fwrite(self::$logFileHandle, "{$results} \n"); 
 	 */
 	static public function Info($msg) {
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
-		//$results = DUP_Util::ByteSize(memory_get_usage(true)) . "\t" . $msg;
+		//$results = DUP_Util::byteSize(memory_get_usage(true)) . "\t" . $msg;
 		//@fwrite(self::$logFileHandle, "{$results} \n"); 
 	}
 	

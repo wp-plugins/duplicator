@@ -1,26 +1,72 @@
 <?php
-
 /**
  * Used to generate a thinkbox inline dialog such as an alert or confirm popup
  *
  * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
  *
- * @package SC\Dup\UI\Dialog
+ * @package Duplicator
+ * @subpackage classes/ui
+ * @copyright (c) 2017, Snapcreek LLC
+ * @since 1.1.32
  *
  */
+
+// Exit if accessed directly
+if (!defined('DUPLICATOR_VERSION')) {
+    exit;
+}
+
 class DUP_UI_Dialog
 {
-    //Public: All Dialogs
+    /**
+     * The title that shows up in the dialog
+     */
     public $title;
+
+    /**
+     * The message displayed in the body of the dialog
+     */
     public $message;
+
+    /**
+     * The width of the dialog the default is used if not set
+     * Alert = 475px (default) |  Confirm = 500px (default)
+     */
     public $width;
+
+    /**
+     * The height of the dialog the default is used if not set
+     * Alert = 125px (default) |  Confirm = 150px (default)
+     */
     public $height;
-    //Public: Confirm Only
+
+    /**
+     * When the progress meter is running show this text
+     * Available only on confirm dialogs
+     */
     public $progressText;
+
+    /**
+     * When true a progress meter will run until page is reloaded
+     * Available only on confirm dialogs
+     */
     public $progressOn = true;
+
+    /**
+     * The javascript call back method to call when the 'Yes' button is clicked
+     * Available only on confirm dialogs
+     */
     public $jscallback;
-    //Private
+
+    /**
+     * The id given to the full dialog
+     */
     private $id;
+
+    /**
+     * A unique id that is added to all id elements
+     */
     private $uniqid;
 
     public function __construct()

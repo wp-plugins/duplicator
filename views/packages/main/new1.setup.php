@@ -1,5 +1,4 @@
 <?php
-require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
 
 global $wpdb;
 
@@ -15,12 +14,12 @@ if (isset($_POST['action']))
     }
 }
 
-DUP_Util::InitSnapshotDirectory();
+DUP_Util::initSnapshotDirectory();
 
-$Package = DUP_Package::GetActive();
+$Package = DUP_Package::getActive();
 $dup_tests = array();
-$dup_tests = DUP_Server::GetRequirements();
-$default_name = DUP_Package::GetDefaultName();
+$dup_tests = DUP_Server::getRequirements();
+$default_name = DUP_Package::getDefaultName();
 
 //View State
 $ctrl_ui = new DUP_CTRL_UI();
@@ -30,8 +29,8 @@ $data = $ctrl_ui->GetViewStateList();
 $ui_css_storage = (isset($data->Payload['dup-pack-storage-panel']) && $data->Payload['dup-pack-storage-panel']) ? 'display:block' : 'display:none';
 $ui_css_archive = (isset($data->Payload['dup-pack-archive-panel']) && $data->Payload['dup-pack-archive-panel']) ? 'display:block' : 'display:none';
 $ui_css_installer = (isset($data->Payload['dup-pack-installer-panel']) && $data->Payload['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
-$dup_intaller_files = implode(", ", array_keys(DUP_Server::GetInstallerFiles()));
-$dbbuild_mode = (DUP_Settings::Get('package_mysqldump') && DUP_Database::GetMySqlDumpPath()) ? 'mysqldump' : 'PHP';
+$dup_intaller_files = implode(", ", array_keys(DUP_Server::getInstallerFiles()));
+$dbbuild_mode = (DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath()) ? 'mysqldump' : 'PHP';
 
 ?>
 
@@ -165,7 +164,7 @@ SYSTEM REQUIREMENTS -->
             <div class="dup-sys-info dup-info-box">
                 <table class="dup-sys-info-results">
                     <tr>
-                        <td><?php printf("%s [%s]", __("MySQL Version", 'duplicator'), DUP_DB::mysqlVersion()); ?></td>
+                        <td><?php printf("%s [%s]", __("MySQL Version", 'duplicator'), DUP_DB::getVersion()); ?></td>
                         <td><?php echo $dup_tests['SRV']['MYSQL_VER'] ?></td>
                     </tr>
                     <tr>

@@ -20,7 +20,7 @@
 	
 	$txt_found = __('File Found', 'duplicator');
 	$txt_not_found = __('File Removed', 'duplicator');
-	$installer_files = DUP_Server::GetInstallerFiles();
+	$installer_files = DUP_Server::getInstallerFiles();
         
 	switch ($_GET['action']) {            
 		case 'installer' :     
@@ -32,7 +32,7 @@
 			$action_response = __('Legacy data removed.', 'duplicator');
 			break;
 		case 'tmp-cache': 
-			DUP_Package::TmpCleanup(true);
+			DUP_Package::tempFileCleanup(true);
 			$action_response = __('Build cache removed.', 'duplicator');
 			break;		
 	} 

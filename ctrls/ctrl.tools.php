@@ -10,7 +10,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.scan.check.php')
  */
 class DUP_CTRL_Tools extends DUP_CTRL_Base
 {	 
-		
+	/**
+     *  Init this instance of the object
+     */
 	function __construct() 
 	{
 		add_action('wp_ajax_DUP_CTRL_Tools_RunScanValidator', array($this, 'RunScanValidator'));
@@ -40,11 +42,11 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 				throw new Exception("Invalid directory provided '{$path}'!");
 			}
 			$scanner = new DUP_ScanCheck();
-			$scanner->Recursion = (isset($post['scan-recursive']) && $post['scan-recursive'] != 'false') ? true : false;
-			$payload = $scanner->Run($path);
+			$scanner->recursion = (isset($post['scan-recursive']) && $post['scan-recursive'] != 'false') ? true : false;
+			$payload = $scanner->run($path);
 
 			//RETURN RESULT
-			$test = ($payload->FileCount > 0) 
+			$test = ($payload->fileCount > 0)
 					? DUP_CTRL_Status::SUCCESS
 					: DUP_CTRL_Status::FAILED;
 			$result->Process($payload, $test);			

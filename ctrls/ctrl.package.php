@@ -10,20 +10,20 @@
 function duplicator_package_scan() {
 	
 	header('Content-Type: application/json;');
-	DUP_Util::CheckPermissions('export');
+	DUP_Util::hasCapability('export');
 	
 	@set_time_limit(0);
 	$errLevel = error_reporting();
 	error_reporting(E_ERROR);
-	DUP_Util::InitSnapshotDirectory();
+	DUP_Util::initSnapshotDirectory();
 	
-	$Package = DUP_Package::GetActive();
-	$report = $Package->Scan();
+	$Package = DUP_Package::getActive();
+	$report = $Package->runScanner();
 	
-	$Package->SaveActiveItem('ScanFile', $Package->ScanFile);
+	$Package->saveActiveItem('ScanFile', $Package->ScanFile);
 	$json_response = json_encode($report);
 	
-	DUP_Package::TmpCleanup();
+	DUP_Package::tempFileCleanup();
 	error_reporting($errLevel);
     die($json_response);
 }
@@ -36,7 +36,7 @@ function duplicator_package_scan() {
  */
 function duplicator_package_build() {
 	
-	DUP_Util::CheckPermissions('export');
+	DUP_Util::hasCapability('export');
 	
 	check_ajax_referer( 'dup_package_build', 'nonce');
 	
@@ -45,15 +45,15 @@ function duplicator_package_build() {
 	@set_time_limit(0);
 	$errLevel = error_reporting();
 	error_reporting(E_ERROR);
-	DUP_Util::InitSnapshotDirectory();
+	DUP_Util::initSnapshotDirectory();
 
-	$Package = DUP_Package::GetActive();
+	$Package = DUP_Package::getActive();
 	
 	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$Package->ScanFile}")) {
 		die("The scan result file was not found.  Please run the scan step before building the package.");
 	}
 	
-	$Package->Build();
+	$Package->runBuild();
 	
 	//JSON:Debug Response
 	//Pass = 1, Warn = 2, Fail = 3
@@ -78,7 +78,7 @@ function duplicator_package_build() {
  */
 function duplicator_package_delete() {
 	
-    DUP_Util::CheckPermissions('export');    
+    DUP_Util::hasCapability('export');    
     check_ajax_referer( 'package_list', 'nonce' );
     
     try {
@@ -102,23 +102,23 @@ function duplicator_package_delete() {
 					$delResult	= $wpdb->query($wpdb->prepare( "DELETE FROM `{$tblName}` WHERE id = %d", $id ));
 					if ($delResult != 0) {
 						//Perms
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"), 0644);
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_database.sql"), 0644);
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_installer.php"), 0644);						
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"), 0644);
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"), 0644);
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"), 0644);
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_scan.json"), 0644);
-						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"), 0644);
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"), 0644);
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_database.sql"), 0644);
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_installer.php"), 0644);						
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"), 0644);
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"), 0644);
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"), 0644);
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_scan.json"), 0644);
+						@chmod(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"), 0644);
 						//Remove
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"));
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_database.sql"));
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_installer.php"));
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"));
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"));
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"));
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_scan.json"));
-						@unlink(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_database.sql"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_installer.php"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_archive.zip"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_database.sql"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_installer.php"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}_scan.json"));
+						@unlink(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH . "/{$nameHash}.log"));
 						//Unfinished Zip files
 						$tmpZip = DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip.*";
 						if ($tmpZip !== false) {

@@ -34,7 +34,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
     
     $action_updated = DUP_Settings::Save();
-    DUP_Util::InitSnapshotDirectory();
+    DUP_Util::initSnapshotDirectory();
 }
 
 $uninstall_settings = DUP_Settings::Get('uninstall_settings');
@@ -55,7 +55,7 @@ $package_ui_created = is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_
 $wpfront_integrate = DUP_Settings::Get('wpfront_integrate');
 $wpfront_ready = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
 
-$mysqlDumpPath = DUP_Database::GetMySqlDumpPath();
+$mysqlDumpPath = DUP_DB::getMySqlDumpPath();
 $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
 
@@ -104,7 +104,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             <th scope="row"><label><?php _e("Storage", 'duplicator'); ?></label></th>
             <td>
                 <?php _e("Full Path", 'duplicator'); ?>: 
-                <?php echo DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH); ?><br/><br/>
+                <?php echo DUP_Util::safePath(DUPLICATOR_SSDIR_PATH); ?><br/><br/>
                 <input type="checkbox" name="storage_htaccess_off" id="storage_htaccess_off" <?php echo ($storage_htaccess_off) ? 'checked="checked"' : ''; ?> /> 
                 <label for="storage_htaccess_off"><?php _e("Disable .htaccess File In Storage Directory", 'duplicator') ?> </label>
                 <p class="description">
@@ -154,7 +154,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
         <tr>
             <th scope="row"><label><?php _e("Database Script", 'duplicator'); ?></label></th>
             <td>
-                <?php if (!DUP_Util::IsShellExecAvailable()) : ?>
+                <?php if (!DUP_Util::hasShellExec()) : ?>
 					<input type="radio" disabled="true" />
                     <label><?php _e("Use mysqldump", 'duplicator'); ?></label>
                     <p class="description" style="width:550px; margin:5px 0 0 20px">

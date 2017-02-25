@@ -1,6 +1,4 @@
 <?php
-	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/package.php');
-	require_once (DUPLICATOR_PLUGIN_PATH . 'classes/utilities/class.util.php');
 	
 	if(empty($_POST))
 	{
@@ -19,15 +17,15 @@
 		die('Unauthorized');
 	}
 	
-	$Package->SaveActive($_POST);
-	$Package = DUP_Package::GetActive();
+	$Package->saveActive($_POST);
+	$Package = DUP_Package::getActive();
 	
-	$mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_Database::GetMySqlDumpPath();
+	$mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath();
 	$mysqlcompat_on  = isset($Package->Database->Compatible) && strlen($Package->Database->Compatible);
 	$mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
 	$dbbuild_mode    = ($mysqldump_on) ? 'mysqldump (fast)' : 'PHP (slow)';
     
-    $zip_check = DUP_Util::GetZipPath();
+    $zip_check = DUP_Util::getZipPath();
 ?>
 
 <style>
@@ -223,12 +221,12 @@ TOOL BAR: STEPS -->
 					echo '</small>';
 
 					//CACHE DIR
-					$cache_path = $cache_path = DUP_Util::SafePath(WP_CONTENT_DIR) . '/cache';
-					$cache_size = DUP_Util::ByteSize(DUP_Util::GetDirectorySize($cache_path));
+					$cache_path = $cache_path = DUP_Util::safePath(WP_CONTENT_DIR) . '/cache';
+					$cache_size = DUP_Util::byteSize(DUP_Util::getDirectorySize($cache_path));
 					echo '<hr size="1" /><span id="data-srv-wp-cache"></span>&nbsp;<b>' . __('Cache Path', 'duplicator') . ":</b>&nbsp; '{$cache_path}' ({$cache_size}) <br/>";
 					echo '<small>';
 					_e("Cached data will lead to issues at install time and increases your archive size. It is recommended to empty your cache directory at build time. Use caution when removing data from the cache directory. If you have a cache plugin review the documentation for how to empty it; simply removing files might cause errors on your site. The cache size minimum threshold is currently set at ", 'duplicator');
-					echo DUP_Util::ByteSize(DUPLICATOR_SCAN_CACHESIZE) . '.';
+					echo DUP_Util::byteSize(DUPLICATOR_SCAN_CACHESIZE) . '.';
 					echo '</small>';
 					
 					//MU SITE
@@ -291,8 +289,8 @@ TOOL BAR: STEPS -->
 						<small>
 						<?php 
 							printf(__('Total size represents all files minus any filters that have been setup.  The current thresholds that triggers a warning is %1$s for the total size.  Some budget hosts limit the amount of time a PHP/Web request process can run.  When working with larger sites this can cause timeout issues. Consider using a file filter in step 1 to shrink and filter the overall size of your package.', 'duplicator'), 
-									DUP_Util::ByteSize(DUPLICATOR_SCAN_SITE), 
-									DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
+									DUP_Util::byteSize(DUPLICATOR_SCAN_SITE), 
+									DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 																					
 							if ($zip_check != null) {
                                 echo '<br/><br/>';
@@ -334,7 +332,7 @@ TOOL BAR: STEPS -->
 						<small>
 						<?php 
 							printf(__('Large files such as movies or other backuped data can cause issues with timeouts.  The current check for large files is %1$s per file.  If your having issues creating a package consider excluding these files with the files filter and manually moving them to your new location.', 'duplicator'), 
-									DUP_Util::ByteSize(DUPLICATOR_SCAN_WARNFILESIZE));
+									DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 						?>
 						</small><br/>
 						<a href="javascript:void(0)" onclick="jQuery('#data-arc-big-data').toggle()">[<?php _e('Show Paths', 'duplicator');?>]</a>
@@ -420,7 +418,7 @@ TOOL BAR: STEPS -->
 							//OVERVIEW
 							echo '<b>' . __('Overview:', 'duplicator') . '</b><br/>';
 							printf(__('Total size and row count for all database tables are approximate values.  The thresholds that trigger warnings are %1$s OR %2$s records total for the entire database.  The larger the databases the more time it takes to process and execute.  This can cause issues with budget hosts that have cpu/memory limits, and timeout constraints.', 'duplicator'), 
-									DUP_Util::ByteSize(DUPLICATOR_SCAN_DB_ALL_SIZE), 
+									DUP_Util::byteSize(DUPLICATOR_SCAN_DB_ALL_SIZE), 
 									number_format(DUPLICATOR_SCAN_DB_ALL_ROWS));
 							
 							//OPTIONS
@@ -450,7 +448,7 @@ TOOL BAR: STEPS -->
 							//OVERVIEW
 							echo '<b>' . __('Overview:', 'duplicator') . '</b><br/>';
 							printf(__('The thresholds that trigger warnings for individual tables are %1$s OR %2$s records OR tables names with upper-case characters.  The larger the table the more time it takes to process and execute.  This can cause issues with budget hosts that have cpu/memory limits, and timeout constraints.', 'duplicator'), 
-									DUP_Util::ByteSize(DUPLICATOR_SCAN_DB_TBL_SIZE), 
+									DUP_Util::byteSize(DUPLICATOR_SCAN_DB_TBL_SIZE), 
 									number_format(DUPLICATOR_SCAN_DB_TBL_ROWS));
 							
 							//OPTIONS
