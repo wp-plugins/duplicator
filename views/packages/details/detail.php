@@ -15,7 +15,7 @@ $debug_on	     = DUP_Settings::Get('package_debug');
 $mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath();
 $mysqlcompat_on  = isset($Package->Database->Compatible) && strlen($Package->Database->Compatible);
 $mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
-$dbbuild_mode    = ($mysqldump_on) ? 'mysqldump (fast)' : 'PHP (slow)';
+$dbbuild_mode    = ($mysqldump_on) ? 'mysqldump' : 'PHP';
 ?>
 
 <style>

@@ -69,6 +69,9 @@ class DUP_UI_Dialog
      */
     private $uniqid;
 
+    /**
+     *  Init this object when created
+     */
     public function __construct()
     {
         add_thickbox();
@@ -80,7 +83,6 @@ class DUP_UI_Dialog
     /**
      * Gets the unique id that is assigned to each instance of a dialog
      *
-     * @access public
      * @return int      The unique ID of this dialog
      */
     public function getID()
@@ -91,7 +93,6 @@ class DUP_UI_Dialog
     /**
      * Gets the unique id that is assigned to each instance of a dialogs message text
      *
-     * @access public
      * @return int      The unique ID of the message
      */
     public function getMessageID()
@@ -102,7 +103,6 @@ class DUP_UI_Dialog
     /**
      * Initilizes the alert base html code used to display when needed
      *
-     * @access public
      * @return string	The html content used for the alert dialog
      */
     public function initAlert()
@@ -127,7 +127,6 @@ HTML;
     /**
      * Shows the alert base js code used to display when needed
      *
-     * @access public
      * @return string	The javascript content used for the alert dialog
      */
     public function showAlert()
@@ -141,7 +140,6 @@ HTML;
     /**
      * Shows the confirm base js code used to display when needed
      *
-     * @access public
      * @return string	The javascript content used for the confirm dialog
      */
     public function initConfirm()
@@ -188,7 +186,6 @@ HTML;
     /**
      * Shows the confirm base js code used to display when needed
      *
-     * @access public
      * @return string	The javascript content used for the confirm dialog
      */
     public function showConfirm()

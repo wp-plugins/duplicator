@@ -35,8 +35,8 @@
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}
     div.dup-installer-header-2 {font-weight:bold; border-bottom:1px solid #dfdfdf; padding-bottom:2px; width:100%}
     label.chk-labels {display:inline-block; margin-top:1px}
-    table.dup-installer-tbl {width:95%; margin-left:20px}
-	div.dup-installer-panel-optional {text-align: center; font-style: italic; font-size: 12px; color:#777}
+    table.dup-installer-tbl {width:97%; margin-left:20px}
+	div.dup-installer-panel-optional {text-align: center; font-style: italic; font-size: 12px; color:maroon}
 	
 	/*TABS*/
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
@@ -293,32 +293,35 @@ INSTALLER -->
     <div class="dup-box-panel" id="dup-pack-installer-panel" style="<?php echo $ui_css_installer ?>">
 		
 		<div class="dup-installer-panel-optional">
-			<b><?php _e('All values in this section are', 'duplicator'); ?> <u><?php _e('optional', 'duplicator'); ?></u>.</b>
-			<?php _e("The installer can have these fields pre-filled at install time.", 'duplicator'); ?> 
+			<b><?php _e('All values in this section are', 'duplicator'); ?> <u><?php _e('optional', 'duplicator'); ?></u>.</b> <br/>
+			<?php _e("The installer can have these fields pre-filled at install time.", 'duplicator'); ?>
+            <i class="fa fa-question-circle"
+					data-tooltip-title="<?php _e("MySQL Server Prefills", 'duplicator'); ?>"
+					data-tooltip="<?php _e('The values in this section are NOT required! If you know ahead of time the database input fields the installer will use, then you can optionally enter them here.  Otherwise you can just enter them in at install time.', 'duplicator'); ?>">
+			</i>
 		</div>	
-		
-        <div class="dup-installer-header-1"><i class="fa fa-caret-square-o-right"></i> <?php echo _e('STEP 1 - INPUTS', 'duplicator'); ?></div><br/>
+	
         <table class="dup-installer-tbl">
             <tr>
-                <td colspan="2"><div class="dup-installer-header-2"><?php _e("MySQL Server", 'duplicator') ?></div></td>
+                <td colspan="2"><div class="dup-installer-header-2"><?php _e(" MySQL Server", 'duplicator') ?></div></td>
             </tr>
             <tr>
                 <td style="width:130px"><?php _e("Host", 'duplicator') ?></td>
-                <td><input type="text" name="dbhost" id="dbhost" value="<?php echo $Package->Installer->OptsDBHost ?>"  maxlength="200" placeholder="localhost"/></td>
+                <td><input type="text" name="dbhost" id="dbhost" value="<?php echo $Package->Installer->OptsDBHost ?>"  maxlength="200" placeholder="<?php _e('example: localhost (value is optional)', 'duplicator'); ?>"/></td>
             </tr>
 			<tr>
                 <td><?php _e("Host Port", 'duplicator') ?></td>
-                <td><input type="text" name="dbport" id="dbport" value="<?php echo $Package->Installer->OptsDBPort ?>"  maxlength="200" placeholder="3306"/></td>
+                <td><input type="text" name="dbport" id="dbport" value="<?php echo $Package->Installer->OptsDBPort ?>"  maxlength="200" placeholder="<?php _e('example: 3306 (value is optional)', 'duplicator'); ?>"/></td>
             </tr>
             <tr>
                 <td><?php _e("Database", 'duplicator') ?></td>
-                <td><input type="text" name="dbname" id="dbname" value="<?php echo $Package->Installer->OptsDBName ?>" maxlength="100" placeholder="mydatabaseName" /></td>
+                <td><input type="text" name="dbname" id="dbname" value="<?php echo $Package->Installer->OptsDBName ?>" maxlength="100" placeholder="<?php _e('example: DatabaseName (value is optional)', 'duplicator'); ?>" /></td>
             </tr>							
             <tr>
                 <td><?php _e("User", 'duplicator') ?></td>
-                <td><input type="text" name="dbuser" id="dbuser" value="<?php echo $Package->Installer->OptsDBUser ?>"  maxlength="100" placeholder="databaseUserName" /></td>
+                <td><input type="text" name="dbuser" id="dbuser" value="<?php echo $Package->Installer->OptsDBUser ?>"  maxlength="100" placeholder="<?php _e('example: DatabaseUserName (value is optional)', 'duplicator'); ?>" /></td>
             </tr>
-            <tr>
+            <!--tr>
                 <td colspan="2"><div class="dup-installer-header-2"><?php _e("Advanced Options", 'duplicator') ?></div></td>
             </tr>						
             <tr>
@@ -348,23 +351,27 @@ INSTALLER -->
                         </tr>
                     </table>
                 </td>
-            </tr>
+            </tr-->
         </table><br />
 
-        <div class="dup-installer-header-1"><i class="fa fa-caret-square-o-right"></i> <?php echo _e('STEP 2 - INPUTS', 'duplicator'); ?></div>
-        <table class="dup-installer-tbl">
+        
+
+         <input type="hidden" name="url-new" id="url-new" value=""/>
+
+         
+        <!--table class="dup-installer-tbl">
             <tr>
                 <td style="width:130px"><?php _e("New URL", 'duplicator') ?></td>
                 <td><input type="text" name="url-new" id="url-new" value="<?php echo $Package->Installer->OptsURLNew ?>" placeholder="http://mynewsite.com" /></td>
             </tr>
-        </table>	
+        </table-->
 		
 		<div style="padding:10px 0 0 12px;">
 			<span class="dup-pro-text">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
-				<?php _e("Create the database and user directly from the installer with ", 'duplicator'); ?>
+				<?php _e("Create the database and users directly at install time with ", 'duplicator'); ?>
 				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_cpanel&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
-				<i class="fa fa-lightbulb-o" 
+				<i class="fa fa-lightbulb-o"
 					data-tooltip-title="<?php _e("cPanel Access:", 'duplicator'); ?>" 
 					data-tooltip="<?php _e('If your server supports cPanel API access then you can create new databases and select existing ones with Duplicator Professional at install time.', 'duplicator'); ?>">
 				</i>

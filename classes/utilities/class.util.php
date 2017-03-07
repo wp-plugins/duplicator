@@ -191,7 +191,6 @@ class DUP_Util
      * @return string Returns the string with the $value appended once
      */
     public static function appendOnce($string, $value)
-
     {
         return $string.(substr($string, -1) == $value ? '' : $value);
     }

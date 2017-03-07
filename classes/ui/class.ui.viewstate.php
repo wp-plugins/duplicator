@@ -31,6 +31,8 @@ class DUP_UI_ViewState
      *
      * @param string $key A unique key to define the ui element
      * @param string $value A generic value to use for the view state
+     *
+     * @return bool Returns true if the value was succesfully saved
      */
     public static function save($key, $value)
     {
