@@ -59,22 +59,25 @@ class DUP_Installer
         }
 
         $embeded_files = array(
-            "assets/inc.libs.css.php" => "@@INC.LIBS.CSS.PHP@@",
-            "assets/inc.css.php" => "@@INC.CSS.PHP@@",
-            "assets/inc.libs.js.php" => "@@INC.LIBS.JS.PHP@@",
-            "assets/inc.js.php" => "@@INC.JS.PHP@@",
-            "classes/util/class.utils.php" => "@@CLASS.UTILS.PHP@@",
-            "classes/util/class.db.php" => "@@CLASS.DB.PHP@@",
-            "classes/class.logging.php" => "@@CLASS.LOGGING.PHP@@",
-            "classes/class.engine.php" => "@@CLASS.ENGINE.PHP@@",
-            "classes/config/class.conf.wp.php" => "@@CLASS.CONF.WP.PHP@@",
-            "classes/config/class.conf.srv.php" => "@@CLASS.CONF.SRV.PHP@@",
-            "ajax.step1.php" => "@@AJAX.STEP1.PHP@@",
-            "ajax.step2.php" => "@@AJAX.STEP2.PHP@@",
-            "view.step1.php" => "@@VIEW.STEP1.PHP@@",
-            "view.step2.php" => "@@VIEW.STEP2.PHP@@",
-            "view.step3.php" => "@@VIEW.STEP3.PHP@@",
-            "view.help.php" => "@@VIEW.HELP.PHP@@",);
+            "assets/inc.libs.css.php"				=> "@@INC.LIBS.CSS.PHP@@",
+            "assets/inc.css.php"					=> "@@INC.CSS.PHP@@",
+            "assets/inc.libs.js.php"				=> "@@INC.LIBS.JS.PHP@@",
+            "assets/inc.js.php"						=> "@@INC.JS.PHP@@",
+            "classes/utilities/class.u.php"			=> "@@CLASS.U.PHP@@",
+            "classes/utilities/class.server.php"	=> "@@CLASS.SERVER.PHP@@",
+            "classes/utilities/class.db.php"		=> "@@CLASS.DB.PHP@@",
+            "classes/class.logging.php"				=> "@@CLASS.LOGGING.PHP@@",
+            "classes/class.engine.php"				=> "@@CLASS.ENGINE.PHP@@",
+            "classes/config/class.conf.wp.php"		=> "@@CLASS.CONF.WP.PHP@@",
+            "classes/config/class.conf.srv.php"		=> "@@CLASS.CONF.SRV.PHP@@",
+			"ctrls/ctrl.step1.php"					=> "@@CTRL.STEP1.PHP@@",
+            "ctrls/ctrl.step2.php"					=> "@@CTRL.STEP2.PHP@@",
+            "ctrls/ctrl.step3.php"					=> "@@CTRL.STEP3.PHP@@",
+            "view.step1.php"						=> "@@VIEW.STEP1.PHP@@",
+            "view.step2.php"						=> "@@VIEW.STEP2.PHP@@",
+            "view.step3.php"						=> "@@VIEW.STEP3.PHP@@",
+            "view.step4.php"						=> "@@VIEW.STEP4.PHP@@",
+            "view.help.php"							=> "@@VIEW.HELP.PHP@@",);
 
         foreach ($embeded_files as $name => $token) {
             $file_path = DUPLICATOR_PLUGIN_PATH."installer/build/{$name}";
@@ -149,7 +152,7 @@ class DUP_Installer
             "fwrite_version_os" => $this->Package->VersionOS,
             //GENERAL
             "fwrite_url_old" => get_option('siteurl'),
-            "fwrite_package_name" => "{$this->Package->NameHash}_archive.zip",
+            "fwrite_archive_name" => "{$this->Package->NameHash}_archive.zip",
             "fwrite_package_notes" => $this->Package->Notes,
             "fwrite_secure_name" => $this->Package->NameHash,
             "fwrite_url_new" => $this->Package->Installer->OptsURLNew,

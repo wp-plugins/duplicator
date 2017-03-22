@@ -141,6 +141,10 @@ SERVER SETTINGS -->
 			<td><?php _e("Shell Exec Zip", 'duplicator'); ?></td>
 			<td><?php echo (DUP_Util::getZipPath() != null) ? _e("Is Supported", 'duplicator') : _e("Not Supported", 'duplicator'); ?></td>
 		</tr>
+        <tr>
+            <td><a href="https://suhosin.org/stories/index.html" target="_blank"><?php _e("Suhosin Extension", 'duplicator'); ?></a></td>
+            <td><?php echo extension_loaded('suhosin') ? _e("Enabled", 'duplicator') : _e("Disabled", 'duplicator'); ?></td>
+        </tr>
 		<tr>
 			<td class='dup-settings-diag-header' colspan="2">MySQL</td>
 		</tr>					   

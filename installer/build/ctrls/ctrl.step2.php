@@ -1,12 +1,4 @@
 <?php
-// Exit if accessed directly
-if (! defined('DUPLICATOR_INIT')) {
-	$_baseURL = "http://" . strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
-	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: $_baseURL");
-	exit;
-}
-
 //POST PARAMS
 $_POST['dbaction']			= isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
 $_POST['dbnbsp']			= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
@@ -14,9 +6,7 @@ $_POST['ssl_admin']			= (isset($_POST['ssl_admin']))  ? true : false;
 $_POST['ssl_login']			= (isset($_POST['ssl_login']))  ? true : false;
 $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
 $_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
-$_POST['package_name']		= isset($_POST['package_name']) ? $_POST['package_name'] : null;
-$_POST['zip_manual']		= (isset($_POST['zip_manual']) && $_POST['zip_manual'] == '1') ? true : false;
-$_POST['zip_filetime']		= (isset($_POST['zip_filetime'])) ? $_POST['zip_filetime'] : 'current';
+$_POST['archive_name']		= isset($_POST['archive_name']) ? $_POST['archive_name'] : null;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -24,15 +14,13 @@ unset($POST_LOG['dbpass']);
 ksort($POST_LOG);
 
 //PAGE VARS
-$root_path		= DUPX_Util::set_safe_path($GLOBALS['CURRENT_ROOT_PATH']);
-$package_path	= "{$root_path}/{$_POST['package_name']}";
-$package_size	= @filesize($package_path);
-$ajax1_start	= DUPX_Util::get_microtime();
-$zip_support	= class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
+$date_time      = @date('h:i:s');
+$root_path		= DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
+$ajax2_start	= DUPX_U::getMicrotime();
 $JSON = array();
 $JSON['pass'] = 0;
 
-/* JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
+/** JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
 cause errors in the JSON data Here we hide the status so warning level is reset at it at the end*/
 $ajax1_error_level = error_reporting();
 error_reporting(E_ERROR);
@@ -40,7 +28,7 @@ error_reporting(E_ERROR);
 //====================================================================================================
 //DATABASE TEST CONNECTION
 //====================================================================================================
-if (isset($_GET['dbtest'])) 
+if (isset($_GET['dbtest']))
 {
 	$html     = "";
 	$baseport =  parse_url($_POST['dbhost'], PHP_URL_PORT);
@@ -50,8 +38,8 @@ if (isset($_GET['dbtest']))
 	$dbFound  = mysqli_select_db($dbConn, $_POST['dbname']);
 	$port_view = (is_int($baseport) || substr($_POST['dbhost'], -1) == ":") ? "Port=[Set in Host]" : "Port={$_POST['dbport']}";
 
-	$tstSrv   = ($dbConn)  ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
-	$tstDB    = ($dbFound) ? "<div class='dup-pass'>Success</div>" : "<div class='dup-fail'>Fail</div>";
+	$tstSrv   = ($dbConn)  ? "<div class='dupx-pass'>Success</div>" : "<div class='dupx-fail'>Fail</div>";
+	$tstDB    = ($dbFound) ? "<div class='dupx-pass'>Success</div>" : "<div class='dupx-fail'>Fail</div>";
 
     $dbversion_info         = DUPX_DB::getServerInfo($dbConn);
     $dbversion_info         = empty($dbversion_info) ? 'no connection' : $dbversion_info;
@@ -62,20 +50,20 @@ if (isset($_GET['dbtest']))
     $dbversion_compat_fail  = version_compare($dbversion_compat, $GLOBALS['FW_VERSION_DB']) < 0;
 
     $tstInfo = ($dbversion_info_fail)
-		? "<div class='dup-notice'>{$dbversion_info}</div>"
-        : "<div class='dup-pass'>{$dbversion_info}</div>";
+		? "<div class='dupx-notice'>{$dbversion_info}</div>"
+        : "<div class='dupx-pass'>{$dbversion_info}</div>";
 
 	$tstCompat = ($dbversion_compat_fail)
-		? "<div class='dup-notice'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>"
-		: "<div class='dup-pass'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
+		? "<div class='dupx-notice'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>"
+		: "<div class='dupx-pass'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
 
 	$html	 .= <<<DATA
-	<div class='dup-db-test'>
+	<div class='s2-db-test'>
 		<small>
 			Using Connection String:<br/>
 			Host={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; {$port_view}
 		</small>
-		<table class='dup-db-test-dtls'>
+		<table class='s2-db-test-dtls'>
 			<tr>
 				<td>Host:</td>
 				<td>{$tstSrv}</td>
@@ -83,7 +71,7 @@ if (isset($_GET['dbtest']))
 			<tr>
 				<td>Database:</td>
 				<td>{$tstDB}</td>
-			</tr>	
+			</tr>
 			<tr>
 				<td>Version:</td>
 				<td>{$tstInfo}</td>
@@ -94,33 +82,33 @@ if (isset($_GET['dbtest']))
 			</tr>
 		</table>
 DATA;
-	
+
 	//--------------------------------
 	//WARNING: DB has tables with create option
 	if ($_POST['dbaction'] == 'create')
 	{
 		$tblcount = DUPX_DB::countTables($dbConn, $_POST['dbname']);
-		$html .= ($tblcount > 0) 
+		$html .= ($tblcount > 0)
 			? "<div class='warn-msg'><b>WARNING:</b> " . sprintf(ERR_DBEMPTY, $_POST['dbname'], $tblcount) . "</div>"
 			: '';
-	}				
+	}
 
 	//WARNNG: Input has utf8
 	$dbConnItems = array($_POST['dbhost'], $_POST['dbuser'], $_POST['dbname'],$_POST['dbpass']);
 	$dbUTF8_tst  = false;
 	foreach ($dbConnItems as $value)
 	{
-		if (DUPX_Util::is_non_ascii($value)) {
+		if (DUPX_U::isNonASCII($value)) {
 			$dbUTF8_tst = true;
 			break;
 		}
 	}
 
     //WARNING: UTF8 Data in Connection String
-	$html .=  (! $dbConn && $dbUTF8_tst) 
-		? "<div class='warn-msg'><b>WARNING:</b> " . ERR_TESTDB_UTF8 .  "</div>"	
+	$html .=  (! $dbConn && $dbUTF8_tst)
+		? "<div class='warn-msg'><b>WARNING:</b> " . ERR_TESTDB_UTF8 .  "</div>"
 		: '';
-	
+
 	//NOTICE: Version Too Low
 	$html .=  ($dbversion_info_fail)
 		? "<div class='warn-msg'><b>NOTICE:</b> " . ERR_TESTDB_VERSION_INFO . "</div>"
@@ -159,34 +147,14 @@ if ($_POST['dbaction'] == 'create' ) {
 	}
 }
 
-//ERR_ZIPMANUAL
-if ($_POST['zip_manual']) {
-	if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
-		DUPX_Log::error(ERR_ZIPMANUAL);
-	}
-} else {
-	//ERR_CONFIG_FOUND
-	(!file_exists('wp-config.php'))
-		or DUPX_Log::error(ERR_CONFIG_FOUND);
-	//ERR_ZIPNOTFOUND
-	(is_readable("{$package_path}"))
-		or DUPX_Log::error(ERR_ZIPNOTFOUND);
-}
-
-DUPX_Log::info("********************************************************************************");
-DUPX_Log::info('DUPLICATOR-LITE INSTALL-LOG');
-DUPX_Log::info('STEP1 START @ ' . @date('h:i:s'));
-DUPX_Log::info('NOTICE: Do NOT post to public sites or forums');
-DUPX_Log::info("********************************************************************************");
-DUPX_Log::info("VERSION:\t{$GLOBALS['FW_DUPLICATOR_VERSION']}");
-DUPX_Log::info("PHP:\t\t" . phpversion() . ' | SAPI: ' . php_sapi_name());
-DUPX_Log::info("PHP MEMORY:\t" . $GLOBALS['PHP_MEMORY_LIMIT'] . ' | SUHOSIN: ' . $GLOBALS['PHP_SUHOSIN_ON'] );
-DUPX_Log::info("SERVER:\t\t{$_SERVER['SERVER_SOFTWARE']}");
-DUPX_Log::info("DOC ROOT:\t{$root_path}");
-DUPX_Log::info("DOC ROOT 755:\t" . var_export($GLOBALS['CHOWN_ROOT_PATH'], true));
-DUPX_Log::info("LOG FILE 644:\t" . var_export($GLOBALS['CHOWN_LOG_PATH'], true));
-DUPX_Log::info("BUILD NAME:\t{$GLOBALS['FW_SECURE_NAME']}");
-DUPX_Log::info("REQUEST URL:\t{$GLOBALS['URL_PATH']}");
+$log = <<<LOG
+\n\n********************************************************************************
+* DUPLICATOR-LITE: INSTALL-LOG
+* STEP-2 START @ {$date_time}
+* NOTICE: Do NOT post to public sites or forums
+********************************************************************************
+LOG;
+DUPX_Log::info($log);
 
 $log  = "--------------------------------------\n";
 $log .= "POST DATA\n";
@@ -196,92 +164,20 @@ DUPX_Log::info($log, 2);
 
 
 //====================================================================================================
-//UNZIP & FILE SETUP - Extract the zip file and prep files
-//====================================================================================================
-$log  = "\n********************************************************************************\n";
-$log .= "ARCHIVE SETUP\n";
-$log .= "********************************************************************************\n";
-$log .= "NAME:\t{$_POST['package_name']}\n";
-$log .= "SIZE:\t" . DUPX_Util::readable_bytesize(@filesize($_POST['package_name'])) . "\n";
-$log .= "ZIP:\t{$zip_support} (ZipArchive Support)";
-DUPX_Log::info($log);
-
-$zip_start = DUPX_Util::get_microtime();
-
-if ($_POST['zip_manual']) 
-{
-	DUPX_Log::info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
-} 
-else 
-{
-	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['package_name']) {
-		$log  = "\n--------------------------------------\n";
-		$log .= "WARNING: This package set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \n";
-		$log .= "To guarantee accuracy the installer and archive should match. For details see the online FAQs.";
-		$log .= "\nCREATED WITH:\t{$GLOBALS['FW_PACKAGE_NAME']} \nPROCESSED WITH:\t{$_POST['package_name']}  \n";
-		$log .= "--------------------------------------\n";
-		DUPX_Log::info($log);
-	}
-
-	if (! class_exists('ZipArchive')) {
-		DUPX_Log::info("ERROR: Stopping install process.  Trying to extract without ZipArchive module installed.  Please use the 'Manual Package extraction' mode to extract zip file.");
-		DUPX_Log::error(ERR_ZIPARCHIVE);
-	}
-
-	$target = $root_path;
-	$zip = new ZipArchive();
-	if ($zip->open($_POST['package_name']) === TRUE) 
-	{
-		DUPX_Log::info("\nEXTRACTING");
-		if (! $zip->extractTo($target)) {
-			DUPX_Log::error(ERR_ZIPEXTRACTION);
-		}
-		$log  = print_r($zip, true);
-		
-		//Keep original timestamp on the file
-		if ($_POST['zip_filetime'] == 'original') 
-		{
-			$log .=  "File timestamp set to Original\n"; 
-			for ($idx = 0; $s = $zip->statIndex($idx); $idx++) {
-				touch( $target . DIRECTORY_SEPARATOR . $s['name'], $s['mtime'] );
-			}
-		} 
-		else
-		{
-			$now = date("Y-m-d H:i:s");
-			$log .=  "File timestamp set to Current: {$now}\n"; 
-		}
-		
-		$close_response = $zip->close();
-		$log .= "COMPLETE: " . var_export($close_response, true);
-		DUPX_Log::info($log);
-	} else {
-		DUPX_Log::error(ERR_ZIPOPEN);
-	}
-	$zip = null;
-}
-
-
-//CONFIG FILE RESETS
-$log = '';
-DUPX_WPConfig::UpdateStep1();
-DUPX_ServerConfig::reset();
-
-
-//====================================================================================================
 //DATABASE ROUTINES
 //====================================================================================================
+$log = '';
 $faq_url = $GLOBALS['FAQ_URL'];
 $db_file_size = filesize('database.sql');
 $php_mem = $GLOBALS['PHP_MEMORY_LIMIT'];
-$php_mem_range = DUPX_Util::return_bytes($GLOBALS['PHP_MEMORY_LIMIT']);
+$php_mem_range = DUPX_U::getBytes($GLOBALS['PHP_MEMORY_LIMIT']);
 $php_mem_range = $php_mem_range == null ?  0 : $php_mem_range - 5000000; //5 MB Buffer
 
-//Fatal Memory errors from file_get_contents is not catchable.  
+//Fatal Memory errors from file_get_contents is not catchable.
 //Try to warn ahead of time with a buffer in memory difference
-if ($db_file_size >= $php_mem_range  && $php_mem_range != 0) 
+if ($db_file_size >= $php_mem_range  && $php_mem_range != 0)
 {
-	$db_file_size = DUPX_Util::readable_bytesize($db_file_size);
+	$db_file_size = DUPX_U::readableByteSize($db_file_size);
 	$msg = "\nWARNING: The database script is '{$db_file_size}' in size.  The PHP memory allocation is set\n";
 	$msg .= "at '{$php_mem}'.  There is a high possibility that the installer script will fail with\n";
 	$msg .= "a memory allocation error when trying to load the database.sql file.  It is\n";
@@ -294,7 +190,7 @@ if ($db_file_size >= $php_mem_range  && $php_mem_range != 0)
 $sql_file = file_get_contents('database.sql', true);
 
 //ERROR: Reading database.sql file
-if ($sql_file === FALSE || strlen($sql_file) < 10) 
+if ($sql_file === FALSE || strlen($sql_file) < 10)
 {
 	$msg = "<b>Unable to read the database.sql file from the archive.  Please check these items:</b> <br/>";
 	$msg .= "1. Validate permissions and/or group-owner rights on these items: <br/>";
@@ -307,7 +203,7 @@ if ($sql_file === FALSE || strlen($sql_file) < 10)
 
 //Removes invalid space characters
 //Complex Subject See: http://webcollab.sourceforge.net/unicode.html
-if ($_POST['dbnbsp']) 
+if ($_POST['dbnbsp'])
 {
 	DUPX_Log::info("NOTICE: Ran fix non-breaking space characters\n");
 	$sql_file = preg_replace('/\xC2\xA0/', ' ', $sql_file);
@@ -321,20 +217,14 @@ $sql_result_file_path	= "{$root_path}/{$GLOBALS['SQL_FILE_NAME']}";
 $sql_file = null;
 
 //WARNING: Create installer-data.sql failed
-if ($sql_file_copy_status === FALSE || filesize($sql_result_file_path) == 0 || !is_readable($sql_result_file_path)) 
+if ($sql_file_copy_status === FALSE || filesize($sql_result_file_path) == 0 || !is_readable($sql_result_file_path))
 {
-	$sql_file_size = DUPX_Util::readable_bytesize(filesize('database.sql'));
+	$sql_file_size = DUPX_U::readableByteSize(filesize('database.sql'));
 	$msg  = "\nWARNING: Unable to properly copy database.sql ({$sql_file_size}) to {$GLOBALS['SQL_FILE_NAME']}.  Please check these items:\n";
 	$msg .= "- Validate permissions and/or group-owner rights on database.sql and directory [{$root_path}] \n";
 	$msg .= "- see: {$faq_url}#faq-trouble-055-q \n";
 	DUPX_Log::info($msg);
 }
-
-DUPX_Log::info("\nUPDATED FILES:");
-DUPX_Log::info("- SQL FILE:  '{$sql_result_file_path}'");
-DUPX_Log::info("- WP-CONFIG: '{$root_path}/wp-config.php' (if present)");
-DUPX_Log::info("\nARCHIVE RUNTIME: " . DUPX_Util::elapsed_time(DUPX_Util::get_microtime(), $zip_start) . "\n");
-DUPX_Util::fcgi_flush();
 
 //=================================
 //START DB RUN
@@ -352,7 +242,7 @@ switch ($_POST['dbmysqlmode']) {
     case 'CUSTOM':
 		$dbmysqlmode_opts = $_POST['dbmysqlmode_opts'];
 		$qry_session_custom = @mysqli_query($dbh, "SET SESSION sql_mode = '{$dbmysqlmode_opts}'");
-        if ($qry_session_custom == false) 
+        if ($qry_session_custom == false)
 		{
 			$sql_error = mysqli_error($dbh);
 			$log  = "WARNING: A custom sql_mode setting issue has been detected:\n{$sql_error}.\n";
@@ -369,23 +259,21 @@ $dbvar_maxtime		= is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
 $dbvar_maxpacks		= is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
 $dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET'  : $dbvar_sqlmode;
 $dbvar_version		= DUPX_DB::getVersion($dbh);
-$sql_file_size1		= DUPX_Util::readable_bytesize(@filesize("database.sql"));
-$sql_file_size2		= DUPX_Util::readable_bytesize(@filesize("{$GLOBALS['SQL_FILE_NAME']}"));
+$sql_file_size1		= DUPX_U::readableByteSize(@filesize("database.sql"));
+$sql_file_size2		= DUPX_U::readableByteSize(@filesize("{$GLOBALS['SQL_FILE_NAME']}"));
 
 
-DUPX_Log::info("{$GLOBALS['SEPERATOR1']}");
-DUPX_Log::info('DATABASE-ROUTINES');
-DUPX_Log::info("{$GLOBALS['SEPERATOR1']}");
 DUPX_Log::info("--------------------------------------");
-DUPX_Log::info("SERVER ENVIRONMENT");
+DUPX_Log::info("DATABASE ENVIRONMENT");
 DUPX_Log::info("--------------------------------------");
 DUPX_Log::info("MYSQL VERSION:\tThis Server: {$dbvar_version} -- Build Server: {$GLOBALS['FW_VERSION_DB']}");
 DUPX_Log::info("FILE SIZE:\tdatabase.sql ({$sql_file_size1}) - installer-data.sql ({$sql_file_size2})");
 DUPX_Log::info("TIMEOUT:\t{$dbvar_maxtime}");
 DUPX_Log::info("MAXPACK:\t{$dbvar_maxpacks}");
 DUPX_Log::info("SQLMODE:\t{$dbvar_sqlmode}");
+DUPX_Log::info("NEW SQL FILE:\t[{$sql_result_file_path}]");
 
-if ($qry_session_custom == false) 
+if ($qry_session_custom == false)
 {
 	DUPX_Log::info("\n{$log}\n");
 }
@@ -414,7 +302,7 @@ switch ($_POST['dbaction']) {
 					}
 				}
 			}
-			$drop_log = 'removed (' . count($found_tables) . ') tables';
+			$drop_log = count($found_tables);
 		}
 		break;
 }
@@ -424,7 +312,7 @@ switch ($_POST['dbaction']) {
 DUPX_Log::info("--------------------------------------");
 DUPX_Log::info("DATABASE RESULTS");
 DUPX_Log::info("--------------------------------------");
-$profile_start = DUPX_Util::get_microtime();
+$profile_start = DUPX_U::getMicrotime();
 $fcgi_buffer_pool = 5000;
 $fcgi_buffer_count = 0;
 $dbquery_rows = 0;
@@ -432,15 +320,21 @@ $dbtable_rows = 1;
 $dbquery_errs = 0;
 $counter = 0;
 @mysqli_autocommit($dbh, false);
+
 while ($counter < $sql_result_file_length) {
 
 	$query_strlen = strlen(trim($sql_result_file_data[$counter]));
+
 	if ($dbvar_maxpacks < $query_strlen) {
+
 		DUPX_Log::info("**ERROR** Query size limit [length={$query_strlen}] [sql=" . substr($sql_result_file_data[$counter], 75) . "...]");
 		$dbquery_errs++;
+
 	} elseif ($query_strlen > 0) {
+
 		@mysqli_free_result(@mysqli_query($dbh, ($sql_result_file_data[$counter])));
 		$err = mysqli_error($dbh);
+
 		//Check to make sure the connection is alive
 		if (!empty($err)) {
 
@@ -456,9 +350,9 @@ while ($counter < $sql_result_file_length) {
 
 		//Buffer data to browser to keep connection open
 		} else {
-			if ($fcgi_buffer_count++ > $fcgi_buffer_pool) {
+			if ($GLOBALS['DB_FCGI_FLUSH'] && $fcgi_buffer_count++ > $fcgi_buffer_pool) {
 				$fcgi_buffer_count = 0;
-				DUPX_Util::fcgi_flush();
+				DUPX_U::fcgiFlush();
 			}
 			$dbquery_rows++;
 		}
@@ -469,7 +363,7 @@ while ($counter < $sql_result_file_length) {
 @mysqli_autocommit($dbh, true);
 
 DUPX_Log::info("ERRORS FOUND:\t{$dbquery_errs}");
-DUPX_Log::info("DROP TABLE:\t{$drop_log}");
+DUPX_Log::info("TABLES DROPPED:\t{$drop_log}");
 DUPX_Log::info("QUERIES RAN:\t{$dbquery_rows}\n");
 
 $dbtable_count = 0;
@@ -484,7 +378,7 @@ if ($result = mysqli_query($dbh, "SHOW TABLES")) {
 }
 
 if ($dbtable_count == 0) {
-	DUPX_Log::error("No tables where created during step 1 of the install.  Please review the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for  
+	DUPX_Log::error("No tables where created during step 1 of the install.  Please review the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for
 		ERROR messages.  You may have to manually run the installer-data.sql with a tool like phpmyadmin to validate the data input.  If you have enabled compatibility mode
 		during the package creation process then the database server version your using may not be compatible with this script.\n");
 }
@@ -498,7 +392,7 @@ $dbdelete_count1 = @mysqli_affected_rows($dbh) or 0;
 @mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE `option_name` LIKE ('_transient%') OR `option_name` LIKE ('_site_transient%')");
 $dbdelete_count2 = @mysqli_affected_rows($dbh) or 0;
 $dbdelete_count = (abs($dbdelete_count1) + abs($dbdelete_count2));
-DUPX_Log::info("Removed '{$dbdelete_count}' cache/transient rows");
+DUPX_Log::info("\nRemoved '{$dbdelete_count}' cache/transient rows");
 //Reset Duplicator Options
 foreach ($GLOBALS['FW_OPTS_DELETE'] as $value) {
 	mysqli_query($dbh, "DELETE FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE `option_name` = '{$value}'");
@@ -506,15 +400,12 @@ foreach ($GLOBALS['FW_OPTS_DELETE'] as $value) {
 
 @mysqli_close($dbh);
 
-$profile_end = DUPX_Util::get_microtime();
-DUPX_Log::info("\nSECTION RUNTIME: " . DUPX_Util::elapsed_time($profile_end, $profile_start));
-
 //FINAL RESULTS
-$ajax1_end = DUPX_Util::get_microtime();
-$ajax1_sum = DUPX_Util::elapsed_time($ajax1_end, $ajax1_start);
-DUPX_Log::info("\n{$GLOBALS['SEPERATOR1']}");
-DUPX_Log::info('STEP1 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax1_sum}");
-DUPX_Log::info("{$GLOBALS['SEPERATOR1']}");
+$profile_end	= DUPX_U::getMicrotime();
+$ajax2_end		= DUPX_U::getMicrotime();
+$ajax1_sum		= DUPX_U::elapsedTime($ajax2_end, $ajax2_start);
+DUPX_Log::info("\nCREATE/INSTALL RUNTIME: " . DUPX_U::elapsedTime($profile_end, $profile_start));
+DUPX_Log::info('STEP-2 COMPLETE @ ' . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax1_sum}");
 
 $JSON['pass'] = 1;
 $JSON['table_count'] = $dbtable_count;

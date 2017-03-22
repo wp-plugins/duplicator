@@ -1,12 +1,4 @@
 <?php
-// Exit if accessed directly
-if (!defined('DUPLICATOR_INIT')) {
-    $_baseURL = "http://".strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
-    header("HTTP/1.1 301 Moved Permanently");
-    header("Location: {$_baseURL}");
-    exit;
-}
-
 /**
  * Walks every table in db that then walks every row and column replacing searches with replaces
  * large tables are split into 50k row blocks to save on memory.
@@ -156,7 +148,7 @@ class DUPX_UpdateEngine
 
         $walk_function = create_function('&$str', '$str = "`$str`";');
 
-        $profile_start = DUPX_Util::get_microtime();
+        $profile_start = DUPX_U::getMicrotime();
         if (is_array($tables) && !empty($tables)) {
 
             foreach ($tables as $table) {
@@ -302,7 +294,7 @@ class DUPX_UpdateEngine
                             $report['errkey'][] = sprintf("Row [%s] on Table [%s] requires a manual update.", $current_row, $table);
                         }
                     }
-                    DUPX_Util::fcgi_flush();
+                    //DUPX_U::fcgiFlush();
                     @mysqli_free_result($data);
                 }
 
@@ -311,8 +303,8 @@ class DUPX_UpdateEngine
                 }
             }
         }
-        $profile_end          = DUPX_Util::get_microtime();
-        $report['time']       = DUPX_Util::elapsed_time($profile_end, $profile_start);
+        $profile_end          = DUPX_U::getMicrotime();
+        $report['time']       = DUPX_U::elapsedTime($profile_end, $profile_start);
         $report['errsql_sum'] = empty($report['errsql']) ? 0 : count($report['errsql']);
         $report['errser_sum'] = empty($report['errser']) ? 0 : count($report['errser']);
         $report['errkey_sum'] = empty($report['errkey']) ? 0 : count($report['errkey']);

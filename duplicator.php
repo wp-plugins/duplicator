@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create and transfer a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.1.35
+  Version: 1.2.0
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -23,6 +23,10 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  SOURCE CONTRIBUTORS:
+  David Coveney of Interconnect IT Ltd
+  https://github.com/interconnectit/Search-Replace-DB/
   ================================================================================ */
 
 require_once("define.php");
@@ -333,6 +337,25 @@ if (is_admin() == true)
             return $links;
         }
         return $links;
+    }
+
+
+	/** ========================================================
+	 * GENERAL
+     * =====================================================  */
+
+	/**
+	 * Used for installer files to redirect if accessed directly
+     *
+     * @access global
+     * @return null
+     */
+    function duplicator_secure_check()
+	{
+		$baseURL = "http://" . strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: $baseURL");
+		exit;
     }
 
 }

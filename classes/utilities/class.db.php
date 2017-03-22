@@ -30,8 +30,12 @@ class DUP_DB extends wpdb
     public static function getVariable($name)
     {
         global $wpdb;
-        $row = $wpdb->get_row("SHOW VARIABLES LIKE '{$name}'", ARRAY_N);
-        return isset($row[1]) ? $row[1] : null;
+        if (strlen($name)) {
+            $row = $wpdb->get_row("SHOW VARIABLES LIKE '{$name}'", ARRAY_N);
+            return isset($row[1]) ? $row[1] : null;
+        } else {
+            return null;
+        }
     }
 
     /**

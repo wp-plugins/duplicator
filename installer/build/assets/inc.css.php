@@ -1,167 +1,135 @@
-<?php
-	// Exit if accessed directly 
-	if (! defined('DUPLICATOR_INIT')) {
-		$_baseURL = "http://" . strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
-		header("HTTP/1.1 301 Moved Permanently");
-		header("Location:$_baseURL");
-		exit; 
-	}
-?>
 <style>
 	body {font-family:"Open Sans",sans-serif;}
-	body,td,th {font-size:13px;color:#000;}
 	fieldset {border:1px solid silver; border-radius:5px; padding:10px}
 	h3 {margin:1px; padding:1px; font-size:14px;}
 	a {color:#222}
 	a:hover{color:gray}
-	input[type=text] { width:500px; border-radius:3px; height:17px; font-size:12px; border:1px solid silver;}
+	input[type=text], input[type=password], select {width:97%; border-radius:3px; height:17px; font-size:12px !important; border:1px solid silver; padding:2px}
+	select {height:22px;padding-left:0; width:100%}
+	select:disabled {background:#EBEBE4}
 	input.readonly {background-color:#efefef;}
-	i.small {font-size:11px}
 
-	/* ============================
+	/* ======================================
 	COMMON VIEW ELEMENTS*/
-	div#content {border:1px solid #CDCDCD;  width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px;  box-shadow:0 8px 6px -6px #333;}
+	div#content {border:1px solid #CDCDCD; width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:14px; color:#000;}
 	div#content-inner {padding:10px 30px; min-height:550px}
 	form.content-form {min-height:550px; position:relative; line-height:17px}	
-	div.dup-logfile-link {float:right; font-weight:normal; font-size:12px}
+    div.status-badge-pass {border-radius:4px; color:#fff; padding:0 4px 0 4px;  font-size:12px; min-width:30px; text-align:center; background-color:#418446;display:inline-block }
+    div.status-badge-fail {border-radius:4px; color:#fff; padding:0 4px 0 4px;  font-size:12px; min-width:30px; text-align:center; background-color:maroon; display:inline-block}
 	
 	/* WIZARD STEPS */
-	table.header-wizard {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 6px 4px -4px #777;	background-color:#F1F1F1}
-	div#dup-wiz {padding:0px; margin:7px 0 10px 20px; height:20px }
-	div#dup-wiz-steps {margin:0px 0 0 10px; padding:0px;  clear:both; font-weight:bold;font-size:12px; min-width:250px }
-	#dup-wiz span {display:block;float:left; text-align:center; width:15px; margin:3px 4px 0 0px; line-height:15px; color:#ccc; border:1px solid #CCCCCC; border-radius:4px;}
-	/* WIZ-DEFAULT*/
-	#dup-wiz a { position:relative; display:block; width:auto; height:24px; margin-right:18px; padding:0px 10px 0 3px; float:left;  line-height:24px; color:#000; background:#E4E4E4; }
-	#dup-wiz a:before { width:0px; height:0px; border-top:12px solid #E4E4E4; border-bottom:12px solid #E4E4E4; border-left:12px solid transparent; position:absolute; content:""; top:0px; left:-12px; }
-	#dup-wiz a:after { width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:12px solid #E4E4E4; position:absolute; content:""; top:0px; right:-12px; }
-	/* WIZ-COMPLETED */
-	#dup-wiz .completed-step a {color:#ccc; background:#999;}
-	#dup-wiz .completed-step a:before {border-top:12px solid #999; border-bottom:12px solid #999;}
-	#dup-wiz .completed-step a:after {border-left:12px solid #999;}
-	#dup-wiz .completed-step span {color:#ccc;}
-	/* WIZ-ACTIVE */
-	#dup-wiz .active-step a {color:#fff; background:#999;}
-	#dup-wiz .active-step a:before {border-top:12px solid #999; border-bottom:12px solid #999;}
-	#dup-wiz .active-step a:after {border-left:12px solid #999;}
-	#dup-wiz .active-step span {color:#fff;}
-	
-	/*Help */
-	select#dup-hlp-lnk {border-radius:3px; font-size:11px; margin:3px 5px 0 0px; background-color:#efefef; border:1px solid silver}
-	div.dup-help-page {padding:5px 0 0 5px}
-	div.dup-help-page fieldset {margin-bottom:25px}
-	div#dup-main-help {line-height:18px}
-	div#dup-main-help h3 {background-color:#dfdfdf; border:1px solid silver; border-radius:5px; padding:3px; margin-bottom:8px;}
-
+	table.dupx-header {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 5px 3px -3px #999;	background-color:#F1F1F1}
+    .dupx-header-version {white-space:nowrap; color:#555; font-size:11px; font-style:italic; text-align:right;  padding:0 15px 5px 0; line-height:14px}
+	.dupx-header-version a {color:#555;}
+    div.dupx-logfile-link {float:right; font-weight:normal; font-size:12px}
 	div#progress-area {padding:5px; margin:150px 0 0 0px; text-align:center;}
-	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:14px; overflow-y:scroll}
-	div.hdr-main {font-size:18px; padding:0 0 5px 0; border-bottom:1px solid #999; font-weight:bold; margin:5px 0 10px 0;}
-	div.hdr-sub {font-size:15px; padding:2px 2px 2px 0; border-bottom:1px solid #dfdfdf; font-weight:bold; margin-bottom:5px;}
-	
-	/*BOXES:Expandable sections */
-	div.dup-box {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}
-	div.dup-box-title {font-size:14px; padding:5px 0 0 10px; font-weight:bold; cursor:pointer; height:23px; margin:0px; background-color:#F9F9F9}
-	div.dup-box-title:hover {background-color:#efefef;}
-	div.dup-box-arrow {text-decoration:none!important; float:right; width:27px; height:30px; font-size:16px; cursor:pointer; padding:1px 0 0 0px; white-space:nowrap}
-	div.dup-box-panel {padding:10px 15px 10px 15px;  border-top:1px solid #EEEEEE; margin:-1px 0 0 0px; background-color:#F9F9F9;   box-shadow:0 8px 6px -6px #999;}
+	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:16px; overflow-y:scroll; line-height:24px}
 
-	/* ============================
-	STEP 1 VIEW */
-	div#dup-s1-warning-check label {cursor: pointer}
-	table.s1-opts {width:100%; border:0px;}
-	table.s1-opts td{white-space:nowrap; padding:3px;}
-	table.s1-opts td:first-child{width:125px;}
-	table.s1-opts-dbhost td {padding:0; margin:0}
-	table.s1-advopts td:first-child{width:125px; font-weight:bold}
+    /*TITLE HEADERS */
+    div.hdr-main {font-size:22px; padding:0 0 5px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin:10px 0 20px 0;}
+	div.hdr-main span.step {color:#DB4B38}
+	div.hdr-sub1 {font-size:18px; margin-bottom:5px; border-bottom:1px solid #D3D3D3;padding:2px 2px 5px 0;font-weight:bold;}
+	div.hdr-sub1 a {cursor:pointer; text-decoration: none !important}
+	div.hdr-sub2 {font-size:16px; padding:2px 2px 2px 0; border-bottom:1px solid #C0C0C0; font-weight:bold; margin-bottom:5px; border:none}
+	div.hdr-sub3 {font-size:16px; padding:2px 2px 2px 0; border-bottom:1px solid #C0C0C0; font-weight:bold; margin-bottom:5px;}
+
+    /* BUTTONS */
+	div.dupx-footer-buttons {position:absolute; bottom:10px; padding:10px;  right:0}
+	div.dupx-footer-buttons  input:hover, button:hover {border:1px solid #000}
+	div.dupx-footer-buttons input[disabled=disabled]{background-color:#F4F4F4; color:silver; border:1px solid silver;}
+    button.default-btn, input.default-btn {cursor:pointer; color:#fff; font-size:16px; border-radius:5px; padding:6px 20px 4px 20px; height:32px; background-color:#13659C; border:1px solid #000;}
 	
-	i#s1-sys-req-msg {font-weight:normal; display:block; padding:0px 0 0 20px;}
-	div.circle-pass, div.circle-fail {display:block;width:13px;height:13px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-align:center;text-decoration:none;box-shadow:1px 1px 2px #000;background:#207D1D;opacity:0.95; display:inline-block;}
-	div.circle-fail {background:#9A0D1D !important;}
-	select#logging {font-size:11px}
-	div.s1-modes {padding:0px 15px 0 0px;}
-	div#s1-dbconn {margin:auto; text-align:center; margin:15px 0 10px 0px}
+    table.dupx-opts {width:100%; border:0px;}
+	table.dupx-opts td{white-space:nowrap; padding:3px;}
+	table.dupx-opts td:first-child{width:125px; font-weight: bold}
+	table.dupx-advopts td:first-child{width:125px; font-weight:bold}
+	table.dupx-advopts td label{min-width:60px; display:inline-block; cursor:pointer}
+
+    .dupx-pass {display:inline-block; color:green;}
+	.dupx-fail {display:inline-block; color:#AF0000;}
+	.dupx-notice {display:inline-block; color:#000;}
+	div.dupx-ui-error {padding-top:2px; font-size:14px; line-height: 20px}
+
 	
-	input.s1-small-btn {font-size:11px; height:20px; border:1px solid gray; border-radius:3px; cursor:pointer}
-	input#s1-dbport-btn { width:80px}
-	div.dup-db-test small{display:block; font-style:italic; color:#333; padding:3px 2px 5px 2px; border-bottom:1px dashed silver; margin-bottom:10px; text-align: center }
-	table.dup-db-test-dtls {text-align: left; margin: auto}
-	table.dup-db-test-dtls td:first-child {font-weight: bold}
-	div#dbconn-test-msg {font-size:12px}
-	div#s1-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:175px; overflow-y: scroll}
-	div#s1-dbconn-status div.warn-msg {text-align: left; padding:5px; margin:10px 0 10px 0}
-	div#s1-dbconn-status div.warn-msg b{color:maroon}
+	/* ======================================
+	STEP 1 VIEW
+    ====================================== */
+    table.s1-archive-local td {padding:5px}
+	table.s1-archive-local td:first-child {font-weight:bold; min-width:50px}
+    div#s1-area-sys-setup {padding:15px 0 0 10px}
+	table.s1-checks-area {width:100%; margin:0; padding:0}
+	table.s1-checks-area td.title {font-size:16px; width:100%}
+	table.s1-checks-area td.toggle {font-size:11px; margin-right:7px; font-weight:normal}
+
+	div.s1-reqs {background-color:#efefef; border:1px solid silver; border-radius:5px; margin-top:-5px}
+	div.s1-reqs div.notice {background-color:#E0E0E0; color:#000; text-align:center; font-size:12px; border-bottom: 1px solid silver; padding:2px; font-style:italic}
+	div.s1-reqs div.status {float:right; border-radius:4px; color:#fff; padding:0 4px 0 4px; margin:4px 5px 0 0; font-size:12px; min-width:30px; text-align:center}
+	div.s1-reqs div.pass {background-color:green;}
+	div.s1-reqs div.fail {background-color:maroon;}
+	div.s1-reqs div.title {padding:4px; font-size:14px;}
+	div.s1-reqs div.title:hover {background-color:#dfdfdf; cursor:pointer}
+	div.s1-reqs div.info {padding:8px 8px 20px 8px; background-color:#fff; display:none; line-height:18px; font-size: 12px}
+	div.s1-reqs div.info a {color:#485AA3;}
+    div.s1-archive-failed-msg {padding:5px 10px 10px 10px; border:1px solid silver; background: #efefef; font-size: 12px}
+    div.s1-err-msg {padding:8px;  border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px; color:maroon}
+
+    /*Terms and Notices*/
+	div#s1-warning-check label{cursor:pointer;}
+    div#s1-warning-msg {padding:5px;font-size:12px; color:#333; line-height:14px;font-style:italic; overflow-y:scroll; height:150px; border:1px solid #dfdfdf; background:#fff; border-radius:3px}
+	div#s1-warning-check {padding:3px; font-size:16px; font-weight:normal;}
+    input#accept-warnings {height: 17px; width:17px}
+	
+    /* ======================================
+	STEP 2 VIEW
+    ====================================== */
+	/*Toggle Buttons */
+	div.s2-btngrp {text-align:center; margin:10px 0 0 0}
+	div.s2-btngrp input[type=button] {font-size:14px; padding:5px; width:120px; border:1px solid silver;  cursor:pointer}
+	div.s2-btngrp input[type=button]:first-child {border-radius:5px 0 0 5px; margin-right:-2px}
+	div.s2-btngrp input[type=button]:last-child {border-radius:0 5px 5px 0; margin-left:-2px}
+	div.s2-btngrp input[type=button].active {background:#999999; color:#fff; font-weight:bold;  box-shadow:inset 0 0 10px #444;}
+	div.s2-btngrp input[type=button].in-active {background:#E4E4E4; }
+	div.s2-btngrp input[type=button]:hover {border:1px solid #999}
+
+	div.s2-modes {padding:0px 15px 0 0px;}
+	div#s2-dbconn {margin:auto; text-align:center; margin:15px 0 10px 0px}
+	input.s2-small-btn {font-size:11px; height:23px; border:1px solid gray; border-radius:3px; cursor:pointer}
+    table.s2-opts-dbhost td {padding:0; margin:0}
+	input#s2-dbport-btn { width:80px}
+	div.s2-db-test small{display:block; font-style:italic; color:#333; padding:3px 2px 5px 2px; border-bottom:1px dashed silver; margin-bottom:10px; text-align: center }
+	table.s2-db-test-dtls {text-align: left; margin: auto}
+	table.s2-db-test-dtls td:first-child {font-weight: bold}
+	div#s2-dbconn-test-msg {font-size:12px}
+	div#s2-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:175px; overflow-y: scroll}
+	div#s2-dbconn-status div.warn-msg {text-align: left; padding:5px; margin:10px 0 10px 0}
+	div#s2-dbconn-status div.warn-msg b{color:maroon}
+
+	/*cPanel Tab */
+	div#s2-cpnl-pane {display: none; min-height: 190px;}
+	div.s2-gopro {color: black; margin-top:10px; padding:0 20px 10px 20px; border: 1px solid silver; background-color:#F6F6F6; border-radius: 4px}
+	div.s2-gopro h2 {text-align: center; margin:10px}
+	div.s2-gopro small {font-style: italic}
 	
 	/*Advanced Options & Warning Area*/
-	div.s1-advopts-section {margin:15px 0 25px 0}
-	div.s1-advopts-section label {cursor: pointer}
-	div.s1-advopts-help {text-align: center; margin:10px}
-	div.dup-s1-gopro {color: black;font-style: italic;margin-top: 11px; text-align:center;margin-top:20px; padding:5px}
-	div#dup-s1-warning {padding:5px;font-size:12px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:150px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
-	div#dup-s1-warning-check {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
-	div#dup-s1-warning-emptydb {display:none; color:#AF2222; margin:0px 0 0 20px}
-	table.s1-advopts label.radio {width:50px; display:inline-block}
+	div.s2-advopts-section {margin:15px 0 25px 0}
+	div.s2-advopts-section label {cursor: pointer}
+	div.s2-advopts-help {text-align: center; margin:10px}
+	div#s2-warning {padding:5px;font-size:12px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:150px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
+	div#s2-warning-check {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
+    div#s2-warning-check label {cursor: pointer; line-height: 16px}
+	div#s2-warning-emptydb {display:none; color:#AF2222; margin:2px 0 0 20px; font-size: 12px}
+	table.s2-advopts label.radio {width:50px; display:inline-block}
 
-	/*Dialog*/
-	div#dup-s1-dialog-data {height:90%; font-size:11px; padding:5px; line-height:16px; }
-	td.dup-s1-dialog-data-details {padding:1px 0 10px 30px; border-radius:4px; line-height:14px; font-size:11px; display:none}
-	td.dup-s1-dialog-data-details b {width:50px;display:inline-block}
-	.dup-pass {display:inline-block; color:green;}
-	.dup-ok {display:inline-block; color:#5860C7;}
-	.dup-fail {display:inline-block; color:#AF0000;}
-	.dup-notice {display:inline-block; color:#000;}
-	hr.dup-dots { border:none; border-top:1px dotted silver; height:1px; width:100%;}
-	div.dup-ui-error {padding-top:2px; font-size:14px; line-height: 20px}
-	div.help {color:#555; font-style:italic; font-size:11px}
+	/* ======================================
+	STEP 3 VIEW
+    ====================================== */
+	table.s3-table-inputs {width:100%; border:0px;}
+	table.s3-table-inputs td{white-space:nowrap; padding:2px;}
+    table.s3-table-inputs td:first-child{font-weight: bold; width:125px}
+	div#s3-adv-opts {margin-top:5px; }
+	div.s3-allnonelinks {font-size:11px; float:right;}
 
-	/* ============================
-	STEP 2 VIEW */
-	table.table-inputs-s2{width:100%; border:0px;}
-	table.table-inputs-s2 td{white-space:nowrap; padding:2px;}
-	div#dup-s2-adv-opts {margin-top:5px; }
-	div.dup-s2-allnonelinks {font-size:11px; float:right;}
-
-	/* ============================
-	STEP 3 VIEW */
-	div.s3-final-title {color:#BE2323;}
-	div.s3-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
-	table.s3-report-results,
-	table.s3-report-errs {border-collapse:collapse; border:1px solid #dfdfdf; }
-	table.s3-report-errs  td {text-align:center; width:33%}
-	table.s3-report-results th, table.s3-report-errs th {background-color:#efefef; padding:0px; font-size:14px; padding:0px}
-	table.s3-report-results td, table.s3-report-errs td {padding:0px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:12px}
-	table.s3-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
-	div.dup-step3-err-title {width:100%; background-color: #dfdfdf; font-weight: bold; margin:-5px 0 15px 0; padding:3px 0 1px 3px; border-radius: 4px; font-size:14px}
-
-	div.s3-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px;}
-	div.s3-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
-	div.s3-err-msg div.info-error{padding:7px; background-color:#EAA9AA; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px }
-	div.s3-err-msg div.info-notice{padding:7px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px;}
-	table.s3-final-step {width:100%;}
-	table.s3-final-step td {padding:5px 15px 5px 5px}
-	table.s3-final-step td:first-child {white-space:nowrap; font-weight:bold}
-	div.s3-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center; font-size: 12px}
-	div.s3-btns-msg {text-align: center; font-size:10px; color:#777; margin:5px 0 15px 0}
-	a.s3-final-btns {display: block; width:135; padding:5px; line-height: 1.4; background-color:#F1F1F1; border:1px solid silver;
-		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
-	}
-	a.s3-final-btns:hover {background-color: #dfdfdf;}
-	div.s3-gopro-btn {text-align:center; font-size:14px; margin:auto; width:200px; font-style: italic}
-
-	/* ============================
-	BUTTONS */	
-	div.dup-footer-buttons {padding:10px; width:100%; text-align:right;}
-	div.dup-footer-buttons  input, button {
-		color:#000; font-size:12px; border-radius:5px;	padding:6px 8px 4px 8px; border:1px solid #999;
-		background-color:#F1F1F1;
-		background-image:-ms-linear-gradient(top, #F9F9F9, #ECECEC);
-		background-image:-moz-linear-gradient(top, #F9F9F9, #ECECEC);
-		background-image:linear-gradient(top, #F9F9F9, #ECECEC);
-	}
-	div.dup-footer-buttons input[disabled=disabled]{background-color:#F4F4F4; color:silver; border:1px solid silver;}
-	div.dup-footer-buttons  input, button {cursor:pointer; border:1px solid #000; }
-
-	/*!
-	 * password indicator
-	 */
+	/* password indicator */
 	.top_testresult{font-weight:bold;	font-size:11px; color:#222;	padding:1px 1px 1px 4px; margin:4px 0 0 0px; width:495px; dislay:inline-block}
 	.top_testresult span{margin:0;}
 	.top_shortPass{background:#edabab; border:1px solid #bc0000;display:block;}
@@ -169,12 +137,58 @@
 	.top_goodPass{background:#ffffe0; border:1px solid #e6db55;	display:block;}
 	.top_strongPass{background:#d3edab;	border:1px solid #73bc00; display:block;}
 
-	/*================================================
-	PARSLEY:Overrides*/
+	/* ======================================
+	STEP 4 VIEW
+	====================================== */
+	div.s4-final-title {color:#BE2323;}
+	div.s4-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
+	table.s4-report-results,
+	table.s4-report-errs {border-collapse:collapse; border:1px solid #dfdfdf; }
+	table.s4-report-errs  td {text-align:center; width:33%}
+	table.s4-report-results th, table.s4-report-errs th {background-color:#efefef; padding:0px; font-size:14px; padding:0px}
+	table.s4-report-results td, table.s4-report-errs td {padding:0px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:12px}
+	table.s4-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
+	div.s4-err-title {width:100%; background-color: #dfdfdf; font-weight: bold; margin:-5px 0 15px 0; padding:3px 0 1px 3px; border-radius: 4px; font-size:14px}
+
+	div.s4-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px;}
+	div.s4-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
+	div.s4-err-msg div.info-error{padding:7px; background-color:#EAA9AA; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px }
+	div.s4-err-msg div.info-notice{padding:7px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px;}
+	table.s4-final-step {width:100%;}
+	table.s4-final-step td {padding:5px 15px 5px 5px}
+	table.s4-final-step td:first-child {white-space:nowrap;}
+	div.s4-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center; font-size: 12px}
+	div.s4-btns-msg {text-align: center; font-size:10px; color:#777; margin:5px 0 15px 0}
+	a.s4-final-btns {display: block; width:135; padding:5px; line-height: 1.4; background-color:#F1F1F1; border:1px solid silver;
+		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
+	}
+	a.s4-final-btns:hover {background-color: #dfdfdf;}
+	div.s4-gopro-btn {text-align:center; font-size:14px; margin:auto; width:200px; font-style: italic}
+
+
+	/* PARSLEY:Overrides*/
 	input.parsley-error, textarea.parsley-error, select.parsley-error {
-	  color:#B94A48 !important;
-	  background-color:#F2DEDE !important;
-	  border:1px solid #EED3D7 !important;
+	  color:#B94A48 !important;  background-color:#F2DEDE !important; border:1px solid #EED3D7 !important;
 	}
 	ul.parsley-errors-list {margin:1px 0 0 -40px; list-style-type:none; font-size:10px}
+
+	/* ============================
+	STEP 5 HELP
+	============================	*/
+	div.help {color:#555; font-style:italic; font-size:11px; padding:4px; border-top:1px solid #dfdfdf}
+	div.help-page {padding:5px 0 0 5px}
+	div.help-page fieldset {margin-bottom:25px}
+    div#main-help {font-size:14px; line-height:17px}
+	div#main-help h3 {background-color:#dfdfdf; border:1px solid silver; border-radius:4px; padding:5px; margin:20px 0 8px 0; font-size:18px}
+    div#main-help span.step {color:#DB4B38}
+
+
+	<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
+		.dupx-debug {display:block; margin:4px 0 30px 0; font-size:11px;}
+		.dupx-debug label {font-weight:bold; display:block; margin:6px 0 2px 0}
+		.dupx-debug textarea {width:95%; height:100px; font-size:11px}
+	<?php else : ?>
+		.dupx-debug {display:none}
+	<?php endif; ?>
+
 </style>
