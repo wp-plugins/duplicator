@@ -211,8 +211,8 @@ HEADER TEMPLATE: Common header on all steps -->
         </td>
         <td class="dupx-header-version">
             version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?><br/>
-            &raquo; <a href="https://snapcreek.com/duplicator/docs/" target="_blank">docs</a>
-			&raquo; <a href="?help=1" target="_blank">help</a> &nbsp;
+			&raquo; <a href="?help=1" target="_blank">help</a>
+			&raquo; <a href="javascript:void(0)" onclick="DUPX.showServerInfo()">info</a>
         </td>
     </tr>
 </table>	
@@ -244,6 +244,50 @@ switch ($_POST['action_step']) {
 ?>
 </div>
 </div><br/>
+
+
+<!-- CONFIRM DIALOG -->
+<div id="dialog-server-info" style="display:none">
+	<!-- DETAILS -->
+	<div class="dlg-serv-info">
+		<?php
+			$ini_path 		= php_ini_loaded_file();
+			$ini_max_time 	= ini_get('max_execution_time');
+			$ini_memory 	= ini_get('memory_limit');
+		?>
+         <div class="hdr">Current Server</div>
+		<label>Web Server:</label>  			<?php echo $_SERVER['SERVER_SOFTWARE']; ?><br/>
+		<label>Operating System:</label>        <?php echo PHP_OS ?><br/>
+        <label>PHP Version:</label>  			<?php echo DUPX_Server::$php_version; ?><br/>
+		<label>PHP INI Path:</label> 			<?php echo empty($ini_path ) ? 'Unable to detect loaded php.ini file' : $ini_path; ?>	<br/>
+		<label>PHP SAPI:</label>  				<?php echo php_sapi_name(); ?><br/>
+		<label>PHP ZIP Archive:</label> 		<?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
+		<label>PHP max_execution_time:</label>  <?php echo $ini_max_time === false ? 'unable to find' : $ini_max_time; ?><br/>
+		<label>PHP memory_limit:</label>  		<?php echo empty($ini_memory)      ? 'unable to find' : $ini_memory; ?><br/>
+
+        <br/>
+        <div class="hdr">Package Server</div>
+		<div class="info-txt">The server where the package was created</div>
+        <label>Plugin Version:</label>  		<?php echo $GLOBALS['FW_VERSION_DUP'] ?><br/>
+        <label>WordPress Version:</label>  		<?php echo $GLOBALS['FW_VERSION_WP'] ?><br/>
+        <label>PHP Version:</label>             <?php echo $GLOBALS['FW_VERSION_PHP'] ?><br/>
+        <label>Database Version:</label>        <?php echo $GLOBALS['FW_VERSION_DB'] ?><br/>
+        <label>Operating System:</label>        <?php echo $GLOBALS['FW_VERSION_OS'] ?><br/>
+		<br/><br/>
+	</div>
+</div>
+
+<script>
+	/* Server Info Dialog*/
+	DUPX.showServerInfo = function()
+	{
+		modal({
+			type: 'alert',
+			title: 'Server Information',
+			text: $('#dialog-server-info').html()
+		});
+	}
+</script>
 
 </body>
 </html>

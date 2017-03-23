@@ -4,7 +4,7 @@ global $wpdb;
 
 //COMMON HEADER DISPLAY
 $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'detail';
-$package_id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : 0;
+$package_id  = isset($_REQUEST["id"])  ? esc_html($_REQUEST["id"]) : 0;
 
 $package			= DUP_Package::getByID($package_id);
 $err_found		    = ($package == null || $package->Status < 100);

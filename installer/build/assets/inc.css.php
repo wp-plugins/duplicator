@@ -50,6 +50,13 @@
 	.dupx-notice {display:inline-block; color:#000;}
 	div.dupx-ui-error {padding-top:2px; font-size:14px; line-height: 20px}
 
+	 /*Dialog Info */
+	div.dlg-serv-info {line-height:22px; font-size:12px; margin:0}
+	div.dlg-serv-info div.info-txt {text-align: center; font-size:11px; font-style:italic}
+	div.dlg-serv-info label {display:inline-block; width:175px; font-weight: bold}
+    div.dlg-serv-info div.hdr {background-color: #dfdfdf; font-weight: bold; margin-top:5px; border-radius: 4px; padding:2px; border: 1px solid silver; font-size: 16px}
+	div#modal-window div.modal-title {background-color:#D0D0D0}
+	div#modal-window div.modal-text {padding-top:10px !important}
 	
 	/* ======================================
 	STEP 1 VIEW

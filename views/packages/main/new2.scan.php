@@ -103,7 +103,7 @@ TOOL BAR: STEPS -->
 <div id="dup-progress-area">
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">
-		<div class="dup-progress-title"><i class="fa fa-spinner fa-spin"></i> <?php _e('Scanning Site', 'duplicator'); ?></div>
+		<div class="dup-progress-title"><i class="fa fa-circle-o-notch fa-spin"></i> <?php _e('Scanning Site', 'duplicator'); ?></div>
 		<div id="dup-progress-bar"></div>
 		<b><?php _e('Please Wait...', 'duplicator'); ?></b>
 	</div>
