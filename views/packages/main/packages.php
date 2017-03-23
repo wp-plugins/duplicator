@@ -214,7 +214,7 @@ THICK-BOX DIALOGS: -->
 	$confirm1->initConfirm();
 ?>
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function($) 
 {
 	

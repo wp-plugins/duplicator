@@ -147,7 +147,7 @@ TOOL BAR: STEPS -->
 	</div>
 </form>
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function($) {
 	/*	----------------------------------------
 	*	METHOD: Performs Ajax post to create a new package

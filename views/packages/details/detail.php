@@ -340,7 +340,7 @@ INSTALLER -->
 <?php endif; ?>	
 
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function ($) 
 {
 	

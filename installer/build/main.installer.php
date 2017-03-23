@@ -157,7 +157,7 @@ $GLOBALS['ARCHIVE_PATH']        = $GLOBALS['CURRENT_ROOT_PATH'] . '/' . $GLOBALS
 $GLOBALS['ARCHIVE_PATH']        = str_replace("\\", "/", $GLOBALS['ARCHIVE_PATH']);
 
 //Restart log if user starts from step 1
-if ($_POST['action_step'] == 1) {
+if ($_POST['action_step'] == 1 && ! isset($_GET['help'])) {
     $GLOBALS['LOG_FILE_HANDLE'] = @fopen($GLOBALS['LOG_FILE_NAME'], "w+");
 } else {
     $GLOBALS['LOG_FILE_HANDLE'] = @fopen($GLOBALS['LOG_FILE_NAME'], "a+");

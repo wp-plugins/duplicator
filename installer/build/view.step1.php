@@ -305,9 +305,8 @@ ADVANCED OPTIONS
 	<a data-type="toggle" data-target="#s1-area-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
 </div>
 <div id="s1-area-adv-opts" style="display:none">
-    <br/>
-    <!-- *** GENERAL *** -->
-    <div class="hdr-sub3">General</div>
+	<div class="help-target"><a href="?help#help-s1" target="_blank">[help]</a></div>
+  
 	<table class="dupx-opts dupx-advopts">
 		<tr>
 			<td>Extraction:</td>
@@ -337,10 +336,20 @@ ADVANCED OPTIONS
      <div class="hdr-sub3">Setup Help</div>
      <div id='s1-area-setup-help'>
         <div style="padding:10px 0px 0px 10px;line-height:22px">
-            &raquo; Watch the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q" target="_blank">video tutorials</a> <br/>
-            &raquo; Read helpful <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">articles</a> <br/>
-            &raquo; Visit the <a href="https://snapcreek.com/duplicator/docs/quick-start/" target="_blank">quick start guides</a> <br/>
-			&raquo; Browse the <a href="https://snapcreek.com/duplicator/docs/" target="_blank">online docs</a> <br/>
+			<table style='width:100%'>
+				<tr>
+					<td style="width:200px">
+						&raquo; Watch the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q" target="_blank">video tutorials</a> <br/>
+						&raquo; Read helpful <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">articles</a> <br/>
+					</td>
+					<td>
+						 &raquo; Visit the <a href="https://snapcreek.com/duplicator/docs/quick-start/" target="_blank">quick start guides</a> <br/>
+						 &raquo; Browse the <a href="https://snapcreek.com/duplicator/docs/" target="_blank">online docs</a> <br/>
+					</td>
+				</tr>
+			</table>
+            
+           
         </div>
      </div><br/>
 

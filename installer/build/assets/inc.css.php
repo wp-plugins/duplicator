@@ -30,8 +30,8 @@
 	div.hdr-main span.step {color:#DB4B38}
 	div.hdr-sub1 {font-size:18px; margin-bottom:5px; border-bottom:1px solid #D3D3D3;padding:2px 2px 5px 0;font-weight:bold;}
 	div.hdr-sub1 a {cursor:pointer; text-decoration: none !important}
-	div.hdr-sub2 {font-size:16px; padding:2px 2px 2px 0; border-bottom:1px solid #C0C0C0; font-weight:bold; margin-bottom:5px; border:none}
-	div.hdr-sub3 {font-size:16px; padding:2px 2px 2px 0; border-bottom:1px solid #C0C0C0; font-weight:bold; margin-bottom:5px;}
+	div.hdr-sub2 {font-size:16px; padding:2px 2px 2px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin-bottom:5px; border:none}
+	div.hdr-sub3 {font-size:16px; padding:2px 2px 2px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin-bottom:5px;}
 
     /* BUTTONS */
 	div.dupx-footer-buttons {position:absolute; bottom:10px; padding:10px;  right:0}
@@ -118,9 +118,7 @@
 	div.s2-gopro small {font-style: italic}
 	
 	/*Advanced Options & Warning Area*/
-	div.s2-advopts-section {margin:15px 0 25px 0}
-	div.s2-advopts-section label {cursor: pointer}
-	div.s2-advopts-help {text-align: center; margin:10px}
+	div#s2-area-adv-opts label {cursor: pointer}
 	div#s2-warning {padding:5px;font-size:12px; color:gray; line-height:12px;font-style:italic; overflow-y:scroll; height:150px; border:1px solid #dfdfdf; background-color:#fff; border-radius:3px}
 	div#s2-warning-check {padding:5px; font-size:12px; font-weight:normal; font-style:italic;}
     div#s2-warning-check label {cursor: pointer; line-height: 16px}
@@ -182,12 +180,22 @@
 	/* ============================
 	STEP 5 HELP
 	============================	*/
+	div.help-target {float:right; font-size:11px}
+	div#main-help a.help-target {display:block; margin:5px}
+	div#main-help sup {font-size:11px; font-weight:normal; font-style:italic; color:blue}
+	div.help-online {text-align:center; font-size:18px; padding:10px 0 0 0; line-height:24px}
 	div.help {color:#555; font-style:italic; font-size:11px; padding:4px; border-top:1px solid #dfdfdf}
 	div.help-page {padding:5px 0 0 5px}
 	div.help-page fieldset {margin-bottom:25px}
     div#main-help {font-size:14px; line-height:17px}
-	div#main-help h3 {background-color:#dfdfdf; border:1px solid silver; border-radius:4px; padding:5px; margin:20px 0 8px 0; font-size:18px}
+	div#main-help h2 {background-color:#F1F1F1; border:1px solid silver; border-radius:4px; padding:10px; margin:26px 0 8px 0; font-size:22px; }
+	div#main-help h3 {border-bottom:1px solid silver; padding:8px; margin:4px 0 8px 0; font-size:20px}
     div#main-help span.step {color:#DB4B38}
+	table.help-opt {width: 100%; border: none; border-collapse: collapse;  margin:5px 0 0 0;}
+	table.help-opt td.section {background-color:#dfdfdf;}
+	table.help-opt td, th {padding:7px; border:1px solid silver;}
+	table.help-opt td:first-child {font-weight:bold; padding-right:10px; white-space:nowrap}
+	table.help-opt th {background: #333; color: #fff;border:1px solid #333; padding:3px}
 
 
 	<?php if ($GLOBALS['DUPX_DEBUG']) : ?>

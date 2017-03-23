@@ -50,7 +50,7 @@ $logfound = (strlen($logname) > 0) ? true :false;
 	label#dup-auto-refresh-lbl {display: inline-block;}
 </style>
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function($) 
 {
 	Duplicator.Tools.FullLog = function() {

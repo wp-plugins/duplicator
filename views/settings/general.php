@@ -294,7 +294,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 	
 </form>
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function($) 
 {
 	$('#package_ui_created').val(<?php echo $package_ui_created ?> );

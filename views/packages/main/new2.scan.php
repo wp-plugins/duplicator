@@ -105,7 +105,9 @@ TOOL BAR: STEPS -->
 	<div id="dup-progress-bar-area">
 		<div class="dup-progress-title"><i class="fa fa-circle-o-notch fa-spin"></i> <?php _e('Scanning Site', 'duplicator'); ?></div>
 		<div id="dup-progress-bar"></div>
-		<b><?php _e('Please Wait...', 'duplicator'); ?></b>
+		<b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
+		<i><?php _e('Keep this window open during the scan process.', 'duplicator'); ?></i><br/>
+		<i><?php _e('This can take several minutes.', 'duplicator'); ?></i><br/>
 	</div>
 
 	<!--  SUCCESS MESSAGE -->
@@ -543,7 +545,7 @@ TOOL BAR: STEPS -->
 </div>
 </form>
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function($) {
 		
 	/*	Performs Ajax post to create check system  */

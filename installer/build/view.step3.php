@@ -60,8 +60,8 @@ VIEW: STEP 3- INPUT -->
         <a data-type="toggle" data-target="#s3-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
     </div>
 	<div id='s3-adv-opts' style="display:none;">
-
-		<br/>
+		<div class="help-target"><a href="?help#help-s3" target="_blank">[help]</a></div>
+		<br/><br/>
 		<div class="hdr-sub3">New Admin Account</div>
 		<div style="text-align: center; margin-top:7px">
 			<i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i>

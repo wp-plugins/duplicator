@@ -220,7 +220,7 @@ FORM PACKAGE OPTIONS -->
 	<?php include('new1.inc.form.php'); ?>
 </div>
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function ($) 
 {
 	//Init: Toogle for system requirment detial links

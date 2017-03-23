@@ -123,38 +123,35 @@ VIEW: STEP 2- INPUT -->
     ADVANCED OPTIONS
     ==================================== -->
     <div class="hdr-sub1">
-        <a data-type="toggle" data-target="#dup-step1-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
+        <a data-type="toggle" data-target="#s2-area-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
     </div>
-    <div id='dup-step1-adv-opts' style="display:none">
-        <div class="s2-advopts-section">
-            <table class="dupx-opts dupx-advopts">
-                <tr>
-                    <td>Spacing</td>
-                    <td colspan="2">
-                        <input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="vertical-align:top">Mode</td>
-                    <td colspan="2">
-                        <input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
-                        <input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
-                        <input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
-                        <div id="dbmysqlmode_3_view" style="display:none; padding:5px">
-                            <input type="text" name="dbmysqlmode_opts" value="" /><br/>
-                            <small>Separate additional <a href="?help#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
-                                Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
-                        </div>
-                    </td>
-                </tr>
-                <tr><td style="width:130px">Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-                <tr><td>Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
-            </table>
-        </div>
-
-        <div class="s2-advopts-help">
-            <small><i>For an overview of these settings see the <a href="?help=1" target="_blank">help page</a></i></small>
-        </div>
+    <div id='s2-area-adv-opts' style="display:none">
+		<div class="help-target"><a href="?help#help-s2" target="_blank">[help]</a></div>
+		
+		<table class="dupx-opts dupx-advopts">
+			<tr>
+				<td>Spacing</td>
+				<td colspan="2">
+					<input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align:top">Mode</td>
+				<td colspan="2">
+					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
+					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
+					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
+					<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
+						<input type="text" name="dbmysqlmode_opts" value="" /><br/>
+						<small>Separate additional <a href="?help#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
+							Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
+					</div>
+				</td>
+			</tr>
+			<tr><td style="width:130px">Charset</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
+			<tr><td>Collation </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+		</table>
+    
     </div>
     <br/><br/><br/>
     <br/><br/><br/>
