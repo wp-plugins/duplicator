@@ -291,7 +291,7 @@ STEP 2
 STEP 3
 ============================================== -->
 <a class="help-target" name="help-s3"></a>
-<h2>Step <span class="step">3</span> of 4: Database Replacement</h2>
+<h2>Step <span class="step">3</span> of 4: Data Replacement</h2>
 <div id="dup-help-step2" class="help-page">
 
     <!-- SETTINGS-->
