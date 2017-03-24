@@ -22,15 +22,15 @@ $charset_server = @mysqli_character_set_name($dbh);
 DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 //POST PARAMS
-$_POST['blogname'] = mysqli_real_escape_string($dbh, $_POST['blogname']);
-$_POST['postguid'] = isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
-$_POST['fullsearch'] = isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
-$_POST['path_old'] = isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
-$_POST['path_new'] = isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
-$_POST['siteurl'] = isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
-$_POST['tables'] = isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
-$_POST['url_old'] = isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
-$_POST['url_new'] = isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
+$_POST['blogname']		= mysqli_real_escape_string($dbh, $_POST['blogname']);
+$_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
+$_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
+$_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
+$_POST['path_new']		= isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
+$_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
+$_POST['tables']		= isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
+$_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
+$_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -257,16 +257,15 @@ if (empty($JSON['step2']['warnlist'])) {
 $JSON['step2']['warn_all'] = empty($JSON['step2']['warnlist']) ? 0 : count($JSON['step2']['warnlist']);
 
 mysqli_close($dbh);
-@unlink('database.sql');
+//@unlink('database.sql');
 
 //CONFIG Setup
 DUPX_ServerConfig::setup();
 
 $ajax2_end = DUPX_U::getMicrotime();
 $ajax2_sum = DUPX_U::elapsedTime($ajax2_end, $ajax2_start);
-DUPX_Log::info("\nSTEP 3 COMPLETE @ " . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax2_sum}\n\n");
+DUPX_Log::info("\nSTEP 3 COMPLETE @ " . @date('h:i:s') . " - RUNTIME: {$ajax2_sum}\n\n");
 
 $JSON['step2']['pass'] = 1;
 error_reporting($ajax2_error_level);
 die(json_encode($JSON));
-?>

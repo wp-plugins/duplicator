@@ -60,7 +60,7 @@ class DUPX_Log
 		$log_msg = strip_tags($log_msg);
 		@fwrite($GLOBALS["LOG_FILE_HANDLE"], "\nINSTALLER ERROR:\n{$log_msg}\n");
 		@fclose($GLOBALS["LOG_FILE_HANDLE"]);
-        die("<div class='dupx-ui-error'><hr size='1' /><b style='color:#B80000;'>INSTALL ERROR!</b><br/>{$msg}</div><br/>");
+        die("<div class='dupx-ui-error'><hr size='1' /><b style='color:#B80000;'>INSTALL ERROR!</b><br/>{$msg}</div>");
     }
 }
 ?>

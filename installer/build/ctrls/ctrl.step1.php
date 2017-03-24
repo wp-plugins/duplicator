@@ -130,7 +130,7 @@ DUPX_ServerConfig::reset();
 //FINAL RESULTS
 $ajax1_end	 = DUPX_U::getMicrotime();
 $ajax1_sum	 = DUPX_U::elapsedTime($ajax1_end, $ajax1_start);
-DUPX_Log::info("\nSTEP-1 COMPLETE @ " . @date('h:i:s') . " - TOTAL RUNTIME: {$ajax1_sum}");
+DUPX_Log::info("\nSTEP-1 COMPLETE @ " . @date('h:i:s') . " - RUNTIME: {$ajax1_sum}");
 
 
 $JSON['pass'] = 1;
