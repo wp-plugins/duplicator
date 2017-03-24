@@ -23,7 +23,7 @@
 	.dupx-header-version a {color:#555;}
     div.dupx-logfile-link {float:right; font-weight:normal; font-size:12px}
 	div#progress-area {padding:5px; margin:150px 0 0 0px; text-align:center;}
-	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:16px; overflow-y:scroll; line-height:24px}
+	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:14px; overflow-y:scroll; line-height:24px}
 
     /*TITLE HEADERS */
     div.hdr-main {font-size:22px; padding:0 0 5px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin:10px 0 20px 0;}
