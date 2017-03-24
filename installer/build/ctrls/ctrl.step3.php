@@ -269,3 +269,4 @@ DUPX_Log::info("\nSTEP 3 COMPLETE @ " . @date('h:i:s') . " - RUNTIME: {$ajax2_su
 $JSON['step2']['pass'] = 1;
 error_reporting($ajax2_error_level);
 die(json_encode($JSON));
+?>
