@@ -116,6 +116,7 @@ ini_set('default_socket_timeout', '5000');
 $GLOBALS['DBCHARSET_DEFAULT'] = 'utf8';
 $GLOBALS['DBCOLLATE_DEFAULT'] = 'utf8_general_ci';
 $GLOBALS['FAQ_URL'] = 'https://snapcreek.com/duplicator/docs/faqs-tech';
+$GLOBALS['NOW_DATE'] = @date("Y-m-d-H:i:s");
 
 //UPDATE TABLE SETTINGS
 $GLOBALS['REPLACE_LIST'] = array();
@@ -202,7 +203,7 @@ HEADER TEMPLATE: Common header on all steps -->
 <table cellspacing="0" class="dupx-header">
     <tr>
         <td style="width:100%;">
-            <div style="font-size:26px; padding:5px 0 5px 0">
+            <div style="font-size:26px; padding:7px 0 7px 0">
                 <!-- !!DO NOT CHANGE/EDIT OR REMOVE PRODUCT NAME!!
                 If your interested in Private Label Rights please contact us at the URL below to discuss
                 customizations to product labeling: http://snapcreek.com	-->

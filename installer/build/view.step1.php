@@ -96,7 +96,7 @@ ARCHIVE FILE
             <br/><br/>
 
             When downloading the package files make sure both files are from the same package line in the packages view.  The archive file also
-            must be completely downloaded to the server before trying to run step 1.  The following zip files where found at the deployment path:<br/>
+            must be completely downloaded to the server before trying to run step 1.  The following zip files were found at the deployment path:<br/>
             <?php
                 //DETECT ARCHIVE FILES
                 $zip_files = DUPX_Server::getZipFiles();

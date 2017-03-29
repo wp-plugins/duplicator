@@ -76,7 +76,7 @@ class DUP_UI_Dialog
     {
         add_thickbox();
         $this->progressText = __('Processing please wait...', 'duplicator');
-        $this->uniqid       = uniqid();
+        $this->uniqid		= substr(uniqid('',true),0,14) . rand();
         $this->id           = 'dup-dlg-'.$this->uniqid;
     }
 

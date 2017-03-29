@@ -28,7 +28,7 @@ VIEW: STEP 3- INPUT -->
 	<input type="hidden" name="dbcharset" 	 value="<?php echo $_POST['dbcharset'] ?>" />
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
 
-	<div class="dupx-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="_blank">installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Data Replacement
 	</div>

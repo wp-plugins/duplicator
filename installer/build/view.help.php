@@ -56,8 +56,21 @@ STEP 1
 		<tr>
 			<td>Extraction</td>
 			<td>
-				Check this box if the archive file has been manually extracted on the server.  This setting can be helpful if you have a large
-				archive files or are having issues with the installer extracting the file due to timeout or ZipArchive errors.
+				<b>Manual Archive Extraction</b><br/>
+				Set the Extraction value to "Manual Archive Extraction" when the archive file has already been manually extracted on the server.  This can be done through your hosts
+				control panel such as cPanel or by your host directly. This setting can be helpful if you have a large archive files or are having issues with the installer extracting
+				the file due to timeout issues.
+				<br/><br/>
+
+				<b>PHP ZipArchive</b><br/>
+				This extraction method will use the PHP <a href="http://php.net/manual/en/book.zip.php" target="_blank">ZipArchive</a> code to extract the archive zip file.
+				<br/><br/>
+
+				<b>Shell-Exec Unzip</b> <sup>pro</sup><br/>
+				This extraction method will use the PHP <a href="http://php.net/manual/en/function.shell-exec.php" target="_blank">shell_exec</a> to call the system unzip
+				command on the server.  This is the default mode that is used if its avail on the server.
+				<br/><br/>
+
 			</td>
 		</tr>
 		<tr>
@@ -81,17 +94,19 @@ STEP 1
 			</td>
 		</tr>
 		<tr>
-			<td>Archive Engine <sup>pro</sup></td>
-			<td>The extraction engine that will be used to extract the archive file.</td>
-		</tr>
-		<tr>
-			<td>File Timestamp</td>
-			<td>When the archive is extracted should it show current date-time or keep the original time it had when it was built.</td>
+			<td>File Times</td>
+			<td>When the archive is extracted should it show the current date-time or keep the original time it had when it was built.  This setting will be applied to
+			all files and directories.</td>
 		</tr>
 		<tr>
 			<td>Permissions <sup>pro</sup></td>
-			<td>The installer will attempt to run a <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a> on both the files
-			and directories.  Choose the chmod settings for each all files and all	directories.
+			<td>
+				<b>All Files:</b> Check the 'All Files' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
+				to recursively set the octal value on all the files being extracted. Typically this value is 644 on most servers and hosts.
+				<br/><br/>
+
+				<b>All Directories:</b> Check the 'All Directories' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
+				to recursively set octal value on all the directories being extracted.  Typically this value is 755 on most servers and hosts.
 			</td>
 		</tr>
 	</table>
@@ -291,7 +306,7 @@ STEP 2
 STEP 3
 ============================================== -->
 <a class="help-target" name="help-s3"></a>
-<h2>Step <span class="step">3</span> of 4: Data Replacement</h2>
+<h2>Step <span class="step">3</span> of 4: Database Replacement</h2>
 <div id="dup-help-step2" class="help-page">
 
     <!-- SETTINGS-->

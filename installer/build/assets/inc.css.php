@@ -1,16 +1,17 @@
 <style>
-	body {font-family:"Open Sans",sans-serif;}
+	body {font-family:Verdana,Arial,sans-serif;}
 	fieldset {border:1px solid silver; border-radius:5px; padding:10px}
 	h3 {margin:1px; padding:1px; font-size:14px;}
 	a {color:#222}
 	a:hover{color:gray}
-	input[type=text], input[type=password], select {width:97%; border-radius:3px; height:17px; font-size:12px !important; border:1px solid silver; padding:2px}
-	select {height:22px;padding-left:0; width:100%}
+	input[type=text], input[type=password], select {width:97%; border-radius:2px; border:1px solid silver; padding:4px;  font-family:Verdana,Arial,sans-serif;}
+	select {padding-left:0; width:99%}
 	select:disabled {background:#EBEBE4}
 	input.readonly {background-color:#efefef;}
 
-	/* ======================================
-	COMMON VIEW ELEMENTS*/
+	/* ============================
+	COMMON VIEWS
+     ============================ */
 	div#content {border:1px solid #CDCDCD; width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:14px; color:#000;}
 	div#content-inner {padding:10px 30px; min-height:550px}
 	form.content-form {min-height:550px; position:relative; line-height:17px}	
@@ -18,15 +19,15 @@
     div.status-badge-fail {border-radius:4px; color:#fff; padding:0 4px 0 4px;  font-size:12px; min-width:30px; text-align:center; background-color:maroon; display:inline-block}
 	
 	/* WIZARD STEPS */
-	table.dupx-header {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 5px 3px -3px #999;	background-color:#F1F1F1}
-    .dupx-header-version {white-space:nowrap; color:#555; font-size:11px; font-style:italic; text-align:right;  padding:0 15px 5px 0; line-height:14px}
+	table.dupx-header {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 5px 3px -3px #999;	background-color:#F1F1F1; font-weight:bold;}
+    .dupx-header-version {white-space:nowrap; color:#555; font-size:11px; font-style:italic; text-align:right;  padding:0 15px 5px 0; line-height:14px; font-weight:normal;}
 	.dupx-header-version a {color:#555;}
     div.dupx-logfile-link {float:right; font-weight:normal; font-size:12px}
 	div#progress-area {padding:5px; margin:150px 0 0 0px; text-align:center;}
 	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:14px; overflow-y:scroll; line-height:24px}
 
     /*TITLE HEADERS */
-    div.hdr-main {font-size:22px; padding:0 0 5px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin:10px 0 20px 0;}
+    div.hdr-main {font-size:22px; padding:0 0 5px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin:15px 0 35px 0;}
 	div.hdr-main span.step {color:#DB4B38}
 	div.hdr-sub1 {font-size:18px; margin-bottom:5px; border-bottom:1px solid #D3D3D3;padding:2px 2px 5px 0;font-weight:bold;}
 	div.hdr-sub1 a {cursor:pointer; text-decoration: none !important}
@@ -37,8 +38,10 @@
 	div.dupx-footer-buttons {position:absolute; bottom:10px; padding:10px;  right:0}
 	div.dupx-footer-buttons  input:hover, button:hover {border:1px solid #000}
 	div.dupx-footer-buttons input[disabled=disabled]{background-color:#F4F4F4; color:silver; border:1px solid silver;}
-    button.default-btn, input.default-btn {cursor:pointer; color:#fff; font-size:16px; border-radius:5px; padding:6px 20px 4px 20px; height:32px; background-color:#13659C; border:1px solid #000;}
-	
+    button.default-btn, input.default-btn {
+		cursor:pointer; color:#fff; font-size:16px; border-radius:5px;	padding:8px 25px 6px 25px;
+	    background-color:#13659C; border:1px solid gray;
+	}
     table.dupx-opts {width:100%; border:0px;}
 	table.dupx-opts td{white-space:nowrap; padding:3px;}
 	table.dupx-opts td:first-child{width:125px; font-weight: bold}
@@ -54,7 +57,7 @@
 	div.dlg-serv-info {line-height:22px; font-size:12px; margin:0}
 	div.dlg-serv-info div.info-txt {text-align: center; font-size:11px; font-style:italic}
 	div.dlg-serv-info label {display:inline-block; width:175px; font-weight: bold}
-    div.dlg-serv-info div.hdr {background-color: #dfdfdf; font-weight: bold; margin-top:5px; border-radius: 4px; padding:2px; border: 1px solid silver; font-size: 16px}
+    div.dlg-serv-info div.hdr {background-color: #dfdfdf; font-weight: bold; margin-top:5px; border-radius: 4px; padding:2px 5px 2px 5px; border: 1px solid silver; font-size: 16px}
 	div#modal-window div.modal-title {background-color:#D0D0D0}
 	div#modal-window div.modal-text {padding-top:10px !important}
 	
@@ -100,7 +103,7 @@
 
 	div.s2-modes {padding:0px 15px 0 0px;}
 	div#s2-dbconn {margin:auto; text-align:center; margin:15px 0 10px 0px}
-	input.s2-small-btn {font-size:11px; height:23px; border:1px solid gray; border-radius:3px; cursor:pointer}
+	input.s2-small-btn {height:25px; border:1px solid gray; border-radius:3px; cursor:pointer}
     table.s2-opts-dbhost td {padding:0; margin:0}
 	input#s2-dbport-btn { width:80px}
 	div.s2-db-test small{display:block; font-style:italic; color:#333; padding:3px 2px 5px 2px; border-bottom:1px dashed silver; margin-bottom:10px; text-align: center }

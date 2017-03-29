@@ -11,7 +11,7 @@ VIEW: STEP 2- INPUT -->
 <input type="hidden" name="archive_name"  value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
 <input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging'] ?>" />
 
-    <div class="dupx-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="_blank">installer-log.txt</a></div>
 	<div class="hdr-main">
         Step <span class="step">2</span> of 4: Install Database
 	</div>
