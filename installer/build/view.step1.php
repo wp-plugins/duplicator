@@ -55,7 +55,8 @@ $agree_msg    = "To enable this button the checkbox above under the 'Terms & Not
 
 <div class="hdr-main">
     Step <span class="step">1</span> of 4: Extract Archive
-</div><br/>
+</div>
+<br/>
 	
 
 <!-- ====================================
@@ -315,18 +316,18 @@ ADVANCED OPTIONS
 			</td>
 		</tr>
 		<tr>
+			<td>File Timestamp:</td>
+			<td>
+				<input type="radio" name="archive_filetime" id="archive_filetime_now" value="current" checked="checked" /> <label class="radio" for="archive_filetime_now" title='Set the files current date time to now'>Current</label>
+				<input type="radio" name="archive_filetime" id="archive_filetime_orginal" value="original" /> <label class="radio" for="archive_filetime_orginal" title="Keep the files date time the same">Original</label>
+			</td>
+		</tr>
+		<tr>
 			<td>Logging:</td>
 			<td>
 				<input type="radio" name="logging" id="logging-light" value="1" checked="true"> <label for="logging-light">Light</label>
 				<input type="radio" name="logging" id="logging-detailed" value="2"> <label for="logging-detailed">Detailed</label>
 				<input type="radio" name="logging" id="logging-debug" value="3"> <label for="logging-debug">Debug</label>
-			</td>
-		</tr>
-		<tr>
-			<td>File Timestamp</td>
-			<td>
-				<input type="radio" name="archive_filetime" id="archive_filetime_now" value="current" checked="checked" /> <label class="radio" for="archive_filetime_now" title='Set the files current date time to now'>Current</label>
-				<input type="radio" name="archive_filetime" id="archive_filetime_orginal" value="original" /> <label class="radio" for="archive_filetime_orginal" title="Keep the files date time the same">Original</label>
 			</td>
 		</tr>
 	</table>
@@ -423,7 +424,7 @@ TERMS & NOTICES
 
 <div id="s1-warning-check">
 	<input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="DUPX.acceptWarning()" />
-	<label for="accept-warnings">I have read and accept all terms &amp; notices <small style="font-style:italic">(required for install)</small></label><br/>
+	<label for="accept-warnings">I have read and accept all terms &amp; notices <small style="font-style:italic">(required to continue)</small></label><br/>
 </div>
 
 

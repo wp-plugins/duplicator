@@ -36,9 +36,9 @@ if (is_admin() == true)
 	//Classes
     require_once 'classes/class.logging.php';
     require_once 'classes/class.settings.php';
-    require_once 'classes/utilities/class.util.php';
-    require_once 'classes/utilities/class.db.php';
-    require_once 'classes/utilities/class.server.php';
+    require_once 'classes/utilities/class.u.php';
+    require_once 'classes/class.db.php';
+    require_once 'classes/class.server.php';
 	require_once 'classes/ui/class.ui.viewstate.php';
 	require_once 'classes/ui/class.ui.notice.php';
     require_once 'classes/package/class.pack.php';
@@ -158,7 +158,7 @@ if (is_admin() == true)
 	{
         /* CSS */
         wp_register_style('dup-jquery-ui', DUPLICATOR_PLUGIN_URL . 'assets/css/jquery-ui.css', null, "1.11.2");
-        wp_register_style('dup-font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.1.0');
+        wp_register_style('dup-font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.7.0');
         wp_register_style('dup-plugin-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
 		wp_register_style('dup-jquery-qtip',DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.css', null, '2.2.1');
         /* JS */

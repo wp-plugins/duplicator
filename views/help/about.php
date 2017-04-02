@@ -63,12 +63,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             </tr>
         </table><br/>
 
-
-        <!--  ==================================================
-        SUPPORT DUPLICATOR
-        ==================================================== -->
-        <h2><?php _e('Support Duplicator', 'duplicator') ?></h2>
-
         <!-- PARTNER WITH US -->
         <div class="dup-support-give-area">
             <table class="dup-support-hlp-hdrs">

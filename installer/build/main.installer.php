@@ -212,8 +212,9 @@ HEADER TEMPLATE: Common header on all steps -->
         </td>
         <td class="dupx-header-version">
             version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?><br/>
-			&raquo; <a href="?help=1" target="_blank">help</a>
 			&raquo; <a href="javascript:void(0)" onclick="DUPX.showServerInfo()">info</a>
+			&raquo; <a href="?help=1" target="_blank">help</a>
+			
         </td>
     </tr>
 </table>	

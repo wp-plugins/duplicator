@@ -1,7 +1,7 @@
 <?php
 if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
 
-require_once (DUPLICATOR_PLUGIN_PATH.'classes/utilities/class.util.php');
+require_once (DUPLICATOR_PLUGIN_PATH.'classes/utilities/class.u.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.installer.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.database.php');

@@ -33,24 +33,28 @@ VIEW: STEP 3- INPUT -->
 		Step <span class="step">3</span> of 4: Data Replacement
 	</div>
 
-	<div class="hdr-sub1" style="margin-top:8px">New Settings</div>
-	<table class="s3-table-inputs">
-		<tr>
-			<td style="width:80px">URL</td>
-			<td>
-				<input type="text" name="url_new" id="url_new" value="<?php echo $GLOBALS['FW_URL_NEW'] ?>" />
-				<a href="javascript:DUPX.getNewURL('url_new')" style="font-size:12px">get</a>
-			</td>
-		</tr>
-		<tr>
-			<td>Path</td>
-			<td><input type="text" name="path_new" id="path_new" value="<?php echo $new_path ?>" /></td>
-		</tr>
-		<tr>
-			<td>Title</td>
-			<td><input type="text" name="blogname" id="blogname" value="<?php echo $GLOBALS['FW_BLOGNAME'] ?>" /></td>
-		</tr>
-	</table>
+	<div class="hdr-sub1" style="margin-top:8px">
+		<a data-type="toggle" data-target="#s3-new-settings"><i class="dupx-minus-square"></i> New Settings</a>
+	</div>
+	<div id='s3-new-settings'>
+		<table class="s3-table-inputs">
+			<tr>
+				<td style="width:80px">URL:</td>
+				<td>
+					<input type="text" name="url_new" id="url_new" value="<?php echo $GLOBALS['FW_URL_NEW'] ?>" />
+					<a href="javascript:DUPX.getNewURL('url_new')" style="font-size:12px">get</a>
+				</td>
+			</tr>
+			<tr>
+				<td>Path:</td>
+				<td><input type="text" name="path_new" id="path_new" value="<?php echo $new_path ?>" /></td>
+			</tr>
+			<tr>
+				<td>Title:</td>
+				<td><input type="text" name="blogname" id="blogname" value="<?php echo $GLOBALS['FW_BLOGNAME'] ?>" /></td>
+			</tr>
+		</table>
+	</div>
 	<br/><br/>
 
     <!-- ====================================
@@ -68,61 +72,46 @@ VIEW: STEP 3- INPUT -->
 		</div>
 		<table class="s3-table-inputs">
 			<tr>
-				<td>Username </td>
+				<td>Username:</td>
 				<td><input type="text" name="wp_username" id="wp_username" value="" title="4 characters minimum" placeholder="(4 or more characters)" /></td>
 			</tr>
 			<tr>
-				<td valign="top">Password</td>
+				<td valign="top">Password:</td>
 				<td><input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" /></td>
-			</tr>
-		</table>
-		<br/><br/>
-
-		 <!-- GENERAL -->
-		<div class="hdr-sub3">WP-Config File</div>
-		<table class="dupx-opts dupx-advopts">
-			<tr>
-				<td>Cache</td>
-				<td style="width:125px"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Enabled</label></td>
-				<td><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Home Path</label></td>
-			</tr>
-			<tr>
-				<td>SSL</td>
-				<td><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce on Admin</label></td>
-				<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
 			</tr>
 		</table>
 		<br/><br/>
 
 		<div class="hdr-sub3">Scan Options</div>
         <table class="s3-table-inputs">
+			<tr>
+				<td>Site URL:</td>
+				<td>
+					<input type="text" name="siteurl" id="siteurl" value="" />
+					<a href="javascript:DUPX.getNewURL('siteurl')" style="font-size:12px">get</a><br/>
+				</td>
+			</tr> 
             <tr>
-                <td>Old URL</td>
+                <td>Old URL:</td>
                 <td>
                     <input type="text" name="url_old" id="url_old" value="<?php echo $GLOBALS['FW_URL_OLD'] ?>" readonly="readonly"  class="readonly" />
                     <a href="javascript:DUPX.editOldURL()" id="edit_url_old" style="font-size:12px">edit</a>
                 </td>
             </tr>
             <tr>
-                <td>Old Path</td>
+                <td>Old Path:</td>
                 <td>
                     <input type="text" name="path_old" id="path_old" value="<?php echo $old_path ?>" readonly="readonly"  class="readonly" />
                     <a href="javascript:DUPX.editOldPath()" id="edit_path_old" style="font-size:12px">edit</a>
                 </td>
             </tr>
-			<tr>
-				<td>Site URL</td>
-				<td>
-					<input type="text" name="siteurl" id="siteurl" value="" />
-					<a href="javascript:DUPX.getNewURL('siteurl')" style="font-size:12px">get</a><br/>
-				</td>
-			</tr>            
+           
         </table><br/>
         
 		<table>
 			<tr>
 				<td style="padding-right:10px">
-                    <b>Scan Tables</b>
+                    <b>Scan Tables:</b>
 					<div class="s3-allnonelinks">
 						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',true);">[All]</a>
 						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',false);">[None]</a>
@@ -137,7 +126,7 @@ VIEW: STEP 3- INPUT -->
 
 				</td>
 				<td valign="top">
-                    <b>Activate Plugins</b>
+                    <b>Activate Plugins:</b>
 					<div class="s3-allnonelinks">
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
@@ -151,16 +140,34 @@ VIEW: STEP 3- INPUT -->
 					</select>
 				</td>
 			</tr>
-		</table><br/>
+		</table>
+		<br/><br/>
+
+		<!-- WP-CONFIG -->
+		<div class="hdr-sub3">WP-Config File</div>
+		<table class="dupx-opts dupx-advopts">
+			<tr>
+				<td>Cache:</td>
+				<td style="width:125px"><input type="checkbox" name="cache_wp" id="cache_wp" <?php echo ($GLOBALS['FW_CACHE_WP']) ? "checked='checked'" : ""; ?> /> <label for="cache_wp">Keep Enabled</label></td>
+				<td><input type="checkbox" name="cache_path" id="cache_path" <?php echo ($GLOBALS['FW_CACHE_PATH']) ? "checked='checked'" : ""; ?> /> <label for="cache_path">Keep Home Path</label></td>
+			</tr>
+			<tr>
+				<td>SSL:</td>
+				<td><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce on Admin</label></td>
+				<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
+			</tr>
+		</table>
+		<br/><br/>
+
 
 		<input type="checkbox" name="postguid" id="postguid" value="1" /> <label for="postguid">Keep Post GUID unchanged</label><br/>
-		<input type="checkbox" name="fullsearch" id="fullsearch" value="1" /> <label for="fullsearch">Enable Full Search <small>(very slow)</small> </label><br/>
+		<input type="checkbox" name="fullsearch" id="fullsearch" value="1" /> <label for="fullsearch">Enable Full Search <small>(slower to process)</small> </label><br/>
 		<br/><br/><br/><br/>
 
 	</div>
 
 	<div class="dupx-footer-buttons">
-		<input id="dup-step2-next"  class="default-btn" type="button" value=" Next " onclick="DUPX.runUpdate()"  />
+		<input id="dup-step3-next"  class="default-btn" type="button" value=" Next " onclick="DUPX.runUpdate()"  />
 	</div>
 </form>
 
@@ -208,114 +215,114 @@ VIEW: STEP 3 - AJAX RESULT
 </form>
 
 <script>
-	/** 
-	* Timeout (10000000 = 166 minutes) */
-	DUPX.runUpdate = function()
-    {
-		//Validation
-		var wp_username = $.trim($("#wp_username").val()).length || 0;
-		var wp_password = $.trim($("#wp_password").val()).length || 0;
+/** 
+* Timeout (10000000 = 166 minutes) */
+DUPX.runUpdate = function()
+{
+	//Validation
+	var wp_username = $.trim($("#wp_username").val()).length || 0;
+	var wp_password = $.trim($("#wp_password").val()).length || 0;
 
-		if ( $.trim($("#url_new").val()) == "" )  {alert("The 'New URL' field is required!"); return false;}
-		if ( $.trim($("#siteurl").val()) == "" )  {alert("The 'Site URL' field is required!"); return false;}
-		if (wp_username >= 1 && wp_username < 4) {alert("The New Admin Account 'Username' must be four or more characters"); return false;}
-		if (wp_username >= 4 && wp_password < 6) {alert("The New Admin Account 'Password' must be six or more characters"); return false;}
+	if ( $.trim($("#url_new").val()) == "" )  {alert("The 'New URL' field is required!"); return false;}
+	if ( $.trim($("#siteurl").val()) == "" )  {alert("The 'Site URL' field is required!"); return false;}
+	if (wp_username >= 1 && wp_username < 4) {alert("The New Admin Account 'Username' must be four or more characters"); return false;}
+	if (wp_username >= 4 && wp_password < 6) {alert("The New Admin Account 'Password' must be six or more characters"); return false;}
 
-		$.ajax({
-			type: "POST",
-			timeout: 1800000,
-			dataType: "json",
-			url: window.location.href,
-			data: $('#s3-input-form').serialize(),
-			beforeSend: function() {
-				DUPX.showProgressBar();
-				$('#s3-input-form').hide();
-				$('#s3-result-form').show();
-			},
-			success: function(data){
-				if (typeof(data) != 'undefined' && data.step2.pass == 1) {
-					$("#ajax-url_new").val($("#url_new").val());
-					$("#ajax-json").val(escape(JSON.stringify(data)));
-					<?php if (! $GLOBALS['DUPX_DEBUG']) : ?>
-						setTimeout(function(){$('#s3-result-form').submit();}, 500);
-					<?php endif; ?>
-					$('#progress-area').fadeOut(1000);
-				} else {
-					DUPX.hideProgressBar();
-				}
-			},
-			error: function(xhr) {
-				var status  = "<b>Server Code:</b> "	+ xhr.status		+ "<br/>";
-				status += "<b>Status:</b> "				+ xhr.statusText	+ "<br/>";
-				status += "<b>Response:</b> "			+ xhr.responseText  + "";
-				status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-				status += "- Check the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for warnings or errors.<br/>";
-				status += "- Check the web server and PHP error logs. <br/>";
-				status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
-				$('#ajaxerr-data').html(status);
+	$.ajax({
+		type: "POST",
+		timeout: 1800000,
+		dataType: "json",
+		url: window.location.href,
+		data: $('#s3-input-form').serialize(),
+		beforeSend: function() {
+			DUPX.showProgressBar();
+			$('#s3-input-form').hide();
+			$('#s3-result-form').show();
+		},
+		success: function(data){
+			if (typeof(data) != 'undefined' && data.step3.pass == 1) {
+				$("#ajax-url_new").val($("#url_new").val());
+				$("#ajax-json").val(escape(JSON.stringify(data)));
+				<?php if (! $GLOBALS['DUPX_DEBUG']) : ?>
+					setTimeout(function(){$('#s3-result-form').submit();}, 500);
+				<?php endif; ?>
+				$('#progress-area').fadeOut(1000);
+			} else {
 				DUPX.hideProgressBar();
 			}
-		});
-	}
-
-	/** Returns the windows active url */
-	DUPX.getNewURL = function(id)
-    {
-		var filename= window.location.pathname.split('/').pop() || 'installer.php' ;
-		$("#" + id).val(window.location.href.replace(filename, ''));
-	}
-
-	/** Allows user to edit the package url  */
-	DUPX.editOldURL = function()
-    {
-		var msg = 'This is the URL that was generated when the package was created.\n';
-		msg += 'Changing this value may cause issues with the install process.\n\n';
-		msg += 'Only modify  this value if you know exactly what the value should be.\n';
-		msg += 'See "General Settings" in the WordPress Administrator for more details.\n\n';
-		msg += 'Are you sure you want to continue?';
-
-		if (confirm(msg)) {
-			$("#url_old").removeAttr('readonly');
-			$("#url_old").removeClass('readonly');
-			$('#edit_url_old').hide('slow');
+		},
+		error: function(xhr) {
+			var status  = "<b>Server Code:</b> "	+ xhr.status		+ "<br/>";
+			status += "<b>Status:</b> "				+ xhr.statusText	+ "<br/>";
+			status += "<b>Response:</b> "			+ xhr.responseText  + "";
+			status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
+			status += "- Check the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for warnings or errors.<br/>";
+			status += "- Check the web server and PHP error logs. <br/>";
+			status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
+			$('#ajaxerr-data').html(status);
+			DUPX.hideProgressBar();
 		}
-	}
-
-	/** Allows user to edit the package path  */
-	DUPX.editOldPath = function()
-    {
-		var msg = 'This is the SERVER URL that was generated when the package was created.\n';
-		msg += 'Changing this value may cause issues with the install process.\n\n';
-		msg += 'Only modify  this value if you know exactly what the value should be.\n';
-		msg += 'Are you sure you want to continue?';
-
-		if (confirm(msg)) {
-			$("#path_old").removeAttr('readonly');
-			$("#path_old").removeClass('readonly');
-			$('#edit_path_old').hide('slow');
-		}
-	}
-
-	/** Go back on AJAX result view */
-	DUPX.hideErrorResult2 = function()
-    {
-		$('#s3-result-form').hide();
-		$('#s3-input-form').show(200);
-	}
-
-	//DOCUMENT LOAD
-	$(document).ready(function()
-    {
-		DUPX.getNewURL('url_new');
-		DUPX.getNewURL('siteurl');
-        $("*[data-type='toggle']").click(DUPX.toggleClick);
-		$("#wp_password").passStrength({
-				shortPass: 		"top_shortPass",
-				badPass:		"top_badPass",
-				goodPass:		"top_goodPass",
-				strongPass:		"top_strongPass",
-				baseStyle:		"top_testresult",
-				userid:			"#wp_username",
-				messageloc:		1	});
 	});
+}
+
+/** Returns the windows active url */
+DUPX.getNewURL = function(id)
+{
+	var filename= window.location.pathname.split('/').pop() || 'installer.php' ;
+	$("#" + id).val(window.location.href.replace(filename, ''));
+}
+
+/** Allows user to edit the package url  */
+DUPX.editOldURL = function()
+{
+	var msg = 'This is the URL that was generated when the package was created.\n';
+	msg += 'Changing this value may cause issues with the install process.\n\n';
+	msg += 'Only modify  this value if you know exactly what the value should be.\n';
+	msg += 'See "General Settings" in the WordPress Administrator for more details.\n\n';
+	msg += 'Are you sure you want to continue?';
+
+	if (confirm(msg)) {
+		$("#url_old").removeAttr('readonly');
+		$("#url_old").removeClass('readonly');
+		$('#edit_url_old').hide('slow');
+	}
+}
+
+/** Allows user to edit the package path  */
+DUPX.editOldPath = function()
+{
+	var msg = 'This is the SERVER URL that was generated when the package was created.\n';
+	msg += 'Changing this value may cause issues with the install process.\n\n';
+	msg += 'Only modify  this value if you know exactly what the value should be.\n';
+	msg += 'Are you sure you want to continue?';
+
+	if (confirm(msg)) {
+		$("#path_old").removeAttr('readonly');
+		$("#path_old").removeClass('readonly');
+		$('#edit_path_old').hide('slow');
+	}
+}
+
+/** Go back on AJAX result view */
+DUPX.hideErrorResult2 = function()
+{
+	$('#s3-result-form').hide();
+	$('#s3-input-form').show(200);
+}
+
+//DOCUMENT LOAD
+$(document).ready(function()
+{
+	DUPX.getNewURL('url_new');
+	DUPX.getNewURL('siteurl');
+	$("*[data-type='toggle']").click(DUPX.toggleClick);
+	$("#wp_password").passStrength({
+			shortPass: 		"top_shortPass",
+			badPass:		"top_badPass",
+			goodPass:		"top_goodPass",
+			strongPass:		"top_strongPass",
+			baseStyle:		"top_testresult",
+			userid:			"#wp_username",
+			messageloc:		1	});
+});
 </script>

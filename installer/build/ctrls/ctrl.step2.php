@@ -378,7 +378,7 @@ if ($result = mysqli_query($dbh, "SHOW TABLES")) {
 }
 
 if ($dbtable_count == 0) {
-	DUPX_Log::error("No tables where created during step 1 of the install.  Please review the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for
+	DUPX_Log::error("No tables where created during step 2 of the install.  Please review the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for
 		ERROR messages.  You may have to manually run the installer-data.sql with a tool like phpmyadmin to validate the data input.  If you have enabled compatibility mode
 		during the package creation process then the database server version your using may not be compatible with this script.\n");
 }

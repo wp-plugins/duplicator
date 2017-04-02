@@ -15,7 +15,6 @@ $php_max_time   = @ini_get("max_execution_time");
 $php_max_time   = ($php_max_time == 0) ? "[0] time limit restriction disabled" : "[{$php_max_time}] time limit restriction enabled";
 $root_path		 = DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
 $package_path	 = "{$root_path}/{$_POST['archive_name']}";
-$package_size	 = @filesize($package_path);
 $ajax1_start	 = DUPX_U::getMicrotime();
 $zip_support	 = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $JSON			 = array();

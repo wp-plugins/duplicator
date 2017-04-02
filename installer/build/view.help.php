@@ -186,7 +186,7 @@ STEP 2
 				cPanel account.
 				<br/><br/>
 
-				<b>Connect and Delete Any Existing Data:</b> This options will DELETE all tables in the database you are connecting to.  Please make sure you have
+				<b>Connect and Remove All Data:</b> This options will DELETE all tables in the database you are connecting to.  Please make sure you have
 				backups of all your data before using an portion of the installer, as this option WILL remove all data.
 				<br/><br/>
 
@@ -306,7 +306,7 @@ STEP 2
 STEP 3
 ============================================== -->
 <a class="help-target" name="help-s3"></a>
-<h2>Step <span class="step">3</span> of 4: Database Replacement</h2>
+<h2>Step <span class="step">3</span> of 4: Data Replacement</h2>
 <div id="dup-help-step2" class="help-page">
 
     <!-- SETTINGS-->

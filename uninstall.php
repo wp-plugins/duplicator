@@ -9,7 +9,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 require_once 'define.php';
 require_once 'classes/class.settings.php';
-require_once 'classes/utilities/class.util.php';
+require_once 'classes/utilities/class.u.php';
 
 global $wpdb;
 $DUP_Settings = new DUP_Settings();
