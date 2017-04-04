@@ -16,11 +16,24 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
 
 <div class="wrap">
 	
-    <?php duplicator_header(__("Settings", 'duplicator')) ?>	
+    <?php duplicator_header(__("Settings", 'duplicator')) ?>
+
+	<h2 class="nav-tab-wrapper">
+        <a href="?page=duplicator-settings&tab=general" class="nav-tab <?php echo ($current_tab == 'general') ? 'nav-tab-active' : '' ?>"> <?php DUP_PRO_U::_e('General'); ?></a>
+		<a href="?page=duplicator-settings&tab=package" class="nav-tab <?php echo ($current_tab == 'package') ? 'nav-tab-active' : '' ?>"> <?php DUP_PRO_U::_e('Packages'); ?></a>
+		<a href="?page=duplicator-settings&tab=schedule" class="nav-tab <?php echo ($current_tab == 'schedule') ? 'nav-tab-active' : '' ?>"> <?php DUP_PRO_U::_e('Schedules'); ?></a>
+        <a href="?page=duplicator-settings&tab=storage" class="nav-tab <?php echo ($current_tab == 'storage') ? 'nav-tab-active' : '' ?>"> <?php DUP_PRO_U::_e('Storage'); ?></a>
+    </h2>
 
     <?php
     switch ($current_tab) {
         case 'general': include('general.php');
+            break;
+		case 'package': include('packages.php');
+            break;
+		case 'schedule': include('schedule.php');
+            break;
+        case 'storage': include('storage.php');
             break;
     }
     ?>
