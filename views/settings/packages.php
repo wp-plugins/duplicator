@@ -53,7 +53,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
         <div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
     <?php endif; ?>
 
-    <h3 class="title"><?php _e("Package", 'duplicator') ?> </h3>
+    <h3 class="title"><?php _e("Visual", 'duplicator') ?> </h3>
     <hr size="1" />
     <table class="form-table">
         <tr>
@@ -87,6 +87,12 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                 </p>
             </td>
         </tr>
+		</table>
+		<br/>
+
+		<h3 class="title"><?php _e("Processing", 'duplicator') ?> </h3>
+		<hr size="1" />
+		<table class="form-table">
         <tr>
             <th scope="row"><label><?php _e("Database Script", 'duplicator'); ?></label></th>
             <td>
