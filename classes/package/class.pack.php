@@ -413,12 +413,17 @@ class DUP_Package
 
     /**
      *  Makes the hashkey for the package files
+	 *  Rare cases will need to fall back to GUID
      *
      *  @return string  Returns a unique hashkey
      */
     public function makeHash()
     {
-        return uniqid().mt_rand(1000, 9999).date("ymdHis");
+		if (function_exists('random_bytes')) {
+			return bin2hex(random_bytes(8)).mt_rand(1000, 9999).date("ymdHis");
+		} else {
+			return DUP_Util::GUIDv4();
+		}
     }
 
     /**

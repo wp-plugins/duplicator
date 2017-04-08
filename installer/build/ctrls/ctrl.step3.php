@@ -129,17 +129,30 @@ if ($_POST['postguid']) {
 	DUPX_Log::info("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
 
-/* FINAL UPDATES: Must happen after the global replace to prevent double pathing
+/** FINAL UPDATES: Must happen after the global replace to prevent double pathing
   http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 
-
-//====================================================================================================
-//FINAL CLEANUP
-//====================================================================================================
+//===============================================
+//CONFIGURATION FILE UPDATES
+//===============================================
 DUPX_Log::info("\n====================================");
-DUPX_Log::info('START FINAL CLEANUP: ');
+DUPX_Log::info('CONFIGURATION FILE UPDATES:');
+DUPX_Log::info("====================================\n");
+DUPX_WPConfig::updateStandard();
+$config_file = DUPX_WPConfig::updateExtended();
+DUPX_Log::info("UPDATED WP-CONFIG: {$root_path}/wp-config.php' (if present)");
+DUPX_ServerConfig::setup();
+
+
+
+//===============================================
+//GENERAL UPDATES & CLEANUP
+//===============================================
+DUPX_Log::info("\n====================================");
+DUPX_Log::info('GENERAL UPDATES & CLEANUP:');
+DUPX_Log::info("====================================\n");
 
 /** CREATE NEW USER LOGIC */
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
@@ -205,19 +218,15 @@ if ($mu_updates) {
 } 
 
 
-/** ==============================
- * UPDATE WP-CONFIG FILE */
-DUPX_WPConfig::updateStandard();
-$config_file = DUPX_WPConfig::updateExtended();
-DUPX_Log::info("\nUPDATED WP-CONFIG: {$root_path}/wp-config.php' (if present)");
-
 //Create snapshots directory in order to
 //compensate for permissions on some servers
 if (!file_exists(DUPLICATOR_SSDIR_NAME)) {
 	mkdir(DUPLICATOR_SSDIR_NAME, 0755);
+	DUPX_Log::info("- Created directory ". DUPLICATOR_SSDIR_NAME);
 }
 $fp = fopen(DUPLICATOR_SSDIR_NAME . '/index.php', 'w');
 fclose($fp);
+DUPX_Log::info("- Created file ". DUPLICATOR_SSDIR_NAME . '/index.php');
 
 
 
@@ -260,8 +269,7 @@ $JSON['step3']['warn_all'] = empty($JSON['step3']['warnlist']) ? 0 : count($JSON
 
 mysqli_close($dbh);
 
-//CONFIG Setup
-DUPX_ServerConfig::setup();
+
 
 $ajax2_end = DUPX_U::getMicrotime();
 $ajax2_sum = DUPX_U::elapsedTime($ajax2_end, $ajax2_start);

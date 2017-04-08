@@ -22,7 +22,7 @@ class DUPX_UpdateEngine
     public static function logErrors($report)
     {
         if (!empty($report['errsql'])) {
-            DUPX_Log::info("====================================");
+            DUPX_Log::info("--------------------------------------");
             DUPX_Log::info("DATA-REPLACE ERRORS (MySQL)");
             foreach ($report['errsql'] as $error) {
                 DUPX_Log::info($error);
@@ -30,7 +30,7 @@ class DUPX_UpdateEngine
             DUPX_Log::info("");
         }
         if (!empty($report['errser'])) {
-            DUPX_Log::info("====================================");
+            DUPX_Log::info("--------------------------------------");
             DUPX_Log::info("DATA-REPLACE ERRORS (Serialization):");
             foreach ($report['errser'] as $error) {
                 DUPX_Log::info($error);
@@ -38,7 +38,7 @@ class DUPX_UpdateEngine
             DUPX_Log::info("");
         }
         if (!empty($report['errkey'])) {
-            DUPX_Log::info("====================================");
+            DUPX_Log::info("--------------------------------------");
             DUPX_Log::info("DATA-REPLACE ERRORS (Key):");
             DUPX_Log::info('Use SQL: SELECT @row := @row + 1 as row, t.* FROM some_table t, (SELECT @row := 0) r');
             foreach ($report['errkey'] as $error) {

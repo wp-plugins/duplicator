@@ -171,17 +171,28 @@ if ($_POST['action_step'] == 1 && ! isset($_GET['help'])) {
 @@CLASS.ENGINE.PHP@@
 @@CLASS.CONF.WP.PHP@@
 @@CLASS.CONF.SRV.PHP@@
-<?php if (isset($_POST['action_ajax'])) :?>
-<?php switch ($_POST['action_ajax']): ?>
-<?php case "1": ?>@@CTRL.STEP1.PHP@@<?php break;?>
-<?php case "2": ?>@@CTRL.STEP2.PHP@@<?php break;?>
-<?php case "3": ?>@@CTRL.STEP3.PHP@@<?php break;?>
-<?php endswitch ?>
 <?php
+if (isset($_POST['action_ajax'])) :
+
+	//Alternative control switch structer will not work in this case
+	//see: http://php.net/manual/en/control-structures.alternative-syntax.php
+	//Some clients will create double spaces such as the FTP client which
+	//will break example found online
+	switch ($_POST['action_ajax']) :
+
+		case "1": ?>@@CTRL.STEP1.PHP@@<?php break;
+
+		case "2": ?>@@CTRL.STEP2.PHP@@<?php break;
+
+		case "3": ?>@@CTRL.STEP3.PHP@@<?php break;
+
+	endswitch;
+
     @fclose($GLOBALS["LOG_FILE_HANDLE"]);
     die("");
+
+endif;
 ?>
-<?php endif; ?>
 	
 	
 <!DOCTYPE html>
