@@ -17,7 +17,7 @@
 VIEW: STEP 4 - INPUT -->
 <form id='s4-input-form' method="post" class="content-form" style="line-height:20px">
 	<input type="hidden" name="url_new" id="url_new" value="<?php echo rtrim($_POST['url_new'], "/"); ?>" />
-	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="_blank">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
 
 	<div class="hdr-main">
         Step <span class="step">4</span> of 4: Test Site
@@ -112,7 +112,7 @@ VIEW: STEP 4 - INPUT -->
 			<div class="s4-err-title">STEP 1 DEPLOY RESULTS</div>
 			<b data-bind="with: status.step2">DEPLOY ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
 			<div class="info-error">
-				Queries that error during the deploy step are logged to the <a href="installer-log.txt" target="_blank">install-log.txt</a> file  and marked '**ERROR**'.
+				Queries that error during the deploy step are logged to the <a href="installer-log.txt" target="install_log">install-log.txt</a> file  and marked '**ERROR**'.
 				<br/><br/>
 
 				<b><u>COMMON FIXES INCLUDE:</u></b>

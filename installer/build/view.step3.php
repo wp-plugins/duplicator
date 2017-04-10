@@ -28,7 +28,7 @@ VIEW: STEP 3- INPUT -->
 	<input type="hidden" name="dbcharset" 	 value="<?php echo $_POST['dbcharset'] ?>" />
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
 
-	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="_blank">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Data Replacement
 	</div>
@@ -141,8 +141,13 @@ VIEW: STEP 3- INPUT -->
 				</td>
 			</tr>
 		</table>
-		<br/><br/>
+		<br/>
 
+		<input type="checkbox" name="urlextended" id="urlextended" value="1" /> <label for="urlextended">Enable Extended URL Replace <small>Searches multiple protocols: '//', 'http', 'https'</small></label><br/>
+		<input type="checkbox" name="postguid" id="postguid" value="1" /> <label for="postguid">Keep Post GUID unchanged</label><br/>
+		<input type="checkbox" name="fullsearch" id="fullsearch" value="1" /> <label for="fullsearch">Enable Full Search <small>(slower to process)</small> </label><br/>
+		<br/><br/>
+		
 		<!-- WP-CONFIG -->
 		<div class="hdr-sub3">WP-Config File</div>
 		<table class="dupx-opts dupx-advopts">
@@ -157,12 +162,8 @@ VIEW: STEP 3- INPUT -->
 				<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
 			</tr>
 		</table>
+		<br/><br/><br/>
 		<br/><br/>
-
-
-		<input type="checkbox" name="postguid" id="postguid" value="1" /> <label for="postguid">Keep Post GUID unchanged</label><br/>
-		<input type="checkbox" name="fullsearch" id="fullsearch" value="1" /> <label for="fullsearch">Enable Full Search <small>(slower to process)</small> </label><br/>
-		<br/><br/><br/><br/>
 
 	</div>
 
@@ -177,7 +178,7 @@ VIEW: STEP 3 - AJAX RESULT
 ========================================= -->
 <form id='s3-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="installer-log.txt" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Data Replacement
 	</div>
@@ -256,7 +257,7 @@ DUPX.runUpdate = function()
 			status += "<b>Status:</b> "				+ xhr.statusText	+ "<br/>";
 			status += "<b>Response:</b> "			+ xhr.responseText  + "";
 			status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-			status += "- Check the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for warnings or errors.<br/>";
+			status += "- Check the <a href='installer-log.txt' target='install_log'>installer-log.txt</a> file for warnings or errors.<br/>";
 			status += "- Check the web server and PHP error logs. <br/>";
 			status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 			$('#ajaxerr-data').html(status);
