@@ -104,25 +104,38 @@ array_push($GLOBALS['REPLACE_LIST'],
 //URL EXTENDED
 if ($_POST['urlextended']) {
 	
-	//RAW '//' and https Formated
-	$url_old_raw = str_ireplace('http:', '', $_POST['url_old']);
-	$url_new_raw = str_ireplace('http:', '', $_POST['url_new']);
-	$url_old_ssl = str_ireplace('http:', 'https:', $_POST['url_old']);
-	$url_new_ssl = str_ireplace('http:', 'https:', $_POST['url_new']);
-
-	//JSON Formated
+	//RAW '//' 
+	$url_old_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_old']);
+	$url_new_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_new']);
 	$url_old_raw_json = str_replace('"',  "", json_encode($url_old_raw));
 	$url_new_raw_json = str_replace('"',  "", json_encode($url_new_raw));
-	$url_old_ssl_json = str_replace('"',  "", json_encode($url_old_ssl));
-	$url_new_ssl_json = str_replace('"',  "", json_encode($url_new_ssl));
+
+	//INVERSE
+	if (stristr($_POST['url_old'], 'http:')) {
+		//Search for https urls
+		$url_old_diff = str_ireplace('http:', 'https:', $_POST['url_old']);
+		$url_new_diff = str_ireplace('http:', 'https:', $_POST['url_new']);
+		$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
+		$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
+		
+	} else {
+		//Search for http urls
+		$url_old_diff = str_ireplace('https:', 'http:', $_POST['url_old']);
+		$url_new_diff = str_ireplace('https:', 'http:', $_POST['url_new']);
+		$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
+		$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
+	}
 
 	array_push($GLOBALS['REPLACE_LIST'],
+			//RAW
 			array('search' => $url_old_raw,			 	 	 'replace' => $url_new_raw),
-			array('search' => $url_old_ssl,			 	 	 'replace' => $url_new_ssl),
 			array('search' => $url_old_raw_json,			 'replace' => $url_new_raw_json),
-			array('search' => $url_old_ssl_json,			 'replace' => $url_new_ssl_json),
 			array('search' => urlencode($url_old_raw), 		 'replace' => urlencode($url_new_raw)),
-			array('search' => urlencode($url_old_ssl),  	 'replace' => urlencode($url_new_ssl))
+
+			//INVERSE
+			array('search' => $url_old_diff,			 	 'replace' => $url_new_diff),
+			array('search' => $url_old_diff_json,			 'replace' => $url_new_diff_json),
+			array('search' => urlencode($url_old_diff),  	 'replace' => urlencode($url_new_diff))
 	);
 }
 
