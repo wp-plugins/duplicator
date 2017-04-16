@@ -48,11 +48,18 @@ class DUP_DB extends wpdb
      */
     public static function getVersion($full = false)
     {
+		global $wpdb;
+
         if ($full) {
             $version = self::getVariable('version');
         } else {
             $version = preg_replace('/[^0-9.].*/', '', self::getVariable('version'));
         }
+
+		//Fallback for servers that have restriced SQL for SHOW statement
+		if (empty($version)) {
+			$version = $wpdb->db_version();
+		}
 
         return empty($version) ? 0 : $version;
     }

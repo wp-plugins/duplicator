@@ -339,19 +339,6 @@ STEP 3
 			<td>The new password for the new user.  Must be at least 6 characters long.</td>
 		</tr>
 		<tr>
-			<td colspan="2" class="section">WP-Config File</td>
-		</td>
-		<tr>
-			<td>Config SSL</td>
-			<td>Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Enforce on Login"
-				will turn off SSL support for WordPress Logins. This sets FORCE_SSL_LOGIN in your wp-config file to false if true, otherwise it will create the setting if not set.</td>
-		</tr>
-		<tr>
-			<td>Config Cache</td>
-			<td>Turn off Cache support for WordPress. This sets WP_CACHE in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Keep Home Path"
-        sets WPCACHEHOME in your wp-config file to nothing if true, otherwise nothing is changed.</td>
-		</tr>
-		<tr>
 			<td colspan="2" class="section">Scan Options</td>
 		</td>
 		<tr>
@@ -379,13 +366,37 @@ STEP 3
 			<td>These plug-ins are the plug-ins that were activated when the package was created and represent the plug-ins that will be activated after the install.</td>
 		</tr>
 		<tr>
+			<td>Extended URL<br/>Replace</td>
+			<td>
+				As part of the search and replace process, Step 3 will look at every cell in the database and replace the 'Old URL' with the 'New URL'.  This process is an <u>exact</u>
+				match replace routine.  So if you have URLs in your site that consist of a mix of 'http', 'https' or '//' protocol relative URLs the search will only pick up the one.
+				To enable the search across all protocol types check this checkbox.
+				<br/><br/>
+				In most cases this check is not needed.  However if you find that some links did not get updated or you know your site is inter-mixed with multiple URL types then this
+				option should be checked.
+			</td>
+		</tr>
+		<tr>
 			<td>Post GUID</td>
 			<td>If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.</td>
 		</tr>
 		<tr>
 			<td>Full Search</td>
 			<td>Full search forces a scan of every single cell in the database. If it is not checked then only text based columns are searched which makes the update process much faster.
-        Use this option if you have issues with data not updating correctly.</td>
+			Use this option if you have issues with data not updating correctly.</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="section">WP-Config File</td>
+		</td>
+		<tr>
+			<td>Config SSL</td>
+			<td>Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Enforce on Login"
+				will turn off SSL support for WordPress Logins. This sets FORCE_SSL_LOGIN in your wp-config file to false if true, otherwise it will create the setting if not set.</td>
+		</tr>
+		<tr>
+			<td>Config Cache</td>
+			<td>Turn off Cache support for WordPress. This sets WP_CACHE in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Keep Home Path"
+			sets WPCACHEHOME in your wp-config file to nothing if true, otherwise nothing is changed.</td>
 		</tr>
 	</table>
 	<br/><br/>

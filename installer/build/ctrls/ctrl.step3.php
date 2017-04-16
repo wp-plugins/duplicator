@@ -110,7 +110,7 @@ if ($_POST['urlextended']) {
 	$url_old_raw_json = str_replace('"',  "", json_encode($url_old_raw));
 	$url_new_raw_json = str_replace('"',  "", json_encode($url_new_raw));
 
-	//INVERSE
+	//INVERSE: Apply a search for the inverse of the orginal
 	if (stristr($_POST['url_old'], 'http:')) {
 		//Search for https urls
 		$url_old_diff = str_ireplace('http:', 'https:', $_POST['url_old']);

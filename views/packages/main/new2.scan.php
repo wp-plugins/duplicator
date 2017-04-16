@@ -180,7 +180,7 @@ TOOL BAR: STEPS -->
 					echo '</small>';
 					
 					//MAX_EXECUTION_TIME
-					$test = (set_time_limit(0)) ? 0 : ini_get("max_execution_time");
+					$test = (@set_time_limit(0)) ? 0 : ini_get("max_execution_time");
 					echo '<hr size="1" /><span id="data-srv-php-maxtime"></span>&nbsp;<b>' . __('Max Execution Time', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
 					echo '<small>';
 					printf(__('Issues might occur for larger packages when the [max_execution_time] value in the php.ini is too low.  The minimum recommended timeout is "%1$s" seconds or higher. An attempt is made to override this value if the server allows it.  A value of 0 (recommended) indicates that PHP has no time limits.', 'duplicator'), DUPLICATOR_SCAN_TIMEOUT);
