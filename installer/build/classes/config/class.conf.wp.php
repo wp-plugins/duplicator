@@ -96,6 +96,15 @@ class DUPX_WPConfig
 			return $config_file;
 		}
 
+		$root_path		= DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
+		$wpconfig_path	= "{$root_path}/wp-config.php";
+		$config_file	= @file_get_contents($wpconfig_path, true);
+
+		$mu_newDomain = parse_url($_POST['url_new']);
+		$mu_oldDomain = parse_url($_POST['url_old']);
+		$mu_newDomainHost = $mu_newDomain['host'];
+		$mu_newUrlPath = parse_url($_POST['url_new'], PHP_URL_PATH);
+
 		$patterns	 = array("/('|\")WP_HOME.*?\)\s*;/",
 			"/('|\")WP_SITEURL.*?\)\s*;/",
 			"/('|\")DOMAIN_CURRENT_SITE.*?\)\s*;/",
@@ -105,11 +114,88 @@ class DUPX_WPConfig
 			"'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');",
 			"'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
 
-		$config_file = file_get_contents('wp-config.php', true);
+
+		$defines = self::tokenParser($wpconfig_path);
+
+		// Tweak WP_CONTENT_DIR and WP_CONTENT_URL
+		if (array_key_exists('WP_CONTENT_DIR', $defines)) {
+			$new_content_dir = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']));
+			array_push($patterns, "/('|\")WP_CONTENT_DIR.*?\)\s*;/");
+			array_push($replace, "'WP_CONTENT_DIR', '{$new_content_dir}');");
+		}
+
+		if (array_key_exists('WP_CONTENT_URL', $defines)) {
+			$new_content_url = str_replace($_POST['url_old'], $_POST['url_new'], $defines['WP_CONTENT_URL']);
+			array_push($patterns, "/('|\")WP_CONTENT_URL.*?\)\s*;/");
+			array_push($replace, "'WP_CONTENT_URL', '{$new_content_url}');");
+		}
+		
 		$config_file = preg_replace($patterns, $replace, $config_file);
-		file_put_contents('wp-config.php', $config_file);
+		file_put_contents($wpconfig_path, $config_file);
+		$config_file = file_get_contents($wpconfig_path, true);
 
 		return $config_file;
 	}
+
+
+	public static function tokenParser($wpconfig_path) {
+
+		$defines = array();
+		$wpconfig_file = @file_get_contents($wpconfig_path);
+
+		if (!function_exists('token_get_all')) {
+			DUPX_Log::info("\nNOTICE: PHP function 'token_get_all' does not exist so skipping WP_CONTENT_DIR and WP_CONTENT_URL processing.");
+			return $defines;
+		}
+
+		if ($wpconfig_file === false) {
+			return $defines;
+		}
+
+		$defines = array();
+		$tokens	 = token_get_all($wpconfig_file);
+		$token	 = reset($tokens);
+		while ($token) {
+			if (is_array($token)) {
+				if ($token[0] == T_WHITESPACE || $token[0] == T_COMMENT || $token[0] == T_DOC_COMMENT) {
+					// do nothing
+				} else if ($token[0] == T_STRING && strtolower($token[1]) == 'define') {
+					$state = 1;
+				} else if ($state == 2 && self::isConstant($token[0])) {
+					$key	 = $token[1];
+					$state	 = 3;
+				} else if ($state == 4 && self::isConstant($token[0])) {
+					$value	 = $token[1];
+					$state	 = 5;
+				}
+			} else {
+				$symbol = trim($token);
+				if ($symbol == '(' && $state == 1) {
+					$state = 2;
+				} else if ($symbol == ',' && $state == 3) {
+					$state = 4;
+				} else if ($symbol == ')' && $state == 5) {
+					$defines[self::tokenStrip($key)] = self::tokenStrip($value);
+					$state = 0;
+				}
+			}
+			$token = next($tokens);
+		}
+
+		return $defines;
+
+	}
+
+	private static function tokenStrip($value)
+	{
+		return preg_replace('!^([\'"])(.*)\1$!', '$2', $value);
+	}
+
+	private static function isConstant($token)
+	{
+		return $token == T_CONSTANT_ENCAPSED_STRING || $token == T_STRING || $token == T_LNUMBER || $token == T_DNUMBER;
+	}
+
+
 }
 ?>

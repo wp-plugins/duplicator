@@ -443,7 +443,7 @@ TERMS & NOTICES
     <br/><br/><br/>
     <br/><br/><br/>
     <div class="dupx-footer-buttons">
-        <input id="s1-deploy-btn" type="button" class="default-btn" value=" Next " onclick="DUPX.runExtraction()" title="<?php echo $agree_msg; ?>" />
+        <button id="s1-deploy-btn" type="button" class="default-btn" onclick="DUPX.runExtraction()" title="<?php echo $agree_msg; ?>"> Next </button>
     </div>
 <?php endif; ?>
 
