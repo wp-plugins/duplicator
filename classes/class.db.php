@@ -56,7 +56,7 @@ class DUP_DB extends wpdb
             $version = preg_replace('/[^0-9.].*/', '', self::getVariable('version'));
         }
 
-		//Fallback for servers that have restriced SQL for SHOW statement
+		//Fall-back for servers that have restricted SQL for SHOW statement
 		if (empty($version)) {
 			$version = $wpdb->db_version();
 		}

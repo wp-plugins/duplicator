@@ -220,14 +220,28 @@ class DUP_Util
      * Notes:
      * 	- Avoid using glob() as GLOB_BRACE is not an option on some operating systems
      * 	- Pre PHP 5.3 DirectoryIterator will crash on unreadable files
+	 *  - Scandir will not crash on unreadable items, but will not return results
      */
     public static function listFiles($path = '.')
     {
-        $files = array();
-        foreach (new DirectoryIterator($path) as $file) {
-            $files[] = str_replace("\\", '/', $file->getPathname());
-        }
-        return $files;
+		try {
+			$files = array();
+			foreach (new DirectoryIterator($path) as $file) {
+				$files[] = str_replace("\\", '/', $file->getPathname());
+			}
+			return $files;
+
+		} catch (Exception $exc) {
+
+			$result = array();
+			$files = @scandir($path);
+			if (is_array($files)) {
+				foreach ($files as $file) {
+					$result[] = str_replace("\\", '/', $path) . $file;
+				}
+			}
+			return $result;
+		}
     }
 
     /**

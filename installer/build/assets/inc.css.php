@@ -171,7 +171,7 @@
 		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
 	}
 	a.s4-final-btns:hover {background-color: #dfdfdf;}
-	div.s4-gopro-btn {text-align:center; font-size:13px; margin:auto; width:200px; font-style: italic}
+	div.s4-gopro-btn {text-align:center; font-size:14px; margin:auto; width:200px; font-style: italic}
 
 
 	/* PARSLEY:Overrides*/

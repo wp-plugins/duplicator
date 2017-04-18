@@ -419,9 +419,13 @@ class DUP_Package
      */
     public function makeHash()
     {
-		if (function_exists('random_bytes')) {
-			return bin2hex(random_bytes(8)).mt_rand(1000, 9999).date("ymdHis");
-		} else {
+		try {
+			if (function_exists('random_bytes') && DUP_Util::$on_php_53_plus) {
+				return bin2hex(random_bytes(8)).mt_rand(1000, 9999).date("ymdHis");
+			} else {
+				return DUP_Util::GUIDv4();
+			}
+		} catch (Exception $exc) {
 			return DUP_Util::GUIDv4();
 		}
     }
