@@ -19,16 +19,20 @@ class DUPX_ServerConfig
 	 */
 	public static function reset()
 	{
+
+
 		DUPX_Log::info("\nWEB SERVER CONFIGURATION FILE RESET:");
 		$timeStamp = date("ymdHis");
 
 		//Apache
 		@copy('.htaccess', ".htaccess.{$timeStamp}.orig");
 		@unlink('.htaccess');
+		@file_put_contents('.htaccess', "#Reset by Duplicator Installer.  Original can be found in .htaccess.{$timeStamp}.orig");
 
 		//IIS
 		@copy('web.config', "web.config.{$timeStamp}.orig");
 		@unlink('web.config');
+		@file_put_contents('web.config', "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$timeStamp}.orig -->");
 
 		//.user.ini - For WordFence
 		@copy('.user.ini', ".user.ini.{$timeStamp}.orig");
@@ -36,8 +40,8 @@ class DUPX_ServerConfig
 
 		DUPX_Log::info("- Backup of .htaccess/web.config made to *.{$timeStamp}.orig");
 		DUPX_Log::info("- Reset of .htaccess/web.config files");
-		$tmp_htaccess = '# RESET FOR DUPLICATOR INSTALLER USEAGE';
-		file_put_contents('.htaccess', $tmp_htaccess);
+		
+		
 		@chmod('.htaccess', 0644);
 	}
 
