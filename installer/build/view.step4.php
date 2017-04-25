@@ -20,7 +20,7 @@ VIEW: STEP 4 - INPUT -->
 	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
 
 	<div class="hdr-main">
-        Step <span class="step">4</span> of 4: Test Site
+        Step <span class="step">4</span> of 4: Test
 	</div><br />
 
 	<div class="hdr-sub1">

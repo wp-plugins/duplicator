@@ -54,16 +54,16 @@ $agree_msg    = "To enable this button the checkbox above under the 'Terms & Not
 <input type="hidden" name="archive_name"  value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
 
 <div class="hdr-main">
-    Step <span class="step">1</span> of 4: Extract Archive
+    Step <span class="step">1</span> of 4: Deployment
 </div>
 <br/>
 	
 
 <!-- ====================================
-ARCHIVE FILE
+ARCHIVE
 ==================================== -->
-<div class="hdr-sub1">
-    <a id="s1-area-archive-file-link" data-type="toggle" data-target="#s1-area-archive-file"><i class="dupx-plus-square"></i> Archive File</a>
+<div class="hdr-sub1" id="s1-area-archive-file-link" data-type="toggle" data-target="#s1-area-archive-file">
+    <a href="javascript:void(0)"><i class="dupx-plus-square"></i> Archive</a>
 	<div class="<?php echo ($arcCheck == 'Pass') ? 'status-badge-pass' : 'status-badge-fail'; ?>" style="float:right">
 		<?php echo ($arcCheck == 'Pass') ? 'Pass' : 'Fail'; ?>
 	</div>
@@ -71,6 +71,39 @@ ARCHIVE FILE
 <div id="s1-area-archive-file" style="display:none">
 
     <table class="s1-archive-local">
+		<tr>
+			<td>Status:</td>
+			<td>
+				<?php if ($arcCheck != 'Fail') : ?>
+					<span class="dupx-pass">Archive file successfully detected.</span>
+				<?php else : ?>
+					<div class="s1-archive-failed-msg">
+						<b class="dupx-fail">Archive File Not Found!</b><br/>
+						The archive file name below must be the <u>exact</u> name of the archive file placed in the deployment path (character for character).
+						If the file does not have the same name then rename it to the name above.
+						<br/><br/>
+
+						When downloading the package files make sure both files are from the same package line in the packages view.  The archive file also
+						must be completely downloaded to the server before starting the install.  The following zip files were found at the deployment path:
+						<?php
+							//DETECT ARCHIVE FILES
+							$zip_files = DUPX_Server::getZipFiles();
+							$zip_count = count($zip_files);
+
+							if ($zip_count >= 1) {
+								echo "<ol style='padding:10px 20px 0 20px; font-style:italic'>";
+								foreach($zip_files as $file) {
+									echo "<li> '{$file}'</li>";
+								}
+								echo "</ol>";
+							} else {
+								echo  "<br/><br/> <i>- No zip files found -</i>";
+							}
+						?>
+					</div>
+				<?php endif; ?>
+			</td>
+		</tr>
         <tr>
             <td>Size:</td>
             <td><?php echo DUPX_U::readableByteSize($arcSize); ;?> </td>
@@ -89,60 +122,33 @@ ARCHIVE FILE
         </tr>
     </table>
 
-    <?php if ($arcCheck == 'Fail') : ?>
-        <div class="s1-archive-failed-msg">
-            <b class="dupx-fail">Archive File Not Found!</b><br/>
-            The archive file name above must be the <u>exact</u> name of the archive file placed in the deployment path (character for character).
-            If the file does not have the same name then rename it to the name above.
-            <br/><br/>
-
-            When downloading the package files make sure both files are from the same package line in the packages view.  The archive file also
-            must be completely downloaded to the server before trying to run step 1.  The following zip files were found at the deployment path:<br/>
-            <?php
-                //DETECT ARCHIVE FILES
-                $zip_files = DUPX_Server::getZipFiles();
-                $zip_count = count($zip_files);
-
-                if ($zip_count >= 1) {
-                    echo "<ol>";
-                    foreach($zip_files as $file) {
-                        echo "<li> {$file}</li>";
-                    }
-                    echo "</ol>";
-                } else {
-                    echo  " - No zip files found -";
-                }
-            ?>
-        </div>
-    <?php endif; ?>
 
 </div>
 <br/><br/>
 
 
 <!-- ====================================
-SYSTEM CHECKS
+VALIDATION
 ==================================== -->
-<div class="hdr-sub1">
-	<a id="s1-area-sys-setup-link" data-type="toggle" data-target="#s1-area-sys-setup"><i class="dupx-plus-square"></i> System Checks</a>
+<div class="hdr-sub1" id="s1-area-sys-setup-link" data-type="toggle" data-target="#s1-area-sys-setup">
+	<a href="javascript:void(0)"><i class="dupx-plus-square"></i> Validation</a>
 	<div class="<?php echo ($req_success) ? 'status-badge-pass' : 'status-badge-fail'; ?>" style="float:right">
 		<?php echo ($req_success) ? 'Pass' : 'Fail'; ?>
 	</div>
 </div>
 <div id="s1-area-sys-setup" style="display:none">
+	<div class='info-top'>The system validation checks help to make sure the system is ready for install.</div>
 
     <!-- *** REQUIREMENTS ***  -->
-	<div class="hdr-sub2">
-		<table class="s1-checks-area">
-			<tr>
-				<td class="title">Requirements</td>
-				<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-reqs-all')">[toggle]</a></td>
-			</tr>
-		</table>
-	</div>
-
 	<div class="s1-reqs" id="s1-reqs-all">
-		<div class="notice">All requirements must pass to start deployment</div>
+		<div class="header">
+			<table class="s1-checks-area">
+				<tr>
+					<td class="title">Requirements <small>(must pass)</small></td>
+					<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-reqs-all')">[toggle]</a></td>
+				</tr>
+			</table>
+		</div>
 
 		<!-- REQ 1 -->
 		<div class="status <?php echo strtolower($req['01']); ?>"><?php echo $req['01']; ?></div>
@@ -197,16 +203,15 @@ SYSTEM CHECKS
 
 
 	<!-- *** NOTICES ***  -->
-	<div class="hdr-sub2">
-		<table class="s1-checks-area">
-			<tr>
-				<td class="title">Notices</td>
-				<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-notice-all')">[toggle]</a></td>
-			</tr>
-		</table>
-	</div>
 	<div class="s1-reqs" id="s1-notice-all">
-		<div class="notice">Notices are not required to start deployment</div>
+		<div class="header">
+			<table class="s1-checks-area">
+				<tr>
+					<td class="title">Notices <small>(optional)</small></td>
+					<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-notice-all')">[toggle]</a></td>
+				</tr>
+			</table>
+		</div>
 
 		<!-- NOTICE 1 -->
 		<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
@@ -300,14 +305,15 @@ SYSTEM CHECKS
 	
 
 <!-- ====================================
-ADVANCED OPTIONS
+OPTIONS
 ==================================== -->
-<div class="hdr-sub1">
-	<a data-type="toggle" data-target="#s1-area-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
+<div class="hdr-sub1" data-type="toggle" data-target="#s1-area-adv-opts">
+	<a href="javascript:void(0)"><i class="dupx-plus-square"></i> Options</a>
 </div>
 <div id="s1-area-adv-opts" style="display:none">
 	<div class="help-target"><a href="?help#help-s1" target="_blank">[help]</a></div>
-  
+	<br/>
+	<div class="hdr-sub3">Advanced</div>
 	<table class="dupx-opts dupx-advopts">
 		<tr>
 			<td>Extraction:</td>
@@ -315,8 +321,11 @@ ADVANCED OPTIONS
 				<input type="checkbox" name="archive_manual" id="archive_manual" value="1" /> <label for="archive_manual">Manual package extraction</label><br/>
 			</td>
 		</tr>
+	</table>
+
+	<table class="dupx-opts dupx-advopts">
 		<tr>
-			<td>File Timestamp:</td>
+			<td>File Times:</td>
 			<td>
 				<input type="radio" name="archive_filetime" id="archive_filetime_now" value="current" checked="checked" /> <label class="radio" for="archive_filetime_now" title='Set the files current date time to now'>Current</label>
 				<input type="radio" name="archive_filetime" id="archive_filetime_orginal" value="original" /> <label class="radio" for="archive_filetime_orginal" title="Keep the files date time the same">Original</label>
@@ -349,8 +358,6 @@ ADVANCED OPTIONS
 					</td>
 				</tr>
 			</table>
-            
-           
         </div>
      </div><br/>
 
@@ -358,10 +365,10 @@ ADVANCED OPTIONS
 <br/><br/>
 
 <!-- ====================================
-TERMS & NOTICES
+NOTICES
 ==================================== -->
-<div class="hdr-sub1">
-	<a data-type="toggle" data-target="#s1-area-warnings"><i class="dupx-plus-square"></i> Terms &amp; Notices</a>
+<div class="hdr-sub1" data-type="toggle" data-target="#s1-area-warnings">
+	<a href="javascript:void(0)"><i class="dupx-plus-square"></i> Notices</a>
 </div>
 
 <div id="s1-area-warnings" style="display:none">
@@ -431,7 +438,7 @@ TERMS & NOTICES
 <?php if (! $req_success  ||  $arcCheck == 'Fail') :?>
 	<div class="s1-err-msg">
 		<i>
-			This installation will not be able to proceed until the archive file and system requirements pass. Please adjust your servers settings or contact your
+			This installation will not be able to proceed until the 'Archive' and 'Validation' sections pass. Please adjust your servers settings or contact your
 			server administrator, hosting provider or visit the resources below for additional help.
 		</i>
 		<div style="padding:10px">
@@ -459,7 +466,7 @@ Auto Posts to view.step2.php
 
 	 <div class="dupx-logfile-link"><a href="installer-log.txt" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
-        Step <span class="step">1</span> of 4: Extract Archive
+        Step <span class="step">1</span> of 4: Deployment
 	</div>
 
 	<!--  POST PARAMS -->

@@ -22,12 +22,12 @@ HELP FORM -->
 STEP 1
 ============================================== -->
 <a class="help-target" name="help-s1"></a>
-<h2>Step <span class="step">1</span> of 4: Extract Archive</h2>
+<h2>Step <span class="step">1</span> of 4: Deployment</h2>
 <div id="dup-help-scanner" class="help-page">
     The "Extract Archive" screen is separated into four sections:
 	<br/><br/>
 
-	<h3>Archive File</h3>
+	<h3>Archive</h3>
 	This is the archive file the installer must use in order to extract the web site files and database.   The 'Name' is a unique key that
 	ties both the archive and installer together.   The installer needs the archive file name to match the 'Name' value exactly character for character in order
 	for	this section to get a pass status.
@@ -36,18 +36,22 @@ STEP 1
 	complete package.  Additional information such as the archive size and the package notes are mentioned in this section.
 	<br/><br/>
 
-	<h3>System Checks</h3>
+	<h3>Validation</h3>
 	This section shows the installers system requirements and notices.  All requirements must pass in order to proceed to Step 2.  Each requirement will show
-	a Pass/Fail status.  Notices on the other hand are <u>not</u> required in order to continue with the install.
+	a <b class="dupx-pass">Pass</b>/<b class="dupx-fail">Fail</b> status.  Notices on the other hand are <u>not</u> required in order to continue with the install.
 	<br/><br/>
 
-	Notices are simply checks that will help you
-	identify any possible issues that might occur.  If this section shows a <i style='color:maroon'>'Fail' or 'Warn'</i> status then click on the title link and
-	read the overview for how to solve the check.
+	Notices are simply checks that will help you identify any possible issues that might occur.  If this section shows a
+	<b class="dupx-pass">Good</b>/<b class="dupx-fail">Warn</b> for various checks. 	Click on the title link and	read the overview for how to solve the test.
 	<br/><br/>
 
-	<h3>Advanced Options</h3>
-	The advanced options for step 1 can help better prepare your site should your server need additional settings beyond most general configuration.
+	<h3>MultiSite <sup>pro</sup></h3>
+	The multisite option allows users with a pro Business or Gold license to perform additional multi-site tasks.  All licenses can backup & migrate standalone sites
+	and full multisite networks. Multisite Plus+ (business and above) adds the  ability to install a subsite as a standalone site.
+	<br/><br/>
+
+	<h3>Options</h3>
+	The options for step 1 can help better prepare your site should your server need additional settings beyond most general configuration.
 	<table class="help-opt">
 		<tr>
 			<th>Option</th>
@@ -74,6 +78,17 @@ STEP 1
 			</td>
 		</tr>
 		<tr>
+			<td>Permissions <sup>pro</sup></td>
+			<td>
+				<b>All Files:</b> Check the 'All Files' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
+				to recursively set the octal value on all the files being extracted. Typically this value is 644 on most servers and hosts.
+				<br/><br/>
+
+				<b>All Directories:</b> Check the 'All Directories' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
+				to recursively set octal value on all the directories being extracted.  Typically this value is 755 on most servers and hosts.
+			</td>
+		</tr>
+		<tr>
 			<td>Config Files <sup>pro</sup></td>
 			<td>
 				Inside the archive.zip should be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
@@ -86,6 +101,12 @@ STEP 1
 				know how to properly configure either the .htaccess or web.config files on your server.
 			</td>
 		</tr>
+
+		<tr>
+			<td>File Times</td>
+			<td>When the archive is extracted should it show the current date-time or keep the original time it had when it was built.  This setting will be applied to
+			all files and directories.</td>
+		</tr>
 		<tr>
 			<td>Logging</td>
 			<td>
@@ -93,27 +114,13 @@ STEP 1
 				Note if you use Debug the amount of data written can be very large.  Debug is only recommended for support.
 			</td>
 		</tr>
-		<tr>
-			<td>File Times</td>
-			<td>When the archive is extracted should it show the current date-time or keep the original time it had when it was built.  This setting will be applied to
-			all files and directories.</td>
-		</tr>
-		<tr>
-			<td>Permissions <sup>pro</sup></td>
-			<td>
-				<b>All Files:</b> Check the 'All Files' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
-				to recursively set the octal value on all the files being extracted. Typically this value is 644 on most servers and hosts.
-				<br/><br/>
 
-				<b>All Directories:</b> Check the 'All Directories' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
-				to recursively set octal value on all the directories being extracted.  Typically this value is 755 on most servers and hosts.
-			</td>
-		</tr>
 	</table>
     <br/><br/>
 
-	<h3>Terms &amp; Notices</h3>
-	To proceed with the install users must check the checkbox labeled " I have read and accept all terms &amp; notices".
+	<h3>Notices</h3>
+	To proceed with the install users must check the checkbox labeled " I have read and accept all terms &amp; notices".   This means you accept the term of using the software
+	and are aware of any notices.
 	<br/><br/>
 
 </div>
@@ -134,7 +141,7 @@ STEP 2
     <br/><br/>
 
 	<h3>cPanel Login <sup>pro</sup></h3>
-	The cPanel connectivity option is only available for Duplicator Pro.
+	<i>The cPanel connectivity option is only available for Duplicator Pro.</i>
 	<table class="help-opt">
 		<tr>
 			<th>Option</th>
@@ -169,8 +176,8 @@ STEP 2
 	</table>
 	<br/><br/>
 
-    <!-- DATABASE SERVER -->
-	<h3>Database Setup</h3>
+    <!-- DATABASE SETUP-->
+	<h3>Setup</h3>
 	The database setup options allow you to connect to an existing database or in the case of cPanel connect or create a new database.
 	<table class="help-opt">
 		<tr>
@@ -190,11 +197,11 @@ STEP 2
 				backups of all your data before using an portion of the installer, as this option WILL remove all data.
 				<br/><br/>
 
-				<b>Connect and Backup Any Existing Data:</b> This options will RENAME all tables in the database you are connecting to with a prefix of
+				<b>Connect and Backup Any Existing Data:</b><sup>pro</sup> This options will RENAME all tables in the database you are connecting to with a prefix of
 				"<?php echo $GLOBALS['DB_RENAME_PREFIX'] ?>".
 				<br/><br/>
 
-				<b>Manual SQL Execution:</b> This options requires that you manually run your own SQL import to an existing database before running the installer.
+				<b>Manual SQL Execution:</b><sup>pro</sup> This options requires that you manually run your own SQL import to an existing database before running the installer.
 				When this action is selected the database.sql file found inside the archive.zip file will NOT be ran.   The database your connecting to should already
 				be a valid WordPress installed database.  This option is viable when you need to run advanced search and replace options on the database.
 				<br/><br/>
@@ -221,61 +228,23 @@ STEP 2
 			<td>Password</td>
 			<td>The password of the MySQL database server user.</td>
 		</tr>
+
+	</table>
+	<br/><br/>
+
+    <!-- OPTIONS-->
+    <h3>Options</h3>
+	<table class="help-opt">
+		<tr>
+			<th>Option</th>
+			<th>Details</th>
+		</tr>
 		<tr>
 			<td>Prefix:<sup>pro*</sup></td>
 			<td>By default, databases are prefixed with the cPanel account's username (for example, myusername_databasename).  However you can ignore this option if
 			your host does not use the default cPanel username prefix schema.  Check the 'Ignore cPanel Prefix' and the username prefixes will be ignored.
 			This will still require you to enter in the cPanels required setup prefix if they require one.  The checkbox will be set to read-only if your host has
 			disabled prefix settings.  Please see your host full requirements when using the cPanel options.</td>
-		</tr>
-	</table>
-	<sup>*cPanel Only Option</sup>
-	<br/><br/>
-
-	<h3>Test Database</h3>
-	Testing the database connection is important and can help isolate possible issues that may arise with database version and compatibility issues.
-
-	<table class="help-opt">
-		<tr>
-			<th>Option</th>
-			<th>Details</th>
-		</tr>
-		<tr>
-		<td>Test Connection</td>
-		<td>
-			The test connection button will help validate if the connection parameters are correct for this server.  There are three separate validation parameters:
-			<ul>
-				<li><b>Host:</b> Returns a status to indicate if the server host name is a valid host name <br/><br/></li>
-				<li><b>Database:</b> Returns a status to indicate if the database name is a valid <br/><br/></li>
-				<li><b>Version:</b> Shows the difference in database engine version numbers. If the package was created on a newer database version than where its trying
-				to be installed then you can run into issues.  Its best to make sure the server where the installer is running has the same or higher version number than
-				where it was built.</li>
-			</ul>
-
-		</td>
-		</tr>
-		<tr>
-			<td>Troubleshoot</td>
-			<td>
-				<b>Common Database Connection Issues:</b><br/>
-				- Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
-				- Validate the database and database user exist on this server <br/>
-				- Check if the database user has the correct permission levels to this database <br/>
-				- The host 'localhost' may not work on all hosting providers <br/>
-				- Contact your hosting provider for the exact required parameters <br/>
-				- Visit the online resources 'Common FAQ page' <br/>
-
-			</td>
-		</tr>
-	</table>
-	<br/><br/>
-
-    <!-- ADVANCED OPTS -->
-    <h3>Advanced Options</h3>
-	<table class="help-opt">
-		<tr>
-			<th>Option</th>
-			<th>Details</th>
 		</tr>
 		<tr>
 			<td>Spacing</td>
@@ -298,7 +267,42 @@ STEP 2
 			databases character  set should be.</td>
 		</tr>
 	</table>
+	<sup>*cPanel Only Option</sup>
 	<br/><br/>
+
+	<h3>Validation</h3>
+	Testing the database connection is important and can help isolate possible issues that may arise with database version and compatibility issues.
+
+	<table class="help-opt">
+		<tr>
+			<th>Option</th>
+			<th>Details</th>
+		</tr>
+		<tr>
+			<td>Test<br/>Database</td>
+			<td>
+				The 'Test Database' button will help validate if the connection parameters are correct for this server and help with details about any issues
+				that may arise.
+			</td>
+		</tr>
+		<tr>
+			<td>Troubleshoot</td>
+			<td>
+				<b>Common Database Connection Issues:</b><br/>
+				- Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
+				- Validate the database and database user exist on this server <br/>
+				- Check if the database user has the correct permission levels to this database <br/>
+				- The host 'localhost' may not work on all hosting providers <br/>
+				- Contact your hosting provider for the exact required parameters <br/>
+				- Visit the online resources 'Common FAQ page' <br/>
+
+			</td>
+		</tr>
+	</table>
+	<br/><br/>
+
+
+
 </div>
 
 
@@ -306,7 +310,7 @@ STEP 2
 STEP 3
 ============================================== -->
 <a class="help-target" name="help-s3"></a>
-<h2>Step <span class="step">3</span> of 4: Data Replacement</h2>
+<h2>Step <span class="step">3</span> of 4: Update Data</h2>
 <div id="dup-help-step2" class="help-page">
 
     <!-- SETTINGS-->
@@ -314,14 +318,14 @@ STEP 3
     These are the new values (URL, Path and Title) you can update for the new location at which your site will be installed at.
     <br/><br/>
 
-    <h3>Custom Replace <sup>pro</sup></h3>
+    <h3>Replace <sup>pro</sup></h3>
 	This section will allow you to add as many custom search and replace items that you would like.  For example you can search for other URLs to replace.  Please use high
 	caution when using this feature as it can have unintended consequences as it will search the entire database.   It is recommended to only use highly unique items such as
 	full URL or file paths with this option.
 	<br/><br/>
 
     <!-- ADVANCED OPTS -->
-    <h3>Advanced Options</h3>
+    <h3>Options</h3>
 	<table class="help-opt">
 		<tr>
 			<th>Option</th>

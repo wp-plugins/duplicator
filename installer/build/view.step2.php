@@ -25,69 +25,66 @@ VIEW: STEP 2- INPUT -->
 	<!-- =========================================
 	BASIC PANEL -->
 	<div id="s2-basic-pane">
-		<div class="hdr-sub1">
-			Database Setup
+		<div class="hdr-sub1" data-type="toggle" data-target="#s2-area-setup">
+			<a href="javascript:void(0)"><i class="dupx-minus-square"></i> Setup</a>
 		</div>
-		<table class="dupx-opts">
-			<tr>
-				<td>Action:</td>
-				<td>
-					<select name="dbaction" id="dbaction">
-						<option value="create">Create New Database</option>
-						<option value="empty" selected="true">Connect and Remove All Data</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>Host:</td>
-				<td>
-					<table class="s2-opts-dbhost">
-						<tr>
-							<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:450px" /></td>
-							<td style="vertical-align:top">
-								<input id="s2-dbport-btn" type="button" onclick="DUPX.togglePort()" class="s2-small-btn" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
-								<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td>Database:</td>
-				<td>
-					<input type="text" name="dbname" id="dbname"  required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  />
-					 <div id="s2-warning-emptydb">
-						 <label for="accept-warnings">Warning: The selected 'Action' above will remove <u>all data</u> from this database!</label>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>User:</td>
-				<td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td>
-			</tr>
-			<tr>
-				<td>Password:</td>
-				<td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database user password"   /></td>
-			</tr>
-		</table>
+		<div id="s2-area-setup">
+			<table class="dupx-opts">
+				<tr>
+					<td>Action:</td>
+					<td>
+						<select name="dbaction" id="dbaction">
+							<option value="create">Create New Database</option>
+							<option value="empty" selected="true">Connect and Remove All Data</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Host:</td>
+					<td>
+						<table class="s2-opts-dbhost">
+							<tr>
+								<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:450px" /></td>
+								<td style="vertical-align:top">
+									<input id="s2-dbport-btn" type="button" onclick="DUPX.togglePort()" class="s2-small-btn" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+									<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>Database:</td>
+					<td>
+						<input type="text" name="dbname" id="dbname"  required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  />
+						 <div id="s2-warning-emptydb">
+							 <label for="accept-warnings">Warning: The selected 'Action' above will remove <u>all data</u> from this database!</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>User:</td>
+					<td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database user password"   /></td>
+				</tr>
+			</table>
+		</div>
 	</div>
-
 
 
 	<!-- =========================================
 	C-PANEL PANEL -->
 	<div id="s2-cpnl-pane">
-
 		<div class="s2-gopro">
-
 			<h2>cPanel Connectivity</h2>
-
 			<div style="text-align: center">
 				<a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step2&utm_campaign=duplicator_pro">Duplicator Pro</a>
 				takes advantage of your hosts <br/>
 				cPanel interface directly <b>from this installer!</b>
 			</div>
-			
 			<b>Features Include:</b>
 			<ul>
 				<li>Fast cPanel Login</li>
@@ -95,14 +92,12 @@ VIEW: STEP 2- INPUT -->
 				<li>Create New Database Users</li>
 				<li>Preview and Select Existing Databases and Users</li>
 			</ul>
-
 			<small>
 				Note: Most hosting providers do not allow applications to create new databases or database users directly from PHP.  However with the cPanel API these restrictions
 				are removed opening up a robust interface for direct access to existing database resources.  You can take advantage of these great features and improve your work-flow with
 				<a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step2&utm_campaign=duplicator_pro">Duplicator Pro!</a>
 			</small>
 		</div>
-
 	</div>
 
     <!-- =========================================
@@ -120,10 +115,10 @@ VIEW: STEP 2- INPUT -->
     <br/>
 
     <!-- ====================================
-    ADVANCED OPTIONS
+    OPTIONS
     ==================================== -->
-    <div class="hdr-sub1">
-        <a data-type="toggle" data-target="#s2-area-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
+    <div class="hdr-sub1" data-type="toggle" data-target="#s2-area-adv-opts">
+        <a  href="javascript:void(0)"><i class="dupx-plus-square"></i> Options</a>
     </div>
     <div id='s2-area-adv-opts' style="display:none">
 		<div class="help-target"><a href="?help#help-s2" target="_blank">[help]</a></div>

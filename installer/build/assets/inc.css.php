@@ -12,9 +12,9 @@
 	/* ============================
 	COMMON VIEWS
      ============================ */
-	div#content {border:1px solid #CDCDCD; width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:13px; color:#000;}
-	div#content-inner {padding:10px 30px; min-height:550px}
-	form.content-form {min-height:550px; position:relative; line-height:17px}	
+	div#content {border:1px solid #CDCDCD; width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:13px}
+	div#content-inner {padding:10px 25px; min-height:550px}
+	form.content-form {min-height:550px; position:relative; line-height:17px}
     div.status-badge-pass {border-radius:4px; color:#fff; padding:0 4px 0 4px;  font-size:12px; min-width:30px; text-align:center; background-color:#418446;display:inline-block }
     div.status-badge-fail {border-radius:4px; color:#fff; padding:0 4px 0 4px;  font-size:12px; min-width:30px; text-align:center; background-color:maroon; display:inline-block}
 	
@@ -29,15 +29,20 @@
     /*TITLE HEADERS */
     div.hdr-main {font-size:22px; padding:0 0 5px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin:15px 0 20px 0;}
 	div.hdr-main span.step {color:#DB4B38}
-	div.hdr-sub1 {font-size:18px; margin-bottom:5px; border-bottom:1px solid #D3D3D3;padding:2px 2px 5px 0;font-weight:bold;}
+	div.hdr-sub1 {font-size:18px; margin-bottom:5px;border:1px solid #D3D3D3;padding:7px; background-color:#f9f9f9; font-weight:bold; border-radius:4px}
 	div.hdr-sub1 a {cursor:pointer; text-decoration: none !important}
+	div.hdr-sub1:hover {cursor:pointer; background-color:#f1f1f1; border:1px solid #dcdcdc; }
+	div.hdr-sub1:hover a{color:#000}
 	div.hdr-sub2 {font-size:15px; padding:2px 2px 2px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin-bottom:5px; border:none}
 	div.hdr-sub3 {font-size:15px; padding:2px 2px 2px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin-bottom:5px;}
+	div.hdr-sub4 {font-size:15px; padding:7px; border:1px solid #D3D3D3;; font-weight:bold; background-color:#e9e9e9;}
+	div.hdr-sub4:hover  {background-color:#dfdfdf; cursor:pointer}
 
     /* BUTTONS */
 	div.dupx-footer-buttons {position:absolute; bottom:10px; padding:10px;  right:0}
 	div.dupx-footer-buttons  input:hover, button:hover {border:1px solid #000}
 	div.dupx-footer-buttons input[disabled=disabled]{background-color:#F4F4F4; color:silver; border:1px solid silver;}
+	div.dupx-footer-buttons button[disabled]{background-color:#F4F4F4; color:silver; border:1px solid silver;}
     button.default-btn, input.default-btn {
 		cursor:pointer; color:#fff; font-size:16px; border-radius:5px;	padding:8px 25px 6px 25px;
 	    background-color:#13659C; border:1px solid gray;
@@ -66,12 +71,15 @@
     ====================================== */
     table.s1-archive-local td {padding:5px}
 	table.s1-archive-local td:first-child {font-weight:bold; min-width:50px}
-    div#s1-area-sys-setup {padding:15px 0 0 10px}
+    div#s1-area-sys-setup {padding:5px 0 0 10px}
+	div#s1-area-sys-setup div.info-top {text-align:center; font-style:italic; font-size:11px; padding:0 5px 5px 5px}
 	table.s1-checks-area {width:100%; margin:0; padding:0}
 	table.s1-checks-area td.title {font-size:16px; width:100%}
+	table.s1-checks-area td.title small {font-size:11px; font-weight:normal}
 	table.s1-checks-area td.toggle {font-size:11px; margin-right:7px; font-weight:normal}
 
 	div.s1-reqs {background-color:#efefef; border:1px solid silver; border-radius:5px; margin-top:-5px}
+	div.s1-reqs div.header {background-color:#E0E0E0; color:#000;  border-bottom: 1px solid silver; padding:2px; font-weight:bold }
 	div.s1-reqs div.notice {background-color:#E0E0E0; color:#000; text-align:center; font-size:12px; border-bottom: 1px solid silver; padding:2px; font-style:italic}
 	div.s1-reqs div.status {float:right; border-radius:4px; color:#fff; padding:0 4px 0 4px; margin:4px 5px 0 0; font-size:12px; min-width:30px; text-align:center; font-weight:bold}
 	div.s1-reqs div.pass {background-color:green;}
@@ -80,8 +88,8 @@
 	div.s1-reqs div.title:hover {background-color:#dfdfdf; cursor:pointer}
 	div.s1-reqs div.info {padding:8px 8px 20px 8px; background-color:#fff; display:none; line-height:18px; font-size: 12px}
 	div.s1-reqs div.info a {color:#485AA3;}
-    div.s1-archive-failed-msg {padding:5px 10px 10px 10px; border:1px solid silver; background: #efefef; font-size: 12px}
-    div.s1-err-msg {padding:8px;  border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px; color:maroon}
+    div.s1-archive-failed-msg {padding:15px; border:1px dashed silver; font-size: 12px; border-radius:5px}
+    div.s1-err-msg {padding:8px;  border:1px dashed #999; margin:20px 0 20px 0px; border-radius:5px; color:maroon}
 
     /*Terms and Notices*/
 	div#s1-warning-check label{cursor:pointer;}
@@ -93,12 +101,12 @@
 	STEP 2 VIEW
     ====================================== */
 	/*Toggle Buttons */
-	div.s2-btngrp {text-align:center; margin:10px 0 0 0}
-	div.s2-btngrp input[type=button] {font-size:13px; padding:5px; width:120px; border:1px solid silver;  cursor:pointer}
+	div.s2-btngrp {text-align:center; margin:0 auto 10px auto}
+	div.s2-btngrp input[type=button] {font-size:14px; padding:6px; width:120px; border:1px solid silver;  cursor:pointer}
 	div.s2-btngrp input[type=button]:first-child {border-radius:5px 0 0 5px; margin-right:-2px}
-	div.s2-btngrp input[type=button]:last-child {border-radius:0 5px 5px 0; margin-left:-2px}
-	div.s2-btngrp input[type=button].active {background:#999999; color:#fff; font-weight:bold;  box-shadow:inset 0 0 10px #444;}
-	div.s2-btngrp input[type=button].in-active {background:#E4E4E4; }
+	div.s2-btngrp input[type=button]:last-child {border-radius:0 5px 5px 0; margin-left:-4px}
+	div.s2-btngrp input[type=button].active {background-color:#13659C; color:#fff;}
+	div.s2-btngrp input[type=button].in-active {background-color:#E4E4E4; }
 	div.s2-btngrp input[type=button]:hover {border:1px solid #999}
 
 	div.s2-modes {padding:0px 15px 0 0px;}
@@ -171,7 +179,8 @@
 		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
 	}
 	a.s4-final-btns:hover {background-color: #dfdfdf;}
-	div.s4-gopro-btn {text-align:center; font-size:14px; margin:auto; width:200px; font-style: italic}
+	div.s4-gopro-btn {text-align:center; font-size:14px; margin:auto; width:200px; font-style: italic; font-weight:bold}
+	div.s4-gopro-btn a{color:green}
 
 
 	/* PARSLEY:Overrides*/

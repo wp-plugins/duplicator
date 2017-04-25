@@ -1,17 +1,17 @@
 === Duplicator ===
 Contributors: corylamleorg, bobriley
 Donate link: www.lifeinthegrid.com/partner
-Tags: backup, restore, move, migrate, localhost, synchronize, duplicate, clone, automate, niche site 
+Tags: migration, backup, restore, move, migrate, synchronize, duplicate, clone, automate, niche site 
 Requires at least: 4.0
 Tested up to: 4.7
 Stable tag: 1.2.4
 License: GPLv2
 
-Duplicate, clone, backup, move and transfer an entire site from one location to another. 
+Duplication, migration, clone, backup, move and transfer an entire site from one location to another. 
 
 == Description ==
 
-> Duplicator gives WordPress administrators the ability to migrate, copy or clone a site from one location to another. The plugin also serves as a simple backup utility.  Duplicator supports both serialized and base64 serialized string replacement.  If you need to move WordPress or backup WordPress this plugin can help simplify the process.
+> Duplicator gives WordPress users the ability to migrate, copy, move or clone a site from one location to another. The plugin also serves as a simple backup utility.  Duplicator supports both serialized and base64 serialized string replacement.  WordPress migration and WordPress backups are much easier with this plugin and help simplify the process.
 
 For complete details visit [snapcreek.com](http://snapcreek.com/).  
 

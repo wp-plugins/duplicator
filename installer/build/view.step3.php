@@ -30,11 +30,14 @@ VIEW: STEP 3- INPUT -->
 
 	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
-		Step <span class="step">3</span> of 4: Data Replacement
+		Step <span class="step">3</span> of 4: Update Data
 	</div>
 
-	<div class="hdr-sub1" style="margin-top:8px">
-		<a data-type="toggle" data-target="#s3-new-settings"><i class="dupx-minus-square"></i> New Settings</a>
+	<!-- ====================================
+    NEW SETTINGS
+    ==================================== -->
+	<div class="hdr-sub1" style="margin-top:8px" data-type="toggle" data-target="#s3-new-settings">
+		<a href="javascript:void(0)"><i class="dupx-minus-square"></i> New Settings</a>
 	</div>
 	<div id='s3-new-settings'>
 		<table class="s3-table-inputs">
@@ -58,14 +61,15 @@ VIEW: STEP 3- INPUT -->
 	<br/><br/>
 
     <!-- ====================================
-    ADVANCED OPTIONS
+    OPTIONS
     ==================================== -->
-    <div class="hdr-sub1">
-        <a data-type="toggle" data-target="#s3-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
+    <div class="hdr-sub1" data-type="toggle" data-target="#s3-adv-opts">
+        <a href="javascript:void(0)"><i class="dupx-plus-square"></i> Options</a>
     </div>
 	<div id='s3-adv-opts' style="display:none;">
 		<div class="help-target"><a href="?help#help-s3" target="_blank">[help]</a></div>
-		<br/><br/>
+		<br/>
+
 		<div class="hdr-sub3">New Admin Account</div>
 		<div style="text-align: center; margin-top:7px">
 			<i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i>
@@ -105,7 +109,6 @@ VIEW: STEP 3- INPUT -->
                     <a href="javascript:DUPX.editOldPath()" id="edit_path_old" style="font-size:12px">edit</a>
                 </td>
             </tr>
-           
         </table><br/>
         
 		<table>

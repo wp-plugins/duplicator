@@ -120,6 +120,7 @@ $GLOBALS['DBCHARSET_DEFAULT'] = 'utf8';
 $GLOBALS['DBCOLLATE_DEFAULT'] = 'utf8_general_ci';
 $GLOBALS['FAQ_URL'] = 'https://snapcreek.com/duplicator/docs/faqs-tech';
 $GLOBALS['NOW_DATE'] = @date("Y-m-d-H:i:s");
+$GLOBALS['DB_RENAME_PREFIX'] = 'x-bak__';
 
 //UPDATE TABLE SETTINGS
 $GLOBALS['REPLACE_LIST'] = array();
