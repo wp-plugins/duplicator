@@ -482,7 +482,7 @@ Auto Posts to view.step2.php
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
 	    <div style="width:500px; margin:auto">
-		<h3>Extracting Archive Files Please Wait...</h3>
+		<h3>Running Deployment Processes Please Wait...</h3>
 		<div id="progress-bar"></div>
 		<i>This may take several minutes</i>
 	    </div>
