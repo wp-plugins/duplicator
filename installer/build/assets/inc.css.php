@@ -69,7 +69,7 @@
 	/* ======================================
 	STEP 1 VIEW
     ====================================== */
-    table.s1-archive-local td {padding:5px}
+    table.s1-archive-local td {padding:4px 20px 4px 4px}
 	table.s1-archive-local td:first-child {font-weight:bold; min-width:50px}
     div#s1-area-sys-setup {padding:5px 0 0 10px}
 	div#s1-area-sys-setup div.info-top {text-align:center; font-style:italic; font-size:11px; padding:0 5px 5px 5px}

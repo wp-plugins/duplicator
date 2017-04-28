@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create and transfer a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.2.6
+  Version: 1.2.7
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator

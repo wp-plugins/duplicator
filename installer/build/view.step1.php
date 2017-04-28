@@ -2,9 +2,45 @@
 //VIEW: STEP 1- INPUT
 
 //ARCHIVE FILE
-$arcCheck	= (file_exists($GLOBALS['ARCHIVE_PATH']))	? 'Pass' : 'Fail';
+$arcStatus	= (file_exists($GLOBALS['ARCHIVE_PATH']))	? 'Pass' : 'Fail';
+$arcFormat  = ($arcStatus == 'Pass') ? 'Pass' : 'StatusFailed';
 $arcSize    = @filesize($GLOBALS['ARCHIVE_PATH']);
 $arcSize    = is_numeric($arcSize) ? $arcSize : 0;
+
+//ARCHIVE FORMAT
+if ($arcStatus) {
+	if (class_exists('ZipArchive')){
+		$zip = new ZipArchive();
+		if($zip->open($GLOBALS['ARCHIVE_PATH']) === TRUE ) {
+
+			$arcFilePath = basename($GLOBALS['ARCHIVE_PATH']);
+			$arcFilePath = substr($arcFilePath, 0, strrpos($arcFilePath, "."));
+			$badFiles  = array('__MACOSX', $arcFilePath);
+			$goodFiles = array('database.sql', 'installer-backup.php');
+			$goodFilesFound = true;
+			$badFilesFound  = false;
+
+			foreach ($badFiles as $val) {
+				if (is_numeric($zip->locateName("{$val}/"))) {
+					$badFilesFound = true;
+					break;
+				}
+			}
+
+			foreach ($goodFiles as $val) {
+				if ($zip->locateName($val) !== true) {
+					$goodFilesFound = false;
+				}
+			}
+
+			$arcFormat = ($goodFilesFound == false && $badFilesFound == true) ? 'Fail' : 'Pass';
+		}
+	} else {
+		$arcFormat = 'NoZipArchive';
+	}
+}
+
+$all_arc = ($arcStatus == 'Pass' && $arcFormat != 'Fail') ? 'Pass' : 'Fail';
 
 //REQUIRMENTS
 $req      	= array();
@@ -64,18 +100,45 @@ ARCHIVE
 ==================================== -->
 <div class="hdr-sub1" id="s1-area-archive-file-link" data-type="toggle" data-target="#s1-area-archive-file">
     <a href="javascript:void(0)"><i class="dupx-plus-square"></i> Archive</a>
-	<div class="<?php echo ($arcCheck == 'Pass') ? 'status-badge-pass' : 'status-badge-fail'; ?>" style="float:right">
-		<?php echo ($arcCheck == 'Pass') ? 'Pass' : 'Fail'; ?>
+	<div class="<?php echo ($all_arc == 'Pass') ? 'status-badge-pass' : 'status-badge-fail'; ?>" style="float:right">
+		<?php echo ($all_arc == 'Pass') ? 'Pass' : 'Fail'; ?>
 	</div>
 </div>
 <div id="s1-area-archive-file" style="display:none">
 
     <table class="s1-archive-local">
 		<tr>
+			<td colspan="2"><div class="hdr-sub3">Site Details</div></td>
+		</tr>
+		 <tr>
+            <td>Site:</td>
+            <td><?php echo $GLOBALS['FW_BLOGNAME'];?> </td>
+        </tr>
+        <tr>
+            <td>Notes:</td>
+            <td><?php echo strlen($GLOBALS['FW_PACKAGE_NOTES']) ? "{$GLOBALS['FW_PACKAGE_NOTES']}" : " - no notes - ";?></td>
+        </tr>
+		<tr>
+			<td colspan="2"><div class="hdr-sub3">File Details</div></td>
+		</tr>
+        <tr>
+            <td>Size:</td>
+            <td><?php echo DUPX_U::readableByteSize($arcSize); ?> </td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><?php echo "{$GLOBALS['FW_PACKAGE_NAME']}";?> </td>
+        </tr>
+        <tr>
+            <td>Path:</td>
+            <td><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}";?> </td>
+        </tr>
+
+		<tr>
 			<td>Status:</td>
 			<td>
-				<?php if ($arcCheck != 'Fail') : ?>
-					<span class="dupx-pass">Archive file successfully detected.</span>
+				<?php if ($arcStatus != 'Fail') : ?>
+					<span class="dupx-pass">File found</span>
 				<?php else : ?>
 					<div class="s1-archive-failed-msg">
 						<b class="dupx-fail">Archive File Not Found!</b><br/>
@@ -104,22 +167,37 @@ ARCHIVE
 				<?php endif; ?>
 			</td>
 		</tr>
-        <tr>
-            <td>Size:</td>
-            <td><?php echo DUPX_U::readableByteSize($arcSize); ;?> </td>
-        </tr>
-        <tr>
-            <td>Name:</td>
-            <td><?php echo "{$GLOBALS['FW_PACKAGE_NAME']}";?> </td>
-        </tr>
-        <tr>
-            <td>Path:</td>
-            <td><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}";?> </td>
-        </tr>
-        <tr>
-            <td>Notes:</td>
-            <td><?php echo strlen($GLOBALS['FW_PACKAGE_NOTES']) ? "{$GLOBALS['FW_PACKAGE_NOTES']}" : " - no notes - ";?></td>
-        </tr>
+		<tr>
+			<td>Format:</td>
+			<td>
+				<?php if ($arcFormat == 'Pass') : ?>
+					<span class="dupx-pass">Structure is good</span>
+				<?php elseif ($arcFormat == 'StatusFailed') : ?>
+					<span class="dupx-fail">Unable to validate format</span><br/>
+				<?php elseif ($arcFormat == 'NoZipArchive') : ?>
+					<div class="s1-archive-failed-msg">
+						The PHP extraction library <a href="" target="_help">ZipArchive</a> was not found on this server.  There are a few options:
+						<ol>
+							<li>Contact your host to enable the this PHP library. <a href="" target="_help">[more info]</a></li>
+							<li>Enable 'Manual package extraction' in the options menu and <a href="" target="_help">Manually extract the archive</a></li>
+						</ol>
+					</div>
+				<?php else : ?>
+					<div class="s1-archive-failed-msg">
+						<b class="dupx-fail">Invalid Archive Format Detected!</b><br/>
+						The archive files contents must be laid out in a specific format.  If the format has been changed the install process will error out.
+						<br/><br/>
+
+						This scenario is rare but can happen on some systems during the download and upload process of the zip without a user being aware of
+						the issue. Please check the contents of the zip archive and be sure its contents match the layout of your site.
+						<br/><br/>
+
+						Files such as database.sql and wp-config.php should be at the root of the archive.  For more details see the FAQ article
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-020-q" target="_help">The archive format is changing on my Mac what might be the problem?</a>
+					</div>
+				<?php endif; ?>
+			</td>
+		</tr>
     </table>
 
 
@@ -435,7 +513,7 @@ NOTICES
 </div>
 
 
-<?php if (! $req_success  ||  $arcCheck == 'Fail') :?>
+<?php if (! $req_success  ||  $all_arc == 'Fail') :?>
 	<div class="s1-err-msg">
 		<i>
 			This installation will not be able to proceed until the 'Archive' and 'Validation' sections pass. Please adjust your servers settings or contact your
@@ -576,7 +654,7 @@ Auto Posts to view.step2.php
     {
 		DUPX.acceptWarning();
         $("*[data-type='toggle']").click(DUPX.toggleClick);
-        <?php echo ($arcCheck == 'Fail') 	? "$('#s1-area-archive-file-link').trigger('click');" 	: ""; ?>
+        <?php echo ($all_arc == 'Fail') 	? "$('#s1-area-archive-file-link').trigger('click');" 	: ""; ?>
 		<?php echo (! $all_success)         ? "$('#s1-area-sys-setup-link').trigger('click');"      : ""; ?>
 	})
 </script>

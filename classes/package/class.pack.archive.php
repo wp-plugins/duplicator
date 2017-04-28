@@ -145,7 +145,7 @@ class DUP_Archive
         $rootPath   = DUP_Util::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
         $this->Dirs = array();
 
-        //@todo remove after 1.2.2 no reason to include files with root filter
+        //@todo remove after 1.2.8 no reason to include files with root filter
         //If the root directory is a filter then we will only need the root files
         /*if (in_array($this->PackDir, $this->FilterDirsAll)) {
             $this->Dirs[] = $this->PackDir;
@@ -154,8 +154,13 @@ class DUP_Archive
             $this->Dirs[] = $this->PackDir;
         }*/
 
+
+		//@todo Add feature to allow a root rilter but retain root files
+		//if ($retainFiles == true) {
+        //	$this->Dirs[] = $this->PackDir;
+		//}
+
         $this->Dirs   = $this->dirsToArray($rootPath, $this->FilterDirsAll);
-        $this->Dirs[] = $this->PackDir;
 
         //Filter Directories
         //Invalid test contains checks for: characters over 250, invlaid characters,
