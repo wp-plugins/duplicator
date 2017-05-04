@@ -21,18 +21,18 @@ http://www.youtube.com/watch?v=yZ7pHmR9JC8
 = Overview =
 Duplicator enables you to:
 
-* Move / migrate a site between domains or hosts
+* Move, migrate or clone a WordPress site between domains or hosts
 * Pull down a live site to localhost for development
-* Manually back up a site
+* Manually backup a WordPress site or parts of a site
 * Duplicate a live site to a staging area or vice versa
 * Bundle up an entire WordPress site for easy reuse or distribution
-* Perform a full WordPress migration without messy import/export sql scripts
+* Perform a full WordPress migration without struggling with messy import/export sql scripts
 
-= Move and Backup =
-Duplicator creates a package that bundles all the site's plugins, themes, content, database and WordPress files into a simple zip file called a package. This package can then be used to easily restore a site to any location you wish.  Move on the same server, across servers and pretty much any location a WordPress site can be hosted.  *WordPress is not required for installation* since the package contains all site files.
+= Migrate WordPress and Run WordPress Backups =
+Duplicator creates a package that bundles all the site's plugins, themes, content, database and WordPress files into a simple zip file called a package. This package can then be used to easily migrate a WordPress site to any location you wish.  Move on the same server, across servers and pretty much any location a WordPress site can be hosted.  *WordPress is not required for installation* since the package contains all site files.
 
 = Improve Your Workflow with Pre-Bundled Sites =
-Duplicator lets you make your own pre-configured sites to eliminate rework.  Instead of manually configuring your favorite theme, set of plugins or content over and over, now just configure a single site and bundle it up into a Duplicator package. Once you have the bundled site, you can install it over and over to different locations to instantly create many pre-configured sites! 
+Duplicator lets you make your own pre-configured sites to eliminate rework.  Instead of manually configuring your favorite theme, set of plugins or content over and over, now just configure a single site and bundle it up into a Duplicator package. Once you have the bundled site, you can migrate the WordPress site over and over to different locations to instantly create many pre-configured sites! 
 
 = Duplicator Pro =
 Duplicator Pro takes Duplicator to the next level with features you'll really appreciate, such as:
@@ -40,7 +40,7 @@ Duplicator Pro takes Duplicator to the next level with features you'll really ap
 * Scheduled backups
 * Cloud Storage to Dropbox, Google Drive, Amazon S3 and FTP
 * Multi-threaded to support larger web sites &amp; databases
-* Migrate an entire multisite network in one shot
+* Migrate an entire multisite WordPress network in one shot
 * Install a multisite subsite as a new standalone website
 * Database and user creation *in the installer* with cPanel API
 * Connect to cPanel directly from installer
@@ -61,20 +61,26 @@ This plugin does require some technical knowledge.  If you plan to migrate WordP
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
 <li>[Nicolas Richer](http://nicolasricher.fr) (French)</li>
 
+== Screenshots ==
+ 
+1. Main Interface for all Packages
+2. Create Package Step 1
+3. Create Package Step 2
+4. Build Process
+5. Installer Screen
 
+== Frequently Asked Questions ==
 
-== Installation ==
+= Does Duplicator have a knowledge base or FAQ? =
+Yes. Please see [all documents](https://snapcreek.com/duplicator/docs/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_docs&utm_campaign=duplicator_free) at snapcreek.com.
+
+= Installation Instructions =
 1. Upload `duplicator` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Click on the Duplicator link from the main menu
 4. Check out the help by clicking the help icon and create your first package.
 
 The Duplicator requires php 5.3 or higher.
-
-== Frequently Asked Questions ==
-
-= Does Duplicator have a knowledge base or FAQ? =
-Yes. Please see [all documents](https://snapcreek.com/duplicator/docs/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_docs&utm_campaign=duplicator_free) at snapcreek.com.
 
 
 = Are there any videos I can watch? =
@@ -86,15 +92,6 @@ Duplicator isn't, however [Duplicator Pro](https://snapcreek.com/duplicator/?utm
 = Where can I get more help and support for this plugin? =
 Visit the [Duplicator support](https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_support&utm_campaign=duplicator_free#faq-resource-030-q) section at snapcreek.com
 
-
-== Screenshots ==
- 
-1. Main Interface for all Packages
-2. Create Package Step 1
-3. Create Package Step 2
-4. Build Process
-5. Installer Screen
- 
 
 == Changelog ==
 
