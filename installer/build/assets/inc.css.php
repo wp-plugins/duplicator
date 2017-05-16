@@ -22,7 +22,7 @@
 	table.dupx-header {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 5px 3px -3px #999;	background-color:#F1F1F1; font-weight:bold;}
     .dupx-header-version {white-space:nowrap; color:#777; font-size:11px; font-style:italic; text-align:right;  padding:0 15px 5px 0; line-height:14px; font-weight:normal;}
 	.dupx-header-version a {color:#555;}
-    div.dupx-logfile-link {float:right; font-weight:normal; font-size:12px}
+    div.dupx-logfile-link {float:right; font-weight:normal; font-size:11px; font-style:italic}
 	div#progress-area {padding:5px; margin:150px 0 0 0px; text-align:center;}
 	div#ajaxerr-data {padding:5px; height:350px; width:99%; border:1px solid silver; border-radius:5px; background-color:#efefef; font-size:13px; overflow-y:scroll; line-height:24px}
 
@@ -65,6 +65,7 @@
     div.dlg-serv-info div.hdr {background-color: #dfdfdf; font-weight: bold; margin-top:5px; border-radius: 4px; padding:2px 5px 2px 5px; border: 1px solid silver; font-size: 16px}
 	div#modal-window div.modal-title {background-color:#D0D0D0}
 	div#modal-window div.modal-text {padding-top:10px !important}
+	div.archive-onlydb {color:#DB4B38; font-weight:normal; position:absolute; top:5px; right:20px; font-style:italic; font-size:10px}
 	
 	/* ======================================
 	STEP 1 VIEW

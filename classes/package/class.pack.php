@@ -325,6 +325,7 @@ class DUP_Package
             $this->Archive->PackDir         = rtrim(DUPLICATOR_WPROOTPATH, '/');
             $this->Archive->Format          = 'ZIP';
             $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
+			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
             $this->Archive->FilterDirs      = esc_html($filter_dirs);
             $this->Archive->FilterExts      = str_replace(array('.', ' '), "", esc_html($filter_exts));
             //INSTALLER
@@ -449,6 +450,7 @@ class DUP_Package
         }
         //Incase unserilaize fails
         $obj = (is_object($obj)) ? $obj : new DUP_Package();
+	
         return $obj;
     }
 

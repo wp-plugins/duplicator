@@ -225,43 +225,55 @@ ARCHIVE -->
 			<td><?php _e('Build Mode', 'duplicator') ?>: </td>
 			<td><?php _e('ZipArchive', 'duplicator'); ?></td>
 		</tr>			
-		<tr>
-			<td><?php _e('Filters', 'duplicator') ?>: </td>
-			<td><?php echo $package->Archive->FilterOn == 1 ? 'On' : 'Off'; ?></td>
-		</tr>
-		<tr class="sub-item <?php echo $css_file_filter_on ?>">
-			<td><?php _e('Directories', 'duplicator') ?>: </td>
-			<td>
-				<?php 
-					echo strlen($package->Archive->FilterDirs) 
-						? str_replace(';', '<br/>', $package->Archive->FilterDirs)
-						: __('- no filters -', 'duplicator');	
-				?>
-			</td>
-		</tr>
-		<tr class="sub-item <?php echo $css_file_filter_on ?>">
-			<td><?php _e('Extensions', 'duplicator') ?>: </td>
-			<td>
-				<?php
-					echo isset($package->Archive->FilterExts) && strlen($package->Archive->FilterExts) 
-						? $package->Archive->FilterExts
-						: __('- no filters -', 'duplicator');
-				?>
-			</td>
-		</tr>
-		<tr class="sub-item <?php echo $css_file_filter_on ?>">
-			<td><?php _e('Files', 'duplicator') ?>: </td>
-			<td>
-				<i>
-					<?php _e('Available in', 'duplicator') ?> 
-					<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a> 
-				</i>
-				<i class="fa fa-lightbulb-o" 
-				   data-tooltip-title="<?php _e('File Filters:', 'duplicator'); ?>" 
-				   data-tooltip="<?php _e('File filters allows you to select individual files and add them to an exclusion list that will filter them from the package.', 'duplicator'); ?>">
-				</i>
-			</td>
-		</tr>			
+
+		<?php if ($package->Archive->ExportOnlyDB) : ?>
+			<tr>
+				<td><?php _e('Database Mode', 'duplicator') ?>: </td>
+				<td>
+					<?php
+						_e('Archive Database Only Enabled', 'duplicator')
+					?>
+				</td>
+			</tr>
+		<?php else : ?>
+			<tr>
+				<td><?php _e('Filters', 'duplicator') ?>: </td>
+				<td><?php echo $package->Archive->FilterOn == 1 ? 'On' : 'Off'; ?></td>
+			</tr>
+			<tr class="sub-item <?php echo $css_file_filter_on ?>">
+				<td><?php _e('Directories', 'duplicator') ?>: </td>
+				<td>
+					<?php
+						echo strlen($package->Archive->FilterDirs)
+							? str_replace(';', '<br/>', $package->Archive->FilterDirs)
+							: __('- no filters -', 'duplicator');
+					?>
+				</td>
+			</tr>
+			<tr class="sub-item <?php echo $css_file_filter_on ?>">
+				<td><?php _e('Extensions', 'duplicator') ?>: </td>
+				<td>
+					<?php
+						echo isset($package->Archive->FilterExts) && strlen($package->Archive->FilterExts)
+							? $package->Archive->FilterExts
+							: __('- no filters -', 'duplicator');
+					?>
+				</td>
+			</tr>
+			<tr class="sub-item <?php echo $css_file_filter_on ?>">
+				<td><?php _e('Files', 'duplicator') ?>: </td>
+				<td>
+					<i>
+						<?php _e('Available in', 'duplicator') ?>
+						<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
+					</i>
+					<i class="fa fa-lightbulb-o"
+					   data-tooltip-title="<?php _e('File Filters:', 'duplicator'); ?>"
+					   data-tooltip="<?php _e('File filters allows you to select individual files and add them to an exclusion list that will filter them from the package.', 'duplicator'); ?>">
+					</i>
+				</td>
+			</tr>
+		<?php endif; ?>
 	</table><br/>
 
 	<!-- DATABASE -->

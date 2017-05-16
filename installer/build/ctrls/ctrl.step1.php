@@ -2,7 +2,7 @@
 
 //POST PARAMS
 $_POST['archive_name']		 = isset($_POST['archive_name']) ? $_POST['archive_name'] : null;
-$_POST['archive_manual']	 = (isset($_POST['archive_manual']) && $_POST['archive_manual'] == '1') ? true : false;
+$_POST['archive_engine']	 = isset($_POST['archive_engine']) ? $_POST['archive_engine']  : 'manual';
 $_POST['archive_filetime']	 = (isset($_POST['archive_filetime'])) ? $_POST['archive_filetime'] : 'current';
 
 //LOGGING
@@ -33,19 +33,23 @@ error_reporting(E_ERROR);
 //===============================
 ($GLOBALS['LOG_FILE_HANDLE'] != false) or DUPX_Log::error(ERR_MAKELOG);
 
-//ERR_ZIPMANUAL
-if ($_POST['archive_manual']) {
-	if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
-		DUPX_Log::error(ERR_ZIPMANUAL);
+if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) {
+	//ERR_ZIPMANUAL
+	if ($_POST['archive_engine'] == 'manual') {
+		if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
+			DUPX_Log::error(ERR_ZIPMANUAL);
+		}
+	} else {
+		//ERR_CONFIG_FOUND
+		(!file_exists('wp-config.php'))
+			or DUPX_Log::error(ERR_CONFIG_FOUND);
+		//ERR_ZIPNOTFOUND
+		(is_readable("{$package_path}"))
+			or DUPX_Log::error(ERR_ZIPNOTFOUND);
 	}
-} else {
-	//ERR_CONFIG_FOUND
-	(!file_exists('wp-config.php'))
-		or DUPX_Log::error(ERR_CONFIG_FOUND);
-	//ERR_ZIPNOTFOUND
-	(is_readable("{$package_path}"))
-		or DUPX_Log::error(ERR_ZIPNOTFOUND);
 }
+
+
 
 DUPX_Log::info("********************************************************************************");
 DUPX_Log::info('* DUPLICATOR-LITE: INSTALL-LOG');
@@ -77,7 +81,7 @@ $log .= "ZIP:\t{$zip_support} (ZipArchive Support)";
 DUPX_Log::info($log);
 
 
-if ($_POST['archive_manual']) {
+if ($_POST['archive_engine'] == 'manual') {
 	DUPX_Log::info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
 } else {
 	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['archive_name']) {

@@ -6,6 +6,7 @@ $arcStatus	= (file_exists($GLOBALS['ARCHIVE_PATH']))	? 'Pass' : 'Fail';
 $arcFormat  = ($arcStatus == 'Pass') ? 'Pass' : 'StatusFailed';
 $arcSize    = @filesize($GLOBALS['ARCHIVE_PATH']);
 $arcSize    = is_numeric($arcSize) ? $arcSize : 0;
+$zip_archive_enabled = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 
 //ARCHIVE FORMAT
 if ($arcStatus) {
@@ -68,7 +69,7 @@ $max_time_warn  = (is_numeric($max_time_ini) && $max_time_ini < 31  && $max_time
 
 $notice		    = array();
 $notice['01']   = ! file_exists($wpconf_path)	? 'Good' : 'Warn';
-$notice['02']   = $scancount <= 40 ? 'Good' : 'Warn';
+$notice['02']   = $scancount <= 35 ? 'Good' : 'Warn';
 $notice['03']	= $fulldays <= 180 ? 'Good' : 'Warn';
 $notice['04']	= 'Good'; //Place-holder for future check
 $notice['05']	= 'Good'; //Place-holder for future check $GLOBALS['FW_VERSION_OS'] == PHP_OS ? 'Good' : 'Warn';
@@ -118,6 +119,15 @@ ARCHIVE
             <td>Notes:</td>
             <td><?php echo strlen($GLOBALS['FW_PACKAGE_NOTES']) ? "{$GLOBALS['FW_PACKAGE_NOTES']}" : " - no notes - ";?></td>
         </tr>
+		<?php if ($GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
+		<tr>
+			<td>Mode:</td>
+			<td>Archive only database was enabled during package package creation.</td>
+		</tr>
+		<?php endif; ?>
+	</table>
+
+	<table class="s1-archive-local">
 		<tr>
 			<td colspan="2"><div class="hdr-sub3">File Details</div></td>
 		</tr>
@@ -138,7 +148,7 @@ ARCHIVE
 			<td>Status:</td>
 			<td>
 				<?php if ($arcStatus != 'Fail') : ?>
-					<span class="dupx-pass">File found</span>
+					<span class="dupx-pass">File Found</span>
 				<?php else : ?>
 					<div class="s1-archive-failed-msg">
 						<b class="dupx-fail">Archive File Not Found!</b><br/>
@@ -171,7 +181,7 @@ ARCHIVE
 			<td>Format:</td>
 			<td>
 				<?php if ($arcFormat == 'Pass') : ?>
-					<span class="dupx-pass">Structure is good</span>
+					<span class="dupx-pass">Good structure</span>
 				<?php elseif ($arcFormat == 'StatusFailed') : ?>
 					<span class="dupx-fail">Unable to validate format</span><br/>
 				<?php elseif ($arcFormat == 'NoZipArchive') : ?>
@@ -291,25 +301,42 @@ VALIDATION
 			</table>
 		</div>
 
-		<!-- NOTICE 1 -->
-		<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice01">+ Configuration File</div>
-		<div class="info" id="s1-notice01">
-			Duplicator works best by placing the installer and archive files into an empty directory.  Typically, if a wp-config.php file is found in the extraction
-			directory it may indicate that your trying to install over an existing WordPress site which can lead to un-intended results.  If this is not the case, then
-			just ignore this notice, but be aware that you will have to remove the wp-config.php file later on in the deployment process.
-		</div>
+		<?php if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
 
-		<!-- NOTICE 2 -->
-		<div class="status <?php echo ($notice['02'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['02']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice02">+ Directory Setup</div>
-		<div class="info" id="s1-notice02">
-			<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}"; ?></i>
-			<br/><br/>
-			There are currently <?php echo "<b>[{$scancount}]</b>";?>  items in the deployment path. These items will be overwritten if they also exist
-			inside the archive file.  The notice is to prevent overwriting an existing site or trying to install on-top of one which
-			can have un-intended results. <i>This notice shows if it detects more than 40 items.</i>
-		</div>
+			<!-- NOTICE 1 -->
+			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
+			<div class="title" data-type="toggle" data-target="#s1-notice01">+ Configuration File</div>
+			<div class="info" id="s1-notice01">
+				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
+				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.
+				<br/><br/>
+				<b>Options:</b>
+				<ul style="margin-bottom: 0">
+					<li>If the archive was already manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
+					<li>If the wp-config file is not needed then remove it.</li>
+				</ul>
+			</div>
+
+			<!-- NOTICE 2 -->
+			<div class="status <?php echo ($notice['02'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['02']; ?></div>
+			<div class="title" data-type="toggle" data-target="#s1-notice02">+ Directory Setup</div>
+			<div class="info" id="s1-notice02">
+				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}"; ?></i>
+				<br/><br/>
+				There are currently <?php echo "<b>[{$scancount}]</b>";?>  items in the deployment path. These items will be overwritten if they also exist
+				inside the archive file.  The notice is to prevent overwriting an existing site or trying to install on-top of one which
+				can have un-intended results. <i>This notice shows if it detects more than 40 items.</i>
+
+				<br/><br/>
+				<b>Options:</b>
+				<ul style="margin-bottom: 0">
+					<li>If the archive was already manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
+					<li>If the files/directories are not the same as those in the archive then this notice can be ignored.</li>
+					<li>Remove the files if they are not needed and refresh this page.</li>
+				</ul>
+			</div>
+
+		<?php endif; ?>
 
 		<!-- NOTICE 3 -->
 		<div class="status <?php echo ($notice['03'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['03']; ?></div>
@@ -393,10 +420,25 @@ OPTIONS
 	<br/>
 	<div class="hdr-sub3">Advanced</div>
 	<table class="dupx-opts dupx-advopts">
+		<?php if ($GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
+		<tr>
+			<td>Mode:</td>
+			<td>Archive only database was enabled during package package creation.</td>
+		</tr>
+		<?php endif; ?>
 		<tr>
 			<td>Extraction:</td>
 			<td>
-				<input type="checkbox" name="archive_manual" id="archive_manual" value="1" /> <label for="archive_manual">Manual package extraction</label><br/>
+
+				<select id="archive_engine" name="archive_engine" size="2">
+					<option value="manual">Manual Archive Extraction</option>
+					<?php
+					//ZIP-ARCHIVE
+					echo (! $zip_archive_enabled)
+						? '<option disabled="true">PHP ZipArchive (not detected on server)</option>'
+						: '<option value="ziparchive" selected="true">PHP ZipArchive</option>';
+					?>
+				</select>
 			</td>
 		</tr>
 	</table>
@@ -580,6 +622,14 @@ Auto Posts to view.step2.php
 </form>
 
 <script>
+    DUPX.getManaualArchiveOpt = function ()
+    {
+        $("html, body").animate({scrollTop: $(document).height()}, 1500);
+        $("a[data-target='#s1-area-adv-opts']").find('i').removeClass('dupx-plus-square').addClass('dupx-minus-square');
+        $('#s1-area-adv-opts').show(1000);
+        $('select#archive_engine').val('manual').focus();
+    };
+
 	/** Performs Ajax post to extract files and create db
 	 * Timeout (10000000 = 166 minutes) */
 	DUPX.runExtraction = function()

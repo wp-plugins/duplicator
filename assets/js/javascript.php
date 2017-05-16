@@ -106,6 +106,22 @@ Duplicator.UI.ToggleMetaBox = function()
 	
 }
 
+Duplicator.UI.readonly = function(item)
+{
+	jQuery(item).attr('readonly', 'true').css({color:'#999'});
+}
+
+Duplicator.UI.disable = function(item)
+{
+	jQuery(item).attr('disabled', 'true').css({color:'#999'});
+}
+
+Duplicator.UI.enable = function(item)
+{
+	jQuery(item).removeAttr('disabled').css({color:'#000'});
+	jQuery(item).removeAttr('readonly').css({color:'#000'});
+}
+
 //Init
 jQuery(document).ready(function($) 
 {

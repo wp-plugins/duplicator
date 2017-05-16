@@ -153,6 +153,7 @@ class DUP_Installer
             //GENERAL
             "fwrite_url_old" => get_option('siteurl'),
             "fwrite_archive_name" => "{$this->Package->NameHash}_archive.zip",
+			"fwrite_archive_onlydb" => $this->Package->Archive->ExportOnlyDB,
             "fwrite_package_notes" => $this->Package->Notes,
             "fwrite_secure_name" => $this->Package->NameHash,
             "fwrite_url_new" => $this->Package->Installer->OptsURLNew,

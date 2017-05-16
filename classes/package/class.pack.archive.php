@@ -26,6 +26,7 @@ class DUP_Archive
     public $FilterDirsAll = array();
     public $FilterExtsAll = array();
     public $FilterOn;
+	public $ExportOnlyDB;
     public $File;
     public $Format;
     public $PackDir;
@@ -42,9 +43,10 @@ class DUP_Archive
      */
     public function __construct($package)
     {
-        $this->Package    = $package;
-        $this->FilterOn   = false;
-        $this->FilterInfo = new DUP_Archive_Filter_Info();
+        $this->Package		= $package;
+        $this->FilterOn		= false;
+		$this->ExportOnlyDB = false;
+        $this->FilterInfo	= new DUP_Archive_Filter_Info();
     }
 
     /**
@@ -91,18 +93,13 @@ class DUP_Archive
      */
     public function buildScanStats()
     {
-//        $this->createFilterInfo();
-//        $this->getDirs();
-//        $this->getFiles();
-//        return $this;
-
 		$this->createFilterInfo();
 
 		$rootPath = DUP_PRO_U::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
         $rootPath = (trim($rootPath) == '') ? '/' : $rootPath;
 
 		//If the root directory is a filter then skip it all
-        if (in_array($this->PackDir, $this->FilterDirsAll)) {
+        if (in_array($this->PackDir, $this->FilterDirsAll) || $this->Package->Archive->ExportOnlyDB) {
             $this->Dirs = array();
         } else {
             $this->Dirs[] = $this->PackDir;

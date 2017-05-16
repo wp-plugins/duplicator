@@ -21,7 +21,6 @@
     span#dup-archive-filter-db {color:#A62426; display:none}
     div#dup-file-filter-items, div#dup-db-filter-items {padding:5px 0;}
 	div#dup-db-filter-items {font-stretch:ultra-condensed; font-family:Calibri; }
-    label.dup-enable-filters {display:inline-block; margin:-5px 0 5px 0}
     div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
     div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0 0 10px; color:#777}
     table#dup-dbtables td {padding:1px 15px 1px 4px}
@@ -30,6 +29,8 @@
 	div.dup-store-pro img {height:14px; width:14px; vertical-align:text-top}
 	div.dup-store-pro a {text-decoration:underline}
 	span.dup-pro-text {font-style:italic; font-size:12px; color:#555; font-style:italic }
+	div#dup-exportdb-items-checked, div#dup-exportdb-items-off {min-height:275px; display:none}
+	div#dup-exportdb-items-checked {padding: 5px; max-width:600px}
 
     /*INSTALLER SECTION*/
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}
@@ -118,7 +119,7 @@ ARCHIVE -->
     </div>		
     <div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo $ui_css_archive ?>">
         <input type="hidden" name="archive-format" value="ZIP" />
-		
+
         <!-- NESTED TABS -->
         <div data-dup-tabs='true'>
             <ul>
@@ -133,70 +134,84 @@ ARCHIVE -->
 					$uploads = wp_upload_dir();
 					$upload_dir = DUP_Util::safePath($uploads['basedir']);
                 ?>
-                <div class="dup-enable-filters">
+           
+				<input type="checkbox"  id="export-onlydb" name="export-onlydb"  onclick="Duplicator.Pack.ExportOnlyDB()" <?php echo ($Package->Archive->ExportOnlyDB) ? "checked='checked'" :""; ?> />
+				<label for="export-onlydb">Archive Only Database</label>
+
+				<div id="dup-exportdb-items-off" style="<?php echo ($Package->Archive->ExportOnlyDB) ? 'none' : 'block'; ?>">
                     <input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" :""; ?> />	
-                    <label for="filter-on"><?php _e("Enable File Filters", 'duplicator') ?></label>
+                    <label for="filter-on" id="filter-on-label"><?php _e("Enable File Filters", 'duplicator') ?></label>
 					<i class="fa fa-question-circle" 
 					   data-tooltip-title="<?php _e("File Filters:", 'duplicator'); ?>" 
 					   data-tooltip="<?php _e('File filters allow you to ignore directories and file extensions.  When creating a package only include the data you '
 					   . 'want and need.  This helps to improve the overall archive build time and keep your backups simple and clean.', 'duplicator'); ?>">
 					</i>
-                </div>
 
-                <div id="dup-file-filter-items">
-                    <label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("Directories", 'duplicator') ?>:</label>
-                    <div class='dup-quick-links'>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'duplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php _e("wp-uploads", 'duplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo DUP_Util::safePath(WP_CONTENT_DIR); ?>/cache')">[<?php _e("cache", 'duplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'duplicator') ?></a>
-                    </div>
-                    <textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterDirs)) ?></textarea><br/>
-                    <label class="no-select" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("File extensions", 'duplicator') ?>:</label>
-                    <div class='dup-quick-links'>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php _e("media", 'duplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php _e("archive", 'duplicator') ?>]</a>
-                        <a href="javascript:void(0)" onclick="jQuery('#filter-exts').val('')"><?php _e("(clear)", 'duplicator') ?></a>
-                    </div>
-                    <textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
+					<div id="dup-file-filter-items">
+						<label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("Directories", 'duplicator') ?>:</label>
+						<div class='dup-quick-links'>
+							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'duplicator') ?>]</a>
+							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php _e("wp-uploads", 'duplicator') ?>]</a>
+							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo DUP_Util::safePath(WP_CONTENT_DIR); ?>/cache')">[<?php _e("cache", 'duplicator') ?>]</a>
+							<a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php _e("(clear)", 'duplicator') ?></a>
+						</div>
+						<textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterDirs)) ?></textarea><br/>
+						<label class="no-select" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("File extensions", 'duplicator') ?>:</label>
+						<div class='dup-quick-links'>
+							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php _e("media", 'duplicator') ?>]</a>
+							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php _e("archive", 'duplicator') ?>]</a>
+							<a href="javascript:void(0)" onclick="jQuery('#filter-exts').val('')"><?php _e("(clear)", 'duplicator') ?></a>
+						</div>
+						<textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
 
-                    <div class="dup-tabs-opts-help">
-                        <?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'duplicator'); ?> <br/>
-                        <?php _e("Use the full path for directories and semicolons to separate all items.", 'duplicator'); ?>
-                    </div>
-					<br/>
-					<span class="dup-pro-text">
-						<?php echo sprintf(__('%1$s are available in', 'duplicator'), 'Individual file filters'); ?>
-						<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
-						<i class="fa fa-lightbulb-o" 
-							data-tooltip-title="<?php _e("File Filters:", 'duplicator'); ?>" 
-							data-tooltip="<?php _e('File filters allows you to select individual files and add them to an exclusion list that will filter them from the package.', 'duplicator'); ?>">
-						 </i>
-					</span>
-                </div>
+						<div class="dup-tabs-opts-help">
+							<?php _e("The directory paths and extensions above will be be excluded from the archive file if enabled is checked.", 'duplicator'); ?> <br/>
+							<?php _e("Use the full path for directories and semicolons to separate all items.", 'duplicator'); ?>
+						</div>
+						<br/>
+						<span class="dup-pro-text">
+							<?php echo sprintf(__('%1$s are available in', 'duplicator'), 'Individual file filters'); ?>
+							<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
+							<i class="fa fa-lightbulb-o"
+								data-tooltip-title="<?php _e("File Filters:", 'duplicator'); ?>"
+								data-tooltip="<?php _e('File filters allows you to select individual files and add them to an exclusion list that will filter them from the package.', 'duplicator'); ?>">
+							 </i>
+						</span>
+					</div>
+				</div>
+
+				<div id="dup-exportdb-items-checked"  style="<?php echo ($Package->Archive->ExportOnlyDB) ? 'block' : 'none'; ?>">
+					<?php _e("<b>Overview:</b><br/> This advanced option excludes all files from the archive.  Only the database and a copy of the installer.php "
+						. "will be included in the archive.zip file.", 'duplicator'); ?>
+					<br/><br/>
+
+					<?php _e("<b>Notice:</b><br/>  Installing only the database over an existing site may have unintended consequences.  "
+						 . "Be sure to know the state of your system before installing the database without the associated files.  "
+						 . "Please note that this option is currently in beta.", 'duplicator'); ?>
+					<br/><br/>
+				</div>
+
             </div>
 
             <!-- TAB2: DATABASE -->
-            <div>
-                <div class="dup-enable-filters">						
-                    <table>
-						<tr>
-							<td colspan="2" style="padding:0 0 10px 0">
-								<?php _e("Build Mode", 'duplicator') ?>:&nbsp; <a href="?page=duplicator-settings" target="settings"><?php echo $dbbuild_mode; ?></a>
-							</td>
-						</tr>
-                        <tr>
-                            <td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" :""; ?> /></td>
-                            <td>
-								<label for="dbfilter-on"><?php _e("Enable Table Filters", 'duplicator') ?> &nbsp;</label> 
-								<i class="fa fa-question-circle" 
-								   data-tooltip-title="<?php _e("Enable Table Filters:", 'duplicator'); ?>" 
-								   data-tooltip="<?php _e('Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!', 'duplicator'); ?>">
-								</i>
-							</td>
-                        </tr>
-                    </table>
-                </div>
+            <div>					
+				<table>
+					<tr>
+						<td colspan="2" style="padding:0 0 10px 0">
+							<?php _e("Build Mode", 'duplicator') ?>:&nbsp; <a href="?page=duplicator-settings" target="settings"><?php echo $dbbuild_mode; ?></a>
+						</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" :""; ?> /></td>
+						<td>
+							<label for="dbfilter-on"><?php _e("Enable Table Filters", 'duplicator') ?> &nbsp;</label>
+							<i class="fa fa-question-circle"
+							   data-tooltip-title="<?php _e("Enable Table Filters:", 'duplicator'); ?>"
+							   data-tooltip="<?php _e('Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!', 'duplicator'); ?>">
+							</i>
+						</td>
+					</tr>
+				</table>
                 <div id="dup-db-filter-items">
                     <a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php _e('Include All', 'duplicator'); ?> ]</a> &nbsp; 
                     <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e('Exclude All', 'duplicator'); ?> ]</a>
@@ -405,6 +420,14 @@ jQuery(document).ready(function ($)
 	var DUP_NAMEDEFAULT = '<?php echo $default_name ?>';
 	var DUP_NAMELAST = $('#package-name').val();
 
+	Duplicator.Pack.ExportOnlyDB = function ()
+	{
+		$('#dup-exportdb-items-off, #dup-exportdb-items-checked').hide();
+		$("#export-onlydb").is(':checked')
+			? $('#dup-exportdb-items-checked').show()
+			: $('#dup-exportdb-items-off').show();
+	};
+
 	/* Enable/Disable the file filter elements */
 	Duplicator.Pack.ToggleFileFilters = function () 
 	{
@@ -483,5 +506,6 @@ jQuery(document).ready(function ($)
 	//Init:Toggle OptionTabs
 	Duplicator.Pack.ToggleFileFilters();
 	Duplicator.Pack.ToggleDBFilters();
+	Duplicator.Pack.ExportOnlyDB();
 });
 </script>

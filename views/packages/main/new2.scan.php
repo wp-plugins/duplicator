@@ -269,8 +269,10 @@ TOOL BAR: STEPS -->
 					data-tooltip="<?php _e('The files size represents only the included files before compression is applied. It does not include the size of the database script and in most cases the package size once completed will be smaller than this number.', 'duplicator'); ?>"></i>
 				<div id="data-arc-size1"></div>
 				<div class="dup-scan-filter-status">
-					<?php 
-						if ($Package->Archive->FilterOn) {
+					<?php
+						if ($Package->Archive->ExportOnlyDB) {
+							echo '<i class="fa fa-filter"></i> '; _e('Database Only', 'duplicator');
+						}elseif ($Package->Archive->FilterOn) {
 							echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
 						} 
 					?> 
