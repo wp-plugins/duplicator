@@ -68,11 +68,13 @@ $max_time_warn  = (is_numeric($max_time_ini) && $max_time_ini < 31  && $max_time
 
 
 $notice		    = array();
-$notice['01']   = ! file_exists($wpconf_path)	? 'Good' : 'Warn';
-$notice['02']   = $scancount <= 35 ? 'Good' : 'Warn';
+if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) {
+	$notice['01']   = ! file_exists($wpconf_path)	? 'Good' : 'Warn';
+	$notice['02']   = $scancount <= 35 ? 'Good' : 'Warn';
+}
 $notice['03']	= $fulldays <= 180 ? 'Good' : 'Warn';
 $notice['04']	= 'Good'; //Place-holder for future check
-$notice['05']	= 'Good'; //Place-holder for future check $GLOBALS['FW_VERSION_OS'] == PHP_OS ? 'Good' : 'Warn';
+$notice['05']	= 'Good'; //Place-holder for future check 
 $notice['06']	= empty($openbase)	 ? 'Good' : 'Warn';
 $notice['07']	= ! $max_time_warn	 ? 'Good' : 'Warn';
 $all_notice  	= in_array('Warn', $notice) ? 'Warn' : 'Good';
@@ -143,7 +145,6 @@ ARCHIVE
             <td>Path:</td>
             <td><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}";?> </td>
         </tr>
-
 		<tr>
 			<td>Status:</td>
 			<td>
@@ -209,7 +210,6 @@ ARCHIVE
 			</td>
 		</tr>
     </table>
-
 
 </div>
 <br/><br/>
