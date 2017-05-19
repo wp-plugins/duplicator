@@ -420,12 +420,6 @@ OPTIONS
 	<br/>
 	<div class="hdr-sub3">Advanced</div>
 	<table class="dupx-opts dupx-advopts">
-		<?php if ($GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
-		<tr>
-			<td>Mode:</td>
-			<td>Archive only database was enabled during package package creation.</td>
-		</tr>
-		<?php endif; ?>
 		<tr>
 			<td>Extraction:</td>
 			<td>

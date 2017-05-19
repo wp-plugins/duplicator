@@ -1,149 +1,159 @@
 <?php
-
-require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.php');
+require_once(DUPLICATOR_PLUGIN_PATH.'/classes/utilities/class.u.php');
 
 //Enum used to define the various test statues 
 final class DUP_CTRL_Status
 {
-	const ERROR = -2;
-	const FAILED = -1;
-	const UNDEFINED = 0;
-	const SUCCESS = 1;
+	const ERROR		= -2;
+	const FAILED	= -1;
+	const UNDEFINED	= 0;
+	const SUCCESS	= 1;
 }
 
 /**
  * Base class for all controllers
  * 
- * @package Dupicator\ctrls\
+ * @package Duplicator
+ * @subpackage classes/ctrls
  */
 class DUP_CTRL_Base
 {
 	//Represents the name of the Nonce Action
 	public $Action;
-	
 	//The return type valiad options: PHP, JSON-AJAX, JSON
-	public $ReturnType = 'JSON-AJAX';
+	public $returnType = 'JSON-AJAX';
 
-	public function SetResponseType($type)
+	public function setResponseType($type)
 	{
 		$opts = array('PHP', 'JSON-AJAX', 'JSON');
-		if (!in_array($type, $opts)) 
-		{
-			throw new Exception('The $type param must be one of the following: ' . implode(',', $opts) . ' for the following function [' . __FUNCTION__.']');
+		if (!in_array($type, $opts)) {
+			throw new Exception('The $type param must be one of the following: '.implode(',', $opts).' for the following function ['.__FUNCTION__.']');
 		}
-		$this->ReturnType = $type;
+		$this->returnType = $type;
 	}
-	
-	public function PostParamMerge($post)
+
+	public function postParamMerge($post)
 	{
-		$post   = is_array($post) ? $post : array();
+		$post = is_array($post) ? $post : array();
 		return array_merge($_POST, $post);
 	}
 }
 
-
-
 /**
  * A class structer used to report on controller methods
  * 
- * @package Dupicator\ctrls\
+ * @package Duplicator
+ * @subpackage classes/ctrls
  */
 class DUP_CTRL_Report
 {
 	//Properties
-	public $RunTime;
-	public $ReturnType;
-	public $Results;
-	public $Status;
+	public $runTime;
+	public $returnType;
+	public $results;
+	public $status;
+
 }
 
-
 /**
- * A class used format all controller responses in a consitent format
- * Every controller response will have a Report and Payload structer
- * The Payload is an array of the result response.  The Report is used
+ * A class used format all controller responses in a consitent format.  Every controller response will
+ * have a Report and Payload structer.  The Payload is an array of the result response.  The Report is used
  * report on the overall status of the controller method
- * 
- * @package Dupicator\ctrls\
+ *
+ * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
+ *
+ * @package Duplicator
+ * @subpackage classes/ctrls
+ * @copyright (c) 2017, Snapcreek LLC
+ *
  */
 class DUP_CTRL_Result
 {
 	//Properties
-	public $Report;
-	public $Payload;
-
-	private $time_start;
-	private $time_end;
+	public $report;
+	public $payload;
+	private $timeStart;
+	private $timeEnd;
 	private $CTRL;
-	
-	function __construct(DUP_CTRL_Base $CTRL_OBJ) 
+
+	function __construct(DUP_CTRL_Base $CTRL_OBJ)
 	{
 		DUP_Util::hasCapability('read');
-		$this->time_start	= $this->microtimeFloat();
-		$this->CTRL			= $CTRL_OBJ;
-		
+		$this->timeStart = $this->microtimeFloat();
+		$this->CTRL		 = $CTRL_OBJ;
+
 		//Report Data
-		$this->Report		=  new DUP_CTRL_Report();
-		$this->Report->ReturnType = $CTRL_OBJ->ReturnType;
+		$this->report				 = new DUP_CTRL_Report();
+		$this->report->returnType	 = $CTRL_OBJ->returnType;
 	}
-	
-	public function Process($payload, $test = DUP_CTRL_Status::UNDEFINED) 
+
+	/**
+	 * Used to process a controller request
+	 *
+	 * @param object $payload The response object that will be returned
+	 * @param enum $test The status of a response
+	 *
+	 * @return object || JSON  Returns a PHP object or json encoded object
+	 */
+	public function process($payload, $test = DUP_CTRL_Status::UNDEFINED)
 	{
-		if (is_array($this->Payload))
-		{
-			$this->Payload[] = $payload;
-			$this->Report->Results = count($this->Payload);
+		if (is_array($this->payload)) {
+			$this->payload[]		 = $payload;
+			$this->report->results	 = count($this->payload);
 		} else {
-			$this->Payload = $payload;
-			$this->Report->Results = 1;
+			$this->payload			 = $payload;
+			$this->report->results	 = (is_array($payload)) ? count($payload) : 1;
 		}
-		
-		$this->Report->Status = $test;
+
+		$this->report->status = $test;
 		$this->getProcessTime();
-		
-		switch ($this->CTRL->ReturnType) 
-		{
-			case 'JSON' :	
+
+		switch ($this->CTRL->returnType) {
+			case 'JSON' :
 				return json_encode($this);
 				break;
-			
+
 			case 'PHP' :
 				return $this;
-				break;			
-			
+				break;
+
 			default:
-				if (!headers_sent())  {
+				if (!headers_sent()) {
 					header('Content-Type: application/json');
 				}
-				return die(json_encode($this));	
+				return die(json_encode($this));
 				break;
 		}
 	}
-	
-	public function ProcessError($exception) 
+
+	/**
+	 * Used to process an error response
+	 *
+	 * @param object $exception The PHP exception object
+	 *
+	 * @return object || JSON  Returns a PHP object or json encoded object
+	 */
+	public function processError($exception)
 	{
-		$payload = array();
-		$payload['Message'] = $exception->getMessage();
-		$payload['File']	= $exception->getFile();
-		$payload['Line']	= $exception->getLine();
-		$payload['Trace']	= $exception->getTraceAsString();
-		$this->Process($payload, DUP_CTRL_Status::ERROR);	
+		$payload			 = array();
+		$payload['Message']	 = $exception->getMessage();
+		$payload['File']	 = $exception->getFile();
+		$payload['Line']	 = $exception->getLine();
+		$payload['Trace']	 = $exception->getTraceAsString();
+		$this->process($payload, DUP_CTRL_Status::ERROR);
 		die(json_encode($this));
 	}
-	
+
 	private function getProcessTime()
 	{
-		$this->time_end = $this->microtimeFloat();
-		$this->Report->RunTime = $this->time_end - $this->time_start;
+		$this->timeEnd			 = $this->microtimeFloat();
+		$this->report->runTime	 = $this->timeEnd - $this->timeStart;
 	}
-	
+
 	private function microtimeFloat()
 	{
 		list($usec, $sec) = explode(" ", microtime());
-		return ((float)$usec + (float)$sec);
+		return ((float) $usec + (float) $sec);
 	}
-	
-
-	
 }
-?>

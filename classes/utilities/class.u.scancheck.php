@@ -134,10 +134,9 @@ class DUP_ScanCheck
      */
     private function isLink($target)
     {
+		//Currently Windows does not support sym-link detection
         if ($this->isWindows) {
-            if (file_exists($target) && @readlink($target) != $target) {
-                return true;
-            }
+           return false;
         } elseif (is_link($target)) {
             return true;
         }

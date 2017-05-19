@@ -74,8 +74,15 @@ $log .= (isset($_POST['plugins']) && count($_POST['plugins'] > 0))
 DUPX_Log::info($log, 2);
 
 //UPDATE SETTINGS
-$serial_plugin_list = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? @serialize($_POST['plugins']) : '';
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['blogname']}' WHERE option_name = 'blogname' ");
+$blog_name   = $_POST['blogname'];
+$plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
+// Force Duplicator active so we the security cleanup will be available
+if (!in_array('duplicator/duplicator.php', $plugin_list)) {
+	$plugin_list[] = 'duplicator/duplicator.php';
+}
+$serial_plugin_list	 = @serialize($plugin_list);
+
+mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 
 $log  = "--------------------------------------\n";
@@ -183,7 +190,7 @@ DUPX_Log::info("====================================\n");
 DUPX_WPConfig::updateStandard();
 $config_file = DUPX_WPConfig::updateExtended();
 DUPX_Log::info("UPDATED WP-CONFIG: {$root_path}/wp-config.php' (if present)");
-DUPX_ServerConfig::setup();
+DUPX_ServerConfig::setup($dbh);
 
 
 

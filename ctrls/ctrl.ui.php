@@ -38,7 +38,7 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
      */
 	public function SaveViewState($post) 
 	{
-		$post = $this->PostParamMerge($post);
+		$post = $this->postParamMerge($post);
 		$result = new DUP_CTRL_Result($this);
 	
 		try 
@@ -58,11 +58,11 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 			$test = ($success) 
 					? DUP_CTRL_Status::SUCCESS
 					: DUP_CTRL_Status::FAILED;
-			return $result->Process($payload, $test);			
+			return $result->process($payload, $test);
 		} 
 		catch (Exception $exc) 
 		{
-			$result->ProcessError($exc);
+			$result->processError($exc);
 		}
     }
 	
@@ -89,13 +89,12 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 			$test = (count($payload)) 
 					? DUP_CTRL_Status::SUCCESS
 					: DUP_CTRL_Status::FAILED;
-			return $result->Process($payload, $test);
+			return $result->process($payload, $test);
 		} 
 		catch (Exception $exc) 
 		{
-			$result->ProcessError($exc);
+			$result->processError($exc);
 		}
     }	
 	
 }
-?>

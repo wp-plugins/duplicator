@@ -136,7 +136,7 @@ jQuery(document).ready(function($)
 	Duplicator.Debug.ProcessResult = function(data, result) 
 	{	
 		UNIT_TEST_COUNTER++;
-		var status = data.Report.Status || 0;
+		var status = data.report.status || 0;
 		//console.log(data);
 		
 		if (status > 0) {

@@ -1,5 +1,12 @@
+<?php
 
-<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+	$_POST['archive_name'] = isset($_POST['archive_name']) ? $_POST['archive_name'] : '';
+	$admin_base		= basename($GLOBALS['FW_WPLOGIN_URL']);
+	$admin_redirect = rtrim($_POST['url_new'], "/") . "/wp-admin/admin.php?page=duplicator-tools&tab=cleanup&package={$_POST['archive_name']}";
+	$admin_redirect = urlencode($admin_redirect);
+	$admin_login	= rtrim($_POST['url_new'], '/') . "/{$admin_base}?redirect_to={$admin_redirect}";
+?>
+
 <script>
 	/** Posts to page to remove install files */
 	DUPX.removeInstallerFiles = function()
@@ -9,6 +16,10 @@
 			var nurl = '<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/admin.php?page=duplicator-tools&tab=cleanup';
 			window.open(nurl, "_blank");
 		}
+	};
+	DUPX.getAdminLogin = function()
+    {
+		window.open('<?php echo $admin_login; ?>', 'wp-admin');
 	};
 </script>
 
@@ -28,17 +39,17 @@ VIEW: STEP 4 - INPUT -->
 	</div>
 
 	<table class="s4-final-step">
-		<tr>
-			<td style="width:170px"><a  class="s4-final-btns" href='<?php echo rtrim($_POST['url_new'], "/"); ?>/wp-admin/options-permalink.php' target='_blank'> Save Permalinks</a></td>
-			<td><i>Updates URL rewrite rules in .htaccess (requires login)</i></td>
-		</tr>
-		<tr>
-			<td><a  class="s4-final-btns" href='<?php echo rtrim($_POST['url_new'], "/") . '?now=' . $GLOBALS['NOW_DATE']; ?>' target='_blank'>Test Site</a></td>
+		<!--tr>
+			<td><a class="s4-final-btns" href='<?php echo rtrim($_POST['url_new'], "/") . '?now=' . $GLOBALS['NOW_DATE']; ?>' target='_blank'>Test Site</a></td>
 			<td><i>Validate all pages, links images and plugins</i></td>
 		</tr>
 		<tr>
-			<td><a  class="s4-final-btns" href="javascript:void(0)" onclick="DUPX.removeInstallerFiles('<?php echo $_POST['archive_name'] ?>')">Security Cleanup</a></td>
+			<td><a class="s4-final-btns" href="javascript:void(0)" onclick="DUPX.removeInstallerFiles('<?php echo $_POST['archive_name'] ?>')">Security Cleanup</a></td>
 			<td><i>Validate installer files are removed (requires login)</i></td>
+		</tr-->
+		<tr>
+			<td><a class="s4-final-btns" href="javascript:void(0)" onclick="DUPX.getAdminLogin()">Site Login</a></td>
+			<td><i>Login to the administrator section to finalize the setup</i></td>
 		</tr>
 		<tr>
 			<td><a class="s4-final-btns" href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Show Report</a></td>
@@ -52,13 +63,10 @@ VIEW: STEP 4 - INPUT -->
 		</tr>
 	</table><br/>
 
-	<div class="s4-btns-msg">Click buttons above to complete process</div>
-
 	<div class="s4-go-back">
 		<i>To re-install <a href="javascript:history.go(-3)">start over at step 1</a>.</i><br/>
 		<i>The .htaccess file was reset.  Resave plugins that write to this file.</i>
 	</div>
-
 
 	<!-- ========================
 	INSTALL REPORT -->

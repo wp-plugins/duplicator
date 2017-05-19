@@ -26,7 +26,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'logging';
             break;
 		case 'diagnostics': include('diagnostics/main.php');
             break;
-        case 'cleanup': include('cleanup.php');
+		case 'cleanup': include('cleanup.php');
             break;
     }
     ?>

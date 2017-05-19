@@ -95,7 +95,7 @@ class DUP_Archive
     {
 		$this->createFilterInfo();
 
-		$rootPath = DUP_PRO_U::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
+		$rootPath = DUP_Util::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
         $rootPath = (trim($rootPath) == '') ? '/' : $rootPath;
 
 		//If the root directory is a filter then skip it all

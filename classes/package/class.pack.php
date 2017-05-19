@@ -505,7 +505,7 @@ class DUP_Package
         if ($all) {
             $dir = DUPLICATOR_SSDIR_PATH_TMP."/*";
             foreach (glob($dir) as $file) {
-                unlink($file);
+                @unlink($file);
             }
         }
         //Remove scan files that are 24 hours old
@@ -513,7 +513,7 @@ class DUP_Package
             $dir = DUPLICATOR_SSDIR_PATH_TMP."/*_scan.json";
             foreach (glob($dir) as $file) {
                 if (filemtime($file) <= time() - 86400) {
-                    unlink($file);
+                    @unlink($file);
                 }
             }
         }
@@ -584,7 +584,7 @@ class DUP_Package
                 $name = basename($file);
                 if (strstr($name, $this->NameHash)) {
                     copy($file, "{$newPath}/{$name}");
-                    unlink($file);
+                    @unlink($file);
                 }
             }
         }

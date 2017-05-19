@@ -1,6 +1,6 @@
 <?php
 	$scan_run = (isset($_POST['action']) && $_POST['action'] == 'duplicator_recursion') ? true :false;	
-	$ajax_nonce	= wp_create_nonce('DUP_CTRL_Tools_RunScanValidator');
+	$ajax_nonce	= wp_create_nonce('DUP_CTRL_Tools_runScanValidator');
 ?>
 
 <style>
@@ -14,7 +14,7 @@ THICK-BOX DIALOGS: -->
 	$confirm1->title			= __('Run Validator', 'duplicator');
 	$confirm1->message			= __('This will run the scan validation check.  This may take several minutes.  Do you want to Continue?', 'duplicator');
 	$confirm1->progressOn		= false;
-	$confirm1->jscallback		= 'Duplicator.Tools.RunScanValidator()';
+	$confirm1->jscallback		= 'Duplicator.Tools.runScanValidator()';
 	$confirm1->initConfirm();
 ?>
 
@@ -88,11 +88,11 @@ jQuery(document).ready(function($)
 	}
 	
 	
-	//Run request to: admin-ajax.php?action=DUP_CTRL_Tools_RunScanValidator
-	Duplicator.Tools.RunScanValidator = function() 
+	//Run request to: admin-ajax.php?action=DUP_CTRL_Tools_runScanValidator
+	Duplicator.Tools.runScanValidator = function()
 	{
 		tb_remove();
-		var data = {action : 'DUP_CTRL_Tools_RunScanValidator', nonce: '<?php echo $ajax_nonce; ?>', 'scan-recursive': true};
+		var data = {action : 'DUP_CTRL_Tools_runScanValidator', nonce: '<?php echo $ajax_nonce; ?>', 'scan-recursive': true};
 		
 		$('#hb-result').html('<?php _e("Scanning Enviroment... This may take a few minutes.", "duplicator"); ?>');
 		$('#scan-run-btn').html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Running Please Wait...');

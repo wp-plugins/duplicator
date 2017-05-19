@@ -175,7 +175,6 @@
 	table.s4-final-step td {padding:5px 15px 5px 5px}
 	table.s4-final-step td:first-child {white-space:nowrap;}
 	div.s4-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center; font-size: 12px}
-	div.s4-btns-msg {text-align: center; font-size:10px; color:#777; margin:5px 0 15px 0}
 	a.s4-final-btns {display: block; width:135; padding:5px; line-height: 1.4; background-color:#F1F1F1; border:1px solid silver;
 		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
 	}

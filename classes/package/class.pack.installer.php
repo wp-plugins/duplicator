@@ -170,6 +170,7 @@ class DUP_Installer
             "fwrite_opts_delete" => json_encode($deleteOpts),
             "fwrite_blogname" => esc_html(get_option('blogname')),
             "fwrite_wproot" => DUPLICATOR_WPROOTPATH,
+			"fwrite_wplogin_url" => wp_login_url(),
             "fwrite_duplicator_version" => DUPLICATOR_VERSION);
 
         if (file_exists($template) && is_readable($template)) {

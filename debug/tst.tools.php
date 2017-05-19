@@ -5,8 +5,8 @@
 	<!-- METHOD TEST -->
 	<form>
 		<?php 
-			$CTRL['Title']  = 'DUP_CTRL_Tools_RunScanValidator';
-			$CTRL['Action'] = 'DUP_CTRL_Tools_RunScanValidator'; 
+			$CTRL['Title']  = 'DUP_CTRL_Tools_runScanValidator';
+			$CTRL['Action'] = 'DUP_CTRL_Tools_runScanValidator';
 			$CTRL['Test']	= true;
 			DUP_DEBUG_TestSetup($CTRL); 
 		?>
@@ -21,8 +21,8 @@
 	<!-- METHOD TEST -->
 	<form>
 		<?php 
-			$CTRL['Title']  = 'DUP_CTRL_Tools_RunScanValidatorFull';
-			$CTRL['Action'] = 'DUP_CTRL_Tools_RunScanValidator'; 
+			$CTRL['Title']  = 'DUP_CTRL_Tools_runScanValidatorFull';
+			$CTRL['Action'] = 'DUP_CTRL_Tools_runScanValidator';
 			$CTRL['Test']	= true;
 			DUP_DEBUG_TestSetup($CTRL);
 		?>
@@ -32,6 +32,17 @@
 			<label>Search Path:</label> 
 			<input type="text" name="scan-path" value="<?php echo DUPLICATOR_WPROOTPATH ?>" /> <br/>
 		</div>
+	</form>
+
+	<!-- METHOD TEST -->
+	<form>
+		<?php
+			$CTRL['Title']  = 'DUP_CTRL_Tools_deleteInstallerFiles';
+			$CTRL['Action'] = 'DUP_CTRL_Tools_deleteInstallerFiles';
+			$CTRL['Test']	= true;
+			DUP_DEBUG_TestSetup($CTRL);
+		?>
+		<div class="params">No Params</div>
 	</form>
 	
 

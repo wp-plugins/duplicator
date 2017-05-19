@@ -100,6 +100,7 @@ $GLOBALS['FW_CACHE_WP']			= '%fwrite_cache_wp%';
 $GLOBALS['FW_CACHE_PATH']		= '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME']			= '%fwrite_blogname%';
 $GLOBALS['FW_WPROOT']			= '%fwrite_wproot%';
+$GLOBALS['FW_WPLOGIN_URL']		= '%fwrite_wplogin_url%';
 $GLOBALS['FW_OPTS_DELETE']		= json_decode("%fwrite_opts_delete%", true);
 $GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
 $GLOBALS['FW_ARCHIVE_ONLYDB']	= '%fwrite_archive_onlydb%';
