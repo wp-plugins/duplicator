@@ -30,7 +30,7 @@
 	div.dup-store-pro a {text-decoration:underline}
 	span.dup-pro-text {font-style:italic; font-size:12px; color:#555; font-style:italic }
 	div#dup-exportdb-items-checked, div#dup-exportdb-items-off {min-height:275px; display:none}
-	div#dup-exportdb-items-checked {padding: 5px; max-width:600px}
+	div#dup-exportdb-items-checked {padding: 5px; max-width:650px}
 
     /*INSTALLER SECTION*/
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}
@@ -181,13 +181,25 @@ ARCHIVE -->
 				</div>
 
 				<div id="dup-exportdb-items-checked"  style="<?php echo ($Package->Archive->ExportOnlyDB) ? 'block' : 'none'; ?>">
-					<?php _e("<b>Overview:</b><br/> This advanced option excludes all files from the archive.  Only the database and a copy of the installer.php "
-						. "will be included in the archive.zip file.", 'duplicator'); ?>
-					<br/><br/>
+					<?php 
+						_e("<b>Overview:</b><br/> This advanced option excludes all files from the archive.  Only the database and a copy of the installer.php "
+						. "will be included in the archive.zip file. The option can be used for backing up and moving only the database. <i>Please note that this option is currently in *Beta*.</i>", 'duplicator');
+						
+						echo '<br/><br/>';
 
-					<?php _e("<b>Notice:</b><br/>  Installing only the database over an existing site may have unintended consequences.  "
-						 . "Be sure to know the state of your system before installing the database without the associated files.  "
-						 . "Please note that this option is currently in beta.", 'duplicator'); ?>
+						_e("<b><i class='fa fa-exclamation-circle'></i> Notice:</b><br/>  Installing only the database over an existing site may have unintended consequences.  "
+						 . "Be sure to know the state of your system before installing the database without the associated files. ", 'duplicator');
+
+						echo '<br/><br/>';
+
+						_e("For example, if you have WordPress 4.6 on this site and you copy this sites database to a host that has WordPress 4.8 files then the source code of the files "
+							. " will not be in sync with the database causing possible errors.", 'duplicator');
+						
+						echo '<br/><br/>';
+						
+						_e("This can also be true of plugins and themes.   When moving only the database be sure to know the database will be compatible with ALL source code files."
+						. "  Please use this advanced feature with caution!", 'duplicator');
+					?>
 					<br/><br/>
 				</div>
 
