@@ -42,7 +42,7 @@
 	
 <?php if($statusCount >= 2)  :	?>
 	<div class="dup-vote">
-		<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Help Rate Duplicator!", 'duplicator') ?></a>
+		<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Rate Duplicator!", 'duplicator') ?></a>
 	</div>
 <?php endif; ?>	
 
