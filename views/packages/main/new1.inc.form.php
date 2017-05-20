@@ -48,7 +48,7 @@
 <div>
 	<label for="package-name"><b><?php _e('Name', 'duplicator') ?>:</b> </label>
 		<div class="dup-notes-add">
-		<button class="button button-small" type="button" onclick="jQuery('#dup-notes-area').toggle()"><i class="fa fa-pencil-square-o"></i> <?php _e('Notes', 'duplicator') ?></button>
+		<button class="button button-small" type="button" onclick="jQuery('#dup-notes-area').toggle()" title="<?php _e('Notes', 'duplicator') ?>"><i class="fa fa-pencil-square-o"></i> </button>
 	</div>
 	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Create a new default name', 'duplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
 	<input id="package-name"  name="package-name" type="text" value="<?php echo $Package->Name ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>

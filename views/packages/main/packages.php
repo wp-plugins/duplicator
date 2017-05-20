@@ -34,13 +34,15 @@
 	td.error-msg a {color:maroon}
 	td.error-msg a i {color:maroon}
 	td.error-msg span {display:inline-block; padding:7px 18px 0px 0px; color:maroon}
+	div.dup-vote { position: absolute; top:15px; right:25px; }
+	div.dup-vote a { font-size:12px; font-style: italic }
 </style>
 
 <form id="form-duplicator" method="post">
 	
-<?php if($statusCount >= 1)  :	?>
-	<div style="font-size:14px; position: absolute; top:15px; right:25px">
-		<a href="admin.php?page=duplicator-about"  style="color:#448B6C"><i><i class="fa fa-handshake-o"></i> <?php _e("Help Promote Duplicator", 'duplicator') ?></i> </a>
+<?php if($statusCount >= 2)  :	?>
+	<div class="dup-vote">
+		<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Help Rate Duplicator!", 'duplicator') ?></a>
 	</div>
 <?php endif; ?>	
 

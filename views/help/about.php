@@ -75,9 +75,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             <table style="text-align: center;width:100%; font-size:11px; font-style:italic; margin-top:25px">
                 <tr>
                     <td valign="top">
-                        <a href="http://wordpress.org/extend/plugins/duplicator" target="_blank"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
+                        <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
                         <div  style=" font-size: 16px; font-weight: bold">
-							<a href="http://wordpress.org/extend/plugins/duplicator" target="_blank"><?php _e('Leave 5 Stars', 'duplicator') ?></a>
+							<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e('Leave 5 Stars', 'duplicator') ?></a>
 						</div>
                     </td>
                 </tr>
