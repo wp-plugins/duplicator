@@ -136,7 +136,7 @@ ARCHIVE -->
                 ?>
            
 				<input type="checkbox"  id="export-onlydb" name="export-onlydb"  onclick="Duplicator.Pack.ExportOnlyDB()" <?php echo ($Package->Archive->ExportOnlyDB) ? "checked='checked'" :""; ?> />
-				<label for="export-onlydb">Archive Only Database</label>
+				<label for="export-onlydb"><?php _e('Archive Only the Database', 'duplicator') ?></label>
 
 				<div id="dup-exportdb-items-off" style="<?php echo ($Package->Archive->ExportOnlyDB) ? 'none' : 'block'; ?>">
                     <input type="checkbox" id="filter-on" name="filter-on" onclick="Duplicator.Pack.ToggleFileFilters()" <?php echo ($Package->Archive->FilterOn) ? "checked='checked'" :""; ?> />	
