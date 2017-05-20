@@ -57,7 +57,7 @@ class DUP_UI_Notice
 				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> {$msg1}</b> <br/>";
 				echo "{$msg3}";
 				echo '<p class="pass-lnks">';
-				@printf("1. <a href='https://wordpress.org/support/plugin/duplicator/reviews/#new-post' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
+				@printf("1. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
 				@printf("2. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!', 'duplicator'));
 				echo '</p>';
 				echo "<div class='pass-msg'>{$msg4}</div>";
