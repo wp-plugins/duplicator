@@ -70,8 +70,9 @@
 	/* ======================================
 	STEP 1 VIEW
     ====================================== */
-    table.s1-archive-local td {padding:4px 20px 4px 4px}
-	table.s1-archive-local td:first-child {font-weight:bold; min-width:50px}
+	table.s1-archive-local {width:100%}
+    table.s1-archive-local td {padding:4px 4px 4px 4px}
+	table.s1-archive-local td:first-child {font-weight:bold; width:55px}
     div#s1-area-sys-setup {padding:5px 0 0 10px}
 	div#s1-area-sys-setup div.info-top {text-align:center; font-style:italic; font-size:11px; padding:0 5px 5px 5px}
 	table.s1-checks-area {width:100%; margin:0; padding:0}
