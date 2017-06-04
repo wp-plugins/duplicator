@@ -34,15 +34,15 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'list';
 			break;
 		case 'new1': 
 			duplicator_header(__("Packages &raquo; New", 'duplicator'));
-			include('new1.setup.php');
+			include('s1.setup1.php');
 			break;
 		case 'new2': 
 			duplicator_header(__("Packages &raquo; New", 'duplicator'));
-			include('new2.scan.php');
+			include('s2.scan1.php');
 			break;
 		case 'new3': 
 			duplicator_header(__("Packages &raquo; New", 'duplicator'));
-			include('new3.build.php');
+			include('s3.build.php');
 			break;
 	}
 ?>

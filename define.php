@@ -2,7 +2,7 @@
 //Prevent directly browsing to the file
 if (function_exists('plugin_dir_url')) 
 {		
-    define('DUPLICATOR_VERSION',        '1.2.8');
+    define('DUPLICATOR_VERSION',        '1.2.9');
     define('DUPLICATOR_HOMEPAGE',       'http://lifeinthegrid.com/labs/duplicator');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
@@ -38,7 +38,7 @@ if (function_exists('plugin_dir_url'))
 	//SCANNER CONSTRAINTS 
 	define('DUPLICATOR_SCAN_SITE',			157286400);	//150MB
 	define('DUPLICATOR_SCAN_WARNFILESIZE',	3145728);	//3MB
-	define('DUPLICATOR_SCAN_CACHESIZE',		524288);	//512K
+	define('DUPLICATOR_SCAN_CACHESIZE',		1048576);	//1MB
 	define('DUPLICATOR_SCAN_DB_ALL_ROWS',	1000000);	//1 rows million per DB
 	define('DUPLICATOR_SCAN_DB_ALL_SIZE',	52428800);	//50MB DB
 	define('DUPLICATOR_SCAN_DB_TBL_ROWS',	100000);    //100K rows per table

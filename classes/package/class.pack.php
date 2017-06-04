@@ -104,7 +104,7 @@ class DUP_Package
         $report['SRV'] = $srv['SRV'];
 
         //FILES
-        $this->Archive->buildScanStats();
+        $this->Archive->getScannerData();
         $dirCount  = count($this->Archive->Dirs);
         $fileCount = count($this->Archive->Files);
         $fullCount = $dirCount + $fileCount;
@@ -113,10 +113,15 @@ class DUP_Package
         $report['ARC']['DirCount']  = number_format($dirCount);
         $report['ARC']['FileCount'] = number_format($fileCount);
         $report['ARC']['FullCount'] = number_format($fullCount);
+		$report['ARC']['FilterDirsAll'] = $this->Archive->FilterDirsAll;
+		$report['ARC']['FilterFilesAll'] = $this->Archive->FilterFilesAll;
+		$report['ARC']['FilterExtsAll'] = $this->Archive->FilterExtsAll;
 
         $report['ARC']['FilterInfo']['Dirs']  = $this->Archive->FilterInfo->Dirs;
         $report['ARC']['FilterInfo']['Files'] = $this->Archive->FilterInfo->Files;
         $report['ARC']['FilterInfo']['Exts']  = $this->Archive->FilterInfo->Exts;
+		$report['ARC']['FilterInfo']['TreeSize']  = $this->Archive->FilterInfo->TreeSize;
+		$report['ARC']['FilterInfo']['TreeWarning']  = $this->Archive->FilterInfo->TreeWarning;
 
         $report['ARC']['Status']['Size']  = ($this->Archive->Size > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
         $report['ARC']['Status']['Names'] = (count($this->Archive->FilterInfo->Files->Warning) + count($this->Archive->FilterInfo->Dirs->Warning)) ? 'Warn' : 'Good';
@@ -126,7 +131,7 @@ class DUP_Package
         $report['ARC']['Files'] = $this->Archive->Files;
 
         //DATABASE
-        $db           = $this->Database->getScanData();
+        $db           = $this->Database->getScannerData();
         $report['DB'] = $db;
 
         $warnings = array($report['SRV']['WEB']['ALL'],
@@ -151,6 +156,8 @@ class DUP_Package
         $report['RPT']['Success']  = $warn_counts['Good'];
         $report['RPT']['ScanTime'] = DUP_Util::elapsedTime(DUP_Util::getMicrotime(), $timerStart);
         $fp                        = fopen(DUPLICATOR_SSDIR_PATH_TMP."/{$this->ScanFile}", 'w');
+
+
         fwrite($fp, json_encode($report));
         fclose($fp);
 
@@ -300,8 +307,8 @@ class DUP_Package
             $name       = substr(sanitize_file_name($name), 0, 40);
             $name       = str_replace($name_chars, '', $name);
 
-            $filter_dirs = isset($post['filter-dirs']) ? $this->parseDirectoryFilter($post['filter-dirs']) : '';
-            $filter_exts = isset($post['filter-exts']) ? $this->parseExtensionFilter($post['filter-exts']) : '';
+            $filter_dirs = isset($post['filter-dirs']) ? $this->Archive->parseDirectoryFilter($post['filter-dirs']) : '';
+            $filter_exts = isset($post['filter-exts']) ? $this->Archive->parseExtensionFilter($post['filter-exts']) : '';
             $tablelist   = isset($post['dbtables']) ? implode(',', $post['dbtables']) : '';
             $compatlist  = isset($post['dbcompat']) ? implode(',', $post['dbcompat']) : '';
             $dbversion   = DUP_DB::getVersion();
@@ -364,6 +371,8 @@ class DUP_Package
         $reflectionClass->getProperty($property)->setValue($package, $value);
         update_option(self::OPT_ACTIVE, $package);
     }
+
+
 
     /**
      * Sets the status to log the state of the build
@@ -590,44 +599,8 @@ class DUP_Package
         }
     }
 
-    /**
-     *  Properly creates the directory filter list that is used for filtering directories
-     *
-     *  @param string $dirs A semi-colon list of dir paths
-     *  /path1_/path/;/path1_/path2/;
-     *
-     *  @returns string A cleaned up list of directory filters
-     */
-    private function parseDirectoryFilter($dirs = "")
-    {
-        $dirs        = str_replace(array("\n", "\t", "\r"), '', $dirs);
-        $filter_dirs = "";
-        $dir_array   = array_unique(explode(";", $dirs));
-        foreach ($dir_array as $val) {
-            if (strlen($val) >= 2) {
-                $filter_dirs .= DUP_Util::safePath(trim(rtrim($val, "/\\"))).";";
-            }
-        }
-        return $filter_dirs;
-    }
 
-    /**
-     *  Properly creates the extension filter list that is used for filtering extensions
-     *
-     *  @param string $dirs A semi-colon list of dir paths
-     *  .jpg;.zip;.gif;
-     *
-     *  @returns string A cleaned up list of extension filters
-     */
-    private function parseExtensionFilter($extensions = "")
-    {
-        $filter_exts = "";
-        if (strlen($extensions) >= 1 && $extensions != ";") {
-            $filter_exts = str_replace(array(' ', '.'), '', $extensions);
-            $filter_exts = str_replace(",", ";", $filter_exts);
-            $filter_exts = DUP_Util::appendOnce($extensions, ";");
-        }
-        return $filter_exts;
-    }
+
+
 }
 ?>

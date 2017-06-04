@@ -184,5 +184,48 @@ jQuery(document).ready(function($)
 			at: 'bottom center'
 		}
 	});
+
+	//HANDLEBARS HELPERS
+	if  (typeof(Handlebars) != "undefined"){
+
+		function _handleBarscheckCondition(v1, operator, v2) {
+			switch(operator) {
+				case '==':
+					return (v1 == v2);
+				case '===':
+					return (v1 === v2);
+				case '!==':
+					return (v1 !== v2);
+				case '<':
+					return (v1 < v2);
+				case '<=':
+					return (v1 <= v2);
+				case '>':
+					return (v1 > v2);
+				case '>=':
+					return (v1 >= v2);
+				case '&&':
+					return (v1 && v2);
+				case '||':
+					return (v1 || v2);
+				case 'obj||':
+					v1 = typeof(v1) == 'object' ? v1.length : v1;
+					v2 = typeof(v2) == 'object' ? v2.length : v2;
+					return (v1 !=0 || v2 != 0);
+				default:
+					return false;
+			}
+		}
+
+		Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+			return _handleBarscheckCondition(v1, operator, v2)
+						? options.fn(this)
+						: options.inverse(this);
+		});
+
+		Handlebars.registerHelper('if_eq',		function(a, b, opts) { return (a == b) ? opts.fn(this) : opts.inverse(this);});
+		Handlebars.registerHelper('if_neq',		function(a, b, opts) { return (a != b) ? opts.fn(this) : opts.inverse(this);});
+	}
+
 });	
 </script>

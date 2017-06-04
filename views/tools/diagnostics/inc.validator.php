@@ -46,17 +46,17 @@ SCAN VALIDATOR -->
 			<table>
 				<tr>
 					<td><b>Files:</b></td>
-					<td>{{Payload.fileCount}} </td>
+					<td>{{payload.fileCount}} </td>
 				</tr>
 				<tr>
 					<td><b>Dirs:</b></td>
-					<td>{{Payload.dirCount}} </td>
+					<td>{{payload.dirCount}} </td>
 				</tr>
 			</table>
 
 			<b>Unreadable Files:</b> <br/>
-			{{#if Payload.unreadable}}
-				{{#each Payload.unreadable}}
+			{{#if payload.unreadable}}
+				{{#each payload.unreadable}}
 					&nbsp; &nbsp; {{@index}} : {{this}}<br/>
 				{{/each}}
 			{{else}}
@@ -64,7 +64,7 @@ SCAN VALIDATOR -->
 			{{/if}}
 			
 			<b>Symbolic Links:</b> <br/>
-			{{#if Payload.symLinks}}
+			{{#if payload.symLinks}}
 				{{#each Payload.symLinks}}
 					&nbsp; &nbsp; {{@index}} : {{this}}<br/>
 				{{/each}}

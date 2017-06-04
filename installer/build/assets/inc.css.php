@@ -166,16 +166,16 @@
 	table.s4-report-results th, table.s4-report-errs th {background-color:#efefef; padding:0px; font-size:13px; padding:0px}
 	table.s4-report-results td, table.s4-report-errs td {padding:0px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:12px}
 	table.s4-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
-	div.s4-err-title {width:100%; background-color: #dfdfdf; font-weight: bold; margin:-5px 0 15px 0; padding:3px 0 1px 3px; border-radius: 4px; font-size:13.5px}
+	div.s4-err-title {background-color:#dfdfdf; font-weight: bold; margin:-3px 0 15px 0; padding:5px; border-radius:3px; font-size:13px}
 
 	div.s4-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0px; border-radius:5px;}
 	div.s4-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
-	div.s4-err-msg div.info-error{padding:7px; background-color:#EAA9AA; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px }
-	div.s4-err-msg div.info-notice{padding:7px; background-color:#FCFEC5; border:1px solid silver; border-radius:5px; font-size:12px; line-height:16px;}
+	div.s4-err-msg div.info-error{padding:7px; background-color:#f9c9c9; border:1px solid silver; border-radius:2px; font-size:12px; line-height:16px }
+	div.s4-err-msg div.info-notice{padding:7px; background-color:#FCFEC5; border:1px solid silver; border-radius:2px; font-size:12px; line-height:16px;}
 	table.s4-final-step {width:100%;}
 	table.s4-final-step td {padding:5px 15px 5px 5px}
 	table.s4-final-step td:first-child {white-space:nowrap;}
-	div.s4-go-back {border-bottom:1px dotted #dfdfdf; border-top:1px dotted #dfdfdf; margin:auto; text-align:center; font-size: 12px}
+	div.s4-go-back {border-top:1px solid #dfdfdf; margin:auto; font-style:italic; font-size:10px; color:#333}
 	a.s4-final-btns {display: block; width:135; padding:5px; line-height: 1.4; background-color:#F1F1F1; border:1px solid silver;
 		color: #000; box-shadow: 5px 5px 5px -5px #949494; text-decoration: none; text-align: center; border-radius: 4px;
 	}

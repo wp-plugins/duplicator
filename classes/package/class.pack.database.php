@@ -109,7 +109,7 @@ class DUP_Database
      *
      *  @return array Returns an array full of meta-data about the database
      */
-    public function getScanData()
+    public function getScannerData()
     {
         global $wpdb;
 

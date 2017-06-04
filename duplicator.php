@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create and transfer a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.2.8
+  Version: 1.2.9
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -132,8 +132,9 @@ if (is_admin() == true)
     add_action('wp_ajax_duplicator_package_scan',        'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_build',		 'duplicator_package_build');
     add_action('wp_ajax_duplicator_package_delete',		 'duplicator_package_delete');
-	$GLOBALS['CTRLS_DUP_CTRL_UI']    = new DUP_CTRL_UI();
-	$GLOBALS['CTRLS_DUP_CTRL_Tools'] = new DUP_CTRL_Tools();
+	$GLOBALS['CTRLS_DUP_CTRL_UI']		= new DUP_CTRL_UI();
+	$GLOBALS['CTRLS_DUP_CTRL_Tools']	= new DUP_CTRL_Tools();
+	$GLOBALS['CTRLS_DUP_CTRL_Package']	= new DUP_CTRL_Package();
 	
 	/**
 	 * User role editor integration 
@@ -162,7 +163,7 @@ if (is_admin() == true)
         wp_register_style('dup-plugin-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
 		wp_register_style('dup-jquery-qtip',DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.css', null, '2.2.1');
         /* JS */
-		wp_register_script('dup-handlebars', DUPLICATOR_PLUGIN_URL . 'assets/js/handlebars.min.js', array('jquery'), '4.0.6');
+		wp_register_script('dup-handlebars', DUPLICATOR_PLUGIN_URL . 'assets/js/handlebars.min.js', array('jquery'), '4.0.10');
         wp_register_script('dup-parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley-standalone.min.js', array('jquery'), '1.1.18');
 		wp_register_script('dup-jquery-qtip', DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.js', array('jquery'), '2.2.1');
     }

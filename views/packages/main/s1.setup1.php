@@ -2,14 +2,14 @@
 
 global $wpdb;
 
-//POST BACK
-$action_updated = null;
-if (isset($_POST['action']))
-{
+//POST BACK: Rest Button
+if (isset($_POST['action'])) {
     $action_result = DUP_Settings::DeleteWPOption($_POST['action']);
     switch ($_POST['action'])
     {
-        case 'duplicator_package_active' : $action_response = __('Package settings have been reset.', 'duplicator');
+        case 'duplicator_package_active' :
+			$action_result = DUP_Settings::DeleteWPOption($_POST['action']);
+			$action_response = __('Package settings have been reset.', 'duplicator');
             break;
     }
 }
@@ -35,8 +35,7 @@ $dbbuild_mode = (DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpP
 ?>
 
 <style>
-    /* -----------------------------
-    REQUIREMENTS*/
+    /* REQUIREMENTS*/
     div.dup-sys-section {margin:1px 0px 5px 0px}
     div.dup-sys-title {display:inline-block; width:250px; padding:1px; }
     div.dup-sys-title div {display:inline-block;float:right; }
@@ -47,6 +46,7 @@ $dbbuild_mode = (DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpP
     span.dup-toggle {float:left; margin:0 2px 2px 0; }
     table.dup-sys-info-results td:first-child {width:200px}
 </style>
+
 
 <!-- ============================
 TOOL BAR: STEPS -->
@@ -65,7 +65,7 @@ TOOL BAR: STEPS -->
             </div>	
         </td>
         <td>
-            <a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'duplicator'); ?></a>
+            <a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("Packages", 'duplicator'); ?></a>
 			<span> <?php _e("Create New", 'duplicator'); ?></span>
         </td>
     </tr>
@@ -218,20 +218,43 @@ SYSTEM REQUIREMENTS -->
 <!-- ============================
 FORM PACKAGE OPTIONS -->
 <div style="padding:5px 5px 2px 5px">
-	<?php include('new1.inc.form.php'); ?>
+	<?php include('s1.setup2.php'); ?>
 </div>
+
+<!-- CACHE PROTECTION: If the back-button is used from the scanner page then we need to
+refresh page in-case any filters where set while on the scanner page -->
+<form id="cache_detection">
+	<input type="hidden" id="cache_state" name="cache_state" value="" />
+</form>
 
 <script>
 jQuery(document).ready(function ($) 
 {
-	//Init: Toogle for system requirment detial links
+	Duplicator.Pack.checkPageCache = function()
+	{
+		var $state = $('#cache_state');
+		if( $state.val() == "" ) {
+			$state.val("fresh-load");
+		} else {
+			$state.val("cached");
+			<?php
+				$redirect = admin_url('admin.php?page=duplicator&tab=new1');
+				echo "window.location.href = '{$redirect}'";
+			?>
+		}
+	}
+
+	//INIT
+	Duplicator.Pack.checkPageCache();
+
+	//Toogle for system requirment detial links
 	$('.dup-sys-title a').each(function () {
 		$(this).attr('href', 'javascript:void(0)');
 		$(this).click({selector: '.dup-sys-info'}, Duplicator.Pack.ToggleSystemDetails);
 		$(this).prepend("<span class='ui-icon ui-icon-triangle-1-e dup-toggle' />");
 	});
 
-	//Init: Color code Pass/Fail/Warn items
+	//Color code Pass/Fail/Warn items
 	$('.dup-sys-title div').each(function () {
 		$(this).addClass(($(this).text() == 'Pass') ? 'dup-sys-pass' : 'dup-sys-fail');
 	});

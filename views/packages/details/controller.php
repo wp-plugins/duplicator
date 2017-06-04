@@ -44,7 +44,7 @@ $err_link_ticket	= '<a target="_blank" href="https://snapcreek.com/duplicator/do
 			<?php _e('Transfer', 'duplicator'); ?>
 		</a> 		
     </h2>
-	<div class="all-packages"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e('All Packages', 'duplicator'); ?></a></div>
+	<div class="all-packages"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e('Packages', 'duplicator'); ?></a></div>
 	
     <?php
     switch ($current_tab) {

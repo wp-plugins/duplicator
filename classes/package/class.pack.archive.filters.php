@@ -66,6 +66,8 @@ class DUP_Archive_Filter_Info
     public $UDirCount  = 0;
     public $UFileCount = 0;
     public $UExtCount  = 0;
+	public $TreeSize;
+	public $TreeWarning;
 
     /**
      *  Init this object
@@ -75,6 +77,8 @@ class DUP_Archive_Filter_Info
         $this->Dirs  = new DUP_Archive_Filter_Scope_Directory();
         $this->Files = new DUP_Archive_Filter_Scope_File();
         $this->Exts  = new DUP_Archive_Filter_Scope_Base();
+		$this->TreeSize = array();
+		$this->TreeWarning = array();
     }
 }
 
