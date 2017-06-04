@@ -166,24 +166,31 @@ jQuery(document).ready(function($)
 			? $arrow.html('<i class="fa fa-caret-up"></i>')
 			: $arrow.html('<i class="fa fa-caret-down"></i>');
 	});
-	
-	//Look for tooltip data
-	$('i[data-tooltip!=""]').qtip({ 
-		content: {
-			attr: 'data-tooltip',
-			title: {
-				text: function() { return  $(this).attr('data-tooltip-title'); }
+
+
+	Duplicator.UI.loadQtip = function()
+	{
+			//Look for tooltip data
+		$('i[data-tooltip!=""]').qtip({
+			content: {
+				attr: 'data-tooltip',
+				title: {
+					text: function() { return  $(this).attr('data-tooltip-title'); }
+				}
+			},
+			style: {
+				classes: 'qtip-light qtip-rounded qtip-shadow',
+				width: 500
+			},
+			 position: {
+				my: 'top left',
+				at: 'bottom center'
 			}
-		},
-		style: {
-			classes: 'qtip-light qtip-rounded qtip-shadow',
-			width: 500
-		},
-		 position: {
-			my: 'top left', 
-			at: 'bottom center'
-		}
-	});
+		});
+	}
+
+	Duplicator.UI.loadQtip();
+
 
 	//HANDLEBARS HELPERS
 	if  (typeof(Handlebars) != "undefined"){

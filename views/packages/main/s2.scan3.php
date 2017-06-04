@@ -38,7 +38,7 @@ ARCHIVE -->
 TOTAL SIZE -->
 <div class="scan-item">
 	<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Total Size', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Size Checks', 'duplicator');?></div>
 		<div id="data-arc-status-size"></div>
 	</div>
 	<div class="info">
@@ -46,41 +46,29 @@ TOTAL SIZE -->
 		<b><?php _e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
 		<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
 		<?php
-			printf(__('Total size represents all files minus any filters that have been setup.  The current thresholds that triggers a warning is %1$s for the total size.  '
-				. 'Some budget hosts limit the amount of time a PHP/Web request process can run.  When working with larger sites this can cause timeout issues on some hosts.  '
-				. 'Consider using a file filter in Step 1 to shrink and filter the overall size of your package.', 'duplicator'),
-					DUP_Util::byteSize(DUPLICATOR_SCAN_SITE),
-					DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
+			printf(__('The size check is set at <b>%1$s</b> and represents all files in the WordPress site minus any path filters.  '
+				. 'Some budget hosts limit the runtime request of Duplicator which can produce a build interupt.  If the package file fails to build then reduce the size of '
+				. 'the archive in step 1 or apply the filters below.  ', 'duplicator'),	DUP_Util::byteSize(DUPLICATOR_SCAN_SITE));
+	
+			//if ($zip_check == null) {
+				echo '<i>';
+				_e('Multi-threaded support is available in Duplicator Pro for larger sites on restricted hosts.', 'duplicator');
+				echo "&nbsp;<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('more details', 'duplicator') . "]</a>";
+				echo '</i>';
+			//}
 
-			if ($zip_check != null) {
-				echo '<br/><br/>';
-				echo '<span style="font-weight:bold">';
-				_e('Package support up to 2GB available in Duplicator Pro.', 'duplicator');
-				echo '</span>';
-				echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
-			}
-		?>
-	</div>
-</div>
-
-<!-- ============
-LARGE FILES -->
-<div class="scan-item">
-	<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Large Files', 'duplicator');?></div>
-		<div id="data-arc-status-big"></div>
-	</div>
-	<div class="info">
-		<?php
-			_e('Large files such as movies or zipped content can create large packages and cause issues with timeouts on some hosts.  If your having issues creating a package try '
-			. 'excluding the directory paths below.  Then manually move the filtered files to your new location.  ', 'duplicator');
-			printf(__('<i>Files over %1$s are shown below.</i>', 'duplicator'), DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
+			$txt = sprintf(__('Large files such as movies or zipped content can cause issues with timeouts on some budget hosts.  If your having '
+				. 'issues creating a package try excluding the directory paths below.  Files over %1$s will be listed below.', 'duplicator'),
+				DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 		?>
 		<script id="hb-files-large" type="text/x-handlebars-template">
 			<div class="container">
 				<div class="hdrs">
-					<b><?php _e('Apply Filters', 'duplicator');?></b>
-					<div style='float:right;  margin:-2px 12px 2px 0'>
+					<span style="font-weight:bold">
+						<?php _e('Recommended Filters', 'duplicator'); ?>
+						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files:", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
+					</span>
+					<div class='hdrs-up-down'>
 						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'close')"></i>
 						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'open')"></i>
 					</div>
@@ -431,9 +419,9 @@ jQuery(document).ready(function($)
 	Duplicator.Pack.initArchiveFilesData = function(data)
 	{
 		//TOTAL SIZE
+		//var sizeChecks = data.ARC.Status.Size == 'Warn' || data.ARC.Status.Big == 'Warn' ? 'Warn' : 'Good';
 		$('#data-arc-status-size').html(Duplicator.Pack.setScanStatus(data.ARC.Status.Size));
 		$('#data-arc-status-names').html(Duplicator.Pack.setScanStatus(data.ARC.Status.Names));
-		$('#data-arc-status-big').html(Duplicator.Pack.setScanStatus(data.ARC.Status.Big));
 		$('#data-arc-size1').text(data.ARC.Size || errMsg);
 		$('#data-arc-size2').text(data.ARC.Size || errMsg);
 		$('#data-arc-files').text(data.ARC.FileCount || errMsg);
@@ -450,6 +438,7 @@ jQuery(document).ready(function($)
 		var templateScript = Handlebars.compile(template);
 		var html = templateScript(data);
 		$('#hb-files-utf8-result').html(html);
+		Duplicator.UI.loadQtip();
 	}
 
 

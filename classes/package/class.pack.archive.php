@@ -150,8 +150,12 @@ class DUP_Archive
 				$clean_array[] = DUP_Util::safePath(trim(rtrim($val, "/\\"))) ;
             }
         }
-		$clean_array  = array_unique($clean_array);
-		$filters = implode(';', $clean_array) . ';';
+
+		if (count($clean_array)) {
+			$clean_array  = array_unique($clean_array);
+			sort($clean_array);
+			$filters = implode(';', $clean_array) . ';';
+		}
         return $filters ;
     }
 
