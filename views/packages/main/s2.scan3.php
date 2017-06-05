@@ -407,6 +407,7 @@ jQuery(document).ready(function($)
 			nonce: '<?php echo wp_create_nonce('DUP_CTRL_Package_addDirectoryFilter'); ?>',
 			dir_paths : filters.join(";")
 		};
+		//console.log(filters);
 
 		$.ajax({
 			type: "POST",

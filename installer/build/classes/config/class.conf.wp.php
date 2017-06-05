@@ -129,6 +129,12 @@ class DUPX_WPConfig
 			array_push($patterns, "/('|\")WP_CONTENT_URL.*?\)\s*;/");
 			array_push($replace, "'WP_CONTENT_URL', '{$new_content_url}');");
 		}
+
+		if (array_key_exists('WP_TEMP_DIR', $defines)) {
+			$new_content_dir = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']));
+			array_push($patterns, "/('|\")WP_TEMP_DIR.*?\)\s*;/");
+			array_push($replace, "'WP_TEMP_DIR', '{$new_content_dir}/uploads/tmp');");
+		}
 		
 		$config_file = preg_replace($patterns, $replace, $config_file);
 		file_put_contents($wpconfig_path, $config_file);

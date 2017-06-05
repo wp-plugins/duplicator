@@ -199,7 +199,6 @@ class DUP_Archive
 		$upload_dir = isset($upload_dir['basedir']) ? basename($upload_dir['basedir']) : 'uploads';
 		$wp_content = str_replace("\\", "/", WP_CONTENT_DIR);
 		$wp_content_upload = "{$wp_content}/{$upload_dir}";
-        //$this->FilterInfo->Dirs->Core[] = DUPLICATOR_SSDIR_PATH;
 		$this->FilterInfo->Dirs->Core = array(
 				//WP-ROOT
 				$wp_root . '/wp-snapshots',
@@ -232,20 +231,17 @@ class DUP_Archive
 				$wp_content_upload . '/wpbackitup_backups'
 			);
 
-
-
-
-
         $this->FilterDirsAll = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Core);
         $this->FilterExtsAll = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);
 
-		//Check for UTF8
-		foreach ($this->FilterDirsAll as $key => $value) {
-			if (preg_match('/[^\x20-\x7f]/', $value)) {
-				$this->FilterDirsAll[$key] = utf8_decode($value);
+		//ENCODING: Pre PHP 7 issues with encoded filter names
+		if (! DUP_Util::$PHP7_plus) {
+			foreach ($this->FilterDirsAll as $key => $value) {
+				if (preg_match('/[^\x20-\x7f]/', $value)) {
+					$this->FilterDirsAll[$key] = utf8_decode($value);
+				}
 			}
 		}
-
     }
 
 	/**

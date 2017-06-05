@@ -2,6 +2,7 @@
 
 require_once(DUPLICATOR_PLUGIN_PATH . '/ctrls/ctrl.base.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.scancheck.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.json.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/package/class.pack.php');
 
 /**
@@ -25,7 +26,7 @@ function duplicator_package_scan() {
 	$report = $Package->runScanner();
 	
 	$Package->saveActiveItem('ScanFile', $Package->ScanFile);
-	$json_response = json_encode($report);
+	$json_response = DUP_JSON::safeEncode($report);
 	
 	DUP_Package::tempFileCleanup();
 	error_reporting($errLevel);
