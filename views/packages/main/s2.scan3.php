@@ -18,11 +18,10 @@ ARCHIVE -->
 	<i class="fa fa-files-o"></i>
 	<?php _e("Files", 'duplicator'); ?>
 	<i class="fa fa-question-circle data-size-help"
-		data-tooltip-title="<?php _e("File Size:", 'duplicator'); ?>"
-		data-tooltip="<?php _e('The files size represents only the included files before compression is applied. It does not include the size of the '
-					. 'database script and in most cases the package size once completed will be smaller than this number.', 'duplicator'); ?>"></i>
+		data-tooltip-title="<?php _e('Archive Size', 'duplicator'); ?>"
+		data-tooltip="<?php _e('This size represents only the included files before compression is applied. It does not include the size of the '
+					. 'database script or any applied filters.  In most cases the package size once completed will be smaller than this number.', 'duplicator'); ?>"></i>
 	<div id="data-arc-size1"></div>
-
 	<div class="dup-scan-filter-status">
 		<?php
 			if ($Package->Archive->ExportOnlyDB) {
@@ -38,7 +37,7 @@ ARCHIVE -->
 TOTAL SIZE -->
 <div class="scan-item">
 	<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Size Checks', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Size Check', 'duplicator');?></div>
 		<div id="data-arc-status-size"></div>
 	</div>
 	<div class="info">
@@ -46,27 +45,36 @@ TOTAL SIZE -->
 		<b><?php _e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
 		<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
 		<?php
-			printf(__('The size check is set at <b>%1$s</b> and represents all files in the WordPress site minus any path filters.  '
-				. 'Some budget hosts limit the runtime request of Duplicator which can produce a build interupt.  If the package file fails to build then reduce the size of '
-				. 'the archive in step 1 or apply the filters below.  ', 'duplicator'),	DUP_Util::byteSize(DUPLICATOR_SCAN_SITE));
-	
-			//if ($zip_check == null) {
-				echo '<i>';
-				_e('Multi-threaded support is available in Duplicator Pro for larger sites on restricted hosts.', 'duplicator');
-				echo "&nbsp;<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('more details', 'duplicator') . "]</a>";
-				echo '</i>';
-			//}
-
-			$txt = sprintf(__('Large files such as movies or zipped content can cause issues with timeouts on some budget hosts.  If your having '
-				. 'issues creating a package try excluding the directory paths below.  Files over %1$s will be listed below.', 'duplicator'),
+			printf(__('Compressing sites larger that <b>%1$s</b> may cause timeouts on some budget hosts.  ', 'duplicator'),	DUP_Util::byteSize(DUPLICATOR_SCAN_SITE));
+			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100)'>[" . __('more details...', 'duplicator') . "]</a></i>";
+			$txt = sprintf(__('Files over %1$s are listed below. Larger files such as movies or zipped content can cause timeout issues on some budget hosts.  If you are having '
+				. 'issues creating a package try excluding the directory paths below or go back to Step 1 and add them.', 'duplicator'),
 				DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 		?>
+		<div id="size-more-details">
+			<?php
+				echo "<b>" . __('Overview', 'duplicator') . ":</b><br/>";
+					_e('On some hosts the size of a package does not matter. If you initially receive this warning it is safe to continue with the build process.  '
+						. 'If after clicking the build button a timeout or build interrupt message occurs then this host that has strict processing limits; see '
+						. 'options below.'  , 'duplicator');
+				echo '<br/><br/>';
+				
+				echo "<b>" . __('Timeout Options', 'duplicator') . ":</b><br/>";
+				echo '<ul>';
+				echo '<li>' . __('Apply the "Recommended Filters" below or click the back button to apply on previous page.', 'duplicator') . '</li>';
+				echo '<li>' . __('See the FAQ link to adjust this hosts timeout limits: ', 'duplicator') . "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>" . __('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
+				echo '<li>' . __('Consider trying multi-threaded support in ', 'duplicator');
+					echo "<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=duplicator_pro' target='_blank'>" . __('Duplicator Pro.', 'duplicator') . "</a>";
+				echo '</li>';
+				echo '</ul>';
+			?>
+		</div>
 		<script id="hb-files-large" type="text/x-handlebars-template">
 			<div class="container">
 				<div class="hdrs">
 					<span style="font-weight:bold">
 						<?php _e('Recommended Filters', 'duplicator'); ?>
-						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files:", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
+						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
 					</span>
 					<div class='hdrs-up-down'>
 						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'close')"></i>
@@ -81,7 +89,7 @@ TOTAL SIZE -->
 								<i class="fa fa-caret-right fa-lg dup-nav" onclick="Duplicator.Pack.toggleDirPath(this)"></i> &nbsp;
 								<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="lf_dir_{{@index}}" />
 								<label for="lf_dir_{{@index}}" title="{{directory.dir}}">
-									<i class="size">[{{directory.size}}]</i> {{directory.sdir}}/
+									<i class="size">[{{directory.size}}]</i> {{directory.dir}}/
 								</label> <br/>
 								<div class="files">
 									{{#each directory.files as |file|}}
@@ -95,7 +103,7 @@ TOTAL SIZE -->
 					{{/if}}
 				</div>
 			</div>
-			<div style="text-align:right">
+			<div class="apply-btn">
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'large')">
 					<i class="fa fa-filter"></i> <?php _e('Apply Filters &amp; Rescan', 'duplicator');?>
 				</button>
@@ -109,26 +117,29 @@ TOTAL SIZE -->
 FILE NAME CHECKS -->
 <div class="scan-item scan-item-last">
 	<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Name Checks', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Name Check', 'duplicator');?></div>
 		<div id="data-arc-status-names"></div>
 	</div>
 	<div class="info">
 		<?php
-			_e('Unicode and special characters such as "*?><:/\|", can cause issues in some remote enviroment.  If the archive is unable to build '
+			_e('Unicode and special characters such as "*?><:/\|", can cause issues in some remote environment.  If the archive is unable to build '
 				. 'or there are issues at install time, it is recommended to filter these paths.', 'duplicator');
+
+			$txt = __('If this environment/system and the system where it will be installed are setup to support Unicode and long paths then these filters can be ignored.  '
+				. 'If you run into issues with creating or installing a package, then is recommended to filter these paths.', 'duplicator');
 		?>
 		<script id="hb-files-utf8" type="text/x-handlebars-template">
 			<div class="container">
 				<div class="hdrs">
-					<b><?php _e('Apply Filters', 'duplicator');?></b>
-					<div style='float:right;  margin:-2px 12px 2px 0'>
+					<span style="font-weight:bold"><?php _e('Recommended Filters', 'duplicator');?></span>
+						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Name Checks", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
+					<div class='hdrs-up-down'>
 						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'close')"></i>
 						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'open')"></i>
 					</div>
 				</div>
 				<div class="data">
 					<?php _duplicatorGetRootPath();	?>
-					<!-- FILES-->
 					{{#if  ARC.FilterInfo.TreeWarning}}
 						{{#each ARC.FilterInfo.TreeWarning as |directory|}}
 							<div class="directory">
@@ -140,7 +151,7 @@ FILE NAME CHECKS -->
 								<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="nc1_dir_{{@index}}" />
 								<label for="nc1_dir_{{@index}}" title="{{directory.dir}}">
 									<i class="count">({{directory.count}})</i>
-									{{directory.sdir}}/
+									{{directory.dir}}/
 								</label> <br/>
 								<div class="files">
 									{{#each directory.files}}
@@ -154,7 +165,7 @@ FILE NAME CHECKS -->
 					{{/if}}
 				</div>
 			</div>
-			<div style="text-align:right">
+			<div class="apply-btn">
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'utf8')">
 					<i class="fa fa-filter"></i> <?php _e('Apply Filters &amp; Rescan', 'duplicator');?>
 				</button>
@@ -212,7 +223,7 @@ DATABASE -->
 				printf(__('1. Running a %1$s on your database will help to improve the overall size, performance and efficiency of the database.', 'duplicator'), $lnk);
 				echo '<br/><br/>';
 				$lnk = '<a href="?page=duplicator-settings" target="_blank">' . __('Duplicator Settings', 'duplicator') . '</a>';
-				printf(__('2. If your server supports shell_exec and mysqldump it is recommended to enable this option from the %1$s menu.', 'duplicator'), $lnk);
+				printf(__('2. If your host supports shell_exec and mysqldump it is recommended to enable this option from the %1$s menu.', 'duplicator'), $lnk);
 				echo '<br/><br/>';
 				_e('3. Consider removing data from tables that store logging, statistical  or other non-critical information about your site.', 'duplicator');
 			?>
@@ -281,13 +292,10 @@ DETAILS DIALOG:
 	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo strlen($_POST['package-notes']) ? $_POST['package-notes'] : __('- no notes -', 'duplicator') ; ?>
 	<br/><br/>
 	
-	
 	<b><i class="fa fa-files-o"></i> FILE SETTINGS</b>
 	<hr size="1" />
 
 	<b><?php _e('Filters State', 'duplicator');?>:</b> <?php echo ($Package->Archive->FilterOn) ? __('Enabled', 'duplicator') : __('Disabled', 'duplicator') ;?> <br/>
-	
-	
 	<div class="filter-area">
 		<b>[<?php _e('Excluded Directories', 'duplicator');?>]</b><br/>
 		<i class="fa fa-folder-open"></i> <?php echo rtrim(DUPLICATOR_WPROOTPATH, "//");?>

@@ -32,9 +32,8 @@ PHP SETTINGS -->
 	<?php
 		//PHP VERSION
 		echo '<span id="data-srv-php-version"></span>&nbsp;<b>' . __('PHP Version', 'duplicator') . "</b> <br/>";
-		_e('The minium PHP version supported by Duplicator is 5.2.9, however it is highly recommended to use PHP 5.3 or higher for improved stability.', 'duplicator');
-		echo "&nbsp;<i><a href='http://php.net/ChangeLog-5.php' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
-
+		_e('The minimum PHP version supported by Duplicator is 5.2.9. It is highly recommended to use PHP 5.3+ for improved stability.  For international language support please use PHP 7.0+.', 'duplicator');
+		
 		//OPEN_BASEDIR
 		$test = ini_get("open_basedir");
 		$test = ($test) ? 'ON' : 'OFF';

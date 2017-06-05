@@ -276,7 +276,7 @@ class DUP_Archive
             }
 
 			//Locate invalid directories and warn
-			$invalid_test = strlen($val) > 250
+			$invalid_test = strlen($val) > 244
 				|| preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name)
 				|| trim($name) == ''
 				|| (strrpos($name, '.') == strlen($name) - 1 && substr($name, -1) == '.')
@@ -343,7 +343,6 @@ class DUP_Archive
 						'sname'	=> strlen($fileName) > 65 ? substr($fileName, 0, 65) . '....' . $ext : $fileName,
 						'name'	=> $fileName,
 						'dir'	=> pathinfo($filePath, PATHINFO_DIRNAME),
-						'sdir'	=> str_replace(DUPLICATOR_WPROOTPATH, "/", pathinfo($filePath, PATHINFO_DIRNAME)),
 						'path'	=> $filePath);
 
 			}
@@ -456,7 +455,6 @@ class DUP_Archive
 			$this->FilterInfo->TreeSize[] = array(
 				'size' => DUP_Util::byteSize($sum),
 				'dir' => $dir,
-				'sdir' => str_replace(DUPLICATOR_WPROOTPATH, "/", $dir),
 				'files' => $files
 			);
 		}
@@ -469,7 +467,6 @@ class DUP_Archive
 		foreach ($dir_group as $dir => $files) {
 			$this->FilterInfo->TreeWarning[] = array(
 				'dir' => $dir,
-				'sdir' => str_replace(DUPLICATOR_WPROOTPATH, "/", $dir),
 				'count' => count($files),
 				'files' => $files);
 		}
@@ -486,7 +483,6 @@ class DUP_Archive
 			if ($add_dir) {
 				$this->FilterInfo->TreeWarning[] = array(
 					'dir' => $dir,
-					'sdir' => str_replace(DUPLICATOR_WPROOTPATH, "/", $dir),
 					'count' => 0);
 			}
 		}

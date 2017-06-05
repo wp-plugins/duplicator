@@ -170,7 +170,7 @@ jQuery(document).ready(function($)
 
 	Duplicator.UI.loadQtip = function()
 	{
-			//Look for tooltip data
+		//Look for tooltip data
 		$('i[data-tooltip!=""]').qtip({
 			content: {
 				attr: 'data-tooltip',
