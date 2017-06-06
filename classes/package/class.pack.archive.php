@@ -36,6 +36,7 @@ class DUP_Archive
     public $FilterInfo;
     //PROTECTED
     protected $Package;
+	private $tmpFilterDirsAll = array();
 
 
     /**
@@ -102,6 +103,7 @@ class DUP_Archive
             $this->Dirs = array();
         } else {
             $this->Dirs[] = $this->PackDir;
+		   
 			$this->getFileLists($rootPath);
 			$this->setDirFilters();
 			$this->setFileFilters();
@@ -233,12 +235,13 @@ class DUP_Archive
 
         $this->FilterDirsAll = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Core);
         $this->FilterExtsAll = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);
+		$this->tmpFilterDirsAll = $this->FilterDirsAll;
 
-		//ENCODING: Pre PHP 7 issues with encoded filter names
-		if (! DUP_Util::$PHP7_plus) {
-			foreach ($this->FilterDirsAll as $key => $value) {
-				if (preg_match('/[^\x20-\x7f]/', $value)) {
-					$this->FilterDirsAll[$key] = utf8_decode($value);
+		//PHP 5 on windows decode fix
+		if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
+			foreach ($this->tmpFilterDirsAll as $key => $value) {
+				if ( preg_match('/[^\x20-\x7f]/', $value)) {
+					$this->tmpFilterDirsAll[$key] = utf8_decode($value);
 				}
 			}
 		}
@@ -407,10 +410,12 @@ class DUP_Archive
 
 					$add = true;
 					//Remove path filter directories
-					foreach ($this->FilterDirsAll as $val) {
+					foreach ($this->tmpFilterDirsAll as $key => $val) {
+		
 						$trimmedFilterDir = rtrim($val, '/');
 						if ($fullPath == $trimmedFilterDir || strpos($fullPath, $trimmedFilterDir . '/') !== false) {
 							$add = false;
+							unset($this->tmpFilterDirsAll[$key]);
 							break;
 						}
 					}
