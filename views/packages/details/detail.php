@@ -43,6 +43,7 @@ $dbbuild_mode    = ($mysqldump_on) ? 'mysqldump' : 'PHP';
 	div#dup-name-info, div#dup-version-info {display: none; font-size:11px; line-height:20px; margin:4px 0 0 0}
 	div#dup-downloads-area {padding: 5px 0 5px 0; }
 	div#dup-downloads-msg {margin-bottom:-5px; font-style: italic}
+	span.file-info {width:600px; display:inline-block;  white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis; cursor: pointer}
 </style>
 
 <?php if ($package_id == 0) :?>
@@ -244,9 +245,14 @@ ARCHIVE -->
 				<td><?php _e('Directories', 'duplicator') ?>: </td>
 				<td>
 					<?php
-						echo strlen($package->Archive->FilterDirs)
-							? str_replace(';', '<br/>', $package->Archive->FilterDirs)
-							: __('- no filters -', 'duplicator');
+					if (strlen($package->Archive->FilterDirs)) {
+						$dirs = explode(';', $package->Archive->FilterDirs);
+						foreach ($dirs as $value) {
+							echo "<span class='file-info' title='{$value}'>{$value}</span><br/>";
+						}
+					} else {
+						_e('- no filters -', 'duplicator');
+					}
 					?>
 				</td>
 			</tr>

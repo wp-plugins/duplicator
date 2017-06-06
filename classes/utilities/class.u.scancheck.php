@@ -54,6 +54,16 @@ class DUP_ScanCheck
      */
     public $unreadable = array();
 
+	 /**
+     *  Stores a list of dirs with utf8 settings
+     */
+    public $nameTestDirs = array();
+
+	 /**
+     *  Stores a list of files with utf8 settings
+     */
+    public $nameTestFiles = array();
+
     /**
      *  If the maxFiles or maxDirs limit is reached then true
      */
@@ -101,7 +111,21 @@ class DUP_ScanCheck
                         } else if ($this->isLink($path)) {
                             $results[]        = $path;
                             $this->symLinks[] = $path;
-                        }
+                        } else {
+							$name = basename($path);
+							$invalid_test =  preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name)
+								|| trim($name) == ''
+								|| (strrpos($name, '.') == strlen($name) - 1 && substr($name, -1) == '.')
+								|| preg_match('/[^\x20-\x7f]/', $name);
+
+							if ($invalid_test) {
+								if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
+									$this->nameTestFiles[] = utf8_decode($path);
+								} else {
+									$this->nameTestFiles[] = $path;
+								}
+							}
+						}
                         $this->fileCount++;
                     }
                     //Dirs
@@ -116,7 +140,21 @@ class DUP_ScanCheck
                         } else if ($this->isLink($path)) {
                             $results[]        = $path;
                             $this->symLinks[] = $path;
-                        }
+                        } else {
+
+							$invalid_test = strlen($path) > 244
+								|| trim($path) == ''
+								|| preg_match('/[^\x20-\x7f]/', $path);
+
+							if ($invalid_test) {
+								if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
+									$this->nameTestDirs[] = utf8_decode($path);
+								} else {
+									$this->nameTestDirs[] = $path;
+								}
+							}
+						}
+						
                         $this->dirCount++;
                     }
                 }

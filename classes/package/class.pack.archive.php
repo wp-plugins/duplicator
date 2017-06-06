@@ -103,7 +103,6 @@ class DUP_Archive
             $this->Dirs = array();
         } else {
             $this->Dirs[] = $this->PackDir;
-		   
 			$this->getFileLists($rootPath);
 			$this->setDirFilters();
 			$this->setFileFilters();
@@ -237,7 +236,7 @@ class DUP_Archive
         $this->FilterExtsAll = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);
 		$this->tmpFilterDirsAll = $this->FilterDirsAll;
 
-		//PHP 5 on windows decode fix
+		//PHP 5 on windows decode patch
 		if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
 			foreach ($this->tmpFilterDirsAll as $key => $value) {
 				if ( preg_match('/[^\x20-\x7f]/', $value)) {
@@ -409,7 +408,7 @@ class DUP_Archive
 				if (is_dir($fullPath)) {
 
 					$add = true;
-					//Remove path filter directories
+					//Directory filters
 					foreach ($this->tmpFilterDirsAll as $key => $val) {
 		
 						$trimmedFilterDir = rtrim($val, '/');

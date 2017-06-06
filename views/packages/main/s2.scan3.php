@@ -299,7 +299,7 @@ DETAILS DIALOG:
 	<div class="filter-area">
 		<b>[<?php _e('Excluded Directories', 'duplicator');?>]</b><br/>
 		<i class="fa fa-folder-open"></i> <?php echo rtrim(DUPLICATOR_WPROOTPATH, "//");?>
-		<div style="padding: 0 0 10px 30px">
+		<div class="file-info">
 			<?php
 				if (strlen( $Package->Archive->FilterDirs)) {
 					$data =  str_replace(";", "/<br/>", $Package->Archive->FilterDirs);

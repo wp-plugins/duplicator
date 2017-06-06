@@ -56,6 +56,7 @@
 	div#dup-arc-details-dlg table#db-area td {padding:0;}
 	div#dup-arc-details-dlg table#db-area td:first-child {font-weight:bold;  white-space:nowrap; width:100px}
 	div#dup-arc-details-dlg div.filter-area {height:175px; overflow-y:scroll; border:1px solid #dfdfdf; padding:8px; margin:8px 0}
+	div#dup-arc-details-dlg div.file-info {padding:0 0 10px 30px; width:500px; white-space:nowrap;}
 
 	/*FILES */
 	div#data-arc-size1 {display:inline-block; float:right; font-size:11px; margin-right:5px;}
