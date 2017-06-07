@@ -57,7 +57,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 </td>
                 <td valign="top" style="padding-top:10px; font-size:14px">
                     <?php
-                    _e("Duplicator helps you streamlines your workflows and quickly clone a WordPress site. The plugin was made to help you speed up the migration process of moving a WordPress site. Please help us to continue in the development effort of this plugin with a 5 star.", 'duplicator');
+                    _e("Duplicator helps you streamline your workflow and quickly clone a WordPress site. The plugin was made to help you speed up the migration process of moving a WordPress site. Please help us continue development by giving this plugin a 5 star.", 'duplicator');
                     ?>
                 </td>
             </tr>

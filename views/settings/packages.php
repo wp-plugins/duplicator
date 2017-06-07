@@ -101,7 +101,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                     <label><?php _e("Use mysqldump", 'duplicator'); ?></label>
                     <p class="description" style="width:550px; margin:5px 0 0 20px">
                         <?php
-							_e("This server does not support the PHP shell_exec function which is requred for mysqldump to run. ", 'duplicator');
+							_e("This server does not support the PHP shell_exec function which is required for mysqldump to run. ", 'duplicator');
 							_e("Please contact the host or server administrator to enable this feature.", 'duplicator');
                         ?>
 						<br/>

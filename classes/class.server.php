@@ -1,6 +1,6 @@
 <?php
 /**
- * Used to get various pieces of information about the server enviroment
+ * Used to get various pieces of information about the server environment
  *
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2

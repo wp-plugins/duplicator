@@ -117,7 +117,7 @@ class DUP_Package
 		$report['ARC']['FilterFilesAll'] = $this->Archive->FilterFilesAll;
 		$report['ARC']['FilterExtsAll'] = $this->Archive->FilterExtsAll;
         $report['ARC']['FilterInfo'] = $this->Archive->FilterInfo;
-        $report['ARC']['Status']['Size']  = ($this->Archive->Size > DUPLICATOR_SCAN_SITE) ? 'Warn' : 'Good';
+        $report['ARC']['Status']['Size']  = ($this->Archive->Size > DUPLICATOR_SCAN_SIZE_DEFAULT) ? 'Warn' : 'Good';
         $report['ARC']['Status']['Names'] = (count($this->Archive->FilterInfo->Files->Warning) + count($this->Archive->FilterInfo->Dirs->Warning)) ? 'Warn' : 'Good';
         $report['ARC']['Status']['Big']   = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
         $report['ARC']['Dirs']  = $this->Archive->Dirs;

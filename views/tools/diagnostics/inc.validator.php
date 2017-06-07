@@ -29,7 +29,7 @@ SCAN VALIDATOR -->
 	<div class="dup-box-panel" style="display: <?php echo $scan_run ? 'block' : 'none';  ?>">	
 		<?php 
 			_e("This utility will help to find unreadable files and sys-links in your environment  that can lead to issues during the scan process.  ", "duplicator"); 
-			_e("The utility  will also shows how many files and directories you have in your system.  This process may take several minutes to run.  ", "duplicator");
+			_e("The utility will also shows how many files and directories you have in your system.  This process may take several minutes to run.  ", "duplicator");
 			_e("If there is a recursive loop on your system then the process has a built in check to stop after a large set of files and directories have been scanned.  ", "duplicator"); 
 			_e("A message will show indicated that that a scan depth has been reached. If you have issues with the package scanner (step 2) during the build process then try to add "
 			. "The paths below to your file filters to allow the scanner to finish.", "duplicator");
@@ -118,7 +118,7 @@ jQuery(document).ready(function($)
 		tb_remove();
 		var data = {action : 'DUP_CTRL_Tools_runScanValidator', nonce: '<?php echo $ajax_nonce; ?>', 'scan-recursive': true};
 		
-		$('#hb-result').html('<?php _e("Scanning Enviroment... This may take a few minutes.", "duplicator"); ?>');
+		$('#hb-result').html('<?php _e("Scanning Environment... This may take a few minutes.", "duplicator"); ?>');
 		$('#scan-run-btn').html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Running Please Wait...');
 		
 		$.ajax({

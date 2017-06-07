@@ -45,7 +45,7 @@ TOTAL SIZE -->
 		<b><?php _e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
 		<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
 		<?php
-			printf(__('Compressing sites larger that <b>%1$s</b> may cause timeouts on some budget hosts.  ', 'duplicator'),	DUP_Util::byteSize(DUPLICATOR_SCAN_SITE));
+			printf(__('Compressing sites larger that <b>%1$s</b> may cause timeouts on some budget hosts.  ', 'duplicator'),	DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT));
 			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100)'>[" . __('more details...', 'duplicator') . "]</a></i>";
 			$txt = sprintf(__('Files over %1$s are listed below. Larger files such as movies or zipped content can cause timeout issues on some budget hosts.  If you are having '
 				. 'issues creating a package try excluding the directory paths below or go back to Step 1 and add them.', 'duplicator'),

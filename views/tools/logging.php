@@ -161,7 +161,7 @@ jQuery(document).ready(function($)
 								printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
 									__("Consider our recommended", 'duplicator'), 
 									__("host list", 'duplicator'),
-									__("if your unhappy with your current provider", 'duplicator'));
+									__("if you’re unhappy with your current provider", 'duplicator'));
 							?>
 					</i>					
 				</div>
