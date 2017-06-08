@@ -16,7 +16,7 @@
 	div.dup-msg-error-area {overflow-y: scroll; padding:5px 15px 5px 15px; max-height:150px; max-width: 700px}
 	div.dup-msg-success-stats{color:#999;margin:10px 0px 0px 0px}
 	div.dup-msg-success-links {margin:20px 5px 5px 5px; font-size: 14px; font-weight: bold}
-	div#dup-msg-error {color:#A62426; padding:5px;}
+	div#dup-msg-error {color:maroon; padding:5px;}
 	div#dup-progress-area div.done-title {font-size:22px; font-weight:bold; margin:0px 0px 10px 0px}
 	div#dup-logs {text-align:center; margin:auto; padding:5px; width:350px;}
 	div#dup-logs a {font-size:15px; text-decoration:none !important; display:inline-block; margin:20px 0px 5px 0px}
@@ -98,16 +98,21 @@ TOOL BAR: STEPS -->
 			<!--  =========================
 			ERROR MESSAGE -->
 			<div id="dup-msg-error" style="display:none">
-				<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Build Interrupt', 'duplicator'); ?></div>
-				<b><?php _e('The current build has experienced an issue.', 'duplicator'); ?></b><br/>
+				<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Host Build Interrupt', 'duplicator'); ?></div>
+				<b><?php _e('This host has generated an exception.', 'duplicator'); ?></b><br/>
 			
-				<i><?php _e('Please try the process again.', 'duplicator'); ?></i><br/><br/>
-				  
+				<i><?php _e("Please click the 'Try Again' button.", 'duplicator'); ?></i><br/><br/>
+				
+                <input type="button" class="button" value="<?php _e('Try Again', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=1'" />
 				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'duplicator'); ?>" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q', '_blank');return false;" />
-                <input type="button" class="button" value="<?php _e('Try Again', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1'" />                                
+                              
 				<fieldset>
-					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'duplicator'); ?></b></legend>
+					<legend><b><?php _e('Details', 'duplicator'); ?></b></legend>
 					<div class="dup-msg-error-area">
+						<div id="dup-msg-error-response-time">
+							<span class="label"><?php _e("Allowed Runtime:", 'duplicator'); ?></span>
+							<span class="data"></span>
+						</div>
 						<div id="dup-msg-error-response-status">
 							<span class="label"><?php _e("Server Status:", 'duplicator'); ?></span>
 							<span class="data"></span>
@@ -125,7 +130,8 @@ TOOL BAR: STEPS -->
 						<?php printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s',
 							__('Build Folder:'),
 								DUPLICATOR_SSDIR_PATH_TMP,
-							__("Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.  Please visit the support page for additional resources.", 'duplicator')
+							__("Some servers close connections quickly; yet the build can continue to run in the background. To validate if a build is still running; open the 'tmp' "
+								. "folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.", 'duplicator')
 							);
 						?> <br/>
 					</div>
@@ -134,7 +140,7 @@ TOOL BAR: STEPS -->
 				<!-- LOGS -->
 				<div id="dup-logs">
 					<div style="font-weight:bold">
-						<i class="fa fa-list-alt"></i> <a href='javascript:void(0)' style="color:#A62426" onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'duplicator');?> </a>						
+						<i class="fa fa-list-alt"></i> <a href='javascript:void(0)' style="color:maroon" onclick='Duplicator.OpenLogWindow(true)'> <?php _e('Package Log', 'duplicator');?> </a>
 					</div> 
 					<br/>
 				</div>
@@ -151,7 +157,10 @@ jQuery(document).ready(function($) {
 	*	METHOD: Performs Ajax post to create a new package
 	*	Timeout (10000000 = 166 minutes)  */
 	Duplicator.Pack.Create = function() {
-		
+
+		var startTime;
+		var endTime;
+
 		var data = {action : 'duplicator_package_build', nonce: '<?php echo $ajax_nonce; ?>'}
 
 		$.ajax({
@@ -160,8 +169,15 @@ jQuery(document).ready(function($) {
 			dataType: "json",
 			timeout: 10000000,
 			data: data,
-			beforeSend: function() {},
-			complete:   function() {},
+			beforeSend: function() {startTime = new Date().getTime();},
+			complete:   function() {
+				endTime = new Date().getTime();
+				var millis = (endTime - startTime);
+				var minutes = Math.floor(millis / 60000);
+				var seconds = ((millis % 60000) / 1000).toFixed(0);
+				var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+				$('#dup-msg-error-response-time span.data').html(status)
+			},
 			success:    function(data) { 
 				$('#dup-progress-bar-area').hide(); 
 				$('#dup-progress-area, #dup-msg-success').show(300);
@@ -183,7 +199,7 @@ jQuery(document).ready(function($) {
 				$('#dup-progress-bar-area').hide(); 
 				$('#dup-progress-area, #dup-msg-error').show(200);
 				var status = data.status + ' -' + data.statusText;
-				var response = (data.responseText != undefined && data.responseText.length > 1) ? data.responseText : 'Unknown Error - See Log File';
+				var response = (data.responseText != undefined && data.responseText.trim().length > 1) ? data.responseText.trim() : 'No client side error - see package log file';
 				$('#dup-msg-error-response-status span.data').html(status)
 				$('#dup-msg-error-response-text span.data').html(response);
 				console.log(data);

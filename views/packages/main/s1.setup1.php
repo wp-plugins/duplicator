@@ -26,11 +26,12 @@ $ctrl_ui = new DUP_CTRL_UI();
 $ctrl_ui->setResponseType('PHP');
 $data = $ctrl_ui->GetViewStateList();
 
-$ui_css_storage = (isset($data->payload['dup-pack-storage-panel']) && $data->payload['dup-pack-storage-panel']) ? 'display:block' : 'display:none';
-$ui_css_archive = (isset($data->payload['dup-pack-archive-panel']) && $data->payload['dup-pack-archive-panel']) ? 'display:block' : 'display:none';
-$ui_css_installer = (isset($data->payload['dup-pack-installer-panel']) && $data->payload['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
+$ui_css_storage		= (isset($data->payload['dup-pack-storage-panel']) && $data->payload['dup-pack-storage-panel']) ? 'display:block' : 'display:none';
+$ui_css_archive		= (isset($data->payload['dup-pack-archive-panel']) && $data->payload['dup-pack-archive-panel']) ? 'display:block' : 'display:none';
+$ui_css_installer	= (isset($data->payload['dup-pack-installer-panel']) && $data->payload['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
 $dup_intaller_files = implode(", ", array_keys(DUP_Server::getInstallerFiles()));
-$dbbuild_mode = (DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath()) ? 'mysqldump' : 'PHP';
+$dbbuild_mode		= (DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath()) ? 'mysqldump' : 'PHP';
+$retry_enabled		= isset($_GET['retry']) ? true : false;
 
 ?>
 

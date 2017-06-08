@@ -27,7 +27,7 @@
 	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 10px 0; background:#fff; border-radius:5px}
 	div#dup-msg-success div.details-title {font-size:20px; border-bottom:1px solid #dfdfdf; padding:5px; margin:0 0 10px 0; font-weight:bold}
 	div#dup-msg-success-subtitle {color:#999; margin:0; font-size:11px}
-	div.dup-scan-filter-status {display:inline; float:right; font-size:11px; margin-right:10px; color:maroon;}
+	div.dup-scan-filter-status {display:inline; float:right; font-size:11px; margin-right:10px; color:#630f0f;}
 	div#dup-msg-error {color:#A62426; padding:5px; max-width:790px;}
 	div#dup-msg-error-response-text { max-height:500px; overflow-y:scroll; border:1px solid silver; border-radius:3px; padding:10px;background:#fff}
 	div.dup-hdr-error-details {text-align:left; margin:20px 0}
@@ -42,10 +42,10 @@
 	div.scan-item div.title:hover {background-color:#ECECEC;}
 	div.scan-item div.text {font-weight:bold; font-size:14px; float:left;  position:relative; left:10px}
 	div.scan-item div.badge-pass {float:right; background:green; border-radius:5px; color:#fff; min-width:40px; text-align:center; position:relative; right:10px; font-size:12px}
-	div.scan-item div.badge-warn {float:right; background:maroon; border-radius:5px; color:#fff; min-width:40px; text-align:center; position:relative; right:10px; font-size:12px}
+	div.scan-item div.badge-warn {float:right; background:#630f0f; border-radius:5px; color:#fff; min-width:40px; text-align:center; position:relative; right:10px; font-size:12px}
 	div.scan-item div.info {display:none; padding:10px; background:#fff}
 	div.dup-scan-good {display:inline-block; color:green;font-weight:bold;}
-	div.dup-scan-warn {display:inline-block; color:maroon;font-weight:bold;}
+	div.dup-scan-warn {display:inline-block; color:#630f0f;font-weight:bold;}
 	div.dup-more-details {float:right; font-size:14px}
 	div.dup-more-details:hover {color:#777; cursor:pointer}
 
@@ -83,7 +83,8 @@
 	div.hb-files-style div.apply-btn {text-align:right; margin: 1px 0 10px 0}
 
 	div#size-more-details {display:none; margin:5px 0 20px 0; border:1px solid #dfdfdf; padding:8px; border-radius: 4px; background-color: #F1F1F1}
-	div#size-more-details ul {list-style-type:circle; padding-left:20px}
+	div#size-more-details ul {list-style-type:circle; padding-left:20px; margin:0}
+	div#size-more-details li {margin:0}
 
 	/*DATABASE*/
 	div#dup-scan-db-info {margin:0px 0px 0px 10px}
@@ -94,7 +95,7 @@
 	
 	/*WARNING-CONTINUE*/
 	div#dup-scan-warning-continue {display:none; text-align:center; padding:0 0 15px 0}
-	div#dup-scan-warning-continue div.msg1 label{font-size:16px; color:maroon}
+	div#dup-scan-warning-continue div.msg1 label{font-size:16px; color:#630f0f}
 	div#dup-scan-warning-continue div.msg2 {padding:2px; line-height:13px}
 	div#dup-scan-warning-continue div.msg2 label {font-size:11px !important}
 	
@@ -255,6 +256,9 @@ jQuery(document).ready(function($)
 		if (warnCount > 0) {
 			$('#dup-scan-warning-continue').show();
 			$('#dup-build-button').prop("disabled",true).removeClass('button-primary');
+			if ($('#dup-scan-warning-continue-checkbox').is(':checked')) {
+				$('#dup-build-button').removeAttr('disabled').addClass('button-primary');
+			}
 		} else {
 			$('#dup-scan-warning-continue').hide();
 			$('#dup-build-button').prop("disabled",false).addClass('button-primary');

@@ -40,41 +40,44 @@ TOTAL SIZE -->
 		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Size Check', 'duplicator');?></div>
 		<div id="data-arc-status-size"></div>
 	</div>
-	<div class="info">
+	<div class="info" id="scan-itme-file-size">
 		<b><?php _e('Size', 'duplicator');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
 		<b><?php _e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
 		<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
 		<?php
-			printf(__('Compressing sites larger that <b>%1$s</b> may cause timeouts on some budget hosts.  ', 'duplicator'),	DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT));
+			_e('Compressing larger sites on <i>some budget hosts</i> may cause timeouts.  ' , 'duplicator');
 			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100)'>[" . __('more details...', 'duplicator') . "]</a></i>";
-			$txt = sprintf(__('Files over %1$s are listed below. Larger files such as movies or zipped content can cause timeout issues on some budget hosts.  If you are having '
-				. 'issues creating a package try excluding the directory paths below or go back to Step 1 and add them.', 'duplicator'),
-				DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 		?>
 		<div id="size-more-details">
 			<?php
 				echo "<b>" . __('Overview', 'duplicator') . ":</b><br/>";
-					_e('On some hosts the size of a package does not matter. If you initially receive this warning it is safe to continue with the build process.  '
-						. 'If after clicking the build button a timeout or build interrupt message occurs then this host that has strict processing limits; see '
-						. 'options below.'  , 'duplicator');
+
+				printf(__('This notice is triggered at <b>%s</b> and can be ignored on most hosts.  If during the build process you see a "Host Build Interrupt" message then this '
+					. 'host has strict processing limits.  Below are some options you can take to overcome constraints setup on this host.', 'duplicator'),
+					DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT));
+
 				echo '<br/><br/>';
-				
+
 				echo "<b>" . __('Timeout Options', 'duplicator') . ":</b><br/>";
 				echo '<ul>';
-				echo '<li>' . __('Apply the "Recommended Filters" below or click the back button to apply on previous page.', 'duplicator') . '</li>';
+				echo '<li>' . __('Apply the "Quick Filters" below or click the back button to apply on previous page.', 'duplicator') . '</li>';
 				echo '<li>' . __('See the FAQ link to adjust this hosts timeout limits: ', 'duplicator') . "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>" . __('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
 				echo '<li>' . __('Consider trying multi-threaded support in ', 'duplicator');
 					echo "<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=duplicator_pro' target='_blank'>" . __('Duplicator Pro.', 'duplicator') . "</a>";
 				echo '</li>';
 				echo '</ul>';
+
+				$hlptxt = sprintf(__('Files over %1$s are listed below. Larger files such as movies or zipped content can cause timeout issues on some budget hosts.  If you are having '
+				. 'issues creating a package try excluding the directory paths below or go back to Step 1 and add them.', 'duplicator'),
+				DUP_Util::byteSize(DUPLICATOR_SCAN_WARNFILESIZE));
 			?>
 		</div>
 		<script id="hb-files-large" type="text/x-handlebars-template">
 			<div class="container">
 				<div class="hdrs">
 					<span style="font-weight:bold">
-						<?php _e('Recommended Filters', 'duplicator'); ?>
-						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
+						<?php _e('Quick Filters', 'duplicator'); ?>
+						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files", 'duplicator'); ?>" data-tooltip="<?php echo $hlptxt; ?>"></i></sup>
 					</span>
 					<div class='hdrs-up-down'>
 						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'close')"></i>
@@ -99,7 +102,18 @@ TOTAL SIZE -->
 							</div>
 						{{/each}}
 					{{else}}
-						 <?php _e('No large files found during this scan.', 'duplicator');?>
+						 <?php 
+							if (! isset($_GET['retry'])) {
+								_e('No large files found during this scan.', 'duplicator');
+							} else {
+								echo "<div style='color:maroon'>";
+								_e('No large files found during this scan.  If your having issues building a package click the back button and try '
+									. 'adding the following file filters to non-essential files paths like wp-conent/uploads.   These filtered files can then '
+									. 'be manually moved to the new location after you have ran the migration installer.', 'duplicator');
+								echo "</div>";
+							}
+
+						?>
 					{{/if}}
 				</div>
 			</div>
@@ -131,7 +145,7 @@ FILE NAME CHECKS -->
 		<script id="hb-files-utf8" type="text/x-handlebars-template">
 			<div class="container">
 				<div class="hdrs">
-					<span style="font-weight:bold"><?php _e('Recommended Filters', 'duplicator');?></span>
+					<span style="font-weight:bold"><?php _e('Quick Filters', 'duplicator');?></span>
 						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Name Checks", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
 					<div class='hdrs-up-down'>
 						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'close')"></i>
@@ -291,7 +305,7 @@ DETAILS DIALOG:
 	<b><?php _e('Name', 'duplicator');?>:</b> <?php echo $_POST['package-name']; ?><br/>
 	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo strlen($_POST['package-notes']) ? $_POST['package-notes'] : __('- no notes -', 'duplicator') ; ?>
 	<br/><br/>
-	
+
 	<b><i class="fa fa-files-o"></i> FILE SETTINGS</b>
 	<hr size="1" />
 
@@ -321,7 +335,7 @@ DETAILS DIALOG:
 		?>
 	</div>
 	<br/>
-	
+
 	<b><i class="fa fa-table"></i> DATABASE SETTINGS</b>
 	<hr size="1" />
 	<table id="db-area">
@@ -341,7 +355,7 @@ DETAILS DIALOG:
 			</td>
 		</tr>
 	</table><br/>
-	
+
 	<small>
 		<?php
 			_e('The root directory is where Duplicator starts archiving files.  The excluded sections will be skipped during the archive process.  ', 'duplicator');
@@ -385,7 +399,7 @@ jQuery(document).ready(function($)
 	Duplicator.Pack.toggleAllDirPath = function(item, toggle)
 	{
 		var $dirs  = $(item).parents('div.container').find('div.data div.directory');
-		 (toggle == 'open') 
+		 (toggle == 'open')
 			? $.each($dirs, function() {$(this).find('div.files').show(100);})
 			: $.each($dirs, function() {$(this).find('div.files').hide(100);});
 	}
@@ -489,5 +503,12 @@ jQuery(document).ready(function($)
 			$('#dup-scan-db').html(html);
 		}
 	}
+
+	<?php
+		if (isset($_GET['retry'])) {
+			echo "$('#scan-itme-file-size').show(300)";
+		}
+	?>
+	
 });
 </script>

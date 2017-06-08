@@ -43,7 +43,7 @@
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
 </style>
 
-<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2" data-validate="parsley">
+<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo $retry_enabled ? '&retry=1' : '';?>" data-validate="parsley">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
 <div>
 	<label for="package-name"><b><?php _e('Name', 'duplicator') ?>:</b> </label>

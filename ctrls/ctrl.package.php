@@ -22,10 +22,10 @@ function duplicator_package_scan() {
 	error_reporting(E_ERROR);
 	DUP_Util::initSnapshotDirectory();
 	
-	$Package = DUP_Package::getActive();
-	$report = $Package->runScanner();
+	$package = DUP_Package::getActive();
+	$report = $package->runScanner();
 	
-	$Package->saveActiveItem('ScanFile', $Package->ScanFile);
+	$package->saveActiveItem('ScanFile', $package->ScanFile);
 	$json_response = DUP_JSON::safeEncode($report);
 	
 	DUP_Package::tempFileCleanup();
@@ -181,6 +181,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 			$filters = $package->Archive->FilterDirs.';'.$post['dir_paths'];
 			$filters = $package->Archive->parseDirectoryFilter($filters);
 			$changed = $package->Archive->saveActiveItem($package, 'FilterDirs', $filters);
+			$changed = $package->Archive->saveActiveItem($package, 'FilterOn', 1);
 
 			//Result
 			$package = DUP_Package::getActive();

@@ -165,7 +165,6 @@ class DUP_Package
      */
     public function runBuild()
     {
-
         global $wp_version;
         global $wpdb;
         global $current_user;
@@ -232,7 +231,6 @@ class DUP_Package
         $this->Database->build($this);
         $this->Archive->build($this);
         $this->Installer->build($this);
-
 
         //INTEGRITY CHECKS
         DUP_Log::Info("\n********************************************************************************");
