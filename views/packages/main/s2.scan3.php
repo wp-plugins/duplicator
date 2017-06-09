@@ -136,9 +136,10 @@ FILE NAME CHECKS -->
 	</div>
 	<div class="info">
 		<?php
-			_e('Unicode and special characters such as "*?><:/\|", can cause issues in some remote environment.  If the archive is unable to build '
-				. 'or there are issues at install time, it is recommended to filter these paths.', 'duplicator');
-
+			_e('Unicode and special characters such as "*?><:/\|", can be problematic on some hosts.', 'duplicator');
+            _e('<b>');
+            _e('  Only consider using this filter if the package build is failing. Select files that are not important to your site or you can migrate manually.', 'duplicator');
+            _e('</b>');
 			$txt = __('If this environment/system and the system where it will be installed are setup to support Unicode and long paths then these filters can be ignored.  '
 				. 'If you run into issues with creating or installing a package, then is recommended to filter these paths.', 'duplicator');
 		?>
