@@ -92,7 +92,7 @@ TOTAL SIZE -->
 								<i class="fa fa-caret-right fa-lg dup-nav" onclick="Duplicator.Pack.toggleDirPath(this)"></i> &nbsp;
 								<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="lf_dir_{{@index}}" />
 								<label for="lf_dir_{{@index}}" title="{{directory.dir}}">
-									<i class="size">[{{directory.size}}]</i> {{directory.dir}}/
+									<i class="size">[{{directory.size}}]</i> /{{directory.sdir}}/
 								</label> <br/>
 								<div class="files">
 									{{#each directory.files as |file|}}
@@ -166,7 +166,7 @@ FILE NAME CHECKS -->
 								<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="nc1_dir_{{@index}}" />
 								<label for="nc1_dir_{{@index}}" title="{{directory.dir}}">
 									<i class="count">({{directory.count}})</i>
-									{{directory.dir}}/
+									/{{directory.sdir}}/
 								</label> <br/>
 								<div class="files">
 									{{#each directory.files}}
