@@ -22,9 +22,13 @@ class DUP_Archive
 {
     //PUBLIC
     public $FilterDirs;
+	public $FilterFiles;
     public $FilterExts;
-    public $FilterDirsAll = array();
-    public $FilterExtsAll = array();
+    public $FilterDirsAll	= array();
+	public $FilterFilesAll	= array();
+	//Includes files not filtered by directory path
+	public $FilterFilesCore	= array();
+    public $FilterExtsAll	= array();
     public $FilterOn;
 	public $ExportOnlyDB;
     public $File;
@@ -160,6 +164,34 @@ class DUP_Archive
         return $filters ;
     }
 
+	/**
+     *  Properly creates the file filter list that is used for filtering files
+     *
+     *  @param string $dirs A semi-colon list of dir paths
+     *  /path1_/path/file1.ext;/path1_/path2/file2.ext;
+     *
+     *  @returns string A cleaned up list of file filters
+     */
+    public function parseFileFilter($files = "")
+    {
+        $files			= str_replace(array("\n", "\t", "\r"), '', $files);
+        $filters		= "";
+        $file_array		= array_unique(explode(";", $files));
+		$clean_array	= array();
+        foreach ($file_array as $val) {
+            if (strlen($val) >= 2) {
+				$clean_array[] = DUP_Util::safePath(trim(rtrim($val, "/\\"))) ;
+            }
+        }
+
+		if (count($clean_array)) {
+			$clean_array  = array_unique($clean_array);
+			sort($clean_array);
+			$filters = implode(';', $clean_array) . ';';
+		}
+        return $filters ;
+    }
+
 	 /**
      *  Properly creates the extension filter list that is used for filtering extensions
      *
@@ -190,6 +222,7 @@ class DUP_Archive
         //Add the items generated at create time
         if ($this->FilterOn) {
             $this->FilterInfo->Dirs->Instance = array_map('DUP_Util::safePath', explode(";", $this->FilterDirs, -1));
+			$this->FilterInfo->Files->Instance = array_map('DUP_Util::safePath', explode(";", $this->FilterFiles, -1));
             $this->FilterInfo->Exts->Instance = explode(";", $this->FilterExts, -1);
         }
 
@@ -201,39 +234,40 @@ class DUP_Archive
 		$wp_content = str_replace("\\", "/", WP_CONTENT_DIR);
 		$wp_content_upload = "{$wp_content}/{$upload_dir}";
 		$this->FilterInfo->Dirs->Core = array(
-				//WP-ROOT
-				$wp_root . '/wp-snapshots',
+			//WP-ROOT
+			$wp_root . '/wp-snapshots',
 
-				//WP-CONTENT
-				$wp_content . '/backups-dup-pro',
-				$wp_content . '/ai1wm-backups',
-				$wp_content . '/backupwordpress',
-				$wp_content . '/content/cache',
-				$wp_content . '/contents/cache',
-				$wp_content . '/infinitewp/backups',
-				$wp_content . '/managewp/backups',
-				$wp_content . '/old-cache',
-				$wp_content . '/plugins/all-in-one-wp-migration/storage',
-				$wp_content . '/updraft',
-				$wp_content . '/wishlist-backup',
-				$wp_content . '/wfcache',		
+			//WP-CONTENT
+			$wp_content . '/backups-dup-pro',
+			$wp_content . '/ai1wm-backups',
+			$wp_content . '/backupwordpress',
+			$wp_content . '/content/cache',
+			$wp_content . '/contents/cache',
+			$wp_content . '/infinitewp/backups',
+			$wp_content . '/managewp/backups',
+			$wp_content . '/old-cache',
+			$wp_content . '/plugins/all-in-one-wp-migration/storage',
+			$wp_content . '/updraft',
+			$wp_content . '/wishlist-backup',
+			$wp_content . '/wfcache',
 
-				//WP-CONTENT-UPLOADS
-				$wp_content_upload . '/aiowps_backups',
-				$wp_content_upload . '/backupbuddy_temp',
-				$wp_content_upload . '/backupbuddy_backups',
-				$wp_content_upload . '/ithemes-security/backups',
-				$wp_content_upload . '/mainwp/backup',
-				$wp_content_upload . '/pb_backupbuddy',
-				$wp_content_upload . '/snapshots',
-				$wp_content_upload . '/sucuri',
-				$wp_content_upload . '/wp-clone',
-				$wp_content_upload . '/wp_all_backup',
-				$wp_content_upload . '/wpbackitup_backups'
-			);
+			//WP-CONTENT-UPLOADS
+			$wp_content_upload . '/aiowps_backups',
+			$wp_content_upload . '/backupbuddy_temp',
+			$wp_content_upload . '/backupbuddy_backups',
+			$wp_content_upload . '/ithemes-security/backups',
+			$wp_content_upload . '/mainwp/backup',
+			$wp_content_upload . '/pb_backupbuddy',
+			$wp_content_upload . '/snapshots',
+			$wp_content_upload . '/sucuri',
+			$wp_content_upload . '/wp-clone',
+			$wp_content_upload . '/wp_all_backup',
+			$wp_content_upload . '/wpbackitup_backups'
+		);
 
-        $this->FilterDirsAll = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Core);
-        $this->FilterExtsAll = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);
+        $this->FilterDirsAll  = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Core);
+        $this->FilterExtsAll  = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);
+		$this->FilterFilesAll = array_merge($this->FilterInfo->Files->Instance);
 		$this->tmpFilterDirsAll = $this->FilterDirsAll;
 
 		//PHP 5 on windows decode patch
@@ -244,6 +278,16 @@ class DUP_Archive
 				}
 			}
 		}
+		
+		//Build Core List of only needed files
+		foreach ($this->FilterFilesAll as $key => $value) {
+			$file_dir = dirname($value);
+			if (! in_array($file_dir, $this->FilterDirsAll)) {
+				$this->FilterFilesCore[] = $value;
+			}
+		}
+		
+		
     }
 
 	/**
@@ -424,7 +468,8 @@ class DUP_Archive
 						$this->Dirs[] = $fullPath;
 					}
 				} else {
-					if ( ! in_array(pathinfo($file, PATHINFO_EXTENSION) , $this->FilterExtsAll)) {
+					if ( ! (in_array(pathinfo($file, PATHINFO_EXTENSION) , $this->FilterFilesCore)
+						|| in_array($fullPath, $this->FilterFilesCore))) {
 						$this->Files[] = $fullPath;
 					}
 				}

@@ -115,6 +115,7 @@ class DUP_Package
         $report['ARC']['FullCount'] = number_format($fullCount);
 		$report['ARC']['FilterDirsAll'] = $this->Archive->FilterDirsAll;
 		$report['ARC']['FilterFilesAll'] = $this->Archive->FilterFilesAll;
+		$report['ARC']['FilterFilesCore'] = $this->Archive->FilterFilesCore;
 		$report['ARC']['FilterExtsAll'] = $this->Archive->FilterExtsAll;
         $report['ARC']['FilterInfo'] = $this->Archive->FilterInfo;
         $report['ARC']['Status']['Size']  = ($this->Archive->Size > DUPLICATOR_SCAN_SIZE_DEFAULT) ? 'Warn' : 'Good';
@@ -299,14 +300,15 @@ class DUP_Package
             $name       = substr(sanitize_file_name($name), 0, 40);
             $name       = str_replace($name_chars, '', $name);
 
-            $filter_dirs = isset($post['filter-dirs']) ? $this->Archive->parseDirectoryFilter($post['filter-dirs']) : '';
-            $filter_exts = isset($post['filter-exts']) ? $this->Archive->parseExtensionFilter($post['filter-exts']) : '';
-            $tablelist   = isset($post['dbtables']) ? implode(',', $post['dbtables']) : '';
-            $compatlist  = isset($post['dbcompat']) ? implode(',', $post['dbcompat']) : '';
-            $dbversion   = DUP_DB::getVersion();
-            $dbversion   = is_null($dbversion) ? '- unknown -' : $dbversion;
-            $dbcomments  = DUP_DB::getVariable('version_comment');
-            $dbcomments  = is_null($dbcomments) ? '- unknown -' : $dbcomments;
+            $filter_dirs  = isset($post['filter-dirs']) ? $this->Archive->parseDirectoryFilter($post['filter-dirs']) : '';
+			$filter_files = isset($post['filter-files']) ? $this->Archive->parseFileFilter($post['filter-files']) : '';
+            $filter_exts  = isset($post['filter-exts']) ? $this->Archive->parseExtensionFilter($post['filter-exts']) : '';
+            $tablelist    = isset($post['dbtables']) ? implode(',', $post['dbtables']) : '';
+            $compatlist   = isset($post['dbcompat']) ? implode(',', $post['dbcompat']) : '';
+            $dbversion    = DUP_DB::getVersion();
+            $dbversion    = is_null($dbversion) ? '- unknown -' : $dbversion;
+            $dbcomments   = DUP_DB::getVariable('version_comment');
+            $dbcomments   = is_null($dbcomments) ? '- unknown -' : $dbcomments;
 
             //PACKAGE
             $this->Created    = date("Y-m-d H:i:s");
@@ -326,6 +328,7 @@ class DUP_Package
             $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
 			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
             $this->Archive->FilterDirs      = esc_html($filter_dirs);
+			 $this->Archive->FilterFiles    = esc_html($filter_files);
             $this->Archive->FilterExts      = str_replace(array('.', ' '), "", esc_html($filter_exts));
             //INSTALLER
             $this->Installer->OptsDBHost    = esc_html($post['dbhost']);
