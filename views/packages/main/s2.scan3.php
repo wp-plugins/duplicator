@@ -95,8 +95,11 @@ TOTAL SIZE -->
 									<i class="size">[{{directory.size}}]</i> /{{directory.sdir}}/
 								</label> <br/>
 								<div class="files">
-									{{#each directory.files as |file|}}
-										<div class="file" title="{{file.name}}"><i class="size">[{{file.bytes}}]</i> {{file.sname}}</div>
+									{{#each directory.files as |file|}}	
+										<input type="checkbox" name="file_paths[]" value="{{file.path}}" id="lf_file_{{directory.dir}}-{{@index}}" />
+										<label for="lf_file_{{directory.dir}}-{{@index}}" title="{{file.path}}">
+											<i class="size">[{{file.bytes}}]</i>	{{file.sname}}
+										</label> <br/>
 									{{/each}}
 								</div>
 							</div>
@@ -412,17 +415,22 @@ jQuery(document).ready(function($)
 		$btn.attr('disabled', 'true');
 
 		var id = (type == 'large') ? '#hb-files-large-result' : '#hb-files-utf8-result'
-		var filters = [];
+		var dirFilters  = [];
+		var fileFilters = [];
 		$(id + " input[name='dir_paths[]']:checked").each(function (){
-			filters.push($(this).val());
+			dirFilters.push($(this).val());
+		});
+		$(id + " input[name='file_paths[]']:checked").each(function (){
+			fileFilters.push($(this).val());
 		});
 
 		var data = {
-			action: 'DUP_CTRL_Package_addDirectoryFilter',
-			nonce: '<?php echo wp_create_nonce('DUP_CTRL_Package_addDirectoryFilter'); ?>',
-			dir_paths : filters.join(";")
+			action: 'DUP_CTRL_Package_addQuickFilters',
+			nonce: '<?php echo wp_create_nonce('DUP_CTRL_Package_addQuickFilters'); ?>',
+			dir_paths : dirFilters.join(";"),
+			file_paths : fileFilters.join(";"),
 		};
-		//console.log(filters);
+		//console.log(dirFilters);
 
 		$.ajax({
 			type: "POST",

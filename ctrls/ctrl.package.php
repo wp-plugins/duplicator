@@ -158,7 +158,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
      */
 	function __construct()
 	{
-		add_action('wp_ajax_DUP_CTRL_Package_addDirectoryFilter', array($this, 'addDirectoryFilter'));
+		add_action('wp_ajax_DUP_CTRL_Package_addQuickFilters', array($this, 'addQuickFilters'));
 	}
 
 
@@ -169,7 +169,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 	 *
 	 * @return string	Returns all of the active directory filters as a ";" seperated string
      */
-	public function addDirectoryFilter($post)
+	public function addQuickFilters($post)
 	{
 		$post = $this->postParamMerge($post);
 		check_ajax_referer($post['action'], 'nonce');
@@ -178,15 +178,26 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 		try {
 			//CONTROLLER LOGIC
 			$package = DUP_Package::getActive();
-			$filters = $package->Archive->FilterDirs.';'.$post['dir_paths'];
-			$filters = $package->Archive->parseDirectoryFilter($filters);
-			$changed = $package->Archive->saveActiveItem($package, 'FilterDirs', $filters);
+
+			//DIRS
+			$dir_filters = $package->Archive->FilterDirs.';' . $post['dir_paths'];
+			$dir_filters = $package->Archive->parseDirectoryFilter($dir_filters);
+			$changed = $package->Archive->saveActiveItem($package, 'FilterDirs', $dir_filters);
+
+			//FILES
+			$file_filters = $package->Archive->FilterFiles.';' . $post['file_paths'];
+			$file_filters = $package->Archive->parseFileFilter($file_filters);
+			$changed = $package->Archive->saveActiveItem($package, 'FilterFiles', $file_filters);
+
+			
 			$changed = $package->Archive->saveActiveItem($package, 'FilterOn', 1);
 
 			//Result
 			$package = DUP_Package::getActive();
-			$payload['in'] = $post['dir_paths'];
-			$payload['out'] = $package->Archive->FilterDirs;
+			$payload['dirs-in'] = $post['dir_paths'];
+			$payload['dir-out'] = $package->Archive->FilterDirs;
+			$payload['files-in'] = $post['file_paths'];
+			$payload['files-out'] = $package->Archive->FilterFiles;
 
 			//RETURN RESULT
 			$test = ($changed) ? DUP_CTRL_Status::SUCCESS : DUP_CTRL_Status::FAILED;
