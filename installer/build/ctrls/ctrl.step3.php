@@ -32,6 +32,7 @@ $_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '
 $_POST['tables']		= isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
 $_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
 $_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
+$_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -190,8 +191,17 @@ DUPX_Log::info("====================================\n");
 DUPX_WPConfig::updateStandard();
 $config_file = DUPX_WPConfig::updateExtended();
 DUPX_Log::info("UPDATED WP-CONFIG: {$root_path}/wp-config.php' (if present)");
-DUPX_ServerConfig::setup($dbh);
 
+//Web Server Config Updates
+if (!isset($_POST['url_new']) || $_POST['retain_config']) {
+	DUPX_Log::info("\nNOTICE: Manual update of permalinks required see:  Admin > Settings > Permalinks > Click Save Changes");
+	DUPX_Log::info("Retaining the original htaccess, user.ini or web.config files may cause issues with the setup of this site.");
+	DUPX_Log::info("If you run into issues during or after the install process please uncheck the 'Config Files' checkbox labeled:");
+	DUPX_Log::info("'Retain original .htaccess, .user.ini and web.config' from Step 1 and re-run the installer. Backups of the");
+	DUPX_Log::info("orginal config files will be made and can be merged per required directive.");
+} else {
+	DUPX_ServerConfig::setup($dbh);
+}
 
 
 //===============================================

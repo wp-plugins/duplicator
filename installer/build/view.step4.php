@@ -1,10 +1,12 @@
 <?php
-	$_POST['archive_name'] = isset($_POST['archive_name']) ? $_POST['archive_name'] : '';
+	$_POST['archive_name']  = isset($_POST['archive_name']) ? $_POST['archive_name'] : '';
+	$_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
 	$admin_base		= basename($GLOBALS['FW_WPLOGIN_URL']);
 	$admin_redirect = rtrim($_POST['url_new'], "/") . "/wp-admin/admin.php?page=duplicator-tools&tab=cleanup&package={$_POST['archive_name']}";
 	$admin_redirect = urlencode($admin_redirect);
 	$admin_login	= rtrim($_POST['url_new'], '/') . "/{$admin_base}?redirect_to={$admin_redirect}";
 	$url_new_rtrim  = rtrim($_POST['url_new'], '/');
+
 ?>
 
 <script>
@@ -33,7 +35,12 @@ VIEW: STEP 4 - INPUT -->
 	<table class="s4-final-step">
 		<tr>
 			<td><a class="s4-final-btns" href="javascript:void(0)" onclick="DUPX.getAdminLogin()">Site Login</a></td>
-			<td><i>Login to the administrator section to finalize the setup</i></td>
+			<td>
+				<i>Login to the administrator section to finalize the setup</i>
+				<?php if ($_POST['retain_config']) :?>
+					<br/> <i>Update of Permalinks required see: Admin &gt; Settings &gt; Permalinks &gt; Save</i>
+				<?php endif;?>
+			</td>
 		</tr>
 		<tr>
 			<td><a class="s4-final-btns" href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Show Report</a></td>

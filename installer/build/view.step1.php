@@ -439,6 +439,13 @@ OPTIONS
 
 	<table class="dupx-opts dupx-advopts">
 		<tr>
+			<td>Config Files:</td>
+			<td>
+				<input type="checkbox" name="retain_config" id="retain_config" value="1" />
+				<label for="retain_config" style="font-weight: normal">Retain original .htaccess, .user.ini and web.config</label>
+			</td>
+		</tr>
+		<tr>
 			<td>File Times:</td>
 			<td>
 				<input type="radio" name="archive_filetime" id="archive_filetime_now" value="current" checked="checked" /> <label class="radio" for="archive_filetime_now" title='Set the files current date time to now'>Current</label>
@@ -588,6 +595,7 @@ Auto Posts to view.step2.php
 		<input type="hidden" name="action_step" value="2" />
 		<input type="hidden" name="archive_name" value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
+		<input type="hidden" name="retain_config" id="ajax-retain-config"  />
 		<input type="hidden" name="json"    id="ajax-json" />
 		<textarea id='ajax-json-debug' name='json_debug_view'></textarea>
 		<input type='submit' value='manual submit'>
@@ -649,6 +657,7 @@ Auto Posts to view.step2.php
 				$("#ajax-json-debug").val(dataJSON);
                 if (typeof(data) != 'undefined' && data.pass == 1) {
 					$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
+					 $("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
 					$("#ajax-json").val(escape(dataJSON));
 					<?php if (! $GLOBALS['DUPX_DEBUG']) : ?>
 						setTimeout(function() {$('#s1-result-form').submit();}, 500);

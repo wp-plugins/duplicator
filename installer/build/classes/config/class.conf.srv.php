@@ -65,6 +65,7 @@ class DUPX_ServerConfig
 		$update_msg  = "# This file was updated by Duplicator on {$timestamp}. See .htaccess.orig for the original .htaccess file.\n";
 		$update_msg .= "# Please note that other plugins and resources write to this file. If the time-stamp above is different\n";
 		$update_msg .= "# than the current time-stamp on the file system then another resource has updated this file.\n";
+		$update_msg .= "# Duplicator only writes to this file once during the install process while running the installer.php file.\n";
 
 		$empty_htaccess	 = false;
 		$query_result	 = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name = 'permalink_structure' ");

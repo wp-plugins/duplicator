@@ -89,7 +89,7 @@ STEP 1
 			</td>
 		</tr>
 		<tr>
-			<td>Config Files <sup>pro</sup></td>
+			<td>Config Files</td>
 			<td>
 				Inside the archive.zip should be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
 				When the installer runs it will backup and then reset all <i>.htaccess, user.ini, and web.config</i> files.   It will then create blank copies of

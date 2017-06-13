@@ -7,6 +7,7 @@ $_POST['ssl_login']			= (isset($_POST['ssl_login']))  ? true : false;
 $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
 $_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
 $_POST['archive_name']		= isset($_POST['archive_name']) ? $_POST['archive_name'] : null;
+$_POST['retain_config']		= (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
 
 //LOGGING
 $POST_LOG = $_POST;

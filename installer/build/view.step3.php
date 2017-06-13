@@ -18,6 +18,7 @@ VIEW: STEP 3- INPUT -->
 	<input type="hidden" name="action_ajax"	 value="3" />
 	<input type="hidden" name="action_step"	 value="3" />
 	<input type="hidden" name="logging"		 value="<?php echo $_POST['logging'] ?>" />
+	<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
 	<input type="hidden" name="archive_name" value="<?php echo $_POST['archive_name'] ?>" />
 	<input type="hidden" name="json"		 value="<?php echo $_POST['json']; ?>" />
 	<input type="hidden" name="dbhost"		 value="<?php echo $_POST['dbhost'] ?>" />
@@ -190,6 +191,7 @@ VIEW: STEP 3 - AJAX RESULT
 	<div class="dupx-debug">
 		<input type="hidden" name="action_step"  value="4" />
 		<input type="hidden" name="archive_name" value="<?php echo $_POST['archive_name'] ?>" />
+		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
 		<input type="hidden" name="url_new" id="ajax-url_new"  />
 		<input type="hidden" name="json"    id="ajax-json" />
 		<br/>
