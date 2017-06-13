@@ -32,7 +32,10 @@ class DUPX_ServerConfig
 		//IIS
 		@copy('web.config', "web.config.{$timeStamp}.orig");
 		@unlink('web.config');
-		@file_put_contents('web.config', "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$timeStamp}.orig -->");
+		$xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		$xml_contents .= "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$timeStamp}.orig -->\n";
+		$xml_contents .=  "<configuration></configuration>\n";
+		@file_put_contents('web.config', $xml_contents);
 
 		//.user.ini - For WordFence
 		@copy('.user.ini', ".user.ini.{$timeStamp}.orig");
