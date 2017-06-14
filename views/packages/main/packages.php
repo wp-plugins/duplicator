@@ -6,8 +6,6 @@
 	$package_debug	= DUP_Settings::Get('package_debug');
     $ajax_nonce		= wp_create_nonce('package_list');
 	$ui_create_frmt = is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_Settings::Get('package_ui_created') : 1;
-
-	echo get_theme_root();
 ?>
 
 <style>
