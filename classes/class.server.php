@@ -79,31 +79,29 @@ class DUP_Server
     {
         $checks = array();
 
-        //WEB SERVER
-        $web_test1 = false;
+        //PHP/SYSTEM SETTINGS
+		//Web Server
+        $php_test0 = false;
         foreach ($GLOBALS['DUPLICATOR_SERVER_LIST'] as $value) {
             if (stristr($_SERVER['SERVER_SOFTWARE'], $value)) {
-                $web_test1 = true;
+                $php_test0 = true;
                 break;
             }
         }
-        $checks['SRV']['WEB']['model'] = $web_test1;
-        $checks['SRV']['WEB']['ALL']   = ($web_test1) ? 'Good' : 'Warn';
 
-        //PHP SETTINGS
         $php_test1 = ini_get("open_basedir");
         $php_test1 = empty($php_test1) ? true : false;
         $php_test2 = ini_get("max_execution_time");
         $php_test2 = ($php_test2 > DUPLICATOR_SCAN_TIMEOUT) || (strcmp($php_test2, 'Off') == 0 || $php_test2 == 0) ? true : false;
         $php_test3 = function_exists('mysqli_connect');
         $php_test4 = DUP_Util::$on_php_53_plus ? true : false;
-
+				
+		$checks['SRV']['PHP']['websrv']   = $php_test0;
         $checks['SRV']['PHP']['openbase'] = $php_test1;
         $checks['SRV']['PHP']['maxtime']  = $php_test2;
         $checks['SRV']['PHP']['mysqli']   = $php_test3;
         $checks['SRV']['PHP']['version']  = $php_test4;
-        $checks['SRV']['PHP']['ALL']      = ($php_test1 && $php_test2 && $php_test3 && $php_test4) ? 'Good' : 'Warn';
-
+        $checks['SRV']['PHP']['ALL']      = ($php_test0 && $php_test1 && $php_test2 && $php_test3 && $php_test4) ? 'Good' : 'Warn';
 
         //WORDPRESS SETTINGS
         global $wp_version;

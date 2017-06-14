@@ -5,45 +5,34 @@ SERVER  -->
 </div>
 
 <!-- ============
-WEB SERVER   -->
-<div class="scan-item scan-item-first">
-	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Web Server', 'duplicator');?></div>
-		<div id="data-srv-web-all"></div>
-	</div>
-	<div class="info">
-		<?php
-		$web_servers = implode(', ', $GLOBALS['DUPLICATOR_SERVER_LIST']);
-		echo '<span id="data-srv-web-model"></span>&nbsp;<b>' . __('Web Server', 'duplicator') . ":</b>&nbsp; '{$_SERVER['SERVER_SOFTWARE']}' <br/>";
-		_e("Supported web servers: ", 'duplicator');
-		echo "<i>{$web_servers}</i>";
-		?>
-	</div>
-</div>
-
-<!-- ============
 PHP SETTINGS -->
 <div class="scan-item">
 	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('PHP Setup', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('System Setup', 'duplicator');?></div>
 		<div id="data-srv-php-all"></div>
 	</div>
 	<div class="info">
 	<?php
+		//WEB SERVER
+		$web_servers = implode(', ', $GLOBALS['DUPLICATOR_SERVER_LIST']);
+		echo '<span id="data-srv-php-websrv"></span>&nbsp;<b>' . __('Web Server', 'duplicator') . ":</b>&nbsp; '{$_SERVER['SERVER_SOFTWARE']}' <br/>";
+		_e("Supported web servers: ", 'duplicator');
+		echo "<i>{$web_servers}</i>";
+
 		//PHP VERSION
-		echo '<span id="data-srv-php-version"></span>&nbsp;<b>' . __('PHP Version', 'duplicator') . "</b> <br/>";
+		echo '<hr size="1" /><span id="data-srv-php-version"></span>&nbsp;<b>' . __('PHP Version', 'duplicator') . "</b> <br/>";
 		_e('The minimum PHP version supported by Duplicator is 5.2.9. It is highly recommended to use PHP 5.3+ for improved stability.  For international language support please use PHP 7.0+.', 'duplicator');
 		
 		//OPEN_BASEDIR
 		$test = ini_get("open_basedir");
 		$test = ($test) ? 'ON' : 'OFF';
-		echo '<hr size="1" /><span id="data-srv-php-openbase"></span>&nbsp;<b>' . __('Open Base Dir', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
+		echo '<hr size="1" /><span id="data-srv-php-openbase"></span>&nbsp;<b>' . __('PHP Open Base Dir', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
 		_e('Issues might occur when [open_basedir] is enabled. Work with your server admin to disable this value in the php.ini file if you’re having issues building a package.', 'duplicator');
 		echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . __('details', 'duplicator') . "]</a></i><br/>";
 
 		//MAX_EXECUTION_TIME
 		$test = (@set_time_limit(0)) ? 0 : ini_get("max_execution_time");
-		echo '<hr size="1" /><span id="data-srv-php-maxtime"></span>&nbsp;<b>' . __('Max Execution Time', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
+		echo '<hr size="1" /><span id="data-srv-php-maxtime"></span>&nbsp;<b>' . __('PHP Max Execution Time', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
 		_e('Timeouts may occur for larger packages when [max_execution_time] time in the php.ini is too low.  A value of 0 (recommended) indicates that PHP has no time limits. '
 			. 'An attempt is made to override this value if the server allows it.', 'duplicator');
 		echo '<br/><br/>';
@@ -109,9 +98,7 @@ WP SETTINGS -->
 	//Ints the various server data responses from the scan results
 	Duplicator.Pack.intServerData= function(data)
 	{
-		$('#data-srv-web-model').html(Duplicator.Pack.setScanStatus(data.SRV.WEB.model));
-		$('#data-srv-web-all').html(Duplicator.Pack.setScanStatus(data.SRV.WEB.ALL));
-
+		$('#data-srv-php-websrv').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.websrv));
 		$('#data-srv-php-openbase').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.openbase));
 		$('#data-srv-php-maxtime').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.maxtime));
 		$('#data-srv-php-version').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.version));

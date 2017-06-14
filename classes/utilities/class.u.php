@@ -111,6 +111,7 @@ class DUP_Util
     {
         echo(str_repeat(' ', 300));
         @flush();
+		@ob_flush();
     }
 
     /**

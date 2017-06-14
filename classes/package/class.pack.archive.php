@@ -26,7 +26,7 @@ class DUP_Archive
     public $FilterExts;
     public $FilterDirsAll	= array();
 	public $FilterFilesAll	= array();
-	//Includes files not filtered by directory path
+	//Excludes files that exist under a directory filter
 	public $FilterFilesCore	= array();
     public $FilterExtsAll	= array();
     public $FilterOn;
@@ -41,6 +41,7 @@ class DUP_Archive
     //PROTECTED
     protected $Package;
 	private $tmpFilterDirsAll = array();
+	private $wpCorePaths = array();
 
 
     /**
@@ -52,6 +53,15 @@ class DUP_Archive
         $this->FilterOn		= false;
 		$this->ExportOnlyDB = false;
         $this->FilterInfo	= new DUP_Archive_Filter_Info();
+
+		$rootPath = DUP_Util::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
+
+		$this->wpCorePaths[] = "{$rootPath}/wp-admin";
+		$this->wpCorePaths[] = WP_CONTENT_DIR . "/uploads";
+		$this->wpCorePaths[] = WP_CONTENT_DIR . "/languages";
+		$this->wpCorePaths[] = WP_PLUGIN_DIR;
+		$this->wpCorePaths[] = get_theme_root();
+		$this->wpCorePaths[] = "{$rootPath}/wp-includes";
     }
 
     /**
@@ -497,10 +507,21 @@ class DUP_Archive
 			foreach ($files as $key => $value) {
 				$sum += $value['ubytes'];
 			}
+			
+			//Locate core paths, wp-admin, wp-includes, etc.
+			$iscore = 0;
+			foreach ($this->wpCorePaths as $core_dir) {
+				if (strpos($dir, $core_dir) !== false) {
+					$iscore = 1;
+					break;
+				}
+			}
+
 			$this->FilterInfo->TreeSize[] = array(
 				'size' => DUP_Util::byteSize($sum),
 				'dir' => $dir,
 				'sdir' => str_replace(DUPLICATOR_WPROOTPATH, '', $dir),
+				'iscore' => $iscore,
 				'files' => $files
 			);
 		}
@@ -511,9 +532,20 @@ class DUP_Archive
 		$dir_group = DUP_Util::array_group_by($this->FilterInfo->Files->Warning, "dir" );
 		ksort($dir_group);
 		foreach ($dir_group as $dir => $files) {
+
+			//Locate core paths, wp-admin, wp-includes, etc.
+			$iscore = 0;
+			foreach ($this->wpCorePaths as $core_dir) {
+				if (strpos($dir, $core_dir) !== false) {
+					$iscore = 1;
+					break;
+				}
+			}
+
 			$this->FilterInfo->TreeWarning[] = array(
 				'dir' => $dir,
 				'sdir' => str_replace(DUPLICATOR_WPROOTPATH, '', $dir),
+				'iscore' => $iscore,
 				'count' => count($files),
 				'files' => $files);
 		}
@@ -528,9 +560,20 @@ class DUP_Archive
 				}
 			}
 			if ($add_dir) {
+
+				//Locate core paths, wp-admin, wp-includes, etc.
+				$iscore = 0;
+				foreach ($this->wpCorePaths as $core_dir) {
+					if (strpos($dir, $core_dir) !== false) {
+						$iscore = 1;
+						break;
+					}
+				}
+
 				$this->FilterInfo->TreeWarning[] = array(
 					'dir' => $dir,
 					'sdir' => str_replace(DUPLICATOR_WPROOTPATH, '', $dir),
+					'iscore' => $iscore,
 					'count' => 0);
 			}
 		}
