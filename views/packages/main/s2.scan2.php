@@ -8,7 +8,7 @@ SERVER  -->
 PHP SETTINGS -->
 <div class="scan-item">
 	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('System Setup', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Setup', 'duplicator');?></div>
 		<div id="data-srv-php-all"></div>
 	</div>
 	<div class="info">
@@ -80,11 +80,11 @@ WP SETTINGS -->
 
 		//MU SITE
 		if (is_multisite()) {
-			echo '<hr size="1" /><span><div class="dup-scan-warn"><i class="fa fa-exclamation-triangle"></i></div></span>&nbsp;<b>' . __('Multisite: Unsupported', 'duplicator') . "</b> <br/>";
+			echo '<hr size="1" /><span><div class="scan-warn"><i class="fa fa-exclamation-triangle"></i></div></span>&nbsp;<b>' . __('Multisite: Unsupported', 'duplicator') . "</b> <br/>";
 			_e('Duplicator does not officially support Multisite. However, Duplicator Pro supports duplication of a full Multisite network and also has the ability to install a Multisite subsite as a standalone site.', 'duplicator');
 			echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
 		} else {
-			echo '<hr size="1" /><span><div class="dup-scan-good"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . __('Multisite: N/A', 'duplicator') . "</b> <br/>";
+			echo '<hr size="1" /><span><div class="scan-good"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . __('Multisite: N/A', 'duplicator') . "</b> <br/>";
 			_e('This is not a Multisite install so duplication will proceed without issue.  Duplicator does not officially support Multisite. However, Duplicator Pro supports duplication of a full Multisite network and also has the ability to install a Multisite subsite as a standalone site.', 'duplicator');
 			echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . __('details', 'duplicator') . "]</a></i>";
 		}

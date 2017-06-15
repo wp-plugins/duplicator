@@ -44,19 +44,25 @@
 	div.scan-item div.badge-pass {float:right; background:green; border-radius:5px; color:#fff; min-width:40px; text-align:center; position:relative; right:10px; font-size:12px}
 	div.scan-item div.badge-warn {float:right; background:#630f0f; border-radius:5px; color:#fff; min-width:40px; text-align:center; position:relative; right:10px; font-size:12px}
 	div.scan-item div.info {display:none; padding:10px; background:#fff}
-	div.dup-scan-good {display:inline-block; color:green;font-weight:bold;}
-	div.dup-scan-warn {display:inline-block; color:#630f0f;font-weight:bold;}
+	div.scan-good {display:inline-block; color:green;font-weight:bold;}
+	div.scan-warn {display:inline-block; color:#630f0f;font-weight:bold;}
 	div.dup-more-details {float:right; font-size:14px}
 	div.dup-more-details:hover {color:#777; cursor:pointer}
 
-	/*DETAILS WINDOW*/
-	div#dup-arc-details-dlg {font-size:12px}
-	div#dup-arc-details-dlg hr {margin:3px 0 10px 0}
-	div#dup-arc-details-dlg table#db-area {margin:0;  width:98%}
-	div#dup-arc-details-dlg table#db-area td {padding:0;}
-	div#dup-arc-details-dlg table#db-area td:first-child {font-weight:bold;  white-space:nowrap; width:100px}
-	div#dup-arc-details-dlg div.filter-area {height:175px; overflow-y:scroll; border:1px solid #dfdfdf; padding:8px; margin:8px 0}
-	div#dup-arc-details-dlg div.file-info {padding:0 0 10px 30px; width:500px; white-space:nowrap;}
+	/*DIALOG WINDOWS*/
+	div#arc-details-dlg {font-size:12px}
+	div#arc-details-dlg h2 {margin:0; padding:0 0 5px 0; border-bottom:1px solid #dfdfdf;}
+	div#arc-details-dlg hr {margin:3px 0 10px 0}
+	div#arc-details-dlg table#db-area {margin:0;  width:98%}
+	div#arc-details-dlg table#db-area td {padding:0;}
+	div#arc-details-dlg table#db-area td:first-child {font-weight:bold;  white-space:nowrap; width:100px}
+	div#arc-details-dlg div.filter-area {height:275px; overflow-y:scroll; border:1px solid #dfdfdf; padding:8px; margin:2px 0}
+	div#arc-details-dlg div.file-info {padding:0 0 10px 15px; width:500px; white-space:nowrap;}
+	
+	div#arc-paths-dlg textarea.path-dirs,
+		textarea.path-files {font-size:12px; border: 1px solid silver; padding: 10px; background: #fff; margin:5px; height:125px; width:100%; white-space:pre}
+	div#arc-paths-dlg div.copy-button {float:right;}
+	div#arc-paths-dlg div.copy-button button {font-size:12px}
 
 	/*FILES */
 	div#data-arc-size1 {display:inline-block; float:right; font-size:11px; margin-right:5px;}
@@ -320,9 +326,9 @@ jQuery(document).ready(function($)
 	{
 		var result;
 		switch (status) {
-			case false :    result = '<div class="dup-scan-warn"><i class="fa fa-exclamation-triangle"></i></div>'; break;
+			case false :    result = '<div class="scan-warn"><i class="fa fa-exclamation-triangle"></i></div>'; break;
 			case 'Warn' :   result = '<div class="badge-warn">Warn</div>'; break;
-			case true :     result = '<div class="dup-scan-good"><i class="fa fa-check"></i></div>'; break;
+			case true :     result = '<div class="scan-good"><i class="fa fa-check"></i></div>'; break;
 			case 'Good' :   result = '<div class="badge-pass">Good</div>'; break;
 			default :
 				result = 'unable to read';

@@ -509,7 +509,7 @@ class DUP_Archive
 			//Locate core paths, wp-admin, wp-includes, etc.
 			$iscore = 0;
 			foreach ($this->wpCorePaths as $core_dir) {
-				if (strpos($dir, $core_dir) !== false) {
+				if (strpos(DUP_Util::safePath($dir), DUP_Util::safePath($core_dir)) !== false) {
 					$iscore = 1;
 					break;
 				}
@@ -562,7 +562,7 @@ class DUP_Archive
 				//Locate core paths, wp-admin, wp-includes, etc.
 				$iscore = 0;
 				foreach ($this->wpCorePaths as $core_dir) {
-					if (strpos($dir, $core_dir) !== false) {
+					if (strpos(DUP_Util::safePath($dir), DUP_Util::safePath($core_dir)) !== false) {
 						$iscore = 1;
 						break;
 					}
