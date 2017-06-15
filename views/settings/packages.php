@@ -134,7 +134,8 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                         <?php else : ?>
                             <div class="dup-feature-notfound">
                                 <?php
-									_e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  If the problem persist contact your server administrator.', 'duplicator');
+									_e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  '
+										. 'If the problem persist contact your server administrator.', 'duplicator');
                                 ?>
 
 								<?php
@@ -149,9 +150,9 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
 						<i class="fa fa-question-circle"
 								data-tooltip-title="<?php _e("mysqldump", 'duplicator'); ?>"
-								data-tooltip="<?php _e('An optional path to the mysqldump program.  Add a custom path if the path to mysqldump is not properly detected or needs to be changed.', 'duplicator'); ?>"></i>
+								data-tooltip="<?php _e('An optional path to the mysqldump program.  Add a custom path if the path to mysqldump is not properly detected or needs to be changed.  For all paths including Windows use a forward slash.', 'duplicator'); ?>"></i>
                         <label><?php _e("Custom Path:", 'duplicator'); ?></label><br/>
-                        <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?> " />
+                        <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?>" placeholder="<?php _e("/usr/bin/mypath/mysqldump.exe", 'duplicator'); ?>" />
 						<br/><br/>
                     </div>
 

@@ -269,14 +269,16 @@ ARCHIVE -->
 			<tr class="sub-item <?php echo $css_file_filter_on ?>">
 				<td><?php _e('Files', 'duplicator') ?>: </td>
 				<td>
-					<i>
-						<?php _e('Available in', 'duplicator') ?>
-						<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_file_filters&utm_campaign=duplicator_pro" target="_blank"><?php _e('Professional', 'duplicator');?></a>
-					</i>
-					<i class="fa fa-lightbulb-o"
-					   data-tooltip-title="<?php _e('File Filters:', 'duplicator'); ?>"
-					   data-tooltip="<?php _e('File filters allows you to select individual files and add them to an exclusion list that will filter them from the package.', 'duplicator'); ?>">
-					</i>
+					<?php
+					if (strlen($package->Archive->FilterFiles)) {
+						$files = explode(';', $package->Archive->FilterFiles);
+						foreach ($files as $value) {
+							echo "<span class='file-info' title='{$value}'>{$value}</span><br/>";
+						}
+					} else {
+						_e('- no filters -', 'duplicator');
+					}
+					?>
 				</td>
 			</tr>
 		<?php endif; ?>

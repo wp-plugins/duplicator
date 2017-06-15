@@ -19,8 +19,8 @@ ARCHIVE -->
 	<?php _e("Files", 'duplicator'); ?>
 	<i class="fa fa-question-circle data-size-help"
 		data-tooltip-title="<?php _e('Archive Size', 'duplicator'); ?>"
-		data-tooltip="<?php _e('This size represents only the included files before compression is applied. It does not include the size of the '
-					. 'database script or any applied filters.  In most cases the package size once completed will be smaller than this number.', 'duplicator'); ?>"></i>
+		data-tooltip="<?php _e('This size includes only files BEFORE compression is applied. It does not include the size of the '
+					. 'database script or any applied filters.  Once complete the package size will be smaller than this number.', 'duplicator'); ?>"></i>
 	<div id="data-arc-size1"></div>
 	<div class="dup-scan-filter-status">
 		<?php
@@ -43,7 +43,7 @@ TOTAL SIZE -->
 	<div class="info" id="scan-itme-file-size">
 		<b><?php _e('Size', 'duplicator');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
 		<b><?php _e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
-		<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/><br/>
+		<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/>
 		<?php
 			_e('Compressing larger sites on <i>some budget hosts</i> may cause timeouts.  ' , 'duplicator');
 			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100)'>[" . __('more details...', 'duplicator') . "]</a></i>";
@@ -102,7 +102,7 @@ TOTAL SIZE -->
 									{{#each directory.files as |file|}}	
 										<input type="checkbox" name="file_paths[]" value="{{file.path}}" id="lf_file_{{directory.dir}}-{{@index}}" />
 										<label for="lf_file_{{directory.dir}}-{{@index}}" title="{{file.path}}">
-											<i class="size">[{{file.bytes}}]</i>	{{file.sname}}
+											<i class="size">[{{file.bytes}}]</i>	{{file.name}}
 										</label> <br/>
 									{{/each}}
 								</div>
@@ -185,7 +185,7 @@ FILE NAME CHECKS -->
 									{{#each directory.files}}
 										<input type="checkbox" name="file_paths[]" value="{{path}}" id="warn_file_{{directory.dir}}-{{@index}}" />
 										<label for="warn_file_{{directory.dir}}-{{@index}}" title="{{path}}">
-											{{sname}}
+											{{name}}
 										</label> <br/>
 									{{/each}}
 								</div>

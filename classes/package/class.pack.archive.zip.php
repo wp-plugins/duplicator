@@ -34,10 +34,12 @@ class DUP_Zip extends DUP_Archive
             self::$zipArchive   = new ZipArchive();
             self::$networkFlush = empty($package_zip_flush) ? false : $package_zip_flush;
 
-            $filterDirs       = empty($archive->FilterDirs) ? 'not set' : $archive->FilterDirs;
-            $filterExts       = empty($archive->FilterExts) ? 'not set' : $archive->FilterExts;
+            $filterDirs       = empty($archive->FilterDirs)  ? 'not set' : $archive->FilterDirs;
+            $filterExts       = empty($archive->FilterExts)  ? 'not set' : $archive->FilterExts;
+			$filterFiles      = empty($archive->FilterFiles) ? 'not set' : $archive->FilterFiles;
             $filterOn         = ($archive->FilterOn) ? 'ON' : 'OFF';
-            $filterDirsFormat = rtrim(str_replace(';', "\n      ", $filterDirs));
+            $filterDirsFormat  = rtrim(str_replace(';', "\n\t", $filterDirs));
+			$filterFilesFormat = rtrim(str_replace(';', "\n\t", $filterFiles));
             $lastDirSuccess   = self::$compressDir;
 
             //LOAD SCAN REPORT
@@ -54,7 +56,8 @@ class DUP_Zip extends DUP_Archive
             DUP_Log::Info("ARCHIVE DIR:  ".self::$compressDir);
             DUP_Log::Info("ARCHIVE FILE: ".basename(self::$zipPath));
             DUP_Log::Info("FILTERS: *{$filterOn}*");
-            DUP_Log::Info("DIRS: {$filterDirsFormat}");
+            DUP_Log::Info("DIRS:\n\t{$filterDirsFormat}");
+			DUP_Log::Info("FILES:\n\t{$filterFilesFormat}");
             DUP_Log::Info("EXTS:  {$filterExts}");
 
             DUP_Log::Info("----------------------------------------");

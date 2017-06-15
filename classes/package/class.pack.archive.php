@@ -392,7 +392,6 @@ class DUP_Archive
 				$filePath = DUP_Encoding::toUTF8($filePath);
 				$fileName = basename($filePath);
 				$this->FilterInfo->Files->Warning[] = array(
-						'sname'	=> strlen($fileName) > 65 ? substr($fileName, 0, 65) . '....' . $ext : $fileName,
 						'name'	=> $fileName,
 						'dir'	=> pathinfo($filePath, PATHINFO_DIRNAME),
 						'path'	=> $filePath);
@@ -408,7 +407,6 @@ class DUP_Archive
 				$this->FilterInfo->Files->Size[] = array(
 						'ubytes' => $fileSize,
 						'bytes'  => DUP_Util::byteSize($fileSize),
-						'sname'	 => strlen($fileName) > 65 ? substr($fileName, 0, 65) . '....' . $ext : $fileName,
 						'name'	 => $fileName,
 						'dir'	 => pathinfo($filePath, PATHINFO_DIRNAME),
 						'path'	 => $filePath);
