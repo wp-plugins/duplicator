@@ -64,14 +64,14 @@
 	div.hb-files-style div.container {border:1px solid #E0E0E0; border-radius:4px; margin:5px 0 10px 0}
 	div.hb-files-style div.container b {font-weight:bold}
 	div.hb-files-style div.container div.divider {margin-bottom:2px; font-weight:bold}
-	div.hb-files-style div.data {padding:8px; line-height:21px; height:150px; overflow-y:scroll; }
+	div.hb-files-style div.data {padding:8px; line-height:21px; height:175px; overflow-y:scroll; }
 	div.hb-files-style div.hdrs {background:#efefef; padding:0 4px 4px 6px; border-bottom:1px solid #E0E0E0; font-weight:bold}
 	div.hb-files-style div.hdrs sup i.fa {font-size:11px}
 	div.hb-files-style div.hdrs-up-down {float:right;  margin:2px 12px 0 0}
 	div.hb-files-style i.dup-nav-toggle:hover {cursor:pointer; color:#999}
 	div.hb-files-style div.directory {margin-left:12px}
-	div.hb-files-style div.directory i.size {font-size:11px; font-weight:normal; font-style:normal; display:inline-block; min-width:60px}
-	div.hb-files-style div.directory i.count {font-size:11px; font-weight:normal; font-style:normal; display:inline-block; min-width:20px}
+	div.hb-files-style div.directory i.size {font-size:11px;  font-style:normal; display:inline-block; min-width:50px}
+	div.hb-files-style div.directory i.count {font-size:11px; font-style:normal; display:inline-block; min-width:20px}
 	div.hb-files-style div.directory i.empty {width:15px; display:inline-block}
 	div.hb-files-style div.directory i.dup-nav {cursor:pointer}
 	div.hb-files-style div.directory i.fa {width:8px}
@@ -79,7 +79,7 @@
 	div.hb-files-style div.directory label {font-weight:bold; cursor:pointer; vertical-align:top;display:inline-block; width:525px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;}
 	div.hb-files-style div.directory label:hover {color:#025d02}
 	div.hb-files-style div.files {padding:2px 0 0 35px; font-size:12px; display:none; line-height:18px}
-	div.hb-files-style div.files i.size {font-style:normal; display:inline-block; min-width:60px}
+	div.hb-files-style div.files i.size {font-style:normal; display:inline-block; min-width:50px}
 	div.hb-files-style div.files label {font-weight: normal; font-size:11px; vertical-align:top;display:inline-block;width:515px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;}
 	div.hb-files-style div.files label:hover {color:#025d02; cursor: pointer}
 	div.hb-files-style div.apply-btn {text-align:right; margin: 1px 0 10px 0}

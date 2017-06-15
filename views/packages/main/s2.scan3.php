@@ -80,8 +80,8 @@ TOTAL SIZE -->
 						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files", 'duplicator'); ?>" data-tooltip="<?php echo $hlptxt; ?>"></i></sup>
 					</span>
 					<div class='hdrs-up-down'>
-						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'close')"></i>
-						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'open')"></i>
+						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'hide')" title="<?php _e("Hide All", 'duplicator'); ?>"></i>
+						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'show')" title="<?php _e("Show All", 'duplicator'); ?>"></i>
 					</div>
 				</div>
 				<div class="data">
@@ -156,8 +156,8 @@ FILE NAME CHECKS -->
 					<span style="font-weight:bold"><?php _e('Quick Filters', 'duplicator');?></span>
 						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Name Checks", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
 					<div class='hdrs-up-down'>
-						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'close')"></i>
-						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'open')"></i>
+						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'hide')" title="<?php _e("Hide All", 'duplicator'); ?>"></i>
+						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'show')" title="<?php _e("Show All", 'duplicator'); ?>"></i>
 					</div>
 				</div>
 				<div class="data">
@@ -425,9 +425,9 @@ jQuery(document).ready(function($)
 	Duplicator.Pack.toggleAllDirPath = function(item, toggle)
 	{
 		var $dirs  = $(item).parents('div.container').find('div.data div.directory');
-		 (toggle == 'open')
-			? $.each($dirs, function() {$(this).find('div.files').show(100);})
-			: $.each($dirs, function() {$(this).find('div.files').hide(100);});
+		 (toggle == 'hide')
+			? $.each($dirs, function() {$(this).find('div.files').show(); $(this).find('i.dup-nav').trigger('click');})
+			: $.each($dirs, function() {$(this).find('div.files').hide(); $(this).find('i.dup-nav').trigger('click');});
 	}
 
 	Duplicator.Pack.applyFilters = function(btn, type)

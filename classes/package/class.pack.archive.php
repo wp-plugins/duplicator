@@ -406,7 +406,7 @@ class DUP_Archive
 				$ext = pathinfo($filePath, PATHINFO_EXTENSION);
 				$this->FilterInfo->Files->Size[] = array(
 						'ubytes' => $fileSize,
-						'bytes'  => DUP_Util::byteSize($fileSize),
+						'bytes'  => DUP_Util::byteSize($fileSize, 0),
 						'name'	 => $fileName,
 						'dir'	 => pathinfo($filePath, PATHINFO_DIRNAME),
 						'path'	 => $filePath);
@@ -516,7 +516,7 @@ class DUP_Archive
 			}
 
 			$this->FilterInfo->TreeSize[] = array(
-				'size' => DUP_Util::byteSize($sum),
+				'size' => DUP_Util::byteSize($sum, 0),
 				'dir' => $dir,
 				'sdir' => str_replace(DUPLICATOR_WPROOTPATH, '', $dir),
 				'iscore' => $iscore,

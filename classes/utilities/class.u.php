@@ -199,14 +199,14 @@ class DUP_Util
      *
      * @return string The size of bytes readable such as 100KB, 20MB, 1GB etc.
      */
-    public static function byteSize($size)
+    public static function byteSize($size, $roundBy = 2)
     {
         try {
             $units = array('B', 'KB', 'MB', 'GB', 'TB');
             for ($i = 0; $size >= 1024 && $i < 4; $i++) {
                 $size /= 1024;
             }
-            return round($size, 2).$units[$i];
+            return round($size, $roundBy).$units[$i];
         } catch (Exception $e) {
             return "n/a";
         }
