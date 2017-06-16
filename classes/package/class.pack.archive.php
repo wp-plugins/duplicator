@@ -476,7 +476,7 @@ class DUP_Archive
 						$this->Dirs[] = $fullPath;
 					}
 				} else {
-					if ( ! (in_array(pathinfo($file, PATHINFO_EXTENSION) , $this->FilterFilesCore)
+					if ( ! (in_array(pathinfo($file, PATHINFO_EXTENSION), $this->FilterExtsAll)
 						|| in_array($fullPath, $this->FilterFilesCore))) {
 						$this->Files[] = $fullPath;
 					}
