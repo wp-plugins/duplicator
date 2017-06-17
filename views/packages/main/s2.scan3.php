@@ -331,7 +331,7 @@ DIALOGS:
 DIALOG: Scan Results -->
 <div id="dup-archive-details" style="display:none">
 	
-	<!-- PACKATE -->
+	<!-- PACKAGE -->
 	<h2><i class="fa fa-archive"></i> <?php _e('Package', 'duplicator');?></h2>
 	<b><?php _e('Name', 'duplicator');?>:</b> <?php echo $_POST['package-name']; ?><br/>
 	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo strlen($_POST['package-notes']) ? $_POST['package-notes'] : __('- no notes -', 'duplicator') ; ?>
@@ -591,15 +591,11 @@ jQuery(document).ready(function($)
 		var html = templateScript(data);
 		$('#hb-files-utf8-result').html(html);
 
-
 		//SCANNER DETAILS: Dirs
 		var template = $('#hb-filter-file-list').html();
 		var templateScript = Handlebars.compile(template);
 		var html = templateScript(data);
 		$('div.hb-filter-file-list-result').html(html);
-
-
-
 		Duplicator.UI.loadQtip();
 	}
 
