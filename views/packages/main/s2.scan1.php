@@ -15,13 +15,13 @@
 	$mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath();
 	$mysqlcompat_on  = isset($Package->Database->Compatible) && strlen($Package->Database->Compatible);
 	$mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
-	$dbbuild_mode    = ($mysqldump_on) ? 'mysqldump (fast)' : 'PHP (slow)';
+	$dbbuild_mode    = ($mysqldump_on) ? 'mysqldump' : 'PHP';
     $zip_check		 = DUP_Util::getZipPath();
 ?>
 
 <style>
 	/*PROGRESS-BAR - RESULTS - ERROR */
-	form#form-duplicator {text-align:center; max-width:700px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
+	form#form-duplicator {text-align:center; max-width:650px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
 	div.dup-progress-title {font-size:22px; padding:5px 0 20px 0; font-weight:bold}
 	div#dup-msg-success {padding:0 5px 5px 5px; text-align:left}
 	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 15px 0; background:#fff; border-radius:5px; border:1px solid #ddd; }
@@ -58,6 +58,8 @@
 	div#arc-details-dlg table#db-area td:first-child {font-weight:bold;  white-space:nowrap; width:100px}
 	div#arc-details-dlg div.filter-area {height:275px; overflow-y:scroll; border:1px solid #dfdfdf; padding:8px; margin:2px 0}
 	div#arc-details-dlg div.file-info {padding:0 0 10px 15px; width:500px; white-space:nowrap;}
+	div#arc-details-dlg div.file-info i.fa-question-circle { margin-right: 5px;  font-size: 11px;}
+
 	
 	div#arc-paths-dlg textarea.path-dirs,
 		textarea.path-files {font-size:12px; border: 1px solid silver; padding: 10px; background: #fff; margin:5px; height:125px; width:100%; white-space:pre}
@@ -82,11 +84,11 @@
 	div.hb-files-style div.directory i.dup-nav {cursor:pointer}
 	div.hb-files-style div.directory i.fa {width:8px}
 	div.hb-files-style div.directory i.chk-off {width:20px; color:#777; cursor: help; margin:0; font-size:1.25em}
-	div.hb-files-style div.directory label {font-weight:bold; cursor:pointer; vertical-align:top;display:inline-block; width:525px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;}
+	div.hb-files-style div.directory label {font-weight:bold; cursor:pointer; vertical-align:top;display:inline-block; width:475px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;}
 	div.hb-files-style div.directory label:hover {color:#025d02}
 	div.hb-files-style div.files {padding:2px 0 0 35px; font-size:12px; display:none; line-height:18px}
 	div.hb-files-style div.files i.size {font-style:normal; display:inline-block; min-width:50px}
-	div.hb-files-style div.files label {font-weight: normal; font-size:11px; vertical-align:top;display:inline-block;width:515px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;}
+	div.hb-files-style div.files label {font-weight: normal; font-size:11px; vertical-align:top;display:inline-block;width:450px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;}
 	div.hb-files-style div.files label:hover {color:#025d02; cursor: pointer}
 	div.hb-files-style div.apply-btn {text-align:right; margin: 1px 0 10px 0}
 

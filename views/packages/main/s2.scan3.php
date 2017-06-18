@@ -337,7 +337,6 @@ DIALOG: Scan Results -->
 	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo strlen($_POST['package-notes']) ? $_POST['package-notes'] : __('- no notes -', 'duplicator') ; ?>
 	<br/><br/>
 
-
 	<!-- DATABASE -->
 	<h2><i class="fa fa-table"></i> <?php _e('Database', 'duplicator');?></h2>
 	<table id="db-area">
@@ -368,32 +367,32 @@ DIALOG: Scan Results -->
 
 		<script id="hb-filter-file-list" type="text/x-handlebars-template">
 			<div class="file-info">
-				<b><?php _e('Directories', 'duplicator');	?>:</b>
+				<b>[<?php _e('Directories', 'duplicator');	?>]</b>
 				<div class="file-info">
 					{{#if ARC.FilterInfo.Dirs.Instance}}
 						{{#each ARC.FilterInfo.Dirs.Instance as |dir|}}
-							/{{stripWPRoot dir}}/<br/>
+							{{stripWPRoot dir}}/<br/>
 						{{/each}}
 					{{else}}
-						 <?php	_e('No custom directory filters set.', 'duplicator');	?>
+						 <?php	_e('No custom directory filters set.', 'duplicator');?>
 					{{/if}}
 				</div>
 
-				<b><?php _e('Files', 'duplicator');	?>:</b>
+				<b>[<?php _e('Files', 'duplicator');	?>]</b>
 				<div class="file-info">
 					{{#if ARC.FilterInfo.Files.Instance}}
 						{{#each ARC.FilterInfo.Files.Instance as |file|}}
-							/{{stripWPRoot file}}<br/>
+							{{stripWPRoot file}}<br/>
 						{{/each}}
 					{{else}}
-						 <?php	_e('No custom file filters set.', 'duplicator');	?>
+						 <?php	_e('No custom file filters set.', 'duplicator');?>
 					{{/if}}
 				</div>
 
-				<b><?php _e('Smart Filters', 'duplicator');	?>:</b>
+				<b>[<?php _e('Auto Filters', 'duplicator');	?>]</b>
 				<div class="file-info">
 					{{#each ARC.FilterInfo.Dirs.Core as |dir|}}
-						/{{stripWPRoot dir}}/<br/>
+						{{stripWPRoot dir}}/<br/>
 					{{/each}}
 				</div>
 
@@ -412,11 +411,8 @@ DIALOG: Scan Results -->
 	</div>
 
 	<small>
-		<?php
-			_e('All path filters will be skipped during the archive process.  ', 'duplicator');
-			_e('Results are stored in a json file. ', 'duplicator');
-		?>
-		<a href="<?php echo DUPLICATOR_SITE_URL ?>/wp-admin/admin-ajax.php?action=duplicator_package_scan" target="dup_report"><?php _e('[view json report]', 'duplicator');?></a>
+		<?php _e('Path filters will be skipped during the archive process when enabled.', 'duplicator');	?>
+		<a href="<?php echo DUPLICATOR_SITE_URL ?>/wp-admin/admin-ajax.php?action=duplicator_package_scan" target="dup_report"><?php _e('[view json result report]', 'duplicator');?></a>
 	</small><br/>
 </div>
 
@@ -451,7 +447,7 @@ jQuery(document).ready(function($)
 {
 
 	Handlebars.registerHelper('stripWPRoot', function(path) {
-		return  path.replace('<?php echo DUPLICATOR_WPROOTPATH ?>', '');
+		return  path.replace('<?php echo rtrim(DUPLICATOR_WPROOTPATH, "//") ?>', '');
 	});
 
 
@@ -469,6 +465,7 @@ jQuery(document).ready(function($)
 	{
 		$('#arc-details-dlg').html($('#dup-archive-details').html());
 		<?php $alert1->showAlert(); ?>
+		Duplicator.UI.loadQtip();
 		return;
 	}
 	
@@ -596,6 +593,7 @@ jQuery(document).ready(function($)
 		var templateScript = Handlebars.compile(template);
 		var html = templateScript(data);
 		$('div.hb-filter-file-list-result').html(html);
+
 		Duplicator.UI.loadQtip();
 	}
 
