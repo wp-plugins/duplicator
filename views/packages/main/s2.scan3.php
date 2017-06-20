@@ -595,6 +595,10 @@ jQuery(document).ready(function($)
 		$('div.hb-filter-file-list-result').html(html);
 
 		Duplicator.UI.loadQtip();
+		
+		//Auto check the large quick filters directories
+		var $dirChecks  = $("#hb-files-large-result div.directory input[name='dir_paths[]']");
+		$.each($dirChecks, function() {$(this).trigger('click');})
 	}
 
 

@@ -26,8 +26,6 @@ class DUP_Archive
     public $FilterExts;
     public $FilterDirsAll	= array();
 	public $FilterFilesAll	= array();
-	//Excludes files that exist under a directory filter
-	public $FilterFilesCore	= array();
     public $FilterExtsAll	= array();
     public $FilterOn;
 	public $ExportOnlyDB;
@@ -288,16 +286,6 @@ class DUP_Archive
 				}
 			}
 		}
-		
-		//Build Core List of only needed files
-		foreach ($this->FilterFilesAll as $key => $value) {
-			$file_dir = dirname($value);
-			if (! in_array($file_dir, $this->FilterDirsAll)) {
-				$this->FilterFilesCore[] = $value;
-			}
-		}
-		
-		
     }
 
 	/**
@@ -477,7 +465,7 @@ class DUP_Archive
 					}
 				} else {
 					if ( ! (in_array(pathinfo($file, PATHINFO_EXTENSION), $this->FilterExtsAll)
-						|| in_array($fullPath, $this->FilterFilesCore))) {
+						|| in_array($fullPath, $this->FilterFilesAll))) {
 						$this->Files[] = $fullPath;
 					}
 				}
