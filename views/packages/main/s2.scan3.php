@@ -378,6 +378,17 @@ DIALOG: Scan Results -->
 					{{/if}}
 				</div>
 
+				<b>[<?php _e('Extensions', 'duplicator');?>]</b><br/>
+				<div class="file-info">
+					<?php
+						if (strlen( $Package->Archive->FilterExts)) {
+							echo $Package->Archive->FilterExts;
+						} else {
+							_e('No file extension filters have been set.', 'duplicator');
+						}
+					?>
+				</div>
+
 				<b>[<?php _e('Files', 'duplicator');	?>]</b>
 				<div class="file-info">
 					{{#if ARC.FilterInfo.Files.Instance}}
@@ -400,19 +411,14 @@ DIALOG: Scan Results -->
 		</script>
 		<div class="hb-filter-file-list-result"></div>
 
-		<b>[<?php _e('Excluded File Extensions', 'duplicator');?>]</b><br/>
-		<?php
-			if (strlen( $Package->Archive->FilterExts)) {
-				echo $Package->Archive->FilterExts;
-			} else {
-				_e('No file extension filters have been set.', 'duplicator');
-			}
-		?>
+
 	</div>
 
 	<small>
 		<?php _e('Path filters will be skipped during the archive process when enabled.', 'duplicator');	?>
 		<a href="<?php echo DUPLICATOR_SITE_URL ?>/wp-admin/admin-ajax.php?action=duplicator_package_scan" target="dup_report"><?php _e('[view json result report]', 'duplicator');?></a>
+		<br/>
+		<?php _e('Auto filters are applied to prevent archiving other backup sets.', 'duplicator');	?>
 	</small><br/>
 </div>
 
