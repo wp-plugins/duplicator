@@ -100,40 +100,56 @@ class DUPX_WPConfig
 		$wpconfig_path	= "{$root_path}/wp-config.php";
 		$config_file	= @file_get_contents($wpconfig_path, true);
 
-		$mu_newDomain = parse_url($_POST['url_new']);
-		$mu_oldDomain = parse_url($_POST['url_old']);
-		$mu_newDomainHost = $mu_newDomain['host'];
-		$mu_newUrlPath = parse_url($_POST['url_new'], PHP_URL_PATH);
+		$patterns	 = array(
+			"/('|\")WP_HOME.*?\)\s*;/",
+			"/('|\")WP_SITEURL.*?\)\s*;/");
+		$replace	 = array(
+			"'WP_HOME', '{$_POST['url_new']}');",
+			"'WP_SITEURL', '{$_POST['url_new']}');");
 
-		$patterns	 = array("/('|\")WP_HOME.*?\)\s*;/",
-			"/('|\")WP_SITEURL.*?\)\s*;/",
-			"/('|\")DOMAIN_CURRENT_SITE.*?\)\s*;/",
-			"/('|\")PATH_CURRENT_SITE.*?\)\s*;/");
-		$replace	 = array("'WP_HOME', '{$_POST['url_new']}');",
-			"'WP_SITEURL', '{$_POST['url_new']}');",
-			"'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');",
-			"'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
-
-
+		//Not sure how well tokenParser works on all servers so only using for
+	    //not critical constants at this point.
 		$defines = self::tokenParser($wpconfig_path);
 
-		// Tweak WP_CONTENT_DIR and WP_CONTENT_URL
-		if (array_key_exists('WP_CONTENT_DIR', $defines)) {
-			$new_content_dir = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']));
-			array_push($patterns, "/('|\")WP_CONTENT_DIR.*?\)\s*;/");
-			array_push($replace, "'WP_CONTENT_DIR', '{$new_content_dir}');");
+		//WP_CONTENT_DIR
+		if (isset($defines['WP_CONTENT_DIR'])) {
+			$val = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']), $count);
+			if ($count > 0) {
+				array_push($patterns, "/('|\")WP_CONTENT_DIR.*?\)\s*;/");
+				array_push($replace, "'WP_CONTENT_DIR', '{$val}');");
+			}
 		}
 
-		if (array_key_exists('WP_CONTENT_URL', $defines)) {
-			$new_content_url = str_replace($_POST['url_old'], $_POST['url_new'], $defines['WP_CONTENT_URL']);
-			array_push($patterns, "/('|\")WP_CONTENT_URL.*?\)\s*;/");
-			array_push($replace, "'WP_CONTENT_URL', '{$new_content_url}');");
+		//WP_CONTENT_URL
+		if (isset($defines['WP_CONTENT_URL'])) {
+			$val = str_replace($_POST['url_old'], $_POST['url_new'], $defines['WP_CONTENT_URL'], $count);
+			if ($count > 0) {
+				array_push($patterns, "/('|\")WP_CONTENT_URL.*?\)\s*;/");
+				array_push($replace, "'WP_CONTENT_URL', '{$val}');");
+			}
 		}
 
-		if (array_key_exists('WP_TEMP_DIR', $defines)) {
-			$new_content_dir = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']));
-			array_push($patterns, "/('|\")WP_TEMP_DIR.*?\)\s*;/");
-			array_push($replace, "'WP_TEMP_DIR', '{$new_content_dir}/uploads/tmp');");
+		//WP_TEMP_DIR
+		if (isset($defines['WP_TEMP_DIR'])) {
+			$val = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_TEMP_DIR']) , $count);
+			if ($count > 0) {
+				array_push($patterns, "/('|\")WP_TEMP_DIR.*?\)\s*;/");
+				array_push($replace, "'WP_TEMP_DIR', '{$val}');");
+			}
+		}
+		
+		//DOMAIN_CURRENT_SITE
+		if (isset($defines['DOMAIN_CURRENT_SITE'])) {
+			$mu_newDomainHost = parse_url($_POST['url_new'], PHP_URL_HOST);
+			array_push($patterns, "/('|\")DOMAIN_CURRENT_SITE.*?\)\s*;/");
+			array_push($replace, "'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');");
+		}
+
+		//PATH_CURRENT_SITE
+		if (isset($defines['PATH_CURRENT_SITE'])) {
+			$mu_newUrlPath = parse_url($_POST['url_new'], PHP_URL_PATH);
+			array_push($patterns, "/('|\")PATH_CURRENT_SITE.*?\)\s*;/");
+			array_push($replace, "'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
 		}
 		
 		$config_file = preg_replace($patterns, $replace, $config_file);
