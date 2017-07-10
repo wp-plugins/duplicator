@@ -4,15 +4,15 @@
 	$admin_base		= basename($GLOBALS['FW_WPLOGIN_URL']);
 	$admin_redirect = rtrim($_POST['url_new'], "/") . "/wp-admin/admin.php?page=duplicator-tools&tab=cleanup&package={$_POST['archive_name']}";
 	$admin_redirect = urlencode($admin_redirect);
-	$admin_login	= rtrim($_POST['url_new'], '/') . "/{$admin_base}?redirect_to={$admin_redirect}";
+	$admin_url_qry  = (strpos($admin_base, '?') === false) ? '?' : '&';
+	$admin_login	= rtrim($_POST['url_new'], '/') . "/{$admin_base}{$admin_url_qry}redirect_to={$admin_redirect}";
 	$url_new_rtrim  = rtrim($_POST['url_new'], '/');
 
 ?>
 
 <script>
 	/** Posts to page to remove install files */
-	DUPX.getAdminLogin = function()
-    {
+	DUPX.getAdminLogin = function() {
 		window.open('<?php echo $admin_login; ?>', 'wp-admin');
 	};
 </script>
