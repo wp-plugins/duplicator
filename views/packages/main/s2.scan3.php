@@ -91,7 +91,7 @@ TOTAL SIZE -->
 							<div class="directory">
 								<i class="fa fa-caret-right fa-lg dup-nav" onclick="Duplicator.Pack.toggleDirPath(this)"></i> &nbsp;
 								{{#if directory.iscore}}
-									<i class="fa fa-window-close-o  chk-off" title="<?php _e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
+									<i class="fa fa-window-close-o chk-off" title="<?php _e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
 								{{else}}
 									<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="lf_dir_{{@index}}" onclick="Duplicator.Pack.filesOff(this)" />
 								{{/if}}
@@ -174,7 +174,7 @@ FILE NAME CHECKS -->
 								{{/if}}
 										
 								{{#if directory.iscore}}
-									<i class="fa fa-window-close-o  chk-off" title="<?php _e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
+									<i class="fa fa-window-close-o chk-off" title="<?php _e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
 								{{else}}		
 									<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="nc1_dir_{{@index}}" onclick="Duplicator.Pack.filesOff(this)" />
 								{{/if}}
@@ -457,7 +457,7 @@ jQuery(document).ready(function($)
 	});
 
 
-	//Opens a dialog to show scan details
+	//Uncheck file names if directory is checked
 	Duplicator.Pack.filesOff = function (dir)
 	{
 		var $checks = $(dir).parent('div.directory').find('div.files input[type="checkbox"]');
@@ -475,7 +475,7 @@ jQuery(document).ready(function($)
 		return;
 	}
 	
-		//Opens a dialog to show scan details
+	//Opens a dialog to show scan details
 	Duplicator.Pack.showPathsDlg = function (type)
 	{
 		var id = (type == 'large') ? '#hb-files-large-result' : '#hb-files-utf8-result'
@@ -603,8 +603,8 @@ jQuery(document).ready(function($)
 		Duplicator.UI.loadQtip();
 		
 		//Auto check the large quick filters directories
-		var $dirChecks  = $("#hb-files-large-result div.directory input[name='dir_paths[]']");
-		$.each($dirChecks, function() {$(this).trigger('click');})
+		//var $dirChecks  = $("#hb-files-large-result div.directory input[name='dir_paths[]']");
+		//$.each($dirChecks, function() {$(this).trigger('click');})
 	}
 
 
