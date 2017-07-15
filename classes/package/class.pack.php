@@ -119,7 +119,7 @@ class DUP_Package
         $report['ARC']['FilterInfo'] = $this->Archive->FilterInfo;
         $report['ARC']['Status']['Size']  = ($this->Archive->Size > DUPLICATOR_SCAN_SIZE_DEFAULT) ? 'Warn' : 'Good';
         $report['ARC']['Status']['Names'] = (count($this->Archive->FilterInfo->Files->Warning) + count($this->Archive->FilterInfo->Dirs->Warning)) ? 'Warn' : 'Good';
-        $report['ARC']['Status']['Big']   = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
+        //$report['ARC']['Status']['Big']   = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
         $report['ARC']['Dirs']  = $this->Archive->Dirs;
         $report['ARC']['Files'] = $this->Archive->Files;
 
@@ -128,15 +128,15 @@ class DUP_Package
         $db  = $this->Database->getScannerData();
         $report['DB'] = $db;
 
-        $warnings = array($report['SRV']['WEB']['ALL'],
+        $warnings = array(
             $report['SRV']['PHP']['ALL'],
             $report['SRV']['WP']['ALL'],
             $report['ARC']['Status']['Size'],
             $report['ARC']['Status']['Names'],
-            $report['ARC']['Status']['Big'],
-            $db['Status']['Size'],
-            $db['Status']['Rows'],
-            $db['Status']['Case']);
+            //$report['ARC']['Status']['Big'],
+            $db['Status']['DB_Size'],
+            $db['Status']['DB_Rows'],
+            $db['Status']['DB_Case']);
 
         //array_count_values will throw a warning message if it has null values,
         //so lets replace all nulls with empty string

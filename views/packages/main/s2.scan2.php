@@ -1,7 +1,10 @@
 <!-- ================================================================
 SERVER  -->
 <div class="details-title">
-	<i class="fa fa-hdd-o"></i> <?php 	_e("Server", 'duplicator');	?>
+	<i class="fa fa-hdd-o"></i> <?php _e("Server", 'duplicator');	?>
+	<div class="dup-more-details" title="<?php _e('Show Diagnostics', 'duplicator');?>">
+		<a href="?page=duplicator-tools&tab=diagnostics" target="_blank"><i class="fa fa-microchip"></i></a>
+	</div>
 </div>
 
 <!-- ============

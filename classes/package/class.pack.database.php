@@ -149,9 +149,10 @@ class DUP_Database
 
             $info['Size'] += $size;
             $info['Rows'] += ($table["Rows"]);
-            $info['TableList'][$name]['Case'] = preg_match('/[A-Z]/', $name) ? 1 : 0;
-            $info['TableList'][$name]['Rows'] = number_format($rows);
-            $info['TableList'][$name]['Size'] = DUP_Util::byteSize($size);
+            $info['TableList'][$name]['Case']  = preg_match('/[A-Z]/', $name) ? 1 : 0;
+            $info['TableList'][$name]['Rows']  = number_format($rows);
+            $info['TableList'][$name]['Size']  = DUP_Util::byteSize($size);
+			$info['TableList'][$name]['USize'] = $size;
             $tblCount++;
 
             //Table Uppercase
