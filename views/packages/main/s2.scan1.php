@@ -24,7 +24,7 @@
 	form#form-duplicator {text-align:center; max-width:650px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
 	div.dup-progress-title {font-size:22px; padding:5px 0 20px 0; font-weight:bold}
 	div#dup-msg-success {padding:0 5px 5px 5px; text-align:left}
-	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 15px 0; background:#fff; border-radius:5px; border:1px solid #ddd; }
+	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 15px 0; background:#fff; border-radius:5px; border:1px solid #ddd; box-shadow:0 8px 6px -6px #999; }
 	div#dup-msg-success div.details-title {font-size:20px; border-bottom:1px solid #dfdfdf; padding:5px; margin:0 0 10px 0; font-weight:bold}
 	div#dup-msg-success-subtitle {color:#999; margin:0; font-size:11px}
 	div.dup-scan-filter-status {display:inline; float:right; font-size:11px; margin-right:10px; color:#630f0f;}
