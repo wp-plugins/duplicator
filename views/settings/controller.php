@@ -36,7 +36,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
             break;
         case 'storage': include('storage.php');
             break;
-        case 'about': include('about.php');
+        case 'about': include('about-info.php');
             break;
     }
     ?>
