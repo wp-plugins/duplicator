@@ -54,12 +54,12 @@ class DUP_Archive
 
 		$rootPath = DUP_Util::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
 
-		$this->wpCorePaths[] = "{$rootPath}/wp-admin";
-		$this->wpCorePaths[] = WP_CONTENT_DIR . "/uploads";
-		$this->wpCorePaths[] = WP_CONTENT_DIR . "/languages";
-		$this->wpCorePaths[] = WP_PLUGIN_DIR;
-		$this->wpCorePaths[] = get_theme_root();
-		$this->wpCorePaths[] = "{$rootPath}/wp-includes";
+		$this->wpCorePaths[] = DUP_Util::safePath("{$rootPath}/wp-admin");
+		$this->wpCorePaths[] = DUP_Util::safePath(WP_CONTENT_DIR . "/uploads");
+		$this->wpCorePaths[] = DUP_Util::safePath(WP_CONTENT_DIR . "/languages");
+		$this->wpCorePaths[] = DUP_Util::safePath(WP_PLUGIN_DIR);
+		$this->wpCorePaths[] = DUP_Util::safePath(get_theme_root());
+		$this->wpCorePaths[] = DUP_Util::safePath("{$rootPath}/wp-includes");
     }
 
     /**
