@@ -184,7 +184,6 @@ if (is_admin() == true)
             case 'duplicator-tools':	include('views/tools/controller.php');      break;
 			case 'duplicator-debug':	include('debug/main.php');					break;
             case 'duplicator-help':		include('views/help/help.php');				break;
-            case 'duplicator-about':	include('views/help/about.php');			break;
 			case 'duplicator-gopro':	include('views/help/gopro.php');			break;
         }
     }
@@ -226,11 +225,6 @@ if (is_admin() == true)
 		$lang_txt = __('Help', 'duplicator');
         $page_help = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-help', 'duplicator_get_menu');
 
-        $perms = 'manage_options';
-        $perms = apply_filters($wpfront_caps_translator, $perms);
-		$lang_txt = __('About', 'duplicator');
-        $page_about = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-about', 'duplicator_get_menu');
-
 		$perms = 'manage_options';
 		$lang_txt = __('Go Pro!', 'duplicator');
 		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
@@ -253,7 +247,6 @@ if (is_admin() == true)
         add_action('admin_print_scripts-' . $page_settings, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_help, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
-        add_action('admin_print_scripts-' . $page_about, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
 		
         //Apply Styles
@@ -261,7 +254,6 @@ if (is_admin() == true)
         add_action('admin_print_styles-' . $page_settings, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_help, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
-        add_action('admin_print_styles-' . $page_about, 'duplicator_styles');
 		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
 		
     }
@@ -333,8 +325,7 @@ if (is_admin() == true)
         $plugin = plugin_basename(__FILE__);
         // create link
         if ($file == $plugin) {
-            $links[] = '<a href="admin.php?page=duplicator-help" title="' . __('Get Help', 'duplicator') . '" >' . __('Help', 'duplicator') . '</a>';
-            $links[] = '<a href="admin.php?page=duplicator-about" title="' . __('Support the Plugin', 'duplicator') . '">' . __('About', 'duplicator') . '</a>';
+            $links[] = '<a href="admin.php?page=duplicator-gopro" title="' . __('Get Help', 'duplicator') . '" style="">' . __('Go Pro', 'duplicator') . '</a>';
             return $links;
         }
         return $links;

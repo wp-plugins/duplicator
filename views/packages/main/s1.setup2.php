@@ -50,7 +50,7 @@
 <div>
 	<label for="package-name" class="lbl-larger"><b>&nbsp;<?php _e('Name', 'duplicator') ?>:</b> </label>
 	<div class="dup-notes-add">
-		<a href="javascript:void(0)" onclick="jQuery('#dup-notes-area').toggle()" title="<?php _e('Notes', 'duplicator') ?>">
+		<a href="javascript:void(0)" onclick="jQuery('#dup-notes-area').toggle()">
 			[<?php _e('Add Notes', 'duplicator') ?>]
 		</a>
 	</div>

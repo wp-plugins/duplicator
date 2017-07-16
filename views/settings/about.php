@@ -1,8 +1,6 @@
 <?php
-DUP_Util::hasCapability('read');
-
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
-require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
+
 ?>
 <style>
     /*================================================
@@ -46,18 +44,16 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 <div class="wrap dup-wrap dup-support-all">
 	
-    <?php duplicator_header(__("About", 'duplicator')) ?>
-    <hr size="1" />
-
     <div style="width:850px; margin:auto; margin-top: 20px">
         <table style="width:825px">
             <tr>
                 <td style="width:90px">
                     <img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-box.png" style='text-align:top; margin:0'  />
                 </td>
-                <td valign="top" style="padding-top:10px; font-size:14px">
+                <td valign="top" style="padding-top:10px; font-size:18px; line-height: 24px">
                     <?php
-                    _e("Duplicator helps you streamline your workflow and quickly clone a WordPress site. The plugin was made to help you speed up the migration process of moving a WordPress site. Please help us continue development by giving this plugin a 5 star.", 'duplicator');
+                    _e("Duplicator can streamline your workflow and quickly clone/migrate a WordPress site. The plugin helps admins, designers and developers speed up the "
+						. "migration process of moving a WordPress site. Please help us continue development by giving this plugin a 5 star.", 'duplicator');
                     ?>
                 </td>
             </tr>
