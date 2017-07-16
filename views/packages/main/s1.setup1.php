@@ -19,7 +19,6 @@ DUP_Util::initSnapshotDirectory();
 $Package = DUP_Package::getActive();
 $dup_tests = array();
 $dup_tests = DUP_Server::getRequirements();
-$default_name = DUP_Package::getDefaultName();
 
 //View State
 $ctrl_ui = new DUP_CTRL_UI();
@@ -79,8 +78,9 @@ TOOL BAR: STEPS -->
 
 <!-- ============================
 SYSTEM REQUIREMENTS -->
-<div class="dup-box dup-box-fancy">
-    <div class="dup-box-title dup-box-title-fancy">
+<?php if (! $dup_tests['Success']) : ?>
+<div class="dup-box">
+    <div class="dup-box-title">
         <?php
 			_e("Requirements:", 'duplicator');
 			echo ($dup_tests['Success']) ? ' <div class="dup-sys-pass">Pass</div>' : ' <div class="dup-sys-fail">Fail</div>';
@@ -88,7 +88,7 @@ SYSTEM REQUIREMENTS -->
         <div class="dup-box-arrow"></div>
     </div>
 
-    <div class="dup-box-panel" style="<?php echo ($dup_tests['Success']) ? 'display:none' : ''; ?>">
+    <div class="dup-box-panel">
 
         <div class="dup-sys-section">
             <i><?php _e("System requirements must pass for the Duplicator to work properly.  Click each link for details.", 'duplicator'); ?></i>
@@ -214,6 +214,7 @@ SYSTEM REQUIREMENTS -->
 
     </div>
 </div><br/>
+<?php endif; ?>
 
 
 <!-- ============================

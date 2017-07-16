@@ -8,10 +8,11 @@
     form#dup-form-opts textarea, input[type="text"] {width:100%}
     form#dup-form-opts textarea#filter-dirs {height:95px;}
     form#dup-form-opts textarea#filter-exts {height:27px}
-    textarea#package_notes {height:37px;}
+    textarea#package-notes {height:75px;}
 	div.dup-notes-add {float:right; margin:-4px 2px 4px 0;}
     div#dup-notes-area {display:none}
-
+	input#package-name {padding:4px;  font-size: 1.2em;  line-height: 100%; width: 100%;   margin: 0 0 3px;}
+	label.lbl-larger {font-size:1.2em}
     /*ARCHIVE SECTION*/
     form#dup-form-opts div.tabs-panel{max-height:550px; padding:10px; min-height:280px}
     form#dup-form-opts ul li.tabs{font-weight:bold}
@@ -47,14 +48,16 @@
 <form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo $retry_enabled ? '&retry=1' : '';?>" data-validate="parsley">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
 <div>
-	<label for="package-name"><b><?php _e('Name', 'duplicator') ?>:</b> </label>
-		<div class="dup-notes-add">
-		<button class="button button-small" type="button" onclick="jQuery('#dup-notes-area').toggle()" title="<?php _e('Notes', 'duplicator') ?>"><i class="fa fa-pencil-square-o"></i> </button>
+	<label for="package-name" class="lbl-larger"><b>&nbsp;<?php _e('Name', 'duplicator') ?>:</b> </label>
+	<div class="dup-notes-add">
+		<a href="javascript:void(0)" onclick="jQuery('#dup-notes-area').toggle()" title="<?php _e('Notes', 'duplicator') ?>">
+			[<?php _e('Add Notes', 'duplicator') ?>]
+		</a>
 	</div>
-	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Create a new default name', 'duplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
+	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php _e('Toggle a default name', 'duplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
 	<input id="package-name"  name="package-name" type="text" value="<?php echo $Package->Name ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>
 	<div id="dup-notes-area">
-		<label><b><?php _e('Notes', 'duplicator') ?>:</b></label> <br/>
+		<label class="lbl-larger"><b>&nbsp;<?php _e('Notes', 'duplicator') ?>:</b></label> <br/>
 		<textarea id="package-notes" name="package-notes" maxlength="300" /><?php echo $Package->Notes ?></textarea>
 	</div>
 </div>
@@ -425,11 +428,16 @@ THICK-BOX DIALOGS: -->
 	$confirm1->message			= __('This will clear and reset all of the current package settings.  Would you like to continue?', 'duplicator');
 	$confirm1->jscallback		= 'Duplicator.Pack.ResetSettings()';
 	$confirm1->initConfirm();
+
+	$default_name1 = DUP_Package::getDefaultName();
+	$default_name2 = DUP_Package::getDefaultName(false);
+
 ?>
 <script>
 jQuery(document).ready(function ($) 
 {
-	var DUP_NAMEDEFAULT = '<?php echo $default_name ?>';
+	var DUP_NAMEDEFAULT1 = '<?php echo $default_name1 ?>';
+	var DUP_NAMEDEFAULT2 = '<?php echo $default_name2 ?>';
 	var DUP_NAMELAST = $('#package-name').val();
 
 	Duplicator.Pack.ExportOnlyDB = function ()
@@ -508,7 +516,12 @@ jQuery(document).ready(function ($)
 	Duplicator.Pack.ResetName = function () 
 	{
 		var current = $('#package-name').val();
-		$('#package-name').val((current == DUP_NAMELAST) ? DUP_NAMEDEFAULT :DUP_NAMELAST)
+		switch (current) {
+			case DUP_NAMEDEFAULT1 : $('#package-name').val(DUP_NAMELAST); break;
+			case DUP_NAMEDEFAULT2 : $('#package-name').val(DUP_NAMEDEFAULT1); break;
+			case DUP_NAMELAST     : $('#package-name').val(DUP_NAMEDEFAULT2); break;
+			default:	$('#package-name').val(DUP_NAMELAST);
+		}
 	}
 
 	Duplicator.Pack.ExcludeTable = function (check) 

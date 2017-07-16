@@ -485,11 +485,13 @@ class DUP_Package
      *
      *  @return string   A default packagename such as 20170218_blogname
      */
-    public static function getDefaultName()
+    public static function getDefaultName($preDate = true)
     {
         //Remove specail_chars from final result
         $special_chars = array(".", "-");
-        $name          = date('Ymd').'_'.sanitize_title(get_bloginfo('name', 'display'));
+        $name          = ($preDate) 
+							? date('Ymd') . '_' . sanitize_title(get_bloginfo('name', 'display'))
+							: sanitize_title(get_bloginfo('name', 'display')) . '_' . date('Ymd');
         $name          = substr(sanitize_file_name($name), 0, 40);
         $name          = str_replace($special_chars, '', $name);
         return $name;
