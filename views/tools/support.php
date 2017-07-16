@@ -1,9 +1,3 @@
-<?php
-DUP_Util::hasCapability('read');
-
-require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
-require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
-?>
 <style>
     div.dup-support-all {font-size:13px; line-height:20px}
     div.dup-support-txts-links {width:100%;font-size:14px; font-weight:bold; line-height:26px; text-align:center}
@@ -26,9 +20,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 <div class="wrap dup-wrap dup-support-all">
 	
-    <?php duplicator_header(__("Help", 'duplicator')) ?>
-    <hr size="1" />
-
     <div style="width:800px; margin:auto; margin-top: 20px">
         <table>
             <tr>

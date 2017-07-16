@@ -18,6 +18,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'logging';
         <a href="?page=duplicator-tools&tab=logging" class="nav-tab <?php echo ($current_tab == 'logging') ? 'nav-tab-active' : '' ?>"> <?php _e('Logging', 'duplicator'); ?></a>  
         <a href="?page=duplicator-tools&tab=diagnostics" class="nav-tab <?php echo ($current_tab == 'diagnostics') ? 'nav-tab-active' : '' ?>"> <?php _e('Diagnostics', 'duplicator'); ?></a>  
 		<a href="?page=duplicator-tools&tab=cleanup" class="nav-tab <?php echo ($current_tab == 'cleanup') ? 'nav-tab-active' : '' ?>"> <?php _e('Cleanup', 'duplicator'); ?></a>
+		<a href="?page=duplicator-tools&tab=support" class="nav-tab <?php echo ($current_tab == 'support') ? 'nav-tab-active' : '' ?>"> <?php _e('Support', 'duplicator'); ?></a>
     </h2> 	
 
     <?php
@@ -27,6 +28,8 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'logging';
 		case 'diagnostics': include('diagnostics/main.php');
             break;
 		case 'cleanup': include('cleanup.php');
+            break;
+		case 'support': include('support.php');
             break;
     }
     ?>

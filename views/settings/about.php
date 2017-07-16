@@ -1,7 +1,3 @@
-<?php
-require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
-
-?>
 <style>
     /*================================================
     PAGE-SUPPORT:*/

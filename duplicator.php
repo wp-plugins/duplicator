@@ -183,7 +183,6 @@ if (is_admin() == true)
             case 'duplicator-settings': include('views/settings/controller.php');	break;
             case 'duplicator-tools':	include('views/tools/controller.php');      break;
 			case 'duplicator-debug':	include('debug/main.php');					break;
-            case 'duplicator-help':		include('views/help/help.php');				break;
 			case 'duplicator-gopro':	include('views/help/gopro.php');			break;
         }
     }
@@ -220,11 +219,6 @@ if (is_admin() == true)
 		$lang_txt = __('Settings', 'duplicator');
         $page_settings = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-settings', 'duplicator_get_menu');
 
-        $perms = 'manage_options';
-        $perms = apply_filters($wpfront_caps_translator, $perms);
-		$lang_txt = __('Help', 'duplicator');
-        $page_help = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-help', 'duplicator_get_menu');
-
 		$perms = 'manage_options';
 		$lang_txt = __('Go Pro!', 'duplicator');
 		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
@@ -245,14 +239,12 @@ if (is_admin() == true)
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_settings, 'duplicator_scripts');
-        add_action('admin_print_scripts-' . $page_help, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
 		add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
 		
         //Apply Styles
         add_action('admin_print_styles-' . $page_packages, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_settings, 'duplicator_styles');
-        add_action('admin_print_styles-' . $page_help, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
 		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
 		
