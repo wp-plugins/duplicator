@@ -11,7 +11,7 @@
     textarea#package-notes {height:75px;}
 	div.dup-notes-add {float:right; margin:-4px 2px 4px 0;}
     div#dup-notes-area {display:none}
-	input#package-name {padding:4px;  font-size: 1.2em;  line-height: 100%; width: 100%;   margin: 0 0 3px;}
+	input#package-name {padding:4px; height: 2em;  font-size: 1.2em;  line-height: 100%; width: 100%;   margin: 0 0 3px;}
 	label.lbl-larger {font-size:1.2em}
     /*ARCHIVE SECTION*/
     form#dup-form-opts div.tabs-panel{max-height:550px; padding:10px; min-height:280px}
