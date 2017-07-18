@@ -158,7 +158,7 @@
 	/* ======================================
 	STEP 4 VIEW
 	====================================== */
-	div.s4-final-title {color:#BE2323;}
+	div.s4-final-title {color:#BE2323;font-size:18px}
 	div.s4-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
 	table.s4-report-results,
 	table.s4-report-errs {border-collapse:collapse; border:1px solid #dfdfdf; }

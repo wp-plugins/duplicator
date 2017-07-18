@@ -28,7 +28,7 @@ VIEW: STEP 4 - INPUT -->
         Step <span class="step">4</span> of 4: Test
 	</div><br />
 
-	<div class="hdr-sub1">
+	<div class="hdr-sub3">
 		<div class="s4-final-title">Final Steps</div>
 	</div>
 
