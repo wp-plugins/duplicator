@@ -16,7 +16,7 @@
 		?>
 	</div>
 	<p style="text-align:center">
-		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_manual_transfer&utm_campaign=duplicator_pro" target="_blank" class="button button-primary button-large dup-check-it-btn" >
+		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_settings_schedule&utm_campaign=duplicator_pro" target="_blank" class="button button-primary button-large dup-check-it-btn" >
 			<?php _e('Learn More', 'duplicator') ?>
 		</a>
 	</p>

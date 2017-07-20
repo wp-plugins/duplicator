@@ -1,7 +1,17 @@
 <?php
 	$Package = DUP_Package::getActive();
 	$ajax_nonce	= wp_create_nonce('dup_package_build');
-	
+
+    // Allows for auto cycling of message in the future - just add dp_texts[n] and dp_contents[n]
+    $dp_texts = array();
+    $dp_texts[0] = __('Get even more power & features with', 'duplicator');
+    $dp_contents[]  = array();
+    $dp_contents[0] = 'package_build_more_power';
+    $dp_index = rand(0, count($dp_contents) - 1);
+    $dp_text = $dp_texts[$dp_index];
+    $dp_content = $dp_contents[$dp_index];
+    $dp_url = "https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content={$dp_content}&utm_campaign=duplicator_pro";
+
 ?>
 
 <style>
@@ -23,6 +33,7 @@
 	div.dup-button-footer {text-align:right; margin:20px 10px 0px 0px}
 	button.button {font-size:16px !important; height:30px !important; font-weight:bold; padding:0px 10px 5px 10px !important; min-width: 150px }
 	span.dup-btn-size {font-size:11px;font-weight: normal}
+	p.get-pro {font-size:12px; color:#777; border-top:1px solid #eeeeee; padding:5px 0 0 0; margin:0; font-style:italic}
 </style>
 
 <!-- =========================================
@@ -62,7 +73,7 @@ TOOL BAR: STEPS -->
 	</div>
 	
 	<div id="dup-progress-area" class="dup-panel" style="display:none">
-		<div class="dup-panel-title dup-box-title-fancy"><b style="font-size:18px"><?php _e('Build Status', 'duplicator'); ?></b></div>
+		<div class="dup-panel-title"><b style="font-size:22px"><?php _e('Build Status', 'duplicator'); ?></b></div>
 		<div class="dup-panel-panel">
 
 			<!--  =========================
@@ -85,14 +96,17 @@ TOOL BAR: STEPS -->
 					<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
 					<span id="dup-btn-archive-size" class="dup-btn-size"></span>
 				</button>
-				<div style='margin: 7px 0 20px 0'>
+				<div style='margin: 7px 0 20px 0; color:#999'>
 					<small><i><?php _e("click buttons to download", 'duplicator') ?></i></small>
 				</div>
 				<div class="dup-msg-success-links">
 					<?php printf("<a href='?page=duplicator'>[ %s ]</a>", 	__('All Packages', 'duplicator'));?>
 					<?php printf("<a href='?page=duplicator&tab=new1'>[ %s ]</a>", 	__('Create New', 'duplicator'));?>
-				</div><br/>
-				
+				</div>
+				<br/>
+				<p class="get-pro">
+					<?php echo $dp_text ?>&nbsp;<a target="_blank" href="<?php echo $dp_url;?>"><?php _e('Professional', 'duplicator'); ?></a>!
+                </p>
 			</div>
 			
 			<!--  =========================

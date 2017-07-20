@@ -63,7 +63,7 @@ TOTAL SIZE -->
 				echo '<li>' . __('Apply the "Quick Filters" below or click the back button to apply on previous page.', 'duplicator') . '</li>';
 				echo '<li>' . __('See the FAQ link to adjust this hosts timeout limits: ', 'duplicator') . "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>" . __('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
 				echo '<li>' . __('Consider trying multi-threaded support in ', 'duplicator');
-					echo "<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn&utm_campaign=duplicator_pro' target='_blank'>" . __('Duplicator Pro.', 'duplicator') . "</a>";
+				echo "<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=multithreaded_pro&utm_campaign=duplicator_pro' target='_blank'>" . __('Duplicator Pro.', 'duplicator') . "</a>";
 				echo '</li>';
 				echo '</ul>';
 
@@ -123,7 +123,17 @@ TOTAL SIZE -->
 					{{/if}}
 				</div>
 			</div>
-			<div class="apply-btn">
+
+			<?php
+				if ($zip_check != null) {
+					echo '<div style="text-align:center; font-weight:bold; font-style:italic; float:left">&nbsp;';
+					_e('Package support up to 2GB in', 'duplicator');
+					echo '&nbsp;<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Professional', 'duplicator') . '</a>';
+					echo '</div>';
+				}
+			?>
+
+			<div class="apply-btn" style="margin-bottom:5px;float:right">
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'large')">
 					<i class="fa fa-filter"></i> <?php _e('Add Filters &amp; Rescan', 'duplicator');?>
 				</button>
@@ -131,6 +141,9 @@ TOTAL SIZE -->
 					<i class="fa fa-clipboard" aria-hidden="true"></i>
 				</button>
 			</div>
+			<div style="clear:both"></div>
+
+
 		</script>
 		<div id="hb-files-large-result" class="hb-files-style"></div>
 	</div>
@@ -267,7 +280,7 @@ DATABASE -->
 				$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'duplicator') . '</a>';
 				printf(__('1. Run a %1$s on the table to improve the overall size and performance.', 'duplicator'), $lnk);
 				echo '<br/><br/>';
-				_e('2. Remove post vevisions and stale data from tables.  Tables such as logs, statistical or other non-critical data should be cleared.', 'duplicator');
+				_e('2. Remove post revisions and stale data from tables.  Tables such as logs, statistical or other non-critical data should be cleared.', 'duplicator');
 				echo '<br/><br/>';
 				$lnk = '<a href="?page=duplicator-settings&tab=package" target="_blank">' . __('Enable mysqldump', 'duplicator') . '</a>';
 				printf(__('3. %1$s if this host supports the option.', 'duplicator'), $lnk);
