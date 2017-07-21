@@ -147,9 +147,9 @@ VIEW: STEP 3- INPUT -->
 		</table>
 		<br/>
 
-		<input type="checkbox" name="urlextended" id="urlextended" value="1" /> <label for="urlextended">Enable Extended URL Replace <small>(Searches multiple protocols: '//', 'http', 'https')</small></label><br/>
+		<input type="checkbox" name="urlextended" id="urlextended" value="1" checked="true" /> <label for="urlextended">Enable Extended URL Replace</label><br/>
+		<input type="checkbox" name="fullsearch" id="fullsearch" value="1" /> <label for="fullsearch">Enable Full Search </label><br/>
 		<input type="checkbox" name="postguid" id="postguid" value="1" /> <label for="postguid">Keep Post GUID unchanged</label><br/>
-		<input type="checkbox" name="fullsearch" id="fullsearch" value="1" /> <label for="fullsearch">Enable Full Search <small>(slower to process)</small> </label><br/>
 		<br/><br/>
 		
 		<!-- WP-CONFIG -->

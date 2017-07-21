@@ -80,21 +80,33 @@ VIEW: STEP 2- INPUT -->
 	<div id="s2-cpnl-pane">
 		<div class="s2-gopro">
 			<h2>cPanel Connectivity</h2>
-			<div style="text-align: center">
-				<a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step2&utm_campaign=duplicator_pro">Duplicator Pro</a>
-				takes advantage of your hosts <br/>
-				cPanel interface directly <b>from this installer!</b>
+
+			<?php if( DUPX_U::isURLActive($_SERVER['SERVER_NAME'], 2083) ): ?>
+				<div class='s2-cpanel-login'>
+					<b>Login to this servers cPanel</b><br/>
+					<a href="//<?php echo $_SERVER['SERVER_NAME'] ?>:2083" target="cpanel" style="color:#fff">[<?php echo $_SERVER['SERVER_NAME'] ?>:2083]</a>
+				</div>
+			<?php else : ?>
+				<div class='s2-cpanel-off'>
+					<b>This server does not look to support cPanel!</b><br/>
+					Consider <a href="https://snapcreek.com/wordpress-hosting/" target="cpanel" style="color:#fff;font-weight:bold">upgrading</a> to a host that does.<br/>
+				</div>
+			<?php endif; ?>
+
+
+			<div style="text-align: center; font-size: 14px">
+				<a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step2&utm_campaign=duplicator_pro"><b>Duplicator Pro</b></a>
+				takes advantage of your hosts cPanel interface<br/>
+				directly <b>from this installer</b> and includes:
 			</div>
-			<b>Features Include:</b>
 			<ul>
-				<li>Fast cPanel Login</li>
-				<li>Create New Databases</li>
-				<li>Create New Database Users</li>
-				<li>Preview and Select Existing Databases and Users</li>
+				<li>Direct cPanel login</li>
+				<li>Instantly create new databases/users</li>
+				<li>Preview and select existing databases/users</li>
 			</ul>
 			<small>
-				Note: Most hosting providers do not allow applications to create new databases or database users directly from PHP.  However with the cPanel API these restrictions
-				are removed opening up a robust interface for direct access to existing database resources.  You can take advantage of these great features and improve your work-flow with
+				Note: Most hosting providers do not allow applications to create new databases or users directly.  With cPanel these restrictions
+				are removed opening up a robust interface for direct access to existing resources.  You can take advantage of these great features and improve your work-flow with
 				<a target="_blank" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_install_step2&utm_campaign=duplicator_pro">Duplicator Pro!</a>
 			</small>
 		</div>

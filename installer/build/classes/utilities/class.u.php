@@ -16,7 +16,7 @@ class DUPX_U
      *
      * @param string $path		A path
      *
-     * @return string The orginal $path with a with '/' added to the end.
+     * @return string The original $path with a with '/' added to the end.
      */
     public static function addSlash($path)
     {
@@ -64,7 +64,7 @@ class DUPX_U
      *  Returns 256 spaces
      *
      *  PHP_SAPI for fcgi requires a data flush of at least 256
-     *  bytes every 40 seconds or else it forces a script hault
+     *  bytes every 40 seconds or else it forces a script halt
      *
      * @return string A series of 256 spaces ' '
      */
@@ -107,7 +107,7 @@ class DUPX_U
     }
 
     /**
-     *  Check to see if the internet is accessable
+     *  Check to see if the internet is accessible
      *
      *  Note: fsocketopen on windows doesn't seem to honor $timeout setting.
      *
@@ -146,11 +146,11 @@ class DUPX_U
 
 
 	/**
-     * Is the string json
+     * Is the string JSON
      *
      * @param string $string Any string blob
      *
-     * @return bool Returns true if the string is json encoded
+     * @return bool Returns true if the string is JSON encoded
      */
     public static function isJSON($string)
     {
