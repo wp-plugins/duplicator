@@ -16,7 +16,7 @@ WordPress migration and backups are much easier with Duplicator! Clone, backup, 
 For complete details visit [snapcreek.com](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=desc_details&utm_campaign=duplicator_free).  
 
 = Quick Video Demo =
-http://www.youtube.com/watch?v=yZ7pHmR9JC8
+http://www.youtube.com/watch?v=oc73jtvHWYQ
 
 = Overview =
 Duplicator enables you to:
