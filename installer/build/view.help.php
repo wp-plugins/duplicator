@@ -395,7 +395,7 @@ STEP 3
 		<tr>
 			<td>Config SSL</td>
 			<td>Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Enforce on Login"
-				will turn off SSL support for WordPress Logins. This sets FORCE_SSL_LOGIN in your wp-config file to false if true, otherwise it will create the setting if not set.</td>
+				will turn off SSL support for WordPress Logins. </td>
 		</tr>
 		<tr>
 			<td>Config Cache</td>

@@ -3,7 +3,6 @@
 $_POST['dbaction']			= isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
 $_POST['dbnbsp']			= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
 $_POST['ssl_admin']			= (isset($_POST['ssl_admin']))  ? true : false;
-$_POST['ssl_login']			= (isset($_POST['ssl_login']))  ? true : false;
 $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
 $_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
 $_POST['archive_name']		= isset($_POST['archive_name']) ? $_POST['archive_name'] : null;

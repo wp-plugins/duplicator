@@ -163,7 +163,7 @@ VIEW: STEP 3- INPUT -->
 			<tr>
 				<td>SSL:</td>
 				<td><input type="checkbox" name="ssl_admin" id="ssl_admin" <?php echo ($GLOBALS['FW_SSL_ADMIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_admin">Enforce on Admin</label></td>
-				<td><input type="checkbox" name="ssl_login" id="ssl_login" <?php echo ($GLOBALS['FW_SSL_LOGIN']) ? "checked='checked'" : ""; ?> /> <label for="ssl_login">Enforce on Login</label></td>
+				<td></td>
 			</tr>
 		</table>
 		<br/><br/><br/>

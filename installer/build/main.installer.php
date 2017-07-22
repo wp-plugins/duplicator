@@ -95,7 +95,6 @@ $GLOBALS['FW_DBNAME']			= '%fwrite_dbname%';
 $GLOBALS['FW_DBUSER']			= '%fwrite_dbuser%';
 $GLOBALS['FW_DBPASS']			= '%fwrite_dbpass%';
 $GLOBALS['FW_SSL_ADMIN']		= '%fwrite_ssl_admin%';
-$GLOBALS['FW_SSL_LOGIN']		= '%fwrite_ssl_login%';
 $GLOBALS['FW_CACHE_WP']			= '%fwrite_cache_wp%';
 $GLOBALS['FW_CACHE_PATH']		= '%fwrite_cache_path%';
 $GLOBALS['FW_BLOGNAME']			= '%fwrite_blogname%';

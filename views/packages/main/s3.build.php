@@ -98,7 +98,7 @@ TOOL BAR: STEPS -->
 					<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
 					<span id="dup-btn-archive-size" class="dup-btn-size"></span>
 				</button>
-				<div style='margin: 7px 0 20px 0; color:#999'>
+				<div style='margin: 7px 0 40px 0; color:#999'>
 					<small><i><?php _e("click buttons to download", 'duplicator') ?></i></small>
 				</div>
 				<div class="dup-msg-success-links">

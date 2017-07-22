@@ -163,7 +163,6 @@ class DUP_Installer
             "fwrite_dbuser" => $this->Package->Installer->OptsDBUser,
             "fwrite_dbpass" => '',
             "fwrite_ssl_admin" => $this->Package->Installer->OptsSSLAdmin,
-            "fwrite_ssl_login" => $this->Package->Installer->OptsSSLLogin,
             "fwrite_cache_wp" => $this->Package->Installer->OptsCacheWP,
             "fwrite_cache_path" => $this->Package->Installer->OptsCachePath,
             "fwrite_wp_tableprefix" => $wpdb->prefix,

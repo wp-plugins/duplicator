@@ -48,15 +48,6 @@ class DUPX_WPConfig
 			array_push($replace, "'FORCE_SSL_ADMIN', false");
 		}
 
-		if ($_POST['ssl_login']) {
-			if (!strstr($wpconfig, 'FORCE_SSL_LOGIN')) {
-				$wpconfig = $wpconfig.PHP_EOL."define('FORCE_SSL_LOGIN', true);";
-			}
-		} else {
-			array_push($patterns, "/'FORCE_SSL_LOGIN',\s*true/");
-			array_push($replace, "'FORCE_SSL_LOGIN', false");
-		}
-
 		//CACHE CHECKS
 		if ($_POST['cache_wp']) {
 			if (!strstr($wpconfig, 'WP_CACHE')) {
