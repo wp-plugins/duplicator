@@ -192,7 +192,7 @@ class DUPX_U
      *
      * @param $val Memory size shorthand notation string such as 10M, 1G
      *
-     * @returns int The byte representation of the shortand $val
+     * @returns int The byte representation of the shorthand $val
      */
     public static function getBytes($val)
     {
@@ -217,12 +217,12 @@ class DUPX_U
      *  Makes path safe for any OS for PHP
      *
      *  Paths should ALWAYS READ be "/"
-     * 		uni:  /home/path/file.xt
+     * 		uni:  /home/path/file.txt
      * 		win:  D:/home/path/file.txt
      *
      *  @param string $path		The path to make safe
      *
-     *  @return string The orginal $path with a with all slashes facing '/'.
+     *  @return string The original $path with a with all slashes facing '/'.
      */
     public static function setSafePath($path)
     {
@@ -235,7 +235,7 @@ class DUPX_U
      *  @param array  $list		An array of strings to search for
      *  @param string $haystack	The string blob to search through
      *
-     *  @return array An array of strings from the $list array fround in the $haystack
+     *  @return array An array of strings from the $list array found in the $haystack
      */
     public static function getListValues($list, $haystack)
     {
@@ -249,12 +249,12 @@ class DUPX_U
     }
 
     /**
-     *  Makes path unsafe for any OS for PHP used primarly to show default
-     *  Winodws OS path standard
+     *  Makes path unsafe for any OS for PHP used primarily to show default
+     *  Windows OS path standard
      *
      *  @param string $path		The path to make unsafe
      *
-     *  @return string The orginal $path with a with all slashes facing '\'.
+     *  @return string The original $path with a with all slashes facing '\'.
      */
     public static function unsetSafePath($path)
     {

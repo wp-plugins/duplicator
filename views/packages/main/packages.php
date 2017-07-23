@@ -9,7 +9,7 @@
 ?>
 
 <style>
-	div#dup-list-alert-nodata {padding:50px 20px;text-align:center; font-size:20px; line-height:26px}
+	div#dup-list-alert-nodata {padding:70px 20px;text-align:center; font-size:20px; line-height:26px}
 	div.dup-notice-msg {border:1px solid silver; padding: 10px; border-radius: 5px; width: 550px; 
 		margin:40px auto 0px auto; font-size:12px; text-align: left; word-break:normal;
 		background: #fefcea; 
@@ -19,6 +19,7 @@
 	}
 	input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
 	button.dup-button-selected {border:1px solid #000 !important; background-color:#dfdfdf !important;}
+	div.dup-quick-start {font-style:italic; font-size: 13px; line-height: 18px; margin-top: 15px}
 	
 	/* Table package details */
 	table.dup-pack-table {word-break:break-all;}
@@ -79,7 +80,12 @@ TOOL-BAR -->
 				<div id='dup-list-alert-nodata'>
 					<i class="fa fa-archive"></i> 
 					<?php _e("No Packages Found.", 'duplicator'); ?><br/>
-					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?>
+					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
+					<div class="dup-quick-start">
+						<?php _e("New to Duplicator?", 'duplicator'); ?><br/>
+						<a href="https://snapcreek.com/duplicator/docs/quick-start/" target="_blank"><?php _e("Check out the 'Quick Start' guide!", 'duplicator'); ?></a>
+					</div>
+					
 					<div style="height:75px">&nbsp;</div>
 				</div>
 				</td>

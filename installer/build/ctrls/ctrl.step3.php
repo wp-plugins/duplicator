@@ -293,7 +293,7 @@ DUPX_Log::info("- Created file ". DUPLICATOR_SSDIR_NAME . '/index.php');
 DUPX_Log::info("\n====================================");
 DUPX_Log::info("NOTICES");
 DUPX_Log::info("====================================\n");
-$config_vars = array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
+$config_vars = array('WPCACHEHOME', 'COOKIE_DOMAIN', 'WP_SITEURL', 'WP_HOME', 'WP_TEMP_DIR');
 $config_found = DUPX_U::getListValues($config_vars, $config_file);
 
 //Config File:
