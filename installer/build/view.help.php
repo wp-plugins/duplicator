@@ -370,24 +370,23 @@ STEP 3
 			<td>These plug-ins are the plug-ins that were activated when the package was created and represent the plug-ins that will be activated after the install.</td>
 		</tr>
 		<tr>
-			<td>Extended URL<br/>Replace</td>
+			<td>Protocol Relative<br/> URL Replace</td>
 			<td>
-				As part of the search and replace process, Step 3 will look at every cell in the database and replace the 'Old URL' with the 'New URL'.  This process is an <u>exact</u>
-				match replace routine.  So if you have URLs in your site that consist of a mix of 'http', 'https' or '//' protocol relative URLs the search will only pick up the one.
-				To enable the search across all protocol types check this checkbox.
+				As part of the search and replace process, this option will look at every cell in the database and replace the 'Old URL' with the 'New URL'.  This process is an 
+				<u>protocol relative</u> search which uses only '//' as its starting point for the search.  
 				<br/><br/>
-				In most cases this check is not needed.  However if you find that some links did not get updated or you know your site is inter-mixed with multiple URL types then this
-				option should be checked.
+				To force the search to use only 'http://' and 'https://' as the	starting search match then un-check this box.  If you find that some links did not get updated
+				correctly then try to un-check this box and run the stiller over again from step 1.
 			</td>
-		</tr>
-		<tr>
-			<td>Post GUID</td>
-			<td>If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.</td>
 		</tr>
 		<tr>
 			<td>Full Search</td>
 			<td>Full search forces a scan of every single cell in the database. If it is not checked then only text based columns are searched which makes the update process much faster.
 			Use this option if you have issues with data not updating correctly.</td>
+		</tr>
+		<tr>
+			<td>Post GUID</td>
+			<td>If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.</td>
 		</tr>
 		<tr>
 			<td colspan="2" class="section">WP-Config File</td>
