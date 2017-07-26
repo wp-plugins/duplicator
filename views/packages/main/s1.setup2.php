@@ -351,51 +351,8 @@ INSTALLER -->
                 <td><?php _e("User", 'duplicator') ?></td>
                 <td><input type="text" name="dbuser" id="dbuser" value="<?php echo $Package->Installer->OptsDBUser ?>"  maxlength="100" placeholder="<?php _e('example: DatabaseUserName (value is optional)', 'duplicator'); ?>" /></td>
             </tr>
-            <!--tr>
-                <td colspan="2"><div class="dup-installer-header-2"><?php _e("Advanced Options", 'duplicator') ?></div></td>
-            </tr>						
-            <tr>
-                <td colspan="2">
-                    <table>
-                        <tr>
-                            <td style="width:130px"><?php _e("SSL", 'duplicator') ?></td>
-                            <td style="padding-right:20px; white-space:nowrap">
-                                <input type="checkbox" name="ssl-admin" id="ssl-admin" <?php echo ($Package->Installer->OptsSSLAdmin) ? "checked='checked'" :""; ?>  />
-                                <label class="chk-labels" for="ssl-admin"><?php _e("Enforce on Admin", 'duplicator') ?></label>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="ssl-login" id="ssl-login" <?php echo ($Package->Installer->OptsSSLLogin) ? "checked='checked'" :""; ?>  />
-                                <label class="chk-labels" for="ssl-login"><?php _e("Enforce on Logins", 'duplicator') ?></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><?php _e("Cache", 'duplicator') ?></td>									
-                            <td style="padding-right:20px; white-space:nowrap">
-                                <input type="checkbox" name="cache-wp" id="cache-wp" <?php echo ($Package->Installer->OptsCacheWP) ? "checked='checked'" :""; ?>  />
-                                <label class="chk-labels" for="cache-wp"><?php _e("Keep Enabled", 'duplicator') ?></label>	
-                            </td>
-                            <td>
-                                <input type="checkbox" name="cache-path" id="cache-path" <?php echo ($Package->Installer->OptsCachePath) ? "checked='checked'" :""; ?>  />
-                                <label class="chk-labels" for="cache-path"><?php _e("Keep Home Path", 'duplicator') ?></label>			
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr-->
         </table><br />
 
-        
-
-         <input type="hidden" name="url-new" id="url-new" value=""/>
-
-         
-        <!--table class="dup-installer-tbl">
-            <tr>
-                <td style="width:130px"><?php _e("New URL", 'duplicator') ?></td>
-                <td><input type="text" name="url-new" id="url-new" value="<?php echo $Package->Installer->OptsURLNew ?>" placeholder="http://mynewsite.com" /></td>
-            </tr>
-        </table-->
-		
 		<div style="padding:10px 0 0 12px;">
 			<span class="dup-pro-text">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />

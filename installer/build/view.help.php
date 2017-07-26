@@ -390,7 +390,7 @@ STEP 3
 		</tr>
 		<tr>
 			<td colspan="2" class="section">WP-Config File</td>
-		</td>
+		</tr>
 		<tr>
 			<td>Config SSL</td>
 			<td>Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Enforce on Login"

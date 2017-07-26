@@ -25,7 +25,7 @@ DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 $_POST['blogname']		= mysqli_real_escape_string($dbh, $_POST['blogname']);
 $_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
 $_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
-$_POST['urlrelative']		= isset($_POST['urlrelative']) && $_POST['urlrelative'] == 1 ? 1 : 0;
+$_POST['urlrelative']	= isset($_POST['urlrelative']) && $_POST['urlrelative'] == 1 ? 1 : 0;
 $_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
 $_POST['path_new']		= isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
 $_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;

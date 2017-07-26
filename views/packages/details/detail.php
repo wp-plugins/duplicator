@@ -326,10 +326,6 @@ INSTALLER -->
 			<td><?php _e('User', 'duplicator') ?>:</td>
 			<td><?php echo strlen($package->Installer->OptsDBUser) ? $package->Installer->OptsDBUser : __('- not set -', 'duplicator') ?></td>
 		</tr>	
-		<tr>
-			<td><?php _e('New URL', 'duplicator') ?>:</td>
-			<td><?php echo strlen($package->Installer->OptsURLNew) ? $package->Installer->OptsURLNew : __('- not set -', 'duplicator') ?></td>
-		</tr>
 	</table>
 </div>
 </div>
