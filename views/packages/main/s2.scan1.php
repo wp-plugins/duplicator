@@ -58,7 +58,7 @@
 	div.hb-files-style div.container b {font-weight:bold}
 	div.hb-files-style div.container div.divider {margin-bottom:2px; font-weight:bold}
 	div.hb-files-style div.data {padding:8px; line-height:21px; height:175px; overflow-y:scroll; }
-	div.hb-files-style div.hdrs {background:#efefef; padding:0 4px 4px 6px; border-bottom:1px solid #E0E0E0; font-weight:bold}
+	div.hb-files-style div.hdrs {padding:0 4px 4px 6px; border-bottom:1px solid #E0E0E0; font-weight:bold}
 	div.hb-files-style div.hdrs sup i.fa {font-size:11px}
 	div.hb-files-style div.hdrs-up-down {float:right;  margin:2px 12px 0 0}
 	div.hb-files-style i.dup-nav-toggle:hover {cursor:pointer; color:#999}
