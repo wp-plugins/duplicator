@@ -133,10 +133,8 @@ class DUP_Package
             $report['SRV']['WP']['ALL'],
             $report['ARC']['Status']['Size'],
             $report['ARC']['Status']['Names'],
-            //$report['ARC']['Status']['Big'],
             $db['Status']['DB_Size'],
-            $db['Status']['DB_Rows'],
-            $db['Status']['DB_Case']);
+            $db['Status']['DB_Rows']);
 
         //array_count_values will throw a warning message if it has null values,
         //so lets replace all nulls with empty string
@@ -145,9 +143,10 @@ class DUP_Package
                 $warnings[$i] = '';
             }
         }
+		
         $warn_counts               = is_array($warnings) ? array_count_values($warnings) : 0;
-        $report['RPT']['Warnings'] = $warn_counts['Warn'];
-        $report['RPT']['Success']  = $warn_counts['Good'];
+        $report['RPT']['Warnings'] = is_null($warn_counts['Warn']) ? 0 : $warn_counts['Warn'];
+        $report['RPT']['Success']  = is_null($warn_counts['Good']) ? 0 : $warn_counts['Good'];
         $report['RPT']['ScanTime'] = DUP_Util::elapsedTime(DUP_Util::getMicrotime(), $timerStart);
         $fp                        = fopen(DUPLICATOR_SSDIR_PATH_TMP."/{$this->ScanFile}", 'w');
 
@@ -161,7 +160,7 @@ class DUP_Package
     /**
      * Starts the package build process
      *
-     * @return obj Retuns a DUP_Package object
+     * @return obj Returns a DUP_Package object
      */
     public function runBuild()
     {
