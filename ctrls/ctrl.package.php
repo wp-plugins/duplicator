@@ -7,9 +7,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/package/class.pack.php');
 
 /**
  *  DUPLICATOR_PACKAGE_SCAN
- *  Returns a json scan report object which contains data about the system
+ *  Returns a JSON scan report object which contains data about the system
  *  
- *  @return json   json report object
+ *  @return json   JSON report object
  *  @example	   to test: /wp-admin/admin-ajax.php?action=duplicator_package_scan
  */
 function duplicator_package_scan() {
@@ -37,7 +37,7 @@ function duplicator_package_scan() {
  *  duplicator_package_build
  *  Returns the package result status
  *  
- *  @return json   json object of package results
+ *  @return json   JSON object of package results
  */
 function duplicator_package_build() {
 	
@@ -69,7 +69,10 @@ function duplicator_package_build() {
 	$json['ExeSize']  = $Package->ExeSize;
 	$json['ZipSize']  = $Package->ZipSize;
 	$json_response = json_encode($json);
-	
+
+	//Generate Host Build Interrupt
+	//die(0);
+
 	error_reporting($errLevel);
     die($json_response);
 }
@@ -78,7 +81,7 @@ function duplicator_package_build() {
  *  DUPLICATOR_PACKAGE_DELETE
  *  Deletes the files and database record entries
  *
- *  @return json   A json message about the action.  
+ *  @return json   A JSON message about the action.
  *				   Use console.log to debug from client
  */
 function duplicator_package_delete() {
@@ -149,7 +152,7 @@ function duplicator_package_delete() {
 
 /**
  * Controller for Tools
- * @package Dupicator\ctrls
+ * @package Duplicator\ctrls
  */
 class DUP_CTRL_Package extends DUP_CTRL_Base
 {
@@ -165,9 +168,9 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 	/**
      * Removed all reserved installer files names
 	 *
-	 * @param string $_POST['dir_paths']		A semi-colon seperated list of dir paths
+	 * @param string $_POST['dir_paths']		A semi-colon separated list of directory paths
 	 *
-	 * @return string	Returns all of the active directory filters as a ";" seperated string
+	 * @return string	Returns all of the active directory filters as a ";" separated string
      */
 	public function addQuickFilters($post)
 	{

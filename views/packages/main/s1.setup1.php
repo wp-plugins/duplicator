@@ -31,6 +31,7 @@ $ui_css_installer	= (isset($data->payload['dup-pack-installer-panel']) && $data-
 $dup_intaller_files = implode(", ", array_keys(DUP_Server::getInstallerFiles()));
 $dbbuild_mode		= (DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath()) ? 'mysqldump' : 'PHP';
 $retry_enabled		= isset($_GET['retry']) ? true : false;
+$retry_dbenabled	= isset($_GET['retry']) && $_GET['retry'] == 2 ? true : false;
 
 ?>
 

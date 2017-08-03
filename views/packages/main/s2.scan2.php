@@ -39,7 +39,7 @@ PHP SETTINGS -->
 		_e('Timeouts may occur for larger packages when [max_execution_time] time in the php.ini is too low.  A value of 0 (recommended) indicates that PHP has no time limits. '
 			. 'An attempt is made to override this value if the server allows it.', 'duplicator');
 		echo '<br/><br/>';
-		_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build interrupt messages, then your web server could be killing '
+		_e('Note: Timeouts can also be set at the web server layer, so if the PHP max timeout passes and you still see a build timeout messages, then your web server could be killing '
 			. 'the process.   If you are on a budget host and limited on processing time, consider using the database or file filters to shrink the size of your overall package.   '
 			. 'However use caution as excluding the wrong resources can cause your install to not work properly.', 'duplicator');
 		echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . __('details', 'duplicator')  . "]</a></i>";

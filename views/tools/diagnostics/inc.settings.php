@@ -140,7 +140,7 @@ SERVER SETTINGS -->
 				?>
 				<i class="fa fa-question-circle data-size-help"
 					data-tooltip-title="<?php _e("Max Execution Time", 'duplicator'); ?>"
-					data-tooltip="<?php _e('If the value shows dynamic then this means its possible for PHP to run longer than the defailt.  '
+					data-tooltip="<?php _e('If the value shows dynamic then this means its possible for PHP to run longer than the default.  '
 						. 'If the value is fixed then PHP will not be allowed to run longer than the default.', 'duplicator'); ?>"></i>
 			</td>
 		</tr>
