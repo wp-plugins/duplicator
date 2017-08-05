@@ -147,7 +147,6 @@ VIEW: STEP 3- INPUT -->
 		</table>
 		<br/>
 
-		<input type="checkbox" name="urlrelative" id="urlrelative" value="1" checked="true" /> <label for="urlrelative">Use Protocol Relative URL Replace</label><br/>
 		<input type="checkbox" name="fullsearch" id="fullsearch" value="1" /> <label for="fullsearch">Use Database Full Search Mode </label><br/>
 		<input type="checkbox" name="postguid" id="postguid" value="1" /> <label for="postguid">Keep Post GUID Unchanged</label><br/>
 		<br/><br/>

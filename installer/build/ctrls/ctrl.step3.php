@@ -25,7 +25,6 @@ DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 $_POST['blogname']		= mysqli_real_escape_string($dbh, $_POST['blogname']);
 $_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
 $_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
-$_POST['urlrelative']	= isset($_POST['urlrelative']) && $_POST['urlrelative'] == 1 ? 1 : 0;
 $_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
 $_POST['path_new']		= isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
 $_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
@@ -107,56 +106,51 @@ array_push($GLOBALS['REPLACE_LIST'],
 	array('search' => rtrim(DUPX_U::unsetSafePath($_POST['path_old']), '\\'), 'replace' => rtrim($_POST['path_new'], '/'))
 );
 
-//SEARCH WITH NO PROTOCAL: RAW "//"
-if ($_POST['urlrelative']) {
 
-	$url_old_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_old']);
-	$url_new_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_new']);
-	$url_old_raw_json = str_replace('"',  "", json_encode($url_old_raw));
-	$url_new_raw_json = str_replace('"',  "", json_encode($url_new_raw));
-
-	array_push($GLOBALS['REPLACE_LIST'],
-		//RAW
-		array('search' => $url_old_raw,			 	'replace' => $url_new_raw),
-		array('search' => $url_old_raw_json,		'replace' => $url_new_raw_json),
-		array('search' => urlencode($url_old_raw), 	'replace' => urlencode($url_new_raw))
-	 );
-
+//URL PATHS
 //SEARCH ONLY HTTP(S)
+array_push($GLOBALS['REPLACE_LIST'],
+	array('search' => $_POST['url_old'],			 'replace' => $_POST['url_new']),
+	array('search' => $url_old_json,				 'replace' => $url_new_json),
+	array('search' => urlencode($_POST['url_old']),  'replace' => urlencode($_POST['url_new']))
+);
+
+//INVERSE: Apply a search for the inverse of the orginal http vs https
+if (stristr($_POST['url_old'], 'http:')) {
+	//Search for https urls
+	$url_old_diff = str_ireplace('http:', 'https:', $_POST['url_old']);
+	$url_new_diff = str_ireplace('http:', 'https:', $_POST['url_new']);
+	$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
+	$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
+
 } else {
-
-	//URL PATHS
-	array_push($GLOBALS['REPLACE_LIST'],
-		array('search' => $_POST['url_old'],			 'replace' => $_POST['url_new']),
-		array('search' => $url_old_json,				 'replace' => $url_new_json),
-		array('search' => urlencode($_POST['url_old']),  'replace' => urlencode($_POST['url_new']))
-	);
-
-	//INVERSE: Apply a search for the inverse of the orginal http vs https
-	if (stristr($_POST['url_old'], 'http:')) {
-		//Search for https urls
-		$url_old_diff = str_ireplace('http:', 'https:', $_POST['url_old']);
-		$url_new_diff = str_ireplace('http:', 'https:', $_POST['url_new']);
-		$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
-		$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
-
-	} else {
-		//Search for http urls
-		$url_old_diff = str_ireplace('https:', 'http:', $_POST['url_old']);
-		$url_new_diff = str_ireplace('https:', 'http:', $_POST['url_new']);
-		$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
-		$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
-	}
-
-	array_push($GLOBALS['REPLACE_LIST'],
-		//INVERSE
-		array('search' => $url_old_diff,			 	 'replace' => $url_new_diff),
-		array('search' => $url_old_diff_json,			 'replace' => $url_new_diff_json),
-		array('search' => urlencode($url_old_diff),  	 'replace' => urlencode($url_new_diff))
-	);
-
-
+	//Search for http urls
+	$url_old_diff = str_ireplace('https:', 'http:', $_POST['url_old']);
+	$url_new_diff = str_ireplace('https:', 'http:', $_POST['url_new']);
+	$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
+	$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
 }
+
+array_push($GLOBALS['REPLACE_LIST'],
+	//INVERSE
+	array('search' => $url_old_diff,			 	 'replace' => $url_new_diff),
+	array('search' => $url_old_diff_json,			 'replace' => $url_new_diff_json),
+	array('search' => urlencode($url_old_diff),  	 'replace' => urlencode($url_new_diff))
+);
+
+
+//SEARCH WITH NO PROTOCAL: RAW "//"
+$url_old_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_old']);
+$url_new_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_new']);
+$url_old_raw_json = str_replace('"',  "", json_encode($url_old_raw));
+$url_new_raw_json = str_replace('"',  "", json_encode($url_new_raw));
+
+array_push($GLOBALS['REPLACE_LIST'],
+	//RAW
+	array('search' => $url_old_raw,			 	'replace' => $url_new_raw),
+	array('search' => $url_old_raw_json,		'replace' => $url_new_raw_json),
+	array('search' => urlencode($url_old_raw), 	'replace' => urlencode($url_new_raw))
+ );
 
 
 //Remove trailing slashes

@@ -121,7 +121,7 @@ TOOL BAR: STEPS -->
 		ERROR MESSAGE -->
 		<div id="dup-msg-error" style="display:none; color:#000">
 			<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Host Build Interrupt', 'duplicator'); ?></div>
-			<b><?php _e('This server cannot complete the build due to configuration constraints.', 'duplicator'); ?></b><br/>
+			<b><?php _e('This server cannot complete the build due to setup constraints.', 'duplicator'); ?></b><br/>
 			<i><?php _e("To help get you past this hosts limitation consider these options:", 'duplicator'); ?></i>
 			<br/><br/><br/>
 
@@ -146,36 +146,49 @@ TOOL BAR: STEPS -->
 						<?php printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s',
 							__('Build Folder:'),
 								DUPLICATOR_SSDIR_PATH_TMP,
-							__("On some servers the build will continue to run in the background. To validate if a build is still running; open the 'tmp' "
-								. "folder above and see if the archive file is growing in size. If it is not then your server has strict timeout constraints.", 'duplicator')
+							__("On some servers the build will continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see "
+							. "if the archive file is growing in size or check the main packages screen to see if the package completed. If it is not then your server "
+							. "has strict timeout constraints.", 'duplicator')
 							);
 						?> 
 					</div>
 				</div>
 			</div>
 
-			<!-- OPTION 2: DB ONLY OPTION -->
+			<!-- OPTION 2: 2-Part Install -->
 			<div class="dup-box no-top">
 				<div class="dup-box-title">
-					<i class="fa fa-table"></i>&nbsp;<?php _e('Database Only', 'duplicator'); ?>
+					<i class="fa fa-random"></i>&nbsp;<?php _e('2-Part Install', 'duplicator'); ?>
 					<div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
 				</div>
 				<div class="dup-box-panel" id="dup-pack-build-try2" style="display:none">
 					<b class="opt-title"><?php _e('OPTION 2:', 'duplicator'); ?></b><br/>
 
-					<?php _e('This option allows you to still migrate/move your WordPress site but it only adds the database to the archive file allowing for a package to be built.  '
-						. 'With this option you simply move the files manually then run the installer to install the database.', 'duplicator'); ?><br/><br/>
+					<?php _e('This option allows you to migrate/move your WordPress site by archiving only the database. With this option you simply move the files '
+						. 'manually then run the installer to install the database.', 'duplicator'); ?><br/><br/>
+
+
+					<b><?php _e('<i class="fa fa-file-text-o"></i> Overview', 'duplicator'); ?></b><br/>
+					<?php _e('This process will consist of the following:', 'duplicator'); ?><br/>
+					<ol>
+						<li><?php _e('Click the button below to go back to Step 1.', 'duplicator'); ?></li>
+						<li><?php _e('On Step 1 the "Archive Only the Database" checkbox will be auto checked.', 'duplicator'); ?></li>
+						<li>
+							<?php _e('Complete the package build and follow the ', 'duplicator'); ?>
+							<?php
+								printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-060-q" target="faq">%s</a>".',
+								__('', 'duplicator'),
+								__('Quick Start 2-Part Install Instructions', 'duplicator'));
+							?>
+						</li>
+					</ol> <br/>
 
 					<div style="text-align: center; margin: 10px">
-						<input type="button" class="button-large button-primary" value="<?php _e('Archive Only the Database', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'" />
+						<input type="button" class="button-large button-primary" value="<?php _e('Continue with 2-Part Install', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'" />
 					</div><br/>
 
-					<?php
-						printf('<i class="fa fa-file-text-o"></i> %s "<a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-050-q" target="faq">%s</a>" %s.',
-							__('See the quick start guide section titled ', 'duplicator'),
-							__('Install Only a Database on Existing Site', 'duplicator'),
-							__('for more details', 'duplicator'));
-					?>
+
+
 				</div>
 			</div>
 
