@@ -39,9 +39,10 @@
 	div.dup-box-panel {text-align: left}
 	div.no-top {border-top: none}
 	div.dup-box-panel b.opt-title {font-size:18px}
-	div.dup-msg-error-area {overflow-y: scroll; padding:15px; max-height:170px; width:95%; border: 1px solid silver; border-radius: 4px}
+	div.dup-msg-error-area {overflow-y: scroll; padding:5px 15px 15px 15px; max-height:170px; width:95%; border: 1px solid silver; border-radius: 4px; line-height: 22px}
 	div#dup-logs {text-align:center; margin:auto; padding:5px; width:350px;}
 	div#dup-logs a {font-size:15px; text-decoration:none !important; display:inline-block; margin:20px 0px 5px 0px}
+	span.sub-data {display: inline-block; padding-left:20px}
 </style>
 
 <!-- =========================================
@@ -202,7 +203,7 @@ TOOL BAR: STEPS -->
 
 					<b class="opt-title"><?php _e('OPTION 3:', 'duplicator'); ?></b><br/>
 						<?php _e('This option is available on some hosts that allow for users to adjust server configurations.  With this option you will be directed to an FAQ page that will show '
-						. 'various recommendations you can take to improve/unlock constraints setup on your server.', 'duplicator'); ?><br/><br/>
+						. 'various recommendations you can take to improve/unlock constraints setup on this server.', 'duplicator'); ?><br/><br/>
 
 						<div style="text-align: center; margin: 10px">
 							<input type="button" style="margin-right:10px;" class="button-large button-primary" value="<?php _e('Diagnose Server Setup', 'duplicator'); ?>"
@@ -216,18 +217,27 @@ TOOL BAR: STEPS -->
 								<span class="data"></span>
 							</div>
 							<div id="dup-msg-error-response-php">
-								<span class="label">
-									<?php _e("PHP Max Execution", 'duplicator'); ?>:
-								</span>
-								<span class="data">
+								<span class="label"><?php _e("PHP Max Execution", 'duplicator'); ?></span><br/>
+								<span class="data sub-data">
+									<span class="label"><?php _e("Time", 'duplicator'); ?>:</span>
 									<?php
 										$try_value = @ini_get('max_execution_time');
 										$try_update = set_time_limit(0);
-										$try_update = $try_update ? 'is dynamic' : 'value is fixed';
-										echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'> (default)</a> - {$try_update}";
+										echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'> (default)</a>";
 									?>
 									<i class="fa fa-question-circle data-size-help"
-										data-tooltip-title="<?php _e("Max Execution Time", 'duplicator'); ?>"
+										data-tooltip-title="<?php _e("PHP Max Execution Time", 'duplicator'); ?>"
+										data-tooltip="<?php _e('This value is represented in seconds. A value of 0 means no timeout limit is set for PHP.', 'duplicator'); ?>"></i>
+								</span><br/>
+		
+								<span class="data sub-data">
+									<span class="label"><?php _e("Mode", 'duplicator'); ?>:</span>
+									<?php
+										$try_update = $try_update ? 'is dynamic' : 'value is fixed';
+										echo "{$try_update}";
+									?>
+									<i class="fa fa-question-circle data-size-help"
+										data-tooltip-title="<?php _e("PHP Max Execution Mode", 'duplicator'); ?>"
 										data-tooltip="<?php _e('If the value is [dynamic] then its possible for PHP to run longer than the default.  '
 											. 'If the value is [fixed] then PHP will not be allowed to run longer than the default. <br/><br/> If this value is larger than the [Allowed Runtime] above then '
 											. 'the web server has been enabled with a timeout cap and is overriding the PHP max time setting.', 'duplicator'); ?>"></i>
