@@ -155,21 +155,21 @@ TOOL BAR: STEPS -->
 				</div>
 			</div>
 
-			<!-- OPTION 2: 2-Part Install -->
+			<!-- OPTION 2: Two-Part Install -->
 			<div class="dup-box no-top">
 				<div class="dup-box-title">
-					<i class="fa fa-random"></i>&nbsp;<?php _e('2-Part Install', 'duplicator'); ?>
+					<i class="fa fa-random"></i>&nbsp;<?php _e('Two-Part Install', 'duplicator'); ?>
 					<div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
 				</div>
 				<div class="dup-box-panel" id="dup-pack-build-try2" style="display:none">
 					<b class="opt-title"><?php _e('OPTION 2:', 'duplicator'); ?></b><br/>
 
-					<?php _e('This option allows you to migrate/move your WordPress site by archiving only the database. With this option you simply move the files '
-						. 'manually then run the installer to install the database.', 'duplicator'); ?><br/><br/>
+					<?php _e('A two-part install minimizes server load and can avoid I/O and CPU host restrictions. With this procedure you simply build a \'database-only\' archive, manually move the website files, '
+						. 'and then run the installer to complete the process.', 'duplicator'); ?><br/><br/>
 
 
 					<b><?php _e('<i class="fa fa-file-text-o"></i> Overview', 'duplicator'); ?></b><br/>
-					<?php _e('This process will consist of the following:', 'duplicator'); ?><br/>
+					<?php _e('Please follow these steps:', 'duplicator'); ?><br/>
 					<ol>
 						<li><?php _e('Click the button below to go back to Step 1.', 'duplicator'); ?></li>
 						<li><?php _e('On Step 1 the "Archive Only the Database" checkbox will be auto checked.', 'duplicator'); ?></li>
@@ -178,13 +178,13 @@ TOOL BAR: STEPS -->
 							<?php
 								printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-060-q" target="faq">%s</a>".',
 								__('', 'duplicator'),
-								__('Quick Start 2-Part Install Instructions', 'duplicator'));
+								__('Quick Start Two-Part Install Instructions', 'duplicator'));
 							?>
 						</li>
 					</ol> <br/>
 
 					<div style="text-align: center; margin: 10px">
-						<input type="button" class="button-large button-primary" value="<?php _e('Continue with 2-Part Install', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'" />
+						<input type="button" class="button-large button-primary" value="<?php _e('Continue with Two-Part Install', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'" />
 					</div><br/>
 
 

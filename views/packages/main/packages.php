@@ -36,7 +36,7 @@
 	td.error-msg a i {color:maroon}
 	td.error-msg span {display:inline-block; padding:7px 18px 0px 0px; color:maroon}
 	div.dup-vote { position: absolute; top:15px; right:25px; }
-	div.dup-vote a { font-size:12px; font-style: italic }
+	div.dup-vote a { font-size:13px; font-style: italic }
 	div#dup-feedback-form {display:none; height:150px; top:70px; min-width:250px; padding:10px; background-color:#f9f9f9; border:1px solid silver; border-radius:5px;
 						   position:fixed; right:25px; z-index: 2; cursor:pointer; line-height:34px; font-size:14px; box-shadow: 10px 10px 5px -6px #999;}
 	div#dup-feedback-form i {display: inline-block; width: 15px}
@@ -44,17 +44,34 @@
 </style>
 
 <form id="form-duplicator" method="post">
-	
+
+<?php
+    switch(rand(1,3)) {
+        case 1:
+            $feed_title = __("Have an idea?", 'duplicator');
+			$feed_utm   = 'have_idea';
+			break;
+        case 2:
+            $feed_title = __("How can we improve?", 'duplicator');
+			$feed_utm   = 'improve';
+			break;
+        case 3:
+            $feed_title = __("Have Feedback?", 'duplicator');
+			$feed_utm   = 'feedback';
+			break;
+    }
+?>
+
 <div class="dup-vote">
 	<a href="javascript:void(0);" onclick="Duplicator.Pack.showFeedbackForm()">
-		<i class="fa fa-bullhorn" aria-hidden="true"></i> <?php _e("Feedback", 'duplicator') ?>
+		<i class="fa fa-bullhorn" aria-hidden="true"></i> <?php echo  $feed_title; ?>
 	</a>
 </div>
 
 <div id="dup-feedback-form">
 	<div style="text-align: center"><b><?php _e("LEAVE FEEDBACK", 'duplicator') ?></b></div>
-	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_package_help&utm_campaign=duplicator_lite" target="_blank"><?php _e("Need help with the plugin?", 'duplicator') ?></a> <br/>
-	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_package_idea&utm_campaign=duplicator_lite" target="_blank"><?php _e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
+	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_package_help&utm_campaign=duplicator_lite_<?php echo  $feed_utm; ?>" target="_blank"><?php _e("Need help with the plugin?", 'duplicator') ?></a> <br/>
+	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_package_idea&utm_campaign=duplicator_lite_<?php echo  $feed_utm; ?>" target="_blank"><?php _e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
 	<?php if($statusCount >= 2)  :	?>
 		<i class="fa fa-star-o"></i> <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Help review the plugin!", 'duplicator') ?></a>
 	<?php endif; ?>
