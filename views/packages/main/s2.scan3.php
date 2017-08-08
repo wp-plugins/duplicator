@@ -124,14 +124,6 @@ TOTAL SIZE -->
 				</div>
 			</div>
 
-			<?php
-				if ($zip_check != null) {
-					echo '<div style="text-align:center; font-weight:bold; font-style:italic; float:left">&nbsp;';
-					_e('Package support up to 2GB in', 'duplicator');
-					echo '&nbsp;<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Professional', 'duplicator') . '</a>';
-					echo '</div>';
-				}
-			?>
 
 			<div class="apply-btn" style="margin-bottom:5px;float:right">
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'large')">
@@ -292,6 +284,18 @@ DATABASE -->
 			?>
 		</div>
 	</div>
+
+	<?php
+		if ($zip_check != null) {
+			echo '<div class="dup-pro-support">&nbsp;';
+			_e('Get larger site support with', 'duplicator');
+			echo '&nbsp;<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Professional', 'duplicator') . '!</a>';
+			echo '</div>';
+		} else {
+			echo '<br/>';
+		}
+	?>
+
 </div>
 <br/><br/>
 
