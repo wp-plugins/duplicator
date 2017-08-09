@@ -113,7 +113,9 @@ TOOL-BAR -->
 					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
 					<div class="dup-quick-start">
 						<?php _e("New to Duplicator?", 'duplicator'); ?><br/>
-						<a href="https://snapcreek.com/duplicator/docs/quick-start/" target="_blank"><?php _e("Check out the 'Quick Start' guide!", 'duplicator'); ?></a>
+						<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty&utm_campaign=quick_start" target="_blank">
+							<?php _e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
+						</a>
 					</div>
 					
 					<div style="height:75px">&nbsp;</div>
