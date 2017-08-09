@@ -293,10 +293,9 @@ class DUP_Package
         if (isset($post)) {
             $post = stripslashes_deep($post);
 
-            $name_chars = array(".", "-");
             $name       = ( isset($post['package-name']) && !empty($post['package-name'])) ? $post['package-name'] : self::getDefaultName();
             $name       = substr(sanitize_file_name($name), 0, 40);
-            $name       = str_replace($name_chars, '', $name);
+            $name       = str_replace(array('.', '-', ';', ':', "'", '"'), '', $name);
 
             $filter_dirs  = isset($post['filter-dirs']) ? $this->Archive->parseDirectoryFilter($post['filter-dirs']) : '';
 			$filter_files = isset($post['filter-files']) ? $this->Archive->parseFileFilter($post['filter-files']) : '';
@@ -304,9 +303,10 @@ class DUP_Package
             $tablelist    = isset($post['dbtables']) ? implode(',', $post['dbtables']) : '';
             $compatlist   = isset($post['dbcompat']) ? implode(',', $post['dbcompat']) : '';
             $dbversion    = DUP_DB::getVersion();
-            $dbversion    = is_null($dbversion) ? '- unknown -' : $dbversion;
+            $dbversion    = is_null($dbversion) ? '- unknown -'  : $dbversion;
             $dbcomments   = DUP_DB::getVariable('version_comment');
             $dbcomments   = is_null($dbcomments) ? '- unknown -' : $dbcomments;
+
 
             //PACKAGE
             $this->Created    = date("Y-m-d H:i:s");
@@ -314,7 +314,7 @@ class DUP_Package
             $this->VersionOS  = defined('PHP_OS') ? PHP_OS : 'unknown';
             $this->VersionWP  = $wp_version;
             $this->VersionPHP = phpversion();
-            $this->VersionDB  = $dbversion;
+            $this->VersionDB  = esc_html($dbversion);
             $this->Name       = $name;
             $this->Hash       = $this->makeHash();
             $this->NameHash   = "{$this->Name}_{$this->Hash}";
@@ -327,7 +327,7 @@ class DUP_Package
 			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
             $this->Archive->FilterDirs      = esc_html($filter_dirs);
 			 $this->Archive->FilterFiles    = esc_html($filter_files);
-            $this->Archive->FilterExts      = str_replace(array('.', ' '), "", esc_html($filter_exts));
+            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', esc_html($filter_exts));
             //INSTALLER
             $this->Installer->OptsDBHost    = esc_html($post['dbhost']);
             $this->Installer->OptsDBPort    = esc_html($post['dbport']);
@@ -337,7 +337,7 @@ class DUP_Package
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
             $this->Database->FilterTables   = esc_html($tablelist);
             $this->Database->Compatible     = $compatlist;
-            $this->Database->Comments       = $dbcomments;
+            $this->Database->Comments       = esc_html($dbcomments);
 
             update_option(self::OPT_ACTIVE, $this);
         }
