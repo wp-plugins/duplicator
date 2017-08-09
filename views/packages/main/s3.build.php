@@ -177,7 +177,7 @@ TOOL BAR: STEPS -->
 						<li>
 							<?php _e('Complete the package build and follow the ', 'duplicator'); ?>
 							<?php
-								printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-060-q" target="faq">%s</a>".',
+								printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>".',
 								__('', 'duplicator'),
 								__('Quick Start Two-Part Install Instructions', 'duplicator'));
 							?>
@@ -207,7 +207,7 @@ TOOL BAR: STEPS -->
 
 						<div style="text-align: center; margin: 10px">
 							<input type="button" style="margin-right:10px;" class="button-large button-primary" value="<?php _e('Diagnose Server Setup', 'duplicator'); ?>"
-								onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt&utm_campaign=build_issues#faq-trouble-100-q', '_blank');return false;" />
+								onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q', '_blank');return false;" />
 						</div>
 	
 						<b><?php _e('RUNTIME DETAILS', 'duplicator'); ?>:</b><br/>
