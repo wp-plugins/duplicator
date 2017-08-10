@@ -536,7 +536,7 @@ class DUP_Util
                 );
 
                 foreach ($possible_paths as $path) {
-                    if (file_exists($path)) {
+                    if (@file_exists($path)) {
                         $filepath = $path;
                         break;
                     }
