@@ -41,8 +41,9 @@
 	div.scan-item div.title {background-color:#F1F1F1; width:100%; padding:4px 0 4px 0; cursor:pointer; height:20px;}
 	div.scan-item div.title:hover {background-color:#ECECEC;}
 	div.scan-item div.text {font-weight:bold; font-size:14px; float:left;  position:relative; left:10px}
-	div.scan-item div.badge-pass {float:right; background:green; border-radius:5px; color:#fff; min-width:45px; text-align:center; position:relative; right:10px; font-size:12px}
-	div.scan-item div.badge-warn {float:right; background:#630f0f; border-radius:5px; color:#fff; min-width:45px; text-align:center; position:relative; right:10px; font-size:12px}
+	div.scan-item div.badge {float:right; border-radius:4px; color:#fff; min-width:40px; text-align:center; position:relative; right:10px; font-size:12px; padding:0 3px 0 3px}
+	div.scan-item div.badge-pass {background:green;}
+	div.scan-item div.badge-warn {background:#630f0f;}
 	div.scan-item div.info {display:none; padding:10px; background:#fff}
 	div.scan-good {display:inline-block; color:green;font-weight:bold;}
 	div.scan-warn {display:inline-block; color:#630f0f;font-weight:bold;}
@@ -330,9 +331,9 @@ jQuery(document).ready(function($)
 		var result;
 		switch (status) {
 			case false :    result = '<div class="scan-warn"><i class="fa fa-exclamation-triangle"></i></div>'; break;
-			case 'Warn' :   result = '<div class="badge-warn"><?php _e("Notice", 'duplicator') ?></div>'; break;
+			case 'Warn' :   result = '<div class="badge badge-warn"><?php _e("Notice", 'duplicator') ?></div>'; break;
 			case true :     result = '<div class="scan-good"><i class="fa fa-check"></i></div>'; break;
-			case 'Good' :   result = '<div class="badge-pass"><?php _e("Good", 'duplicator') ?></div>'; break;
+			case 'Good' :   result = '<div class="badge badge-pass"><?php _e("Good", 'duplicator') ?></div>'; break;
 			default :
 				result = 'unable to read';
 		}
