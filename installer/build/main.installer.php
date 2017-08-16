@@ -297,15 +297,15 @@ switch ($_POST['action_step']) {
 </div>
 
 <script>
-	/* Server Info Dialog*/
-	DUPX.showServerInfo = function()
-	{
-		modal({
-			type: 'alert',
-			title: 'Server Information',
-			text: $('#dialog-server-info').html()
-		});
-	}
+/* Server Info Dialog*/
+DUPX.showServerInfo = function()
+{
+	modal({
+		type: 'alert',
+		title: 'Server Information',
+		text: $('#dialog-server-info').html()
+	});
+}
 </script>
 
 </body>

@@ -47,7 +47,7 @@ $all_arc = ($arcStatus == 'Pass' && $arcFormat != 'Fail') ? 'Pass' : 'Fail';
 $req      	= array();
 $req['01']	= DUPX_Server::isDirWritable($GLOBALS["CURRENT_ROOT_PATH"]) ? 'Pass' : 'Fail';
 $req['02']	= 'Pass'; //Place-holder for future check
-$req['03']	= (! DUPX_Server::$php_safe_mode_on) ? 'Pass' : 'Fail';
+$req['03']	= 'Pass'; //Place-holder for future check; 
 $req['04']	= function_exists('mysqli_connect')	 ? 'Pass' : 'Fail';
 $req['05']	= DUPX_Server::$php_version_safe	 ? 'Pass' : 'Fail';
 $all_req  	= in_array('Fail', $req) 			 ? 'Fail' : 'Pass';
@@ -240,7 +240,7 @@ VALIDATION
 
 		<!-- REQ 1 -->
 		<div class="status <?php echo strtolower($req['01']); ?>"><?php echo $req['01']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs01">+ Directory Writable</div>
+		<div class="title" data-type="toggle" data-target="#s1-reqs01">+ Permissions</div>
 		<div class="info" id="s1-reqs01">
 			<table>
 				<tr>
@@ -249,13 +249,19 @@ VALIDATION
 				</tr>
 				<tr>
 					<td><b>Suhosin Extension:</b> </td>
-					<td><?php echo extension_loaded('suhosin') ? "<i class='dupx-fail'>Enabled</i>'" : "<i class='dupx-pass'>Disabled</i>"; ?> </td>
+					<td><?php echo extension_loaded('suhosin') ? "<i class='dupx-fail'>Enabled</i>" : "<i class='dupx-pass'>Disabled</i>"; ?> </td>
+				</tr>
+				<tr>
+					<td><b>PHP Safe Mode:</b> </td>
+					<td><?php echo (DUPX_Server::$php_safe_mode_on)  ? "<i class='dupx-fail'>Enabled</i>" : "<i class='dupx-pass'>Disabled</i>"; ?> </td>
 				</tr>
 			</table><br/>
 
-			The deployment path must be writable by PHP in order to extract the archive file.  Incorrect permissions and extension such as
+			The deployment path above must be writable by PHP in order to extract the archive file.  Incorrect permissions and extension such as
 			<a href="https://suhosin.org/stories/index.html" target="_blank">suhosin</a> can sometimes inter-fear with PHP being able to write/extract files.
 			Please see the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-055-q" target="_blank">FAQ permission</a> help link for complete details.
+			PHP with <a href='http://php.net/manual/en/features.safe-mode.php' target='_blank'>safe mode</a> should be disabled.  If this test fails
+			please contact your hosting provider or server administrator to disable PHP safe mode.
 		</div>
 
 		<!-- REQ 2
@@ -263,17 +269,14 @@ VALIDATION
 		<div class="title" data-type="toggle" data-target="#s1-reqs02">+ Place Holder</div>
 		<div class="info" id="s1-reqs02"></div>-->
 
-		<!-- REQ 3 -->
+		<!-- REQ 3
 		<div class="status <?php echo strtolower($req['03']); ?>"><?php echo $req['03']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs03">+ PHP SafeMode</div>
-		<div class="info" id="s1-reqs03">
-			PHP with <a href='http://php.net/manual/en/features.safe-mode.php' target='_blank'>safe mode</a> must be disabled.  If this test fails
-			please contact your hosting provider or server administrator to disable PHP safe mode.
-		</div>
+		<div class="title" data-type="toggle" data-target="#s1-reqs03">+ Place Holder</div>
+		<div class="info" id="s1-reqs03"></div> -->
 
 		<!-- REQ 4 -->
 		<div class="status <?php echo strtolower($req['04']); ?>"><?php echo $req['04']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs04">+ PHP mysqli</div>
+		<div class="title" data-type="toggle" data-target="#s1-reqs04">+ PHP Mysqli</div>
 		<div class="info" id="s1-reqs04">
 			Support for the PHP <a href='http://us2.php.net/manual/en/mysqli.installation.php' target='_blank'>mysqli extension</a> is required.
 			Please contact your hosting provider or server administrator to enable the mysqli extension.  <i>The detection for this call uses
@@ -488,71 +491,66 @@ OPTIONS
 <!-- ====================================
 NOTICES
 ==================================== -->
-<div class="hdr-sub1" data-type="toggle" data-target="#s1-area-warnings">
-	<a href="javascript:void(0)"><i class="dupx-plus-square"></i> Notices</a>
-</div>
+<div id="dialog-server-info" style="display:none">
+	<div id="s1-warning-msg">
+		<b>TERMS &amp; NOTICES</b> <br/><br/>
 
-<div id="s1-area-warnings" style="display:none">
-	<div id='s1-warning-area'>
-		<div id="s1-warning-msg">
-			<b>TERMS &amp; NOTICES</b> <br/><br/>
+		<b>Disclaimer:</b>
+		The Duplicator software and installer should be used at your own risk.  Users should always back up or have backups of your database and files before running this installer.
+		If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  <u>Always</u> test this installer in a sandbox environment
+		before trying to deploy into a production environment.  Be sure that if anything happens during the install that you have a backup recovery plan in place.   By accepting
+		this agreement the users of this software do not hold liable Snapcreek LLC or any of its affiliates/members liable for any issues that might occur during use of this software.
+		<br/><br/>
 
-			<b>Disclaimer:</b>
-			This plugin require above average technical knowledge. Please use it at your own risk and always back up your database and files beforehand Duplicator.
-            If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  <u>Always</u> test
-			this installer in a sandbox environment before trying to deploy into a production setting.
-			<br/><br/>
 
-			<b>Database:</b>
-			Do not connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently
-			DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the
-			package name above.
-			<br/><br/>
+		<b>Database:</b>
+		Do not connect to an existing database unless you are 100% sure you want to remove all of it's data. Connecting to a database that already exists will permanently
+		DELETE all data in that database. This tool is designed to populate and fill a database with NEW data from a duplicated database using the SQL script in the
+		package name above.
+		<br/><br/>
 
-			<b>Setup:</b>
-			Only the archive and installer file should be in the install directory, unless you have manually extracted the package and checked the
-			'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files
-			before continuing with an installation. Manual extraction requires that all contents in the package are extracted to the same directory as the installer file.
-			Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
-			<br/><br/>
+		<b>Setup:</b>
+		Only the archive and installer file should be in the install directory, unless you have manually extracted the package and checked the
+		'Manual Package Extraction' checkbox. All other files will be OVERWRITTEN during install.  Make sure you have full backups of all your databases and files
+		before continuing with an installation. Manual extraction requires that all contents in the package are extracted to the same directory as the installer file.
+		Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
+		<br/><br/>
 
-			<b>After Install:</b> When you are done with the installation you must remove the these files/directories:
-			<ul>
-				<li>installer.php</li>
-				<li>installer-data.sql</li>
-				<li>installer-backup.php</li>
-				<li>installer-log.txt</li>
-				<li>database.sql</li>
-			</ul>
+		<b>After Install:</b> When you are done with the installation you must remove the these files/directories:
+		<ul>
+			<li>installer.php</li>
+			<li>installer-data.sql</li>
+			<li>installer-backup.php</li>
+			<li>installer-log.txt</li>
+			<li>database.sql</li>
+		</ul>
 
-			These files contain sensitive information and should not remain on a production system for system integrity and security protection.
-            <br/><br/>
+		These files contain sensitive information and should not remain on a production system for system integrity and security protection.
+		<br/><br/>
 
-            <b>License Overview</b><br/>
-            Duplicator is licensed under the GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html including the following disclaimers and limitation of liability.
-            <br/><br/>
+		<b>License Overview</b><br/>
+		Duplicator is licensed under the GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html including the following disclaimers and limitation of liability.
+		<br/><br/>
 
-            <b>Disclaimer of Warranty</b><br/>
-            THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-            PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-            FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME
-            THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
-            <br/><br/>
+		<b>Disclaimer of Warranty</b><br/>
+		THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+		PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+		FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME
+		THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+		<br/><br/>
 
-            <b>Limitation of Liability</b><br/>
-            IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS
-            PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
-            PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO
-            OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-            <br/><br/>
-
-		</div>
+		<b>Limitation of Liability</b><br/>
+		IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS
+		PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
+		PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO
+		OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+		<br/><br/>
 	</div>
 </div>
 
 <div id="s1-warning-check">
 	<input id="accept-warnings" name="accpet-warnings" type="checkbox" onclick="DUPX.acceptWarning()" />
-	<label for="accept-warnings">I have read and accept all terms &amp; notices <small style="font-style:italic">(required to continue)</small></label><br/>
+	<label for="accept-warnings">I have read and accept all <a href="javascript:void(0)" onclick="DUPX.showNotices()">terms &amp; notices</a> <small style="font-style:italic">(required to continue)</small></label><br/>
 </div>
 
 
@@ -694,6 +692,17 @@ Auto Posts to view.step2.php
 			$("#s1-deploy-btn").attr("title", "<?php echo $agree_msg; ?>");
         }
 	}
+
+	/** Server Terms Dialog*/
+	DUPX.showNotices = function()
+	{
+		modal({
+			type: 'alert',
+			title: 'Terms and Notices',
+			text: $('#dialog-server-info').html()
+		});
+	}
+
 
 	/** Go back on AJAX result view */
 	DUPX.hideErrorResult = function()
