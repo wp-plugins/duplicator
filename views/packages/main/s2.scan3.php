@@ -53,7 +53,7 @@ TOTAL SIZE -->
 				echo "<b>" . __('Overview', 'duplicator') . ":</b><br/>";
 
 				printf(__('This notice is triggered at <b>%s</b> and can be ignored on most hosts.  If during the build process you see a "Host Build Interrupt" message then this '
-					. 'host has strict processing limits.  Below are some options you can take to overcome constraints setup on this host.', 'duplicator'),
+					. 'host has strict processing limits.  Below are some options you can take to overcome constraints set up on this host.', 'duplicator'),
 					DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT));
 
 				echo '<br/><br/>';
@@ -114,7 +114,7 @@ TOTAL SIZE -->
 								_e('No large files found during this scan.', 'duplicator');
 							} else {
 								echo "<div style='color:maroon'>";
-								_e('No large files found during this scan.  If your having issues building a package click the back button and try '
+								_e('No large files found during this scan.  If you\'re having issues building a package click the back button and try '
 									. 'adding the following file filters to non-essential files paths like wp-conent/uploads.   These filtered files can then '
 									. 'be manually moved to the new location after you have ran the migration installer.', 'duplicator');
 								echo "</div>";
@@ -154,7 +154,7 @@ FILE NAME CHECKS -->
             _e('<b>');
             _e('  Only consider using this filter if the package build is failing. Select files that are not important to your site or you can migrate manually.', 'duplicator');
             _e('</b>');
-			$txt = __('If this environment/system and the system where it will be installed are setup to support Unicode and long paths then these filters can be ignored.  '
+			$txt = __('If this environment/system and the system where it will be installed are set up to support Unicode and long paths then these filters can be ignored.  '
 				. 'If you run into issues with creating or installing a package, then is recommended to filter these paths.', 'duplicator');
 		?>
 		<script id="hb-files-utf8" type="text/x-handlebars-template">
@@ -286,14 +286,11 @@ DATABASE -->
 	</div>
 
 	<?php
-		if ($zip_check != null) {
-			echo '<div class="dup-pro-support">&nbsp;';
-			_e('Get larger site support with', 'duplicator');
-			echo '&nbsp;<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Professional', 'duplicator') . '!</a>';
-			echo '</div>';
-		} else {
-			echo '<br/>';
-		}
+		
+        echo '<div class="dup-pro-support">&nbsp;';
+        _e('Get large site support with', 'duplicator');
+        echo '&nbsp;<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Duplicator Pro', 'duplicator') . '!</a>';
+        echo '</div>';
 	?>
 
 </div>

@@ -91,7 +91,7 @@ STEP 1
 		<tr>
 			<td>Config Files</td>
 			<td>
-				Inside the archive.zip should be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
+				Inside the archive.zip should be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were set up with your packaged site.
 				When the installer runs it will backup and then reset all <i>.htaccess, user.ini, and web.config</i> files.   It will then create blank copies of
 				both files.   This is needed because the original files that were archived in most cases will not play well in the new environment.
 				<br/><br/>
@@ -135,7 +135,7 @@ STEP 2
 
     <h3>Basic/cPanel:</h3>
     There are currently two options you can use to perform the database setup.  The "Basic" option requires knowledge about the existing server and on most hosts
-    will require that the database be setup ahead of time.  The cPanel option is for hosts that support <a href="http://cpanel.com/" target="_blank">cPanel Software</a>.
+    will require that the database be set up ahead of time.  The cPanel option is for hosts that support <a href="http://cpanel.com/" target="_blank">cPanel Software</a>.
     This option will automatically show you the existing databases and users on your cPanel server and allow you to create new databases directly
     from the installer.
     <br/><br/>
@@ -243,7 +243,7 @@ STEP 2
 			<td>Prefix:<sup>pro*</sup></td>
 			<td>By default, databases are prefixed with the cPanel account's username (for example, myusername_databasename).  However you can ignore this option if
 			your host does not use the default cPanel username prefix schema.  Check the 'Ignore cPanel Prefix' and the username prefixes will be ignored.
-			This will still require you to enter in the cPanels required setup prefix if they require one.  The checkbox will be set to read-only if your host has
+			This will still require you to enter in the cPanel's required setup prefix if they require one.  The checkbox will be set to read-only if your host has
 			disabled prefix settings.  Please see your host full requirements when using the cPanel options.</td>
 		</tr>
 		<tr>

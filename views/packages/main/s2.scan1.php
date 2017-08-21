@@ -93,7 +93,7 @@
 	div#dup-scan-warning-continue div.msg1 label{font-size:16px; color:#630f0f}
 	div#dup-scan-warning-continue div.msg2 {padding:2px; line-height:13px}
 	div#dup-scan-warning-continue div.msg2 label {font-size:11px !important}
-	div.dup-pro-support {text-align:center; font-style:italic; font-size:12px; margin-top:20px}
+	div.dup-pro-support {text-align:center; font-style:italic; font-size:13px; margin-top:20px;font-weight:bold}
 
 	/*DIALOG WINDOWS*/
 	div#arc-details-dlg {font-size:12px}

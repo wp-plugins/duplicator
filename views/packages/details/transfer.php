@@ -10,7 +10,7 @@
 	<div class="area">
 		<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50.png"  />
 		<h2>
-			<?php _e('Transfer your packages to multiple<br/> locations  with Duplicator Professional', 'duplicator') ?>
+			<?php _e('Transfer your packages to multiple<br/> locations  with Duplicator Pro', 'duplicator') ?>
 		</h2>
 
 		<div style='text-align: left; margin:auto; width:200px'>
@@ -23,7 +23,7 @@
 			</ul>
 		</div>
 		<?php
-			_e('Setup a one-time storage location and automatically <br/> push the package to your destination.', 'duplicator');
+			_e('Set up a one-time storage location and automatically <br/> push the package to your destination.', 'duplicator');
 		?>
 	</div><br/>
 

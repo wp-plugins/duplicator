@@ -6,7 +6,7 @@ require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.zip.php
 require_once (DUPLICATOR_PLUGIN_PATH.'lib/forceutf8/Encoding.php');
 
 /**
- * Class for handleing archive setup and build process
+ * Class for handling archive setup and build process
  *
  * Standard: PSR-2 (almost)
  * @link http://www.php-fig.org/psr/psr-2
