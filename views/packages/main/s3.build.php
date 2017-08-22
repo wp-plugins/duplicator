@@ -13,7 +13,7 @@
 
 	$rand_txt = array();
 	$rand_txt[0] = $atext0;
-	$rand_txt[1] = $atext1;
+	//$rand_txt[1] = $atext1;
 ?>
 
 <style>
@@ -109,7 +109,7 @@ TOOL BAR: STEPS -->
 			<!-- DOWNLOAD FILES -->
 			<fieldset class="download-area">
 				<legend>
-					&nbsp; <i class="fa fa-download"></i> <?php _e("Download Package Files", 'duplicator') ?> &nbsp;
+					&nbsp; <i class="fa fa-download"></i> <?php _e("Download Files", 'duplicator') ?> &nbsp;
 				</legend>
 				<button id="dup-btn-installer" class="button button-primary button-large" title="<?php _e("Click to download installer file", 'duplicator') ?>">
 					<i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?> &nbsp;
