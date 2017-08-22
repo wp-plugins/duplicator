@@ -204,7 +204,7 @@ ARCHIVE
 						<br/><br/>
 
 						Files such as database.sql and wp-config.php should be at the root of the archive.  For more details see the FAQ article
-						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-020-q" target="_help">The archive format is changing on my Mac what might be the problem?</a>
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=invalid_ar_fmt#faq-installer-020-q" target="_help">The archive format is changing on my Mac what might be the problem?</a>
 					</div>
 				<?php endif; ?>
 			</td>
@@ -259,7 +259,7 @@ VALIDATION
 
 			The deployment path above must be writable by PHP in order to extract the archive file.  Incorrect permissions and extension such as
 			<a href="https://suhosin.org/stories/index.html" target="_blank">suhosin</a> can sometimes inter-fear with PHP being able to write/extract files.
-			Please see the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-055-q" target="_blank">FAQ permission</a> help link for complete details.
+			Please see the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=installer_perms#faq-trouble-055-q" target="_blank">FAQ permission</a> help link for complete details.
 			PHP with <a href='http://php.net/manual/en/features.safe-mode.php' target='_blank'>safe mode</a> should be disabled.  If this test fails
 			please contact your hosting provider or server administrator to disable PHP safe mode.
 		</div>
@@ -404,7 +404,7 @@ VALIDATION
 			<a href="http://php.net/manual/en/function.set-time-limit.php" target="_blank">set_time_limit</a> setting.   If this notice shows as a warning then it is
 			still safe to continue with the install.  However, if a timeout occurs then you will need to consider working with the max_execution_time setting or extracting the
 			archive file using the 'Manual package extraction' method.
-			Please see the	<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q" target="_blank">FAQ timeout</a> help link for more details.
+			Please see the	<a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=installer_timeout#faq-trouble-100-q" target="_blank">FAQ timeout</a> help link for more details.
 
 		</div>
 	</div>
@@ -473,12 +473,12 @@ OPTIONS
 			<table style='width:100%'>
 				<tr>
 					<td style="width:200px">
-						&raquo; Watch the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-070-q" target="_blank">video tutorials</a> <br/>
-						&raquo; Read helpful <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">articles</a> <br/>
+						&raquo; Watch the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=installer_vid_tutor#faq-resource-070-q" target="_blank">video tutorials</a> <br/>
+						&raquo; Read helpful <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=installer_help_art" target="_blank">articles</a> <br/>
 					</td>
 					<td>
-						 &raquo; Visit the <a href="https://snapcreek.com/duplicator/docs/quick-start/" target="_blank">quick start guides</a> <br/>
-						 &raquo; Browse the <a href="https://snapcreek.com/duplicator/docs/" target="_blank">online docs</a> <br/>
+						 &raquo; Visit the <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_quickstart" target="_blank">quick start guides</a> <br/>
+						 &raquo; Browse the <a href="https://snapcreek.com/duplicator/docs/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=installer_online_docs" target="_blank">online docs</a> <br/>
 					</td>
 				</tr>
 			</table>
@@ -561,8 +561,8 @@ NOTICES
 			server administrator, hosting provider or visit the resources below for additional help.
 		</i>
 		<div style="padding:10px">
-			&raquo; <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">Technical FAQs</a> <br/>
-			&raquo; <a href="https://snapcreek.com/support/docs/" target="_blank">Online Documentation</a> <br/>
+			&raquo; <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_validfail_techfaq" target="_blank">Technical FAQs</a> <br/>
+			&raquo; <a href="https://snapcreek.com/support/docs/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_validfail_onlinedocs" target="_blank">Online Documentation</a> <br/>
 		</div>
 	</div> <br/><br/>
 <?php else : ?>
@@ -615,7 +615,7 @@ Auto Posts to view.step2.php
 			<div id="ajaxerr-data">An unknown issue has occurred with the file and database set up process.  Please see the installer-log.txt file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" class="default-btn" onclick="DUPX.hideErrorResult()" value="&laquo; Try Again" /><br/><br/>
-				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket' target='_blank'>snapcreek.com</a></i>
+				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_ajaxerr_ticket' target='_blank'>snapcreek.com</a></i>
 			</div>
 	    </div>
 	</div>
@@ -673,7 +673,7 @@ Auto Posts to view.step2.php
 					status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
 					status += "- Check the <a href='installer-log.txt' target='install_log'>installer-log.txt</a> file for warnings or errors.<br/>";
 					status += "- Check the web server and PHP error logs. <br/>";
-					status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
+					status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_ajaxextract_tofaq#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 				$('#ajaxerr-data').html(status);
 				DUPX.hideProgressBar();
 			}

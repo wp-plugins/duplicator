@@ -127,7 +127,7 @@ VIEW: STEP 4 - INPUT -->
 				<ul>
 					<li>
 						<b>Unknown collation:</b> See Online FAQ:
-						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-090-q" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a>
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_step4_unknowncoll#faq-trouble-090-q" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a>
 					</li>
 					<li>
 						<b>Query Limits:</b> Update MySQL server with the <a href="https://dev.mysql.com/doc/refman/5.5/en/packet-too-large.html" target="_blank">max_allowed_packet</a>
@@ -230,7 +230,7 @@ VIEW: STEP 4 - INPUT -->
 
 	<div class='s4-connect'>
 		<a href="installer.php?help=1#troubleshoot" target="_blank">Troubleshoot</a> |
-		<a href='https://snapcreek.com/duplicator/docs/faqs-tech/' target='_blank'>FAQs</a>
+		<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>FAQs</a>
 	</div><br/>
 </form>
 

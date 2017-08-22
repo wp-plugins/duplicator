@@ -2,7 +2,7 @@
 HELP FORM -->
 <div id="main-help">
 <div class="help-online">
-	<i class="fa fa-file-text-o"></i> For additional help visit the<br/> <a href="https://snapcreek.com/support/docs/" target="_blank">Online Knowledge-Base</a><br/>
+	<i class="fa fa-file-text-o"></i> For additional help visit the<br/> <a href="https://snapcreek.com/support/docs/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=knowledgebase" target="_blank">Online Knowledge-Base</a><br/>
 	<small>Features available only in Duplicator Pro are flagged with a <sup>pro</sup> tag.</small>
 </div>
 
@@ -170,7 +170,7 @@ STEP 2
 				- Your host does not use <a href="http://cpanel.com/" target="_blank">cPanel Software</a> <br/>
 				- Your host has disabled cPanel API access <br/>
 				- Your host has configured cPanel to work differently (please contact your host) <br/>
-				- View a list of valid cPanel <a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>Supported Hosts</a>
+				- View a list of valid cPanel <a href='https://snapcreek.com/wordpress-hosting/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=affiliate&utm_content=inst_cpanel_hosts' target='_blank'>Supported Hosts</a>
 			</td>
 		</tr>
 	</table>
@@ -426,7 +426,7 @@ STEP 4
 	<div style="padding: 0px 10px 10px 10px;">
 		<b>Common Quick Fix Issues:</b>
 		<ul>
-			<li>Use an <a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>approved hosting provider</a></li>
+			<li>Use an <a href='https://snapcreek.com/wordpress-hosting/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=affiliate&utm_content=inst_help_hosts' target='_blank'>approved hosting provider</a></li>
 			<li>Validate directory and file permissions (see below)</li>
 			<li>Validate web server configuration file (see below)</li>
 			<li>Clear your browsers cache</li>
@@ -461,7 +461,7 @@ STEP 4
 
 </div>
 
-<div style="text-align:center">For additional help please visit the <a href="https://snapcreek.com/support/docs/" target="_blank">online resources</a></div>
+<div style="text-align:center">For additional help please visit the <a href="https://snapcreek.com/support/docs/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=additional_help" target="_blank">online resources</a></div>
 
 <br/><br/>
 </div>

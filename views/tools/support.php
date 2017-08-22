@@ -43,10 +43,10 @@
                 <?php _e('Complete Online Documentation', 'duplicator'); ?><br/>
                 <select id="dup-support-kb-lnks" style="margin-top:18px; font-size:16px; min-width: 170px">
                     <option> <?php _e('Choose A Section', 'duplicator') ?> </option>
-                    <option value="https://snapcreek.com/duplicator/docs/quick-start/"><?php _e('Quick Start', 'duplicator') ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/guide/"><?php _e('User Guide', 'duplicator') ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/faqs-tech/"><?php _e('FAQs', 'duplicator') ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/changelog/?lite"><?php _e('Change Log', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_qs"><?php _e('Quick Start', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/guide/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_guide"><?php _e('User Guide', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_FAQs"><?php _e('FAQs', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/changelog/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_changelog&lite"><?php _e('Change Log', 'duplicator') ?></option>
                 </select>
             </div>
         </div>
@@ -65,7 +65,7 @@
 						<?php _e('Get Support!', 'duplicator') ?>
 					</button> <br/>
                 </div>	
-				<small>Pro Users <a href="https://snapcreek.com/ticket" target="_blank">Support Here</a></small>
+				<small>Pro Users <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_prousers_here" target="_blank">Support Here</a></small>
             </div>
         </div> 
         <br style="clear:both" /><br/><br/>
@@ -82,7 +82,7 @@
                 <?php _e('Servers That Work With Duplicator', 'duplicator'); ?>
                 <br/><br/>
                 <div class="dup-support-txts-links">
-                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-040-q', 'litg');"><?php _e('Trusted Providers!', 'duplicator') ?></button> &nbsp; 
+                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_servers#faq-resource-040-q', 'litg');"><?php _e('Trusted Providers!', 'duplicator') ?></button> &nbsp;
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
                 <?php _e('Other Commercial Resources', 'duplicator'); ?>
                 <br/><br/>
                 <div class="dup-support-txts-links">
-                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource-050-q', 'litg');"><?php _e('Pro Solutions!', 'duplicator') ?></button> &nbsp; 
+                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_pro_sln#faq-resource-050-q', 'litg');"><?php _e('Pro Solutions!', 'duplicator') ?></button> &nbsp;
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
     jQuery(document).ready(function($) {
 
         Duplicator.OpenSupportWindow = function() {
-            var url = 'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-resource';
+            var url = 'https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_window#faq-resource';
             window.open(url, 'litg');
         }
 

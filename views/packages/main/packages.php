@@ -70,8 +70,8 @@
 
 <div id="dup-feedback-form">
 	<div style="text-align: center"><b><?php _e("LEAVE FEEDBACK", 'duplicator') ?></b></div>
-	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_help_<?php echo $feed_utm; ?>&utm_campaign=duplicator_lite" target="_blank"><?php _e("Need help with the plugin?", 'duplicator') ?></a> <br/>
-	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_idea_<?php echo $feed_utm; ?>&utm_campaign=duplicator_lite" target="_blank"><?php _e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
+	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_help_<?php echo $feed_utm; ?>&utm_campaign=duplicator_free" target="_blank"><?php _e("Need help with the plugin?", 'duplicator') ?></a> <br/>
+	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_idea_<?php echo $feed_utm; ?>&utm_campaign=duplicator_free" target="_blank"><?php _e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
 	<?php if($statusCount >= 2)  :	?>
 		<i class="fa fa-star-o"></i> <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Help review the plugin!", 'duplicator') ?></a>
 	<?php endif; ?>

@@ -168,6 +168,7 @@ DUPX_Log::info($log, 2);
 //====================================================================================================
 $log = '';
 $faq_url = $GLOBALS['FAQ_URL'];
+$utm_prefix = '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=';
 $db_file_size = filesize('database.sql');
 $php_mem = $GLOBALS['PHP_MEMORY_LIMIT'];
 $php_mem_range = DUPX_U::getBytes($GLOBALS['PHP_MEMORY_LIMIT']);
@@ -182,7 +183,7 @@ if ($db_file_size >= $php_mem_range  && $php_mem_range != 0)
 	$msg .= "at '{$php_mem}'.  There is a high possibility that the installer script will fail with\n";
 	$msg .= "a memory allocation error when trying to load the database.sql file.  It is\n";
 	$msg .= "recommended to increase the 'memory_limit' setting in the php.ini config file.\n";
-	$msg .= "see: {$faq_url}#faq-trouble-056-q \n";
+    $msg .= "see: {$faq_url}{$utm_prefix}inst_step2_lgdbscript#faq-trouble-056-q \n";
 	DUPX_Log::info($msg);
 }
 
@@ -195,9 +196,9 @@ if ($sql_file === FALSE || strlen($sql_file) < 10)
 	$msg = "<b>Unable to read the database.sql file from the archive.  Please check these items:</b> <br/>";
 	$msg .= "1. Validate permissions and/or group-owner rights on these items: <br/>";
 	$msg .= " - File: database.sql <br/> - Directory: [{$root_path}] <br/>";
-	$msg .= "<i>see: <a href='{$faq_url}#faq-trouble-055-q' target='_blank'>{$faq_url}#faq-trouble-055-q</a></i> <br/>";
+    $msg .= "<i>see: <a href='{$faq_url}{$utm_prefix}inst_step2_dbperms#faq-trouble-055-q' target='_blank'>{$faq_url}#faq-trouble-055-q</a></i> <br/>";
 	$msg .= "2. Validate the database.sql file exists and is in the root of the archive.zip file <br/>";
-	$msg .= "<i>see: <a href='{$faq_url}#faq-installer-020-q' target='_blank'>{$faq_url}#faq-installer-020-q</a></i> <br/>";
+	$msg .= "<i>see: <a href='{$faq_url}{$utm_prefix}inst_step2_sqlroot#faq-installer-020-q' target='_blank'>{$faq_url}#faq-installer-020-q</a></i> <br/>";
 	DUPX_Log::error($msg);
 }
 
@@ -222,7 +223,7 @@ if ($sql_file_copy_status === FALSE || filesize($sql_result_file_path) == 0 || !
 	$sql_file_size = DUPX_U::readableByteSize(filesize('database.sql'));
 	$msg  = "\nWARNING: Unable to properly copy database.sql ({$sql_file_size}) to {$GLOBALS['SQL_FILE_NAME']}.  Please check these items:\n";
 	$msg .= "- Validate permissions and/or group-owner rights on database.sql and directory [{$root_path}] \n";
-	$msg .= "- see: {$faq_url}#faq-trouble-055-q \n";
+	$msg .= "- see: {$faq_url}{$utm_prefix}inst_step2_copydbsql#faq-trouble-055-q \n";
 	DUPX_Log::info($msg);
 }
 

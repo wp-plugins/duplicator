@@ -8,7 +8,7 @@ class DUP_JSON
 		JSON_ERROR_STATE_MISMATCH => 'Invalid or malformed JSON',
 		JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
 		JSON_ERROR_SYNTAX => 'Syntax error',
-		JSON_ERROR_UTF8 => 'Malformed UTF-8 characters. To resolve see https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-170-q'
+		JSON_ERROR_UTF8 => 'Malformed UTF-8 characters. To resolve see https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=malformed_utf8#faq-package-170-q'
 	);
 
 	public static function customEncode($value, $iteration = 1)

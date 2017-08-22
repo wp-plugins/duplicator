@@ -61,7 +61,7 @@ TOTAL SIZE -->
 				echo "<b>" . __('Timeout Options', 'duplicator') . ":</b><br/>";
 				echo '<ul>';
 				echo '<li>' . __('Apply the "Quick Filters" below or click the back button to apply on previous page.', 'duplicator') . '</li>';
-				echo '<li>' . __('See the FAQ link to adjust this hosts timeout limits: ', 'duplicator') . "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>" . __('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
+				echo '<li>' . __('See the FAQ link to adjust this hosts timeout limits: ', 'duplicator') . "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=pkg_s2scan3_tolimits#faq-trouble-100-q' target='_blank'>" . __('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
 				echo '<li>' . __('Consider trying multi-threaded support in ', 'duplicator');
 				echo "<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=multithreaded_pro&utm_campaign=duplicator_pro' target='_blank'>" . __('Duplicator Pro.', 'duplicator') . "</a>";
 				echo '</li>';
@@ -288,8 +288,8 @@ DATABASE -->
 	<?php
 		
         echo '<div class="dup-pro-support">&nbsp;';
-        _e('Get large site support with', 'duplicator');
-        echo '&nbsp;<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Duplicator Pro', 'duplicator') . '!</a>';
+        _e('Package support up to 2GB available in', 'duplicator');
+        echo '&nbsp;<i><a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Duplicator Pro', 'duplicator') . '!</a></i>';
         echo '</div>';
 	?>
 
