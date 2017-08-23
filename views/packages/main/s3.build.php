@@ -122,7 +122,7 @@ TOOL BAR: STEPS -->
 				</button>
 				<div class="one-click-download">
 					<a href="javascript:void(0)" id="dup-link-download-both" title="<?php _e("Click to download both files", 'duplicator') ?>">
-						<?php _e("One Click Download", 'duplicator') ?><i class="fa fa-download" style="padding-left:5px; color:#0073AA"></i>
+						<?php _e("One-Click Download", 'duplicator') ?><i class="fa fa-download" style="padding-left:5px; color:#0073AA"></i>
 					</a>
 					
 				</div>
