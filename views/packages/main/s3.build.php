@@ -33,7 +33,7 @@
 	fieldset.download-area {border:2px dashed #dfdfdf; padding:20px 20px 10px 20px; border-radius:9px; margin: auto; width:400px }
 	fieldset.download-area legend {font-weight: bold; font-size: 16px}
 	button#dup-btn-installer, button#dup-btn-archive {min-width: 150px}
-	div.one-click-download {margin:20px 0 10px 0; font-style: italic; font-size:16px}
+	div.one-click-download {margin:20px 0 10px 0; font-style: italic; font-size:16px; font-weight: bold}
 
 	div.dup-button-footer {text-align:right; margin:20px 10px 0px 0px}
 	button.button {font-size:16px !important; height:30px !important; font-weight:bold; padding:0px 10px 5px 10px !important; min-width: 150px }
@@ -122,7 +122,7 @@ TOOL BAR: STEPS -->
 				</button>
 				<div class="one-click-download">
 					<a href="javascript:void(0)" id="dup-link-download-both" title="<?php _e("Click to download both files", 'duplicator') ?>">
-						<i><?php _e("One Click Download", 'duplicator') ?></i><i class="fa fa-download" style="padding-left:5px; color:#0073AA"></i>
+						<?php _e("One Click Download", 'duplicator') ?><i class="fa fa-download" style="padding-left:5px; color:#0073AA"></i>
 					</a>
 					
 				</div>

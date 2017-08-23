@@ -115,7 +115,7 @@ TOTAL SIZE -->
 							} else {
 								echo "<div style='color:maroon'>";
 								_e('No large files found during this scan.  If you\'re having issues building a package click the back button and try '
-									. 'adding the following file filters to non-essential files paths like wp-conent/uploads.   These filtered files can then '
+									. 'adding the following file filters to non-essential files paths like wp-content/uploads.   These filtered files can then '
 									. 'be manually moved to the new location after you have ran the migration installer.', 'duplicator');
 								echo "</div>";
 							}

@@ -8,6 +8,9 @@ $arcSize    = @filesize($GLOBALS['ARCHIVE_PATH']);
 $arcSize    = is_numeric($arcSize) ? $arcSize : 0;
 $zip_archive_enabled = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 
+$arcSizeRatio  = (((1.0) * $arcSize)  / $GLOBALS['FW_PACKAGE_EST_SIZE']) * 100;
+$arcSizeStatus = ($arcSizeRatio > 90) ? 'Pass' : 'Fail';
+
 //ARCHIVE FORMAT
 if ($arcStatus) {
 	if (class_exists('ZipArchive')){
@@ -41,7 +44,7 @@ if ($arcStatus) {
 	}
 }
 
-$all_arc = ($arcStatus == 'Pass' && $arcFormat != 'Fail') ? 'Pass' : 'Fail';
+$all_arc = ($arcStatus == 'Pass' && $arcFormat != 'Fail' && $arcSizeStatus == 'Pass') ? 'Pass' : 'Fail';
 
 //REQUIRMENTS
 $req      	= array();
@@ -133,9 +136,22 @@ ARCHIVE
 		<tr>
 			<td colspan="2"><div class="hdr-sub3">File Details</div></td>
 		</tr>
-        <tr>
+        <tr style="vertical-align:top">
             <td>Size:</td>
-            <td><?php echo DUPX_U::readableByteSize($arcSize); ?> </td>
+            <td>
+			<?php
+				$projectedSize = DUPX_U::readableByteSize($GLOBALS['FW_PACKAGE_EST_SIZE']);
+				$actualSize	= DUPX_U::readableByteSize($arcSize);
+				echo "{$actualSize}<br/>";
+				if ($arcSizeStatus == 'Fail' ) {
+					echo "<span class='dupx-fail'>The archive file size is currently <b>{$actualSize}</b> and its estimated file size should be around <b>{$projectedSize}</b>.  "
+					. "The archive file may not have been fully downloaded to the server.  If so please wait for the file to completely download and then refresh this page.<br/><br/>";
+
+					echo "This warning is only shown when the file has more than a 10% size ratio difference from when it was originally built.  Please review the file sizes "
+					. "to make sure the archive was downloaded to this server correctly if the download is complete.</span>";
+				}
+			?>
+			</td>
         </tr>
         <tr>
             <td>Name:</td>

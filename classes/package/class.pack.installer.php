@@ -122,7 +122,7 @@ class DUP_Installer
     /**
      * Generates the final installer file from the template file
      *
-     * @param string $template The path to the installer template which is orginally copied from main.installer.php
+     * @param string $template The path to the installer template which is originally copied from main.installer.php
      *
      * @return null
      */
@@ -137,6 +137,8 @@ class DUP_Installer
         //Option values to delete at install time
         $deleteOpts = $GLOBALS['DUPLICATOR_OPTS_DELETE'];
 
+		 DUP_Log::Info("PACK SIZE: {$this->Package->Size}");
+
         $replace_items = Array(
             //COMPARE VALUES
             "fwrite_created" => $this->Package->Created,
@@ -150,6 +152,7 @@ class DUP_Installer
             "fwrite_archive_name" => "{$this->Package->NameHash}_archive.zip",
 			"fwrite_archive_onlydb" => $this->Package->Archive->ExportOnlyDB,
             "fwrite_package_notes" => $this->Package->Notes,
+			"fwrite_package_size" => $this->Package->Archive->Size,
             "fwrite_secure_name" => $this->Package->NameHash,
             "fwrite_dbhost" => $this->Package->Installer->OptsDBHost,
             "fwrite_dbport" => $this->Package->Installer->OptsDBPort,

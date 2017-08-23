@@ -85,6 +85,7 @@ $GLOBALS['FW_TABLEPREFIX']		= '%fwrite_wp_tableprefix%';
 $GLOBALS['FW_URL_OLD']			= '%fwrite_url_old%';
 $GLOBALS['FW_PACKAGE_NAME']		= '%fwrite_archive_name%';
 $GLOBALS['FW_PACKAGE_NOTES']	= '%fwrite_package_notes%';
+$GLOBALS['FW_PACKAGE_EST_SIZE']	= '%fwrite_package_size%';
 $GLOBALS['FW_SECURE_NAME']		= '%fwrite_secure_name%';
 $GLOBALS['FW_DBHOST']			= '%fwrite_dbhost%';
 $GLOBALS['FW_DBHOST']			= empty($GLOBALS['FW_DBHOST']) ? 'localhost' : $GLOBALS['FW_DBHOST'];
