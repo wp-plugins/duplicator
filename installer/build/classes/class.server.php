@@ -31,14 +31,21 @@ class DUPX_Server
 	 */
 	public static $php_version_safe = false;
 
+
+	 /**
+     * Is PHP 5.3 or better running
+     */
+    public static $php_version_53_plus;
+
 	/**
-	 *  Used to init the staic properties
+	 *  Used to init the static properties
 	 */
 	public static function init()
 	{
-		self::$php_safe_mode_on	 = in_array(strtolower(@ini_get('safe_mode')), array('on', 'yes', 'true', 1, "1"));
-		self::$php_version		 = phpversion();
-		self::$php_version_safe	 = (version_compare(phpversion(), self::$php_version_min) >= 0);
+		self::$php_safe_mode_on		= in_array(strtolower(@ini_get('safe_mode')), array('on', 'yes', 'true', 1, "1"));
+		self::$php_version			= phpversion();
+		self::$php_version_safe		= (version_compare(phpversion(), self::$php_version_min) >= 0);
+		self::$php_version_53_plus	= version_compare(PHP_VERSION, '5.3.0') >= 0;
 	}
 
 	/**

@@ -77,7 +77,7 @@ if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) {
 }
 $notice['03']	= $fulldays <= 180 ? 'Good' : 'Warn';
 $notice['04']	= 'Good'; //Place-holder for future check
-$notice['05']	= 'Good'; //Place-holder for future check 
+$notice['05']	= DUPX_Server::$php_version_53_plus	 ? 'Good' : 'Warn';
 $notice['06']	= empty($openbase)	 ? 'Good' : 'Warn';
 $notice['07']	= ! $max_time_warn	 ? 'Good' : 'Warn';
 $all_notice  	= in_array('Warn', $notice) ? 'Warn' : 'Good';
@@ -301,7 +301,7 @@ VALIDATION
 
 		<!-- REQ 5 -->
 		<div class="status <?php echo strtolower($req['05']); ?>"><?php echo $req['05']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs05">+ PHP Version</div>
+		<div class="title" data-type="toggle" data-target="#s1-reqs05">+ PHP Min Version</div>
 		<div class="info" id="s1-reqs05">
 			This server is running PHP: <b><?php echo DUPX_Server::$php_version ?></b>. <i>A minimum of PHP 5.2.17 is required</i>.
 			Contact your hosting provider or server administrator and let them know you would like to upgrade your PHP version.
@@ -370,17 +370,23 @@ VALIDATION
 		<div class="info" id="s1-notice04">
 		</div>-->
 
-
-		<!-- NOTICE 5 
+		<!-- NOTICE 5 -->
 		<div class="status <?php echo ($notice['05'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['05']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice05">+ OS Compatibility</div>
+		<div class="title" data-type="toggle" data-target="#s1-notice05">+ PHP Version</div>
 		<div class="info" id="s1-notice05">
 			<?php
-				$currentOS = PHP_OS;
-				echo "The current OS (operating system) is '{$currentOS}'.  The package was built on '{$GLOBALS['FW_VERSION_OS']}'.  Moving from one OS to another
-				is typically very safe and normal, however if any issues do arise be sure that you don't have any items on your site that were OS specific";
+				$currentPHP = DUPX_Server::$php_version;
+				$cssStyle   = DUPX_Server::$php_version_53_plus	 ? 'color:green' : 'color:red';
+				echo "<b style='{$cssStyle}'>This server is currently running PHP version [{$currentPHP}]</b>.<br/>"
+				. "Duplicator allows PHP 5.2 to be used during install but does not officially support it.  If your using PHP 5.2 we strongly recommend NOT using it and having your "
+				. "host upgrade to a newer more stable, secure and widely supported version of PHP.  The <a href='http://php.net/eol.php' target='_blank'>end of life for PHP 5.2</a> "
+				. "was in January of 2011 and is not recommended for use.<br/><br/>";
+
+				echo "Many plugin and theme authors are no longer officially supporting PHP 5.2 and trying to use it can result in site wide problems and compatibility errors.  "
+				. "Please note if you continue with the install using PHP 5.2 the Duplicator support team will not be able to help with issues or troubleshooting your site.  "
+				. "If your running PHP 5.3+ please feel free to reach out for help if you run into issues with your migration/install.";
 			?>
-		</div>-->
+		</div>
 
 		<!-- NOTICE 6 -->
 		<div class="status <?php echo ($notice['06'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['06']; ?></div>
@@ -407,7 +413,7 @@ VALIDATION
 		<div class="title" data-type="toggle" data-target="#s1-notice07">+ PHP Timeout</div>
 		<div class="info" id="s1-notice07">
 			<b>Archive Size:</b> <?php echo DUPX_U::readableByteSize($arcSize) ?>  <small>(detection limit is set at <?php echo DUPX_U::readableByteSize($max_time_size) ?>) </small><br/>
-			<b>PHP max_execution_time:</b> <?php echo "{$max_time_ini}"; ?> <small>(zero means not limit)</small> <br/>
+			<b>PHP max_execution_time:</b> <?php echo "{$max_time_ini}"; ?> <small>(zero means no limit)</small> <br/>
 			<b>PHP set_time_limit:</b> <?php echo ($max_time_zero) ? '<i style="color:green">Success</i>' : '<i style="color:maroon">Failed</i>' ?>
 			<br/><br/>
 
