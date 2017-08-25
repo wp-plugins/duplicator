@@ -372,7 +372,7 @@ VALIDATION
 
 		<!-- NOTICE 5 -->
 		<div class="status <?php echo ($notice['05'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['05']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice05">+ PHP Version</div>
+		<div class="title" data-type="toggle" data-target="#s1-notice05">+ PHP Version 5.3+</div>
 		<div class="info" id="s1-notice05">
 			<?php
 				$currentPHP = DUPX_Server::$php_version;
