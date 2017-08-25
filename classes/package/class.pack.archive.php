@@ -425,7 +425,7 @@ class DUP_Archive
      *  - error 'too many files open' for recursion
      *  - $file->getExtension() is not reliable as it silently fails at least in php 5.2.17
      *  - issues with when a file has a permission such as 705 and trying to get info (had to fallback to pathinfo)
-     *  - basic conclusion wait on the SPL libs untill after php 5.4 is a requiremnt
+     *  - basic conclusion wait on the SPL libs until after php 5.4 is a requirments
      *  - tight recursive loop use caution for speed
      *
      * @return array	Returns an array of directories to include in the archive
