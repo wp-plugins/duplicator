@@ -507,7 +507,7 @@ OPTIONS
 <!-- ====================================
 NOTICES
 ==================================== -->
-<div id="dialog-server-info" style="display:none">
+<div id="dialog-server-notice" style="display:none">
 	<div id="s1-warning-msg">
 		<b>TERMS &amp; NOTICES</b> <br/><br/>
 
@@ -715,7 +715,7 @@ Auto Posts to view.step2.php
 		modal({
 			type: 'alert',
 			title: 'Terms and Notices',
-			text: $('#dialog-server-info').html()
+			text: $('#dialog-server-notice').html()
 		});
 	}
 

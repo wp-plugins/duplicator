@@ -95,7 +95,7 @@
 
     /*Terms and Notices*/
 	div#s1-warning-check label{cursor:pointer;}
-    div#s1-warning-msg {padding:5px;font-size:12px; color:#333; line-height:14px;font-style:italic; overflow-y:scroll; height:150px; border:1px solid #dfdfdf; background:#fff; border-radius:3px}
+    div#s1-warning-msg {padding:5px;font-size:12px; color:#333; line-height:14px;font-style:italic; overflow-y:scroll; height:250px; border:1px solid #dfdfdf; background:#fff; border-radius:3px}
 	div#s1-warning-check {padding:3px; font-size:14px; font-weight:normal;}
     input#accept-warnings {height: 17px; width:17px}
 	
