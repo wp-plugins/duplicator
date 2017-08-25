@@ -75,7 +75,7 @@ if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) {
 	$notice['01']   = ! file_exists($wpconf_path)	? 'Good' : 'Warn';
 	$notice['02']   = $scancount <= 35 ? 'Good' : 'Warn';
 }
-$notice['03']	= $fulldays <= 180 ? 'Good' : 'Warn';
+$notice['03']	= $fulldays <= 120 ? 'Good' : 'Warn';
 $notice['04']	= 'Good'; //Place-holder for future check
 $notice['05']	= DUPX_Server::$php_version_53_plus	 ? 'Good' : 'Warn';
 $notice['06']	= empty($openbase)	 ? 'Good' : 'Warn';
@@ -361,7 +361,8 @@ VALIDATION
 		<div class="status <?php echo ($notice['03'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['03']; ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice03">+ Package Age</div>
 		<div class="info" id="s1-notice03">
-			<?php echo "The package is {$fulldays} day(s) old. Packages older than 180 days might be considered stale"; ?>
+			<?php echo "The package is {$fulldays} day(s) old. Packages older than 120 days might be considered stale.  If you are comfortable with a package that that was created over "
+			. "four months ago please ignore this notice."; ?>
 		</div>
 
         <!-- NOTICE 4
@@ -372,19 +373,19 @@ VALIDATION
 
 		<!-- NOTICE 5 -->
 		<div class="status <?php echo ($notice['05'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['05']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice05">+ PHP Version 5.3+</div>
+		<div class="title" data-type="toggle" data-target="#s1-notice05">+ PHP Version 5.2</div>
 		<div class="info" id="s1-notice05">
 			<?php
 				$currentPHP = DUPX_Server::$php_version;
 				$cssStyle   = DUPX_Server::$php_version_53_plus	 ? 'color:green' : 'color:red';
 				echo "<b style='{$cssStyle}'>This server is currently running PHP version [{$currentPHP}]</b>.<br/>"
 				. "Duplicator allows PHP 5.2 to be used during install but does not officially support it.  If your using PHP 5.2 we strongly recommend NOT using it and having your "
-				. "host upgrade to a newer more stable, secure and widely supported version of PHP.  The <a href='http://php.net/eol.php' target='_blank'>end of life for PHP 5.2</a> "
+				. "host upgrade to a newer more stable, secure and widely supported version.  The <a href='http://php.net/eol.php' target='_blank'>end of life for PHP 5.2</a> "
 				. "was in January of 2011 and is not recommended for use.<br/><br/>";
 
-				echo "Many plugin and theme authors are no longer officially supporting PHP 5.2 and trying to use it can result in site wide problems and compatibility errors.  "
+				echo "Many plugin and theme authors are no longer supporting PHP 5.2 and trying to use it can result in site wide problems and compatibility warnings and errors.  "
 				. "Please note if you continue with the install using PHP 5.2 the Duplicator support team will not be able to help with issues or troubleshooting your site.  "
-				. "If your running PHP 5.3+ please feel free to reach out for help if you run into issues with your migration/install.";
+				. "If your server is running <b>PHP 5.3+</b> please feel free to reach out for help if you run into issues with your migration/install.";
 			?>
 		</div>
 
