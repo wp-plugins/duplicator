@@ -70,8 +70,8 @@ function duplicator_package_build() {
 	$json['ZipSize']  = $Package->ZipSize;
 	$json_response = json_encode($json);
 
-	//Generate Host Build Interrupt
-	// die(0);
+	//Simulate a Host Build Interrupt
+	//die(0);
 
 	error_reporting($errLevel);
     die($json_response);

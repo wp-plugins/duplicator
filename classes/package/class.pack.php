@@ -297,11 +297,11 @@ class DUP_Package
             $name       = substr(sanitize_file_name($name), 0, 40);
             $name       = str_replace(array('.', '-', ';', ':', "'", '"'), '', $name);
 
-            $filter_dirs  = isset($post['filter-dirs']) ? $this->Archive->parseDirectoryFilter($post['filter-dirs']) : '';
+            $filter_dirs  = isset($post['filter-dirs'])  ? $this->Archive->parseDirectoryFilter($post['filter-dirs']) : '';
 			$filter_files = isset($post['filter-files']) ? $this->Archive->parseFileFilter($post['filter-files']) : '';
-            $filter_exts  = isset($post['filter-exts']) ? $this->Archive->parseExtensionFilter($post['filter-exts']) : '';
-            $tablelist    = isset($post['dbtables']) ? implode(',', $post['dbtables']) : '';
-            $compatlist   = isset($post['dbcompat']) ? implode(',', $post['dbcompat']) : '';
+            $filter_exts  = isset($post['filter-exts'])  ? $this->Archive->parseExtensionFilter($post['filter-exts']) : '';
+            $tablelist    = isset($post['dbtables'])	 ? implode(',', $post['dbtables']) : '';
+            $compatlist   = isset($post['dbcompat'])	 ? implode(',', $post['dbcompat']) : '';
             $dbversion    = DUP_DB::getVersion();
             $dbversion    = is_null($dbversion) ? '- unknown -'  : $dbversion;
             $dbcomments   = DUP_DB::getVariable('version_comment');
@@ -315,24 +315,24 @@ class DUP_Package
             $this->VersionWP  = $wp_version;
             $this->VersionPHP = phpversion();
             $this->VersionDB  = esc_html($dbversion);
-            $this->Name       = $name;
+            $this->Name       = sanitize_text_field($name);
             $this->Hash       = $this->makeHash();
             $this->NameHash   = "{$this->Name}_{$this->Hash}";
 
-            $this->Notes                    = esc_html($post['package-notes']);
+            $this->Notes                    = esc_html(sanitize_textarea_field($post['package-notes']));
             //ARCHIVE
             $this->Archive->PackDir         = rtrim(DUPLICATOR_WPROOTPATH, '/');
             $this->Archive->Format          = 'ZIP';
             $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
 			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
-            $this->Archive->FilterDirs      = esc_html($filter_dirs);
-			 $this->Archive->FilterFiles    = esc_html($filter_files);
-            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', esc_html($filter_exts));
+            $this->Archive->FilterDirs      = esc_html(sanitize_textarea_field($filter_dirs));
+			 $this->Archive->FilterFiles    = esc_html(sanitize_textarea_field($filter_files));
+            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', esc_html(sanitize_textarea_field($filter_exts)));
             //INSTALLER
-            $this->Installer->OptsDBHost    = esc_html($post['dbhost']);
-            $this->Installer->OptsDBPort    = esc_html($post['dbport']);
-            $this->Installer->OptsDBName    = esc_html($post['dbname']);
-            $this->Installer->OptsDBUser    = esc_html($post['dbuser']);
+            $this->Installer->OptsDBHost    = esc_html(sanitize_text_field($post['dbhost']));
+            $this->Installer->OptsDBPort    = esc_html(sanitize_text_field($post['dbport']));
+            $this->Installer->OptsDBName    = esc_html(sanitize_text_field($post['dbname']));
+            $this->Installer->OptsDBUser    = esc_html(sanitize_text_field($post['dbuser']));
             //DATABASE
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
             $this->Database->FilterTables   = esc_html($tablelist);
@@ -477,7 +477,7 @@ class DUP_Package
     /**
      *  Gets a default name for the package
      *
-     *  @return string   A default packagename such as 20170218_blogname
+     *  @return string   A default package name such as 20170218_blogname
      */
     public static function getDefaultName($preDate = true)
     {

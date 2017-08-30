@@ -1,4 +1,9 @@
 <?php
+	//Nonce Check
+	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_form_opts_nonce_field'], 'dup_form_opts' ) ) {
+		die('Invalid token permissions to perform this request.');
+	}
+
 	global $wp_version;
 	wp_enqueue_script('dup-handlebars');
 
@@ -143,6 +148,7 @@ TOOL BAR:STEPS -->
 
 
 <form id="form-duplicator" method="post" action="?page=duplicator&tab=new3">
+<?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field'); ?>
 
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">

@@ -1,4 +1,9 @@
 <?php
+	//Nonce Check
+	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_form_opts_nonce_field'], 'dup_form_opts' ) ) {
+		die('Invalid token permissions to perform this request.');
+	}
+
 	$Package = DUP_Package::getActive();
 	$ajax_nonce	= wp_create_nonce('dup_package_build');
 
@@ -79,6 +84,7 @@ TOOL BAR: STEPS -->
 
 
 <form id="form-duplicator" method="post" action="?page=duplicator">
+<?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field'); ?>
 
 <!--  PROGRESS BAR -->
 <div id="dup-progress-bar-area">
@@ -109,7 +115,7 @@ TOOL BAR: STEPS -->
 			<!-- DOWNLOAD FILES -->
 			<fieldset class="download-area">
 				<legend>
-					&nbsp; <i class="fa fa-download"></i> <?php _e("Download Files", 'duplicator') ?> &nbsp;
+					&nbsp; <?php _e("Download Files", 'duplicator') ?> <i class="fa fa-download"></i> &nbsp;
 				</legend>
 				<button id="dup-btn-installer" class="button button-primary button-large" title="<?php _e("Click to download installer file", 'duplicator') ?>">
 					<i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?> &nbsp;
@@ -122,9 +128,13 @@ TOOL BAR: STEPS -->
 				</button>
 				<div class="one-click-download">
 					<a href="javascript:void(0)" id="dup-link-download-both" title="<?php _e("Click to download both files", 'duplicator') ?>">
-						<?php _e("One-Click Download", 'duplicator') ?><i class="fa fa-download" style="padding-left:5px; color:#0073AA"></i>
-					</a>
+						<i class="fa fa-download" style="padding-left:5px; color:#0073AA">&nbsp;</i><?php _e("One-Click Download", 'duplicator') ?></a>
 					
+					<sup><i class="fa fa-question-circle" style='font-size:11px'
+					   data-tooltip-title="<?php _e("One Click:", 'duplicator'); ?>"
+					   data-tooltip="<?php _e('Clicking this link will open both the installer and archive download prompts at the same time. '
+					   . 'On some browsers you may have to disable pop-up warnings on this domain for this to work correctly.', 'duplicator'); ?>">
+					</i></sup>
 				</div>
 			</fieldset>
 			<br/><br/>

@@ -16,10 +16,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 
     //Package
 	$enable_mysqldump = isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
+	$package_mysqldump = realpath(trim(esc_sql(strip_tags($_POST['package_mysqldump_path']))));
+
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
 	DUP_Settings::Set('package_mysqldump', $enable_mysqldump ? "1" : "0");
 	DUP_Settings::Set('package_phpdump_qrylimit', isset($_POST['package_phpdump_qrylimit']) ? $_POST['package_phpdump_qrylimit'] : "100");
-    DUP_Settings::Set('package_mysqldump_path', trim(esc_sql(strip_tags($_POST['package_mysqldump_path']))));
+    DUP_Settings::Set('package_mysqldump_path', $package_mysqldump);
 	DUP_Settings::Set('package_ui_created', $_POST['package_ui_created']);
     $action_updated = DUP_Settings::Save();
     DUP_Util::initSnapshotDirectory();

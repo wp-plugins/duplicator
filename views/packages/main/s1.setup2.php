@@ -50,6 +50,8 @@
 
 <form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo $retry_enabled ? '&retry=1' : '';?>" data-validate="parsley">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
+<?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field'); ?>
+
 <div>
 	<label for="package-name" class="lbl-larger"><b>&nbsp;<?php _e('Name', 'duplicator') ?>:</b> </label>
 	<div class="dup-notes-add">
@@ -140,6 +142,9 @@ ARCHIVE -->
                 <?php
 					$uploads = wp_upload_dir();
 					$upload_dir = DUP_Util::safePath($uploads['basedir']);
+					$filter_dir_count  = isset($Package->Archive->FilterDirs)  ? count(explode(";", $Package->Archive->FilterDirs)) -1  : 0;
+					$filter_file_count = isset($Package->Archive->FilterFiles) ? count(explode(";", $Package->Archive->FilterFiles)) -1 : 0;
+
                 ?>
            
 				<input type="checkbox"  id="export-onlydb" name="export-onlydb"  onclick="Duplicator.Pack.ExportOnlyDB()" <?php echo ($Package->Archive->ExportOnlyDB) ? "checked='checked'" :""; ?> />
@@ -155,7 +160,12 @@ ARCHIVE -->
 					</i>
 
 					<div id="dup-file-filter-items">
-						<label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("Directories", 'duplicator') ?>:</label>
+						<label for="filter-dirs" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>">
+							<?php
+								_e("Directories:", 'duplicator');
+								echo sprintf("<sup title='%s'>({$filter_dir_count})</sup>", __("Number of directories filtered", 'duplicator'));
+							?>
+						</label>
 						<div class='dup-quick-links'>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php _e("root path", 'duplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php _e("wp-uploads", 'duplicator') ?>]</a>
@@ -172,7 +182,12 @@ ARCHIVE -->
 						</div>
 						<textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
 
-						<label class="no-select" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>"><?php _e("Files", 'duplicator') ?>:</label>
+						<label class="no-select" title="<?php _e("Separate all filters by semicolon", 'duplicator'); ?>">
+							<?php
+								_e("Files:", 'duplicator');
+								echo sprintf("<sup title='%s'>({$filter_file_count})</sup>", __("Number of files filtered", 'duplicator'));
+							?>
+						</label>
 						<div class='dup-quick-links'>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeFilePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')"><?php _e("(file path)", 'duplicator') ?></a>
 							<a href="javascript:void(0)" onclick="jQuery('#filter-files').val('')"><?php _e("(clear)", 'duplicator') ?></a>

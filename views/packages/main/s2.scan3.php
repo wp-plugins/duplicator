@@ -1,4 +1,6 @@
 <?php
+	/*IDE Helper*/
+	/* @var $Package DUP_Package */
 	function _duplicatorGetRootPath() {
 		$txt   = __('Root Path', 'duplicator');
 		$root  = rtrim(DUPLICATOR_WPROOTPATH, '//');
@@ -115,7 +117,7 @@ TOTAL SIZE -->
 							} else {
 								echo "<div style='color:maroon'>";
 								_e('No large files found during this scan.  If you\'re having issues building a package click the back button and try '
-									. 'adding the following file filters to non-essential files paths like wp-content/uploads.   These filtered files can then '
+									. 'adding a file filter to non-essential files paths like wp-content/uploads.   These excluded files can then '
 									. 'be manually moved to the new location after you have ran the migration installer.', 'duplicator');
 								echo "</div>";
 							}
@@ -328,8 +330,8 @@ DIALOG: Scan Results -->
 	
 	<!-- PACKAGE -->
 	<h2><i class="fa fa-archive"></i> <?php _e('Package', 'duplicator');?></h2>
-	<b><?php _e('Name', 'duplicator');?>:</b> <?php echo $_POST['package-name']; ?><br/>
-	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo strlen($_POST['package-notes']) ? $_POST['package-notes'] : __('- no notes -', 'duplicator') ; ?>
+	<b><?php _e('Name', 'duplicator');?>:</b> <?php echo $Package->Name; ?><br/>
+	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo $Package->Notes; ; ?>
 	<br/><br/>
 
 	<!-- DATABASE -->
