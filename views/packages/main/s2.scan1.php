@@ -76,7 +76,8 @@
 	div.hb-files-style div.files i.size {font-style:normal; display:inline-block; min-width:50px}
 	div.hb-files-style div.files label {font-weight: normal; font-size:11px; vertical-align:top;display:inline-block;width:450px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis;}
 	div.hb-files-style div.files label:hover {color:#025d02; cursor: pointer}
-	div.hb-files-style div.apply-btn {text-align:right; margin: 1px 0 10px 0}
+	div.hb-files-style div.apply-btn {text-align:right; margin: 1px 0 10px 0; width:100%}
+	div.hb-files-style div.apply-warn {float:left; font-size:11px; color:maroon; margin-top:-7px; font-style: italic; display:none; text-align: left}
 
 	div#size-more-details {display:none; margin:5px 0 20px 0; border:1px solid #dfdfdf; padding:8px; border-radius: 4px; background-color: #F1F1F1}
 	div#size-more-details ul {list-style-type:circle; padding-left:20px; margin:0}

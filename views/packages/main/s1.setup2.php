@@ -12,7 +12,7 @@
 	input#package-name {padding:4px; height: 2em;  font-size: 1.2em;  line-height: 100%; width: 100%;   margin: 0 0 3px;}
 	label.lbl-larger {font-size:1.2em}
     /*ARCHIVE SECTION*/
-    form#dup-form-opts div.tabs-panel{max-height:550px; padding:10px; min-height:280px}
+    form#dup-form-opts div.tabs-panel{max-height:800px; padding:10px; min-height:280px}
     form#dup-form-opts ul li.tabs{font-weight:bold}
     ul.category-tabs li {padding:4px 15px 4px 15px}
     select#archive-format {min-width:100px; margin:1px 0 4px 0}
@@ -23,7 +23,12 @@
 	form#dup-form-opts textarea#filter-files {height:85px}
     div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
     div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0 0 10px; color:#777}
-    table#dup-dbtables td {padding:1px 15px 1px 4px}
+    /* Tab: Database */
+    table#dup-dbtables td {padding:1px 7px 1px 4px}
+	label.core-table {color:#9A1E26;font-style:italic;font-weight:bold}
+	i.core-table-info {color:#9A1E26;font-style:italic;}
+	label.non-core-table {color:#000}
+	label.non-core-table:hover, label.core-table:hover {text-decoration:line-through}
 	table.dbmysql-compatibility td{padding:2px 20px 2px 2px}
 	div.dup-store-pro {font-size:12px; font-style:italic;}
 	div.dup-store-pro img {height:14px; width:14px; vertical-align:text-top}
@@ -184,7 +189,7 @@ ARCHIVE -->
 				<div id="dup-exportdb-items-checked"  style="<?php echo ($Package->Archive->ExportOnlyDB) ? 'block' : 'none'; ?>">
 					<?php 
 						_e("<b>Overview:</b><br/> This advanced option excludes all files from the archive.  Only the database and a copy of the installer.php "
-						. "will be included in the archive.zip file. The option can be used for backing up and moving only the database. <i>Please note that this option is currently in *Beta*.</i>", 'duplicator');
+						. "will be included in the archive.zip file. The option can be used for backing up and moving only the database.", 'duplicator');
 						
 						echo '<br/><br/>';
 
@@ -230,28 +235,36 @@ ARCHIVE -->
                     <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php _e('Exclude All', 'duplicator'); ?> ]</a>
                     <div style="white-space:nowrap">
 					<?php
+						$coreTables = DUP_Util::getWPCoreTables();
 						$tables = $wpdb->get_results("SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N);
 						$num_rows = count($tables);
-						echo '<table id="dup-dbtables"><tr><td valign="top">';
-						$next_row = round($num_rows / 3, 0);
+						$next_row = round($num_rows / 4, 0);
 						$counter = 0;
 						$tableList = explode(',', $Package->Database->FilterTables);
-						foreach ($tables as $table)
-						{
-							if (in_array($table[0], $tableList))
-							{
+
+						echo '<table id="dup-dbtables"><tr><td valign="top">';
+						foreach ($tables as $table) {
+
+							if (in_array($table[0], $coreTables)) {
+								$core_css = 'core-table';
+								$core_note = '*';
+							} else {
+								$core_css = 'non-core-table';
+								$core_note = '';
+							}
+
+							if (in_array($table[0], $tableList)) {
 								$checked = 'checked="checked"';
-								$css = 'text-decoration:line-through';
-							}
-							else
-							{
+								$css	 = 'text-decoration:line-through';
+							} else {
 								$checked = '';
-								$css = '';
+								$css	 = '';
 							}
-							echo "<label for='dbtables-{$table[0]}' style='{$css}'><input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />&nbsp;{$table[0]}</label><br />";
+							echo  "<label for='dbtables-{$table[0]}' style='{$css}' class='{$core_css}'>"
+								. "<input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />"
+								. "&nbsp;{$table[0]}{$core_note}</label><br />";
 							$counter++;
-							if ($next_row <= $counter)
-							{
+							if ($next_row <= $counter) {
 								echo '</td><td valign="top">';
 								$counter = 0;
 							}
@@ -260,6 +273,15 @@ ARCHIVE -->
 					?>
                     </div>	
                 </div>
+
+				<div class="dup-tabs-opts-help">
+					<?php
+						_e("Checked tables will be <u>excluded</u> from the database script. ", 'duplicator');
+						_e("Excluding certain tables can cause your site or plugins to not work correctly after install!<br/>", 'duplicator');
+						_e("<i class='core-table-info'> Use caution when excluding tables! It is highly recommended to not exclude WordPress core tables*, unless you know the impact.</i>", 'duplicator');
+					?>
+				</div>
+
 				<br/>
 				<?php _e("Compatibility Mode", 'duplicator') ?> &nbsp;
 				<i class="fa fa-question-circle" 

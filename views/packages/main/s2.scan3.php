@@ -126,6 +126,9 @@ TOTAL SIZE -->
 
 
 			<div class="apply-btn" style="margin-bottom:5px;float:right">
+				<div class="apply-warn">
+					 <?php _e('*Checking a directory will exclude all items recursively from that path down.<br/>Please use caution when filtering directories.', 'duplicator'); ?>
+				</div>
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'large')">
 					<i class="fa fa-filter"></i> <?php _e('Add Filters &amp; Rescan', 'duplicator');?>
 				</button>
@@ -204,6 +207,9 @@ FILE NAME CHECKS -->
 				</div>
 			</div>
 			<div class="apply-btn">
+				<div class="apply-warn">
+					 <?php _e('*Checking a directory will exclude all items recursively from that path down.<br/>Please use caution when filtering directories.', 'duplicator'); ?>
+				</div>
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'utf8')">
 					<i class="fa fa-filter"></i> <?php _e('Add Filters &amp; Rescan', 'duplicator');?>
 				</button>
@@ -453,6 +459,7 @@ jQuery(document).ready(function($)
 		$(dir).is(':checked')
 			? $.each($checks, function() {$(this).attr({disabled : true, checked : false, title : '<?php _e('Directory applied filter set.', 'duplicator');?>'});})
 			: $.each($checks, function() {$(this).removeAttr('disabled checked title');});
+		$('div.apply-warn').show(300);
 	}
 
 	//Opens a dialog to show scan details
