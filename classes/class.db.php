@@ -66,7 +66,8 @@ class DUP_DB extends wpdb
 
 
     /**
-     * Returns the mysqldump path if the server is enabled to execute it
+     * Returns the mysqldump path if the server is enabled to execute it otherwise false
+	 *
      * @return boolean|string
      */
     public static function getMySqlDumpPath()

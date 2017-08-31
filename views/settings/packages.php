@@ -9,27 +9,32 @@ $action_response = __("Package Settings Saved", 'duplicator');
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
 
 	//Nonce Check
-	if (! isset( $_POST['dup_settings_save_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_settings_save_nonce_field'], 'dup_settings_save' ) )
-	{
+	if (! isset( $_POST['dup_settings_save_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_settings_save_nonce_field'], 'dup_settings_save' )) {
 		die('Invalid token permissions to perform this request.');
 	}
 
     //Package
-	$enable_mysqldump = isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
-	$package_mysqldump = realpath(trim(esc_sql(strip_tags($_POST['package_mysqldump_path']))));
-
+	$mysqldump_enabled		= isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
+	$mysqldump_exe_file		= isset($_POST['package_mysqldump_path']) ? trim(esc_sql(strip_tags($_POST['package_mysqldump_path']))) : null;
+	$mysqldump_path_valid	= is_file($mysqldump_exe_file) ? true : false;
+	
+	DUP_Settings::Set('last_updated', date('Y-m-d-H-i-s'));
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
-	DUP_Settings::Set('package_mysqldump', $enable_mysqldump ? "1" : "0");
+	DUP_Settings::Set('package_mysqldump', $mysqldump_enabled ? "1" : "0");
 	DUP_Settings::Set('package_phpdump_qrylimit', isset($_POST['package_phpdump_qrylimit']) ? $_POST['package_phpdump_qrylimit'] : "100");
-    DUP_Settings::Set('package_mysqldump_path', $package_mysqldump);
+	if ($mysqldump_path_valid) {
+		$mysqldump_exe_file = DUP_Util::isWindows() ? realpath($mysqldump_exe_file) : $mysqldump_exe_file;
+		DUP_Settings::Set('package_mysqldump_path', $mysqldump_exe_file);
+	}
 	DUP_Settings::Set('package_ui_created', $_POST['package_ui_created']);
-    $action_updated = DUP_Settings::Save();
+    
+	$action_updated = DUP_Settings::Save();
     DUP_Util::initSnapshotDirectory();
 }
 
 $package_zip_flush = DUP_Settings::Get('package_zip_flush');
 $phpdump_chunkopts = array("20", "100", "500", "1000", "2000");
-$package_phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
+$phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
 $package_mysqldump = DUP_Settings::Get('package_mysqldump');
 $package_mysqldump_path = trim(DUP_Settings::Get('package_mysqldump_path'));
 $package_ui_created = is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_Settings::Get('package_ui_created') : 1;
@@ -39,10 +44,9 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 ?>
 
 <style>
-    form#dup-settings-form input[type=text] {width: 400px; }
-    input#package_mysqldump_path_found {margin-top:5px}
-    div.dup-feature-found {padding:3px; border:1px solid silver; background: #f7fcfe; border-radius: 3px; width:400px; font-size: 12px}
-    div.dup-feature-notfound {padding:5px; border:1px solid silver; background: #fcf3ef; border-radius: 3px; width:500px; font-size: 13px; line-height: 18px}
+    form#dup-settings-form input[type=text] {width:500px; }
+    div.dup-feature-found {padding:10px 0 5px 0; color:green;}
+    div.dup-feature-notfound {color:maroon; width:600px; line-height: 18px}
 	select#package_ui_created {font-family: monospace}
 </style>
 
@@ -96,11 +100,11 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 		<hr size="1" />
 		<table class="form-table">
         <tr>
-            <th scope="row"><label><?php _e("Database Script", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php _e("SQL Script", 'duplicator'); ?></label></th>
             <td>
                 <?php if (!DUP_Util::hasShellExec()) : ?>
 					<input type="radio" disabled="true" />
-                    <label><?php _e("Use mysqldump", 'duplicator'); ?></label>
+                    <label><?php _e("Mysqldump", 'duplicator'); ?></label>
                     <p class="description" style="width:550px; margin:5px 0 0 20px">
                         <?php
 							_e("This server does not support the PHP shell_exec function which is required for mysqldump to run. ", 'duplicator');
@@ -124,37 +128,50 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                     </p>
                 <?php else : ?>
                     <input type="radio" name="package_dbmode" value="mysql" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
-                    <label for="package_mysqldump"><?php _e("Use mysqldump", 'duplicator'); ?></label>
+                    <label for="package_mysqldump"><?php _e("Mysqldump", 'duplicator'); ?></label>
                     <i style="font-size:12px">(<?php _e("recommended", 'duplicator'); ?>)</i> <br/>
 
                     <div style="margin:5px 0px 0px 25px">
                         <?php if ($mysqlDumpFound) : ?>
                             <div class="dup-feature-found">
-                                <?php _e("Working Path:", 'duplicator'); ?> &nbsp;
+								<i class="fa fa-check-circle"></i>
+                                <?php _e("Successfully Found:", 'duplicator'); ?> &nbsp;
                                 <i><?php echo $mysqlDumpPath ?></i>
                             </div><br/>
                         <?php else : ?>
                             <div class="dup-feature-notfound">
+								<i class="fa fa-exclamation-triangle"></i>
                                 <?php
-									_e('Mysqldump was not found at its default location or the location provided.  Please enter a path to a valid location where mysqldump can run.  '
-										. 'If the problem persist contact your server administrator.', 'duplicator');
-                                ?>
-
-								<?php
+									_e('Mysqldump was not found at its default location or the location provided.  Please enter a custom path to a valid location where mysqldump can run.  '
+										. 'If the problem persist contact your host or server administrator.  ', 'duplicator');
+           
 									printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
 										__("See the", 'duplicator'),
 										__("host list", 'duplicator'),
-										__("for reliable access to mysqldump", 'duplicator'));
+										__("for reliable access to mysqldump.", 'duplicator'));
+																
 								?>
                             </div><br/>
 
                         <?php endif; ?>
 
 						<i class="fa fa-question-circle"
-								data-tooltip-title="<?php _e("mysqldump", 'duplicator'); ?>"
-								data-tooltip="<?php _e('An optional path to the mysqldump program.  Add a custom path if the path to mysqldump is not properly detected or needs to be changed.  For all paths including Windows use a forward slash.', 'duplicator'); ?>"></i>
+								data-tooltip-title="<?php _e("mysqldump path:", 'duplicator'); ?>"
+								data-tooltip="<?php _e('An optional path to the mysqldump program.  Add a custom path if the path to mysqldump is not properly detected or needs to be changed.', 'duplicator'); ?>"></i>
                         <label><?php _e("Custom Path:", 'duplicator'); ?></label><br/>
                         <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?>" placeholder="<?php _e("/usr/bin/mypath/mysqldump.exe", 'duplicator'); ?>" />
+						<div class="dup-feature-notfound">
+						<?php
+							if ($action_updated && $mysqldump_path_valid === false) {
+								$mysqldump_path = DUP_Util::isWindows() ? stripslashes($_POST['package_mysqldump_path']) : $_POST['package_mysqldump_path'];
+								if (strlen($mysqldump_path)) {
+									_e('<i class="fa fa-exclamation-triangle"></i> The custom path provided is not recognized as a valid mysqldump file:<br/>', 'duplicator');
+									$mysqldump_path = esc_html($mysqldump_path);
+									echo "'{$mysqldump_path}'";
+								}
+							}
+						?>
+						</div>
 						<br/><br/>
                     </div>
 
@@ -162,7 +179,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 
 				<!-- PHP MODE -->
 				<input type="radio" name="package_dbmode" id="package_phpdump" value="php" <?php echo (! $package_mysqldump) ? 'checked="checked"' : ''; ?> />
-                <label for="package_phpdump"><?php _e("Use PHP Code", 'duplicator'); ?></label> &nbsp;
+                <label for="package_phpdump"><?php _e("PHP Code", 'duplicator'); ?></label> &nbsp;
 
 				<div style="margin:5px 0px 0px 25px">
 					<i class="fa fa-question-circle"
@@ -172,7 +189,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 					<select name="package_phpdump_qrylimit" id="package_phpdump_qrylimit">
 						<?php
 							foreach($phpdump_chunkopts as $value) {
-								$selected = ( $package_phpdump_qrylimit == $value ? "selected='selected'" : '' );
+								$selected = ( $phpdump_qrylimit == $value ? "selected='selected'" : '' );
 								echo "<option {$selected} value='{$value}'>" . number_format($value)  . '</option>';
 							}
 						?>
