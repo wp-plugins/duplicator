@@ -124,7 +124,7 @@ class DUP_Settings
 		//Flag used to show debug info
 		$default['package_debug']			 = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
 		//Flag used to enable mysqldump
-		$default['package_mysqldump']		 = isset(self::$Data['package_mysqldump']) ? self::$Data['package_mysqldump'] : false;
+		$default['package_mysqldump']		 = isset(self::$Data['package_mysqldump']) ? self::$Data['package_mysqldump'] : true;
 		//Optional mysqldump search path
 		$default['package_mysqldump_path']	 = isset(self::$Data['package_mysqldump_path']) ? self::$Data['package_mysqldump_path'] : '';
 		//Optional mysql limit size

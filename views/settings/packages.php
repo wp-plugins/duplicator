@@ -104,7 +104,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
             <td>
                 <?php if (!DUP_Util::hasShellExec()) : ?>
 					<input type="radio" disabled="true" />
-                    <label><?php _e("Mysqldump", 'duplicator'); ?></label>
+                    <label><?php _e("Mysqldump", 'duplicator'); ?> <i style="font-size:12px">(<?php _e("recommended", 'duplicator'); ?>)</i></label>
                     <p class="description" style="width:550px; margin:5px 0 0 20px">
                         <?php
 							_e("This server does not support the PHP shell_exec function which is required for mysqldump to run. ", 'duplicator');
@@ -178,7 +178,12 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
                 <?php endif; ?>
 
 				<!-- PHP MODE -->
-				<input type="radio" name="package_dbmode" id="package_phpdump" value="php" <?php echo (! $package_mysqldump) ? 'checked="checked"' : ''; ?> />
+				<?php if (! $mysqlDumpFound) : ?>
+					<input type="radio" name="package_dbmode" id="package_phpdump" value="php" checked="checked" />
+				<?php else : ?>
+					<input type="radio" name="package_dbmode" id="package_phpdump" value="php" <?php echo (! $package_mysqldump) ? 'checked="checked"' : ''; ?> />
+				<?php endif; ?>
+
                 <label for="package_phpdump"><?php _e("PHP Code", 'duplicator'); ?></label> &nbsp;
 
 				<div style="margin:5px 0px 0px 25px">
