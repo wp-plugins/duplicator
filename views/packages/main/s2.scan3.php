@@ -292,15 +292,12 @@ DATABASE -->
 			?>
 		</div>
 	</div>
-
 	<?php
-		
         echo '<div class="dup-pro-support">&nbsp;';
         _e('Package support up to 2GB available in', 'duplicator');
         echo '&nbsp;<i><a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Duplicator Pro', 'duplicator') . '!</a></i>';
         echo '</div>';
 	?>
-
 </div>
 <br/><br/>
 

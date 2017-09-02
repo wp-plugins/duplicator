@@ -1,7 +1,7 @@
 <?php
 	//Nonce Check
 	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_form_opts_nonce_field'], 'dup_form_opts' ) ) {
-		die('Invalid token permissions to perform this request.');
+		DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1');
 	}
 
 	global $wp_version;

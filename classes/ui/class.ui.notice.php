@@ -20,10 +20,8 @@ if (!defined('DUPLICATOR_VERSION')) {
 
 class DUP_UI_Notice
 {
-
-
     /**
-     * Shows a display message in the wp-admin if any researved files are found
+     * Shows a display message in the wp-admin if any reserved files are found
      * 
      * @return string   Html formated text notice warnings
      */
@@ -74,5 +72,19 @@ class DUP_UI_Notice
 
 			echo "</p></div>";
         } 
+    }
+
+    /**
+     * Shows a message for redirecting a page
+     *
+     * @return string   The location to redirect to
+     */
+    public static function redirect($location)
+    {
+        echo '<div class="dup-redirect"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i>';
+			_e('Redirecting Please Wait...', 'duplicator');
+		echo '</div>';
+		echo "<script>window.location = '{$location}';</script>";
+		die(_e('Invalid token permissions to perform this request.', 'duplicator'));
     }
 }

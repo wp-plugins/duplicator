@@ -22,6 +22,7 @@ div.dup-box-title {font-size: 16px; padding: 10px 0 0 10px; font-weight: bold; c
 div.dup-box-title:hover {background-color: #FCFCFC;}
 div.dup-box-arrow {text-decoration:none!important; float:right; width:27px; height:30px; font-size:16px; cursor:pointer; padding:1px 0 0 0; white-space: nowrap}
 div.dup-box-panel {padding:10px 15px 10px 15px;  border-top:1px solid #EEEEEE; margin:-1px 0 0 0;}
+div.dup-redirect {font-size:16px; font-weight: bold; padding: 10px}
 
 /*PANELS: Boxes that do not exapand */
 div.dup-panel {padding:0px; display: block; background-color: #fff; border: 1px solid #e5e5e5; box-shadow: 0 1px 1px rgba(0,0,0,.04);}

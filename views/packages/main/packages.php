@@ -35,51 +35,10 @@
 	td.error-msg a {color:maroon}
 	td.error-msg a i {color:maroon}
 	td.error-msg span {display:inline-block; padding:7px 18px 0px 0px; color:maroon}
-	div.dup-vote { position: absolute; top:15px; right:25px; }
-	div.dup-vote a { font-size:13px; font-style: italic }
-	div#dup-feedback-form {display:none; height:150px; top:70px; min-width:250px; padding:10px; background-color:#f9f9f9; border:1px solid silver; border-radius:5px;
-						   position:fixed; right:25px; z-index: 2; cursor:pointer; line-height:34px; font-size:14px; box-shadow: 10px 10px 5px -6px #999;}
-	div#dup-feedback-form i {display: inline-block; width: 15px}
-
+	div#dup-help-dlg i {display: inline-block; width: 15px; padding:2px;line-height:28px; font-size:14px;}
 </style>
 
 <form id="form-duplicator" method="post">
-
-<?php
-//    switch(rand(1,3)) {
-//        case 1:
-//          $feed_title = __("Have an idea?", 'duplicator');
-//			$feed_utm   = 'have_idea';
-//			break;
-//        case 2:
-//          $feed_title = __("How can we improve?", 'duplicator');
-//			$feed_utm   = 'improve';
-//			break;
-//        case 3:
-//          $feed_title = __("Have Feedback?", 'duplicator');
-//			$feed_utm   = 'feedback';
-//			break;
-//    }
-	$feed_title = __("Need Help", 'duplicator');
-	$feed_utm   = 'help_pack_screen';
-?>
-
-<div class="dup-vote">
-	<a href="javascript:void(0);" onclick="Duplicator.Pack.showFeedbackForm()">
-		 <?php echo  $feed_title; ?> <i class="fa fa-question-circle"></i>
-	</a>
-</div>
-
-<div id="dup-feedback-form">
-	<!--div style="text-align: center"><b><?php _e("LEAVE FEEDBACK", 'duplicator') ?></b></div-->
-	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_ticket_<?php echo $feed_utm; ?>&utm_campaign=duplicator_free" target="_blank"><?php _e("Need help with the plugin?", 'duplicator') ?></a> <br/>
-	<i class="fa fa-file-text-o"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_quick_<?php echo $feed_utm; ?>&utm_campaign=duplicator_free" target="_blank"><?php _e("Visit Quick Start Guide!", 'duplicator') ?></a> <br/>
-	<i class="fa fa-file-code-o"></i> <a href="https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_faq_<?php echo $feed_utm; ?>&utm_campaign=duplicator_free" target="_blank"><?php _e("Frequently Asked Questions!", 'duplicator') ?></a> <hr size="1"/>
-	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=feedback_idea_<?php echo $feed_utm; ?>&utm_campaign=duplicator_free" target="_blank"><?php _e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
-	<?php if($statusCount >= 2)  :	?>
-		<!--i class="fa fa-star-o"></i> <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Help review the plugin!", 'duplicator') ?></a-->
-	<?php endif; ?>
-</div>
 
 <!-- ====================
 TOOL-BAR -->
@@ -93,7 +52,12 @@ TOOL-BAR -->
 			<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.ConfirmDelete()">
 		</td>
 		<td align="center" >
-			<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'duplicator') ?>..."><i class="fa fa-list-alt"></i>
+			<a href="javascript:void(0)" id="btn-logs-dialog" class="button"  title="<?php _e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()">
+				<?php echo ($statusCount == 1)  
+						? '<i class="fa fa-question-circle" style="color:green"></i>'
+						: '<i class="fa fa-question-circle"></i>';
+				?>
+			</a>
 		</td>
 		<td>						
 			<span><i class="fa fa-archive"></i> <?php _e("Packages", 'duplicator'); ?></span>
@@ -121,7 +85,6 @@ TOOL-BAR -->
 							<?php _e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
 						</a>
 					</div>
-					
 					<div style="height:75px">&nbsp;</div>
 				</div>
 				</td>
@@ -261,7 +224,31 @@ THICK-BOX DIALOGS: -->
 	$confirm1->progressText	= __('Removing Packages, Please Wait...', 'duplicator');
 	$confirm1->jscallback		= 'Duplicator.Pack.Delete()';
 	$confirm1->initConfirm();
+
+	$alert3 = new DUP_UI_Dialog();
+	$alert3->height     = 350;
+	$alert3->width      = 350;
+	$alert3->title		= __('Duplicator Help', 'duplicator');
+	$alert3->message	= "<div id='dup-help-dlg'></div>";
+	$alert3->initAlert();
 ?>
+
+<!-- =======================
+DIALOG: HELP DIALOG -->
+<div id="dup-help-dlg-info" style="display:none">
+	<b><?php _e("Common Questions:", 'duplicator') ?></b><hr size='1'/>
+	<i class="fa fa-file-text-o"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_pack_help&utm_campaign=duplicator_free#quick-010-q" target="_blank"><?php _e("How do I create a package", 'duplicator') ?></a> <br/>
+    <i class="fa fa-file-text-o"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank"><?php _e('How do I install a package?', 'duplicator'); ?></a>	 <br/>
+	<i class="fa fa-file-code-o"></i> <a href="https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free" target="_blank"><?php _e("Frequently Asked Questions!", 'duplicator') ?></a>
+	<br/><br/>
+
+	<b><?php _e("Other Resources:", 'duplicator') ?></b><hr size='1'/>
+	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_ticket&utm_campaign=duplicator_free" target="_blank"><?php _e("Need help with the plugin?", 'duplicator') ?></a> <br/>
+	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_idea&utm_campaign=duplicator_free" target="_blank"><?php _e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
+	<?php if($statusCount >= 3)  :	?>
+		<i class="fa fa-star-o"></i> <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Help review the plugin!", 'duplicator') ?></a>
+	<?php endif; ?>
+</div>
 
 <script>
 jQuery(document).ready(function($) 
@@ -332,9 +319,10 @@ jQuery(document).ready(function($)
 	}
 
 	/*	Toggles the feedback form */
-	Duplicator.Pack.showFeedbackForm = function ()
+	Duplicator.Pack.showHelp = function ()
 	{
-		$("div#dup-feedback-form").toggle(300);
+		$('#dup-help-dlg').html($('#dup-help-dlg-info').html());
+		<?php $alert3->showAlert(); ?>
 	}
 	
 });

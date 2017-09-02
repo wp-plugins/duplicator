@@ -1,7 +1,7 @@
 <?php
 	//Nonce Check
 	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_form_opts_nonce_field'], 'dup_form_opts' ) ) {
-		die('Invalid token permissions to perform this request.');
+		DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1');
 	}
 
 	$Package = DUP_Package::getActive();
@@ -54,7 +54,7 @@
 	div.dup-box-panel b.opt-title {font-size:18px}
 	div.dup-msg-error-area {overflow-y: scroll; padding:5px 15px 15px 15px; max-height:170px; width:95%; border: 1px solid silver; border-radius: 4px; line-height: 22px}
 	div#dup-logs {text-align:center; margin:auto; padding:5px; width:350px;}
-	div#dup-logs a {font-size:15px; text-decoration:none !important; display:inline-block; margin:20px 0px 5px 0px}
+	div#dup-logs a {display:inline-block;}
 	span.sub-data {display: inline-block; padding-left:20px}
 </style>
 
@@ -224,9 +224,6 @@ TOOL BAR: STEPS -->
 					<div style="text-align: center; margin: 10px">
 						<input type="button" class="button-large button-primary" value="<?php _e('Continue with Two-Part Install', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'" />
 					</div><br/>
-
-
-
 				</div>
 			</div>
 
@@ -237,67 +234,66 @@ TOOL BAR: STEPS -->
 					<div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
 				</div>
 				<div class="dup-box-panel" id="dup-pack-build-try3" style="display:none">
-
 					<b class="opt-title"><?php _e('OPTION 3:', 'duplicator'); ?></b><br/>
-						<?php _e('This option is available on some hosts that allow for users to adjust server configurations.  With this option you will be directed to an FAQ page that will show '
-						. 'various recommendations you can take to improve/unlock constraints set up on this server.', 'duplicator'); ?><br/><br/>
+					<?php _e('This option is available on some hosts that allow for users to adjust server configurations.  With this option you will be directed to an FAQ page that will show '
+					. 'various recommendations you can take to improve/unlock constraints set up on this server.', 'duplicator'); ?><br/><br/>
 
-						<div style="text-align: center; margin: 10px">
-							<input type="button" style="margin-right:10px;" class="button-large button-primary" value="<?php _e('Diagnose Server Setup', 'duplicator'); ?>"
-								onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q', '_blank');return false;" />
+					<div style="text-align: center; margin: 10px">
+						<input type="button" style="margin-right:10px;" class="button-large button-primary" value="<?php _e('Diagnose Server Setup', 'duplicator'); ?>"
+							onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q', '_blank');return false;" />
+					</div>
+
+					<b><?php _e('RUNTIME DETAILS', 'duplicator'); ?>:</b><br/>
+					<div class="dup-msg-error-area">
+					<div id="dup-msg-error-response-time">
+							<span class="label"><?php _e("Allowed Runtime:", 'duplicator'); ?></span>
+							<span class="data"></span>
 						</div>
-	
-						<b><?php _e('RUNTIME DETAILS', 'duplicator'); ?>:</b><br/>
-						<div class="dup-msg-error-area">
-						<div id="dup-msg-error-response-time">
-								<span class="label"><?php _e("Allowed Runtime:", 'duplicator'); ?></span>
-								<span class="data"></span>
-							</div>
-							<div id="dup-msg-error-response-php">
-								<span class="label"><?php _e("PHP Max Execution", 'duplicator'); ?></span><br/>
-								<span class="data sub-data">
-									<span class="label"><?php _e("Time", 'duplicator'); ?>:</span>
-									<?php
-										$try_value = @ini_get('max_execution_time');
-										$try_update = set_time_limit(0);
-										echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'> (default)</a>";
-									?>
-									<i class="fa fa-question-circle data-size-help"
-										data-tooltip-title="<?php _e("PHP Max Execution Time", 'duplicator'); ?>"
-										data-tooltip="<?php _e('This value is represented in seconds. A value of 0 means no timeout limit is set for PHP.', 'duplicator'); ?>"></i>
-								</span><br/>
-		
-								<span class="data sub-data">
-									<span class="label"><?php _e("Mode", 'duplicator'); ?>:</span>
-									<?php
-										$try_update = $try_update ? 'is dynamic' : 'value is fixed';
-										echo "{$try_update}";
-									?>
-									<i class="fa fa-question-circle data-size-help"
-										data-tooltip-title="<?php _e("PHP Max Execution Mode", 'duplicator'); ?>"
-										data-tooltip="<?php _e('If the value is [dynamic] then its possible for PHP to run longer than the default.  '
-											. 'If the value is [fixed] then PHP will not be allowed to run longer than the default. <br/><br/> If this value is larger than the [Allowed Runtime] above then '
-											. 'the web server has been enabled with a timeout cap and is overriding the PHP max time setting.', 'duplicator'); ?>"></i>
-								</span>
-							</div>
-	
-							<div id="dup-msg-error-response-status">
-								<span class="label"><?php _e("Server Status:", 'duplicator'); ?></span>
-								<span class="data"></span>
-							</div>
-							<div id="dup-msg-error-response-text">
-								<span class="label"><?php _e("Error Message:", 'duplicator'); ?></span><br/>
-								<span class="data"></span>
-							</div>
-						</div><br/>
-						
-						<!-- LOGS -->
-						<div id="dup-logs">
-							<div style="font-weight:bold">
-								<i class="fa fa-list-alt"></i>
-								<a href='javascript:void(0)' style="color:#000" onclick='Duplicator.OpenLogWindow(true)'><?php _e('Read Package Log File', 'duplicator');?></a>
-							</div>
+						<div id="dup-msg-error-response-php">
+							<span class="label"><?php _e("PHP Max Execution", 'duplicator'); ?></span><br/>
+							<span class="data sub-data">
+								<span class="label"><?php _e("Time", 'duplicator'); ?>:</span>
+								<?php
+									$try_value = @ini_get('max_execution_time');
+									$try_update = set_time_limit(0);
+									echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'> (default)</a>";
+								?>
+								<i class="fa fa-question-circle data-size-help"
+									data-tooltip-title="<?php _e("PHP Max Execution Time", 'duplicator'); ?>"
+									data-tooltip="<?php _e('This value is represented in seconds. A value of 0 means no timeout limit is set for PHP.', 'duplicator'); ?>"></i>
+							</span><br/>
+
+							<span class="data sub-data">
+								<span class="label"><?php _e("Mode", 'duplicator'); ?>:</span>
+								<?php
+									$try_update = $try_update ? 'is dynamic' : 'value is fixed';
+									echo "{$try_update}";
+								?>
+								<i class="fa fa-question-circle data-size-help"
+									data-tooltip-title="<?php _e("PHP Max Execution Mode", 'duplicator'); ?>"
+									data-tooltip="<?php _e('If the value is [dynamic] then its possible for PHP to run longer than the default.  '
+										. 'If the value is [fixed] then PHP will not be allowed to run longer than the default. <br/><br/> If this value is larger than the [Allowed Runtime] above then '
+										. 'the web server has been enabled with a timeout cap and is overriding the PHP max time setting.', 'duplicator'); ?>"></i>
+							</span>
 						</div>
+
+						<div id="dup-msg-error-response-status">
+							<span class="label"><?php _e("Server Status:", 'duplicator'); ?></span>
+							<span class="data"></span>
+						</div>
+						<div id="dup-msg-error-response-text">
+							<span class="label"><?php _e("Error Message:", 'duplicator'); ?></span><br/>
+							<span class="data"></span>
+						</div>
+					</div>
+
+					<!-- LOGS -->
+					<div id="dup-logs">
+						<br/>
+						<i class="fa fa-list-alt"></i>
+						<a href='javascript:void(0)' style="color:#000" onclick='Duplicator.OpenLogWindow(true)'><?php _e('Read Package Log File', 'duplicator');?></a>
+						<br/><br/>
+					</div>
 				</div>
 			</div>
 			<br/><br/><br/>
