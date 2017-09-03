@@ -628,6 +628,33 @@ class DUP_Util
 			"{$wpdb->prefix}usermeta",
 			"{$wpdb->prefix}users");
     }
+	
+	/**
+     * Runs esc_html and sanitize_textarea_field on a string
+	 *
+	 * @param string   The string to process
+     *
+     * @return string  Returns and escaped and sanitized string
+     */
+    public static function escSanitizeTextAreaField($string)
+    {
+		if (!function_exists('sanitize_textarea_field')) {
+			return esc_html(sanitize_text_field($string));
+		} else {
+			return esc_html(sanitize_textarea_field($string));
+		}	
+    }
+
+	/**
+     * Runs esc_html and sanitize_text_field on a string
+	 *
+	 * @param string   The string to process
+     *
+     * @return string  Returns and escaped and sanitized string
+     */
+    public static function escSanitizeTextField($string)
+    {
+		return esc_html(sanitize_text_field($string));
+    }
 }
 DUP_Util::init();
-?>

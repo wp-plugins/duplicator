@@ -319,20 +319,20 @@ class DUP_Package
             $this->Hash       = $this->makeHash();
             $this->NameHash   = "{$this->Name}_{$this->Hash}";
 
-            $this->Notes                    = esc_html(sanitize_textarea_field($post['package-notes']));
+            $this->Notes                    = DUP_Util::escSanitizeTextAreaField($post['package-notes']);
             //ARCHIVE
             $this->Archive->PackDir         = rtrim(DUPLICATOR_WPROOTPATH, '/');
             $this->Archive->Format          = 'ZIP';
             $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
 			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
-            $this->Archive->FilterDirs      = esc_html(sanitize_textarea_field($filter_dirs));
-			 $this->Archive->FilterFiles    = esc_html(sanitize_textarea_field($filter_files));
-            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', esc_html(sanitize_textarea_field($filter_exts)));
+            $this->Archive->FilterDirs      = DUP_Util::escSanitizeTextAreaField($filter_dirs);
+			 $this->Archive->FilterFiles    = DUP_Util::escSanitizeTextAreaField($filter_files);
+            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', DUP_Util::escSanitizeTextAreaField($filter_exts));
             //INSTALLER
-            $this->Installer->OptsDBHost    = esc_html(sanitize_text_field($post['dbhost']));
-            $this->Installer->OptsDBPort    = esc_html(sanitize_text_field($post['dbport']));
-            $this->Installer->OptsDBName    = esc_html(sanitize_text_field($post['dbname']));
-            $this->Installer->OptsDBUser    = esc_html(sanitize_text_field($post['dbuser']));
+            $this->Installer->OptsDBHost    = DUP_Util::escSanitizeTextField($post['dbhost']);
+            $this->Installer->OptsDBPort    = DUP_Util::escSanitizeTextField($post['dbport']);
+            $this->Installer->OptsDBName    = DUP_Util::escSanitizeTextField($post['dbname']);
+            $this->Installer->OptsDBUser    = DUP_Util::escSanitizeTextField($post['dbuser']);
             //DATABASE
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
             $this->Database->FilterTables   = esc_html($tablelist);
