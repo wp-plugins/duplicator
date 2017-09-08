@@ -107,51 +107,44 @@ array_push($GLOBALS['REPLACE_LIST'],
 );
 
 
-//URL PATHS
-//SEARCH ONLY HTTP(S)
-array_push($GLOBALS['REPLACE_LIST'],
-	array('search' => $_POST['url_old'],			 'replace' => $_POST['url_new']),
-	array('search' => $url_old_json,				 'replace' => $url_new_json),
-	array('search' => urlencode($_POST['url_old']),  'replace' => urlencode($_POST['url_new']))
-);
-
-//INVERSE: Apply a search for the inverse of the orginal http vs https
-if (stristr($_POST['url_old'], 'http:')) {
-	//Search for https urls
-	$url_old_diff = str_ireplace('http:', 'https:', $_POST['url_old']);
-	$url_new_diff = str_ireplace('http:', 'https:', $_POST['url_new']);
-	$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
-	$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
-
-} else {
-	//Search for http urls
-	$url_old_diff = str_ireplace('https:', 'http:', $_POST['url_old']);
-	$url_new_diff = str_ireplace('https:', 'http:', $_POST['url_new']);
-	$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
-	$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
-}
-
-array_push($GLOBALS['REPLACE_LIST'],
-	//INVERSE
-	array('search' => $url_old_diff,			 	 'replace' => $url_new_diff),
-	array('search' => $url_old_diff_json,			 'replace' => $url_new_diff_json),
-	array('search' => urlencode($url_old_diff),  	 'replace' => urlencode($url_new_diff))
-);
-
-
 //SEARCH WITH NO PROTOCAL: RAW "//"
 $url_old_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_old']);
 $url_new_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_new']);
 $url_old_raw_json = str_replace('"',  "", json_encode($url_old_raw));
 $url_new_raw_json = str_replace('"',  "", json_encode($url_new_raw));
-
 array_push($GLOBALS['REPLACE_LIST'],
-	//RAW
-	array('search' => $url_old_raw,			 	'replace' => $url_new_raw),
-	array('search' => $url_old_raw_json,		'replace' => $url_new_raw_json),
-	array('search' => urlencode($url_old_raw), 	'replace' => urlencode($url_new_raw))
- );
+    //RAW
+    array('search' => $url_old_raw,			 	'replace' => $url_new_raw),
+    array('search' => $url_old_raw_json,		'replace' => $url_new_raw_json),
+    array('search' => urlencode($url_old_raw), 	'replace' => urlencode($url_new_raw))
+);
 
+
+//SEARCH HTTP(S) EXPLICIT REQUEST
+//Because the raw replace above has already changed all urls just fix https/http issue
+//if the user has explicitly asked other-wise word boundary issues will occur:
+//Old site: http://mydomain.com/somename/
+//New site: http://mydomain.com/somename-dup/
+//Result: http://mydomain.com/somename-dup-dup/
+if (stristr($_POST['url_old'], 'http:') && stristr($_POST['url_new'], 'https:') ) {
+    $url_old_http = str_ireplace('https:', 'http:', $_POST['url_new']);
+    $url_new_http = $_POST['url_new'];
+    $url_old_http_json = str_replace('"',  "", json_encode($url_old_http));
+    $url_new_http_json = str_replace('"',  "", json_encode($url_new_http));
+
+} elseif(stristr($_POST['url_old'], 'https:') && stristr($_POST['url_new'], 'http:')) {
+    $url_old_http = str_ireplace('http:', 'https:', $_POST['url_new']);
+    $url_new_http = $_POST['url_new'];
+    $url_old_http_json = str_replace('"',  "", json_encode($url_old_http));
+    $url_new_http_json = str_replace('"',  "", json_encode($url_new_http));
+}
+if(isset($url_old_http)){
+    array_push($GLOBALS['REPLACE_LIST'],
+        array('search' => $url_old_http,			 	 'replace' => $url_new_http),
+        array('search' => $url_old_http_json,			 'replace' => $url_new_http_json),
+        array('search' => urlencode($url_old_http),  	 'replace' => urlencode($url_new_http))
+    );
+}
 
 //Remove trailing slashes
 function _dupx_array_rtrim(&$value) {
