@@ -148,7 +148,7 @@ TOOL BAR:STEPS -->
 
 
 <form id="form-duplicator" method="post" action="?page=duplicator&tab=new3">
-<?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field'); ?>
+<?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">

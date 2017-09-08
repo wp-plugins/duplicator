@@ -45,7 +45,7 @@ $package_debug = DUP_Settings::Get('package_debug');
 
 <form id="dup-settings-form" action="<?php echo admin_url('admin.php?page=duplicator-settings&tab=general'); ?>" method="post">
 
-    <?php wp_nonce_field('dup_settings_save', 'dup_settings_save_nonce_field'); ?>
+    <?php wp_nonce_field('dup_settings_save', 'dup_settings_save_nonce_field', false); ?>
     <input type="hidden" name="action" value="save">
     <input type="hidden" name="page"   value="duplicator-settings">
 

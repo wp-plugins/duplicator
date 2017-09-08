@@ -50,7 +50,7 @@
 
 <form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo $retry_enabled ? '&retry=1' : '';?>" data-validate="parsley">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
-<?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field'); ?>
+<?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
 <div>
 	<label for="package-name" class="lbl-larger"><b>&nbsp;<?php _e('Name', 'duplicator') ?>:</b> </label>

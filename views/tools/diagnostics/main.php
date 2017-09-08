@@ -51,7 +51,7 @@
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-tools&tab=diagnostics' ); ?>" method="post">
-	<?php wp_nonce_field( 'duplicator_settings_page' ); ?>
+	<?php wp_nonce_field( 'duplicator_settings_page', '_wpnonce', false ); ?>
 	<input type="hidden" id="dup-settings-form-action" name="action" value="">
 	<br/>
 
