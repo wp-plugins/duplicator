@@ -289,7 +289,7 @@ switch ($_POST['dbaction']) {
 	case "empty":
 		//DROP DB TABLES
 		$drop_log = "Database already empty. Ready for install.";
-		$sql = "SHOW TABLES FROM `{$_POST['dbname']}`";
+		$sql = "SHOW FULL TABLES WHERE Table_Type != 'VIEW'";
 		$found_tables = null;
 		if ($result = mysqli_query($dbh, $sql)) {
 			while ($row = mysqli_fetch_row($result)) {
