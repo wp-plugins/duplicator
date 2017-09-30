@@ -50,23 +50,27 @@
 	textarea.dup-opts-read {width:100%; height:40px; font-size:12px}
 </style>
 
-<form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-tools&tab=diagnostics' ); ?>" method="post">
-	<?php wp_nonce_field( 'duplicator_settings_page', '_wpnonce', false ); ?>
-	<input type="hidden" id="dup-settings-form-action" name="action" value="">
-	<br/>
 
-	<?php if (! empty($action_response))  :	?>
-		<div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
-	<?php endif; ?>	
-		
-	<?php
-		include_once 'inc.settings.php';
-		include_once 'inc.data.php';
-		include_once 'inc.validator.php';
-		include_once 'inc.phpinfo.php';
-	?>
-</form>
+<?php
+$section        = isset($_GET['section']) ? $_GET['section'] : 'info';
+$txt_diagnostic = "Information";
+$txt_log        = "Logs";
+$txt_support    = "Support";
+$tools_url      = 'admin.php?page=duplicator-tools&tab=diagnostics';
 
+switch ($section) {
+    case 'info':
+        echo "<div class='lite-sub-tabs'><b>{$txt_diagnostic}</b> &nbsp;|&nbsp; <a href='{$tools_url}&section=log'>{$txt_log}</a> &nbsp;|&nbsp; <a href='{$tools_url}&section=support'>{$txt_support}</a></div>";
+        include(dirname(__FILE__) . '/information.php');
+        break;
+    case 'log':
+        echo "<div class='lite-sub-tabs'><a href='{$tools_url}&section=info'>{$txt_diagnostic}</a>  &nbsp;|&nbsp;<b>{$txt_log}</b>  &nbsp;|&nbsp; <a href='{$tools_url}&section=support'>{$txt_support}</a></div>";
+        include(dirname(__FILE__) . '/logging.php');
+        break;
+    case 'support':
+        echo "<div class='lite-sub-tabs'><a href='{$tools_url}&section=info'>{$txt_diagnostic}</a> &nbsp;|&nbsp; <a href='{$tools_url}&section=log'>{$txt_log}</a> &nbsp;|&nbsp; <b>{$txt_support}</b> </div>";
+        include(dirname(__FILE__) . '/support.php');
 
-
-
+        break;
+}
+?>

@@ -110,7 +110,22 @@ class DUP_Server
         //Core Files
         $files                  = array();
         $files['wp-config.php'] = file_exists(DUP_Util::safePath(DUPLICATOR_WPROOTPATH.'/wp-config.php'));
-        $wp_test2               = $files['wp-config.php'];
+
+        /** searching wp-config in working word press is not worthy
+         * if this script is executing that means wp-config.php exists :)
+         * we need to know the core folders and files added by the user at this point
+         * retaining old logic as else for the case if its used some where else
+         */
+        //Core dir and files logic
+
+        if (isset($_POST['file_notice']) && isset($_POST['dir_notice'])) {
+            //means if there are core directories excluded or core files excluded return false
+            if ((bool) $_POST['file_notice'] || (bool) $_POST['dir_notice'])
+                    $wp_test2 = false;
+            else $wp_test2 = true;
+        }else {
+            $wp_test2 = $files['wp-config.php'];
+        }
 
         //Cache
         $Package       = DUP_Package::getActive();

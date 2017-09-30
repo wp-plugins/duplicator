@@ -120,6 +120,7 @@
 	/*FOOTER*/
 	div.dup-button-footer {text-align:center; margin:0}
 	button.button {font-size:15px !important; height:30px !important; font-weight:bold; padding:3px 5px 5px 5px !important;}
+        i.scan-warn {color:#630f0f;}
 </style>
 
 <!-- =========================================
@@ -186,7 +187,7 @@ TOOL BAR:STEPS -->
 			<?php
 				include ('s2.scan2.php');
 				echo '<br/>';
-				include ('s2.scan3.php')
+				include ('s2.scan3.php');
 			?>
 		</div>
 
@@ -227,7 +228,7 @@ jQuery(document).ready(function($)
 	// Performs ajax call to get scanner retults via JSON response
 	Duplicator.Pack.runScanner = function()
 	{
-		var data = {action : 'duplicator_package_scan'}
+		var data = {action : 'duplicator_package_scan',file_notice:'<?= $core_file_notice; ?>',dir_notice:'<?= $core_dir_notice; ?>'}
 		$.ajax({
 			type: "POST",
 			cache: false,
