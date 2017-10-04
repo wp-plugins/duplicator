@@ -10,7 +10,7 @@
 		<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50.png"  />
 		<?php
 			echo '<h2><i class="fa fa-clock-o"></i> ' .  __('This option is available in Duplicator Pro.', 'duplicator')  . '</h2>';
-			_e('Create robust automated schedules that automatically create packages while you sleep.', 'duplicator');
+			_e('Create robust schedules that automatically create packages while you sleep.', 'duplicator');
 			echo '<br/>';
 			_e('Simply choose your storage location and when you want it to run.', 'duplicator');
 		?>

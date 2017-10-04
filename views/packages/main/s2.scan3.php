@@ -294,7 +294,7 @@ DATABASE -->
 	</div>
 	<?php
         echo '<div class="dup-pro-support">&nbsp;';
-        _e('Migrate large, multi-GB sites with', 'duplicator');
+        _e('Migrate large, multi-gig sites with', 'duplicator');
         echo '&nbsp;<i><a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn_multigig&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Duplicator Pro', 'duplicator') . '!</a></i>';
         echo '</div>';
 	?>

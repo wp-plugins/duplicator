@@ -139,6 +139,30 @@ class DUPX_DB
 		return mysqli_get_server_info($dbh);
 	}
 
+    /**
+     * Get an array of all supported collation names
+     *
+     * @param conn $dbh Database connection handle
+     *
+     * @return array
+     */
+    public static function getSupportedCollationsList($dbh)
+    {
+        $collations = array();
+
+        $query  = "SHOW COLLATION";
+        if ($result = $dbh->query($query)) {
+
+            while ($row = $result->fetch_assoc()) {
+                $collations[] = $row["Collation"];
+            }
+
+        }
+        $result->free();
+
+        return $collations;
+    }
+
 	/**
 	 * Determine if a MySQL database supports a particular feature
 	 *

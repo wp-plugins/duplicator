@@ -23,6 +23,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
 		<a href="?page=duplicator-settings&tab=package" class="nav-tab <?php echo ($current_tab == 'package') ? 'nav-tab-active' : '' ?>"> <?php _e('Packages', 'duplicator'); ?></a>
 		<a href="?page=duplicator-settings&tab=schedule" class="nav-tab <?php echo ($current_tab == 'schedule') ? 'nav-tab-active' : '' ?>"> <?php _e('Schedules', 'duplicator'); ?></a>
         <a href="?page=duplicator-settings&tab=storage" class="nav-tab <?php echo ($current_tab == 'storage') ? 'nav-tab-active' : '' ?>"> <?php _e('Storage', 'duplicator'); ?></a>
+		<a href="?page=duplicator-settings&tab=license" class="nav-tab <?php echo ($current_tab == 'license') ? 'nav-tab-active' : '' ?>"> <?php _e('License', 'duplicator'); ?></a>
 		<a href="?page=duplicator-settings&tab=about" class="nav-tab <?php echo ($current_tab == 'about') ? 'nav-tab-active' : '' ?>"> <?php _e('About', 'duplicator'); ?></a>
     </h2>
 
@@ -35,6 +36,8 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
 		case 'schedule': include('schedule.php');
             break;
         case 'storage': include('storage.php');
+            break;
+        case 'license': include('license.php');
             break;
         case 'about': include('about-info.php');
             break;

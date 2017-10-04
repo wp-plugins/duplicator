@@ -102,19 +102,46 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>			
-		<tr>
-			<td class="feature-column"><?php _e('Scheduled Backups', 'duplicator') ?></td>
+		</tr>
+        <tr>
+            <td class="feature-column"><?php _e('Installer Passwords', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>			
-		<tr>
-			<td class="feature-column"><?php _e('Large Package Support', 'duplicator') ?></td>
+		</tr>
+        <tr>
+            <td class="feature-column"><?php _e('Large Site Support', 'duplicator') ?><sup><i style="color:#444; margin-left:5px;" class="fa fa-question-circle"
+                                                                                              data-tooltip-title="<?php _e("Large Site Support", 'duplicator'); ?>"
+                                                                                              data-tooltip="<?php _e('Bundle multi-gig sites on even low-end hosts!', 'duplicator'); ?>"/></i></sup></td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+        <tr>
+			<td class="feature-column"><?php _e('Server Throttling', 'duplicator') ?></td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+        <tr>
+			<td class="feature-column"><?php _e('Background Processing', 'duplicator') ?></td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+        <tr>
+			<td class="feature-column"><?php _e('Multiple Archive Engines', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
 		<tr>
+			<td class="feature-column"><?php _e('Scheduled Backups', 'duplicator') ?></td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>					
+		<tr>
 			<td class="feature-column"><?php _e('Multisite Backup', 'duplicator') ?></td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+        <tr>
+			<td class="feature-column"><?php _e('Multisite Subsite to Standalone', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>

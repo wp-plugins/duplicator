@@ -137,6 +137,10 @@ VIEW: STEP 2- INPUT -->
 		
 		<table class="dupx-opts dupx-advopts">
 			<tr>
+				<td>Legacy:</td>
+				<td><input type="checkbox" name="dbcollatefb" id="dbcollatefb" value="1" /> <label for="dbcollatefb">Apply legacy collation fallback support for unknown collations types</label></td>
+			</tr>
+			<tr>
 				<td>Spacing:</td>
 				<td colspan="2">
 					<input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label>

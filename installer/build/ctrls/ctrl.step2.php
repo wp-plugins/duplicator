@@ -217,6 +217,45 @@ $sql_result_file_length = count($sql_result_file_data);
 $sql_result_file_path	= "{$root_path}/{$GLOBALS['SQL_FILE_NAME']}";
 $sql_file = null;
 
+if($_POST['dbcollatefb']){
+    $supportedCollations = DUPX_DB::getSupportedCollationsList($dbh);
+    $collation_arr = array(
+        'utf8mb4_unicode_520_ci',
+        'utf8mb4_unicode_520',
+        'utf8mb4_unicode_ci',
+        'utf8mb4',
+        'utf8_unicode_520_ci',
+        'utf8_unicode_520',
+        'utf8_unicode_ci',
+        'utf8'
+    );
+    $latest_supported_collation = '';
+    $latest_supported_index = -1;
+
+    foreach ($collation_arr as $key => $val){
+        if(in_array($val,$supportedCollations)){
+            $latest_supported_collation = $val;
+            $latest_supported_index = $key;
+            break;
+        }
+    }
+
+//No need to replace if current DB is up to date
+    if($latest_supported_index != 0){
+        for($i=0;$i<$latest_supported_index;$i++){
+            foreach ($sql_result_file_data as $index => $col_sql_query){
+                if(strpos($col_sql_query,$collation_arr[$i]) !== false){
+                    $sql_result_file_data[$index] = str_replace($collation_arr[$i],$latest_supported_collation,$col_sql_query);
+                    if(strpos($collation_arr[$i],'utf8mb4') !== false && strpos($latest_supported_collation,'utf8mb4') === false){
+                        $sql_result_file_data[$index] = str_replace('utf8mb4','utf8',$sql_result_file_data[$index]);
+                    }
+                    DUPX_Log::info("Collation {$collation_arr[$i]} was changed with {$latest_supported_collation}");
+                }
+            }
+        }
+    }
+}
+
 //WARNING: Create installer-data.sql failed
 if ($sql_file_copy_status === FALSE || filesize($sql_result_file_path) == 0 || !is_readable($sql_result_file_path))
 {
