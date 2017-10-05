@@ -116,7 +116,7 @@ TOTAL SIZE -->
 								_e('No large files found during this scan.', 'duplicator');
 							} else {
 								echo "<div style='color:maroon'>";
-								_e('No large files found during this scan.  If you\'re having issues building a package click the back button and try '
+									_e('No large files found during this scan.  If you\'re having issues building a package click the back button and try '
 									. 'adding a file filter to non-essential files paths like wp-content/uploads.   These excluded files can then '
 									. 'be manually moved to the new location after you have ran the migration installer.', 'duplicator');
 								echo "</div>";
@@ -649,7 +649,7 @@ jQuery(document).ready(function($)
 	}
 
 	<?php
-		if (isset($_GET['retry'])) {
+		if (isset($_GET['retry']) && $_GET['retry'] == '1' ) {
 			echo "$('#scan-itme-file-size').show(300)";
 		}
 	?>

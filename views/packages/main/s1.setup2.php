@@ -35,7 +35,7 @@
 	div.dup-store-pro a {text-decoration:underline}
 	span.dup-pro-text {font-style:italic; font-size:12px; color:#555; font-style:italic }
 	div#dup-exportdb-items-checked, div#dup-exportdb-items-off {min-height:275px; display:none}
-	div#dup-exportdb-items-checked {padding: 5px; max-width:650px}
+	div#dup-exportdb-items-checked {padding: 5px; max-width:700px}
 
     /*INSTALLER SECTION*/
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}
@@ -48,7 +48,7 @@
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
 </style>
 
-<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo $retry_enabled ? '&retry=1' : '';?>" data-validate="parsley">
+<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo "&retry={$retry_state}"; ?>" data-validate="parsley">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
@@ -202,24 +202,28 @@ ARCHIVE -->
 				</div>
 
 				<div id="dup-exportdb-items-checked"  style="<?php echo ($Package->Archive->ExportOnlyDB) ? 'block' : 'none'; ?>">
-					<?php 
+					<?php
+
+						if ($retry_state == '2') {
+							echo '<i style="color:maroon">';
+							_e("This option has automatically been checked because you have opted for a <i class='fa fa-random'></i> Two-Part Install Process.  Please complete the package build and continue with the ", 'duplicator');
+								printf('%s <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>.',
+								__('', 'duplicator'),
+								__('Quick Start Two-Part Install Instructions', 'duplicator'));
+							echo '</i><br/><br/>';
+						}
+
 						_e("<b>Overview:</b><br/> This advanced option excludes all files from the archive.  Only the database and a copy of the installer.php "
 						. "will be included in the archive.zip file. The option can be used for backing up and moving only the database.", 'duplicator');
-						
-						echo '<br/><br/>';
-
-						_e("<b><i class='fa fa-exclamation-circle'></i> Notice:</b><br/>  Installing only the database over an existing site may have unintended consequences.  "
-						 . "Be sure to know the state of your system before installing the database without the associated files. ", 'duplicator');
 
 						echo '<br/><br/>';
 
-						_e("For example, if you have WordPress 4.6 on this site and you copy this sites database to a host that has WordPress 4.8 files then the source code of the files "
-							. " will not be in sync with the database causing possible errors.", 'duplicator');
-						
-						echo '<br/><br/>';
-						
-						_e("This can also be true of plugins and themes.   When moving only the database be sure to know the database will be compatible with ALL source code files."
-						. "  Please use this advanced feature with caution!", 'duplicator');
+						_e("<b><i class='fa fa-exclamation-circle'></i> Notice:</b><br/>", 'duplicator');
+
+						_e("Please use caution when installing only the database over an existing site and be sure the correct files correspond with the database. For example, "
+							. "if WordPress 4.6 is on this site and you copy the database to a host that has WordPress 4.8 files then the source code of the files will not be "
+							. "in sync with the database causing possible errors.  If you’re immediately moving the source files with the database then you can ignore this notice. "
+							. "Please use this advanced feature with caution!", 'duplicator');
 					?>
 					<br/><br/>
 				</div>
@@ -526,8 +530,8 @@ jQuery(document).ready(function ($)
 		}
 	}
 
-	<?php if ($retry_dbenabled) :?>
-		$('#dup-pack-archive-panel').show(500);
+	<?php if ($retry_state == '2') :?>
+		$('#dup-pack-archive-panel').show();
 		$('#export-onlydb').prop( "checked", true );
 	<?php endif; ?>
 	

@@ -160,7 +160,7 @@ TOOL BAR: STEPS -->
 		<div id="dup-msg-error" style="display:none; color:#000">
 			<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Host Build Interrupt', 'duplicator'); ?></div>
 			<b><?php _e('This server cannot complete the build due to setup constraints.', 'duplicator'); ?></b><br/>
-			<i><?php _e("To help get you past this hosts limitation consider these options:", 'duplicator'); ?></i>
+			<i><?php _e("To help get you past this hosts limitation consider these three options:", 'duplicator'); ?></i>
 			<br/><br/><br/>
 
 			<!-- OPTION 1: TRY AGAIN -->
@@ -202,9 +202,8 @@ TOOL BAR: STEPS -->
 				<div class="dup-box-panel" id="dup-pack-build-try2" style="display:none">
 					<b class="opt-title"><?php _e('OPTION 2:', 'duplicator'); ?></b><br/>
 
-					<?php _e('A two-part install minimizes server load and can avoid I/O and CPU host restrictions. With this procedure you simply build a \'database-only\' archive, manually move the website files, '
-						. 'and then run the installer to complete the process.', 'duplicator'); ?><br/><br/>
-
+					<?php _e('A two-part install minimizes server load and can avoid I/O and CPU issues encountered on some budget hosts. With this procedure you simply build a '
+						. '\'database-only\' archive, manually move the website files, and then run the installer to complete the process.', 'duplicator'); ?><br/><br/>
 
 					<b><?php _e('<i class="fa fa-file-text-o"></i> Overview', 'duplicator'); ?></b><br/>
 					<?php _e('Please follow these steps:', 'duplicator'); ?><br/>
@@ -222,7 +221,11 @@ TOOL BAR: STEPS -->
 					</ol> <br/>
 
 					<div style="text-align: center; margin: 10px">
-						<input type="button" class="button-large button-primary" value="<?php _e('Continue with Two-Part Install', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'" />
+						<input type="checkbox" id="dup-two-part-check" onclick="Duplicator.Pack.ToggleTwoPart()">
+						<label for="dup-two-part-check"><?php _e('Yes. I have read the above overview and would like to continue!', 'duplicator'); ?></label><br/><br/>
+						<button id="dup-two-part-btn"  type="button" class="button-large button-primary" disabled="true" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'">
+							<i class="fa fa-random"></i> <?php _e('Start Two-Part Install Process', 'duplicator'); ?>
+						</button>
 					</div><br/>
 				</div>
 			</div>
@@ -238,9 +241,10 @@ TOOL BAR: STEPS -->
 					<?php _e('This option is available on some hosts that allow for users to adjust server configurations.  With this option you will be directed to an FAQ page that will show '
 					. 'various recommendations you can take to improve/unlock constraints set up on this server.', 'duplicator'); ?><br/><br/>
 
-					<div style="text-align: center; margin: 10px">
-						<input type="button" style="margin-right:10px;" class="button-large button-primary" value="<?php _e('Diagnose Server Setup', 'duplicator'); ?>"
-							onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q', '_blank');return false;" />
+					<div style="text-align: center; margin: 10px; font-size:16px; font-weight: bold">
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q" target="_blank">
+							[<?php _e('Diagnose Server Setup', 'duplicator'); ?>]
+						</a>
 					</div>
 
 					<b><?php _e('RUNTIME DETAILS', 'duplicator'); ?>:</b><br/>
@@ -367,6 +371,15 @@ jQuery(document).ready(function($) {
 		});
 		return false;
 	}
+
+	Duplicator.Pack.ToggleTwoPart = function() {
+		var $btn = $('#dup-two-part-btn');
+		if ($('#dup-two-part-check').is(':checked')) {
+			$btn.removeAttr("disabled");
+		} else {
+			$btn.attr("disabled", true);
+		}
+	};
 
 	//Page Init:
 	Duplicator.UI.AnimateProgressBar('dup-progress-bar');
