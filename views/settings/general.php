@@ -7,23 +7,22 @@ $action_response = __("General Settings Saved", 'duplicator');
 
 //SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
-	
+
 	//Nonce Check
-	if (! isset( $_POST['dup_settings_save_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_settings_save_nonce_field'], 'dup_settings_save' ) ) 
-	{
+	if (!isset($_POST['dup_settings_save_nonce_field']) || !wp_verify_nonce($_POST['dup_settings_save_nonce_field'], 'dup_settings_save')) {
 		die('Invalid token permissions to perform this request.');
 	}
-	
-    DUP_Settings::Set('uninstall_settings', isset($_POST['uninstall_settings']) ? "1" : "0");
-    DUP_Settings::Set('uninstall_files', isset($_POST['uninstall_files']) ? "1" : "0");
-    DUP_Settings::Set('uninstall_tables', isset($_POST['uninstall_tables']) ? "1" : "0");
-    DUP_Settings::Set('storage_htaccess_off', isset($_POST['storage_htaccess_off']) ? "1" : "0");
 
-    DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
+	DUP_Settings::Set('uninstall_settings', isset($_POST['uninstall_settings']) ? "1" : "0");
+	DUP_Settings::Set('uninstall_files', isset($_POST['uninstall_files']) ? "1" : "0");
+	DUP_Settings::Set('uninstall_tables', isset($_POST['uninstall_tables']) ? "1" : "0");
+	DUP_Settings::Set('storage_htaccess_off', isset($_POST['storage_htaccess_off']) ? "1" : "0");
+
+	DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
 	DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
-    
-    $action_updated = DUP_Settings::Save();
-    DUP_Util::initSnapshotDirectory();
+
+	$action_updated = DUP_Settings::Save();
+	DUP_Util::initSnapshotDirectory();
 }
 
 $uninstall_settings = DUP_Settings::Get('uninstall_settings');
@@ -130,6 +129,5 @@ $package_debug = DUP_Settings::Get('package_debug');
 <script>
 jQuery(document).ready(function($) 
 {
-	$('#package_ui_created').val(<?php echo $package_ui_created ?> );
 });
 </script>
