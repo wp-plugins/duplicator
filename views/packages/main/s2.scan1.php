@@ -32,14 +32,15 @@
 	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 15px 0; background:#fff; border-radius:5px; border:1px solid #ddd; box-shadow:0 8px 6px -6px #999; }
 	div#dup-msg-success div.details-title {font-size:20px; border-bottom:1px solid #dfdfdf; padding:5px; margin:0 0 10px 0; font-weight:bold}
 	div#dup-msg-success-subtitle {color:#999; margin:0; font-size:11px}
-	div.dup-scan-filter-status {display:inline; float:right; font-size:11px; margin-right:10px; color:#630f0f;}
+	div.dup-scan-filter-status {display:inline; font-size:11px; margin-right:10px; color:#630f0f;}
 	div#dup-msg-error {color:#A62426; padding:5px; max-width:790px;}
 	div#dup-msg-error-response-text { max-height:500px; overflow-y:scroll; border:1px solid silver; border-radius:3px; padding:10px;background:#fff}
 	div.dup-hdr-error-details {text-align:left; margin:20px 0}
 	i[data-tooltip].fa-question-circle {color:#555}
 
 	/*SCAN ITEMS: Sections */
-	div.scan-header { font-size:16px; padding:7px 5px 5px 7px; font-weight:bold; background-color:#E0E0E0; border-bottom:0px solid #C0C0C0 }
+	div.scan-header { font-size:16px; padding:7px 5px 7px 7px; font-weight:bold; background-color:#E0E0E0; border-bottom:0px solid #C0C0C0 }
+	div.scan-header-details {float:right; margin-top:-5px}
 	div.scan-item {border:1px solid #E0E0E0; border-bottom:none;}
 	div.scan-item-first { border-top-right-radius:4px; border-top-left-radius:4px}
 	div.scan-item-last {border-bottom:1px solid #E0E0E0}
@@ -58,8 +59,9 @@
 	div.dup-more-details:hover {color:#777; cursor:pointer}
 
 	/*FILES */
-	div#data-arc-size1 {display:inline-block; float:right; font-size:11px; margin-right:5px;}
-	i.data-size-help { float:right; margin-right:5px; display:block; font-size:11px}
+	div#data-arc-size1 {display:inline-block; font-size:11px; margin-right:1px;}
+	i.data-size-help { font-size:12px; display:inline-block;  margin:0; padding:0}
+	div.dup-data-size-uncompressed {font-size:10px; text-align: right; padding:0; margin:-7px 0 0 0; font-style: italic; font-weight: normal; border:0px solid red; clear:both}
 	div.hb-files-style div.container {border:1px solid #E0E0E0; border-radius:4px; margin:5px 0 10px 0}
 	div.hb-files-style div.container b {font-weight:bold}
 	div.hb-files-style div.container div.divider {margin-bottom:2px; font-weight:bold}
@@ -92,7 +94,7 @@
 	div#dup-scan-db-info {margin-top:5px}
 	div#data-db-tablelist {max-height:250px; overflow-y:scroll; border:1px solid silver; padding:8px; background: #efefef; border-radius: 4px}
 	div#data-db-tablelist td{padding:0 5px 3px 20px; min-width:100px}
-	div#data-db-size1 {display:inline-block; float:right; font-size:11px; margin-right:5px;}
+	div#data-db-size1 {display:inline-block; font-size:11px; margin-right:1px;}
 	
 	/*WARNING-CONTINUE*/
 	div#dup-scan-warning-continue {display:none; text-align:center; padding:0 0 15px 0}

@@ -19,19 +19,24 @@ ARCHIVE -->
 <div class="scan-header scan-item-first">
 	<i class="fa fa-files-o"></i>
 	<?php _e("Files", 'duplicator'); ?>
-	<i class="fa fa-question-circle data-size-help"
-		data-tooltip-title="<?php _e('Archive Size', 'duplicator'); ?>"
-		data-tooltip="<?php _e('This size includes only files BEFORE compression is applied. It does not include the size of the '
-					. 'database script or any applied filters.  Once complete the package size will be smaller than this number.', 'duplicator'); ?>"></i>
-	<div id="data-arc-size1"></div>
-	<div class="dup-scan-filter-status">
-		<?php
-			if ($Package->Archive->ExportOnlyDB) {
-				echo '<i class="fa fa-filter"></i> '; _e('Database Only', 'duplicator');
-			} elseif ($Package->Archive->FilterOn) {
-				echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
-			}
-		?>
+	
+	<div class="scan-header-details">
+		<div class="dup-scan-filter-status">
+			<?php
+				if ($Package->Archive->ExportOnlyDB) {
+					echo '<i class="fa fa-filter"></i> '; _e('Database Only', 'duplicator');
+				} elseif ($Package->Archive->FilterOn) {
+					echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
+				}
+			?>
+		</div>
+		<div id="data-arc-size1"></div>
+		<i class="fa fa-question-circle data-size-help"
+			data-tooltip-title="<?php _e('Archive Size', 'duplicator'); ?>"
+			data-tooltip="<?php _e('This size includes only files BEFORE compression is applied. It does not include the size of the '
+						. 'database script or any applied filters.  Once complete the package size will be smaller than this number.', 'duplicator'); ?>"></i>
+
+		<div class="dup-data-size-uncompressed"><?php _e("uncompressed"); ?></div>
 	</div>
 </div>
 
@@ -231,17 +236,22 @@ DATABASE -->
 	<div class="scan-header">
 		<i class="fa fa-table"></i>
 		<?php _e("Database", 'duplicator');	?>
-		<i class="fa fa-question-circle data-size-help"
-			data-tooltip-title="<?php _e("Database Size:", 'duplicator'); ?>"
-			data-tooltip="<?php _e('The database size represents only the included tables. The process for gathering the size uses the query SHOW TABLE STATUS.  '
-				. 'The overall size of the database file can impact the final size of the package.', 'duplicator'); ?>"></i>
-		<div id="data-db-size1"></div>
-		<div class="dup-scan-filter-status">
-			<?php
-				if ($Package->Database->FilterOn) {
-					echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
-				}
-			?>
+		<div class="scan-header-details">
+			<div class="dup-scan-filter-status">
+				<?php
+					if ($Package->Database->FilterOn) {
+						echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
+					}
+				?>
+			</div>
+			<div id="data-db-size1"></div>
+			<i class="fa fa-question-circle data-size-help"
+				data-tooltip-title="<?php _e("Database Size:", 'duplicator'); ?>"
+				data-tooltip="<?php _e('The database size represents only the included tables. The process for gathering the size uses the query SHOW TABLE STATUS.  '
+					. 'The overall size of the database file can impact the final size of the package.', 'duplicator'); ?>"></i>
+
+			<div class="dup-data-size-uncompressed"><?php _e("uncompressed"); ?></div>
+
 		</div>
 	</div>
 
