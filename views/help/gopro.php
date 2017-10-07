@@ -177,12 +177,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td colspan="3" class="group-header"><?php _e('Multisite', 'duplicator') ?></td>
 		</tr>-->
 		<tr>
-			<td class="feature-column"><?php _e('Entire Network Migration', 'duplicator') ?></td>
+			<td class="feature-column"><?php _e('Multisite Network Migration', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
         <tr>
-			<td class="feature-column"><?php _e('Subsite &gt; Standalone', 'duplicator') ?><sup>
+			<td class="feature-column"><?php _e('Multisite Subsite &gt; Standalone', 'duplicator') ?><sup>
 					<i  class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php _e("Multisite", 'duplicator'); ?>"
                         data-tooltip="<?php _e('Install an individual subsite from a Multisite as a standalone site.', 'duplicator'); ?>"/></i></sup>
