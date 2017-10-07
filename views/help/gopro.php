@@ -46,10 +46,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<th class="check-column"><?php _e('Professional', 'duplicator') ?></th>
 		</tr>
 		<!-- =====================
-		CORE FEATURES -->
+		CORE FEATURES
 		<tr>
 			<td colspan="3" class="group-header"><?php _e('Core Features', 'duplicator') ?></td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td class="feature-column"><?php _e('Backup Files & Database', 'duplicator') ?></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -76,10 +76,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>		
 		<!-- =====================
-		CLOUD STORAGE -->
+		CLOUD STORAGE 
 		<tr>
 			<td colspan="3" class="group-header"><?php _e('Cloud Storage', 'duplicator') ?></td>
-		</tr>
+		</tr>-->
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/amazon-64.png" style='height:16px; width:16px'  />  
@@ -114,10 +114,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		</tr>
 
 		<!-- =====================
-		ENHANCED PROCCESING -->
+		ENHANCED PROCCESING 
 		<tr>
 			<td colspan="3" class="group-header"><?php _e('Improved Processing', 'duplicator') ?></td>
-		</tr>
+		</tr>-->
 		<tr>
             <td class="feature-column"><?php _e('Large Site Support', 'duplicator') ?><sup>
 					<i class="fa fa-question-circle dup-gopro-help"
@@ -144,10 +144,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		</tr>		
 		
 		<!-- =====================
-		ROBUST INSTALLATION -->
+		ROBUST INSTALLATION 
 		<tr>
 			<td colspan="3" class="group-header"><?php _e('Robust Installation', 'duplicator') ?></td>
-		</tr>
+		</tr>-->
         <tr>
             <td class="feature-column"><?php _e('Installer Passwords', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -160,7 +160,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 				<sup>
 					<i  class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php _e("cPanel", 'duplicator'); ?>"
-                        data-tooltip="<?php _e('Create the database and database user directly in the installer.  No need to browse to your hosts cPanel application.', 'duplicator'); ?>"/></i></sup>
+                        data-tooltip="<?php _e('Create the database and database user directly in the installer.  No need to browse to your host\'s cPanel application.', 'duplicator'); ?>"/></i></sup>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -172,10 +172,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		</tr>
 		
 		<!-- =====================
-		MULTI-SITE-->
+		MULTI-SITE
 		<tr>
 			<td colspan="3" class="group-header"><?php _e('Multisite', 'duplicator') ?></td>
-		</tr>
+		</tr>-->
 		<tr>
 			<td class="feature-column"><?php _e('Entire Network Migration', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -185,7 +185,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="feature-column"><?php _e('Subsite &gt; Standalone', 'duplicator') ?><sup>
 					<i  class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php _e("Multisite", 'duplicator'); ?>"
-                        data-tooltip="<?php _e('Install an individual subsite in a Multisite as a standalone site.', 'duplicator'); ?>"/></i></sup>
+                        data-tooltip="<?php _e('Install an individual subsite from a Multisite as a standalone site.', 'duplicator'); ?>"/></i></sup>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -197,10 +197,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		</tr-->
 		
 		<!-- =====================
-		ENHANCED EXPERIENCE-->
+		ENHANCED EXPERIENCE
 		<tr>
 			<td colspan="3" class="group-header"><?php _e('Enhanced Experience', 'duplicator') ?></td>
-		</tr>
+		</tr>-->
 		<tr>
 			<td class="feature-column"><?php _e('Email Alerts', 'duplicator') ?></td>
 			<td class="check-column"></td>
