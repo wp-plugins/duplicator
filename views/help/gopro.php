@@ -165,11 +165,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-		<tr>
-			<td class="feature-column"><?php _e('Custom Search & Replace', 'duplicator') ?></td>
-			<td class="check-column"></td>
-			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>
+
 		
 		<!-- =====================
 		MULTI-SITE
@@ -187,6 +183,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 						data-tooltip-title="<?php _e("Multisite", 'duplicator'); ?>"
                         data-tooltip="<?php _e('Install an individual subsite from a Multisite as a standalone site.', 'duplicator'); ?>"/></i></sup>
 			</td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+
+   		<tr>
+			<td class="feature-column"><?php _e('Custom Search & Replace', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
