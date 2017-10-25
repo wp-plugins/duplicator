@@ -49,7 +49,7 @@ $package_debug = DUP_Settings::Get('package_debug');
     <input type="hidden" name="page"   value="duplicator-settings">
 
     <?php if ($action_updated) : ?>
-        <div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
+        <div id="message" class="notice notice-success is-dismissible"><p><?php echo $action_response; ?></p></div>
     <?php endif; ?>	
 
 

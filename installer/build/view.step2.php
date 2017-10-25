@@ -1,5 +1,6 @@
 <?php
     $_POST['logging'] = isset($_POST['logging']) ? trim($_POST['logging']) : 1;
+    $_POST['exe_safe_mode'] = (isset($_POST['exe_safe_mode'])) ? $_POST['exe_safe_mode'] : 0;
 ?>
 
 
@@ -192,6 +193,7 @@ Auto Posts to view.step3.php
 		<input type="hidden" name="archive_name" value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
 		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
+                <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode']; ?>"/>
 		<input type="hidden" name="dbhost" id="ajax-dbhost" />
 		<input type="hidden" name="dbport" id="ajax-dbport" />
 		<input type="hidden" name="dbuser" id="ajax-dbuser" />

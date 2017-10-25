@@ -367,7 +367,7 @@ while ($counter < $sql_result_file_length) {
 
 	if ($dbvar_maxpacks < $query_strlen) {
 
-		DUPX_Log::info("**ERROR** Query size limit [length={$query_strlen}] [sql=" . substr($sql_result_file_data[$counter], 75) . "...]");
+		DUPX_Log::info("**ERROR** Query size limit [length={$query_strlen}] [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
 		$dbquery_errs++;
 
 	} elseif ($query_strlen > 0) {

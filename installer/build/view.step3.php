@@ -7,6 +7,7 @@
 	$old_path = $GLOBALS['FW_WPROOT'];
 	$new_path = DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
 	$new_path = ((strrpos($old_path, '/') + 1) == strlen($old_path)) ? DUPX_U::addSlash($new_path) : $new_path;
+        $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 ?>
 
 
@@ -131,11 +132,11 @@ VIEW: STEP 3- INPUT -->
 				</td>
 				<td valign="top">
                     <b>Activate Plugins:</b>
-					<div class="s3-allnonelinks">
+					<div class="s3-allnonelinks"  style="<?php echo  ($_POST['exe_safe_mode']>0)? 'display:none':''; ?>">
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
-					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px">
+					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode']>0)? 'disabled="disabled"':''; ?>>
 						<?php
 						foreach ($active_plugins as $plugin) {
 							echo '<option selected="selected" value="' . DUPX_U::escapeHTML( $plugin ) . '">' . dirname($plugin) . '</option>';
@@ -190,6 +191,7 @@ VIEW: STEP 3 - AJAX RESULT
 		<input type="hidden" name="action_step"  value="4" />
 		<input type="hidden" name="archive_name" value="<?php echo $_POST['archive_name'] ?>" />
 		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
+                <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode']; ?>"/>
 		<input type="hidden" name="url_new" id="ajax-url_new"  />
 		<input type="hidden" name="json"    id="ajax-json" />
 		<br/>

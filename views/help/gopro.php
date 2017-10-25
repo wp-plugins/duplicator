@@ -122,7 +122,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             <td class="feature-column"><?php _e('Large Site Support', 'duplicator') ?><sup>
 					<i class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php _e("Large Site Support", 'duplicator'); ?>"
-                        data-tooltip="<?php _e('Advanced archive engine processes multi-gig sites on even stubborn budget hosts!', 'duplicator'); ?>"/></i></sup>
+                        data-tooltip="<?php _e('Advanced archive engine processes multi-gig sites - even on stubborn budget hosts!', 'duplicator'); ?>"/></i></sup>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>

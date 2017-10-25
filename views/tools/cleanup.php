@@ -52,7 +52,7 @@
 <form id="dup-settings-form" action="?page=duplicator-tools&tab=cleanup" method="post">
 	
 	<?php if ($_GET['action'] != 'display')  :	?>
-		<div id="message" class="updated below-h2">
+		<div id="message" class="notice notice-success is-dismissible">
 			<p><b><?php echo $action_response; ?></b></p>
 			<?php if ( $_GET['action'] == 'installer') :  ?>
 				<?php	

@@ -36,7 +36,7 @@ class DUP_UI_Notice
 		$screen = get_current_screen();
         if (!isset($screen))
 			return;
-
+  
         if (DUP_Server::hasInstallerFiles()) {
 
             $screen         = get_current_screen();
@@ -49,10 +49,44 @@ class DUP_UI_Notice
 							. 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
 
 			echo '<div class="updated notice" id="dup-global-error-reserved-files"><p>';
+                        $msg_safe_mode ="";
+                        if(isset($_GET['safe_mode'])){
+
+                            switch($_GET['safe_mode']){
+                                case 0://case safe_mode off
+                                    //may be something to do in future
+                                break;
+                                case 1://case safe_mode basic
+                                    $msg_safe_mode="<div><b>Safe mode was enabled during install, be sure to re-enable all your plugins</b></div>";
+                                break;
+                                case 2://case safe_mode advance
+                                    $msg_safe_mode="<div><b>Safe mode was enabled during install, be sure to re-enable all your plugins</b></div>";
+                                    
+                                    $active_theme = wp_get_theme( $stylesheet, $theme_root );
+
+                                    $temp_theme = null;
+                                    $available_themes = wp_get_themes();
+                                    foreach($available_themes as $theme){
+                                        if($temp_theme ==null && $theme->stylesheet != $active_theme->stylesheet){
+                                            $temp_theme = array('stylesheet'=> $theme->stylesheet,'template' => $theme->template);
+                                            break;
+                                        }
+                                    }
+                                    if($temp_theme != null){
+                                        //switch to another theme
+                                        switch_theme($temp_theme['template'], $temp_theme['stylesheet']);
+                                        //set to default theme
+                                        switch_theme($active_theme->template, $active_theme->stylesheet);
+                                    }
+                                break;
+
+                            }
+                        }
 		
 			//On Cleanup Page
 			if ($screen->id == 'duplicator_page_duplicator-tools' && $on_active_tab) {
 				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> {$msg1}</b> <br/>";
+                                echo $msg_safe_mode;
 				echo "{$msg3}";
 				echo '<p class="pass-lnks">';
 				@printf("1. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
@@ -62,6 +96,7 @@ class DUP_UI_Notice
 
 			//All other Pages
 			} else {
+                                echo $msg_safe_mode;
 				echo "<b>{$msg2}</b> <br/>";
 				echo '<p class="pass-lnks">';
 				_e('Reserved Duplicator installation still exist in the root directory.  Please remove these installation files to complete setup and avoid security issues. <br/>', 'duplicator');

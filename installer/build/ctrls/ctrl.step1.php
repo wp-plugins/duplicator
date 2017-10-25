@@ -5,7 +5,7 @@ $_POST['archive_name']		 = isset($_POST['archive_name']) ? $_POST['archive_name'
 $_POST['archive_engine']	 = isset($_POST['archive_engine']) ? $_POST['archive_engine']  : 'manual';
 $_POST['archive_filetime']	 = (isset($_POST['archive_filetime'])) ? $_POST['archive_filetime'] : 'current';
 $_POST['retain_config']		 = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
-
+$_POST['exe_safe_mode']          = (isset($_POST['exe_safe_mode'])) ? $_POST['exe_safe_mode'] : 0;
 //LOGGING
 $POST_LOG = $_POST;
 unset($POST_LOG['dbpass']);
@@ -66,6 +66,7 @@ DUPX_Log::info("DOC ROOT:\t{$root_path}");
 DUPX_Log::info("DOC ROOT 755:\t".var_export($GLOBALS['CHOWN_ROOT_PATH'], true));
 DUPX_Log::info("LOG FILE 644:\t".var_export($GLOBALS['CHOWN_LOG_PATH'], true));
 DUPX_Log::info("REQUEST URL:\t{$GLOBALS['URL_PATH']}");
+DUPX_Log::info("SAFE MODE :\t{$_POST['exe_safe_mode']}");
 
 $log = "--------------------------------------\n";
 $log .= "POST DATA\n";

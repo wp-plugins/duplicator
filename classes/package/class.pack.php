@@ -183,7 +183,7 @@ class DUP_Package
         $php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" : DUPLICATOR_PHP_MAX_MEMORY." ({$php_max_memory} default)";
 
         $info = "********************************************************************************\n";
-        $info .= "DUPLICATOR-LITE PACKAGE-LOG: ".@date("Y-m-d H:i:s")."\n";
+        $info .= "DUPLICATOR-LITE PACKAGE-LOG: ".@date(get_option('date_format')." ".get_option('time_format'))."\n";
         $info .= "NOTICE: Do NOT post to public sites or forums \n";
         $info .= "********************************************************************************\n";
         $info .= "VERSION:\t".DUPLICATOR_VERSION."\n";
@@ -268,7 +268,7 @@ class DUP_Package
         $info .= "RECORD ID:[{$this->ID}]\n";
         $info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
         $info .= "PEAK PHP MEMORY USED: ".DUP_Server::getPHPMemory(true)."\n";
-        $info .= "DONE PROCESSING => {$this->Name} ".@date("Y-m-d H:i:s")."\n";
+        $info .= "DONE PROCESSING => {$this->Name} ".@date(get_option('date_format')." ".get_option('time_format'))."\n";
 
         DUP_Log::Info($info);
         DUP_Log::Close();

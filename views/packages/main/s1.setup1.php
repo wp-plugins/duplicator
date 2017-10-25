@@ -74,7 +74,7 @@ TOOL BAR: STEPS -->
 <hr class="dup-toolbar-line">
 
 <?php if (!empty($action_response)) : ?>
-    <div id="message" class="updated below-h2"><p><?php echo $action_response; ?></p></div>
+    <div id="message" class="notice notice-success is-dismissible"><p><?php echo $action_response; ?></p></div>
 <?php endif; ?>	
 
 <!-- ============================
