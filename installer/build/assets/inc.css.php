@@ -220,5 +220,7 @@
 	<?php else : ?>
 		.dupx-debug {display:none}
 	<?php endif; ?>
+	small.s3-warn {color: maroon;font-style: italic;}
+	div.s4-warn {color: maroon;}
 
 </style>

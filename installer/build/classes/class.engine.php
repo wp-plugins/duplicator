@@ -123,7 +123,7 @@ class DUPX_UpdateEngine
 	 * @param mysql  $dbh			The db connection object
 	 * @param array  $list			Key value pair of 'search' and 'replace' arrays
 	 * @param array  $tables		The tables we want to look at
-	 * @param array  $fullsearch    Search every column reguardless of its data type
+	 * @param array  $fullsearch    Search every column regardless of its data type
 	 *
 	 * @return array Collection of information gathered during the run.
 	 */
@@ -229,7 +229,7 @@ class DUPX_UpdateEngine
                             //Unkeyed table code
                             //Added this here to add all columns to $where_sql
                             //The if statement with $txt_found would skip additional columns
-                            if($is_unkeyed && ! empty($data_to_fix)){
+                            if($is_unkeyed && ! empty($data_to_fix)) {
                                 $where_sql[] = $column.' = "'.mysqli_real_escape_string($dbh, $data_to_fix).'"';
                             }
 

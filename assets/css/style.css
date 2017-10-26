@@ -64,3 +64,5 @@ input.parsley-error, textarea.parsley-error {
 }
 div.qtip-content {line-height:16px}
 ul.parsley-error-list {margin:1px 0px -7px 0px}
+div.notice-safemode {color: maroon;}
+div.cleanup-notice b.title {color: green;font-size: 20px;}

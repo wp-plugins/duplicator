@@ -39,73 +39,44 @@ class DUP_UI_Notice
   
         if (DUP_Server::hasInstallerFiles()) {
 
-            $screen         = get_current_screen();
-            $on_active_tab  = isset($_GET['tab']) && $_GET['tab'] == 'cleanup' ? true : false;
-			$dup_nonce		= wp_create_nonce('duplicator_cleanup_page');
-			$msg1			= __('This site has been successfully migrated!', 'duplicator');
-			$msg2			= __('Migration Almost Complete!', 'duplicator');
-			$msg3			= __('Please complete these final steps:', 'duplicator');
-			$msg4			= __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.<br/>'
-							. 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
+			$on_active_tab = isset($_GET['section'])? $_GET['section']: '';
+            echo '<div class="updated notice-success" id="dup-global-error-reserved-files"><p>';
 
-			echo '<div class="updated notice" id="dup-global-error-reserved-files"><p>';
-                        $msg_safe_mode ="";
-                        if(isset($_GET['safe_mode'])){
-
-                            switch($_GET['safe_mode']){
-                                case 0://case safe_mode off
-                                    //may be something to do in future
-                                break;
-                                case 1://case safe_mode basic
-                                    $msg_safe_mode="<div><b>Safe mode was enabled during install, be sure to re-enable all your plugins</b></div>";
-                                break;
-                                case 2://case safe_mode advance
-                                    $msg_safe_mode="<div><b>Safe mode was enabled during install, be sure to re-enable all your plugins</b></div>";
-                                    
-                                    $active_theme = wp_get_theme( $stylesheet, $theme_root );
-
-                                    $temp_theme = null;
-                                    $available_themes = wp_get_themes();
-                                    foreach($available_themes as $theme){
-                                        if($temp_theme ==null && $theme->stylesheet != $active_theme->stylesheet){
-                                            $temp_theme = array('stylesheet'=> $theme->stylesheet,'template' => $theme->template);
-                                            break;
-                                        }
-                                    }
-                                    if($temp_theme != null){
-                                        //switch to another theme
-                                        switch_theme($temp_theme['template'], $temp_theme['stylesheet']);
-                                        //set to default theme
-                                        switch_theme($active_theme->template, $active_theme->stylesheet);
-                                    }
-                                break;
-
-                            }
-                        }
-		
-			//On Cleanup Page
-			if ($screen->id == 'duplicator_page_duplicator-tools' && $on_active_tab) {
-				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> {$msg1}</b> <br/>";
-                                echo $msg_safe_mode;
-				echo "{$msg3}";
-				echo '<p class="pass-lnks">';
-				@printf("1. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
-				@printf("2. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!', 'duplicator'));
-				echo '</p>';
-				echo "<div class='pass-msg'>{$msg4}</div>";
-
-			//All other Pages
-			} else {
-                                echo $msg_safe_mode;
-				echo "<b>{$msg2}</b> <br/>";
-				echo '<p class="pass-lnks">';
-				_e('Reserved Duplicator installation still exist in the root directory.  Please remove these installation files to complete setup and avoid security issues. <br/>', 'duplicator');
-				_e('Go to: Duplicator > Tools > Cleanup > and click the "Remove Installation Files" button.', 'duplicator');
-				@printf("<br/><a href='admin.php?page=duplicator-tools&tab=cleanup&_wpnonce={$dup_nonce}'>%s</a> <br/>", __('Take me there now!', 'duplicator'));
-				echo '</p>';
+			//Safe Mode Notice
+			$safe_html = '';
+			if(get_option("duplicator_lite_exe_safe_mode", 0) > 0 ){
+				$safe_msg1 = __('Safe Mode:');
+				$safe_msg2 = __('During the install safe mode was enabled deactivating all plugins.<br/> Please be sure to ');
+				$safe_msg3 = __('re-activate the plugins');
+				$safe_html = "<div class='notice-safemode'><b>{$safe_msg1}</b><br/>{$safe_msg2} <a href='plugins.php'>{$safe_msg3}</a>!</div><br/>";
 			}
 
-			echo "</p></div>";
+			//On Tools > Cleanup Page
+            if ($screen->id == 'duplicator_page_duplicator-tools' && ($on_active_tab == "info" || $on_active_tab == '') ) {
+
+				$title = __('This site has been successfully migrated!');
+				$msg1  = __('Final step:');
+				$msg2  = __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.<br/>'
+									. 'Click the link above or button below to remove all installer files and complete the migration.');
+
+				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> {$title}</b> <br/> {$safe_html} <b>{$msg1}</b> <br/>";
+				@printf("<a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!'));
+                echo "<div class='pass-msg'>{$msg2}</div>";
+
+			//All other Pages
+            } else {
+
+				$title = __('Migration Almost Complete!');
+				$msg   = __('Reserved Duplicator installation files have been detected in the root directory.  Please delete these installation files to '
+						. 'avoid security issues. <br/> Go to:Duplicator > Tools > Information >Stored Data and click the "Remove Installation Files" button');
+
+				$nonce = wp_create_nonce('duplicator_cleanup_page');
+				$url   = self_admin_url('admin.php?page=duplicator-tools&tab=diagnostics&section=info&_wpnonce='.$nonce);
+				echo "<b>{$title}</b><br/> {$safe_html} {$msg}";
+				@printf("<br/><a href='{$url}'>%s</a>", __('Take me there now!'));
+
+            }
+            echo "</p></div>";
         } 
     }
 
@@ -117,9 +88,9 @@ class DUP_UI_Notice
     public static function redirect($location)
     {
         echo '<div class="dup-redirect"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i>';
-			_e('Redirecting Please Wait...', 'duplicator');
+			__('Redirecting Please Wait...', 'duplicator');
 		echo '</div>';
 		echo "<script>window.location = '{$location}';</script>";
-		die(_e('Invalid token permissions to perform this request.', 'duplicator'));
+		die(__('Invalid token permissions to perform this request.', 'duplicator'));
     }
 }

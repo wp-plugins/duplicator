@@ -58,6 +58,9 @@ STEP 1
 			<th>Details</th>
 		</tr>
 		<tr>
+			<td colspan="2" class="section">General Options</td>
+		</tr>
+		<tr>
 			<td>Extraction</td>
 			<td>
 				<b>Manual Archive Extraction</b><br/>
@@ -86,6 +89,23 @@ STEP 1
 
 				<b>All Directories:</b> Check the 'All Directories' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
 				to recursively set octal value on all the directories being extracted.  Typically this value is 755 on most servers and hosts.
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="section">Advanced Options</td>
+		</tr>
+		<tr>
+			<td>Safe Mode</td>
+			<td>
+				Safe mode is designed to configure the site with specific options at install time to help over come issues that may happen during the install were the site
+				is having issues.  These options should only be used if you run into issues after you have tried to run an install.
+				<br/><br/>
+				<b>Basic:</b> This safe mode option will disable all the plugins at install time.  When this option is set you will need to re-enable all plugins after the
+				install has full ran.
+				<br/><br/>
+
+				<b>Advanced:</b> This option applies all settings used in basic and will also de-activate and reactivate your theme when logging in for the first time.  This
+				options should be used only if the Basic option did not work.
 			</td>
 		</tr>
 		<tr>
@@ -124,6 +144,7 @@ STEP 1
 	<br/><br/>
 
 </div>
+<br/>
 
 
 <!-- ============================================
@@ -257,7 +278,7 @@ STEP 2
 			use 'utf8mb4_unicode_520', then 'utf8mb4', then 'utf8' and so on until it runs out of options.
 			<br/><br/>
 			For more information about this feature see the online FAQ question titled
-			<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q" target="_blank">"What is Compatibility mode & ' collation' errors"</a>
+			<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q" target="_blank">"What is compatibility mode & 'unknown collation' errors"</a>
 			</td>
 		</tr>
 		<tr>
@@ -314,10 +335,7 @@ STEP 2
 		</tr>
 	</table>
 	<br/><br/>
-
-
-
-</div>
+</div><br/>
 
 
 <!-- ============================================
@@ -347,7 +365,7 @@ STEP 3
 		</tr>
 		<tr>
 			<td colspan="2" class="section">New Admin Account</td>
-		</td>
+		</tr>
 		<tr>
 			<td>Username</td>
 			<td>A new WordPress username to create.  This will create a new WordPress administrator account.  Please note that usernames are not changeable from the within the UI.</td>
@@ -358,7 +376,7 @@ STEP 3
 		</tr>
 		<tr>
 			<td colspan="2" class="section">Scan Options</td>
-		</td>
+		</tr>
 		<tr>
 			<td>Cleanup <sup>pro</sup></td>
 			<td>The checkbox labeled Remove schedules &amp; storage endpoints will empty the Duplicator schedule and storage settings.  This is recommended to keep enabled so that you do not have unwanted schedules and storage options enabled.</td>
@@ -407,7 +425,7 @@ STEP 3
 		</tr>
 	</table>
 	<br/><br/>
-</div>
+</div><br/>
 
 
 <!-- ============================================

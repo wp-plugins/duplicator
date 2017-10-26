@@ -7,7 +7,7 @@
 	$old_path = $GLOBALS['FW_WPROOT'];
 	$new_path = DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
 	$new_path = ((strrpos($old_path, '/') + 1) == strlen($old_path)) ? DUPX_U::addSlash($new_path) : $new_path;
-        $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
+    $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 ?>
 
 
@@ -29,6 +29,7 @@ VIEW: STEP 3- INPUT -->
 	<input type="hidden" name="dbname" 		 value="<?php echo $_POST['dbname'] ?>" />
 	<input type="hidden" name="dbcharset" 	 value="<?php echo $_POST['dbcharset'] ?>" />
 	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
+	<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
 
 	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
@@ -132,14 +133,16 @@ VIEW: STEP 3- INPUT -->
 				</td>
 				<td valign="top">
                     <b>Activate Plugins:</b>
+					<?php echo ($_POST['exe_safe_mode'] > 0) ? '<small class="s3-warn">Safe Mode Enabled</small>' : '' ; ?>
 					<div class="s3-allnonelinks"  style="<?php echo  ($_POST['exe_safe_mode']>0)? 'display:none':''; ?>">
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
 					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode']>0)? 'disabled="disabled"':''; ?>>
 						<?php
+						$selected_string = ($_POST['exe_safe_mode']>0)? '':'selected="selected';
 						foreach ($active_plugins as $plugin) {
-							echo '<option selected="selected" value="' . DUPX_U::escapeHTML( $plugin ) . '">' . dirname($plugin) . '</option>';
+							echo '<option '.$selected_string.' value="' . DUPX_U::escapeHTML( $plugin ) . '">' . dirname($plugin) . '</option>';
 						}
 						?>
 					</select>

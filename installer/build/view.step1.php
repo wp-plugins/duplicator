@@ -444,7 +444,7 @@ OPTIONS
 <div id="s1-area-adv-opts" style="display:none">
 	<div class="help-target"><a href="?help#help-s1" target="_blank">[help]</a></div>
 	<br/>
-	<div class="hdr-sub3">Advanced</div>
+	<div class="hdr-sub3">General</div>
 	<table class="dupx-opts dupx-advopts">
 		<tr>
 			<td>Extraction:</td>
@@ -462,7 +462,9 @@ OPTIONS
 			</td>
 		</tr>
 	</table>
-
+	<br>
+	<br>
+	<div class="hdr-sub3">Advanced</div>
 	<table class="dupx-opts dupx-advopts">
                 <tr>
 			<td>Safe Mode:</td>
