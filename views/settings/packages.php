@@ -56,7 +56,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
     <input type="hidden" name="page"   value="duplicator-settings">
 
     <?php if ($action_updated) : ?>
-        <div id="message" class="notice notice-success is-dismissible"><p><?php echo $action_response; ?></p></div>
+        <div id="message" class="notice notice-success is-dismissible dup-wpnotice-box"><p><?php echo $action_response; ?></p></div>
     <?php endif; ?>
 
     <h3 class="title"><?php _e("Visual", 'duplicator') ?> </h3>

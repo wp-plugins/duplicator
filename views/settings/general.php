@@ -21,7 +21,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
 	DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
 
-	$action_updated = DUP_Settings::Save();
+	DUP_Settings::Save();
+	$action_updated = true;
 	DUP_Util::initSnapshotDirectory();
 }
 
@@ -49,7 +50,7 @@ $package_debug = DUP_Settings::Get('package_debug');
     <input type="hidden" name="page"   value="duplicator-settings">
 
     <?php if ($action_updated) : ?>
-        <div id="message" class="notice notice-success is-dismissible"><p><?php echo $action_response; ?></p></div>
+        <div id="message" class="notice notice-success is-dismissible dup-wpnotice-box"><p><?php echo $action_response; ?></p></div>
     <?php endif; ?>	
 
 

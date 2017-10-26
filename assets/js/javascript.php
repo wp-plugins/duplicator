@@ -234,5 +234,8 @@ jQuery(document).ready(function($)
 		Handlebars.registerHelper('if_neq',		function(a, b, opts) { return (a != b) ? opts.fn(this) : opts.inverse(this);});
 	}
 
+	//Prevent notice boxes from flashing as its re-positioned in DOM
+	$('div.dup-wpnotice-box').show(300);
+
 });	
 </script>
