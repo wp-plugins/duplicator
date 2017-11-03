@@ -151,6 +151,59 @@ TOTAL SIZE -->
 	</div>
 </div>
 
+<!-- ======================
+ADDON SITES -->
+<div id="addonsites-block"  class="scan-item">
+	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
+		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Addon Sites');?></div>
+		<div id="data-arc-status-addonsites"></div>
+	</div>
+    <div class="info">
+        <div style="margin-bottom:10px;">
+            <small>
+            <?php
+                printf(__('An "Addon Site" is a separate WordPress site(s) residing in subdirectories within this site. If you confirm these to be separate sites, '
+					. 'then it is recommended that you exclude them by checking the corresponding boxes below and clicking the \'Add Filters & Rescan\' button.  To backup the other sites '
+					. 'install the plugin on the sites needing to be backed-up.'));
+            ?>
+            </small>
+        </div>
+        <script id="hb-addon-sites" type="text/x-handlebars-template">
+            <div class="container">
+                <div class="hdrs">
+                    <span style="font-weight:bold">
+                        <?php _e('Quick Filters'); ?>
+                    </span>
+                </div>
+                <div class="data">
+                    {{#if ARC.FilterInfo.Dirs.AddonSites.length}}
+                        {{#each ARC.FilterInfo.Dirs.AddonSites as |path|}}
+                        <div class="directory">
+                            <input type="checkbox" name="dir_paths[]" value="{{path}}" id="as_dir_{{@index}}"/>
+                            <label for="as_dir_{{@index}}" title="{{path}}">
+                                {{path}}
+                            </label>
+                        </div>
+                        {{/each}}
+                    {{else}}
+                    <?php _e('No add on sites found.'); ?>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="apply-btn">
+                <div class="apply-warn">
+                    <?php _e('*Checking a directory will exclude all items in that path recursively.'); ?>
+                </div>
+                <button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'addon')">
+                    <i class="fa fa-filter"></i> <?php _e('Add Filters &amp; Rescan');?>
+                </button>
+            </div>
+        </script>
+        <div id="hb-addon-sites-result" class="hb-files-style"></div>
+    </div>
+</div>
+
+
 <!-- ============
 FILE NAME CHECKS -->
 <div class="scan-item scan-item-last">
@@ -547,7 +600,19 @@ jQuery(document).ready(function($)
 		$btn.html('<i class="fa fa-circle-o-notch fa-spin"></i> <?php _e('Initializing Please Wait...', 'duplicator');?>');
 		$btn.attr('disabled', 'true');
 
-		var id = (type == 'large') ? '#hb-files-large-result' : '#hb-files-utf8-result'
+		//var id = (type == 'large') ? '#hb-files-large-result' : '#hb-files-utf8-result'
+		var id = '';
+        switch(type){
+            case 'large':
+                id = '#hb-files-large-result';
+                break;
+            case 'utf8':
+                id = '#hb-files-utf8-result';
+                break;
+            case 'addon':
+                id = '#hb-addon-sites-result';
+                break;
+        }
 		var dirFilters  = [];
 		var fileFilters = [];
 		$(id + " input[name='dir_paths[]']:checked").each(function()  {dirFilters.push($(this).val());});
@@ -592,6 +657,12 @@ jQuery(document).ready(function($)
 		var templateScript = Handlebars.compile(template);
 		var html = templateScript(data);
 		$('#hb-files-large-result').html(html);
+
+		//ADDON SITES
+        var template = $('#hb-addon-sites').html();
+        var templateScript = Handlebars.compile(template);
+        var html = templateScript(data);
+        $('#hb-addon-sites-result').html(html);
 
 		//NAME CHECKS
 		var template = $('#hb-files-utf8').html();

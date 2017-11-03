@@ -297,6 +297,7 @@ class DUP_Archive
     {
         $this->FilterInfo->Dirs->Warning    = array();
         $this->FilterInfo->Dirs->Unreadable = array();
+        $this->FilterInfo->Dirs->AddonSites = array();
 
 		$utf8_key_list = array();
 		$unset_key_list = array();
@@ -326,6 +327,22 @@ class DUP_Archive
 				$utf8_key_list[] = $key;
 				$this->FilterInfo->Dirs->Warning[] = DUP_Encoding::toUTF8($val);
 			}
+
+			//Check for other WordPress installs
+            if ($name === 'wp-admin') {
+                $parent_dir = realpath(dirname($this->Dirs[$key]));
+                if ($parent_dir != realpath(DUPLICATOR_WPROOTPATH)) {
+                    if (file_exists("$parent_dir/wp-includes")) {
+                        if (file_exists("$parent_dir/wp-config.php")) {
+                            // Ensure we aren't adding any critical directories
+                            $parent_name = basename($parent_dir);
+                            if (($parent_name != 'wp-includes') && ($parent_name != 'wp-content') && ($parent_name != 'wp-admin')) {
+                                $this->FilterInfo->Dirs->AddonSites[] =  str_replace("\\", '/',$parent_dir);
+                            }
+                        }
+                    }
+                }
+            }
 
         }
 

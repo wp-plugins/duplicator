@@ -122,6 +122,8 @@ class DUP_Package
         //$report['ARC']['Status']['Big']   = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
         $report['ARC']['Dirs']  = $this->Archive->Dirs;
         $report['ARC']['Files'] = $this->Archive->Files;
+		$report['ARC']['Status']['AddonSites'] = count($this->Archive->FilterInfo->Dirs->AddonSites) ? 'Warn' : 'Good';
+            
 
 
         //DATABASE

@@ -274,7 +274,7 @@ VALIDATION
 			</table><br/>
 
 			The deployment path above must be writable by PHP in order to extract the archive file.  Incorrect permissions and extension such as
-			<a href="https://suhosin.org/stories/index.html" target="_blank">suhosin</a> can sometimes inter-fear with PHP being able to write/extract files.
+			<a href="https://suhosin.org/stories/index.html" target="_blank">suhosin</a> can sometimes interfere with PHP being able to write/extract files.
 			Please see the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=installer_perms#faq-trouble-055-q" target="_blank">FAQ permission</a> help link for complete details.
 			PHP with <a href='http://php.net/manual/en/features.safe-mode.php' target='_blank'>safe mode</a> should be disabled.  If this test fails
 			please contact your hosting provider or server administrator to disable PHP safe mode.

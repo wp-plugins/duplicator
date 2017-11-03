@@ -271,6 +271,12 @@ jQuery(document).ready(function($)
 		Duplicator.Pack.initArchiveFilesData(data);
 		Duplicator.Pack.initArchiveDBData(data);
 
+		//Addon Sites
+		$('#data-arc-status-addonsites').html(Duplicator.Pack.setScanStatus(data.ARC.Status.AddonSites));
+		if (data.ARC.FilterInfo.Dirs.AddonSites !== undefined && data.ARC.FilterInfo.Dirs.AddonSites.length > 0) {
+			$("#addonsites-block").show();
+		}
+
 		$('#dup-msg-success').show();
 
 		//Waring Check

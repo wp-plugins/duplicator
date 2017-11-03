@@ -126,4 +126,25 @@ class DUP_DB extends wpdb
         return false;
     }
 
+	/**
+     * Returns an escaped sql string
+	 *
+	 * @param string	$sql				The sql to escape
+	 * @param bool		$escapePlaceHolder	Patch for how the default WP function works.
+	 *
+     * @return boolean|string
+	 * @also see: https://make.wordpress.org/core/2017/10/31/changed-behaviour-of-esc_sql-in-wordpress-4-8-3/
+     */
+    public static function escSQL($sql, $escapePlaceHolder = true)
+    {
+		global $wpdb;
+
+		if ($escapePlaceHolder) {
+			return $wpdb->remove_placeholder_escape(@esc_sql($sql));
+		} else {
+			return @esc_sql($sql);
+		}
+
+    }
+
 }

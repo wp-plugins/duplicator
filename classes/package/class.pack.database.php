@@ -353,7 +353,9 @@ class DUP_Database
                             if (is_null($value) || !isset($value)) {
                                 ($num_values == $num_counter) ? $sql .= 'NULL' : $sql .= 'NULL, ';
                             } else {
-                                ($num_values == $num_counter) ? $sql .= '"'.@esc_sql($value).'"' : $sql .= '"'.@esc_sql($value).'", ';
+                                ($num_values == $num_counter) 
+									? $sql .= '"' . DUP_DB::escSQL($value) . '"'
+									: $sql .= '"' . DUP_DB::escSQL($value) . '", ';
                             }
                             $num_counter++;
                         }
