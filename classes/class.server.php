@@ -42,16 +42,11 @@ class DUP_Server
         $dup_tests['PHP']['ALL']       = !in_array('Fail', $dup_tests['PHP']) ? 'Pass' : 'Fail';
 
         //REQUIRED PATHS
-        if (file_exists(DUPLICATOR_SSDIR_PATH) && is_writeable(DUPLICATOR_SSDIR_PATH)) {
-            $dup_tests['IO']['SSDIR']  = 'Pass';
-            $dup_tests['IO']['WPROOT'] = 'Pass';
-        } else {
-            $handle_test               = @opendir(DUPLICATOR_WPROOTPATH);
-            $dup_tests['IO']['WPROOT'] = is_writeable(DUPLICATOR_WPROOTPATH) && $handle_test ? 'Pass' : 'Fail';
-            $dup_tests['IO']['SSDIR']  = 'Fail';
-            @closedir($handle_test);
-        }
+		$handle_test               = @opendir(DUPLICATOR_WPROOTPATH);
+		$dup_tests['IO']['WPROOT'] = is_writeable(DUPLICATOR_WPROOTPATH) && $handle_test ? 'Pass' : 'Warn';
+		@closedir($handle_test);
 
+		$dup_tests['IO']['SSDIR'] = (file_exists(DUPLICATOR_SSDIR_PATH) && is_writeable(DUPLICATOR_SSDIR_PATH)) ? 'Pass' : 'Fail';
         $dup_tests['IO']['SSTMP'] = is_writeable(DUPLICATOR_SSDIR_PATH_TMP) ? 'Pass' : 'Fail';
         $dup_tests['IO']['ALL']   = !in_array('Fail', $dup_tests['IO']) ? 'Pass' : 'Fail';
 
@@ -66,6 +61,8 @@ class DUP_Server
                                         && $dup_tests['IO']['ALL'] == 'Pass'
                                         && $dup_tests['SRV']['ALL'] == 'Pass'
                                         && $dup_tests['RES']['INSTALL'] == 'Pass';
+		
+		$dup_tests['Warning'] = $dup_tests['IO']['WPROOT'] == 'Warn';
 
         return $dup_tests;
     }

@@ -79,7 +79,7 @@ TOOL BAR: STEPS -->
 
 <!-- ============================
 SYSTEM REQUIREMENTS -->
-<?php if (! $dup_tests['Success']) : ?>
+<?php if (! $dup_tests['Success'] || $dup_tests['Warning']) : ?>
 <div class="dup-box">
     <div class="dup-box-title">
         <?php
@@ -137,21 +137,30 @@ SYSTEM REQUIREMENTS -->
         <!-- PERMISSIONS -->
         <div class='dup-sys-req'>
             <div class='dup-sys-title'>
-                <a><?php _e('Required Paths', 'duplicator'); ?></a> <div><?php echo $dup_tests['IO']['ALL']; ?></div>
+                <a><?php _e('Required Paths', 'duplicator'); ?></a>
+				<div>
+					<?php
+						if ($dup_tests['IO']['ALL']) {
+							echo ($dup_tests['IO']['WPROOT'] == 'Warn') ? 'Warn' : 'Pass';
+						} else {
+							echo 'Fail';
+						}
+					?>
+				</div>
             </div>
             <div class="dup-sys-info dup-info-box">
 				<?php
-				printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSDIR'], DUPLICATOR_SSDIR_PATH);
-				printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSTMP'], DUPLICATOR_SSDIR_PATH_TMP);
+					printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSDIR'], DUPLICATOR_SSDIR_PATH);
+					printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSTMP'], DUPLICATOR_SSDIR_PATH_TMP);
+					printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['WPROOT'], DUPLICATOR_WPROOTPATH);
 				?>
-				<br/>
-				<div style="font-size:11px">
-					<?php 
-						_e("If Duplicator does not have enough permissions then you will need to manually create the paths above. &nbsp; ", 'duplicator'); 
-						if ($dup_tests['IO']['WPROOT'] == 'Fail')
-						{
-							echo sprintf( __('The root WordPress path [%s] is currently not writable by PHP.', 'duplicator'), 	DUPLICATOR_WPROOTPATH);
+				<div style="font-size:11px; padding-top: 3px">
+					<?php
+						if ($dup_tests['IO']['WPROOT'] == 'Warn') {
+							echo sprintf( __('If the root WordPress path is not writable by PHP on some systems this can cause issues.', 'duplicator'), DUPLICATOR_WPROOTPATH);
+							echo '<br/>';
 						}
+						_e("If Duplicator does not have enough permissions then you will need to manually create the paths above. &nbsp; ", 'duplicator'); 
 					?>
 				</div>
             </div>
