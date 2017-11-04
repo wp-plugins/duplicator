@@ -158,4 +158,4 @@ class DUP_DB extends wpdb
     }
 }
 
-DUP_PRO_DB::init();
+DUP_DB::init();
