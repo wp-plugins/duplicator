@@ -148,6 +148,8 @@
     table.s3-table-inputs td:first-child{font-weight: bold; width:125px}
 	div#s3-adv-opts {margin-top:5px; }
 	div.s3-allnonelinks {font-size:11px; float:right;}
+	select#plugins {width:330px; height:100px}
+	select#tables {width:330px; height:100px}
 
 	/* password indicator */
 	.top_testresult{font-weight:bold;	font-size:11px; color:#222;	padding:1px 1px 1px 4px; margin:4px 0 0 0px; width:495px; dislay:inline-block}

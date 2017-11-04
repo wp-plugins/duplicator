@@ -122,14 +122,13 @@ VIEW: STEP 3- INPUT -->
 						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',true);">[All]</a>
 						<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
-					<select id="tables" name="tables[]" multiple="multiple" style="width:315px; height:100px">
+					<select id="tables" name="tables[]" multiple="multiple">
 						<?php
-						foreach( $all_tables as $table ) {
-							echo '<option selected="selected" value="' . DUPX_U::escapeHTML( $table ) . '">' . $table . '</option>';
-						}
+							foreach( $all_tables as $table ) {
+								echo '<option selected="selected" value="' . DUPX_U::escapeHTML( $table ) . '">' . $table . '</option>';
+							}
 						?>
 					</select>
-
 				</td>
 				<td valign="top">
                     <b>Activate Plugins:</b>
@@ -138,12 +137,14 @@ VIEW: STEP 3- INPUT -->
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
-					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode']>0) ? 'disabled="disabled"' : ''; ?>>
+					<select id="plugins" name="plugins[]" multiple="multiple" <?php echo ($_POST['exe_safe_mode'] > 0) ? 'disabled="disabled"' : ''; ?>>
 						<?php
-						$selected_string = ($_POST['exe_safe_mode']>0)? '' : 'selected="selected"';
-						foreach ($active_plugins as $plugin) {
-							echo '<option '.$selected_string.' value="' . DUPX_U::escapeHTML( $plugin ) . '">' . dirname($plugin) . '</option>';
-						}
+							$selected_string = ($_POST['exe_safe_mode'] > 0) ? '' : 'selected="selected"';
+							foreach ($active_plugins as $plugin) {
+								$plug_val  = DUPX_U::escapeHTML($plugin);
+								$plug_name = dirname($plugin);
+								echo "<option {$selected_string} value='{$plug_val}'>{$plug_name}</option>";
+							}
 						?>
 					</select>
 				</td>
