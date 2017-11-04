@@ -138,9 +138,9 @@ VIEW: STEP 3- INPUT -->
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 					</div><br style="clear:both" />
-					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode']>0)? 'disabled="disabled"':''; ?>>
+					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode']>0) ? 'disabled="disabled"' : ''; ?>>
 						<?php
-						$selected_string = ($_POST['exe_safe_mode']>0)? '':'selected="selected';
+						$selected_string = ($_POST['exe_safe_mode']>0)? '' : 'selected="selected"';
 						foreach ($active_plugins as $plugin) {
 							echo '<option '.$selected_string.' value="' . DUPX_U::escapeHTML( $plugin ) . '">' . dirname($plugin) . '</option>';
 						}
