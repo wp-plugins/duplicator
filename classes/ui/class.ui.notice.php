@@ -45,35 +45,36 @@ class DUP_UI_Notice
 			//Safe Mode Notice
 			$safe_html = '';
 			if(get_option("duplicator_lite_exe_safe_mode", 0) > 0 ){
-				$safe_msg1 = __('Safe Mode:');
-				$safe_msg2 = __('During the install safe mode was enabled deactivating all plugins.<br/> Please be sure to ');
-				$safe_msg3 = __('re-activate the plugins');
+				$safe_msg1 = __('Safe Mode:', 'duplicator');
+				$safe_msg2 = __('During the install safe mode was enabled deactivating all plugins.<br/> Please be sure to ', 'duplicator');
+				$safe_msg3 = __('re-activate the plugins', 'duplicator');
 				$safe_html = "<div class='notice-safemode'><b>{$safe_msg1}</b><br/>{$safe_msg2} <a href='plugins.php'>{$safe_msg3}</a>!</div><br/>";
 			}
 
 			//On Tools > Cleanup Page
             if ($screen->id == 'duplicator_page_duplicator-tools' && ($on_active_tab == "info" || $on_active_tab == '') ) {
 
-				$title = __('This site has been successfully migrated!');
-				$msg1  = __('Final step:');
+				$title = __('This site has been successfully migrated!', 'duplicator');
+				$msg1  = __('Final step(s):', 'duplicator');
 				$msg2  = __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.<br/>'
-									. 'Click the link above or button below to remove all installer files and complete the migration.');
+									. 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
 
 				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> {$title}</b> <br/> {$safe_html} <b>{$msg1}</b> <br/>";
-				@printf("<a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!'));
+				printf("1. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
+				printf("2. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!', 'duplicator'));
                 echo "<div class='pass-msg'>{$msg2}</div>";
 
 			//All other Pages
             } else {
 
-				$title = __('Migration Almost Complete!');
+				$title = __('Migration Almost Complete!', 'duplicator');
 				$msg   = __('Reserved Duplicator installation files have been detected in the root directory.  Please delete these installation files to '
-						. 'avoid security issues. <br/> Go to:Duplicator > Tools > Information >Stored Data and click the "Remove Installation Files" button');
+						. 'avoid security issues. <br/> Go to:Duplicator > Tools > Information >Stored Data and click the "Remove Installation Files" button', 'duplicator');
 
 				$nonce = wp_create_nonce('duplicator_cleanup_page');
 				$url   = self_admin_url('admin.php?page=duplicator-tools&tab=diagnostics&section=info&_wpnonce='.$nonce);
 				echo "<b>{$title}</b><br/> {$safe_html} {$msg}";
-				@printf("<br/><a href='{$url}'>%s</a>", __('Take me there now!'));
+				@printf("<br/><a href='{$url}'>%s</a>", __('Take me there now!', 'duplicator'));
 
             }
             echo "</p></div>";
