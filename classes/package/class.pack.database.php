@@ -354,8 +354,8 @@ class DUP_Database
                                 ($num_values == $num_counter) ? $sql .= 'NULL' : $sql .= 'NULL, ';
                             } else {
                                 ($num_values == $num_counter) 
-									? $sql .= '"' . DUP_DB::escSQL($value) . '"'
-									: $sql .= '"' . DUP_DB::escSQL($value) . '", ';
+									? $sql .= '"' . DUP_DB::escSQL($value, true) . '"'
+									: $sql .= '"' . DUP_DB::escSQL($value, true) . '", ';
                             }
                             $num_counter++;
                         }

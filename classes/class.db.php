@@ -20,6 +20,15 @@ if (!defined('DUPLICATOR_VERSION')) {
 class DUP_DB extends wpdb
 {
 
+	public static $remove_placeholder_escape_exists = null;
+
+	public static function init()
+	{
+		global $wpdb;
+
+		self::$remove_placeholder_escape_exists = method_exists($wpdb, 'remove_placeholder_escape');
+	}
+
     /**
      * Get the requested MySQL system variable
      *
@@ -127,24 +136,26 @@ class DUP_DB extends wpdb
     }
 
 	/**
-     * Returns an escaped sql string
+     * Returns an escaped SQL string
 	 *
-	 * @param string	$sql				The sql to escape
-	 * @param bool		$escapePlaceHolder	Patch for how the default WP function works.
+	 * @param string	$sql						The SQL to escape
+	 * @param bool		$removePlaceholderEscape	Patch for how the default WP function works.
 	 *
      * @return boolean|string
 	 * @also see: https://make.wordpress.org/core/2017/10/31/changed-behaviour-of-esc_sql-in-wordpress-4-8-3/
      */
-    public static function escSQL($sql, $escapePlaceHolder = true)
+    public static function escSQL($sql, $removePlaceholderEscape = false)
     {
 		global $wpdb;
 
-		if ($escapePlaceHolder) {
+		$removePlaceholderEscape = $removePlaceholderEscape && self::$remove_placeholder_escape_exists;
+
+		if ($removePlaceholderEscape) {
 			return $wpdb->remove_placeholder_escape(@esc_sql($sql));
 		} else {
 			return @esc_sql($sql);
 		}
-
     }
-
 }
+
+DUP_PRO_DB::init();

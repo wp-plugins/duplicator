@@ -100,11 +100,11 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 			<?php endif; ?>
 		</div>
 	<?php endif;
-	if(isset($_GET['action']) && $_GET['action']=="installer" && get_option("duplicator_lite_exe_safe_mode")){
+	if(isset($_GET['action']) && $_GET['action']=="installer" && get_option("duplicator_exe_safe_mode")){
 		$safe_title = __('This site has been successfully migrated!');
 		$safe_msg = __('Please test the entire site to validate the migration process!');
 
-		switch(get_option("duplicator_lite_exe_safe_mode")){
+		switch(get_option("duplicator_exe_safe_mode")){
 			//safe_mode basic
 			case 1:
 				$safe_msg = __('NOTICE: Safe mode (Basic) was enabled during install, be sure to re-enable all your plugins.');
@@ -138,7 +138,7 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 				. "<div class='notice-safemode'>{$safe_msg}</p></div></div>";
 		}
 
-		delete_option("duplicator_lite_exe_safe_mode");
+		delete_option("duplicator_exe_safe_mode");
 	}
 }
 ?>

@@ -44,7 +44,7 @@ class DUP_UI_Notice
 
 			//Safe Mode Notice
 			$safe_html = '';
-			if(get_option("duplicator_lite_exe_safe_mode", 0) > 0 ){
+			if(get_option("duplicator_exe_safe_mode", 0) > 0 ){
 				$safe_msg1 = __('Safe Mode:', 'duplicator');
 				$safe_msg2 = __('During the install safe mode was enabled deactivating all plugins.<br/> Please be sure to ', 'duplicator');
 				$safe_msg3 = __('re-activate the plugins', 'duplicator');

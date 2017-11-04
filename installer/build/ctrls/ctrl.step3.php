@@ -179,7 +179,7 @@ if ($_POST['postguid']) {
   http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
-mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_lite_exe_safe_mode')");
+mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_exe_safe_mode')");
 //===============================================
 //CONFIGURATION FILE UPDATES
 //===============================================

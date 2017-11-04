@@ -16,7 +16,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     //Package
 	$mysqldump_enabled		= isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
 	$mysqldump_exe_file		= isset($_POST['package_mysqldump_path']) 
-								? trim(DUP_DB::escSQL(strip_tags($_POST['package_mysqldump_path'])))
+								? trim(DUP_DB::escSQL(strip_tags($_POST['package_mysqldump_path']), true))
 								: null;
 	$mysqldump_path_valid	= is_file($mysqldump_exe_file) ? true : false;
 	
