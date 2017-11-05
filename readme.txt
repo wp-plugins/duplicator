@@ -3,9 +3,9 @@ Contributors: corylamleorg, bobriley
 Donate link: www.lifeinthegrid.com/partner
 Tags: migration, backup, restore, move, migrate, duplicate, transfer, clone, automate, copy site
 Requires at least: 4.0
-Tested up to: 4.8.2
+Tested up to: 4.8.3
 Requires PHP: 5.2.17
-Stable tag: 1.2.26
+Stable tag: 1.2.28
 License: GPLv2
 
 WordPress migration and backups are much easier with Duplicator! Clone, backup, move and transfer an entire site from one location to another. 
