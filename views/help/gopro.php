@@ -204,23 +204,23 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td colspan="3" class="group-header"><?php _e('Enhanced Experience', 'duplicator') ?></td>
 		</tr>-->
 		<tr>
-			<td class="feature-column"><?php _e('Email Alerts') ?></td>
+			<td class="feature-column"><?php _e('Email Alerts', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
 
 		<tr>
-			<td class="feature-column"><?php _e('Manual Transfers') ?></td>
+			<td class="feature-column"><?php _e('Manual Transfers', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>		
 		<tr>
-			<td class="feature-column"><?php _e('Active Customer Support') ?></td>
+			<td class="feature-column"><?php _e('Active Customer Support', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
 		<tr>
-			<td class="feature-column"><?php _e('Plus Many Other Features...') ?></td>
+			<td class="feature-column"><?php _e('Plus Many Other Features...', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>			
