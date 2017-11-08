@@ -261,5 +261,17 @@ class DUPX_U
         return str_replace("/", "\\", $path);
     }
 
+	 /**
+     *  Sanitize input for XSS code
+     *
+     *  @param string $val		The value to sanitize
+     *
+     *  @return string Returns the input value cleaned up.
+     */
+    public static function sanitize($input)
+    {
+        return filter_var($input, FILTER_SANITIZE_STRING);
+    }
+
 }
 ?>

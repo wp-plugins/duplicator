@@ -1,6 +1,8 @@
 <?php
+
+	$_POST['url_new']	    = isset($_POST['url_new'])      ? DUPX_U::sanitize($_POST['url_new']) : '';
 	$_POST['archive_name']  = isset($_POST['archive_name']) ? $_POST['archive_name'] : '';
-	$_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
+	$_POST['retain_config'] = isset($_POST['retain_config']) && $_POST['retain_config'] == '1' ? true : false;
     $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
         
 	$admin_base		= basename($GLOBALS['FW_WPLOGIN_URL']);
