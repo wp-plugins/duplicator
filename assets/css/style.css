@@ -67,3 +67,8 @@ div.qtip-content {line-height:16px}
 ul.parsley-error-list {margin:1px 0px -7px 0px}
 div.notice-safemode {color: maroon;}
 div.cleanup-notice b.title {color: green;font-size: 20px;}
+
+/*SCREEN TABS*/
+div.dup-screen-hlp-info {line-height:26px; padding:10px 0 10px 0}
+#screen-meta-links .button { font-size:13px !important; height:auto !important;font-weight: normal; padding: 3px 6px 3px 16px !important;min-width:72px !important}
+

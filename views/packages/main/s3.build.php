@@ -81,9 +81,9 @@ TOOL BAR: STEPS -->
 			</div>
 		</td>
 		<td style="padding-bottom:4px">
-			<a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("Packages", 'duplicator'); ?></a> &nbsp;
 			<div id="dup-create-area-nolink"><?php _e("Create New", 'duplicator'); ?></div>
 			<div id="dup-create-area-link"><a href="admin.php?page=duplicator&tab=new1" class="add-new-h2"><?php _e("Create New", 'duplicator'); ?></a></div>
+			<div style="float:right;margin: 0px 5px;"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("Packages", 'duplicator'); ?></a></div>
 		</td>
 	</tr>
 </table>		
