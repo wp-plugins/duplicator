@@ -3,7 +3,7 @@ Contributors: corylamleorg, bobriley
 Donate link: www.lifeinthegrid.com/partner
 Tags: migration, backup, restore, move, migrate, duplicate, transfer, clone, automate, copy site
 Requires at least: 4.0
-Tested up to: 4.8.3
+Tested up to: 4.9
 Requires PHP: 5.2.17
 Stable tag: 1.2.30
 License: GPLv2
