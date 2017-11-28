@@ -70,7 +70,15 @@ $GLOBALS['REPLACE_LIST']
   ================================================================================================= */
 
 // Some machines don’t have this set so just do it here.
-date_default_timezone_set('UTC'); 
+date_default_timezone_set('UTC');
+
+//PATCH FOR IIS:  Does not support REQUEST_URI
+if (!isset($_SERVER['REQUEST_URI']))  {
+	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],0);
+	if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != "") {
+		$_SERVER['REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
+	}
+}
 
 //COMPARE VALUES
 $GLOBALS['DUPX_DEBUG']		= false;
