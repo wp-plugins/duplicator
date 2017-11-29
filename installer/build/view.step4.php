@@ -70,8 +70,8 @@ VIEW: STEP 4 - INPUT -->
 		Additional Notes:
 		<ul style="margin-top: 1px">
 			<li>
-				Review the <a href='<?php echo $url_new_rtrim; ?>' target='_blank'>front-end</a> or
-				re-run installer at <a href="javascript:history.go(-3)">step 1</a>
+				Review the <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
+				re-run installer at <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">step 1</a>
 			</li>
 			<li>The .htaccess file was reset.  Resave plugins that write to this file.</li>
 			<li>

@@ -7,6 +7,7 @@ $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
 $_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
 $_POST['archive_name']		= isset($_POST['archive_name']) ? $_POST['archive_name'] : null;
 $_POST['retain_config']		= (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
+$_POST['dbcollatefb']       = isset($_POST['dbcollatefb']) ? $_POST['dbcollatefb'] : false;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -216,6 +217,7 @@ $sql_result_file_data	= explode(";\n", $sql_file);
 $sql_result_file_length = count($sql_result_file_data);
 $sql_result_file_path	= "{$root_path}/{$GLOBALS['SQL_FILE_NAME']}";
 $sql_file = null;
+$db_collatefb_log = '';
 
 if($_POST['dbcollatefb']){
     $supportedCollations = DUPX_DB::getSupportedCollationsList($dbh);
@@ -240,16 +242,17 @@ if($_POST['dbcollatefb']){
         }
     }
 
-//No need to replace if current DB is up to date
+	//No need to replace if current DB is up to date
     if($latest_supported_index != 0){
-        for($i=0;$i<$latest_supported_index;$i++){
+        for($i=0; $i < $latest_supported_index; $i++){
             foreach ($sql_result_file_data as $index => $col_sql_query){
                 if(strpos($col_sql_query,$collation_arr[$i]) !== false){
-                    $sql_result_file_data[$index] = str_replace($collation_arr[$i],$latest_supported_collation,$col_sql_query);
+                    $sql_result_file_data[$index] = str_replace($collation_arr[$i], $latest_supported_collation, $col_sql_query);
                     if(strpos($collation_arr[$i],'utf8mb4') !== false && strpos($latest_supported_collation,'utf8mb4') === false){
                         $sql_result_file_data[$index] = str_replace('utf8mb4','utf8',$sql_result_file_data[$index]);
                     }
-                    DUPX_Log::info("Collation {$collation_arr[$i]} was changed with {$latest_supported_collation}");
+					$sub_query = str_replace("\n", '', substr($col_sql_query, 0, 75));
+                    $db_collatefb_log .= "   - Collation '{$collation_arr[$i]}' set to '{$latest_supported_collation}' on query [{$sub_query}...]\n";
                 }
             }
         }
@@ -276,19 +279,18 @@ DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 //sql_mode can cause db create issues on some systems
 $qry_session_custom = true;
 switch ($_POST['dbmysqlmode']) {
-    case 'DISABLE':
-        @mysqli_query($dbh, "SET SESSION sql_mode = ''");
-        break;
-    case 'CUSTOM':
-		$dbmysqlmode_opts = $_POST['dbmysqlmode_opts'];
-		$qry_session_custom = @mysqli_query($dbh, "SET SESSION sql_mode = '{$dbmysqlmode_opts}'");
-        if ($qry_session_custom == false)
-		{
-			$sql_error = mysqli_error($dbh);
-			$log  = "WARNING: A custom sql_mode setting issue has been detected:\n{$sql_error}.\n";
-			$log .= "For more details visit: http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html\n";
+	case 'DISABLE':
+		@mysqli_query($dbh, "SET SESSION sql_mode = ''");
+		break;
+	case 'CUSTOM':
+		$dbmysqlmode_opts	 = $_POST['dbmysqlmode_opts'];
+		$qry_session_custom	 = @mysqli_query($dbh, "SET SESSION sql_mode = '{$dbmysqlmode_opts}'");
+		if ($qry_session_custom == false) {
+			$sql_error	 = mysqli_error($dbh);
+			$log		 = "WARNING: Trying to set a custom sql_mode setting issue has been detected:\n{$sql_error}.\n";
+			$log		 .= "For more details visit: http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html\n";
 		}
-        break;
+		break;
 }
 
 //Set defaults in-case the variable could not be read
@@ -301,6 +303,7 @@ $dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET'  : $dbvar_sqlmode;
 $dbvar_version		= DUPX_DB::getVersion($dbh);
 $sql_file_size1		= DUPX_U::readableByteSize(@filesize("database.sql"));
 $sql_file_size2		= DUPX_U::readableByteSize(@filesize("{$GLOBALS['SQL_FILE_NAME']}"));
+$db_collatefb		= isset($_POST['dbcollatefb']) ? 'On' : 'Off';
 
 
 DUPX_Log::info("--------------------------------------");
@@ -312,9 +315,9 @@ DUPX_Log::info("TIMEOUT:\t{$dbvar_maxtime}");
 DUPX_Log::info("MAXPACK:\t{$dbvar_maxpacks}");
 DUPX_Log::info("SQLMODE:\t{$dbvar_sqlmode}");
 DUPX_Log::info("NEW SQL FILE:\t[{$sql_result_file_path}]");
+DUPX_Log::info("COLLATE RESET:\t{$db_collatefb}\n{$db_collatefb_log}");
 
-if ($qry_session_custom == false)
-{
+if ($qry_session_custom == false) {
 	DUPX_Log::info("\n{$log}\n");
 }
 
