@@ -101,7 +101,7 @@ class DUP_UI_Dialog
     }
 
     /**
-     * Initilizes the alert base html code used to display when needed
+     * Initialize the alert base html code used to display when needed
      *
      * @return string	The html content used for the alert dialog
      */
@@ -131,10 +131,14 @@ HTML;
      */
     public function showAlert()
     {
-        $this->width  = is_numeric($this->width) ? $this->width : 475;
-        $this->height = is_numeric($this->height) ? $this->height : 125;
+        $this->width  = is_numeric($this->width) ? $this->width : 500;
+        $this->height = is_numeric($this->height) ? $this->height : 175;
 
-        echo "tb_show('{$this->title}', '#TB_inline?width={$this->width}&height={$this->height}&inlineId={$this->id}');";
+        $html = "tb_show('{$this->title}', '#TB_inline?width={$this->width}&height={$this->height}&inlineId={$this->id}');\n" .
+				 "var styleData = jQuery('#TB_window').attr('style') + 'height: {$this->height}px !important';\n" .
+			 	 "jQuery('#TB_window').attr('style', styleData);";
+
+		echo $html;
     }
 
     /**
@@ -191,7 +195,11 @@ HTML;
     public function showConfirm()
     {
         $this->width  = is_numeric($this->width) ? $this->width : 500;
-        $this->height = is_numeric($this->height) ? $this->height : 150;
-        echo "tb_show('{$this->title}', '#TB_inline?width={$this->width}&height={$this->height}&inlineId={$this->id}');";
+        $this->height = is_numeric($this->height) ? $this->height : 225;
+                $html = "tb_show('{$this->title}', '#TB_inline?width={$this->width}&height={$this->height}&inlineId={$this->id}');\n" .
+				 "var styleData = jQuery('#TB_window').attr('style') + 'height: {$this->height}px !important';\n" .
+			 	 "jQuery('#TB_window').attr('style', styleData);";
+
+		echo $html;
     }
 }
