@@ -53,9 +53,9 @@
 
 <?php
 $section        = isset($_GET['section']) ? $_GET['section'] : 'info';
-$txt_diagnostic = "Information";
-$txt_log        = "Logs";
-$txt_support    = "Support";
+$txt_diagnostic = __('Information', 'duplicator');
+$txt_log        = __('Logs', 'duplicator');
+$txt_support    = __('Support', 'duplicator');;
 $tools_url      = 'admin.php?page=duplicator-tools&tab=diagnostics';
 
 switch ($section) {

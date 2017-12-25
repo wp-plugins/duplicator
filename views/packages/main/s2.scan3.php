@@ -155,7 +155,7 @@ TOTAL SIZE -->
 ADDON SITES -->
 <div id="addonsites-block"  class="scan-item">
 	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Addon Sites');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Addon Sites', 'duplicator');?></div>
 		<div id="data-arc-status-addonsites"></div>
 	</div>
     <div class="info">
@@ -172,7 +172,7 @@ ADDON SITES -->
             <div class="container">
                 <div class="hdrs">
                     <span style="font-weight:bold">
-                        <?php _e('Quick Filters'); ?>
+                        <?php _e('Quick Filters', 'duplicator'); ?>
                     </span>
                 </div>
                 <div class="data">
