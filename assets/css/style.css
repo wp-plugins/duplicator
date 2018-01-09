@@ -12,6 +12,10 @@ label {font-size:13px}
 hr {border:0; border-top:1px solid #ddd; border-bottom:1px solid #fafafa; margin:10px 0px 2px 0px;}
 i[data-tooltip].fa-question-circle {cursor:pointer; color:#C3C3C3}
 i[data-tooltip].fa-lightbulb-o {cursor:pointer; color:gray}
+span.btn-separator {content: ''; display: inline-block; background: silver; margin: 2px 3px; height: 25px; width: 1px; vertical-align: top;}
+a.grey-icon i.fa {color:#777}
+i.grey-icon {color:#777}
+
 
 /*TABS*/
 ul.category-tabs li {cursor: pointer}

@@ -6,6 +6,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'list';
 <style>
 	/*TOOLBAR TABLE*/
 	table#dup-toolbar td {white-space: nowrap !important; padding:10px 0 0 0}
+	table#dup-toolbar td .button {box-shadow: none !important;}
 	table#dup-toolbar {width:100%; border:0 solid red; padding: 0; margin:8px 0 4px 0; height: 35px}
 	table#dup-toolbar td:last-child {font-size:16px; width:100%; text-align: right; vertical-align: bottom;white-space:nowrap;}
 	table#dup-toolbar td:last-child a {top:0; font-size:16px !important; margin-top:10px }

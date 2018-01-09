@@ -18,6 +18,7 @@
     select#archive-format {min-width:100px; margin:1px 0 4px 0}
     span#dup-archive-filter-file {color:#A62426; display:none}
     span#dup-archive-filter-db {color:#A62426; display:none}
+	span#dup-archive-db-only {color:#A62426; display:none}
     div#dup-file-filter-items, div#dup-db-filter-items {padding:5px 0;}
 	div#dup-db-filter-items {font-stretch:ultra-condensed; font-family:Calibri; }
 	form#dup-form-opts textarea#filter-files {height:85px}
@@ -122,7 +123,8 @@ ARCHIVE -->
         <i class="fa fa-file-archive-o"></i> <?php _e('Archive', 'duplicator') ?> &nbsp;
         <span style="font-size:13px">
             <span id="dup-archive-filter-file" title="<?php _e('File filter enabled', 'duplicator') ?>"><i class="fa fa-files-o"></i> <i class="fa fa-filter"></i> &nbsp;&nbsp;</span> 
-            <span id="dup-archive-filter-db" title="<?php _e('Database filter enabled', 'duplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>	
+            <span id="dup-archive-filter-db" title="<?php _e('Database filter enabled', 'duplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>
+			<span id="dup-archive-db-only" title="<?php _e('Archive Only the Database', 'duplicator') ?>"> <?php _e('Database Only', 'duplicator') ?> </span>
         </span>
         <div class="dup-box-arrow"></div>
     </div>		
@@ -144,7 +146,6 @@ ARCHIVE -->
 					$upload_dir = DUP_Util::safePath($uploads['basedir']);
 					$filter_dir_count  = isset($Package->Archive->FilterDirs)  ? count(explode(";", $Package->Archive->FilterDirs)) -1  : 0;
 					$filter_file_count = isset($Package->Archive->FilterFiles) ? count(explode(";", $Package->Archive->FilterFiles)) -1 : 0;
-
                 ?>
            
 				<input type="checkbox"  id="export-onlydb" name="export-onlydb"  onclick="Duplicator.Pack.ExportOnlyDB()" <?php echo ($Package->Archive->ExportOnlyDB) ? "checked='checked'" :""; ?> />
@@ -439,9 +440,19 @@ jQuery(document).ready(function ($)
 	Duplicator.Pack.ExportOnlyDB = function ()
 	{
 		$('#dup-exportdb-items-off, #dup-exportdb-items-checked').hide();
-		$("#export-onlydb").is(':checked')
-			? $('#dup-exportdb-items-checked').show()
-			: $('#dup-exportdb-items-off').show();
+		if ($("#export-onlydb").is(':checked')) {
+			$('#dup-exportdb-items-checked').show();
+			$('#dup-archive-db-only').show(100);
+			$('#dup-archive-filter-db').hide();
+			$('#dup-archive-filter-file').hide();
+		} else {
+			$('#dup-exportdb-items-off').show();
+			$('#dup-exportdb-items-checked').hide();
+			$('#dup-archive-db-only').hide();
+			Duplicator.Pack.ToggleFileFilters();
+		}
+
+		Duplicator.Pack.ToggleDBFilters();
 	};
 
 	/* Enable/Disable the file filter elements */
