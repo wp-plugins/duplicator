@@ -62,14 +62,13 @@ class DUP_Package_Screen extends DUP_UI_Screen
 	public function get_list_help()
 	{
 		return  __("<b><i class='fa fa-archive'></i> Packages » All</b><br/> The 'Packages' section is the main interface for managing all the packages that have been created.  "
-				. "A Package consists of two core files, the 'installer.php' and the 'archive.zip' file.  The installer file is a php file that when browsed to via "
-				. "a web browser presents a wizard that redeploys/installs the website by extracting the archive file and installing the database.  The archive file is a zip file containing "
-				. "all your WordPress files and a copy of your WordPress database. To create a package, click the 'Create New' button and follow the prompts. <br/><br/>"
+				. "A Package consists of two core files, the 'archive.zip' and the 'installer.php' file.  The archive file is a zip file containing all your WordPress files and a "
+				. "copy of your WordPress database.  The installer file is a php file that when browsed to via a web browser presents a wizard that redeploys/installs the website "
+				. "by extracting the archive file and installing the database.   To create a package, click the 'Create New' button and follow the prompts. <br/><br/>"
 
                 . "<b><i class='fa fa-download'></i> Downloads</b><br/>"
-			    . "To download the package files click on the Installer or Archive button after creating a package.  The archive file will have a copy of the installer inside of it named "
-				. "installer-backup.php in case the original installer file is lost.  To see the details of a package click on the details button.<br/><br/>"
-
+			    . "To download the package files click on the Installer and Archive buttons after creating a package.  The archive file will have a copy of the installer inside of it named "
+				. "installer-backup.php in case the original installer file is lost.  To see the details of a package click on the <i class='fa fa-archive'></i> details button.<br/><br/>"
 			,'duplicator');
 	}
 
@@ -78,9 +77,11 @@ class DUP_Package_Screen extends DUP_UI_Screen
 	{
 		return __("<b>Packages New » 1 Setup</b> <br/>"
 				. "The setup step allows for optional filtered directory paths, files, file extensions and database tables.  To filter specific system files, click the 'Enable File Filters' "
-				. "checkbox and add the full path of the file or directory, followed by a semicolon.  For a file extension add the name (i.e. 'zip') followed by a semicolon.  To exclude a "
-				. "database table, check the box labeled 'Enable Table Filters' and check the table name to exclude. Optionally the installer can be pre-filled with data at install time but is "
-				. "not required.  <br/><br/>",'duplicator');
+				. "checkbox and add the full path of the file or directory, followed by a semicolon.  For a file extension add the name (i.e. 'zip') followed by a semicolon. <br/><br/>"
+
+				. "To exclude a database table, check the box labeled 'Enable Table Filters' and check the table name to exclude. To include only a copy of your database in the "
+				. "archive file check the box labeled 'Archive Only the Database'.  The installer.php file can optionally be pre-filled with data at install time but is not "
+				. "required.  <br/><br/>",'duplicator');
 	}
 
 
@@ -89,7 +90,7 @@ class DUP_Package_Screen extends DUP_UI_Screen
 		return __("<b>Packages » 2 Scan</b> <br/>"
 				. "The plugin will scan your system files and database to let you know if there are any concerns or issues that may be present.  All items in green mean the checks "
 				. "looked good.  All items in red indicate a warning.  Warnings will not prevent the build from running, however if you do run into issues with the build then investigating "
-				. "the warnings should be considered. <br/><br/>",'duplicator');
+				. "the warnings should be considered.  Click on each section for more details about each scan check. <br/><br/>",'duplicator');
 	}
 
 	public function get_step3_help()
