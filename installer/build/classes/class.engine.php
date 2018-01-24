@@ -146,8 +146,22 @@ class DUPX_UpdateEngine
 			'err_all' => 0
 		);
 
-		$walk_function = create_function('&$str', '$str = "`$str`";');
-
+        // Let's use anonymous function after PHP5.3.0 - is faster than create_function()
+        // create_function() is removed from PHP7.2
+        if(DUPX_U::isVersion('5.3.0'))
+        {
+            // Use "try catch" to avoid PHP notice or error below PHP5.3.0
+            try {
+                $walk_function = function () use (&$str) {
+                    $str = "`$str`";
+                };
+            } catch (Exception $exc) {}
+        }
+        else
+        {
+            $walk_function = create_function('&$str', '$str = "`$str`";');
+        }
+        
 		$profile_start = DUPX_U::getMicrotime();
 		if (is_array($tables) && !empty($tables)) {
 

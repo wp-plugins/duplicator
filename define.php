@@ -53,6 +53,23 @@ if (function_exists('plugin_dir_url'))
 	 * Note: This value will cause the Zip file to double in size durning the creation process only*/
 	define("DUPLICATOR_ZIP_FLUSH_TRIGGER", 1000);
 
+    /* Let's setup few things to cover all PHP versions */
+    if(!defined('PHP_VERSION'))
+    {
+        define('PHP_VERSION', phpversion());
+    }
+    if (!defined('PHP_VERSION_ID')) {
+        $version = explode('.', PHP_VERSION);
+        define('PHP_VERSION_ID', (($version[0] * 10000) + ($version[1] * 100) + $version[2]));
+    }
+    if (PHP_VERSION_ID < 50207) {
+        if(!(isset($version))) $version = explode('.', PHP_VERSION);
+        if(!defined('PHP_MAJOR_VERSION'))   define('PHP_MAJOR_VERSION',   $version[0]);
+        if(!defined('PHP_MINOR_VERSION'))   define('PHP_MINOR_VERSION',   $version[1]);
+        if(!defined('PHP_RELEASE_VERSION')) define('PHP_RELEASE_VERSION', $version[2]);
+        
+    }
+
 } else {
     error_reporting(0);
     $port = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != "off") ? "https://" : "http://";

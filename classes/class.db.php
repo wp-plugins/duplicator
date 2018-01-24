@@ -73,6 +73,39 @@ class DUP_DB extends wpdb
         return empty($version) ? 0 : $version;
     }
 
+    /**
+     * Try to return the mysqldump path on Windows servers
+	 *
+     * @return boolean|string
+     */
+	public static function getWindowsMySqlDumpRealPath() {
+		if(function_exists('php_ini_loaded_file'))
+		{
+			$get_php_ini_path = php_ini_loaded_file();
+			if(file_exists($get_php_ini_path))
+			{
+				$search = array(
+					dirname(dirname($get_php_ini_path)).'/mysql/bin/mysqldump.exe',
+					dirname(dirname(dirname($get_php_ini_path))).'/mysql/bin/mysqldump.exe',
+					dirname(dirname($get_php_ini_path)).'/mysql/bin/mysqldump',
+					dirname(dirname(dirname($get_php_ini_path))).'/mysql/bin/mysqldump',
+				);
+
+				foreach($search as $mysqldump)
+				{
+					if(file_exists($mysqldump))
+					{
+						return str_replace("\\","/",$mysqldump);
+					}
+				}
+			}
+		}
+
+		unset($search);
+		unset($get_php_ini_path);
+
+		return false;
+	}
 
     /**
      * Returns the mysqldump path if the server is enabled to execute it otherwise false
@@ -94,6 +127,7 @@ class DUP_DB extends wpdb
         if (DUP_Util::isWindows()) {
             $paths = array(
                 $custom_mysqldump_path,
+                self::getWindowsMySqlDumpRealPath(),
                 'C:/xampp/mysql/bin/mysqldump.exe',
                 'C:/Program Files/xampp/mysql/bin/mysqldump',
                 'C:/Program Files/MySQL/MySQL Server 6.0/bin/mysqldump',

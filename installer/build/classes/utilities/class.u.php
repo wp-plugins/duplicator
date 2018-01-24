@@ -273,5 +273,17 @@ class DUPX_U
         return filter_var($input, FILTER_SANITIZE_STRING);
     }
 
+     /**
+     *  Check PHP version
+     *
+     *  @param string $version		PHP version we looking for
+     *
+     *  @return boolean Returns true if version is same or above.
+     */
+    public static function isVersion($version)
+    {
+        return (version_compare(PHP_VERSION, $version) >= 0);
+    }
+
 }
 ?>

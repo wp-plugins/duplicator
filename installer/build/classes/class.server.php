@@ -44,8 +44,8 @@ class DUPX_Server
 	{
 		self::$php_safe_mode_on		= in_array(strtolower(@ini_get('safe_mode')), array('on', 'yes', 'true', 1, "1"));
 		self::$php_version			= phpversion();
-		self::$php_version_safe		= (version_compare(phpversion(), self::$php_version_min) >= 0);
-		self::$php_version_53_plus	= version_compare(PHP_VERSION, '5.3.0') >= 0;
+		self::$php_version_safe		= DUPX_U::isVersion(self::$php_version_min);
+		self::$php_version_53_plus	= DUPX_U::isVersion('5.3.0');
 	}
 
 	/**
