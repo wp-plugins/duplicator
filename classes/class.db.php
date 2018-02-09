@@ -142,10 +142,14 @@ class DUP_DB extends wpdb
             $path1     = '';
             $path2     = '';
             $mysqldump = `which mysqldump`;
-            if (@is_executable($mysqldump)) $path1     = (!empty($mysqldump)) ? $mysqldump : '';
+            if (DUP_Util::isExecutable($mysqldump))  {
+				$path1 = (!empty($mysqldump)) ? $mysqldump : '';
+			}
 
             $mysqldump = dirname(`which mysql`)."/mysqldump";
-            if (@is_executable($mysqldump)) $path2     = (!empty($mysqldump)) ? $mysqldump : '';
+            if (DUP_Util::isExecutable($mysqldump)) {
+				$path2 = (!empty($mysqldump)) ? $mysqldump : '';
+			}
 
             $paths = array(
                 $custom_mysqldump_path,
@@ -163,7 +167,8 @@ class DUP_DB extends wpdb
 
         // Find the one which works
         foreach ($paths as $path) {
-            if (@is_executable($path)) return $path;
+            if (DUP_Util::isExecutable($path))
+				return $path;
         }
 
         return false;
