@@ -167,8 +167,10 @@ class DUP_DB extends wpdb
 
         // Find the one which works
         foreach ($paths as $path) {
-            if (DUP_Util::isExecutable($path))
-				return $path;
+            if(file_exists($path)) {
+				if (DUP_Util::isExecutable($path))
+					return $path;
+			}
         }
 
         return false;
