@@ -147,18 +147,16 @@ class DUPX_UpdateEngine
 		);
 
         // Let's use anonymous function after PHP5.3.0 - is faster than create_function()
-        // create_function() is removed from PHP7.2
-        if(DUPX_U::isVersion('5.3.0'))
-        {
+        // create_function() is removed from PHP 7.2
+        if(DUPX_U::isVersion('5.3.0')) {
             // Use "try catch" to avoid PHP notice or error below PHP5.3.0
             try {
                 $walk_function = function () use (&$str) {
                     $str = "`$str`";
                 };
-            } catch (Exception $exc) {}
-        }
-        else
-        {
+            }
+			catch (Exception $exc) {}
+        } else {
             $walk_function = create_function('&$str', '$str = "`$str`";');
         }
         
