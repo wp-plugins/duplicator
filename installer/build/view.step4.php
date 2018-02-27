@@ -239,23 +239,35 @@ VIEW: STEP 4 - INPUT -->
 	?>
 
 	<div class="s4-gopro-btn">
-		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=<?php echo $key;?>" target="_blank"> <?php echo $txt;?></a>
+		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=<?php echo $key;?>" target="_blank"> 
+			<?php echo $txt;?>
+		</a>
 	</div>
-	<br/><br/>
-
-	<!--div class='s4-connect'>
-		<a href="installer.php?help=1#troubleshoot" target="_blank">Troubleshoot</a> |
-		<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>FAQs</a>
-	</div--><br/>
+	<br/><br/><br/>
 </form>
 
+<?php
+	//Sanitize
+	$json_result = true;
+	$json_data   = utf8_decode(urldecode($_POST['json']));
+	$json_decode = json_decode($json_data);
+	if ($json_decode == NULL || $json_decode == FALSE) {
+		$json_data  = "{'json reset invalid form value sent'}";
+		$json_result = false;
+	}
+?>
+
 <script>
+<?php if ($json_result) : ?>
 	MyViewModel = function() {
-		this.status = <?php echo urldecode($_POST['json']); ?>;
+		this.status = <?php echo $json_data; ?>;
 		var errorCount =  this.status.step2.query_errs || 0;
 		(errorCount >= 1 )
 			? $('#dup-step3-install-report-count').css('color', '#BE2323')
-			: $('#dup-step3-install-report-count').css('color', '#197713')
+			: $('#dup-step3-install-report-count').css('color', '#197713');
 	};
 	ko.applyBindings(new MyViewModel());
+<?php else: ?>
+	console.log("Cross site script attempt detected, unable to create final report!");
+<?php endif; ?>
 </script>
