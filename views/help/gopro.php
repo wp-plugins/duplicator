@@ -107,7 +107,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px'  /> 
-				<?php _e('Remote FTP Storage', 'duplicator') ?>
+				<?php _e('Remote FTP/SFTP Storage', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
