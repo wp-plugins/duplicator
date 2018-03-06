@@ -146,19 +146,9 @@ class DUPX_UpdateEngine
 			'err_all' => 0
 		);
 
-        // Let's use anonymous function after PHP5.3.0 - is faster than create_function()
-        // create_function() is removed from PHP 7.2
-        if(DUPX_U::isVersion('5.3.0')) {
-            // Use "try catch" to avoid PHP notice or error below PHP5.3.0
-            try {
-                $walk_function = function () use (&$str) {
-                    $str = "`$str`";
-                };
-            }
-			catch (Exception $exc) {}
-        } else {
-            $walk_function = create_function('&$str', '$str = "`$str`";');
-        }
+		function set_sql_column_safe(&$str) {
+			$str = "`$str`";
+		}
         
 		$profile_start = DUPX_U::getMicrotime();
 		if (is_array($tables) && !empty($tables)) {
@@ -194,7 +184,7 @@ class DUPX_UpdateEngine
 				if (!$fullsearch) {
 					$colList = self::getTextColumns($dbh, $table);
 					if ($colList != null && is_array($colList)) {
-						array_walk($colList, $walk_function);
+						array_walk($colList, set_sql_column_safe);
 						$colList = implode(',', $colList);
 					}
 					$colMsg = (empty($colList)) ? '*' : '~';
@@ -339,13 +329,13 @@ class DUPX_UpdateEngine
 	}
 
 	/**
-	 * Take a serialised array and unserialise it replacing elements and
-	 * unserialising any subordinate arrays and performing the replace.
+	 * Take a serialized array and unserialized it replacing elements and
+	 * unserializing any subordinate arrays and performing the replace.
 	 *
 	 * @param string $from       String we're looking to replace.
 	 * @param string $to         What we want it to be replaced with
 	 * @param array  $data       Used to pass any subordinate arrays back to in.
-	 * @param bool   $serialised Does the array passed via $data need serialising.
+	 * @param bool   $serialised Does the array passed via $data need serializing.
 	 *
 	 * @return array	The original array with all elements replaced as needed. 
 	 */

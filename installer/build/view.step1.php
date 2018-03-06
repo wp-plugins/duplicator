@@ -203,10 +203,10 @@ ARCHIVE
 					<span class="dupx-fail">Unable to validate format</span><br/>
 				<?php elseif ($arcFormat == 'NoZipArchive') : ?>
 					<div class="s1-archive-failed-msg">
-						The PHP extraction library <a href="" target="_help">ZipArchive</a> was not found on this server.  There are a few options:
+						The PHP extraction library <a href="http://php.net/manual/en/book.zip.php" target="_help">ZipArchive</a> was not found on this server.  There are a few options:
 						<ol>
-							<li>Contact your host to enable the this PHP library. <a href="" target="_help">[more info]</a></li>
-							<li>Enable 'Manual package extraction' in the options menu and <a href="" target="_help">Manually extract the archive</a></li>
+							<li>Contact your host to enable the this PHP library. <a href="http://php.net/manual/en/zip.installation.php" target="_help">[more info]</a></li>
+							<li>Enable 'Manual package extraction' in the options menu and <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_help">Manually extract the archive</a></li>
 						</ol>
 					</div>
 				<?php else : ?>
