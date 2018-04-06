@@ -19,7 +19,10 @@ if ($arcStatus) {
 
 			$arcFilePath = basename($GLOBALS['ARCHIVE_PATH']);
 			$arcFilePath = substr($arcFilePath, 0, strrpos($arcFilePath, "."));
-			$badFiles  = array('__MACOSX', $arcFilePath);
+			//Some systems the __MACOSX folder can cause issues on others it works fine removing
+			//until further reports are discovered, removed on 04-06-2018
+			//$badFiles  = array('__MACOSX', $arcFilePath);
+			$badFiles  = array('', $arcFilePath);
 			$goodFiles = array('database.sql', 'installer-backup.php');
 			$goodFilesFound = true;
 			$badFilesFound  = false;
