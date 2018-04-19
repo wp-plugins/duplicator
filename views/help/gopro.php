@@ -181,7 +181,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="feature-column"><?php _e('Multisite Subsite &gt; Standalone', 'duplicator') ?><sup>
 					<i  class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php _e("Multisite", 'duplicator'); ?>"
-                        data-tooltip="<?php _e('Install an individual subsite from a Multisite as a standalone site.', 'duplicator'); ?>"/></i></sup>
+                        data-tooltip="<?php _e('Install an individual subsite from a Multisite as a standalone site.  This feature is only available with a business license purchase.', 'duplicator'); ?>"/></i></sup>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>

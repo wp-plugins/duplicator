@@ -71,6 +71,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 		$post = $this->postParamMerge($post);
 		check_ajax_referer($post['action'], 'nonce');
 		$result = new DUP_CTRL_Result($this);
+		$payload = array();
 		try
 		{
 			//CONTROLLER LOGIC
