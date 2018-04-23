@@ -91,12 +91,12 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 					</optgroup>
 				</select>
                 <p class="description">
-                    <?php _e("The date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?>
+                    <?php _e("The UTC date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?> <br/>
+					<small><?php _e("To use WordPress timezone formats consider an upgrade to Duplicator Pro.", 'duplicator'); ?></small>
                 </p>
             </td>
         </tr>
 		</table>
-		<br/>
 
 		<h3 class="title"><?php _e("Processing", 'duplicator') ?> </h3>
 		<hr size="1" />
