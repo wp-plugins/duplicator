@@ -26,12 +26,13 @@
     img#dup-img-5stars:hover {opacity:1.0;}
 	
 	/* EMAIL AREA */
-	div.dup-support-email-area {width:825px; height:250px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+	div.dup-support-email-area {width:825px; height:355px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 	#mce-EMAIL {font-size:20px; height:40px; width:500px}
 	#mce-responses {width:300px}
 	#mc-embedded-subscribe { height: 35px; font-size: 16px; font-weight: bold}
 	div.mce_inline_error {width:300px; margin: auto !important}
-	div#mce-responses {margin: auto; padding: 10px; width:500px}
+	div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
+
 </style>
 
 <script>var switchTo5x = true;</script>
@@ -133,11 +134,18 @@
 										</div>
 										<div style="position:absolute; left:-5000px;"><input type="text" name="b_e2a9a514bfefa439bf2b7cf16_1270a169c1" tabindex="-1" value=""></div>
 										<div style="margin: auto; text-align: center">
-											<input type="submit" class="button-primary button-large" value="Sign me up!" name="subscribe" id="mc-embedded-subscribe" >
+											<input disabled="disabled" type="submit" class="button-primary button-large" value="Sign me up!" name="subscribe" id="mc-embedded-subscribe" >
 										</div>
 										<!-- Forces the submission to use Duplicator group -->
 										<input style="display:none" checked="checked" type="checkbox" value="1" name="group[15741][1]" id="mce-group[15741]-15741-0">						
 									</div>
+                                    <div style="margin-top:10px; margin-left:100px; width: 650px;text-align:left">
+                                        <small>
+                                            <input type="checkbox" name="privacy" id="privacy-checkbox"></input>
+                                            <label for="privacy-checkbox" style="padding-left:5px; display:block; margin-top:-20px; margin-left:20px;">Check box  this box if you would like us to contact you by email with helpful information about Duplicator and other Snap Creek products.<br/></br> We will process your data in accordance with our <a target="_blank" href="//snapcreek.com/privacy-policy">privacy policy</a>. You may withdraw this consent at any time by <a target="_blank" href="mailto:admin@snapcreek.com">emailing us</a> or updating your information by clicking the unsubscribe link in the emails you receive.</span></label>
+                                        </small>
+
+                                    </div>
 								</form>
 							</div>
 						</div>
@@ -164,3 +172,16 @@
 
     </div>
 </div><br/><br/><br/><br/>
+<script>
+	jQuery(document).ready(function($){
+
+        $('input[type="checkbox"][name="privacy"]').change(function() {
+        if(this.checked) {
+             $("#mc-embedded-subscribe").prop("disabled", false);
+         } else {
+             $("#mc-embedded-subscribe").prop("disabled", true);
+         }
+
+        });
+    });
+</script>

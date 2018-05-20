@@ -19,6 +19,7 @@
 				<li><i class="fa fa-dropbox"></i> <?php _e(' Dropbox', 'duplicator'); ?></li>
 				<li><i class="fa fa-google"></i> <?php _e('Google Drive', 'duplicator'); ?></li>
 				<li><i class="fa fa-upload"></i> <?php _e('FTP &amp; SFTP', 'duplicator'); ?></li>
+                <li><i class="fa fa-cloud"></i> <?php _e('OneDrive', 'duplicator'); ?></li>
 				<li><i class="fa fa-folder-open-o"></i> <?php _e('Custom Directory', 'duplicator'); ?></li>
 			</ul>
 		</div>
