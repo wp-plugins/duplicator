@@ -32,7 +32,7 @@ final class DUP_PackageType
 /**
  * Class used to store and process all Package logic
  *
- * @package Dupicator\classes
+ * @package Duplicator\classes
  */
 class DUP_Package
 {
@@ -366,8 +366,6 @@ class DUP_Package
         update_option(self::OPT_ACTIVE, $package);
     }
 
-
-
     /**
      * Sets the status to log the state of the build
      *
@@ -396,7 +394,7 @@ class DUP_Package
     }
 
     /**
-     * Does a hash already exisit
+     * Does a hash already exist
      *
      * @param string $hash An existing hash value
      *
