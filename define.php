@@ -2,8 +2,8 @@
 //Prevent directly browsing to the file
 if (function_exists('plugin_dir_url')) 
 {		
-    define('DUPLICATOR_VERSION',        '1.2.40');
-    define('DUPLICATOR_HOMEPAGE',       'http://lifeinthegrid.com/labs/duplicator');
+    define('DUPLICATOR_VERSION',        '1.2.41');
+    define('DUPLICATOR_HOMEPAGE',       'https://snapcreek.com/duplicator/duplicator-free/');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	

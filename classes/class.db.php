@@ -114,7 +114,6 @@ class DUP_DB extends wpdb
      */
     public static function getMySqlDumpPath()
     {
-
         //Is shell_exec possible
         if (!DUP_Util::hasShellExec()) {
             return false;
@@ -123,7 +122,7 @@ class DUP_DB extends wpdb
         $custom_mysqldump_path = DUP_Settings::Get('package_mysqldump_path');
         $custom_mysqldump_path = (strlen($custom_mysqldump_path)) ? $custom_mysqldump_path : '';
 
-        //Common Windows Paths
+        //COMMON WINDOWS PATHS
         if (DUP_Util::isWindows()) {
             $paths = array(
                 $custom_mysqldump_path,
@@ -137,7 +136,7 @@ class DUP_DB extends wpdb
                 'C:/Program Files/MySQL/MySQL Server 5.0/bin/mysqldump',
             );
 
-            //Common Linux Paths
+        //COMMON LINUX PATHS
         } else {
             $path1     = '';
             $path2     = '';
@@ -165,11 +164,22 @@ class DUP_DB extends wpdb
             );
         }
 
-        // Find the one which works
+        //Try to find a path that works.  With open_basedir enabled, the file_exists may not work on some systems
+		//So we fallback and try to use exec as a last resort
+		$exec_available = function_exists('exec');
         foreach ($paths as $path) {
             if(file_exists($path)) {
-				if (DUP_Util::isExecutable($path))
+				if (DUP_Util::isExecutable($path)) {
 					return $path;
+				}
+			} elseif ($exec_available) {
+				$out = array();
+				$rc  = -1;
+				$cmd = $path . ' --help';
+				@exec($cmd, $out, $rc);
+				if ($rc === 0) {
+					return $path;
+				}
 			}
         }
 

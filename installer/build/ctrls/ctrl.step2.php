@@ -1,6 +1,11 @@
 <?php
 //POST PARAMS
-$_POST['dbaction']			= isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
+$_POST['dbaction']			= isset($_POST['dbaction'])  ? $_POST['dbaction'] : 'create';
+$_POST['dbhost']			= isset($_POST['dbhost'])    ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
+$_POST['dbname']			= isset($_POST['dbname'])    ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
+$_POST['dbuser']			= isset($_POST['dbuser'])    ? DUPX_U::sanitize($_POST['dbuser']) : null;
+$_POST['dbcharset']			= isset($_POST['dbcharset']) ? DUPX_U::sanitize(trim($_POST['dbcharset'])) : $GLOBALS['DBCHARSET_DEFAULT'];
+$_POST['dbcollate']			= isset($_POST['dbcollate']) ? DUPX_U::sanitize(trim($_POST['dbcollate'])) : $GLOBALS['DBCOLLATE_DEFAULT'];
 $_POST['dbnbsp']			= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
 $_POST['ssl_admin']			= (isset($_POST['ssl_admin']))  ? true : false;
 $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;

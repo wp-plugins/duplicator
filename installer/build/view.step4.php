@@ -67,12 +67,17 @@ VIEW: STEP 4 - INPUT -->
 	<br/><br/>
 
 	<div class="s4-go-back">
-		Additional Notes:
+		Final Steps:
 		<ul style="margin-top: 1px">
 			<li>
 				Review the <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
 				re-run installer at <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">step 1</a>
 			</li>
+			<li>Finalize installation by logging into the WordPress Admin Login and removing installation files</li>
+		</ul>
+		
+		Additional Notes:
+		<ul style="margin-top: 1px">
 			<li>The .htaccess file was reset.  Resave plugins that write to this file.</li>
 			<li>
 				Visit the <a href="installer.php?help=1#troubleshoot" target="_blank">troubleshoot</a> section or

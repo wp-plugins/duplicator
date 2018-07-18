@@ -141,7 +141,7 @@
 									</div>
                                     <div style="margin-top:10px; margin-left:100px; width: 650px;text-align:left">
                                         <small>
-                                            <input type="checkbox" name="privacy" id="privacy-checkbox"></input>
+                                            <input type="checkbox" name="privacy" id="privacy-checkbox"/>
                                             <label for="privacy-checkbox" style="padding-left:5px; display:block; margin-top:-20px; margin-left:20px;">Check box  this box if you would like us to contact you by email with helpful information about Duplicator and other Snap Creek products.<br/></br> We will process your data in accordance with our <a target="_blank" href="//snapcreek.com/privacy-policy">privacy policy</a>. You may withdraw this consent at any time by <a target="_blank" href="mailto:admin@snapcreek.com">emailing us</a> or updating your information by clicking the unsubscribe link in the emails you receive.</span></label>
                                         </small>
 
@@ -161,14 +161,6 @@
             </div>
         </div>
         <br style="clear:both" /><br/>
-		
-		
-		<!--div style='margin: auto; text-align: center; margin-top: 20px'>
-			<a href="http://lifeinthegrid.com/tools" target="_blank"  class="button button-large button-primary">
-				<i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Tools', 'duplicator') ?>...
-			</a>
-		</div-->
-
 
     </div>
 </div><br/><br/><br/><br/>

@@ -15,14 +15,11 @@ error_reporting(E_ERROR);
 
 $ajax2_start = DUPX_U::getMicrotime();
 
-//MYSQL CONNECTION
-$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
-$charset_server = @mysqli_character_set_name($dbh);
-@mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
-DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
-
 //POST PARAMS
-$_POST['blogname']		= mysqli_real_escape_string($dbh, $_POST['blogname']);
+$_POST['dbhost']		= isset($_POST['dbhost'])   ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
+$_POST['dbname']		= isset($_POST['dbname'])   ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
+$_POST['dbuser']		= isset($_POST['dbuser'])   ? DUPX_U::sanitize($_POST['dbuser']) : null;
+$_POST['blogname']		= isset($_POST['blogname']) ? DUPX_U::sanitize(trim($_POST['blogname'])): '';
 $_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
 $_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
 $_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
@@ -33,6 +30,14 @@ $_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
 $_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
 $_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
+
+//MYSQL CONNECTION
+$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
+$charset_server = @mysqli_character_set_name($dbh);
+@mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
+DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
+
+
 //LOGGING
 $POST_LOG = $_POST;
 unset($POST_LOG['tables']);
