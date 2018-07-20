@@ -81,13 +81,14 @@ if (!isset($_SERVER['REQUEST_URI']))  {
 }
 
 //COMPARE VALUES
-$GLOBALS['DUPX_DEBUG']		= false;
-$GLOBALS['FW_CREATED']		= '%fwrite_created%';
-$GLOBALS['FW_VERSION_DUP']	= '%fwrite_version_dup%';
-$GLOBALS['FW_VERSION_WP']	= '%fwrite_version_wp%';
-$GLOBALS['FW_VERSION_DB']	= '%fwrite_version_db%';
-$GLOBALS['FW_VERSION_PHP']	= '%fwrite_version_php%';
-$GLOBALS['FW_VERSION_OS']	= '%fwrite_version_os%';
+$GLOBALS['DUPX_DEBUG']			= false;
+$GLOBALS['DUPX_DBPASS_CHECK']	= true;
+$GLOBALS['FW_CREATED']			= '%fwrite_created%';
+$GLOBALS['FW_VERSION_DUP']		= '%fwrite_version_dup%';
+$GLOBALS['FW_VERSION_WP']		= '%fwrite_version_wp%';
+$GLOBALS['FW_VERSION_DB']		= '%fwrite_version_db%';
+$GLOBALS['FW_VERSION_PHP']		= '%fwrite_version_php%';
+$GLOBALS['FW_VERSION_OS']		= '%fwrite_version_os%';
 //GENERAL
 $GLOBALS['FW_TABLEPREFIX']		= '%fwrite_wp_tableprefix%';
 $GLOBALS['FW_URL_OLD']			= '%fwrite_url_old%';

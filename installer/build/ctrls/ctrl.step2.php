@@ -4,6 +4,7 @@ $_POST['dbaction']			= isset($_POST['dbaction'])  ? $_POST['dbaction'] : 'create
 $_POST['dbhost']			= isset($_POST['dbhost'])    ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
 $_POST['dbname']			= isset($_POST['dbname'])    ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
 $_POST['dbuser']			= isset($_POST['dbuser'])    ? DUPX_U::sanitize($_POST['dbuser']) : null;
+$_POST['dbpass']			= isset($_POST['dbpass'])    ? $_POST['dbpass'] : null;
 $_POST['dbcharset']			= isset($_POST['dbcharset']) ? DUPX_U::sanitize(trim($_POST['dbcharset'])) : $GLOBALS['DBCHARSET_DEFAULT'];
 $_POST['dbcollate']			= isset($_POST['dbcollate']) ? DUPX_U::sanitize(trim($_POST['dbcollate'])) : $GLOBALS['DBCOLLATE_DEFAULT'];
 $_POST['dbnbsp']			= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
@@ -132,8 +133,25 @@ DATA;
 //===============================
 //ERROR MESSAGES
 //===============================
+
 //ERR_MAKELOG
 ($GLOBALS['LOG_FILE_HANDLE'] != false) or DUPX_Log::error(ERR_MAKELOG);
+
+//ERR_NON_SECURE_PASSWORD
+if ($GLOBALS['DUPX_DBPASS_CHECK']) {
+	$dbpass_test_chars = array("'");
+	$dbpass_char_found = false;
+	$dbpass_sent = urldecode($_POST['dbpass']);
+	foreach ($dbpass_test_chars as $value) {
+		if (strpos($dbpass_sent, $value)) {
+			$dbpass_char_found = true;
+			break;
+		}
+	}
+	if ($dbpass_char_found) {
+		DUPX_Log::error(ERR_NON_SECURE_PASSWORD);
+	}
+}
 
 //ERR_MYSQLI_SUPPORT
 function_exists('mysqli_connect') or DUPX_Log::error(ERR_MYSQLI_SUPPORT);
@@ -152,6 +170,8 @@ if ($_POST['dbaction'] == 'create' ) {
 		DUPX_Log::error(sprintf(ERR_DBEMPTY, $_POST['dbname'], $tblcount));
 	}
 }
+
+
 
 $log = <<<LOG
 \n\n********************************************************************************
