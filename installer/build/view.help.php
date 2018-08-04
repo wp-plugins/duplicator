@@ -1,21 +1,54 @@
+<?php
+	//The help for both pro and lite are shared.  Pro is where the master lives.  Use the flag below to
+    //indicate if this help lives in lite or pro
+	$pro_version = false;
+?>
 <!-- =========================================
 HELP FORM -->
 <div id="main-help">
-<div class="help-online">
-	<i class="fa fa-file-text-o"></i> For additional help visit the<br/> <a href="https://snapcreek.com/support/docs/" target="_blank">Online Knowledge-Base</a><br/>
+<div class="help-online"><br/>
+	<i class="fa fa-file-text-o"></i> For complete help visit the
+	<a href="https://snapcreek.com/support/docs/" target="_blank">Online Knowledge-Base</a> <br/>
 	<small>Features available only in Duplicator Pro are flagged with a <sup>pro</sup> tag.</small>
 </div>
 
 <h2>Installer Security</h2>
 <a name="help-s1-init"></a>
 <div id="dup-help-installer" class="help-page">
-    The installer security screen <sup>pro</sup> will allow for basic password protection on the installer. The password is set at package creation time.  The password
+    The installer security screen will allow for basic password protection on the installer. The password is set at package creation time.  The password
 	input on this screen must be entered before proceeding with an install.   This setting is optional and can be turned on/off via the package creation screens.
     <br/><br/>
 
     If you do not recall the password then login to the site where the package was created and click the details of the package to view the original password.
-    To validate the password just typed you can toggle the view by clicking on the lock icon.
-    <br/><br/>
+    To validate the password just typed you can toggle the view by clicking on the lock icon.	For detail on how to override this setting visit the online FAQ for
+	<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-030-q" target="_blank">more details</a>.
+
+	<table class="help-opt">
+		<tr>
+			<th>Option</th>
+			<th>Details</th>
+		</tr>
+		<tr>
+			<td>Locked</td>
+			<td>
+				"Locked" means a password is protecting each step of the installer.  This option is recommended on all installers
+				that are accessible via a public URL but not required.
+			</td>
+		</tr>
+		<tr>
+			<td>Unlocked</td>
+			<td>
+				"Unlocked" means that if your installer is on a public server that anyone can access it.  This is a less secure way to run your installer. If you are running the
+				installer very quickly then removing all the installer files, then the chances of exposing it is going to be low depending	on your sites access history.
+				<br/><br/>
+
+				While it is not required to	have a password set it is recommended.  If your URL has little to no traffic or has never been the target of an attack
+				then running the installer without a password is going to be relatively safe if ran quickly.  However, a password is always a good idea.  Also, it is
+				absolutely required and recommended to remove <u>all</u> installer files after installation is completed by logging into the WordPress admin and
+				following the Duplicator prompts.
+			</td>
+		</tr>
+	</table>
 </div>
 
 <!-- ============================================
@@ -24,6 +57,47 @@ STEP 1
 <a class="help-target" name="help-s1"></a>
 <h2>Step <span class="step">1</span> of 4: Deployment</h2>
 <div id="dup-help-scanner" class="help-page">
+	There are currently several modes that the installer can be in.  The mode will be shown at the top of each screen. Below is an overview of the various modes.
+
+	<table class="help-opt">
+	<tr>
+		<th>Option</th>
+		<th>Details</th>
+	</tr>
+	<tr>
+		<td>Standard Install</td>
+		<td>
+			This mode indicates that the installer and archive have been placed into an empty directory and the site is ready for a fresh/new redeployment.
+			This is the most common mode and the mode that has been around the longest.
+		</td>
+	</tr>
+	<tr>
+		<td>Standard Install <br/> Database Only</td>
+		<td>
+			This mode indicates that the installer and archive were manually moved or transferred to a location and that only the Database will be installed
+			at this location.
+		</td>
+	</tr>
+	<?php if ($pro_version) : ?>
+		<tr>
+			<td>Overwrite Install</td>
+			<td>
+				This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
+				Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import). In both cases <b>the existing site will be overwritten.</b>
+			</td>
+		</tr>
+		<tr>
+			<td>Overwrite Install <br/> Database Only</td>
+			<td>
+				This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
+				Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import).  In both cases <b>the existing site's database will be overwritten.</b>
+			</td>
+		</tr>
+	<?php endif; ?>
+	</table>
+	<br/><br/>
+
+
     The "Extract Archive" screen is separated into four sections:
 	<br/><br/>
 
@@ -45,8 +119,8 @@ STEP 1
 	<b class="dupx-pass">Good</b>/<b class="dupx-fail">Warn</b> for various checks. 	Click on the title link and	read the overview for how to solve the test.
 	<br/><br/>
 
-	<h3>MultiSite <sup>pro</sup></h3>
-	The multisite option allows users with a pro Business or Gold license to perform additional multi-site tasks.  All licenses can backup & migrate standalone sites
+	<h3>Multisite <sup>pro</sup></h3>
+	The multisite option allows users with a Pro Business or Gold license to perform additional multi-site tasks.  All licenses can backup & migrate standalone sites
 	and full multisite networks. Multisite Plus+ (business and above) adds the  ability to install a subsite as a standalone site.
 	<br/><br/>
 
@@ -73,7 +147,7 @@ STEP 1
 				This extraction method will use the PHP <a href="http://php.net/manual/en/book.zip.php" target="_blank">ZipArchive</a> code to extract the archive zip file.
 				<br/><br/>
 
-				<b>Shell-Exec Unzip</b> <sup>pro</sup><br/>
+				<b>Shell-Exec Unzip</b><br/>
 				This extraction method will use the PHP <a href="http://php.net/manual/en/function.shell-exec.php" target="_blank">shell_exec</a> to call the system unzip
 				command on the server.  This is the default mode that is used if its avail on the server.
 				<br/><br/>
@@ -81,7 +155,7 @@ STEP 1
 			</td>
 		</tr>
 		<tr>
-			<td>Permissions <sup>pro</sup></td>
+			<td>Permissions</td>
 			<td>
 				<b>All Files:</b> Check the 'All Files' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
 				to recursively set the octal value on all the files being extracted. Typically this value is 644 on most servers and hosts.
@@ -109,16 +183,31 @@ STEP 1
 			</td>
 		</tr>
 		<tr>
-			<td>Config Files <sup>pro</sup></td>
+			<td>Config Files </td>
 			<td>
-				Inside the archive.zip should be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
-				When the installer runs it will backup and then reset all <i>.htaccess, user.ini, and web.config</i> files.   It will then create blank copies of
-				both files.   This is needed because the original files that were archived in most cases will not play well in the new environment.
+				When dealing with configuration files (.htaccess, web.config and .user.ini) the installer can apply different modes:
 				<br/><br/>
 
-				There are cases where users do not want these files over-written after the installer runs.  If that is the case then check the checkbox for this setting
-				to retain the original web server configuration files you had on the original site that was archived.  This is an advanced feature and requires that you
-				know how to properly configure either the .htaccess or web.config files on your server.
+				<b>Create New:</b> This is the default recommended option which will create either a new .htaccess or web.config file.  The new file is streamlined to help
+				guarantee no conflicts are created during install.   The config files generated with this mode will be simple and basic.  The WordFence .user.ini file if
+				present will be removed.
+				<br/><br/>
+
+				<b>Restore Original:</b> This option simply renames the htaccess.orig or web.config.orig	files to .htaccess or web.config. The *.orig files come from the original
+				web server where the package was built.	Please note this option will cause issues with the install process if the configuration files are not properly setup to
+				handle the new server environment.  This is an	advanced option and should only be used if you know how to properly configure your web servers configuration.
+				<br/><br/>
+
+<!--				<b>Ignore All:</b> This option simply does nothing.  No files are backed up, nothing is renamed or created.  This advanced option assumes you already have your
+				config files setup and know how they should behave in the new environment.
+				<br/><br/>-->
+
+				<small>
+				<b>Additional Notes:</b>
+				Inside the archive.zip will be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.  They are both
+				renamed to htaccess.orig and web.config.orig.  Using either Create New or Restore Original if any existing config files exist for the extraction process they will
+				be backed up with a .bak extension.</small>
+				<br/><br/>
 			</td>
 		</tr>
 
@@ -223,7 +312,7 @@ STEP 2
 				<br/><br/>
 
 				<b>Manual SQL Execution:</b><sup>pro</sup> This options requires that you manually run your own SQL import to an existing database before running the installer.
-				When this action is selected the database.sql file found inside the archive.zip file will NOT be ran.   The database your connecting to should already
+				When this action is selected the dup-database__[hash].sql file found inside the dup-installer folder of the archive.zip file will NOT be ran.   The database your connecting to should already
 				be a valid WordPress installed database.  This option is viable when you need to run advanced search and replace options on the database.
 				<br/><br/>
 
@@ -444,8 +533,17 @@ STEP 4
 	After the install is complete run through your entire site and test all pages and posts.
 	<br/><br/>
 
-	<b>Security Cleanup</b><br/>
-	When you're completed with the installation please delete all installation files.  Leaving these files on your server can impose a security risk!
+	<b>Final Security Cleanup</b><br/>
+	When completed with the installation please delete all installation files.  Leaving these files on your server can impose a security risk!   You can remove
+	all the security files by logging into your WordPress admin and following the remove notification links.   Be sure these files/directories are removed.  Optionally
+	it is also recommended to remove the archive.zip/daf file.
+	<ul>
+		<li>dup-installer</li>
+		<li>installer.php</li>
+		<li>installer-backup.php</li>
+		<li>installer-bootlog.txt</li>
+		<li>archive.zip/daf</li>
+	</ul>
 	<br/><br/>
 
 </div>
@@ -472,7 +570,7 @@ STEP 4
 		<br/><br/>
 
 		<b>Web server configuration files:</b><br/>
-		For Apache web server the root .htaccess file was copied to .htaccess.orig. A new stripped down .htaccess file was created to help simplify access issues.  For IIS web server the web.config file was copied to web.config.orig, however no new web.config file was created.  If you have not altered this file manually then resaving your permalinks and resaving your plugins should resolve most all changes that were made to the root web configuration file.   If your still experiencing issues then open the .orig file and do a compare to see what changes need to be made. <br/><br/><b>Plugin Notes:</b><br/> It's impossible to know how all 3rd party plugins function.  The Duplicator attempts to fix the new install URL for settings stored in the WordPress options table.   Please validate that all plugins retained there settings after installing.   If you experience issues try to bulk deactivate all plugins then bulk reactivate them on your new duplicated site. If you run into issues were a plugin does not retain its data then try to resave the plugins settings.
+		For Apache web server the root .htaccess file was copied to htaccess.orig. A new stripped down .htaccess file was created to help simplify access issues.  For IIS web server the web.config file was copied to web.config.orig, however no new web.config file was created.  If you have not altered this file manually then resaving your permalinks and resaving your plugins should resolve most all changes that were made to the root web configuration file.   If your still experiencing issues then open the .orig file and do a compare to see what changes need to be made. <br/><br/><b>Plugin Notes:</b><br/> It's impossible to know how all 3rd party plugins function.  The Duplicator attempts to fix the new install URL for settings stored in the WordPress options table.   Please validate that all plugins retained there settings after installing.   If you experience issues try to bulk deactivate all plugins then bulk reactivate them on your new duplicated site. If you run into issues were a plugin does not retain its data then try to resave the plugins settings.
 		<br/><br/>
 
 		 <b>Cache Systems:</b><br/>

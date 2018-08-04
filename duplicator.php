@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.2.41
+  Version: 1.2.42
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -25,7 +25,6 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   SOURCE CONTRIBUTORS:
-  David Coveney of Interconnect IT Ltd
   https://github.com/interconnectit/Search-Replace-DB/
   ================================================================================ */
 
@@ -109,8 +108,8 @@ if (is_admin() == true)
     }
 
 	/**
-	 * Hooked into `register_deactivation_hook`.  Routines used to deactivae the plugin
-	 * For uninstall see uninstall.php  Wordpress by default will call the uninstall.php file
+	 * Hooked into `register_deactivation_hook`.  Routines used to deactivate the plugin
+	 * For uninstall see uninstall.php  WordPress by default will call the uninstall.php file
      *
      * @access global
      * @return null
@@ -163,9 +162,10 @@ if (is_admin() == true)
         wp_register_style('dup-font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.7.0');
         wp_register_style('dup-plugin-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
 		wp_register_style('dup-jquery-qtip',DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.css', null, '2.2.1');
+		wp_register_style('dup-parsley-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, '2.3.5');
         /* JS */
 		wp_register_script('dup-handlebars', DUPLICATOR_PLUGIN_URL . 'assets/js/handlebars.min.js', array('jquery'), '4.0.10');
-        wp_register_script('dup-parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley-standalone.min.js', array('jquery'), '1.1.18');
+        wp_register_script('dup-parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley.min.js', array('jquery'), '2.3.5');
 		wp_register_script('dup-jquery-qtip', DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.js', array('jquery'), '2.2.1');
     }
 	
@@ -265,7 +265,6 @@ if (is_admin() == true)
         wp_enqueue_script('jquery-ui-progressbar');
         wp_enqueue_script('dup-parsley');
 		wp_enqueue_script('dup-jquery-qtip');
-		
     }
 
     /**
@@ -280,6 +279,7 @@ if (is_admin() == true)
         wp_enqueue_style('dup-font-awesome');
 		wp_enqueue_style('dup-plugin-style');
 		wp_enqueue_style('dup-jquery-qtip');
+		wp_enqueue_style('dup-parsley-style');
     }
 
 

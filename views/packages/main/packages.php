@@ -25,11 +25,11 @@
 	table.dup-pack-table {word-break:break-all;}
 	table.dup-pack-table th {white-space:nowrap !important;}
 	table.dup-pack-table td.pack-name {text-overflow:ellipsis; white-space:nowrap}
-	table.dup-pack-table td.pack-name sup {font-style:italic;font-size:10px; cursor: pointer }
+	table.dup-pack-table td.pack-name sup {font-style:italic;font-size:10px; cursor: pointer; display:inline-block; margin-top: -5px }
 	table.dup-pack-table input[name="delete_confirm"] {margin-left:15px}
 	table.dup-pack-table td.fail {border-left: 4px solid #d54e21;}
 	table.dup-pack-table td.pass {border-left: 4px solid #2ea2cc;}
-	tr.dup-pack-info td {white-space:nowrap; padding:12px 30px 0px 7px;}
+	tr.dup-pack-info td {white-space:nowrap; padding:10px 30px 0px 7px;}
 	tr.dup-pack-info td.get-btns {text-align:right; padding:3px 5px 6px 0px !important;}
 	tr.dup-pack-info td.get-btns button {box-shadow:none}
 	textarea.dup-pack-debug {width:98%; height:300px; font-size:11px; display:none}
