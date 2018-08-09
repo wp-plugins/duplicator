@@ -227,7 +227,6 @@ class DUP_Database
         $tables       = $wpdb->get_col('SHOW TABLES');
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
         $tblAllCount  = count($tables);
-        $tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
 
         if (is_array($filterTables) && $this->FilterOn) {
             foreach ($tables as $key => $val) {
@@ -290,7 +289,6 @@ class DUP_Database
 
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
         $tblAllCount  = count($tables);
-        $tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
         $qryLimit     = DUP_Settings::Get('package_phpdump_qrylimit');
 
         if (is_array($filterTables) && $this->FilterOn) {

@@ -580,14 +580,17 @@ jQuery(document).ready(function ($)
 
 	Duplicator.Pack.EnableInstallerPassword = function ()
 	{
+		var $button =  $('#secure-btn');
 		if ($('#secure-on').is(':checked')) {
 			$('#secure-pass').attr('readonly', false);
 			$('#secure-pass').attr('required', 'true').focus();
 			$('#dup-installer-secure').show();
+			$button.removeAttr('disabled');
 		} else {
 			$('#secure-pass').removeAttr('required');
 			$('#secure-pass').attr('readonly', true);
 			$('#dup-installer-secure').hide();
+			$button.attr('disabled', 'true');
 		}
 	};
 
