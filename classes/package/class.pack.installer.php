@@ -1,5 +1,6 @@
 <?php
 if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.password.php');
 
 class DUP_Installer
 {
@@ -68,6 +69,7 @@ class DUP_Installer
 			"classes/class.http.php"				=> "@@CLASS.HTTP.PHP@@",
             "classes/config/class.conf.wp.php"		=> "@@CLASS.CONF.WP.PHP@@",
             "classes/config/class.conf.srv.php"		=> "@@CLASS.CONF.SRV.PHP@@",
+			"classes/class.password.php"			=> "@@CLASS.PASSWORD.PHP@@",
 			"ctrls/ctrl.step1.php"					=> "@@CTRL.STEP1.PHP@@",
             "ctrls/ctrl.step2.php"					=> "@@CTRL.STEP2.PHP@@",
             "ctrls/ctrl.step3.php"					=> "@@CTRL.STEP3.PHP@@",
@@ -143,6 +145,9 @@ class DUP_Installer
 
 		 DUP_Log::Info("PACK SIZE: {$this->Package->Size}");
 
+		 $hasher = new DUP_PasswordHash(8, FALSE);
+		 $pass_hash = $hasher->HashPassword($this->Package->Installer->OptsSecurePass);
+
         $replace_items = Array(
             //COMPARE VALUES
             "fwrite_created" => $this->Package->Created,
@@ -163,7 +168,7 @@ class DUP_Installer
             "fwrite_dbname"			=> $this->Package->Installer->OptsDBName,
             "fwrite_dbuser"			=> $this->Package->Installer->OptsDBUser,
 			"fwrite_secureon"		=> $this->Package->Installer->OptsSecureOn,
-			"fwrite_securepass"		=> $this->Package->Installer->OptsSecurePass,
+			"fwrite_securepass"		=> $pass_hash,
             "fwrite_dbpass" => '',
             "fwrite_wp_tableprefix" => $wpdb->prefix,
             "fwrite_opts_delete" => json_encode($deleteOpts),

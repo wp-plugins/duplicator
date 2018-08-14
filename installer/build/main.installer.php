@@ -145,9 +145,12 @@ define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots');  //This should match DUPLICATOR
 
 //SHARED POST PARMS
 $_POST['action_step'] = isset($_POST['action_step']) ? $_POST['action_step'] : "0";
-$_POST['secure-pass'] = isset($_POST['secure-pass']) ? $_POST['secure-pass'] : "";
+$_POST['secure-pass'] = isset($_POST['secure-pass']) ? $_POST['secure-pass'] : '';
+
 if ($GLOBALS['FW_SECUREON']) {
-	if (base64_decode($GLOBALS['FW_SECUREPASS']) != $_POST['secure-pass']) {
+	$pass_hasher = new DUPX_PasswordHash(8, FALSE);
+	$pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['FW_SECUREPASS']);
+	if (! $pass_check) {
 		$_POST['action_step'] = 0;
 	}
 }
@@ -191,11 +194,14 @@ if ($_POST['action_step'] == 1 && ! isset($_GET['help'])) {
 @@CLASS.CONF.WP.PHP@@
 @@CLASS.CONF.SRV.PHP@@
 @@CLASS.HTTP.PHP@@
+@@CLASS.PASSWORD.PHP@@
 <?php
 if (isset($_POST['action_ajax'])) :
 
 	if ($GLOBALS['FW_SECUREON']) {
-		if (base64_decode($GLOBALS['FW_SECUREPASS']) != $_POST['secure-pass']) {
+		$pass_hasher = new DUPX_PasswordHash(8, FALSE);
+		$pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['FW_SECUREPASS']);
+		if (! $pass_check) {
 			die("Unauthorized Access:  Please provide a password!");
 		}
 	}
@@ -219,7 +225,6 @@ if (isset($_POST['action_ajax'])) :
 
 endif;
 ?>
-	
 	
 <!DOCTYPE html>
 <html>

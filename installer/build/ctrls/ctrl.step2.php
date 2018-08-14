@@ -50,11 +50,11 @@ if (isset($_GET['dbtest']))
 
     $dbversion_info         = DUPX_DB::getServerInfo($dbConn);
     $dbversion_info         = empty($dbversion_info) ? 'no connection' : $dbversion_info;
-    $dbversion_info_fail    = version_compare(DUPX_DB::getVersion($dbConn), '5.5.3') < 0;
+    $dbversion_info_fail    = $dbConn && version_compare(DUPX_DB::getVersion($dbConn), '5.5.3') < 0;
 
     $dbversion_compat       = DUPX_DB::getVersion($dbConn);
 	$dbversion_compat       = empty($dbversion_compat) ? 'no connection' : $dbversion_compat;
-    $dbversion_compat_fail  = version_compare($dbversion_compat, $GLOBALS['FW_VERSION_DB']) < 0;
+    $dbversion_compat_fail  = $dbConn && version_compare($dbversion_compat, $GLOBALS['FW_VERSION_DB']) < 0;
 
     $tstInfo = ($dbversion_info_fail)
 		? "<div class='dupx-notice'>{$dbversion_info}</div>"
@@ -91,6 +91,11 @@ if (isset($_GET['dbtest']))
 DATA;
 
 	//--------------------------------
+	//WARNING: Unable to connect
+	$html .=  (!$dbConn ||  !$dbFound)
+		? "<div class='warn-msg'>" . ERR_DBCONNECT_INFO .  "</div>"
+		: '';
+
 	//WARNING: DB has tables with create option
 	if ($_POST['dbaction'] == 'create')
 	{
@@ -103,8 +108,7 @@ DATA;
 	//WARNNG: Input has utf8
 	$dbConnItems = array($_POST['dbhost'], $_POST['dbuser'], $_POST['dbname'],$_POST['dbpass']);
 	$dbUTF8_tst  = false;
-	foreach ($dbConnItems as $value)
-	{
+	foreach ($dbConnItems as $value) {
 		if (DUPX_U::isNonASCII($value)) {
 			$dbUTF8_tst = true;
 			break;
@@ -112,7 +116,7 @@ DATA;
 	}
 
     //WARNING: UTF8 Data in Connection String
-	$html .=  (! $dbConn && $dbUTF8_tst)
+	$html .=  (!$dbConn && $dbUTF8_tst)
 		? "<div class='warn-msg'><b>WARNING:</b> " . ERR_TESTDB_UTF8 .  "</div>"
 		: '';
 
@@ -136,22 +140,6 @@ DATA;
 
 //ERR_MAKELOG
 ($GLOBALS['LOG_FILE_HANDLE'] != false) or DUPX_Log::error(ERR_MAKELOG);
-
-//ERR_NON_SECURE_PASSWORD
-if ($GLOBALS['DUPX_DBPASS_CHECK']) {
-	$dbpass_test_chars = array("'");
-	$dbpass_char_found = false;
-	$dbpass_sent = urldecode($_POST['dbpass']);
-	foreach ($dbpass_test_chars as $value) {
-		if (strpos($dbpass_sent, $value)) {
-			$dbpass_char_found = true;
-			break;
-		}
-	}
-	if ($dbpass_char_found) {
-		DUPX_Log::error(ERR_NON_SECURE_PASSWORD);
-	}
-}
 
 //ERR_MYSQLI_SUPPORT
 function_exists('mysqli_connect') or DUPX_Log::error(ERR_MYSQLI_SUPPORT);

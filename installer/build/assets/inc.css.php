@@ -138,7 +138,7 @@
 	table.s2-db-test-dtls {text-align: left; margin: auto}
 	table.s2-db-test-dtls td:first-child {font-weight: bold}
 	div#s2-dbconn-test-msg {font-size:12px}
-	div#s2-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:175px; overflow-y: scroll}
+	div#s2-dbconn-status {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:2px 5px; margin-top:10px; height:200px; overflow-y: scroll}
 	div#s2-dbconn-status div.warn-msg {text-align: left; padding:5px; margin:10px 0 10px 0}
 	div#s2-dbconn-status div.warn-msg b{color:maroon}
 

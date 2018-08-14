@@ -30,9 +30,8 @@ $_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
 $_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
 $_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
-if ($GLOBALS['DUPX_DBPASS_CHECK']) {
-	$_POST['dbpass'] = isset($_POST['dbpass']) ? str_replace("'", '', $_POST['dbpass']) : null;
-}
+$_POST['dbpass']		= isset($_POST['dbpass']) ? $_POST['dbpass'] : null;
+
 
 //MYSQL CONNECTION
 $dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
@@ -331,8 +330,6 @@ if (empty($JSON['step3']['warnlist'])) {
 $JSON['step3']['warn_all'] = empty($JSON['step3']['warnlist']) ? 0 : count($JSON['step3']['warnlist']);
 
 mysqli_close($dbh);
-
-
 
 $ajax2_end = DUPX_U::getMicrotime();
 $ajax2_sum = DUPX_U::elapsedTime($ajax2_end, $ajax2_start);

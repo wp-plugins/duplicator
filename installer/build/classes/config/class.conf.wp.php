@@ -13,7 +13,7 @@ class DUPX_WPConfig
 {
 
 	/**
-	 *  Updates the web server config files in Step 1
+	 *  Updates the web server config files in Step 3
 	 *
 	 *  @return null
 	 */
@@ -23,6 +23,7 @@ class DUPX_WPConfig
 
 		$root_path	 = DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
 		$wpconfig	 = @file_get_contents('wp-config.php', true);
+		$_POST['dbpass'] = isset($_POST['dbpass']) ? str_replace("'", "\'", $_POST['dbpass']) : null;
 
 		$patterns = array(
 			"/'DB_NAME',\s*'.*?'/",
@@ -35,7 +36,7 @@ class DUPX_WPConfig
 		$replace = array(
 			"'DB_NAME', ".'\''.$_POST['dbname'].'\'',
 			"'DB_USER', ".'\''.$_POST['dbuser'].'\'',
-			"'DB_PASSWORD', ".'\''.DUPX_U::pregReplacementQuote($_POST['dbpass']).'\'',
+			"'DB_PASSWORD', " . '\'' . DUPX_U::pregReplacementQuote($_POST['dbpass']) . '\'',
 			"'DB_HOST', ".'\''.$db_host.'\'');
 
 		//SSL CHECKS
@@ -76,7 +77,7 @@ class DUPX_WPConfig
 	}
 
 	/**
-	 *  Updates the web server config files in Step 1
+	 *  Updates the web server config files in Step 3
 	 *
 	 *  @return null
 	 */
