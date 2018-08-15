@@ -18,7 +18,8 @@
     select#archive-format {min-width:100px; margin:1px 0 4px 0}
     span#dup-archive-filter-file {color:#A62426; display:none}
     span#dup-archive-filter-db {color:#A62426; display:none}
-	span#dup-installer-secure {color:#A62426; display:none; font-size:14px}
+	span#dup-installer-secure-lock {color:#A62426; display:none; font-size:14px}
+	span#dup-installer-secure-unlock {color:#A62426; display:none; font-size:14px}
 	span#dup-archive-db-only {color:#A62426; display:none}
     div#dup-file-filter-items, div#dup-db-filter-items {padding:5px 0;}
 	div#dup-db-filter-items {font-stretch:ultra-condensed; font-family:Calibri; }
@@ -365,7 +366,8 @@ INSTALLER -->
 <div class="dup-box">
     <div class="dup-box-title">
         <i class="fa fa-bolt"></i> <?php _e('Installer', 'duplicator') ?> &nbsp;
-		<span id="dup-installer-secure" title="<?php _e('Installer Security Enabled', 'duplicator') ?>"><i class="fa fa-lock"></i> </span>
+		<span id="dup-installer-secure-lock" title="<?php _e('Installer password protection is on', 'duplicator') ?>"><i class="fa fa-lock"></i> </span>
+		<span id="dup-installer-secure-unlock" title="<?php _e('Installer password protection is off', 'duplicator') ?>"><i class="fa fa-unlock-alt"></i> </span>
         <div class="dup-box-arrow"></div>
     </div>			
 	
@@ -584,12 +586,14 @@ jQuery(document).ready(function ($)
 		if ($('#secure-on').is(':checked')) {
 			$('#secure-pass').attr('readonly', false);
 			$('#secure-pass').attr('required', 'true').focus();
-			$('#dup-installer-secure').show();
+			$('#dup-installer-secure-lock').show();
+			$('#dup-installer-secure-unlock').hide();
 			$button.removeAttr('disabled');
 		} else {
 			$('#secure-pass').removeAttr('required');
 			$('#secure-pass').attr('readonly', true);
-			$('#dup-installer-secure').hide();
+			$('#dup-installer-secure-lock').hide();
+			$('#dup-installer-secure-unlock').show();
 			$button.attr('disabled', 'true');
 		}
 	};
