@@ -317,7 +317,7 @@ TOOL BAR: STEPS -->
 					<ol>
 						<li><?php _e('Uninstall this version of Duplicator.', 'duplicator'); ?></li>
 						<li><?php _e('Install Duplicator 1.3 (Beta) via the link below.', 'duplicator'); ?></li>
-						<li><?php _e('After plugin install goto Duplicator &gt; Settings &gt; Packages Tab &gt; Archive Engine &gt; Enable DupArchive', 'duplicator'); ?></li>
+						<li><?php _e('After plugin install go to Duplicator &gt; Settings &gt; Packages Tab &gt; Archive Engine &gt; Enable DupArchive', 'duplicator'); ?></li>
 						<li><?php _e('Try and build a new package again using the new engine format and let us know how it goes.', 'duplicator'); ?></li>
 					</ol> <br/>
 

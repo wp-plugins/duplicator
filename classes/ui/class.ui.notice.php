@@ -47,7 +47,7 @@ class DUP_UI_Notice
 			if(get_option("duplicator_exe_safe_mode", 0) > 0 ){
 				$safe_msg1 = __('Safe Mode:', 'duplicator');
 				$safe_msg2 = __('During the install safe mode was enabled deactivating all plugins.<br/> Please be sure to ', 'duplicator');
-				$safe_msg3 = __('re-activate the plugins', 'duplicator');
+				$safe_msg3 = __('reactivate the plugins', 'duplicator');
 				$safe_html = "<div class='notice-safemode'><b>{$safe_msg1}</b><br/>{$safe_msg2} <a href='plugins.php'>{$safe_msg3}</a>!</div><br/>";
 			}
 

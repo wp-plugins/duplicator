@@ -353,7 +353,7 @@ ARCHIVE -->
 						</tr>					
 					</table>
 				<?php else :?>
-					<i><?php _e("This option is only availbe with mysqldump mode.", 'duplicator'); ?></i>
+					<i><?php _e("This option is only available with mysqldump mode.", 'duplicator'); ?></i>
 				<?php endif; ?>
 
             </div>

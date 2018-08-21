@@ -16,7 +16,7 @@
     }
     table.dup-support-hlp-hdrs td img{margin-left:7px}
     div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
-    div.dup-support-give-area {width:400px; height:185px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+    div.dup-support-give-area {width:400px; height:165px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
     div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
 	
     img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
@@ -32,12 +32,7 @@
 	#mc-embedded-subscribe { height: 35px; font-size: 16px; font-weight: bold}
 	div.mce_inline_error {width:300px; margin: auto !important}
 	div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
-
 </style>
-
-<script>var switchTo5x = true;</script>
-<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
-<script>stLight.options({publisher: "1a44d92e-2a78-42c3-a32e-414f78f9f484"});</script> 
 
 <div class="wrap dup-wrap dup-support-all">
 	
@@ -82,23 +77,19 @@
             <table class="dup-support-hlp-hdrs">
                 <tr>
                     <td style="height:30px; text-align: center;">
-                        <span style="display: inline-block; margin-top: 5px"><?php _e('Spread the Word', 'duplicator') ?></span>
+                        <span style="display: inline-block; margin-top: 5px"><?php _e('Want New Features?', 'duplicator') ?></span>
                     </td>
                 </tr>
             </table>
             <div class="dup-support-hlp-txt">
-                <?php
-                $title = __("Duplicate Your WordPress", 'duplicator');
-                $summary = __("Rapid WordPress Duplication by snapcreek.com", 'duplicator');
-                $share_this_data = "st_url='" . DUPLICATOR_HOMEPAGE . "' st_title='{$title}' st_summary='{$summary}'";
-                ?>
-                <div style="width:100%; padding:20px 10px 0px 10px" align="center">
-                    <span class='st_facebook_vcount' displayText='Facebook' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_twitter_vcount' displayText='Tweet' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_googleplus_vcount' displayText='Google +' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_linkedin_vcount' displayText='LinkedIn' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_email_vcount' displayText='Email' <?php echo $share_this_data; ?> ></span>
-                </div><br/>
+
+			<div style="margin: auto; text-align: center; margin-top:35px; font-weight: bold;">
+				<button type="button" class="button-primary button-large" onclick="Duplicator.ProvideFeedback()">
+					<?php _e('Suggest One Now!', 'duplicator') ?>
+				</button>
+			</div>
+
+
             </div>
         </div>
         <br style="clear:both" /><br/>
@@ -166,6 +157,11 @@
 </div><br/><br/><br/><br/>
 <script>
 	jQuery(document).ready(function($){
+
+		Duplicator.ProvideFeedback = function()
+		{
+			window.open('https://snapcreek.com/duplicator/survey-features/','_blank');
+		}
 
         $('input[type="checkbox"][name="privacy"]').change(function() {
         if(this.checked) {

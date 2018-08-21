@@ -26,7 +26,7 @@
                 <td style="width:70px"><i class="fa fa-question-circle fa-5x"></i></td>
                 <td valign="top" style="padding-top:10px; font-size:13px">
                     <?php
-                    _e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below.", 'duplicator');
+                    _e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server ecosystem some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources for additional support, approved hosting, and alternatives to fit your needs can be found below.", 'duplicator');
                     ?>
                 </td>
             </tr>
