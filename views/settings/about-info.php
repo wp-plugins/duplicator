@@ -24,7 +24,8 @@
     form#dup-donate-form input:hover {opacity:1.0;}
     img#dup-img-5stars {opacity:0.7;}
     img#dup-img-5stars:hover {opacity:1.0;}
-	
+	div.social-item {float:right; width: 170px; padding:10px 10px 20px 0px; border:0px solid red; text-align: left; font-size:20px}
+
 	/* EMAIL AREA */
 	div.dup-support-email-area {width:825px; height:355px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
 	#mce-EMAIL {font-size:20px; height:40px; width:500px}
@@ -51,7 +52,7 @@
             </tr>
         </table><br/>
 
-        <!-- PARTNER WITH US -->
+        <!-- RATE PLUGIN -->
         <div class="dup-support-give-area">
             <table class="dup-support-hlp-hdrs">
                 <tr >
@@ -65,7 +66,7 @@
                     <td valign="top">
                         <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
                         <div  style=" font-size: 16px; font-weight: bold">
-							<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e('Leave 5 Stars', 'duplicator') ?></a>
+							<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e('Support us with a 5 star review!', 'duplicator') ?></a>
 						</div>
                     </td>
                 </tr>
@@ -77,22 +78,29 @@
             <table class="dup-support-hlp-hdrs">
                 <tr>
                     <td style="height:30px; text-align: center;">
-                        <span style="display: inline-block; margin-top: 5px"><?php _e('Want New Features?', 'duplicator') ?></span>
+                        <span style="display: inline-block; margin-top: 5px"><?php _e('Spread the Word', 'duplicator') ?></span>
                     </td>
                 </tr>
             </table>
             <div class="dup-support-hlp-txt">
-
-			<div style="margin: auto; text-align: center; margin-top:35px; font-weight: bold;">
-				<button type="button" class="button-primary button-large" onclick="Duplicator.ProvideFeedback()">
-					<?php _e('Suggest One Now!', 'duplicator') ?>
-				</button>
-			</div>
-
-
+				<div class="social-images">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
+						<div class="social-item"><i class="fa fa-facebook-square fa-lg"></i> <?php _e('Facebook', 'duplicator') ?></div>
+					</a>
+					<a href="https://twitter.com/home?status=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator/duplicator-free/"  target="_blank">
+						<div class="social-item"><i class="fa fa-twitter-square fa-lg"></i> <?php _e('Twitter', 'duplicator') ?></div>
+					</a>
+					<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=" target="_blank">
+						<div class="social-item"><i class="fa fa-linkedin-square fa-lg"></i> <?php _e('LinkedIn', 'duplicator') ?></div>
+					</a>
+					<a href="https://plus.google.com/share?url=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
+						<div class="social-item"><i class="fa fa-google-plus-square fa-lg"></i> <?php _e('Google+', 'duplicator') ?></div>
+					</a>
+				</div>
             </div>
         </div>
         <br style="clear:both" /><br/>
+
 		
 		<!-- STAY IN THE LOOP  -->
         <div class="dup-support-email-area">
