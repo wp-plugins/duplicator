@@ -2,8 +2,8 @@
 //POST PARAMS
 $_POST['dbaction']			= isset($_POST['dbaction'])  ? $_POST['dbaction'] : 'create';
 $_POST['dbhost']			= isset($_POST['dbhost'])    ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
-$_POST['dbname']			= isset($_POST['dbname'])    ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
-$_POST['dbuser']			= isset($_POST['dbuser'])    ? DUPX_U::sanitize($_POST['dbuser']) : null;
+$_POST['dbname']			= isset($_POST['dbname'])    ? trim($_POST['dbname']) : null;
+$_POST['dbuser']			= isset($_POST['dbuser'])    ? $_POST['dbuser'] : null;
 $_POST['dbpass']			= isset($_POST['dbpass'])    ? $_POST['dbpass'] : null;
 $_POST['dbcharset']			= isset($_POST['dbcharset']) ? DUPX_U::sanitize(trim($_POST['dbcharset'])) : $GLOBALS['DBCHARSET_DEFAULT'];
 $_POST['dbcollate']			= isset($_POST['dbcollate']) ? DUPX_U::sanitize(trim($_POST['dbcollate'])) : $GLOBALS['DBCOLLATE_DEFAULT'];

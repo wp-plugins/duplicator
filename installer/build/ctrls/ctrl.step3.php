@@ -17,8 +17,9 @@ $ajax2_start = DUPX_U::getMicrotime();
 
 //POST PARAMS
 $_POST['dbhost']		= isset($_POST['dbhost'])   ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
-$_POST['dbname']		= isset($_POST['dbname'])   ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
-$_POST['dbuser']		= isset($_POST['dbuser'])   ? DUPX_U::sanitize($_POST['dbuser']) : null;
+$_POST['dbname']		= isset($_POST['dbname'])   ? trim($_POST['dbname']) : null;
+$_POST['dbuser']		= isset($_POST['dbuser'])   ? $_POST['dbuser'] : null;
+$_POST['dbpass']		= isset($_POST['dbpass'])   ? $_POST['dbpass'] : null;
 $_POST['blogname']		= isset($_POST['blogname']) ? DUPX_U::sanitize(trim($_POST['blogname'])): '';
 $_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
 $_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
@@ -30,7 +31,7 @@ $_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
 $_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
 $_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
-$_POST['dbpass']		= isset($_POST['dbpass']) ? $_POST['dbpass'] : null;
+
 
 
 //MYSQL CONNECTION
