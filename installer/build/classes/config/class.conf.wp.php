@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class used to update and edit and update the wp-config.php
  *
@@ -11,7 +10,6 @@
  */
 class DUPX_WPConfig
 {
-
 	/**
 	 *  Updates the web server config files in Step 3
 	 *
@@ -19,7 +17,8 @@ class DUPX_WPConfig
 	 */
 	public static function updateStandard()
 	{
-		if (!file_exists('wp-config.php')) return;
+		if (!file_exists('wp-config.php'))
+			return;
 
 		$root_path	= DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
 		$wpconfig	= @file_get_contents('wp-config.php', true);
@@ -76,16 +75,11 @@ class DUPX_WPConfig
 			}
 		}
 
-        $replace = array_map('self::customEscape', $replace);
+        $replace  = array_map('self::customEscape', $replace);
 		$wpconfig = preg_replace($patterns, $replace, $wpconfig);
 
 		file_put_contents('wp-config.php', $wpconfig);
-		$wpconfig	 = null;
-	}
-
-    public static function customEscape($str)
-    {
-		return str_replace('\\', '\\\\', $str);
+		$wpconfig = null;
 	}
 
 	/**
@@ -164,9 +158,13 @@ class DUPX_WPConfig
 		return $config_file;
 	}
 
-
-	public static function tokenParser($wpconfig_path) {
-
+	/**
+	 *  Used to parse the wp-config.php file
+	 *
+	 *  @return null
+	 */
+	public static function tokenParser($wpconfig_path)
+	{
 		$defines = array();
 		$wpconfig_file = @file_get_contents($wpconfig_path);
 
@@ -210,7 +208,6 @@ class DUPX_WPConfig
 		}
 
 		return $defines;
-
 	}
 
 	private static function tokenStrip($value)
@@ -218,11 +215,14 @@ class DUPX_WPConfig
 		return preg_replace('!^([\'"])(.*)\1$!', '$2', $value);
 	}
 
+	private static function customEscape($str)
+    {
+		return str_replace('\\', '\\\\', $str);
+	}
+
 	private static function isConstant($token)
 	{
 		return $token == T_CONSTANT_ENCAPSED_STRING || $token == T_STRING || $token == T_LNUMBER || $token == T_DNUMBER;
 	}
-
-
 }
 ?>
