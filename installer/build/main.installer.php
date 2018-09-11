@@ -253,15 +253,12 @@ HEADER TEMPLATE: Common header on all steps -->
             </div>
         </td>
         <td class="dupx-header-version">
-            version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?><br/>
-			&raquo; <a href="javascript:void(0)" onclick="DUPX.showServerInfo()">info</a>
-			&raquo; <a href="?help=1" target="_blank">help</a>
+            <a href="javascript:void(0)" onclick="DUPX.showServerInfo()">version: <?php echo $GLOBALS['FW_DUPLICATOR_VERSION'] ?></a><br/>
+			<a href="?help=1" target="_blank">help</a>
 			<?php
 				echo ' &raquo; <a href="?help=1#secure" target="_blank">';
 				echo ($GLOBALS['FW_SECUREON']) ? 'locked</a>' : '<i class="secure-unlocked">unlocked</i></a>';
-
 			?>
-
         </td>
     </tr>
 </table>

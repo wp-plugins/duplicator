@@ -1,5 +1,4 @@
 <?php
-
 	$_POST['url_new']	    = isset($_POST['url_new'])      ? DUPX_U::sanitize($_POST['url_new']) : '';
 	$_POST['archive_name']  = isset($_POST['archive_name']) ? $_POST['archive_name'] : '';
 	$_POST['retain_config'] = isset($_POST['retain_config']) && $_POST['retain_config'] == '1' ? true : false;
@@ -13,14 +12,13 @@
 	$admin_url_qry  = (strpos($admin_base, '?') === false) ? '?' : '&';
 	$admin_login	= rtrim($_POST['url_new'], '/') . "/{$admin_base}{$admin_url_qry}redirect_to={$admin_redirect}";
 	$url_new_rtrim  = rtrim($_POST['url_new'], '/');
-
 ?>
 
 <script>
-	/** Posts to page to remove install files */
-	DUPX.getAdminLogin = function() {
-		window.open('<?php echo $admin_login; ?>', 'wp-admin');
-	};
+/** Posts to page to remove install files */
+DUPX.getAdminLogin = function() {
+	window.open('<?php echo $admin_login; ?>', 'wp-admin');
+};
 </script>
 
 
@@ -36,9 +34,11 @@ VIEW: STEP 4 - INPUT -->
 
 	<table class="s4-final-step">
 		<tr style="vertical-align:top">
-			<td><a class="s4-final-btns" href="javascript:void(0)" onclick="DUPX.getAdminLogin()">Site Login</a></td>
+			<td style="padding-top:10px">
+				<button type="button" class="s4-final-btns" onclick="DUPX.getAdminLogin()">Admin Login</button>
+			</td>
 			<td>
-				<i>Login to finalize the setup</i>
+				Click the Admin Login button to login and finalize this install.<br/>
 				<?php if ($_POST['retain_config']) :?>
 					<br/> <i>Update of Permalinks required see: Admin &gt; Settings &gt; Permalinks &gt; Save</i>
 				<?php endif;?>
@@ -52,37 +52,31 @@ VIEW: STEP 4 - INPUT -->
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td><a class="s4-final-btns" href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Show Report</a></td>
-			<td>
-				<i>Optionally review the migration report</i><br/>
+	</table>
+	<i style="color:maroon; font-size:12px">
+		IMPORTANT FINAL STEPS: Login into the WordPress Admin to remove all	<a href="?help=1#help-s4" target="_blank">installation files</a>
+		and keep this site secure.   This install is not complete until the installer files are removed!
+	</i>
+	<br/><br/><br/>
+
+	<div class="s4-go-back">
+		Additional Notes:
+		<ul style="margin-top: 1px">
+			<li>
+				<a href="javascript:void(0)" onclick="$('#dup-step3-install-report').toggle(400)">Review Migration Report</a><br/>
+				&nbsp; &nbsp;
 				<i id="dup-step3-install-report-count">
 					<span data-bind="with: status.step2">Install Notices: (<span data-bind="text: query_errs"></span>)</span> &nbsp;
 					<span data-bind="with: status.step3">Update Notices: (<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
 					<span data-bind="with: status.step3" style="color:#888"><b>General Notices:</b> (<span data-bind="text: warn_all"></span>)</span>
 				</i>
-			</td>
-		</tr>
-	</table>
-	<br/><br/>
-
-	<div class="s4-go-back">
-		Final Steps:
-		<ul style="margin-top: 1px">
-			<li>
-				Review the <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
-				re-run installer at <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">step 1</a>
 			</li>
-			<li>Finalize installation by logging into the WordPress Admin Login and removing installation files</li>
-		</ul>
-		
-		Additional Notes:
-		<ul style="margin-top: 1px">
-			<li>The .htaccess file was reset.  Resave plugins that write to this file.</li>
 			<li>
-				Visit the <a href="installer.php?help=1#troubleshoot" target="_blank">troubleshoot</a> section or
-				<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a> for additional help.
+				Review this sites <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
+				re-run the installer and <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">go back to step 1</a>.
 			</li>
+			<li>If the .htaccess file was reset some plugin settings might need to be re-saved.</li>
+			<li>For additional help and questions visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a>.</li>
 		</ul>
 	</div>
 
