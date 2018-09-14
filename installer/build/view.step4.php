@@ -38,7 +38,7 @@ VIEW: STEP 4 - INPUT -->
 				<button type="button" class="s4-final-btns" onclick="DUPX.getAdminLogin()">Admin Login</button>
 			</td>
 			<td>
-				Click the Admin Login button to login and finalize this install.<br/>
+				Click the 'Admin Login' button to login and finalize this install.<br/>
 				<?php if ($_POST['retain_config']) :?>
 					<br/> <i>Update of Permalinks required see: Admin &gt; Settings &gt; Permalinks &gt; Save</i>
 				<?php endif;?>
