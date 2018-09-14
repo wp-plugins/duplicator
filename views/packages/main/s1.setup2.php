@@ -399,7 +399,7 @@ INSTALLER -->
 					   data-tooltip-title="<?php _e("Password Protection:", 'duplicator'); ?>"
 					   data-tooltip="<?php _e('Enabling this option will allow for basic password protection on the installer. Before running the installer the '
 							   . 'password below must be entered before proceeding with an install.  This password is a general deterrent and should not be substituted for properly '
-							   . 'keeping your files secure.', 'duplicator'); ?>"></i>
+							   . 'keeping your files secure.  Be sure to remove all installer files when the install process is completed.', 'duplicator'); ?>"></i>
 
 					<div id="dup-pass-toggle">
 						<input type="password" name="secure-pass" id="secure-pass" required="required" value="<?php echo $dup_install_secure_pass; ?>" />
