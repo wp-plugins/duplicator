@@ -222,7 +222,7 @@ STEP 1
 		<tr>
 			<td>Logging</td>
 			<td>
-				The level of detail that will be sent to the log file (installer-log.txt).  The recommend setting for most installs should be 'Light'.
+				The level of detail that will be sent to the log file (<?php echo $GLOBALS["LOG_FILE_NAME"];?>).  The recommend setting for most installs should be 'Light'.
 				Note if you use Debug the amount of data written can be very large.  Debug is only recommended for support.
 			</td>
 		</tr>
@@ -542,10 +542,10 @@ STEP 4
 	it is also recommended to remove the archive.zip file.
 	<ul>
 		<li>installer.php</li>
-		<li>installer-data.sql</li>
+		<li>dup-installer-data__<?php echo $GLOBALS['PACKAGE_HASH'];?>.sql</li>
 		<li>installer-backup.php</li>
-		<li>installer-log.txt</li>
-		<li>database.sql</li>
+		<li><?php echo $GLOBALS["LOG_FILE_NAME"];?></li>
+		<li>dup-database__<?php echo $GLOBALS['PACKAGE_HASH'];?>.sql</li>
 		<li>[a-hash-code]_archive.zip <small>(optional)</small></li>
 	</ul>
 	<br/><br/>

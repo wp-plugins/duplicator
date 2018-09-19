@@ -151,11 +151,23 @@ class DUP_Server
     {
         $files = self::getInstallerFiles();
         foreach ($files as $file => $path) {
-            if (file_exists($path)) return true;
+            if (false !== stripos($file, '[hash]')) {
+                $glob_files = glob($path);
+                if (!empty($glob_files)) {
+                    return true;
+                }
+            } elseif (file_exists($path)) return true;
         }
         return false;
     }
-
+    
+    public static function filePatternExists($file_pattern)
+    {       
+        $result = glob($file_pattern);
+        //error_log("#### $file_pattern");
+        return (($result !== false) && (count($result) > 0));
+    }
+   
     /**
      * Gets a list of all the installer files by name and full path
      *
@@ -163,13 +175,16 @@ class DUP_Server
      */
     public static function getInstallerFiles()
     {
+        // alphanumeric 7 time, then -(dash), then 8 digits
+        $hashPattern = '[a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]';
         // Files:  installer.php, installer-backup.php, installer-data.sql, installer-log.txt, database.sql
         return array(
             DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_PHP,
             DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_BAK,
-            DUPLICATOR_INSTALL_SQL => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_SQL,
-            DUPLICATOR_INSTALL_LOG => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_LOG,
-            DUPLICATOR_INSTALL_DB => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_DB
+            
+            'dup-installer-data__[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-installer-data__'.$hashPattern.'.sql',
+            'dup-database__[HASH].sql' => DUPLICATOR_WPROOTPATH . 'dup-database__'.$hashPattern.'.sql',
+            'dup-installer-log_[HASH].sql' => DUPLICATOR_WPROOTPATH . 'dup-installer-log__'.$hashPattern.'.txt',
         );
     }
 

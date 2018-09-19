@@ -268,7 +268,7 @@ jQuery(document).ready(function ($)
 
 	//Color code Pass/Fail/Warn items
 	$('.dup-sys-title div').each(function () {
-		$(this).addClass(($(this).text() == 'Pass') ? 'dup-sys-pass' : 'dup-sys-fail');
+		$(this).addClass(($(this).text().trim() == 'Pass') ? 'dup-sys-pass' : 'dup-sys-fail');
 	});
 });
 </script>

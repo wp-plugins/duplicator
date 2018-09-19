@@ -423,15 +423,16 @@ class DUP_Package
      */
     public function makeHash()
     {
-		try {
-			if (function_exists('random_bytes') && DUP_Util::$on_php_53_plus) {
-				return bin2hex(random_bytes(8)).mt_rand(1000, 9999).date("ymdHis");
-			} else {
-				return DUP_Util::GUIDv4();
-			}
-		} catch (Exception $exc) {
-			return DUP_Util::GUIDv4();
-		}
+        // IMPORTANT!  Be VERY careful in changing this format - the FTP delete logic requires 3 segments with the last segment to be the date in YmdHis format.
+        try {
+            if (function_exists('random_bytes') && DUP_Util::PHP53()) {
+                return bin2hex(random_bytes(8)) . mt_rand(1000, 9999) . '_' . date("YmdHis");
+            } else {
+                return strtolower(md5(uniqid(rand(), true))) . '_' . date("YmdHis");
+            }
+        } catch (Exception $exc) {
+            return strtolower(md5(uniqid(rand(), true))) . '_' . date("YmdHis");
+        }
     }
 
     /**
@@ -595,8 +596,29 @@ class DUP_Package
         }
     }
 
+    /**
+     * Get package hash
+     * 
+     * @return string package hash
+     */
+    public function getPackageHash() {
+        $hashParts = explode('_', $this->Hash);
+        $firstPart = substr($hashParts[0], 0, 7);
+        $secondPart = substr($hashParts[1], -8);
+        $packageHash = $firstPart.'-'.$secondPart;
+        return $packageHash;
+    }
 
-
-
+    /**
+     *  Provides the full sql file path in archive
+     *
+     *  @return the full sql file path in archive
+     */
+    public function getSqlArkFilePath()
+    {
+        $packageHash = $this->getPackageHash();
+        $sqlArkFilePath = 'dup-database__'.$packageHash.'.sql';
+        return $sqlArkFilePath;
+    }
 }
 ?>

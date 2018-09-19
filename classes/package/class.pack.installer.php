@@ -137,7 +137,7 @@ class DUP_Installer
 
         global $wpdb;
 
-        DUP_Log::Info("Preping for use");
+        DUP_Log::Info("Preparing for use");
         $installer = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php";
 
         //Option values to delete at install time
@@ -174,8 +174,10 @@ class DUP_Installer
             "fwrite_opts_delete" => json_encode($deleteOpts),
             "fwrite_blogname" => esc_html(get_option('blogname')),
             "fwrite_wproot" => DUPLICATOR_WPROOTPATH,
-			"fwrite_wplogin_url" => wp_login_url(),
-            "fwrite_duplicator_version" => DUPLICATOR_VERSION);
+            "fwrite_wplogin_url" => wp_login_url(),
+            "package_hash" => $this->Package->getPackageHash(),
+            "fwrite_duplicator_version" => DUPLICATOR_VERSION
+        );
 
         if (file_exists($template) && is_readable($template)) {
             $err_msg     = "ERROR: Unable to read/write installer. \nERROR INFO: Check permission/owner on file and parent folder.\nInstaller File = <{$installer}>";

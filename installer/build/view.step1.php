@@ -23,7 +23,7 @@ if ($arcStatus) {
 			//until further reports are discovered, removed on 04-06-2018
 			//$badFiles  = array('__MACOSX', $arcFilePath);
 			$badFiles  = array('', $arcFilePath);
-			$goodFiles = array('database.sql', 'installer-backup.php');
+			$goodFiles = array("dup-database__{$GLOBALS['PACKAGE_HASH']}.sql", 'installer-backup.php');
 			$goodFilesFound = true;
 			$badFilesFound  = false;
 
@@ -223,7 +223,7 @@ ARCHIVE
 						the issue. Please check the contents of the zip archive and be sure its contents match the layout of your site.
 						<br/><br/>
 
-						Files such as database.sql and wp-config.php should be at the root of the archive.  For more details see the FAQ article
+						Files such as dup-database__<?php echo $GLOBALS['PACKAGE_HASH'];?>.sql and wp-config.php should be at the root of the archive.  For more details see the FAQ article
 						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=invalid_ar_fmt#faq-installer-020-q" target="_help">The archive format is changing on my Mac what might be the problem?</a>
 					</div>
 				<?php endif; ?>
@@ -558,10 +558,10 @@ NOTICES
 		<b>After Install:</b> When you are done with the installation you must remove these files/directories:
 		<ul>
 			<li>installer.php</li>
-			<li>installer-data.sql</li>
+			<li>dup-installer-data__<?php echo $GLOBALS['PACKAGE_HASH'];?>.sql</li>
 			<li>installer-backup.php</li>
-			<li>installer-log.txt</li>
-			<li>database.sql</li>
+			<li></li>
+			<li>dup-database__<?php echo $GLOBALS['PACKAGE_HASH'];?>.sql</li>
 		</ul>
 
 		These files contain sensitive information and should not remain on a production system for system integrity and security protection.
@@ -622,7 +622,7 @@ Auto Posts to view.step2.php
 ========================================= -->
 <form id='s1-result-form' method="post" class="content-form" style="display:none">
 
-	 <div class="dupx-logfile-link"><a href="installer-log.txt" target="install_log">installer-log.txt</a></div>
+	 <div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
         Step <span class="step">1</span> of 4: Deployment
 	</div>
@@ -653,7 +653,7 @@ Auto Posts to view.step2.php
 	<div id="ajaxerr-area" style="display:none">
 	    <p>Please try again an issue has occurred.</p>
 	    <div style="padding: 0px 10px 10px 0px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the file and database set up process.  Please see the installer-log.txt file for more details.</div>
+			<div id="ajaxerr-data">An unknown issue has occurred with the file and database set up process.  Please see the <?php echo $GLOBALS["LOG_FILE_NAME"];?> file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" class="default-btn" onclick="DUPX.hideErrorResult()" value="&laquo; Try Again" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_ajaxerr_ticket' target='_blank'>snapcreek.com</a></i>
@@ -713,7 +713,7 @@ Auto Posts to view.step2.php
 					status += "<b>Status:</b> "			+ xhr.statusText	+ "<br/>";
 					status += "<b>Response:</b> "		+ xhr.responseText  + "";
 					status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-					status += "- Check the <a href='installer-log.txt' target='install_log'>installer-log.txt</a> file for warnings or errors.<br/>";
+					status += "- Check the <a href='<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='install_log'><?php echo $GLOBALS["LOG_FILE_NAME"];?></a> file for warnings or errors.<br/>";
 					status += "- Check the web server and PHP error logs. <br/>";
 					status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_ajaxextract_tofaq#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 				$('#ajaxerr-data').html(status);

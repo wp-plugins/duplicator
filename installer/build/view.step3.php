@@ -32,7 +32,7 @@ VIEW: STEP 3- INPUT -->
 	<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
 	<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 
-	<div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
@@ -186,7 +186,7 @@ VIEW: STEP 3 - AJAX RESULT
 ========================================= -->
 <form id='s3-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="installer-log.txt" target="install_log">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
@@ -268,7 +268,7 @@ DUPX.runUpdate = function()
 			status += "<b>Status:</b> "				+ xhr.statusText	+ "<br/>";
 			status += "<b>Response:</b> "			+ xhr.responseText  + "";
 			status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-			status += "- Check the <a href='installer-log.txt' target='install_log'>installer-log.txt</a> file for warnings or errors.<br/>";
+			status += "- Check the <a href='<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='install_log'>installer-log.txt</a> file for warnings or errors.<br/>";
 			status += "- Check the web server and PHP error logs. <br/>";
 			status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_step3_ajax_rundepl#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 			$('#ajaxerr-data').html(status);

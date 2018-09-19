@@ -36,7 +36,7 @@ OPTIONS DATA -->
 								echo "<br/><br/>";
 
 								foreach ($installer_files as $file => $path) {
-									echo (file_exists($path)) ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file}</div>" : "<div class='success'><i class='fa fa-check'></i> {$txt_removed} - {$file}</div>";
+                                    echo (DUP_Server::filePatternExists($path)) ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file}</div>" : "<div class='success'><i class='fa fa-check'></i> {$txt_removed} - {$file}</div>";
 								}
 								echo "<br/>";
 								echo $txt_archive_msg;
@@ -135,25 +135,9 @@ jQuery(document).ready(function($)
 
 Duplicator.Tools.deleteInstallerFiles = function()
 {
-	var data = {
-		action: 'DUP_CTRL_Tools_deleteInstallerFiles',
-		nonce: '<?php echo $ajax_nonce; ?>',
-		'archive-name':  '<?php echo $package_name; ?>'
-	};
-
-	jQuery.ajax({
-		type: "POST",
-		url: ajaxurl,
-		dataType: "json",
-		data: data,
-		complete: function() {
-		<?php
-			$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
-			echo "window.location = '{$url}';";
-		?>
-		},
-		error: function(data) {console.log(data)},
-		done: function(data) {console.log(data)}
-	});
+	<?php
+	$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
+	echo "window.location = '{$url}';";
+	?>
 }
 </script>

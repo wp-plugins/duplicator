@@ -183,7 +183,7 @@ DUPX_Log::info($log, 2);
 $log = '';
 $faq_url = $GLOBALS['FAQ_URL'];
 $utm_prefix = '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=';
-$db_file_size = filesize('database.sql');
+$db_file_size = filesize("dup-database__{$GLOBALS['PACKAGE_HASH']}.sql");
 $php_mem = $GLOBALS['PHP_MEMORY_LIMIT'];
 $php_mem_range = DUPX_U::getBytes($GLOBALS['PHP_MEMORY_LIMIT']);
 $php_mem_range = $php_mem_range == null ?  0 : $php_mem_range - 5000000; //5 MB Buffer
@@ -195,23 +195,23 @@ if ($db_file_size >= $php_mem_range  && $php_mem_range != 0)
 	$db_file_size = DUPX_U::readableByteSize($db_file_size);
 	$msg = "\nWARNING: The database script is '{$db_file_size}' in size.  The PHP memory allocation is set\n";
 	$msg .= "at '{$php_mem}'.  There is a high possibility that the installer script will fail with\n";
-	$msg .= "a memory allocation error when trying to load the database.sql file.  It is\n";
+	$msg .= "a memory allocation error when trying to load the dup-database__{$GLOBALS['PACKAGE_HASH']}.sql file.  It is\n";
 	$msg .= "recommended to increase the 'memory_limit' setting in the php.ini config file.\n";
     $msg .= "see: {$faq_url}{$utm_prefix}inst_step2_lgdbscript#faq-trouble-056-q \n";
 	DUPX_Log::info($msg);
 }
 
-@chmod("{$root_path}/database.sql", 0777);
-$sql_file = file_get_contents('database.sql', true);
+@chmod("{$root_path}/dup-database__{$GLOBALS['PACKAGE_HASH']}.sql", 0777);
+$sql_file = file_get_contents("dup-database__{$GLOBALS['PACKAGE_HASH']}.sql", true);
 
 //ERROR: Reading database.sql file
 if ($sql_file === FALSE || strlen($sql_file) < 10)
 {
-	$msg = "<b>Unable to read the database.sql file from the archive.  Please check these items:</b> <br/>";
+	$msg = "<b>Unable to read the dup-database__{$GLOBALS['PACKAGE_HASH']}.sql file from the archive.  Please check these items:</b> <br/>";
 	$msg .= "1. Validate permissions and/or group-owner rights on these items: <br/>";
-	$msg .= " - File: database.sql <br/> - Directory: [{$root_path}] <br/>";
+	$msg .= " - File: dup-database__{$GLOBALS['PACKAGE_HASH']}.sql <br/> - Directory: [{$root_path}] <br/>";
     $msg .= "<i>see: <a href='{$faq_url}{$utm_prefix}inst_step2_dbperms#faq-trouble-055-q' target='_blank'>{$faq_url}#faq-trouble-055-q</a></i> <br/>";
-	$msg .= "2. Validate the database.sql file exists and is in the root of the archive.zip file <br/>";
+	$msg .= "2. Validate the dup-database__{$GLOBALS['PACKAGE_HASH']}.sql file exists and is in the root of the archive.zip file <br/>";
 	$msg .= "<i>see: <a href='{$faq_url}{$utm_prefix}inst_step2_sqlroot#faq-installer-020-q' target='_blank'>{$faq_url}#faq-installer-020-q</a></i> <br/>";
 	DUPX_Log::error($msg);
 }
@@ -275,9 +275,9 @@ if($_POST['dbcollatefb']){
 //WARNING: Create installer-data.sql failed
 if ($sql_file_copy_status === FALSE || filesize($sql_result_file_path) == 0 || !is_readable($sql_result_file_path))
 {
-	$sql_file_size = DUPX_U::readableByteSize(filesize('database.sql'));
-	$msg  = "\nWARNING: Unable to properly copy database.sql ({$sql_file_size}) to {$GLOBALS['SQL_FILE_NAME']}.  Please check these items:\n";
-	$msg .= "- Validate permissions and/or group-owner rights on database.sql and directory [{$root_path}] \n";
+	$sql_file_size = DUPX_U::readableByteSize(filesize("dup-database__{$GLOBALS['PACKAGE_HASH']}.sql"));
+	$msg  = "\nWARNING: Unable to properly copy dup-database__{$GLOBALS['PACKAGE_HASH']}.sql ({$sql_file_size}) to {$GLOBALS['SQL_FILE_NAME']}.  Please check these items:\n";
+	$msg .= "- Validate permissions and/or group-owner rights on dup-database__{$GLOBALS['PACKAGE_HASH']}.sql and directory [{$root_path}] \n";
 	$msg .= "- see: {$faq_url}{$utm_prefix}inst_step2_copydbsql#faq-trouble-055-q \n";
 	DUPX_Log::info($msg);
 }
@@ -314,7 +314,7 @@ $dbvar_maxtime		= is_null($dbvar_maxtime) ? 300 : $dbvar_maxtime;
 $dbvar_maxpacks		= is_null($dbvar_maxpacks) ? 1048576 : $dbvar_maxpacks;
 $dbvar_sqlmode		= empty($dbvar_sqlmode) ? 'NOT_SET'  : $dbvar_sqlmode;
 $dbvar_version		= DUPX_DB::getVersion($dbh);
-$sql_file_size1		= DUPX_U::readableByteSize(@filesize("database.sql"));
+$sql_file_size1		= DUPX_U::readableByteSize(@filesize("dup-database__{$GLOBALS['PACKAGE_HASH']}.sql"));
 $sql_file_size2		= DUPX_U::readableByteSize(@filesize("{$GLOBALS['SQL_FILE_NAME']}"));
 $db_collatefb		= isset($_POST['dbcollatefb']) ? 'On' : 'Off';
 
@@ -323,7 +323,7 @@ DUPX_Log::info("--------------------------------------");
 DUPX_Log::info("DATABASE ENVIRONMENT");
 DUPX_Log::info("--------------------------------------");
 DUPX_Log::info("MYSQL VERSION:\tThis Server: {$dbvar_version} -- Build Server: {$GLOBALS['FW_VERSION_DB']}");
-DUPX_Log::info("FILE SIZE:\tdatabase.sql ({$sql_file_size1}) - installer-data.sql ({$sql_file_size2})");
+DUPX_Log::info("FILE SIZE:\tdup-database__{$GLOBALS['PACKAGE_HASH']}.sql ({$sql_file_size1}) - dup-installer-data__{$GLOBALS['PACKAGE_HASH']}.sql ({$sql_file_size2})");
 DUPX_Log::info("TIMEOUT:\t{$dbvar_maxtime}");
 DUPX_Log::info("MAXPACK:\t{$dbvar_maxpacks}");
 DUPX_Log::info("SQLMODE:\t{$dbvar_sqlmode}");
@@ -434,8 +434,8 @@ if ($result = mysqli_query($dbh, "SHOW TABLES")) {
 }
 
 if ($dbtable_count == 0) {
-	DUPX_Log::error("No tables where created during step 2 of the install.  Please review the <a href='installer-log.txt' target='install_log'>installer-log.txt</a> file for
-		ERROR messages.  You may have to manually run the installer-data.sql with a tool like phpmyadmin to validate the data input.  If you have enabled compatibility mode
+	DUPX_Log::error("No tables where created during step 2 of the install.  Please review the <a href='".$GLOBALS["LOG_FILE_NAME"]."' target='install_log'>".$GLOBALS["LOG_FILE_NAME"]."</a> file for
+		ERROR messages.  You may have to manually run the installer-data__{$GLOBALS['PACKAGE_HASH']}.sql with a tool like phpmyadmin to validate the data input.  If you have enabled compatibility mode
 		during the package creation process then the database server version your using may not be compatible with this script.\n");
 }
 

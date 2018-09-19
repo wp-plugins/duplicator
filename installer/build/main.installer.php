@@ -111,6 +111,7 @@ $GLOBALS['FW_WPLOGIN_URL']		= '%fwrite_wplogin_url%';
 $GLOBALS['FW_OPTS_DELETE']		= json_decode("%fwrite_opts_delete%", true);
 $GLOBALS['FW_DUPLICATOR_VERSION'] = '%fwrite_duplicator_version%';
 $GLOBALS['FW_ARCHIVE_ONLYDB']	= '%fwrite_archive_onlydb%';
+$GLOBALS['PACKAGE_HASH']		= '%package_hash%';
 
 //DATABASE SETUP: all time in seconds	
 $GLOBALS['DB_MAX_TIME']		= 5000;
@@ -166,8 +167,9 @@ $_POST['dbcharset'] = isset($_POST['dbcharset'])  ? trim($_POST['dbcharset']) : 
 $_POST['dbcollate'] = isset($_POST['dbcollate'])  ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
 
 //GLOBALS
-$GLOBALS['SQL_FILE_NAME']       = "installer-data.sql";
-$GLOBALS['LOG_FILE_NAME']       = "installer-log.txt";
+// Constants which are dependent on the $GLOBALS['DUPX_AC']
+$GLOBALS['SQL_FILE_NAME'] = "dup-installer-data__{$GLOBALS['PACKAGE_HASH']}.sql";
+$GLOBALS['LOG_FILE_NAME']       = "dup-installer-log__{$GLOBALS['PACKAGE_HASH']}.txt";
 $GLOBALS['LOGGING']             = isset($_POST['logging']) ? $_POST['logging'] : 1;
 $GLOBALS['CURRENT_ROOT_PATH']   = dirname(__FILE__);
 $GLOBALS['CHOWN_ROOT_PATH']     = @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);

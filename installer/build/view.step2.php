@@ -13,7 +13,7 @@ VIEW: STEP 2- INPUT -->
 <input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging'] ?>" />
 <input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 
-    <div class="dupx-logfile-link"><a href="installer-log.txt?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
         Step <span class="step">2</span> of 4: Install Database
 	</div>
@@ -183,7 +183,7 @@ Auto Posts to view.step3.php
 ========================================= -->
 <form id='s2-result-form' method="post" class="content-form" style="display:none">
 
-    <div class="dupx-logfile-link"><a href="installer-log.txt" target="install_log">installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
         Step <span class="step">2</span> of 4: Install Database
 	</div>

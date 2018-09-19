@@ -60,16 +60,28 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 		<div id="message" class="notice notice-success is-dismissible">
 			<p><b><?php echo $action_response; ?></b></p>
 			<?php if ( $_GET['action'] == 'installer') :  ?>
-				<?php	
+				<?php
 					$html = "";
 
 					//REMOVE CORE INSTALLER FILES
 					$installer_files = DUP_Server::getInstallerFiles();
 					foreach ($installer_files as $file => $path) {
-						@unlink($path);
-						echo (file_exists($path)) 
-							? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$path}  </div>"
-							: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$path}	</div>";
+						$file_path = '';
+						if (false !== stripos($file, '[hash]')) {
+							$glob_files = glob($path);
+							if (!empty($glob_files)) {
+								$file_path = $glob_files[0];
+								
+							}
+						} else {
+							$file_path = $path;                            
+						}
+                        if (!empty($file_path)) {
+                            @unlink($file_path);
+                            echo (file_exists($file_path))
+								? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file_path}  </div>"
+								: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$file_path}	</div>";
+                        }
 					}
 
 					//No way to know exact name of archive file except from installer.

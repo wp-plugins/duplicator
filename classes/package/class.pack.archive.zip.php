@@ -66,11 +66,12 @@ class DUP_Zip extends DUP_Archive
             DUP_Log::Info("STATS:\tDirs ".self::$scanReport->ARC->DirCount." | Files ".self::$scanReport->ARC->FileCount);
 
             //ADD SQL
-            $isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, "database.sql");
+            $sqlArkFilePath = $archive->Package->getSqlArkFilePath();
+            $isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, $sqlArkFilePath);
             if ($isSQLInZip) {
                 DUP_Log::Info("SQL ADDED: ".basename(self::$sqlPath));
             } else {
-                DUP_Log::Error("Unable to add database.sql to archive.", "SQL File Path [".self::$sqlath."]");
+                DUP_Log::Error("Unable to add ".$sqlArkFilePath." to archive.", "SQL File Path [".self::$sqlath."]");
             }
             self::$zipArchive->close();
             self::$zipArchive->open(self::$zipPath, ZipArchive::CREATE);

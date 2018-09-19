@@ -37,7 +37,7 @@ error_reporting(E_ERROR);
 if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) {
 	//ERR_ZIPMANUAL
 	if ($_POST['archive_engine'] == 'manual') {
-		if (!file_exists("wp-config.php") && !file_exists("database.sql")) {
+		if (!file_exists("wp-config.php") && !file_exists("dup-database__{$GLOBALS['PACKAGE_HASH']}.sql")) {
 			DUPX_Log::error(ERR_ZIPMANUAL);
 		}
 	} else {
