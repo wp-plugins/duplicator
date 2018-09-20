@@ -540,13 +540,14 @@ STEP 4
 	When completed with the installation please delete all installation files.  Leaving these files on your server can impose a security risk!   You can remove
 	all the security files by logging into your WordPress admin and following the remove notification links.   Be sure all these files are removed.  Optionally
 	it is also recommended to remove the archive.zip file.
+	<!-- Do not display hash codes anywhere in UI. -->
 	<ul>
 		<li>installer.php</li>
-		<li>dup-installer-data__<?php echo $GLOBALS['PACKAGE_HASH'];?>.sql</li>
 		<li>installer-backup.php</li>
-		<li><?php echo $GLOBALS["LOG_FILE_NAME"];?></li>
-		<li>dup-database__<?php echo $GLOBALS['PACKAGE_HASH'];?>.sql</li>
-		<li>[a-hash-code]_archive.zip <small>(optional)</small></li>
+		<li>dup-installer-data_[HASH].sql</li>
+		<li>dup-database_[HASH].sql</li>
+		<li>dup-installer-log_[HASH].txt</li>
+		<li>[HASH]_archive.zip</li>
 	</ul>
 	<br/><br/>
 

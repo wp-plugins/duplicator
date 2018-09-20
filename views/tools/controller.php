@@ -13,6 +13,7 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'diagnosti
 
 <style>
 	div.lite-sub-tabs {padding: 10px 0 10px 0; font-size: 14px}
+	div.dup-no-files-msg {padding:10px 0 10px 0}
 </style>
 <?php
 
@@ -20,14 +21,11 @@ $installer_files = DUP_Server::getInstallerFiles();
 $package_name = (isset($_GET['package'])) ?  esc_html($_GET['package']) : '';
 $package_path = (isset($_GET['package'])) ?  DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
 
-$txt_found		 = __('File Found', 'duplicator');
-$txt_removed	 = __('File Removed', 'duplicator');
-$txt_archive_msg = __("<b>Archive File:</b> The archive file has a unique hashed name when downloaded.  Leaving the archive file on your server does not impose a security"
-					. " risk if the file was not renamed.  It is still recommended to remove the archive file after install,"
-					. " especially if it was renamed.", 'duplicator');
+$txt_found		= __('File Found: Unable to remove', 'duplicator');
+$txt_removed	= __('File Removed', 'duplicator');
+$nonce			= wp_create_nonce('duplicator_cleanup_page');
+$section		= (isset($_GET['section'])) ?$_GET['section']:'';
 
-$nonce = wp_create_nonce('duplicator_cleanup_page');
-$section  = (isset($_GET['section'])) ?$_GET['section']:'';
 if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 	$ajax_nonce	= wp_create_nonce('DUP_CTRL_Tools_deleteInstallerFiles');
 	$_GET['action'] = isset($_GET['action']) ? $_GET['action'] : 'display';
@@ -65,22 +63,26 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 
 					//REMOVE CORE INSTALLER FILES
 					$installer_files = DUP_Server::getInstallerFiles();
+					$installer_file_found = false;
 					foreach ($installer_files as $file => $path) {
 						$file_path = '';
 						if (false !== stripos($file, '[hash]')) {
 							$glob_files = glob($path);
 							if (!empty($glob_files)) {
 								$file_path = $glob_files[0];
-								
 							}
-						} else {
+						} elseif (file_exists($path)) {
 							$file_path = $path;                            
 						}
+
                         if (!empty($file_path)) {
                             @unlink($file_path);
-                            echo (file_exists($file_path))
-								? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file_path}  </div>"
-								: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$file_path}	</div>";
+                            if (file_exists($file_path)) {
+								$installer_file_found = true;
+								echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file_path}  </div>";
+							} else {
+								echo "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$file_path}	</div>";
+							}
                         }
 					}
 
@@ -98,14 +100,18 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 					}
 
 					echo $html;
-				 ?><br/>
 
-				<div style="font-style: italic; max-width:900px">
+					if (!$installer_file_found) {
+						echo '<div class="dup-no-files-msg success">'
+								. '<i class="fa fa-check"></i> <b>'.__('No Duplicator installer files found on this WordPress Site.', 'duplicator').'</b>'
+							. '</div>';
+					}
+				?>
+				<div style="font-style: italic; max-width:1000px; padding-top:15px">
 					<b><?php _e('Security Notes', 'duplicator')?>:</b>
-					<?php _e('If the installer files do not successfully get removed with this action, then they WILL need to be removed manually through your hosts control panel,  '
-						 . ' file system or FTP.  Please remove all installer files listed above to avoid leaving open security issues on your server.', 'duplicator')?>
-					<br/><br/>
-					<?php echo $txt_archive_msg; ?>
+					<?php _e('If the installer files do not successfully get removed with this action, then they WILL need to be removed manually through your hosts control panel  '
+						 . ' or FTP.  Please remove all installer files to avoid any security issues on this site.  For more details please visit '
+						. 'the FAQ link <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-295-q" target="_blank">Which files need to be removed after an install?</a>', 'duplicator')?>
 					<br/><br/>
 				</div>
 			
@@ -140,8 +146,6 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 					switch_theme($temp_theme['template'], $temp_theme['stylesheet']);
 					switch_theme($active_theme->template, $active_theme->stylesheet);
 				}
-				
-
 			break;
 		}
 

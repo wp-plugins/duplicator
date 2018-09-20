@@ -33,9 +33,15 @@ $_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_conf
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 
 
+//MYSQL CONNECTION: If inputs are bad then die
+$dbh		 = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
+$dbConnError = (mysqli_connect_error()) ? 'Error: '.mysqli_connect_error() : 'Unable to Connect';
+if (!$dbh) {
+	$msg = "Unable to connect with the following parameters: <br/> <b>HOST:</b> {$_POST['dbhost']}<br/> <b>DATABASE:</b> {$_POST['dbname']}<br/>";
+	$msg .= "<b>Connection Error:</b> {$dbConnError}";
+	DUPX_Log::error($msg);
+}
 
-//MYSQL CONNECTION
-$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
 $charset_server = @mysqli_character_set_name($dbh);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);

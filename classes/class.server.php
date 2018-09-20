@@ -161,13 +161,6 @@ class DUP_Server
         return false;
     }
     
-    public static function filePatternExists($file_pattern)
-    {       
-        $result = glob($file_pattern);
-        //error_log("#### $file_pattern");
-        return (($result !== false) && (count($result) > 0));
-    }
-   
     /**
      * Gets a list of all the installer files by name and full path
      *
@@ -182,9 +175,9 @@ class DUP_Server
             DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_PHP,
             DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_BAK,
             
-            'dup-installer-data__[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-installer-data__'.$hashPattern.'.sql',
+            'dup-installer-data__[HASH].sql' => DUPLICATOR_WPROOTPATH . 'dup-installer-data__'.$hashPattern.'.sql',
             'dup-database__[HASH].sql' => DUPLICATOR_WPROOTPATH . 'dup-database__'.$hashPattern.'.sql',
-            'dup-installer-log_[HASH].sql' => DUPLICATOR_WPROOTPATH . 'dup-installer-log__'.$hashPattern.'.txt',
+            'dup-installer-log_[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-installer-log__'.$hashPattern.'.txt',
         );
     }
 
