@@ -16,7 +16,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     //Package
 	$mysqldump_enabled	= isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
 	if (isset($_POST['package_mysqldump_path'])) {
-		$mysqldump_exe_file	= DUP_Util::safePath(stripslashes(trim($_POST['package_mysqldump_path'])));
+		$mysqldump_exe_file	= DUP_Util::safePath(sanitize_text_field(trim($_POST['package_mysqldump_path'])));
 		$mysqldump_exe_file	= DUP_DB::escSQL(strip_tags($mysqldump_exe_file), true);
 	}
 
@@ -156,7 +156,7 @@ $mysqlDumpFound			= ($mysqlDumpPath) ? true : false;
 							data-tooltip-title="<?php _e("mysqldump path:", 'duplicator'); ?>"
 							data-tooltip="<?php _e('An optional path to the mysqldump program.  Add a custom path if the path to mysqldump is not properly detected or needs to be changed.', 'duplicator'); ?>"></i>
 					<label><?php _e("Custom Path:", 'duplicator'); ?></label><br/>
-					<input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?>" placeholder="<?php _e("/usr/bin/mypath/mysqldump.exe", 'duplicator'); ?>" />
+					<input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo esc_attr($package_mysqldump_path); ?>" placeholder="<?php _e("/usr/bin/mypath/mysqldump.exe", 'duplicator'); ?>" />
 					<div class="dup-feature-notfound">
 					<?php
 						if (!$mysqlDumpFound && strlen($mysqldump_exe_file)) {

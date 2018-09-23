@@ -1,7 +1,6 @@
 <?php
 
 //POST PARAMS
-$_POST['archive_name']		 = isset($_POST['archive_name']) ? $_POST['archive_name'] : null;
 $_POST['archive_engine']	 = isset($_POST['archive_engine']) ? $_POST['archive_engine']  : 'manual';
 $_POST['archive_filetime']	 = (isset($_POST['archive_filetime'])) ? $_POST['archive_filetime'] : 'current';
 $_POST['retain_config']		 = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
@@ -15,7 +14,7 @@ ksort($POST_LOG);
 $php_max_time   = @ini_get("max_execution_time");
 $php_max_time   = ($php_max_time == 0) ? "[0] time limit restriction disabled" : "[{$php_max_time}] time limit restriction enabled";
 $root_path		 = DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
-$package_path	 = "{$root_path}/{$_POST['archive_name']}";
+$package_path	 = "{$root_path}/{$GLOBALS['FW_PACKAGE_NAME']}";
 $ajax1_start	 = DUPX_U::getMicrotime();
 $zip_support	 = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $JSON			 = array();
@@ -77,8 +76,8 @@ DUPX_Log::info($log, 2);
 $log = "--------------------------------------\n";
 $log .= "ARCHIVE EXTRACTION\n";
 $log .= "--------------------------------------\n";
-$log .= "NAME:\t{$_POST['archive_name']}\n";
-$log .= "SIZE:\t".DUPX_U::readableByteSize(@filesize($_POST['archive_name']))."\n";
+$log .= "NAME:\t{$GLOBALS['FW_PACKAGE_NAME']}\n";
+$log .= "SIZE:\t".DUPX_U::readableByteSize(@filesize($GLOBALS['FW_PACKAGE_NAME']))."\n";
 $log .= "ZIP:\t{$zip_support} (ZipArchive Support)";
 DUPX_Log::info($log);
 
@@ -86,15 +85,6 @@ DUPX_Log::info($log);
 if ($_POST['archive_engine'] == 'manual') {
 	DUPX_Log::info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
 } else {
-	if ($GLOBALS['FW_PACKAGE_NAME'] != $_POST['archive_name']) {
-		$log = "\n--------------------------------------\n";
-		$log .= "WARNING: This package set may be incompatible!  \nBelow is a summary of the package this installer was built with and the package used. \n";
-		$log .= "To guarantee accuracy the installer and archive should match. For details see the online FAQs.";
-		$log .= "\nCREATED WITH:\t{$GLOBALS['FW_PACKAGE_NAME']} \nPROCESSED WITH:\t{$_POST['archive_name']}  \n";
-		$log .= "--------------------------------------\n";
-		DUPX_Log::info($log);
-	}
-
 	if (!class_exists('ZipArchive')) {
 		DUPX_Log::info("ERROR: Stopping install process.  Trying to extract without ZipArchive module installed.  Please use the 'Manual Package extraction' mode to extract zip file.");
 		DUPX_Log::error(ERR_ZIPARCHIVE);
@@ -102,7 +92,7 @@ if ($_POST['archive_engine'] == 'manual') {
 
 	$target	 = $root_path;
 	$zip	 = new ZipArchive();
-	if ($zip->open($_POST['archive_name']) === TRUE) {
+	if ($zip->open($GLOBALS['FW_PACKAGE_NAME']) === TRUE) {
 
 		DUPX_Log::info("\n>>> START EXTRACTION:");
 		if (!$zip->extractTo($target)) {

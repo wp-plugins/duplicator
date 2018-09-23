@@ -1,13 +1,12 @@
 <?php
 	$_POST['url_new']	    = isset($_POST['url_new'])      ? DUPX_U::sanitize($_POST['url_new']) : '';
-	$_POST['archive_name']  = isset($_POST['archive_name']) ? $_POST['archive_name'] : '';
 	$_POST['retain_config'] = isset($_POST['retain_config']) && $_POST['retain_config'] == '1' ? true : false;
     $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
         
 	$admin_base		= basename($GLOBALS['FW_WPLOGIN_URL']);
 
     $safe_mode	= $_POST['exe_safe_mode'];
-	$admin_redirect = rtrim($_POST['url_new'], "/") . "/wp-admin/admin.php?page=duplicator-tools&tab=diagnostics&section=info&package={$_POST['archive_name']}&safe_mode={$safe_mode}";
+	$admin_redirect = rtrim($_POST['url_new'], "/") . "/wp-admin/admin.php?page=duplicator-tools&tab=diagnostics&section=info&package={$GLOBALS['FW_PACKAGE_NAME']}&safe_mode={$safe_mode}";
 	$admin_redirect = urlencode($admin_redirect);
 	$admin_url_qry  = (strpos($admin_base, '?') === false) ? '?' : '&';
 	$admin_login	= rtrim($_POST['url_new'], '/') . "/{$admin_base}{$admin_url_qry}redirect_to={$admin_redirect}";
@@ -26,7 +25,7 @@ DUPX.getAdminLogin = function() {
 VIEW: STEP 4 - INPUT -->
 <form id='s4-input-form' method="post" class="content-form" style="line-height:20px">
 	<input type="hidden" name="url_new" id="url_new" value="<?php echo $url_new_rtrim; ?>" />
-	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">dup-installer-log.txt</a></div>
 
 	<div class="hdr-main">
         Step <span class="step">4</span> of 4: Test Site
@@ -132,7 +131,7 @@ VIEW: STEP 4 - INPUT -->
 			<div class="s4-err-title">STEP 2 - INSTALL NOTICES:</div>
 			<b data-bind="with: status.step2">ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
 			<div class="info-error">
-				Queries that error during the deploy step are logged to the <a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dpro-installer">install-log.txt</a> file and
+				Queries that error during the deploy step are logged to the <a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dpro-installer">dup-installer-log.txt</a> file and
 				and marked with an **ERROR** status.   If you experience a few errors (under 5), in many cases they can be ignored as long as your site is working correctly.
 				However if you see a large amount of errors or you experience an issue with your site then the error messages in the log file will need to be investigated.
 				<br/><br/>

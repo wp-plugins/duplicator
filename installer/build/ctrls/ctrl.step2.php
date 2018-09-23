@@ -11,7 +11,6 @@ $_POST['dbnbsp']			= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true
 $_POST['ssl_admin']			= (isset($_POST['ssl_admin']))  ? true : false;
 $_POST['cache_wp']			= (isset($_POST['cache_wp']))   ? true : false;
 $_POST['cache_path']		= (isset($_POST['cache_path'])) ? true : false;
-$_POST['archive_name']		= isset($_POST['archive_name']) ? $_POST['archive_name'] : null;
 $_POST['retain_config']		= (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
 $_POST['dbcollatefb']       = isset($_POST['dbcollatefb']) ? $_POST['dbcollatefb'] : false;
 
@@ -43,7 +42,7 @@ if (isset($_GET['dbtest']))
 	$dbErr	  = mysqli_connect_error();
 
 	$dbFound  = mysqli_select_db($dbConn, $_POST['dbname']);
-	$port_view = (is_int($baseport) || substr($_POST['dbhost'], -1) == ":") ? "Port=[Set in Host]" : "Port={$_POST['dbport']}";
+	$port_view = (is_int($baseport) || substr($_POST['dbhost'], -1) == ":") ? "Port=[Set in Host]" : "Port=".htmlentities($_POST['dbport']);
 
 	$tstSrv   = ($dbConn)  ? "<div class='dupx-pass'>Success</div>" : "<div class='dupx-fail'>Fail</div>";
 	$tstDB    = ($dbFound) ? "<div class='dupx-pass'>Success</div>" : "<div class='dupx-fail'>Fail</div>";
@@ -57,38 +56,37 @@ if (isset($_GET['dbtest']))
     $dbversion_compat_fail  = $dbConn && version_compare($dbversion_compat, $GLOBALS['FW_VERSION_DB']) < 0;
 
     $tstInfo = ($dbversion_info_fail)
-		? "<div class='dupx-notice'>{$dbversion_info}</div>"
-        : "<div class='dupx-pass'>{$dbversion_info}</div>";
+		? "<div class='dupx-notice'>".htmlentities($dbversion_info)."</div>"
+        : "<div class='dupx-pass'>".htmlentities($dbversion_info)."</div>";
 
 	$tstCompat = ($dbversion_compat_fail)
-		? "<div class='dupx-notice'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>"
-		: "<div class='dupx-pass'>This Server: [{$dbversion_compat}] -- Package Server: [{$GLOBALS['FW_VERSION_DB']}]</div>";
+		? "<div class='dupx-notice'>This Server: [".htmlentities($dbversion_compat)."] -- Package Server: [".htmlentities($GLOBALS['FW_VERSION_DB'])."]</div>"
+		: "<div class='dupx-pass'>This Server: [".htmlentities($dbversion_compat)."] -- Package Server: [".htmlentities($GLOBALS['FW_VERSION_DB'])."]</div>";
 
-	$html	 .= <<<DATA
+	$html	 .= "
 	<div class='s2-db-test'>
 		<small>
 			Using Connection String:<br/>
-			Host={$_POST['dbhost']}; Database={$_POST['dbname']}; Uid={$_POST['dbuser']}; Pwd={$_POST['dbpass']}; {$port_view}
+			Host=".htmlentities($_POST['dbhost'])."; Database=".htmlentities($_POST['dbname'])."; Uid=".htmlentities($_POST['dbuser'])."; Pwd=".htmlentities($_POST['dbpass'])."; {$port_view}
 		</small>
 		<table class='s2-db-test-dtls'>
 			<tr>
 				<td>Host:</td>
-				<td>{$tstSrv}</td>
+				<td>".$tstSrv."</td>
 			</tr>
 			<tr>
 				<td>Database:</td>
-				<td>{$tstDB}</td>
+				<td>".$tstDB."</td>
 			</tr>
 			<tr>
 				<td>Version:</td>
-				<td>{$tstInfo}</td>
+				<td>".$tstInfo."</td>
 			</tr>
             <tr>
 				<td>Compatibility:</td>
-				<td>{$tstCompat}</td>
+				<td>".$tstCompat."</td>
 			</tr>
-		</table>
-DATA;
+		</table>";
 
 	//--------------------------------
 	//WARNING: Unable to connect
@@ -101,7 +99,7 @@ DATA;
 	{
 		$tblcount = DUPX_DB::countTables($dbConn, $_POST['dbname']);
 		$html .= ($tblcount > 0)
-			? "<div class='warn-msg'><b>WARNING:</b> " . sprintf(ERR_DBEMPTY, $_POST['dbname'], $tblcount) . "</div>"
+			? "<div class='warn-msg'><b>WARNING:</b> " . sprintf(ERR_DBEMPTY, htmlentities($_POST['dbname']), htmlentities($tblcount)) . "</div>"
 			: '';
 	}
 
@@ -435,7 +433,7 @@ if ($result = mysqli_query($dbh, "SHOW TABLES")) {
 
 if ($dbtable_count == 0) {
 	DUPX_Log::error("No tables where created during step 2 of the install.  Please review the <a href='".$GLOBALS["LOG_FILE_NAME"]."' target='install_log'>".$GLOBALS["LOG_FILE_NAME"]."</a> file for
-		ERROR messages.  You may have to manually run the installer-data__{$GLOBALS['PACKAGE_HASH']}.sql with a tool like phpmyadmin to validate the data input.  If you have enabled compatibility mode
+		ERROR messages.  You may have to manually run the installer-data_[HASH].sql with a tool like phpmyadmin to validate the data input.  If you have enabled compatibility mode
 		during the package creation process then the database server version your using may not be compatible with this script.\n");
 }
 

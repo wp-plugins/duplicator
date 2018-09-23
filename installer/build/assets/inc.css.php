@@ -89,6 +89,7 @@
 	STEP 1 VIEW
     ====================================== */
 	table.s1-archive-local {width:100%}
+	table.s1-archive-local tr {vertical-align:top}
     table.s1-archive-local td {padding:4px 4px 4px 4px}
 	table.s1-archive-local td:first-child {font-weight:bold; width:55px}
     div#s1-area-sys-setup {padding:5px 0 0 10px}
@@ -108,7 +109,7 @@
 	div.s1-reqs div.title:hover {background-color:#dfdfdf; cursor:pointer}
 	div.s1-reqs div.info {padding:8px 8px 20px 8px; background-color:#fff; display:none; line-height:18px; font-size: 12px}
 	div.s1-reqs div.info a {color:#485AA3;}
-    div.s1-archive-failed-msg {padding:15px; border:1px dashed silver; font-size: 12px; border-radius:5px}
+    div.s1-archive-failed-msg {padding:15px; border:1px dashed maroon; font-size: 12px; border-radius:5px;}
     div.s1-err-msg {padding:8px;  border:1px dashed #999; margin:20px 0 20px 0px; border-radius:5px; color:maroon}
 
     /*Terms and Notices*/

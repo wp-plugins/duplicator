@@ -20,7 +20,6 @@ VIEW: STEP 3- INPUT -->
 	<input type="hidden" name="action_step"	 value="3" />
 	<input type="hidden" name="logging"		 value="<?php echo $_POST['logging'] ?>" />
 	<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
-	<input type="hidden" name="archive_name" value="<?php echo $_POST['archive_name'] ?>" />
 	<input type="hidden" name="json"		 value="<?php echo $_POST['json']; ?>" />
 	<input type="hidden" name="dbhost"		 value="<?php echo $_POST['dbhost'] ?>" />
 	<input type="hidden" name="dbport"		 value="<?php echo $_POST['dbport'] ?>" />
@@ -32,7 +31,7 @@ VIEW: STEP 3- INPUT -->
 	<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
 	<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 
-	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
@@ -186,7 +185,7 @@ VIEW: STEP 3 - AJAX RESULT
 ========================================= -->
 <form id='s3-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
@@ -195,9 +194,8 @@ VIEW: STEP 3 - AJAX RESULT
 	<div class="dupx-debug">
 		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="action_step"  value="4" />
-		<input type="hidden" name="archive_name" value="<?php echo $_POST['archive_name'] ?>" />
 		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
-                <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode']; ?>"/>
+        <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode']; ?>"/>
 		<input type="hidden" name="url_new" id="ajax-url_new"  />
 		<input type="hidden" name="json"    id="ajax-json" />
 		<br/>
@@ -217,7 +215,7 @@ VIEW: STEP 3 - AJAX RESULT
 	<div id="ajaxerr-area" style="display:none">
 		<p>Please try again an issue has occurred.</p>
 		<div style="padding: 0px 10px 10px 10px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the update data set up process.  Please see the installer-log.txt file for more details.</div>
+			<div id="ajaxerr-data">An unknown issue has occurred with the update data set up process.  Please see the dup-installer-log.txt file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button"  class="default-btn" onclick='DUPX.hideErrorResult2()' value="&laquo; Try Again" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_step3_ajax' target='_blank'>snapcreek.com</a></i>
@@ -268,7 +266,7 @@ DUPX.runUpdate = function()
 			status += "<b>Status:</b> "				+ xhr.statusText	+ "<br/>";
 			status += "<b>Response:</b> "			+ xhr.responseText  + "";
 			status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-			status += "- Check the <a href='<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='install_log'>installer-log.txt</a> file for warnings or errors.<br/>";
+			status += "- Check the <a href='<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='install_log'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
 			status += "- Check the web server and PHP error logs. <br/>";
 			status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_step3_ajax_rundepl#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 			$('#ajaxerr-data').html(status);
