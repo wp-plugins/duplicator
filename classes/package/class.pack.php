@@ -320,32 +320,33 @@ class DUP_Package
             $this->VersionOS  = defined('PHP_OS') ? PHP_OS : 'unknown';
             $this->VersionWP  = $wp_version;
             $this->VersionPHP = phpversion();
-            $this->VersionDB  = esc_html($dbversion);
+            $this->VersionDB  = sanitize_text_field($dbversion);
             $this->Name       = sanitize_text_field($name);
             $this->Hash       = $this->makeHash();
             $this->NameHash   = "{$this->Name}_{$this->Hash}";
 
-            $this->Notes                    = DUP_Util::escSanitizeTextAreaField($post['package-notes']);
+            $this->Notes                    = sanitize_textarea_field($post['package-notes']);
             //ARCHIVE
             $this->Archive->PackDir         = rtrim(DUPLICATOR_WPROOTPATH, '/');
             $this->Archive->Format          = 'ZIP';
             $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
 			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
-            $this->Archive->FilterDirs      = DUP_Util::escSanitizeTextAreaField($filter_dirs);
-			 $this->Archive->FilterFiles    = DUP_Util::escSanitizeTextAreaField($filter_files);
-            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', DUP_Util::escSanitizeTextAreaField($filter_exts));
+            $this->Archive->FilterDirs      = sanitize_textarea_field($filter_dirs);
+			 $this->Archive->FilterFiles    = sanitize_textarea_field($filter_files);
+            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', sanitize_textarea_field($filter_exts));
             //INSTALLER
-            $this->Installer->OptsDBHost		= DUP_Util::escSanitizeTextField($post['dbhost']);
-            $this->Installer->OptsDBPort		= DUP_Util::escSanitizeTextField($post['dbport']);
-            $this->Installer->OptsDBName		= DUP_Util::escSanitizeTextField($post['dbname']);
-            $this->Installer->OptsDBUser		= DUP_Util::escSanitizeTextField($post['dbuser']);
-			$this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
-			$this->Installer->OptsSecurePass    = DUP_Util::installerScramble($post['secure-pass']);
+            $this->Installer->OptsDBHost		= sanitize_text_field($post['dbhost']);
+            $this->Installer->OptsDBPort		= sanitize_text_field($post['dbport']);
+            $this->Installer->OptsDBName		= sanitize_text_field($post['dbname']);
+            $this->Installer->OptsDBUser		= sanitize_text_field($post['dbuser']);
+            $this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
+            $post_secure_pass = sanitize_text_field($post['secure-pass']);
+			$this->Installer->OptsSecurePass    = DUP_Util::installerScramble($post_secure_pass);
             //DATABASE
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
-            $this->Database->FilterTables   = esc_html($tablelist);
+            $this->Database->FilterTables   = sanitize_text_field($tablelist);
             $this->Database->Compatible     = $compatlist;
-            $this->Database->Comments       = esc_html($dbcomments);
+            $this->Database->Comments       = sanitize_text_field($dbcomments);
 
             update_option(self::OPT_ACTIVE, $this);
         }
@@ -391,7 +392,7 @@ class DUP_Package
 
         $wpdb->flush();
         $table = $wpdb->prefix."duplicator_packages";
-        $sql   = "UPDATE `{$table}` SET  status = {$status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
+        $sql   = "UPDATE `{$table}` SET  status = ".intval($status).", package = '".esc_sql($packageObj)."'	WHERE ID = ".intval($this->ID);
         $wpdb->query($sql);
     }
 

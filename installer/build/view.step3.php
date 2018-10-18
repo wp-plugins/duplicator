@@ -1,4 +1,6 @@
 <?php
+defined("DUPXABSPATH") or die("");
+
 	$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 
 	$all_tables     = DUPX_DB::getTables($dbh);
@@ -18,20 +20,20 @@ VIEW: STEP 3- INPUT -->
 	<!--  POST PARAMS -->
 	<input type="hidden" name="action_ajax"	 value="3" />
 	<input type="hidden" name="action_step"	 value="3" />
-	<input type="hidden" name="logging"		 value="<?php echo $_POST['logging'] ?>" />
-	<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
-	<input type="hidden" name="json"		 value="<?php echo $_POST['json']; ?>" />
-	<input type="hidden" name="dbhost"		 value="<?php echo $_POST['dbhost'] ?>" />
-	<input type="hidden" name="dbport"		 value="<?php echo $_POST['dbport'] ?>" />
-	<input type="hidden" name="dbuser" 		 value="<?php echo $_POST['dbuser'] ?>" />
-	<input type="hidden" name="dbpass" 		 value="<?php echo htmlentities($_POST['dbpass']) ?>" />
-	<input type="hidden" name="dbname" 		 value="<?php echo $_POST['dbname'] ?>" />
-	<input type="hidden" name="dbcharset" 	 value="<?php echo $_POST['dbcharset'] ?>" />
-	<input type="hidden" name="dbcollate" 	 value="<?php echo $_POST['dbcollate'] ?>" />
-	<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
-	<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+	<input type="hidden" name="logging"		 value="<?php echo DUPX_U::esc_attr($_POST['logging']); ?>" />
+	<input type="hidden" name="retain_config" value="<?php echo DUPX_U::esc_attr($_POST['retain_config']); ?>" />
+	<input type="hidden" name="json"		 value="<?php echo DUPX_U::esc_attr($_POST['json']); ?>" />
+	<input type="hidden" name="dbhost"		 value="<?php echo DUPX_U::esc_attr($_POST['dbhost']); ?>" />
+	<input type="hidden" name="dbport"		 value="<?php echo DUPX_U::esc_attr($_POST['dbport']); ?>" />
+	<input type="hidden" name="dbuser" 		 value="<?php echo DUPX_U::esc_attr($_POST['dbuser']); ?>" />
+	<input type="hidden" name="dbpass" 		 value="<?php echo DUPX_U::esc_attr($_POST['dbpass']); ?>" />
+	<input type="hidden" name="dbname" 		 value="<?php echo DUPX_U::esc_attr($_POST['dbname']); ?>" />
+	<input type="hidden" name="dbcharset" 	 value="<?php echo DUPX_U::esc_attr($_POST['dbcharset']); ?>" />
+	<input type="hidden" name="dbcollate" 	 value="<?php echo DUPX_U::esc_attr($_POST['dbcollate']); ?>" />
+	<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo DUPX_U::esc_attr($_POST['exe_safe_mode']); ?>" />
+	<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 
-	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">dup-installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_DATE']); ?>" target="install_log">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
@@ -53,11 +55,11 @@ VIEW: STEP 3- INPUT -->
 			</tr>
 			<tr>
 				<td>Path:</td>
-				<td><input type="text" name="path_new" id="path_new" value="<?php echo $new_path ?>" /></td>
+				<td><input type="text" name="path_new" id="path_new" value="<?php echo DUPX_U::esc_attr($new_path); ?>" /></td>
 			</tr>
 			<tr>
 				<td>Title:</td>
-				<td><input type="text" name="blogname" id="blogname" value="<?php echo $GLOBALS['FW_BLOGNAME'] ?>" /></td>
+				<td><input type="text" name="blogname" id="blogname" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_BLOGNAME']); ?>" /></td>
 			</tr>
 		</table>
 	</div>
@@ -101,14 +103,14 @@ VIEW: STEP 3- INPUT -->
             <tr>
                 <td>Old URL:</td>
                 <td>
-                    <input type="text" name="url_old" id="url_old" value="<?php echo $GLOBALS['FW_URL_OLD'] ?>" readonly="readonly"  class="readonly" />
+                    <input type="text" name="url_old" id="url_old" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_URL_OLD']); ?>" readonly="readonly"  class="readonly" />
                     <a href="javascript:DUPX.editOldURL()" id="edit_url_old" style="font-size:12px">edit</a>
                 </td>
             </tr>
             <tr>
                 <td>Old Path:</td>
                 <td>
-                    <input type="text" name="path_old" id="path_old" value="<?php echo $old_path ?>" readonly="readonly"  class="readonly" />
+                    <input type="text" name="path_old" id="path_old" value="<?php echo DUPX_U::esc_attr($old_path); ?>" readonly="readonly"  class="readonly" />
                     <a href="javascript:DUPX.editOldPath()" id="edit_path_old" style="font-size:12px">edit</a>
                 </td>
             </tr>
@@ -125,7 +127,7 @@ VIEW: STEP 3- INPUT -->
 					<select id="tables" name="tables[]" multiple="multiple">
 						<?php
 							foreach( $all_tables as $table ) {
-								echo '<option selected="selected" value="' . DUPX_U::escapeHTML( $table ) . '">' . $table . '</option>';
+								echo '<option selected="selected" value="' . DUPX_U::esc_attr( $table ) . '">' . DUPX_U::esc_html($table) . '</option>';
 							}
 						?>
 					</select>
@@ -141,9 +143,8 @@ VIEW: STEP 3- INPUT -->
 						<?php
 							$selected_string = ($_POST['exe_safe_mode'] > 0) ? '' : 'selected="selected"';
 							foreach ($active_plugins as $plugin) {
-								$plug_val  = DUPX_U::escapeHTML($plugin);
 								$plug_name = dirname($plugin);
-								echo "<option {$selected_string} value='{$plug_val}'>{$plug_name}</option>";
+								echo "<option {$selected_string} value='".DUPX_U::esc_attr($plugin)."'>".DUPX_U::esc_html($plug_name)."</option>";
 							}
 						?>
 					</select>
@@ -185,17 +186,17 @@ VIEW: STEP 3 - AJAX RESULT
 ========================================= -->
 <form id='s3-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">dup-installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>" target="install_log">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
 
 	<!--  POST PARAMS -->
 	<div class="dupx-debug">
-		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 		<input type="hidden" name="action_step"  value="4" />
-		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
-        <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode']; ?>"/>
+		<input type="hidden" name="retain_config" value="<?php echo DUPX_U::esc_attr($_POST['retain_config']); ?>" />
+        <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo DUPX_U::esc_attr($_POST['exe_safe_mode']); ?>"/>
 		<input type="hidden" name="url_new" id="ajax-url_new"  />
 		<input type="hidden" name="json"    id="ajax-json" />
 		<br/>
@@ -266,7 +267,7 @@ DUPX.runUpdate = function()
 			status += "<b>Status:</b> "				+ xhr.statusText	+ "<br/>";
 			status += "<b>Response:</b> "			+ xhr.responseText  + "";
 			status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-			status += "- Check the <a href='<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='install_log'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
+			status += "- Check the <a href='<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>' target='install_log'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
 			status += "- Check the web server and PHP error logs. <br/>";
 			status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_step3_ajax_rundepl#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 			$('#ajaxerr-data').html(status);

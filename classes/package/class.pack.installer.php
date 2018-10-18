@@ -62,6 +62,7 @@ class DUP_Installer
             "assets/inc.libs.js.php"				=> "@@INC.LIBS.JS.PHP@@",
             "assets/inc.js.php"						=> "@@INC.JS.PHP@@",
             "classes/utilities/class.u.php"			=> "@@CLASS.U.PHP@@",
+            "classes/class.csrf.php"				=> "@@CLASS.CSRF.PHP@@",
             "classes/class.server.php"				=> "@@CLASS.SERVER.PHP@@",
             "classes/class.db.php"					=> "@@CLASS.DB.PHP@@",
             "classes/class.logging.php"				=> "@@CLASS.LOGGING.PHP@@",
@@ -88,7 +89,7 @@ class DUP_Installer
             $insert_data = @file_get_contents($file_path);
             file_put_contents($template_path, str_replace("${token}", "{$insert_data}", $search_data));
             if ($search_data === false || $insert_data == false) {
-                DUP_Log::Error("Installer generation failed at {$token}.");
+                DUP_Log::Error("Installer generation failed at {$token}.", '');
             }
             @chmod($file_path, 0644);
         }

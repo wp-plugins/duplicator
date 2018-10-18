@@ -12,7 +12,7 @@ OPTIONS DATA -->
 		<?php _e("Stored Data", 'duplicator'); ?>
 		<div class="dup-box-arrow"></div>
 	</div>
-	<div class="dup-box-panel" id="dup-settings-diag-opts-panel" style="<?php echo $ui_css_opts_panel?>">
+	<div class="dup-box-panel" id="dup-settings-diag-opts-panel" style="<?php echo esc_attr($ui_css_opts_panel); ?>">
 		<div style="padding-left:10px">
 			<h3 class="title"><?php _e('Data Cleanup', 'duplicator') ?></h3>
 				<table class="dup-reset-opts">
@@ -32,6 +32,7 @@ OPTIONS DATA -->
 									. "be left on production systems for security reasons. Below are the files that should be removed.", 'duplicator');
 								echo "<br/><br/>";
 								$installer_files = array_keys($installer_files);
+								$installer_files = array_map('esc_html', $installer_files);
 								array_push($installer_files, '[HASH]_archive.zip');
 								echo '<i>' . implode('<br/>', $installer_files) . '</i>';
 								echo "<br/><br/>";
@@ -65,11 +66,11 @@ OPTIONS DATA -->
 						<td>
 							<?php 
 								 echo (in_array($row->option_name, $GLOBALS['DUPLICATOR_OPTS_DELETE']))
-									? "<a href='javascript:void(0)' onclick='Duplicator.Settings.ConfirmDeleteOption(this)'>{$row->option_name}</a>"
-									: $row->option_name;
+									? "<a href='javascript:void(0)' onclick='Duplicator.Settings.ConfirmDeleteOption(this)'>".esc_js($row->option_name)."</a>"
+									: esc_textarea($row->option_name);
 							?>
 						</td>
-						<td><textarea class="dup-opts-read" readonly="readonly"><?php echo $row->option_value?></textarea></td>
+						<td><textarea class="dup-opts-read" readonly="readonly"><?php echo esc_textarea($row->option_value); ?></textarea></td>
 					</tr>
 				<?php } ?>
 				</tbody>
@@ -103,7 +104,7 @@ jQuery(document).ready(function($)
 	Duplicator.Settings.ConfirmDeleteOption = function (anchor) 
 	{
 		var key = $(anchor).text();
-		var msg_id = '<?php echo $confirm1->getMessageID() ?>';
+		var msg_id = '<?php echo esc_js($confirm1->getMessageID()); ?>';
 		var msg    = '<?php _e('Delete the option value', 'duplicator');?>' + ' [' + key + '] ?';
 		jQuery('#dup-settings-form-action').val(key);
 		jQuery('#' + msg_id).html(msg)
@@ -123,7 +124,7 @@ jQuery(document).ready(function($)
 
 	Duplicator.Tools.ClearBuildCache = function ()
 	{
-		window.location = '?page=duplicator-tools&tab=diagnostics&action=tmp-cache&_wpnonce=<?php echo $nonce; ?>';
+		window.location = "<?php echo esc_js(esc_url('?page=duplicator-tools&tab=diagnostics&action=tmp-cache&_wpnonce='.$nonce));?>";
 	}
 });
 
@@ -131,8 +132,8 @@ jQuery(document).ready(function($)
 Duplicator.Tools.deleteInstallerFiles = function()
 {
 	<?php
-	$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
-	echo "window.location = '{$url}';";
+	$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package=".esc_js($package_name);
+	echo "window.location = '".$url."';";
 	?>
 }
 </script>

@@ -39,19 +39,25 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 	public function SaveViewState($post) 
 	{
 		$post = $this->postParamMerge($post);
+
+		$nonce = sanitize_text_field($post['nonce']);
+		if (!wp_verify_nonce($nonce, 'DUP_CTRL_UI_SaveViewState')) {
+			die('Security check disrupted, please return to packages screen.');
+		}
+
 		$result = new DUP_CTRL_Result($this);
 	
 		try 
 		{
 			//CONTROLLER LOGIC
 			$post  = stripslashes_deep($_POST);
-			$key   = esc_html($post['key']);
-			$value = esc_html($post['value']);
+			$key   = sanitize_text_field($post['key']);
+			$value = sanitize_text_field($post['value']);
 			$success = DUP_UI_ViewState::save($key, $value);
 
 			$payload = array();
-			$payload['key']    = $key;
-			$payload['value']  = $value;
+			$payload['key']    = esc_html($key);
+			$payload['value']  = esc_html($value);
 			$payload['update-success'] = $success;
 			
 			//RETURN RESULT
@@ -78,6 +84,13 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
      */
 	public function GetViewStateList() 
 	{
+		if (isset($_REQUEST['nonce'])) {
+			$nonce = sanitize_text_field($_REQUEST['nonce']);
+			if (!wp_verify_nonce($nonce, 'DUP_CTRL_UI_GetViewStateList')) {
+				die('Security check disrupted, please return to packages screen.');
+			}
+		}
+
 		$result = new DUP_CTRL_Result($this);
 		
 		try 

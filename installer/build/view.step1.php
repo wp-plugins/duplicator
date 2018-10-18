@@ -1,4 +1,5 @@
 <?php
+defined("DUPXABSPATH") or die("");
 //VIEW: STEP 1- INPUT
 
 //ARCHIVE FILE
@@ -100,7 +101,7 @@ $actualSize	= DUPX_U::readableByteSize($arcSize);
 <form id='s1-input-form' method="post" class="content-form" >
 <input type="hidden" name="action_ajax" value="1" />
 <input type="hidden" name="action_step" value="1" />
-<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 
 <div class="hdr-main">
     Step <span class="step">1</span> of 4: Deployment
@@ -125,11 +126,11 @@ ARCHIVE
 		</tr>
 		 <tr>
             <td>Site:</td>
-            <td><?php echo $GLOBALS['FW_BLOGNAME'];?> </td>
+            <td><?php echo DUPX_U::esc_html($GLOBALS['FW_BLOGNAME']);?> </td>
         </tr>
         <tr>
             <td>Notes:</td>
-            <td><?php echo strlen($GLOBALS['FW_PACKAGE_NOTES']) ? "{$GLOBALS['FW_PACKAGE_NOTES']}" : " - no notes - ";?></td>
+            <td><?php echo strlen($GLOBALS['FW_PACKAGE_NOTES']) ? DUPX_U::esc_html($GLOBALS['FW_PACKAGE_NOTES']) : " - no notes - ";?></td>
         </tr>
 		<?php if ($GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
 		<tr>
@@ -197,8 +198,8 @@ ARCHIVE
 				<?php else : ?>
 					<div class="s1-archive-failed-msg">
 						<b class='dupx-fail'>Archive File Size Incorrect!</b><br/>
-						The archive is showing a size that is currently as <b><?php echo $actualSize; ?></b>. Its estimated file size should be around
-						<b><?php echo $projectedSize; ?></b>.  The archive file may not have been fully downloaded to the server.  If so please wait for the file
+						The archive is showing a size that is currently as <b><?php echo DUPX_U::esc_html($actualSize); ?></b>. Its estimated file size should be around
+						<b><?php echo DUPX_U::esc_html($projectedSize); ?></b>.  The archive file may not have been fully downloaded to the server.  If so please wait for the file
 						to completely download and then refresh this page.<br/><br/>
 
 						This warning is only shown when the file has more than a 10% size ratio difference from when it was originally built.  Please review the file sizes
@@ -268,7 +269,10 @@ VALIDATION
 		</div>
 
 		<!-- REQ 1 -->
-		<div class="status <?php echo strtolower($req['01']); ?>"><?php echo $req['01']; ?></div>
+		<?php
+		$status_1 = strtolower($req['01']);
+		?>
+		<div class="status <?php echo DUPX_U::esc_html($status_1); ?>"><?php echo DUPX_U::esc_html($req['01']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs01">+ Permissions</div>
 		<div class="info" id="s1-reqs01">
 			<table>
@@ -294,17 +298,20 @@ VALIDATION
 		</div>
 
 		<!-- REQ 2
-		<div class="status <?php echo strtolower($req['02']); ?>"><?php echo $req['02']; ?></div>
+		<div class="status <?php echo strtolower($req['02']); ?>"><?php echo DUPX_U::esc_html($req['02']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs02">+ Place Holder</div>
 		<div class="info" id="s1-reqs02"></div>-->
 
 		<!-- REQ 3
-		<div class="status <?php echo strtolower($req['03']); ?>"><?php echo $req['03']; ?></div>
+		<div class="status <?php echo strtolower($req['03']); ?>"><?php echo DUPX_U::esc_html($req['03']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs03">+ Place Holder</div>
 		<div class="info" id="s1-reqs03"></div> -->
 
 		<!-- REQ 4 -->
-		<div class="status <?php echo strtolower($req['04']); ?>"><?php echo $req['04']; ?></div>
+		<?php
+		$status_4 = strtolower($req['04']);
+		?>
+		<div class="status <?php echo DUPX_U::esc_html($status_4); ?>"><?php echo DUPX_U::esc_html($req['04']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs04">+ PHP Mysqli</div>
 		<div class="info" id="s1-reqs04">
 			Support for the PHP <a href='http://us2.php.net/manual/en/mysqli.installation.php' target='_blank'>mysqli extension</a> is required.
@@ -313,7 +320,10 @@ VALIDATION
 		</div>
 
 		<!-- REQ 5 -->
-		<div class="status <?php echo strtolower($req['05']); ?>"><?php echo $req['05']; ?></div>
+		<?php
+		$status_5 = strtolower($req['05']);
+		?>
+		<div class="status <?php echo DUPX_U::esc_html($status_5); ?>"><?php echo DUPX_U::esc_html($req['05']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs05">+ PHP Min Version</div>
 		<div class="info" id="s1-reqs05">
 			This server is running PHP: <b><?php echo DUPX_Server::$php_version ?></b>. <i>A minimum of PHP 5.2.17 is required</i>.
@@ -336,7 +346,7 @@ VALIDATION
 		<?php if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
 
 			<!-- NOTICE 1 -->
-			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
+			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['01']); ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice01">+ Configuration File</div>
 			<div class="info" id="s1-notice01">
 				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
@@ -350,10 +360,10 @@ VALIDATION
 			</div>
 
 			<!-- NOTICE 2 -->
-			<div class="status <?php echo ($notice['02'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['02']; ?></div>
+			<div class="status <?php echo ($notice['02'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['02']); ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice02">+ Directory Setup</div>
 			<div class="info" id="s1-notice02">
-				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}"; ?></i>
+				<b>Deployment Path:</b> <i><?php echo DUPX_U::esc_html($GLOBALS['CURRENT_ROOT_PATH']); ?></i>
 				<br/><br/>
 				There are currently <?php echo "<b>[{$scancount}]</b>";?>  items in the deployment path. These items will be overwritten if they also exist
 				inside the archive file.  The notice is to prevent overwriting an existing site or trying to install on-top of one which
@@ -371,7 +381,7 @@ VALIDATION
 		<?php endif; ?>
 
 		<!-- NOTICE 3 -->
-		<div class="status <?php echo ($notice['03'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['03']; ?></div>
+		<div class="status <?php echo ($notice['03'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['03']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice03">+ Package Age</div>
 		<div class="info" id="s1-notice03">
 			<?php echo "The package is {$fulldays} day(s) old. Packages older than 120 days might be considered stale.  If you are comfortable with a package that that was created over "
@@ -379,13 +389,13 @@ VALIDATION
 		</div>
 
         <!-- NOTICE 4
-		<div class="status <?php echo ($notice['04'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['04']; ?></div>
+		<div class="status <?php echo ($notice['04'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['04']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice04">+ Placeholder</div>
 		<div class="info" id="s1-notice04">
 		</div>-->
 
 		<!-- NOTICE 5 -->
-		<div class="status <?php echo ($notice['05'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['05']; ?></div>
+		<div class="status <?php echo ($notice['05'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['05']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice05">+ PHP Version 5.2</div>
 		<div class="info" id="s1-notice05">
 			<?php
@@ -403,7 +413,7 @@ VALIDATION
 		</div>
 
 		<!-- NOTICE 6 -->
-		<div class="status <?php echo ($notice['06'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['06']; ?></div>
+		<div class="status <?php echo ($notice['06'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['06']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice06">+ PHP Open Base</div>
 		<div class="info" id="s1-notice06">
 			<b>Open BaseDir:</b> <i><?php echo $notice['06'] == 'Good' ? "<i class='dupx-pass'>Disabled</i>" : "<i class='dupx-fail'>Enabled</i>"; ?></i>
@@ -423,7 +433,7 @@ VALIDATION
 		</div>
 
 		<!-- NOTICE 7 -->
-		<div class="status <?php echo ($notice['07'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['07']; ?></div>
+		<div class="status <?php echo ($notice['07'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['07']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice07">+ PHP Timeout</div>
 		<div class="info" id="s1-notice07">
 			<b>Archive Size:</b> <?php echo DUPX_U::readableByteSize($arcSize) ?>  <small>(detection limit is set at <?php echo DUPX_U::readableByteSize($max_time_size) ?>) </small><br/>
@@ -618,7 +628,7 @@ NOTICES
     <br/><br/><br/>
     <br/><br/><br/>
     <div class="dupx-footer-buttons">
-        <button id="s1-deploy-btn" type="button" class="default-btn" onclick="DUPX.runExtraction()" title="<?php echo $agree_msg; ?>"> Next </button>
+        <button id="s1-deploy-btn" type="button" class="default-btn" onclick="DUPX.runExtraction()" title="<?php echo DUPX_U::esc_js($agree_msg); ?>"> Next </button>
     </div>
 <?php endif; ?>
 
@@ -632,7 +642,7 @@ Auto Posts to view.step2.php
 ========================================= -->
 <form id='s1-result-form' method="post" class="content-form" style="display:none">
 
-	 <div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">dup-installer-log.txt</a></div>
+	 <div class="dupx-logfile-link"><a href="<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>" target="install_log">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
         Step <span class="step">1</span> of 4: Deployment
 	</div>
@@ -640,7 +650,7 @@ Auto Posts to view.step2.php
 	<!--  POST PARAMS -->
 	<div class="dupx-debug">
 		<input type="hidden" name="action_step" value="2" />
-		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
         <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="0" />
 		<input type="hidden" name="retain_config" id="ajax-retain-config"  />
@@ -662,7 +672,7 @@ Auto Posts to view.step2.php
 	<div id="ajaxerr-area" style="display:none">
 	    <p>Please try again an issue has occurred.</p>
 	    <div style="padding: 0px 10px 10px 0px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the file and database set up process.  Please see the <?php echo $GLOBALS["LOG_FILE_NAME"];?> file for more details.</div>
+			<div id="ajaxerr-data">An unknown issue has occurred with the file and database set up process.  Please see the <?php echo DUPX_U::esc_html($GLOBALS["LOG_FILE_NAME"]);?> file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" class="default-btn" onclick="DUPX.hideErrorResult()" value="&laquo; Try Again" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_ajaxerr_ticket' target='_blank'>snapcreek.com</a></i>
@@ -722,7 +732,7 @@ Auto Posts to view.step2.php
 					status += "<b>Status:</b> "			+ xhr.statusText	+ "<br/>";
 					status += "<b>Response:</b> "		+ xhr.responseText  + "";
 					status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-					status += "- Check the <a href='<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='install_log'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
+					status += "- Check the <a href='<?php echo DUPX_U::esc_js($GLOBALS["LOG_FILE_NAME"]);?>' target='install_log'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
 					status += "- Check the web server and PHP error logs. <br/>";
 					status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_ajaxextract_tofaq#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 				$('#ajaxerr-data').html(status);
@@ -740,7 +750,7 @@ Auto Posts to view.step2.php
 			$("#s1-deploy-btn").removeAttr("title");
         } else {
             $("#s1-deploy-btn").attr("disabled", "true");
-			$("#s1-deploy-btn").attr("title", "<?php echo $agree_msg; ?>");
+			$("#s1-deploy-btn").attr("title", "<?php echo DUPX_U::esc_js($agree_msg); ?>");
         }
 	}
 

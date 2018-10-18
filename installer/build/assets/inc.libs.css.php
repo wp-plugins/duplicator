@@ -1,3 +1,4 @@
+<?php defined("DUPXABSPATH") or die(""); ?>
 <?php
 	// Exit if accessed directly
 	if (! defined('DUPLICATOR_INIT')) {

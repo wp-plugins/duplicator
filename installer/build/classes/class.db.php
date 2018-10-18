@@ -1,4 +1,5 @@
 <?php
+defined("DUPXABSPATH") or die("");
 
 /**
  * Lightweight abstraction layer for common simple database routines
@@ -45,7 +46,7 @@ class DUPX_DB
 	 */
 	public static function countTables($dbh, $dbname)
 	{
-		$res = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = '{$dbname}' ");
+		$res = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = '".mysqli_real_escape_string($dbh, $dbname)."' ");
 		$row = mysqli_fetch_row($res);
 		return is_null($row) ? 0 : $row[0];
 	}
@@ -58,7 +59,7 @@ class DUPX_DB
 	 */
 	public static function countTableRows($dbh, $name)
 	{
-		$total = mysqli_query($dbh, "SELECT COUNT(*) FROM `$name`");
+		$total = mysqli_query($dbh, "SELECT COUNT(*) FROM `".mysqli_real_escape_string($dbh, $name)."`");
 		if ($total) {
 			$total = @mysqli_fetch_array($total);
 			return $total[0];
@@ -98,7 +99,7 @@ class DUPX_DB
 	 */
 	public static function getVariable($dbh, $name)
 	{
-		$result	 = @mysqli_query($dbh, "SHOW VARIABLES LIKE '{$name}'");
+		$result	 = @mysqli_query($dbh, "SHOW VARIABLES LIKE '".mysqli_real_escape_string($dbh, $name)."'");
 		$row	 = @mysqli_fetch_array($result);
 		@mysqli_free_result($result);
 		return isset($row[1]) ? $row[1] : null;
@@ -204,8 +205,8 @@ class DUPX_DB
 			if (function_exists('mysqli_set_charset') && self::hasAbility($dbh, 'set_charset')) {
 				return mysqli_set_charset($dbh, $charset);
 			} else {
-				$sql = " SET NAMES {$charset}";
-				if (!empty($collate)) $sql .= " COLLATE {$collate}";
+				$sql = " SET NAMES ".mysqli_real_escape_string($dbh, $charset);
+				if (!empty($collate)) $sql .= " COLLATE ".mysqli_real_escape_string($dbh, $collate);
 				return mysqli_query($dbh, $sql);
 			}
 		}

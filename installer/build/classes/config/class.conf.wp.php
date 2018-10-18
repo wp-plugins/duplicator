@@ -1,4 +1,5 @@
 <?php
+defined("DUPXABSPATH") or die("");
 /**
  * Class used to update and edit and update the wp-config.php
  *
@@ -17,17 +18,19 @@ class DUPX_WPConfig
 	 */
 	public static function updateStandard()
 	{
-		if (!file_exists('wp-config.php'))
+		if (!file_exists('wp-config.php')) {
+			DUPX_Log::info('WARNING: Unable to locate wp-config.php file during standard update process.  Be sure the file is present in your archive.');
 			return;
+		}
 
 		$root_path	= DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
 		$wpconfig	= @file_get_contents('wp-config.php', true);
 
-		$db_port    = is_int($_POST['dbport'])   ? $_POST['dbport'] : 3306;
-		$db_host	= ($db_port == 3306) ? $_POST['dbhost'] : "{$_POST['dbhost']}:{$db_port}";
-		$db_name	= isset($_POST['dbname']) ? DUPX_U::safeQuote($_POST['dbname']) : null;
-		$db_user	= isset($_POST['dbuser']) ? DUPX_U::safeQuote($_POST['dbuser']) : null;
-       	$db_pass	= isset($_POST['dbpass']) ? DUPX_U::safeQuote($_POST['dbpass']) : null;
+		$db_port    = is_int($_POST['dbport'])   ? DUPX_U::sanitize_text_field($_POST['dbport']) : 3306;
+		$db_host	= ($db_port == 3306) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : DUPX_U::sanitize_text_field($_POST['dbhost']).':'.DUPX_U::sanitize_text_field($db_port);
+		$db_name	= isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : null;
+		$db_user	= isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : null;
+       	$db_pass	= isset($_POST['dbpass']) ? DUPX_U::sanitize_text_field($_POST['dbpass']) : null;
 
 		$patterns = array(
 			"/'DB_NAME',\s*'.*?'/",
@@ -75,7 +78,12 @@ class DUPX_WPConfig
 			}
 		}
 
-        $replace  = array_map('self::customEscape', $replace);
+		// array_map replaced because of installer error in PHP 5.2.9 - Cannot call method self::customEscape() or method does not exist in installer.php on line 1480
+		// $replace  = array_map('self::customEscape', $replace);
+		foreach ($replace as $key=>$val) {
+			$replace[$key] = self::customEscape($val);
+		}
+        
 		$wpconfig = preg_replace($patterns, $replace, $wpconfig);
 
 		file_put_contents('wp-config.php', $wpconfig);
@@ -101,9 +109,11 @@ class DUPX_WPConfig
 		$patterns	 = array(
 			"/('|\")WP_HOME.*?\)\s*;/",
 			"/('|\")WP_SITEURL.*?\)\s*;/");
+		
+		$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
 		$replace	 = array(
-			"'WP_HOME', '{$_POST['url_new']}');",
-			"'WP_SITEURL', '{$_POST['url_new']}');");
+			"'WP_HOME', '".$post_url_new."');",
+			"'WP_SITEURL', '".$post_url_new."');");
 
 		//Not sure how well tokenParser works on all servers so only using for not critical constants at this point.
 		//$count checks for dynamic variable types such as:  define('WP_TEMP_DIR',	'D:/' . $var . 'somepath/');
@@ -112,7 +122,9 @@ class DUPX_WPConfig
 
 		//WP_CONTENT_DIR
 		if (isset($defines['WP_CONTENT_DIR'])) {
-			$val = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']), $count);
+			$post_path_old = DUPX_U::sanitize_text_field($_POST['path_old']);
+			$post_path_new = DUPX_U::sanitize_text_field($_POST['path_new']);
+			$val = str_replace($post_path_old, $post_path_new, DUPX_U::setSafePath($defines['WP_CONTENT_DIR']), $count);
 			if ($count > 0) {
 				array_push($patterns, "/('|\")WP_CONTENT_DIR.*?\)\s*;/");
 				array_push($replace, "'WP_CONTENT_DIR', '{$val}');");
@@ -121,7 +133,9 @@ class DUPX_WPConfig
 
 		//WP_CONTENT_URL
 		if (isset($defines['WP_CONTENT_URL'])) {
-			$val = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $defines['WP_CONTENT_URL'], $count);
+			$post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
+			$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+			$val = str_replace($post_url_old . '/', $post_url_new . '/', $defines['WP_CONTENT_URL'], $count);
 			if ($count > 0) {
 				array_push($patterns, "/('|\")WP_CONTENT_URL.*?\)\s*;/");
 				array_push($replace, "'WP_CONTENT_URL', '{$val}');");
@@ -130,7 +144,9 @@ class DUPX_WPConfig
 
 		//WP_TEMP_DIR
 		if (isset($defines['WP_TEMP_DIR'])) {
-			$val = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_TEMP_DIR']) , $count);
+			$post_path_old = DUPX_U::sanitize_text_field($_POST['path_old']);
+			$post_path_new = DUPX_U::sanitize_text_field($_POST['path_new']);
+			$val = str_replace($post_path_old, $post_path_new, DUPX_U::setSafePath($defines['WP_TEMP_DIR']) , $count);
 			if ($count > 0) {
 				array_push($patterns, "/('|\")WP_TEMP_DIR.*?\)\s*;/");
 				array_push($replace, "'WP_TEMP_DIR', '{$val}');");
@@ -139,14 +155,16 @@ class DUPX_WPConfig
 		
 		//DOMAIN_CURRENT_SITE
 		if (isset($defines['DOMAIN_CURRENT_SITE'])) {
-			$mu_newDomainHost = parse_url($_POST['url_new'], PHP_URL_HOST);
+			$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+			$mu_newDomainHost = parse_url($post_url_new, PHP_URL_HOST);
 			array_push($patterns, "/('|\")DOMAIN_CURRENT_SITE.*?\)\s*;/");
 			array_push($replace, "'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');");
 		}
 
 		//PATH_CURRENT_SITE
 		if (isset($defines['PATH_CURRENT_SITE'])) {
-			$mu_newUrlPath = parse_url($_POST['url_new'], PHP_URL_PATH);
+			$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+			$mu_newUrlPath = parse_url($post_url_new, PHP_URL_PATH);
 			array_push($patterns, "/('|\")PATH_CURRENT_SITE.*?\)\s*;/");
 			array_push($replace, "'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
 		}

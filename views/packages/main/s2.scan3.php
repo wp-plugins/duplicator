@@ -12,7 +12,7 @@
 <!-- ================================================================
 ARCHIVE -->
 <div class="details-title">
-	<i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'duplicator');?>
+	<i class="fa fa-file-archive-o"></i>&nbsp;<?php esc_html_e('Archive', 'duplicator');?>
 	<div class="dup-more-details" onclick="Duplicator.Pack.showDetailsDlg()" title="<?php _e('Show Scan Details', 'duplicator');?>"><i class="fa fa-window-maximize"></i></div>
 </div>
 
@@ -24,16 +24,16 @@ ARCHIVE -->
 		<div class="dup-scan-filter-status">
 			<?php
 				if ($Package->Archive->ExportOnlyDB) {
-					echo '<i class="fa fa-filter"></i> '; _e('Database Only', 'duplicator');
+					echo '<i class="fa fa-filter"></i> '; esc_html_e('Database Only', 'duplicator');
 				} elseif ($Package->Archive->FilterOn) {
-					echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
+					echo '<i class="fa fa-filter"></i> '; esc_html_e('Enabled', 'duplicator');
 				}
 			?>
 		</div>
 		<div id="data-arc-size1"></div>
 		<i class="fa fa-question-circle data-size-help"
-			data-tooltip-title="<?php _e('Archive Size', 'duplicator'); ?>"
-			data-tooltip="<?php _e('This size includes only files BEFORE compression is applied. It does not include the size of the '
+			data-tooltip-title="<?php esc_html_e('Archive Size', 'duplicator'); ?>"
+			data-tooltip="<?php esc_html_e('This size includes only files BEFORE compression is applied. It does not include the size of the '
 						. 'database script or any applied filters.  Once complete the package size will be smaller than this number.', 'duplicator'); ?>"></i>
 
 		<div class="dup-data-size-uncompressed"><?php _e("uncompressed"); ?></div>
@@ -44,31 +44,28 @@ ARCHIVE -->
 TOTAL SIZE -->
 <div class="scan-item">
 	<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Size Checks', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Size Checks', 'duplicator');?></div>
 		<div id="data-arc-status-size"></div>
 	</div>
 	<div class="info" id="scan-itme-file-size">
-		<b><?php _e('Size', 'duplicator');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
-		<b><?php _e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
-		<b><?php _e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/>
+		<b><?php esc_html_e('Size', 'duplicator');?>:</b> <span id="data-arc-size2"></span>  &nbsp; | &nbsp;
+		<b><?php esc_html_e('File Count', 'duplicator');?>:</b> <span id="data-arc-files"></span>  &nbsp; | &nbsp;
+		<b><?php esc_html_e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/>
 		<?php
-			_e('Compressing larger sites on <i>some budget hosts</i> may cause timeouts.  ' , 'duplicator');
-			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100)'>[" . __('more details...', 'duplicator') . "]</a></i>";
+			esc_html_e('Compressing larger sites on some budget hosts may cause timeouts.  ' , 'duplicator');
+			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100); return false;'>[" . __('more details...', 'duplicator') . "]</a></i>";
 		?>
 		<div id="size-more-details">
 			<?php
 				echo "<b>" . __('Overview', 'duplicator') . ":</b><br/>";
-
-				printf(__('This notice is triggered at <b>%s</b> and can be ignored on most hosts.  If during the build process you see a "Host Build Interrupt" message then this '
-					. 'host has strict processing limits.  Below are some options you can take to overcome constraints set up on this host.', 'duplicator'),
-					DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT));
-
+				$dup_byte_size = '<b>' . DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT) . '</b>';
+				printf(esc_html__('This notice is triggered at [%s] and can be ignored on most hosts.  If during the build process you see a "Host Build Interrupt" message then this '
+					. 'host has strict processing limits.  Below are some options you can take to overcome constraints set up on this host.', 'duplicator'), $dup_byte_size);
 				echo '<br/><br/>';
-
-				echo "<b>" . __('Timeout Options', 'duplicator') . ":</b><br/>";
+				echo "<b>" . esc_html__('Timeout Options', 'duplicator') . ":</b><br/>";
 				echo '<ul>';
-				echo '<li>' . __('Apply the "Quick Filters" below or click the back button to apply on previous page.', 'duplicator') . '</li>';
-				echo '<li>' . __('See the FAQ link to adjust this hosts timeout limits: ', 'duplicator') . "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=pkg_s2scan3_tolimits#faq-trouble-100-q' target='_blank'>" . __('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
+				echo '<li>' . esc_html__('Apply the "Quick Filters" below or click the back button to apply on previous page.', 'duplicator') . '</li>';
+				echo '<li>' . esc_html__('See the FAQ link to adjust this hosts timeout limits: ', 'duplicator') . "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=pkg_s2scan3_tolimits#faq-trouble-100-q' target='_blank'>" . __('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
 				echo '<li>' . __('Consider trying multi-threaded support in ', 'duplicator');
 				echo "<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=multithreaded_pro&utm_campaign=duplicator_pro' target='_blank'>" . __('Duplicator Pro.', 'duplicator') . "</a>";
 				echo '</li>';
@@ -83,12 +80,12 @@ TOTAL SIZE -->
 			<div class="container">
 				<div class="hdrs">
 					<span style="font-weight:bold">
-						<?php _e('Quick Filters', 'duplicator'); ?>
-						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files", 'duplicator'); ?>" data-tooltip="<?php echo $hlptxt; ?>"></i></sup>
+						<?php esc_html_e('Quick Filters', 'duplicator'); ?>
+						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Large Files", 'duplicator'); ?>" data-tooltip="<?php echo esc_html($hlptxt); ?>"></i></sup>
 					</span>
 					<div class='hdrs-up-down'>
-						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'hide')" title="<?php _e("Hide All", 'duplicator'); ?>"></i>
-						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'show')" title="<?php _e("Show All", 'duplicator'); ?>"></i>
+						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'hide')" title="<?php esc_html_e("Hide All", 'duplicator'); ?>"></i>
+						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'show')" title="<?php esc_html_e("Show All", 'duplicator'); ?>"></i>
 					</div>
 				</div>
 				<div class="data">
@@ -98,7 +95,7 @@ TOTAL SIZE -->
 							<div class="directory">
 								<i class="fa fa-caret-right fa-lg dup-nav" onclick="Duplicator.Pack.toggleDirPath(this)"></i> &nbsp;
 								{{#if directory.iscore}}
-									<i class="fa fa-window-close-o chk-off" title="<?php _e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
+									<i class="fa fa-window-close-o chk-off" title="<?php esc_html_e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
 								{{else}}
 									<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="lf_dir_{{@index}}" onclick="Duplicator.Pack.filesOff(this)" />
 								{{/if}}
@@ -118,10 +115,10 @@ TOTAL SIZE -->
 					{{else}}
 						 <?php 
 							if (! isset($_GET['retry'])) {
-								_e('No large files found during this scan.', 'duplicator');
+								esc_html_e('No large files found during this scan.', 'duplicator');
 							} else {
 								echo "<div style='color:maroon'>";
-									_e('No large files found during this scan.  If you\'re having issues building a package click the back button and try '
+									esc_html_e('No large files found during this scan.  If you\'re having issues building a package click the back button and try '
 									. 'adding a file filter to non-essential files paths like wp-content/uploads.   These excluded files can then '
 									. 'be manually moved to the new location after you have ran the migration installer.', 'duplicator');
 								echo "</div>";
@@ -134,12 +131,12 @@ TOTAL SIZE -->
 
 			<div class="apply-btn" style="margin-bottom:5px;float:right">
 				<div class="apply-warn">
-					 <?php _e('*Checking a directory will exclude all items recursively from that path down.<br/>Please use caution when filtering directories.', 'duplicator'); ?>
+					 <?php esc_html_e('*Checking a directory will exclude all items recursively from that path down.<br/>Please use caution when filtering directories.', 'duplicator'); ?>
 				</div>
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'large')">
-					<i class="fa fa-filter"></i> <?php _e('Add Filters &amp; Rescan', 'duplicator');?>
+					<i class="fa fa-filter"></i> <?php _e('Add Filters & Rescan', 'duplicator');?>
 				</button>
-				<button type="button" class="button-small" onclick="Duplicator.Pack.showPathsDlg('large')" title="<?php _e('Copy Paths to Clipboard', 'duplicator');?>">
+				<button type="button" class="button-small" onclick="Duplicator.Pack.showPathsDlg('large')" title="<?php esc_html_e('Copy Paths to Clipboard', 'duplicator');?>">
 					<i class="fa fa-clipboard" aria-hidden="true"></i>
 				</button>
 			</div>
@@ -155,14 +152,14 @@ TOTAL SIZE -->
 ADDON SITES -->
 <div id="addonsites-block"  class="scan-item">
 	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Addon Sites', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Addon Sites', 'duplicator');?></div>
 		<div id="data-arc-status-addonsites"></div>
 	</div>
     <div class="info">
         <div style="margin-bottom:10px;">
             <small>
             <?php
-                printf(__('An "Addon Site" is a separate WordPress site(s) residing in subdirectories within this site. If you confirm these to be separate sites, '
+                printf(esc_html__('An "Addon Site" is a separate WordPress site(s) residing in subdirectories within this site. If you confirm these to be separate sites, '
 					. 'then it is recommended that you exclude them by checking the corresponding boxes below and clicking the \'Add Filters & Rescan\' button.  To backup the other sites '
 					. 'install the plugin on the sites needing to be backed-up.'));
             ?>
@@ -172,7 +169,7 @@ ADDON SITES -->
             <div class="container">
                 <div class="hdrs">
                     <span style="font-weight:bold">
-                        <?php _e('Quick Filters', 'duplicator'); ?>
+                        <?php esc_html_e('Quick Filters', 'duplicator'); ?>
                     </span>
                 </div>
                 <div class="data">
@@ -186,16 +183,16 @@ ADDON SITES -->
                         </div>
                         {{/each}}
                     {{else}}
-                    <?php _e('No add on sites found.'); ?>
+                    <?php esc_html_e('No addon sites found.', 'duplicator'); ?>
                     {{/if}}
                 </div>
             </div>
             <div class="apply-btn">
                 <div class="apply-warn">
-                    <?php _e('*Checking a directory will exclude all items in that path recursively.'); ?>
+                    <?php esc_html_e('*Checking a directory will exclude all items in that path recursively.'); ?>
                 </div>
                 <button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'addon')">
-                    <i class="fa fa-filter"></i> <?php _e('Add Filters &amp; Rescan');?>
+                    <i class="fa fa-filter"></i> <?php esc_html_e('Add Filters & Rescan');?>
                 </button>
             </div>
         </script>
@@ -208,26 +205,26 @@ ADDON SITES -->
 FILE NAME CHECKS -->
 <div class="scan-item scan-item-last">
 	<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Name Checks', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Name Checks', 'duplicator');?></div>
 		<div id="data-arc-status-names"></div>
 	</div>
 	<div class="info">
 		<?php
-			_e('Unicode and special characters such as "*?><:/\|", can be problematic on some hosts.', 'duplicator');
-            _e('<b>');
-            _e('  Only consider using this filter if the package build is failing. Select files that are not important to your site or you can migrate manually.', 'duplicator');
-            _e('</b>');
+			esc_html_e('Unicode and special characters such as "*?><:/\|", can be problematic on some hosts.', 'duplicator');
+            echo '<b>';
+            esc_html_e('  Only consider using this filter if the package build is failing. Select files that are not important to your site or you can migrate manually.', 'duplicator');
+            echo '</b>';
 			$txt = __('If this environment/system and the system where it will be installed are set up to support Unicode and long paths then these filters can be ignored.  '
 				. 'If you run into issues with creating or installing a package, then is recommended to filter these paths.', 'duplicator');
 		?>
 		<script id="hb-files-utf8" type="text/x-handlebars-template">
 			<div class="container">
 				<div class="hdrs">
-					<span style="font-weight:bold"><?php _e('Quick Filters', 'duplicator');?></span>
-						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php _e("Name Checks", 'duplicator'); ?>" data-tooltip="<?php echo $txt; ?>"></i></sup>
+					<span style="font-weight:bold"><?php esc_html_e('Quick Filters', 'duplicator');?></span>
+						<sup><i class="fa fa-question-circle" data-tooltip-title="<?php esc_html_e("Name Checks", 'duplicator'); ?>" data-tooltip="<?php echo esc_attr($txt); ?>"></i></sup>
 					<div class='hdrs-up-down'>
-						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'hide')" title="<?php _e("Hide All", 'duplicator'); ?>"></i>
-						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'show')" title="<?php _e("Show All", 'duplicator'); ?>"></i>
+						<i class="fa fa-caret-up fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'hide')" title="<?php esc_html_e("Hide All", 'duplicator'); ?>"></i>
+						<i class="fa fa-caret-down fa-lg dup-nav-toggle" onclick="Duplicator.Pack.toggleAllDirPath(this, 'show')" title="<?php esc_html_e("Show All", 'duplicator'); ?>"></i>
 					</div>
 				</div>
 				<div class="data">
@@ -242,7 +239,7 @@ FILE NAME CHECKS -->
 								{{/if}}
 										
 								{{#if directory.iscore}}
-									<i class="fa fa-window-close-o chk-off" title="<?php _e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
+									<i class="fa fa-window-close-o chk-off" title="<?php esc_html_e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
 								{{else}}		
 									<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="nc1_dir_{{@index}}" onclick="Duplicator.Pack.filesOff(this)" />
 								{{/if}}
@@ -262,18 +259,18 @@ FILE NAME CHECKS -->
 							</div>
 						{{/each}}
 					{{else}}
-						<?php _e('No file/directory name warnings found.', 'duplicator');?>
+						<?php esc_html_e('No file/directory name warnings found.', 'duplicator');?>
 					{{/if}}
 				</div>
 			</div>
 			<div class="apply-btn">
 				<div class="apply-warn">
-					 <?php _e('*Checking a directory will exclude all items recursively from that path down.<br/>Please use caution when filtering directories.', 'duplicator'); ?>
+					 <?php esc_html_e('*Checking a directory will exclude all items recursively from that path down.<br/>Please use caution when filtering directories.', 'duplicator'); ?>
 				</div>
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'utf8')">
-					<i class="fa fa-filter"></i> <?php _e('Add Filters &amp; Rescan', 'duplicator');?>
+					<i class="fa fa-filter"></i> <?php esc_html_e('Add Filters & Rescan', 'duplicator');?>
 				</button>
-				<button type="button" class="button-small" onclick="Duplicator.Pack.showPathsDlg('utf8')" title="<?php _e('Copy Paths to Clipboard', 'duplicator');?>">
+				<button type="button" class="button-small" onclick="Duplicator.Pack.showPathsDlg('utf8')" title="<?php esc_html_e('Copy Paths to Clipboard', 'duplicator');?>">
 					<i class="fa fa-clipboard" aria-hidden="true"></i>
 				</button>
 			</div>
@@ -285,36 +282,45 @@ FILE NAME CHECKS -->
 UNREADABLE FILES -->
 <div id="scan-unreadable-items" class="scan-item scan-item-last">
     <div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-        <div class="text"><i class="fa fa-caret-right"></i> <?php _e('Read Checks');?></div>
+        <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Read Checks');?></div>
         <div id="data-arc-status-unreadablefiles"></div>
     </div>
     <div class="info">
         <?php
-        _e('PHP is unable to read the following items and they will <u>not</u> be included in the package.  Please work with your host to adjust the permissions or resolve the '
-            . 'symbolic-link(s) shown in the lists below.  If these items are not needed then this notice can be ignored.');
+        esc_html_e('PHP is unable to read the following items and they will NOT be included in the package.  Please work with your host to adjust the permissions or resolve the '
+            . 'symbolic-link(s) shown in the lists below.  If these items are not needed then this notice can be ignored.', 'duplicator');
         ?>
         <script id="unreadable-files" type="text/x-handlebars-template">
             <div class="container">
                 <div class="data">
-                    <b><?php _e('Unreadable Items:');?></b> <br/>
+                    <b><?php esc_html_e('Unreadable Items:');?></b> <br/>
                     <div class="directory">
                         {{#if ARC.UnreadableItems}}
                         {{#each ARC.UnreadableItems as |uitem|}}
                         <i class="fa fa-lock"></i> {{uitem}} <br/>
                         {{/each}}
                         {{else}}
-                        <i><?php _e('No unreadable items found.<br>');?></i>
+                        <i>
+							<?php
+							esc_html_e('No unreadable items found.', 'duplicator');
+							echo '<br>';
+							?>
+						</i>
                         {{/if}}
                     </div>
 
-                    <b><?php _e('Recursive Links:');?></b> <br/>
+                    <b><?php esc_html_e('Recursive Links:');?></b> <br/>
                     <div class="directory">
                         {{#if  ARC.RecursiveLinks}}
                         {{#each ARC.RecursiveLinks as |link|}}
                         <i class="fa fa-lock"></i> {{link}} <br/>
                         {{/each}}
                         {{else}}
-                        <i><?php _e('No recursive sym-links found.<br>');?></i>
+                        <i>
+							<?php 
+							esc_html_e('No recursive sym-links found.', 'duplicator');
+							echo '<br>';
+							?></i>
                         {{/if}}
                     </div>
                 </div>
@@ -331,68 +337,66 @@ DATABASE -->
 <div id="dup-scan-db">
 	<div class="scan-header">
 		<i class="fa fa-table"></i>
-		<?php _e("Database", 'duplicator');	?>
+		<?php esc_html_e("Database", 'duplicator');	?>
 		<div class="scan-header-details">
 			<div class="dup-scan-filter-status">
 				<?php
 					if ($Package->Database->FilterOn) {
-						echo '<i class="fa fa-filter"></i> '; _e('Enabled', 'duplicator');
+						echo '<i class="fa fa-filter"></i> ';
+						esc_html_e('Enabled', 'duplicator');
 					}
 				?>
 			</div>
 			<div id="data-db-size1"></div>
 			<i class="fa fa-question-circle data-size-help"
-				data-tooltip-title="<?php _e("Database Size:", 'duplicator'); ?>"
-				data-tooltip="<?php _e('The database size represents only the included tables. The process for gathering the size uses the query SHOW TABLE STATUS.  '
+				data-tooltip-title="<?php esc_attr_e("Database Size:", 'duplicator'); ?>"
+				data-tooltip="<?php esc_attr_e('The database size represents only the included tables. The process for gathering the size uses the query SHOW TABLE STATUS.  '
 					. 'The overall size of the database file can impact the final size of the package.', 'duplicator'); ?>"></i>
 
-			<div class="dup-data-size-uncompressed"><?php _e("uncompressed"); ?></div>
+			<div class="dup-data-size-uncompressed"><?php esc_html_e("uncompressed"); ?></div>
 
 		</div>
 	</div>
 
 	<div class="scan-item scan-item-last">
 		<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-			<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Overview', 'duplicator');?></div>
+			<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Overview', 'duplicator');?></div>
 			<div id="data-db-status-size"></div>
 		</div>
 		<div class="info">
-			<?php echo '<b>' . __('TOTAL SIZE', 'duplicator') . ' &nbsp; &#8667; &nbsp; </b>'; ?>
-			<b><?php _e('Size', 'duplicator');?>:</b> <span id="data-db-size2"></span> &nbsp; | &nbsp;
-			<b><?php _e('Tables', 'duplicator');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
-			<b><?php _e('Records', 'duplicator');?>:</b> <span id="data-db-rows"></span><br/>
+			<?php echo '<b>' . esc_html__('TOTAL SIZE', 'duplicator') . ' &nbsp; &#8667; &nbsp; </b>'; ?>
+			<b><?php esc_html_e('Size', 'duplicator');?>:</b> <span id="data-db-size2"></span> &nbsp; | &nbsp;
+			<b><?php esc_html_e('Tables', 'duplicator');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
+			<b><?php esc_html_e('Records', 'duplicator');?>:</b> <span id="data-db-rows"></span><br/>
 			<?php
-				printf(__('Total size and row counts are approximate values.  The thresholds that trigger notices are <i>%1$s OR %2$s</i> records total for the entire database.  '
-					. 'Larger databases take more time to process.  On some budget hosts that have cpu/memory/timeout limits this may cause issues.', 'duplicator'),
-						DUP_Util::byteSize(DUPLICATOR_SCAN_DB_ALL_SIZE),
-						number_format(DUPLICATOR_SCAN_DB_ALL_ROWS));
-
+				$dup_scan_tbl_total_trigger_size = '[' . DUP_Util::byteSize(DUPLICATOR_SCAN_DB_ALL_SIZE) . ' OR ' . number_format(DUPLICATOR_SCAN_DB_ALL_ROWS) . ']';
+				printf(__('Total size and row counts are approximate values.  The thresholds that trigger notices are %1$s records total for the entire database.  Larger databases '
+					. 'take more time to process.  On some budget hosts that have cpu/memory/timeout limits this may cause issues.', 'duplicator'), $dup_scan_tbl_total_trigger_size);
 				echo '<br/><br/><hr size="1" />';
 
 				//TABLE DETAILS
 				echo '<b>' . __('TABLE DETAILS:', 'duplicator') . '</b><br/>';
-				printf(__('The notices for tables are <i>%1$s, %2$s records or names with upper-case characters</i>.  Individual tables will not trigger '
-					. 'a notice message, but can help narrow down issues if they occur later on.', 'duplicator'),
-						DUP_Util::byteSize(DUPLICATOR_SCAN_DB_TBL_SIZE),
-						number_format(DUPLICATOR_SCAN_DB_TBL_ROWS));
+				$dup_scan_tbl_trigger_size = DUP_Util::byteSize(DUPLICATOR_SCAN_DB_TBL_SIZE) . ', ' . number_format(DUPLICATOR_SCAN_DB_TBL_ROWS);
+				printf(esc_html__('The notices for tables are %1$s records or names with upper-case characters.  Individual tables will not trigger '
+					. 'a notice message, but can help narrow down issues if they occur later on.', 'duplicator'), $dup_scan_tbl_trigger_size);
 				
 				echo '<div id="dup-scan-db-info"><div id="data-db-tablelist"></div></div>';
 
 				//RECOMMENDATIONS
 				echo '<br/><hr size="1" />';
-				echo '<b>' . __('RECOMMENDATIONS:', 'duplicator') . '</b><br/>';
+				echo '<b>' . esc_html__('RECOMMENDATIONS:', 'duplicator') . '</b><br/>';
 				
 				echo '<div style="padding:5px">';
 				$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'duplicator') . '</a>';
-				printf(__('1. Run a %1$s on the table to improve the overall size and performance.', 'duplicator'), $lnk);
+				printf(esc_html__('1. Run a %1$s on the table to improve the overall size and performance.', 'duplicator'), $lnk);
 				echo '<br/><br/>';
-				_e('2. Remove post revisions and stale data from tables.  Tables such as logs, statistical or other non-critical data should be cleared.', 'duplicator');
+				esc_html_e('2. Remove post revisions and stale data from tables.  Tables such as logs, statistical or other non-critical data should be cleared.', 'duplicator');
 				echo '<br/><br/>';
 				$lnk = '<a href="?page=duplicator-settings&tab=package" target="_blank">' . __('Enable mysqldump', 'duplicator') . '</a>';
-				printf(__('3. %1$s if this host supports the option.', 'duplicator'), $lnk);
+				printf(esc_html__('3. %1$s if this host supports the option.', 'duplicator'), $lnk);
 				echo '<br/><br/>';
 				$lnk = '<a href="http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names" target="_blank">' . __('lower_case_table_names', 'duplicator') . '</a>';
-				printf(__('4. For table name case sensitivity issues either rename the table with lower case characters or be prepared to work with the %1$s system variable setting.', 'duplicator'), $lnk);
+				printf(esc_html__('4. For table name case sensitivity issues either rename the table with lower case characters or be prepared to work with the %1$s system variable setting.', 'duplicator'), $lnk);
 				echo '</div>';
 
 			?>
@@ -400,8 +404,8 @@ DATABASE -->
 	</div>
 	<?php
         echo '<div class="dup-pro-support">&nbsp;';
-        _e('Migrate large, multi-gig sites with', 'duplicator');
-        echo '&nbsp;<i><a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn_multigig&amp;utm_campaign=duplicator_pro" target="_blank">' . __('Duplicator Pro', 'duplicator') . '!</a></i>';
+        esc_html_e('Migrate large, multi-gig sites with', 'duplicator');
+        echo '&nbsp;<i><a href="'.esc_url('https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_size_warn_multigig&utm_campaign=duplicator_pro').'" target="_blank">' . esc_html__('Duplicator Pro', 'duplicator') . '!</a></i>';
         echo '</div>';
 	?>
 </div>
@@ -420,7 +424,7 @@ DIALOGS:
 	$alert1->initAlert();
 	
 	$alert2 = new DUP_UI_Dialog();
-	$alert2->height     = 425;
+	$alert2->height     = 435;
 	$alert2->width      = 650;
 	$alert2->title		= __('Copy Quick Filter Paths', 'duplicator');
 	$alert2->message	= "<div id='arc-paths-dlg'></div>";
@@ -432,24 +436,24 @@ DIALOG: Scan Results -->
 <div id="dup-archive-details" style="display:none">
 	
 	<!-- PACKAGE -->
-	<h2><i class="fa fa-archive"></i> <?php _e('Package', 'duplicator');?></h2>
-	<b><?php _e('Name', 'duplicator');?>:</b> <?php echo $Package->Name; ?><br/>
-	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo $Package->Notes; ; ?>
+	<h2><i class="fa fa-archive"></i> <?php esc_html_e('Package', 'duplicator');?></h2>
+	<b><?php esc_html_e('Name', 'duplicator');?>:</b> <?php echo esc_html($Package->Name); ?><br/>
+	<b><?php esc_html_e('Notes', 'duplicator');?>:</b> <?php echo esc_html($Package->Notes); ?>
 	<br/><br/>
 
 	<!-- DATABASE -->
 	<h2><i class="fa fa-table"></i> <?php _e('Database', 'duplicator');?></h2>
 	<table id="db-area">
-		<tr><td><b><?php _e('Name:', 'duplicator');?></b></td><td><?php echo DB_NAME; ?> </td></tr>
-		<tr><td><b><?php _e('Host:', 'duplicator');?></b></td><td><?php echo DB_HOST; ?> </td></tr>
+		<tr><td><b><?php esc_html_e('Name:', 'duplicator');?></b></td><td><?php echo DB_NAME; ?> </td></tr>
+		<tr><td><b><?php esc_html_e('Host:', 'duplicator');?></b></td><td><?php echo DB_HOST; ?> </td></tr>
 		<tr>
-			<td style="vertical-align: top"><b><?php _e('Build Mode:', 'duplicator');?></b></td>
+			<td style="vertical-align: top"><b><?php esc_html_e('Build Mode:', 'duplicator');?></b></td>
 			<td style="line-height:18px">
-				<a href="?page=duplicator-settings" target="_blank"><?php echo $dbbuild_mode ;?></a>
+				<a href="?page=duplicator-settings" target="_blank"><?php echo esc_html($dbbuild_mode);?></a>
 				<?php if ($mysqlcompat_on) :?>
 					<br/>
 					<small style="font-style:italic; color:maroon">
-						<i class="fa fa-exclamation-circle"></i> <?php _e('MySQL Compatibility Mode Enabled', 'duplicator'); ?>
+						<i class="fa fa-exclamation-circle"></i> <?php esc_html_e('MySQL Compatibility Mode Enabled', 'duplicator'); ?>
 						<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php _e('details', 'duplicator'); ?>]</a>
 					</small>
 				<?php endif;?>
@@ -459,15 +463,15 @@ DIALOG: Scan Results -->
 
 	<!-- FILE FILTERS -->
 	<h2 style="border: none">
-		<i class="fa fa-filter"></i> <?php _e('File Filters', 'duplicator');?>:
-		<small><?php echo ($Package->Archive->FilterOn) ? __('Enabled', 'duplicator') : __('Disabled', 'duplicator') ;?></small>
+		<i class="fa fa-filter"></i> <?php esc_html_e('File Filters', 'duplicator');?>:
+		<small><?php echo ($Package->Archive->FilterOn) ? __('Enabled', 'duplicator') : esc_html__('Disabled', 'duplicator') ;?></small>
 	</h2>
 	<div class="filter-area">
-		<b><i class="fa fa-folder-open"></i> <?php echo rtrim(DUPLICATOR_WPROOTPATH, "//");?></b>
+		<b><i class="fa fa-folder-open"></i> <?php echo esc_html(rtrim(DUPLICATOR_WPROOTPATH, "//"));?></b>
 
 		<script id="hb-filter-file-list" type="text/x-handlebars-template">
 			<div class="file-info">
-				<b>[<?php _e('Directories', 'duplicator');	?>]</b>
+				<b>[<?php esc_html_e('Directories', 'duplicator');	?>]</b>
 				<div class="file-info">
 					{{#if ARC.FilterInfo.Dirs.Instance}}
 						{{#each ARC.FilterInfo.Dirs.Instance as |dir|}}
@@ -478,29 +482,29 @@ DIALOG: Scan Results -->
 					{{/if}}
 				</div>
 
-				<b>[<?php _e('Extensions', 'duplicator');?>]</b><br/>
+				<b>[<?php esc_html_e('Extensions', 'duplicator');?>]</b><br/>
 				<div class="file-info">
 					<?php
 						if (strlen( $Package->Archive->FilterExts)) {
-							echo $Package->Archive->FilterExts;
+							echo esc_html($Package->Archive->FilterExts);
 						} else {
-							_e('No file extension filters have been set.', 'duplicator');
+							esc_html_e('No file extension filters have been set.', 'duplicator');
 						}
 					?>
 				</div>
 
-				<b>[<?php _e('Files', 'duplicator');	?>]</b>
+				<b>[<?php esc_html_e('Files', 'duplicator');	?>]</b>
 				<div class="file-info">
 					{{#if ARC.FilterInfo.Files.Instance}}
 						{{#each ARC.FilterInfo.Files.Instance as |file|}}
 							{{stripWPRoot file}}<br/>
 						{{/each}}
 					{{else}}
-						 <?php	_e('No custom file filters set.', 'duplicator');?>
+						 <?php esc_html_e('No custom file filters set.', 'duplicator');?>
 					{{/if}}
 				</div>
 
-				<b>[<?php _e('Auto Filters', 'duplicator');	?>]</b>
+				<b>[<?php esc_html_e('Auto Filters', 'duplicator');	?>]</b>
 				<div class="file-info">
 					{{#each ARC.FilterInfo.Dirs.Core as |dir|}}
 						{{stripWPRoot dir}}/<br/>
@@ -515,10 +519,10 @@ DIALOG: Scan Results -->
 	</div>
 
 	<small>
-		<?php _e('Path filters will be skipped during the archive process when enabled.', 'duplicator');	?>
-		<a href="<?php echo DUPLICATOR_SITE_URL ?>/wp-admin/admin-ajax.php?action=duplicator_package_scan" target="dup_report"><?php _e('[view json result report]', 'duplicator');?></a>
+		<?php esc_html_e('Path filters will be skipped during the archive process when enabled.', 'duplicator');	?>
+		<a href="<?php echo wp_nonce_url(DUPLICATOR_SITE_URL.'/wp-admin/admin-ajax.php?action=duplicator_package_scan', 'duplicator_package_scan', 'nonce'); ?>" target="dup_report"><?php esc_html_e('[view json result report]', 'duplicator');?></a>
 		<br/>
-		<?php _e('Auto filters are applied to prevent archiving other backup sets.', 'duplicator');	?>
+		<?php esc_html_e('Auto filters are applied to prevent archiving other backup sets.', 'duplicator');	?>
 	</small><br/>
 </div>
 
@@ -526,24 +530,24 @@ DIALOG: Scan Results -->
 DIALOG: PATHS COPY & PASTE -->
 <div id="dup-archive-paths" style="display:none">
 	
-	<b><i class="fa fa-folder"></i> <?php _e('Directories', 'duplicator');?></b>
+	<b><i class="fa fa-folder"></i> <?php esc_html_e('Directories', 'duplicator');?></b>
 	<div class="copy-button">
 		<button type="button" class="button-small" onclick="Duplicator.Pack.copyText(this, '#arc-paths-dlg textarea.path-dirs')">
-			<i class="fa fa-clipboard"></i> <?php _e('Click to Copy', 'duplicator');?>
+			<i class="fa fa-clipboard"></i> <?php esc_html_e('Click to Copy', 'duplicator');?>
 		</button>
 	</div>
 	<textarea class="path-dirs"></textarea>
 	<br/><br/>
 
-	<b><i class="fa fa-files-o"></i> <?php _e('Files', 'duplicator');?></b>
+	<b><i class="fa fa-files-o"></i> <?php esc_html_e('Files', 'duplicator');?></b>
 	<div class="copy-button">
 		<button type="button" class="button-small" onclick="Duplicator.Pack.copyText(this, '#arc-paths-dlg textarea.path-files')">
-			<i class="fa fa-clipboard"></i> <?php _e('Click to Copy', 'duplicator');?>
+			<i class="fa fa-clipboard"></i> <?php esc_html_e('Click to Copy', 'duplicator');?>
 		</button>
 	</div>
 	<textarea class="path-files"></textarea>
 	<br/>
-	<small><?php _e('Copy the paths above and apply them as needed on Step 1 &gt; Archive &gt; Files section.', 'duplicator');?></small>
+	<small><?php esc_html_e('Copy the paths above and apply them as needed on Step 1 > Archive > Files section.', 'duplicator');?></small>
 </div>
 
 
@@ -553,7 +557,7 @@ jQuery(document).ready(function($)
 {
 
 	Handlebars.registerHelper('stripWPRoot', function(path) {
-		return  path.replace('<?php echo rtrim(DUPLICATOR_WPROOTPATH, "//") ?>', '');
+		return  path.replace('<?php echo esc_js(rtrim(DUPLICATOR_WPROOTPATH, "//")); ?>', '');
 	});
 
 
@@ -562,7 +566,7 @@ jQuery(document).ready(function($)
 	{
 		var $checks = $(dir).parent('div.directory').find('div.files input[type="checkbox"]');
 		$(dir).is(':checked')
-			? $.each($checks, function() {$(this).attr({disabled : true, checked : false, title : '<?php _e('Directory applied filter set.', 'duplicator');?>'});})
+			? $.each($checks, function() {$(this).attr({disabled : true, checked : false, title : '<?php echo esc_js(__('Directory applied filter set.', 'duplicator'));?>'});})
 			: $.each($checks, function() {$(this).removeAttr('disabled checked title');});
 		$('div.apply-warn').show(300);
 	}
@@ -589,11 +593,11 @@ jQuery(document).ready(function($)
 		var $files = $('#dup-archive-paths textarea.path-files');
 		(dirFilters.length > 0)
 		   ? $dirs.text(dirFilters.join(";\n"))
-		   : $dirs.text("<?php _e('No directories have been selected!', 'duplicator');?>");
+		   : $dirs.text("<?php echo esc_js(__('No directories have been selected!', 'duplicator')); ?>");
 
 	    (fileFilters.length > 0)
 		   ? $files.text(fileFilters.join(";\n"))
-		   : $files.text("<?php _e('No files have been selected!', 'duplicator');?>");
+		   : $files.text("<?php echo esc_js(__('No files have been selected!', 'duplicator'));?>");
 
 		$('#arc-paths-dlg').html($('#dup-archive-paths').html());
 		<?php $alert2->showAlert(); ?>
@@ -631,16 +635,16 @@ jQuery(document).ready(function($)
 		 try {
 		   document.execCommand('copy');
 		   $(btn).css({color: '#fff', backgroundColor: 'green'});
-		   $(btn).text("<?php _e('Copied to Clipboard!', 'duplicator');?>");
+		   $(btn).text("<?php echo esc_js(__('Copied to Clipboard!', 'duplicator')); ?>");
 		 } catch(err) {
-		   alert("<?php _e('Manual copy of selected text required on this browser.', 'duplicator');?>")
+		   alert("<?php echo esc_js(__('Manual copy of selected text required on this browser.', 'duplicator')); ?>");
 		 }
 	}
 
 	Duplicator.Pack.applyFilters = function(btn, type)
 	{
 		var $btn = $(btn);
-		$btn.html('<i class="fa fa-circle-o-notch fa-spin"></i> <?php _e('Initializing Please Wait...', 'duplicator');?>');
+		$btn.html('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo esc_js(__('Initializing Please Wait...', 'duplicator')); ?>');
 		$btn.attr('disabled', 'true');
 
 		//var id = (type == 'large') ? '#hb-files-large-result' : '#hb-files-utf8-result'
@@ -679,7 +683,7 @@ jQuery(document).ready(function($)
 			success:  function() {Duplicator.Pack.rescan();},
 			error: function(data) {
 				console.log(data);
-				alert("<?php _e('Error applying filters.  Please go back to Step 1 to add filter manually!', 'duplicator');?>");
+				alert("<?php echo esc_js(__('Error applying filters.  Please go back to Step 1 to add filter manually!', 'duplicator'));?>");
 			}
 		});
 	}
@@ -748,7 +752,7 @@ jQuery(document).ready(function($)
 			$('#data-db-tablecount').text(data.DB.TableCount || errMsg);
 			//Table Details
 			if (data.DB.TableList == undefined || data.DB.TableList.length == 0) {
-				html = '<?php _e("Unable to report on any tables", 'duplicator') ?>';
+				html = '<?php echo esc_js(__("Unable to report on any tables", 'duplicator')); ?>';
 			} else {
 				$.each(data.DB.TableList, function(i) {
 					html += '<b>' + i  + '</b><br/>';
@@ -774,7 +778,7 @@ jQuery(document).ready(function($)
 			}
 			$('#data-db-tablelist').append(html);
 		} else {
-			html = '<?php _e("Unable to report on database stats", 'duplicator') ?>';
+			html = '<?php echo esc_js(__("Unable to report on database stats", 'duplicator')); ?>';
 			$('#dup-scan-db').html(html);
 		}
 	}

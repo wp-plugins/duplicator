@@ -1,4 +1,6 @@
 <?php
+defined("DUPXABSPATH") or die("");
+
 #
 # Portable PHP password hashing framework.
 #

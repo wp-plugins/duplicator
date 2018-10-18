@@ -1,4 +1,6 @@
 <?php
+defined("DUPXABSPATH") or die("");
+
 // Exit if accessed directly from admin
 if (function_exists('duplicator_secure_check')) {
 	duplicator_secure_check();
@@ -16,21 +18,55 @@ error_reporting(E_ERROR);
 $ajax2_start = DUPX_U::getMicrotime();
 
 //POST PARAMS
-$_POST['dbhost']		= isset($_POST['dbhost'])   ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
-$_POST['dbname']		= isset($_POST['dbname'])   ? trim($_POST['dbname']) : null;
-$_POST['dbuser']		= isset($_POST['dbuser'])   ? $_POST['dbuser'] : null;
-$_POST['dbpass']		= isset($_POST['dbpass'])   ? $_POST['dbpass'] : null;
-$_POST['blogname']		= isset($_POST['blogname']) ? DUPX_U::sanitize(trim($_POST['blogname'])): '';
+if (isset($_POST['dbhost'])) {
+	$post_db_host = DUPX_U::sanitize_text_field($_POST['dbhost']);
+	$_POST['dbhost'] = trim($post_db_host);
+} else {
+	$_POST['dbhost'] = null;
+}
+
+if (isset($_POST['dbname'])) {
+    $post_db_name = DUPX_U::sanitize_text_field($_POST['dbname']);
+    $_POST['dbname'] = trim($post_db_name);
+} else {
+	$_POST['dbname'] = null;
+}
+
+
+$_POST['dbuser'] = isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : null;
+$_POST['dbpass'] = isset($_POST['dbpass']) ? DUPX_U::sanitize_text_field($_POST['dbpass']) : null;
+
+if (isset($_POST['blogname'])) {
+	$post_blog_name = DUPX_U::sanitize_text_field($_POST['blogname']);
+	$_POST['blogname'] = trim($post_blog_name);
+} else {
+	$_POST['blogname'] = '';
+}
+
 $_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
 $_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
-$_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
-$_POST['path_new']		= isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
+
+if (isset($_POST['path_old'])) {
+	$post_path_old = DUPX_U::sanitize_text_field($_POST['path_old']);
+	$_POST['path_old'] = trim($post_path_old);
+} else {
+	$_POST['path_old'] = null;
+}
+
+if (isset($_POST['path_new'])) {
+	$post_path_new = DUPX_U::sanitize_text_field($_POST['path_new']);
+	$_POST['path_new'] = trim($post_path_new);
+} else {
+	$_POST['path_new'] = null;
+}
+
+
 $_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
 $_POST['tables']		= isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
 $_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
 $_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
 $_POST['retain_config'] = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
-$_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
+$_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? DUPX_U::sanitize_text_field($_POST['exe_safe_mode']) : 0;
 
 
 //MYSQL CONNECTION: If inputs are bad then die
@@ -43,7 +79,7 @@ if (!$dbh) {
 }
 
 $charset_server = @mysqli_character_set_name($dbh);
-@mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
+@mysqli_query($dbh, "SET wait_timeout = ".mysqli_real_escape_string($dbh, $GLOBALS['DB_MAX_TIME']));
 DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 
 
@@ -96,8 +132,8 @@ if (!in_array('duplicator/duplicator.php', $plugin_list)) {
 }
 $serial_plugin_list	 = @serialize($plugin_list);
 
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 
 $log  = "--------------------------------------\n";
 $log .= "SERIALIZER ENGINE\n";
@@ -184,16 +220,17 @@ DUPX_UpdateEngine::logErrors($report);
 
 //Reset the postguid data
 if ($_POST['postguid']) {
-	mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}posts` SET guid = REPLACE(guid, '{$_POST['url_new']}', '{$_POST['url_old']}')");
+	mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."posts` SET guid = REPLACE(guid, '".mysqli_real_escape_string($dbh, $_POST['url_new'])."', '".mysqli_real_escape_string($dbh, $_POST['url_old'])."')");
 	$update_guid = @mysqli_affected_rows($dbh) or 0;
 	DUPX_Log::info("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
 
 /** FINAL UPDATES: Must happen after the global replace to prevent double pathing
   http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
-mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_exe_safe_mode')");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."options` SET option_value = '".mysqli_real_escape_string($dbh, $_POST['url_new'])."'  WHERE option_name = 'home' ");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."options` SET option_value = '".mysqli_real_escape_string($dbh, $_POST['siteurl'])."'  WHERE option_name = 'siteurl' ");
+mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."options` (option_value, option_name) VALUES('".mysqli_real_escape_string($dbh, $_POST['exe_safe_mode'])."','duplicator_exe_safe_mode')");
+
 //===============================================
 //CONFIGURATION FILE UPDATES
 //===============================================
@@ -225,8 +262,13 @@ DUPX_Log::info("====================================\n");
 
 /** CREATE NEW USER LOGIC */
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
+	$post_wp_username = DUPX_U::sanitize_text_field($_POST['wp_username']);
+	$post_wp_password = DUPX_U::sanitize_text_field($_POST['wp_password']);
+
+	$post_wp_username = mysqli_real_escape_string($dbh, $post_wp_username);
+	$post_wp_password = mysqli_real_escape_string($dbh, $post_wp_password);
 	
-	$newuser_check = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `{$GLOBALS['FW_TABLEPREFIX']}users` WHERE user_login = '{$_POST['wp_username']}' ");
+	$newuser_check = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."users` WHERE user_login = '{$post_wp_username}' ");
 	$newuser_row   = mysqli_fetch_row($newuser_check);
     $newuser_count = is_null($newuser_row) ? 0 : $newuser_row[0];
 	
@@ -235,27 +277,27 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		$newuser_datetime =	@date("Y-m-d H:i:s");
 		$newuser_security = mysqli_real_escape_string($dbh, 'a:1:{s:13:"administrator";s:1:"1";}');
 
-		$newuser_test1 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}users` 
+		$newuser_test1 = @mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."users` 
 			(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) 
-			VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '{$_POST['wp_username']}', '', '{$newuser_datetime}', '', '0', '{$_POST['wp_username']}')");
+			VALUES ('{$post_wp_username}', MD5('{$post_wp_password}'), '{$post_wp_username}', '', '{$newuser_datetime}', '', '0', '{$post_wp_username}')");
 
 		$newuser_insert_id = mysqli_insert_id($dbh);
 
-		$newuser_test2 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '{$GLOBALS['FW_TABLEPREFIX']}capabilities', '{$newuser_security}')");
+		$newuser_test2 = @mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."usermeta` 
+				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."capabilities', '{$newuser_security}')");
 
-		$newuser_test3 = @mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` 
-				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '{$GLOBALS['FW_TABLEPREFIX']}user_level', '10')");
+		$newuser_test3 = @mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."usermeta` 
+				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', '".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."user_level', '10')");
 				
 		//Misc Meta-Data Settings:
-		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'rich_editing', 'true')");
-		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'admin_color',  'fresh')");
-		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['FW_TABLEPREFIX']}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'nickname', '{$_POST['wp_username']}')");
+		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'rich_editing', 'true')");
+		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'admin_color',  'fresh')");
+		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser_insert_id}', 'nickname', '{$post_wp_username}')");
 
 		if ($newuser_test1 && $newuser_test2 && $newuser_test3) {
 			DUPX_Log::info("NEW WP-ADMIN USER: New username '{$_POST['wp_username']}' was created successfully \n ");
 		} else {
-			$newuser_warnmsg = "NEW WP-ADMIN USER: Failed to create the user '{$_POST['wp_username']}' \n ";
+			$newuser_warnmsg = "NEW WP-ADMIN USER: Failed to create the user '{".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."}' \n ";
 			$JSON['step3']['warnlist'][] = $newuser_warnmsg;
 			DUPX_Log::info($newuser_warnmsg);
 		}			
@@ -280,10 +322,10 @@ $mu_oldUrlPath = parse_url($_POST['url_old'], PHP_URL_PATH);
 $mu_newUrlPath = (empty($mu_newUrlPath) || ($mu_newUrlPath == '/')) ? '/'  : rtrim($mu_newUrlPath, '/') . '/';
 $mu_oldUrlPath = (empty($mu_oldUrlPath) || ($mu_oldUrlPath == '/')) ? '/'  : rtrim($mu_oldUrlPath, '/') . '/';
 
-$mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+$mu_updates = @mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."blogs` SET domain = '".mysqli_real_escape_string($dbh, $mu_newDomainHost)."' WHERE domain = '".mysqli_real_escape_string($dbh, $mu_oldDomainHost)."'");
 if ($mu_updates) {
 	DUPX_Log::info("Update MU table blogs: domain {$mu_newDomainHost} ");
-	DUPX_Log::info("UPDATE `{$GLOBALS['FW_TABLEPREFIX']}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
+	DUPX_Log::info("UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."blogs` SET domain = '".mysqli_real_escape_string($dbh, $mu_newDomainHost)."' WHERE domain = '".mysqli_real_escape_string($dbh, $mu_oldDomainHost)."'");
 } 
 
 
@@ -317,7 +359,7 @@ if (! empty($config_found)) {
 }
 
 //Database: 
-$result = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name IN ('upload_url_path','upload_path')");
+$result = @mysqli_query($dbh, "SELECT option_value FROM `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."options` WHERE option_name IN ('upload_url_path','upload_path')");
 if ($result) {
 	while ($row = mysqli_fetch_row($result)) {
 		if (strlen($row[0])) {

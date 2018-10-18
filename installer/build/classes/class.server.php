@@ -1,4 +1,5 @@
 <?php
+defined("DUPXABSPATH") or die("");
 
 /**
  * Lightweight abstraction layer for common simple server based routines

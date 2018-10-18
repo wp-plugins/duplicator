@@ -1,4 +1,6 @@
 <?php
+	defined("DUPXABSPATH") or die("");
+	
 	//The help for both pro and lite are shared.  Pro is where the master lives.  Use the flag below to
     //indicate if this help lives in lite or pro
 	$pro_version = false;
@@ -311,7 +313,7 @@ STEP 2
 				<br/><br/>
 
 				<b>Connect and Backup Any Existing Data:</b><sup>pro</sup> This options will RENAME all tables in the database you are connecting to with a prefix of
-				"<?php echo $GLOBALS['DB_RENAME_PREFIX'] ?>".
+				"<?php echo DUPX_U::esc_html($GLOBALS['DB_RENAME_PREFIX']); ?>".
 				<br/><br/>
 
 				<b>Manual SQL Execution:</b><sup>pro</sup> This options requires that you manually run your own SQL import to an existing database before running the installer.

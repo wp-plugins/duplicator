@@ -85,7 +85,7 @@ class DUP_Zip extends DUP_Archive
                 } else {
                     //Don't warn when dirtory is the root path
                     if (strcmp($dir, rtrim(self::$compressDir, '/')) != 0) {
-                        $dir_path = strlen($dir) ? "[{$dir}]" : "[Read Error] - last successful read was: [{$lastDirSuccess}]";
+                        $dir_path = strlen($dir) ? "[".esc_html($dir)."]" : "[Read Error] - last successful read was: [{$lastDirSuccess}]";
                         $info .= "DIR: {$dir_path}\n";
                     }
                 }
@@ -153,8 +153,8 @@ class DUP_Zip extends DUP_Archive
 
             self::$zipFileSize = @filesize(self::$zipPath);
             DUP_Log::Info("COMPRESSED SIZE: ".DUP_Util::byteSize(self::$zipFileSize));
-            DUP_Log::Info("ARCHIVE RUNTIME: {$timerAllSum}");
-            DUP_Log::Info("MEMORY STACK: ".DUP_Server::getPHPMemory());
+            DUP_Log::Info("ARCHIVE RUNTIME: ".esc_html($timerAllSum));
+            DUP_Log::Info("MEMORY STACK: ".esc_html(DUP_Server::getPHPMemory()));
         } catch (Exception $e) {
             DUP_Log::Error("Runtime error in class.pack.archive.zip.php constructor.", "Exception: {$e}");
         }

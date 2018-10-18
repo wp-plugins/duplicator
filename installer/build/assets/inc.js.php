@@ -1,3 +1,4 @@
+<?php defined("DUPXABSPATH") or die(""); ?>
 <script>
 	//Unique namespace
     DUPX = new Object();

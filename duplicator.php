@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.2.48
+  Version: 1.2.50
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -177,7 +177,7 @@ if (is_admin() == true)
      */
     function duplicator_get_menu() 
 	{
-        $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : 'duplicator';
+        $current_page = isset($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : 'duplicator';
         switch ($current_page) 
 		{
             case 'duplicator':			include('views/packages/controller.php');	break;
@@ -207,22 +207,22 @@ if (is_admin() == true)
 
         $perms = 'export';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-		$lang_txt = __('Packages', 'duplicator');
+		$lang_txt = esc_html__('Packages', 'duplicator');
         $page_packages = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator', 'duplicator_get_menu');
 		$GLOBALS['DUP_PRO_Package_Screen'] = new DUP_Package_Screen($page_packages);
 
 		$perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-		$lang_txt = __('Tools', 'duplicator');
+		$lang_txt = esc_html__('Tools', 'duplicator');
         $page_tools = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-tools', 'duplicator_get_menu');
 
         $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
-		$lang_txt = __('Settings', 'duplicator');
+		$lang_txt = esc_html__('Settings', 'duplicator');
         $page_settings = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-settings', 'duplicator_get_menu');
 
 		$perms = 'manage_options';
-		$lang_txt = __('Go Pro!', 'duplicator');
+		$lang_txt = esc_html__('Go Pro!', 'duplicator');
 		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_gopro = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
@@ -232,7 +232,7 @@ if (is_admin() == true)
 		{
 			$perms = 'manage_options';
 			$perms = apply_filters($wpfront_caps_translator, $perms);			
-			$lang_txt = __('Debug', 'duplicator');
+			$lang_txt = esc_html__('Debug', 'duplicator');
 			$page_debug = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-debug', 'duplicator_get_menu');
 			add_action('admin_print_scripts-' . $page_debug, 'duplicator_scripts');
 			add_action('admin_print_styles-'  . $page_debug, 'duplicator_styles');

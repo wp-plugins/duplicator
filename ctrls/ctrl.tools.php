@@ -37,7 +37,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 		try 
 		{
 			//CONTROLLER LOGIC
-			$path = isset($post['scan-path']) ? $post['scan-path'] : DUPLICATOR_WPROOTPATH;
+			$path = isset($post['scan-path']) ? sanitize_text_field($post['scan-path']) : sanitize_text_field(DUPLICATOR_WPROOTPATH);
 			if (!is_dir($path)) {
 				throw new Exception("Invalid directory provided '{$path}'!");
 			}

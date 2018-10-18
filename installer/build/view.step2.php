@@ -1,6 +1,16 @@
 <?php
-    $_POST['logging'] = isset($_POST['logging']) ? trim(DUPX_U::sanitize($_POST['logging'])) : 1;
-    $_POST['exe_safe_mode'] = (isset($_POST['exe_safe_mode'])) ? DUPX_U::sanitize($_POST['exe_safe_mode']) : 0;
+defined("DUPXABSPATH") or die("");
+
+	if (isset($_POST['logging'])) {
+		$post_logging = DUPX_U::sanitize_text_field($_POST['logging']);
+		$_POST['logging'] = trim($post_logging);
+	}
+	
+    if (isset($_POST['exe_safe_mode'])) {
+		$_POST['exe_safe_mode'] = DUPX_U::sanitize_text_field($_POST['exe_safe_mode']);
+    } else {
+		$_POST['exe_safe_mode'] = 0;
+	}
 ?>
 
 
@@ -9,10 +19,10 @@ VIEW: STEP 2- INPUT -->
 <form id='s2-input-form' method="post" class="content-form"  data-parsley-validate="true" data-parsley-excluded="input[type=hidden], [disabled], :hidden">
 <input type="hidden" name="action_ajax" value="2" />
 <input type="hidden" name="action_step" value="2" />
-<input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging'] ?>" />
-<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+<input type="hidden" name="logging" id="logging" value="<?php echo DUPX_U::esc_attr($_POST['logging']); ?>" />
+<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 
-    <div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_DATE'] ?>" target="install_log">dup-installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_DATE']); ?>" target="install_log">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
         Step <span class="step">2</span> of 4: Install Database
 	</div>
@@ -45,10 +55,10 @@ VIEW: STEP 2- INPUT -->
 					<td>
 						<table class="s2-opts-dbhost">
 							<tr>
-								<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:450px" /></td>
+								<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_DBHOST']); ?>" placeholder="localhost" style="width:450px" /></td>
 								<td style="vertical-align:top">
-									<input id="s2-dbport-btn" type="button" onclick="DUPX.togglePort()" class="s2-small-btn" value="Port: <?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
-									<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPORT']); ?>" />
+									<input id="s2-dbport-btn" type="button" onclick="DUPX.togglePort()" class="s2-small-btn" value="Port: <?php echo DUPX_U::esc_attr($GLOBALS['FW_DBPORT']); ?>" />
+									<input name="dbport" id="dbport" type="text" style="width:80px; display:none" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_DBPORT']); ?>" />
 								</td>
 							</tr>
 						</table>
@@ -57,7 +67,7 @@ VIEW: STEP 2- INPUT -->
 				<tr>
 					<td>Database:</td>
 					<td>
-						<input type="text" name="dbname" id="dbname"  required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  />
+						<input type="text" name="dbname" id="dbname"  required="true" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_DBNAME']); ?>"  placeholder="new or existing database name"  />
 						 <div id="s2-warning-emptydb">
 							 <label for="accept-warnings">Warning: The selected 'Action' above will remove <u>all data</u> from this database!</label>
 						</div>
@@ -65,14 +75,73 @@ VIEW: STEP 2- INPUT -->
 				</tr>
 				<tr>
 					<td>User:</td>
-					<td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo htmlspecialchars($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td>
+					<td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_DBUSER']); ?>" placeholder="valid database username" /></td>
 				</tr>
 				<tr>
 					<td>Password:</td>
-					<td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database user password"   /></td>
+					<td><input type="text" name="dbpass" id="dbpass" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_DBPASS']); ?>"  placeholder="valid database user password"   /></td>
 				</tr>
 			</table>
 		</div>
+
+		<!-- =========================================
+		DIALOG: DB CONNECTION CHECK  -->
+		<div id="s2-dbconn">
+			<div id="s2-dbconn-status" style="display:none">
+				<div style="padding: 0px 10px 10px 10px;">
+					<div id="s2-dbconn-test-msg" style="min-height:80px"></div>
+				</div>
+				<small><input type="button" onclick="$('#s2-dbconn-status').hide(500)" class="s2-small-btn" value="Hide Message" /></small>
+			</div>
+		</div><br/>
+
+		<!-- ====================================
+		OPTIONS
+		==================================== -->
+		<div class="hdr-sub1" data-type="toggle" data-target="#s2-area-adv-opts">
+			<a  href="javascript:void(0)"><i class="dupx-plus-square"></i> Options</a>
+		</div>
+		<div id='s2-area-adv-opts' style="display:none">
+			<div class="help-target"><a href="?help#help-s2" target="_blank">[help]</a></div>
+
+			<table class="dupx-opts dupx-advopts">
+				<tr>
+					<td>Legacy:</td>
+					<td><input type="checkbox" name="dbcollatefb" id="dbcollatefb" value="1" /> <label for="dbcollatefb">Apply legacy collation fallback support for unknown collations types</label></td>
+				</tr>
+				<tr>
+					<td>Spacing:</td>
+					<td colspan="2">
+						<input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label>
+					</td>
+				</tr>
+				<tr>
+					<td style="vertical-align:top">Mode:</td>
+					<td colspan="2">
+						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
+						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
+						<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
+						<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
+							<input type="text" name="dbmysqlmode_opts" value="" /><br/>
+							<small>Separate additional <a href="?help#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
+								Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
+						</div>
+					</td>
+				</tr>
+				<tr><td style="width:130px">Charset:</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo DUPX_U::esc_attr($_POST['dbcharset']) ?>" /> </td></tr>
+				<tr><td>Collation:</td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo DUPX_U::esc_attr($_POST['dbcollate']); ?>" /> </tr>
+			</table>
+
+		</div>
+		<br/><br/><br/>
+		<br/><br/><br/>
+
+		<div class="dupx-footer-buttons">
+			<input type="button" onclick="DUPX.testDatabase()" class="default-btn" value="Test Database" />
+			<input id="dup-step2-deploy-btn" type="button" class="default-btn" value=" Next " onclick="DUPX.confirmDeployment()" />
+		</div>
+
+
 	</div>
 
 
@@ -85,7 +154,7 @@ VIEW: STEP 2- INPUT -->
 			<?php if( DUPX_U::isURLActive($_SERVER['SERVER_NAME'], 2083) ): ?>
 				<div class='s2-cpanel-login'>
 					<b>Login to this server's cPanel</b><br/>
-					<a href="https://<?php echo $_SERVER['SERVER_NAME'] ?>:2083" target="cpanel" style="color:#fff">[<?php echo $_SERVER['SERVER_NAME'] ?>:2083]</a>
+					<a href=<?php echo DUPX_U::esc_url('https://'.$_SERVER['SERVER_NAME'].':2083'); ?>" target="cpanel" style="color:#fff">[<?php echo DUPX_U::esc_html($_SERVER['SERVER_NAME']); ?>:2083]</a>
 				</div>
 			<?php else : ?>
 				<div class='s2-cpanel-off'>
@@ -113,66 +182,6 @@ VIEW: STEP 2- INPUT -->
 		</div>
 	</div>
 
-    <!-- =========================================
-    DIALOG: DB CONNECTION CHECK  -->
-    <div id="s2-dbconn">
-        <div id="s2-dbconn-status" style="display:none">
-            <div style="padding: 0px 10px 10px 10px;">
-                <div id="s2-dbconn-test-msg" style="min-height:80px"></div>
-            </div>
-            <small><input type="button" onclick="$('#s2-dbconn-status').hide(500)" class="s2-small-btn" value="Hide Message" /></small>
-        </div>
-    </div>
-
-
-    <br/>
-
-    <!-- ====================================
-    OPTIONS
-    ==================================== -->
-    <div class="hdr-sub1" data-type="toggle" data-target="#s2-area-adv-opts">
-        <a  href="javascript:void(0)"><i class="dupx-plus-square"></i> Options</a>
-    </div>
-    <div id='s2-area-adv-opts' style="display:none">
-		<div class="help-target"><a href="?help#help-s2" target="_blank">[help]</a></div>
-		
-		<table class="dupx-opts dupx-advopts">
-			<tr>
-				<td>Legacy:</td>
-				<td><input type="checkbox" name="dbcollatefb" id="dbcollatefb" value="1" /> <label for="dbcollatefb">Apply legacy collation fallback support for unknown collations types</label></td>
-			</tr>
-			<tr>
-				<td>Spacing:</td>
-				<td colspan="2">
-					<input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label>
-				</td>
-			</tr>
-			<tr>
-				<td style="vertical-align:top">Mode:</td>
-				<td colspan="2">
-					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
-					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
-					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
-					<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
-						<input type="text" name="dbmysqlmode_opts" value="" /><br/>
-						<small>Separate additional <a href="?help#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
-							Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
-					</div>
-				</td>
-			</tr>
-			<tr><td style="width:130px">Charset:</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-			<tr><td>Collation:</td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
-		</table>
-    
-    </div>
-    <br/><br/><br/>
-    <br/><br/><br/>
-
-    <div class="dupx-footer-buttons">
-        <input type="button" onclick="DUPX.testDatabase()" class="default-btn" value="Test Database" />
-        <input id="dup-step2-deploy-btn" type="button" class="default-btn" value=" Next " onclick="DUPX.confirmDeployment()" />
-    </div>
-
 </form>
 
 
@@ -182,18 +191,18 @@ Auto Posts to view.step3.php
 ========================================= -->
 <form id='s2-result-form' method="post" class="content-form" style="display:none">
 
-    <div class="dupx-logfile-link"><a href="<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="install_log">dup-installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>" target="install_log">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
         Step <span class="step">2</span> of 4: Install Database
 	</div>
 
 	<!--  POST PARAMS -->
 	<div class="dupx-debug">
-		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 		<input type="hidden" name="action_step" value="3" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
-		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
-        <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode']; ?>"/>
+		<input type="hidden" name="retain_config" value="<?php echo DUPX_U::esc_attr($_POST['retain_config']); ?>" />
+        <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo DUPX_U::esc_attr($_POST['exe_safe_mode']); ?>"/>
 		<input type="hidden" name="dbhost" id="ajax-dbhost" />
 		<input type="hidden" name="dbport" id="ajax-dbport" />
 		<input type="hidden" name="dbuser" id="ajax-dbuser" />
@@ -338,7 +347,7 @@ DUPX.runDeployment = function()
 			status += "<b>Status:</b> "				+ xhr.statusText	+ "<br/>";
 			status += "<b>Response:</b> "			+ xhr.responseText  + "";
 			status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-			status += "- Check the <a href='<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='install_log'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
+			status += "- Check the <a href='<?php echo DUPX_U::esc_js($GLOBALS["LOG_FILE_NAME"]);?>' target='install_log'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
 			status += "- Check the web server and PHP error logs. <br/>";
 			status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst_step2deploy_timout#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 			$('#ajaxerr-data').html(status);

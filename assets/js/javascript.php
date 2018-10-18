@@ -50,7 +50,7 @@ Duplicator.OpenLogWindow = function(target)
 	if (target != null) {
 		window.open('?page=duplicator-tools', 'log-win');
 	} else {
-		window.open('<?php echo DUPLICATOR_SSDIR_URL; ?>' + '/' + log)
+		window.open('<?php echo esc_js(DUPLICATOR_SSDIR_URL); ?>' + '/' + log)
 	}
 };
 
@@ -67,7 +67,7 @@ Duplicator.UI.SaveViewState = function (key, value)
 			type: "POST",
 			url: ajaxurl,
 			dataType: "json",
-			data: {action : 'DUP_CTRL_UI_SaveViewState', key: key, value: value},
+			data: {action : 'DUP_CTRL_UI_SaveViewState', key: key, value: value, nonce: '<?php echo wp_create_nonce('DUP_CTRL_UI_SaveViewState'); ?>'},
 			success: function(data) {},
 			error: function(data) {}
 		});	

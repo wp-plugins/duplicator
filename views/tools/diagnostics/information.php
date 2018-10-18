@@ -3,7 +3,7 @@
 	<input type="hidden" id="dup-settings-form-action" name="action" value="">
 
 	<?php if (! empty($action_response))  :	?>
-		<div id="message" class="notice notice-success is-dismissible dup-wpnotice-box"><p><?php echo $action_response; ?></p></div>
+		<div id="message" class="notice notice-success is-dismissible dup-wpnotice-box"><p><?php echo esc_html($action_response); ?></p></div>
 	<?php endif; ?>
 
 <style>

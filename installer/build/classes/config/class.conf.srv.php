@@ -1,5 +1,5 @@
 <?php
-
+defined("DUPXABSPATH") or die("");
 /**
  * Class used to update and edit web server configuration files
  *
@@ -60,8 +60,10 @@ class DUPX_ServerConfig
 		}
 
 		DUPX_Log::info("\nWEB SERVER CONFIGURATION FILE BASIC SETUP:");
+		$post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
 		$currdata	 = parse_url($_POST['url_old']);
-		$newdata	 = parse_url($_POST['url_new']);
+		$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+		$newdata	 = parse_url($post_url_new);
 		$currpath	 = DUPX_U::addSlash(isset($currdata['path']) ? $currdata['path'] : "");
 		$newpath	 = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
 		$timestamp   = date("Y-m-d H:i:s");
@@ -71,7 +73,7 @@ class DUPX_ServerConfig
 		$update_msg .= "# Duplicator only writes to this file once during the install process while running the installer.php file.\n";
 
 		$empty_htaccess	 = false;
-		$query_result	 = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['FW_TABLEPREFIX']}options` WHERE option_name = 'permalink_structure' ");
+		$query_result	 = @mysqli_query($dbh, "SELECT option_value FROM `".mysqli_real_escape_string($dbh, $GLOBALS['FW_TABLEPREFIX'])."options` WHERE option_name = 'permalink_structure' ");
 
 		//If the permalink is set to Plain then don't update the rewrite rules
 		if ($query_result) {

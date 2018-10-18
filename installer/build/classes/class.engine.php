@@ -1,4 +1,5 @@
 <?php
+defined("DUPXABSPATH") or die("");
 
 /**
  * Walks every table in db that then walks every row and column replacing searches with replaces
@@ -94,7 +95,7 @@ class DUPX_UpdateEngine
 		$type_where .= "type NOT LIKE 'time%' AND ";
 		$type_where .= "type NOT LIKE 'year%' ";
 
-		$result = mysqli_query($dbh, "SHOW COLUMNS FROM `{$table}` WHERE {$type_where}");
+		$result = mysqli_query($dbh, "SHOW COLUMNS FROM `".mysqli_real_escape_string($dbh, $table)."` WHERE {$type_where}");
 		if (!$result) {
 			return null;
 		}
@@ -107,7 +108,7 @@ class DUPX_UpdateEngine
 
 		//Return Primary which is needed for index lookup
 		//$result = mysqli_query($dbh, "SHOW INDEX FROM `{$table}` WHERE KEY_NAME LIKE '%PRIMARY%'"); 1.1.15 updated
-		$result = mysqli_query($dbh, "SHOW INDEX FROM `{$table}`");
+		$result = mysqli_query($dbh, "SHOW INDEX FROM `".mysqli_real_escape_string($dbh, $table)."`");
 		if (mysqli_num_rows($result) > 0) {
 			while ($row = mysqli_fetch_assoc($result)) {
 				$fields[] = $row['Column_name'];
@@ -158,13 +159,13 @@ class DUPX_UpdateEngine
 				$columns = array();
 
 				// Get a list of columns in this table
-				$fields	 = mysqli_query($dbh, 'DESCRIBE '.$table);
+				$fields	 = mysqli_query($dbh, 'DESCRIBE '.mysqli_real_escape_string($dbh, $table));
 				while ($column	 = mysqli_fetch_array($fields)) {
 					$columns[$column['Field']] = $column['Key'] == 'PRI' ? true : false;
 				}
 
 				// Count the number of rows we have in the table if large we'll split into blocks
-				$row_count	 = mysqli_query($dbh, "SELECT COUNT(*) FROM `{$table}`");
+				$row_count	 = mysqli_query($dbh, "SELECT COUNT(*) FROM `".mysqli_real_escape_string($dbh, $table)."`");
 				$rows_result = mysqli_fetch_array($row_count);
 				@mysqli_free_result($row_count);
 				$row_count	 = $rows_result[0];
@@ -202,7 +203,7 @@ class DUPX_UpdateEngine
 					$current_row = 0;
 					$start		 = $page * $page_size;
 					$end		 = $start + $page_size;
-					$sql		 = sprintf("SELECT {$colList} FROM `%s` LIMIT %d, %d", $table, $start, $offset);
+					$sql		 = sprintf("SELECT {$colList} FROM `%s` LIMIT %d, %d", mysqli_real_escape_string($dbh, $table), $start, $offset);
 					$data		 = mysqli_query($dbh, $sql);
 
 					if (!$data) $report['errsql'][] = mysqli_error($dbh);
@@ -290,7 +291,7 @@ class DUPX_UpdateEngine
 
 						//PERFORM ROW UPDATE
 						if ($upd && !empty($where_sql)) {
-							$sql	= "UPDATE `{$table}` SET ".implode(', ', $upd_sql).' WHERE '.implode(' AND ', array_filter($where_sql));
+							$sql	= "UPDATE `".mysqli_real_escape_string($dbh, $table)."` SET ".implode(', ', $upd_sql).' WHERE '.implode(' AND ', array_filter($where_sql));
 							$result	= mysqli_query($dbh, $sql);
 							if ($result) {
 								if ($serial_err > 0) {
