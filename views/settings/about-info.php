@@ -18,10 +18,8 @@
     div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
     div.dup-support-give-area {width:400px; height:165px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
     div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
-	
+
     img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
-    form#dup-donate-form input {opacity:0.7;}
-    form#dup-donate-form input:hover {opacity:1.0;}
     img#dup-img-5stars {opacity:0.7;}
     img#dup-img-5stars:hover {opacity:1.0;}
 	div.social-item {float:right; width: 170px; padding:10px 10px 20px 0px; border:0px solid red; text-align: left; font-size:20px}
@@ -35,15 +33,16 @@
 	div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
 </style>
 
+
 <div class="wrap dup-wrap dup-support-all">
-	
+
     <div style="width:850px; margin:auto; margin-top: 20px">
         <table style="width:825px">
             <tr>
                 <td style="width:90px">
-                    <img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-box.png" style='text-align:top; margin:0'  />
+                    <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-box.png"); ?>" style='text-align:top; margin:0'  />
                 </td>
-                <td valign="top" style="padding-top:10px; font-size:18px; line-height: 24px">
+                <td valign="top" style="padding-top:10px;">
                     <?php
                     esc_html_e("Duplicator can streamline your workflow and quickly clone/migrate a WordPress site. The plugin helps admins, designers and developers speed up the "
 						. "migration process of moving a WordPress site. Please help us continue development by giving this plugin a 5 star.", 'duplicator');
@@ -52,7 +51,7 @@
             </tr>
         </table><br/>
 
-        <!-- RATE PLUGIN -->
+        <!-- PARTNER WITH US -->
         <div class="dup-support-give-area">
             <table class="dup-support-hlp-hdrs">
                 <tr >
@@ -71,9 +70,9 @@
                     </td>
                 </tr>
             </table>
-        </div> 
+        </div>
 
-        <!-- SPREAD THE WORD  -->
+		<!-- SPREAD THE WORD  -->
         <div class="dup-support-give-area">
             <table class="dup-support-hlp-hdrs">
                 <tr>
@@ -101,7 +100,6 @@
         </div>
         <br style="clear:both" /><br/>
 
-		
 		<!-- STAY IN THE LOOP  -->
         <div class="dup-support-email-area">
             <table class="dup-support-hlp-hdrs">
@@ -116,10 +114,10 @@
 					<div class="email-area">
 						<!-- Begin MailChimp Signup Form -->
 						<div class="email-form">
-							<div style="font-size:18px; width: 525px; padding: 5px 0 15px 0; text-align: center; font-style: italic; margin: auto">
+							<div style="width:425px; padding: 5px 0 15px 0; text-align: center; font-style: italic; margin: auto">
 								<?php esc_html_e('Subscribe to the Duplicator newsletter and stay on top of great ideas, tutorials, and better ways to improve your workflows', 'duplicator') ?>...
 							</div>
-							
+
 
 							<div id="mc_embed_signup">
 								<form action="//snapcreek.us11.list-manage.com/subscribe/post?u=e2a9a514bfefa439bf2b7cf16&amp;id=1270a169c1" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
@@ -136,11 +134,11 @@
 											<input disabled="disabled" type="submit" class="button-primary button-large" value="Sign me up!" name="subscribe" id="mc-embedded-subscribe" >
 										</div>
 										<!-- Forces the submission to use Duplicator group -->
-										<input style="display:none" checked="checked" type="checkbox" value="1" name="group[15741][1]" id="mce-group[15741]-15741-0">						
+										<input style="display:none" checked="checked" type="checkbox" value="1" name="group[15741][1]" id="mce-group[15741]-15741-0">
 									</div>
                                     <div style="margin-top:10px; margin-left:100px; width: 650px;text-align:left">
                                         <small>
-                                            <input type="checkbox" name="privacy" id="privacy-checkbox"/>
+                                            <input type="checkbox" name="privacy" id="privacy-checkbox"></input>
                                             <label for="privacy-checkbox" style="padding-left:5px; display:block; margin-top:-20px; margin-left:20px;">Check box  this box if you would like us to contact you by email with helpful information about Duplicator and other Snap Creek products.<br/></br> We will process your data in accordance with our <a target="_blank" href="//snapcreek.com/privacy-policy">privacy policy</a>. You may withdraw this consent at any time by <a target="_blank" href="mailto:admin@snapcreek.com">emailing us</a> or updating your information by clicking the unsubscribe link in the emails you receive.</span></label>
                                         </small>
 
@@ -148,28 +146,22 @@
 								</form>
 							</div>
 						</div>
-	
+
 						<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
 						<script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
 						<!--End mc_embed_signup-->
 					</div>
 				</div>
-				
-				
-				
+
+
+
             </div>
         </div>
         <br style="clear:both" /><br/>
-
     </div>
 </div><br/><br/><br/><br/>
 <script>
 	jQuery(document).ready(function($){
-
-		Duplicator.ProvideFeedback = function()
-		{
-			window.open('https://snapcreek.com/duplicator/survey-features/','_blank');
-		}
 
         $('input[type="checkbox"][name="privacy"]').change(function() {
         if(this.checked) {

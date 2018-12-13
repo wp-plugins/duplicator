@@ -7,7 +7,7 @@
 <div class="panel">
 
 	<br/>
-	<div class="area" style="width: 450px">
+	<div class="area" style="width:450px">
 		<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50.png"  />
 		<h2>
 			<?php esc_html_e('Transfer your packages to multiple locations  with Duplicator Pro', 'duplicator') ?>
@@ -17,9 +17,9 @@
 			<ul>
 				<li><i class="fa fa-amazon"></i> <?php esc_html_e('Amazon S3', 'duplicator'); ?></li>
 				<li><i class="fa fa-dropbox"></i> <?php esc_html_e('Dropbox', 'duplicator'); ?></li>
-				<li><i class="fa fa-google"></i> <?php esc_html_e('Google Drive', 'duplicator'); ?></li>                
-				<li><i class="fa fa-upload"></i> <?php esc_html_e('FTP', 'duplicator'); ?></li>
-                <li><i class="fa fa-cloud"></i> <?php esc_html_e('OneDrive', 'duplicator'); ?></li>
+				<li><i class="fa fa-google"></i> <?php esc_html_e('Google Drive', 'duplicator'); ?></li>
+				<li><i class="fa fa-cloud"></i> <?php esc_html_e('One Drive', 'duplicator'); ?></li>
+				<li><i class="fa fa-upload"></i> <?php esc_html_e('FTP &amp; SFTP', 'duplicator'); ?></li>
 				<li><i class="fa fa-folder-open-o"></i> <?php esc_html_e('Custom Directory', 'duplicator'); ?></li>
 			</ul>
 		</div>

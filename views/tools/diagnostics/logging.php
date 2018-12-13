@@ -41,7 +41,7 @@ $logfound = (strlen($logname) > 0) ? true :false;
 	td#dup-log-panel-left div.name {float:left; margin: 0px 0px 5px 5px;}
 	td#dup-log-panel-left div.opts {float:right;}
 	td#dup-log-panel-right {vertical-align: top; padding-left:15px; max-width: 375px}
-	#dup-log-content {padding:5px; background: #fff; min-height:500px; width:99%; border:1px solid silver; overflow:scroll}
+	#dup-log-content {padding:5px; background: #fff; min-height:500px; width:99%; border:1px solid silver;overflow:scroll; word-wrap: break-word; margin:0;}
 	
 	/* OPTIONS */
 	div.dup-log-hdr {font-weight: bold; font-size:16px; padding:2px; }
@@ -119,8 +119,6 @@ jQuery(document).ready(function($)
 	function startTimer() {
 		timerInterval = setInterval(timer, 1000); 
 	}
-
-
 	
 	//INIT Events
 	$(window).resize(Duplicator.Tools.WinResize);
@@ -128,10 +126,12 @@ jQuery(document).ready(function($)
 	$("#dup-refresh").click(Duplicator.Tools.Refresh);
 	$("#dup-auto-refresh").click(Duplicator.Tools.RefreshAuto);
 	$("#dup-refresh-count").html(duration.toString());
-	
+
+    // READ LOG FILE
+    Duplicator.Tools.readLogfile();
+
 	//INIT
 	Duplicator.Tools.WinResize();
-    Duplicator.Tools.readLogfile();
 	<?php if ($refresh)  :	?>
 		//Scroll to Bottom
 		$("#dup-log-content").load(function () {
@@ -171,15 +171,15 @@ jQuery(document).ready(function($)
 						 <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
 							<?php
 								printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
-									__("Consider our recommended", 'duplicator'), 
-									__("host list", 'duplicator'),
-									__("if you’re unhappy with your current provider", 'duplicator'));
+								esc_html__("Consider our recommended", 'duplicator'), 
+								esc_html__("host list", 'duplicator'),
+								esc_html__("if you’re unhappy with your current provider", 'duplicator'));
 							?>
 					</i>					
 				</div>
 				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php esc_html_e("Options", 'duplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
 				<br style="clear:both" />
-                <pre id="dup-log-content"></pre>
+				<pre id="dup-log-content"></pre>
 			</td>
 			<td id="dup-log-panel-right">
 				<h2><?php esc_html_e("Options", 'duplicator') ?> </h2>
@@ -187,7 +187,7 @@ jQuery(document).ready(function($)
 					<input type="button" class="button button-small" id="dup-refresh" value="<?php esc_attr_e("Refresh", 'duplicator') ?>" /> &nbsp; 
 					<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" /> 
 					<label id="dup-auto-refresh-lbl" for="dup-auto-refresh">
-						<?php esc_html_e("Auto Refresh", 'duplicator') ?>
+						<?php esc_attr_e("Auto Refresh", 'duplicator') ?>
 						[<div id="dup-refresh-count"></div>]
 					</label>
 				</div>
@@ -204,10 +204,10 @@ jQuery(document).ready(function($)
 						foreach ($logs as $log) { 
 							$time = date('m/d/y h:i:s', filemtime($log));
 							$name = basename($log);
-							$url  = '?page=duplicator-tools&tab=diagnostics&section=log&logname=' . esc_js($name);
+							$url  = '?page=duplicator-tools&tab=diagnostics&section=log&logname=' . esc_html($name);
 							echo ($active == $name) 
-								? "<span class='dup-log' title='".esc_attr($name)."'>".esc_attr($time)."-".esc_html($name)."</span>"
-								: "<a href='javascript:void(0)'  title='".esc_html($name)."' onclick='Duplicator.Tools.GetLog(\"".esc_js($url)."\")'>".esc_html($time)."-".esc_html($name)."</a>";
+								? "<span class='dup-log' title='".esc_attr($name)."'>".esc_html($time)."-".esc_html($name)."</span>"
+								: "<a href='javascript:void(0)'  title='".esc_attr($name)."' onclick='Duplicator.Tools.GetLog(\"".esc_js($url)."\")'>".esc_html($time)."-".esc_html($name)."</a>";
 							if ($count > 20) break;
 						} 
 					?>

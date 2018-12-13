@@ -2,8 +2,7 @@
 //Prevent directly browsing to the file
 if (function_exists('plugin_dir_url')) 
 {		
-    define('DUPLICATOR_VERSION',        '1.2.52');
-    define('DUPLICATOR_HOMEPAGE',       'https://snapcreek.com/duplicator/duplicator-free/');
+    define('DUPLICATOR_VERSION',        '1.3.0');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	
@@ -19,13 +18,18 @@ if (function_exists('plugin_dir_url'))
 	if (! defined('DUPLICATOR_WPROOTPATH')) {
 		define('DUPLICATOR_WPROOTPATH', str_replace('\\', '/', ABSPATH));
 	}
-	define('DUPLICATOR_SSDIR_NAME',     'wp-snapshots');
-	define('DUPLICATOR_PLUGIN_PATH',    str_replace("\\", "/", plugin_dir_path(__FILE__)));
-	define('DUPLICATOR_SSDIR_PATH',     str_replace("\\", "/", DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME));
-	define('DUPLICATOR_SSDIR_PATH_TMP', DUPLICATOR_SSDIR_PATH . '/tmp');
-	define('DUPLICATOR_SSDIR_URL',      DUPLICATOR_SITE_URL . "/" . DUPLICATOR_SSDIR_NAME);
-    define('DUPLICATOR_INSTALL_PHP',    'installer.php');
-	define('DUPLICATOR_INSTALL_BAK',    'installer-backup.php');
+
+	define('DUPLICATOR_PLUGIN_PATH',				str_replace("\\", "/", plugin_dir_path(__FILE__)));
+    define('DUPLICATOR_SSDIR_NAME',					'wp-snapshots');
+	define('DUPLICATOR_SSDIR_PATH',					str_replace("\\", "/", DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME));
+    define('DUPLICATOR_SSDIR_PATH_TMP',				DUPLICATOR_SSDIR_PATH . '/tmp');
+    define("DUPLICATOR_SSDIR_PATH_INSTALLER",		DUPLICATOR_SSDIR_PATH . '/installer');
+	define('DUPLICATOR_SSDIR_URL',					DUPLICATOR_SITE_URL . "/" . DUPLICATOR_SSDIR_NAME);
+	define('DUPLICATOR_ZIPPED_LOG_FILENAME',		'duplicator_lite_log.zip');
+    define('DUPLICATOR_INSTALL_PHP',				'installer.php');
+	define('DUPLICATOR_INSTALL_BAK',				'installer-backup.php');
+    define('DUPLICATOR_INSTALLER_HASH_PATTERN',		'[a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]');
+	define('DUPLICATOR_INSTALL_SITE_OVERWRITE_ON',	false);
 	
 	//GENERAL CONSTRAINTS
     define('DUPLICATOR_PHP_MAX_MEMORY',  '2048M');
@@ -41,9 +45,29 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_SCAN_DB_TBL_SIZE',	10485760);  //10MB Table
 	define('DUPLICATOR_SCAN_TIMEOUT',		150);		//Seconds
 	define('DUPLICATOR_SCAN_MIN_WP',		'4.7.0');
+    define('DUPLICATOR_MAX_DUPARCHIVE_SIZE', 524288000); // 500 GB
+
+	define('DUPLICATOR_TEMP_CLEANUP_SECONDS', 900);     // 15 min = How many seconds to keep temp files around when delete is requested
+	define('DUPLICATOR_MAX_BUILD_RETRIES', 10);			// Max times to try a part of progressive build work
+	define('DUPLICATOR_HTACCESS_ORIG_FILENAME', 'htaccess.orig');
+	define('DUPLICATOR_WEBCONFIG_ORIG_FILENAME', 'web.config.orig');
+	define("DUPLICATOR_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH . 'dup-installer');
+    define('DUPLICATOR_MAX_LOG_SIZE', 400000);    // The higher this is the more overhead
 	
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');
+	$GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS_ON'] = true;
+    $GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS'] = array(
+        'error_log',
+        'error.log',
+        'debug_log',
+        'ws_ftp.log',
+        'dbcache',
+        'pgcache',
+        'objectcache',
+		'.DS_Store'
+    );
+
 	
 	/* Used to flush a response every N items. 
 	 * Note: This value will cause the Zip file to double in size durning the creation process only*/
@@ -63,7 +87,6 @@ if (function_exists('plugin_dir_url'))
         if(!defined('PHP_MAJOR_VERSION'))   define('PHP_MAJOR_VERSION',   $version[0]);
         if(!defined('PHP_MINOR_VERSION'))   define('PHP_MINOR_VERSION',   $version[1]);
         if(!defined('PHP_RELEASE_VERSION')) define('PHP_RELEASE_VERSION', $version[2]);
-        
     }
 
 } else {

@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.2.52
+  Version: 1.3.0
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -25,6 +25,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   SOURCE CONTRIBUTORS:
+  David Coveney of Interconnect IT Ltd
   https://github.com/interconnectit/Search-Replace-DB/
   ================================================================================ */
 
@@ -109,9 +110,11 @@ if (!function_exists('_sanitize_text_fields')) {
 if (is_admin() == true) 
 {
 	//Classes
-    require_once 'classes/class.logging.php';
     require_once 'classes/class.settings.php';
+    require_once 'classes/class.logging.php';    
     require_once 'classes/utilities/class.u.php';
+	require_once 'classes/utilities/class.u.string.php';
+    require_once 'classes/utilities/class.u.validator.php';
     require_once 'classes/class.db.php';
     require_once 'classes/class.server.php';
 	require_once 'classes/ui/class.ui.viewstate.php';
@@ -200,14 +203,19 @@ if (is_admin() == true)
      * =====================================================  */
     add_action('plugins_loaded',	'duplicator_update');
     add_action('plugins_loaded',	'duplicator_wpfront_integrate');
-	add_action('admin_init',		'duplicator_init');
+    add_action('admin_init',		'duplicator_init');
     add_action('admin_menu',		'duplicator_menu');
+    add_action('admin_enqueue_scripts', 'duplicator_admin_enqueue_scripts' );
 	add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
 	
 	//CTRL ACTIONS
-    add_action('wp_ajax_duplicator_package_scan',        'duplicator_package_scan');
-    add_action('wp_ajax_duplicator_package_build',		 'duplicator_package_build');
-    add_action('wp_ajax_duplicator_package_delete',		 'duplicator_package_delete');
+    add_action('wp_ajax_duplicator_package_scan',				'duplicator_package_scan');
+    add_action('wp_ajax_duplicator_package_build',				'duplicator_package_build');
+    add_action('wp_ajax_duplicator_package_delete',				'duplicator_package_delete');
+    add_action('wp_ajax_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
+    add_action('wp_ajax_nopriv_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
+
+
 	$GLOBALS['CTRLS_DUP_CTRL_UI']		= new DUP_CTRL_UI();
 	$GLOBALS['CTRLS_DUP_CTRL_Tools']	= new DUP_CTRL_Tools();
 	$GLOBALS['CTRLS_DUP_CTRL_Package']	= new DUP_CTRL_Package();
@@ -236,13 +244,29 @@ if (is_admin() == true)
         /* CSS */
         wp_register_style('dup-jquery-ui', DUPLICATOR_PLUGIN_URL . 'assets/css/jquery-ui.css', null, "1.11.2");
         wp_register_style('dup-font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.7.0');
-        wp_register_style('dup-plugin-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, DUPLICATOR_VERSION);
+        wp_register_style('dup-plugin-global-style', DUPLICATOR_PLUGIN_URL . 'assets/css/global_admin_style.css', null , DUPLICATOR_VERSION);
+        wp_register_style('dup-plugin-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', array('dup-plugin-global-style') , DUPLICATOR_VERSION);
+
 		wp_register_style('dup-jquery-qtip',DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.css', null, '2.2.1');
-		wp_register_style('dup-parsley-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', null, '2.3.5');
+		wp_register_style('dup-parsley-style', DUPLICATOR_PLUGIN_URL . 'assets/css/parsley.css', null, '2.3.5');
         /* JS */
 		wp_register_script('dup-handlebars', DUPLICATOR_PLUGIN_URL . 'assets/js/handlebars.min.js', array('jquery'), '4.0.10');
-        wp_register_script('dup-parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley.min.js', array('jquery'), '2.3.5');
+        wp_register_script('dup-parsley', DUPLICATOR_PLUGIN_URL . 'assets/js/parsley.min.js', array('jquery'), '1.1.18');
 		wp_register_script('dup-jquery-qtip', DUPLICATOR_PLUGIN_URL . 'assets/js/jquery.qtip/jquery.qtip.min.js', array('jquery'), '2.2.1');
+
+
+        // Clean tmp folder
+        DUP_Package::not_active_files_tmp_cleanup();
+    }
+
+    /**
+	 * Hooked into `admin_enqueue_scripts`.  Init routines for all admin pages
+     *
+     * @access global
+     * @return null
+     */
+    function duplicator_admin_enqueue_scripts() {
+        wp_enqueue_style('dup-plugin-global-style');
     }
 	
 	/**
@@ -260,7 +284,7 @@ if (is_admin() == true)
             case 'duplicator-settings': include('views/settings/controller.php');	break;
             case 'duplicator-tools':	include('views/tools/controller.php');      break;
 			case 'duplicator-debug':	include('debug/main.php');					break;
-			case 'duplicator-gopro':	include('views/help/gopro.php');			break;
+			case 'duplicator-gopro':	include('views/settings/gopro.php');			break;
         }
     }
 
@@ -302,17 +326,6 @@ if (is_admin() == true)
 		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_gopro = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
-		
-		$package_debug = DUP_Settings::Get('package_debug');
-		if ($package_debug != null && $package_debug == true)
-		{
-			$perms = 'manage_options';
-			$perms = apply_filters($wpfront_caps_translator, $perms);			
-			$lang_txt = esc_html__('Debug', 'duplicator');
-			$page_debug = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-debug', 'duplicator_get_menu');
-			add_action('admin_print_scripts-' . $page_debug, 'duplicator_scripts');
-			add_action('admin_print_styles-'  . $page_debug, 'duplicator_styles');
-		}
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
@@ -325,7 +338,6 @@ if (is_admin() == true)
         add_action('admin_print_styles-' . $page_settings, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
 		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
-		
     }
 
     /**
@@ -341,6 +353,7 @@ if (is_admin() == true)
         wp_enqueue_script('jquery-ui-progressbar');
         wp_enqueue_script('dup-parsley');
 		wp_enqueue_script('dup-jquery-qtip');
+		
     }
 
     /**
@@ -355,7 +368,6 @@ if (is_admin() == true)
         wp_enqueue_style('dup-font-awesome');
 		wp_enqueue_style('dup-plugin-style');
 		wp_enqueue_style('dup-jquery-qtip');
-		wp_enqueue_style('dup-parsley-style');
     }
 
 
@@ -378,7 +390,7 @@ if (is_admin() == true)
             $this_plugin = plugin_basename(__FILE__);
 
         if ($file == $this_plugin) {
-            $settings_link = '<a href="admin.php?page=duplicator">' . __("Manage", 'duplicator') . '</a>';
+            $settings_link = '<a href="admin.php?page=duplicator">' . esc_html__("Manage", 'duplicator') . '</a>';
             array_unshift($links, $settings_link);
         }
         return $links;
@@ -395,7 +407,7 @@ if (is_admin() == true)
         $plugin = plugin_basename(__FILE__);
         // create link
         if ($file == $plugin) {
-            $links[] = '<a href="admin.php?page=duplicator-gopro" title="' . __('Get Help', 'duplicator') . '" style="">' . __('Go Pro', 'duplicator') . '</a>';
+            $links[] = '<a href="admin.php?page=duplicator-gopro" title="' . esc_attr__('Get Help', 'duplicator') . '" style="">' . esc_html__('Go Pro', 'duplicator') . '</a>';
             return $links;
         }
         return $links;

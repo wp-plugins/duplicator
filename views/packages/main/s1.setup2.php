@@ -74,7 +74,7 @@ $action_nonce_url = wp_nonce_url($action_url, 'new2-package');
 		</a>
 	</div>
 	<a href="javascript:void(0)" onclick="Duplicator.Pack.ResetName()" title="<?php esc_attr_e('Toggle a default name', 'duplicator') ?>"><i class="fa fa-undo"></i></a> <br/>
-	<input id="package-name"  name="package-name" type="text" value="<?php echo esc_attr($Package->Name); ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>
+	<input id="package-name"  name="package-name" type="text" value="<?php echo esc_html($Package->Name); ?>" maxlength="40"  data-required="true" data-regexp="^[0-9A-Za-z|_]+$" /> <br/>
 	<div id="dup-notes-area">
 		<label class="lbl-larger"><b>&nbsp;<?php esc_html_e('Notes', 'duplicator') ?>:</b></label> <br/>
 		<textarea id="package-notes" name="package-notes" maxlength="300" /><?php echo esc_html($Package->Notes); ?></textarea>
@@ -89,7 +89,7 @@ STORAGE -->
 		<i class="fa fa-database"></i>&nbsp;<?php  esc_html_e("Storage", 'duplicator'); ?> 
 		<div class="dup-box-arrow"></div>
 	</div>			
-	<div class="dup-box-panel" id="dup-pack-storage-panel" style="<?php echo esc_attr($ui_css_storage); ?>">
+	<div class="dup-box-panel" id="dup-pack-storage-panel" style="<?php echo esc_html($ui_css_storage); ?>">
 	<table class="widefat package-tbl">
 		<thead>
 			<tr>
@@ -134,15 +134,19 @@ STORAGE -->
 ARCHIVE -->
 <div class="dup-box">
     <div class="dup-box-title">
-        <i class="fa fa-file-archive-o"></i> <?php esc_html_e('Archive', 'duplicator') ?> &nbsp;
+        <i class="fa fa-file-archive-o"></i>
+			<?php
+				_e('Archive', 'duplicator');
+				echo "&nbsp;<sup class='archive-ext'>{$archive_build_mode}</sup>";
+			?> &nbsp;
         <span style="font-size:13px">
             <span id="dup-archive-filter-file" title="<?php esc_attr_e('File filter enabled', 'duplicator') ?>"><i class="fa fa-files-o"></i> <i class="fa fa-filter"></i> &nbsp;&nbsp;</span> 
             <span id="dup-archive-filter-db" title="<?php esc_attr_e('Database filter enabled', 'duplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>
-			<span id="dup-archive-db-only" title="<?php esc_attr_e('Archive Only the Database', 'duplicator') ?>"> <?php esc_html_e('Database Only', 'duplicator'); ?> </span>
+			<span id="dup-archive-db-only" title="<?php esc_attr_e('Archive Only the Database', 'duplicator') ?>"> <?php esc_html_e('Database Only', 'duplicator') ?> </span>
         </span>
         <div class="dup-box-arrow"></div>
     </div>		
-    <div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo esc_attr($ui_css_archive); ?>">
+    <div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo esc_html($ui_css_archive); ?>">
         <input type="hidden" name="archive-format" value="ZIP" />
 
         <!-- NESTED TABS -->
@@ -250,7 +254,8 @@ ARCHIVE -->
 				<table>
 					<tr>
 						<td colspan="2" style="padding:0 0 10px 0">
-							<?php esc_html_e("Build Mode", 'duplicator') ?>:&nbsp; <a href="?page=duplicator-settings" target="settings"><?php echo esc_html($dbbuild_mode); ?></a>
+							<?php esc_html_e("Build Mode", 'duplicator') ?>:&nbsp; 
+							<a href="?page=duplicator-settings&amp;tab=package" target="settings"><?php echo esc_html($dbbuild_mode); ?></a>
 						</td>
 					</tr>
 					<tr>
@@ -376,7 +381,7 @@ INSTALLER -->
 	<div class="dup-box-arrow"></div>
 </div>			
 
-<div class="dup-box-panel" id="dup-pack-installer-panel" style="<?php echo esc_attr($ui_css_installer); ?>">
+<div class="dup-box-panel" id="dup-pack-installer-panel" style="<?php echo esc_html($ui_css_installer); ?>">
 
 	<div class="dup-installer-panel-optional">
 		<b><?php esc_html_e('All values in this section are', 'duplicator'); ?> <u><?php esc_html_e('optional', 'duplicator'); ?></u></b>

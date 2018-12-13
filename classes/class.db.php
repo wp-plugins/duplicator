@@ -8,14 +8,11 @@
  * @package Duplicator
  * @subpackage classes/utilities
  * @copyright (c) 2017, Snapcreek LLC
- * @since 1.1.32
  *
  */
 
 // Exit if accessed directly
-if (!defined('DUPLICATOR_VERSION')) {
-    exit;
-}
+if (! defined('DUPLICATOR_VERSION')) exit;
 
 class DUP_DB extends wpdb
 {
@@ -78,44 +75,43 @@ class DUP_DB extends wpdb
 	 *
      * @return boolean|string
      */
-	public static function getWindowsMySqlDumpRealPath()
-	{
-		try {
-			if (function_exists('php_ini_loaded_file')) {
-				$get_php_ini_path = php_ini_loaded_file();
-				if (@file_exists($get_php_ini_path)) {
-					$search = array(
-						dirname(dirname($get_php_ini_path)).'/mysql/bin/mysqldump.exe',
-						dirname(dirname(dirname($get_php_ini_path))).'/mysql/bin/mysqldump.exe',
-						dirname(dirname($get_php_ini_path)).'/mysql/bin/mysqldump',
-						dirname(dirname(dirname($get_php_ini_path))).'/mysql/bin/mysqldump',
-					);
+	public static function getWindowsMySqlDumpRealPath() {
+		if(function_exists('php_ini_loaded_file'))
+		{
+			$get_php_ini_path = php_ini_loaded_file();
+			if(file_exists($get_php_ini_path))
+			{
+				$search = array(
+					dirname(dirname($get_php_ini_path)).'/mysql/bin/mysqldump.exe',
+					dirname(dirname(dirname($get_php_ini_path))).'/mysql/bin/mysqldump.exe',
+					dirname(dirname($get_php_ini_path)).'/mysql/bin/mysqldump',
+					dirname(dirname(dirname($get_php_ini_path))).'/mysql/bin/mysqldump',
+				);
 
-					foreach ($search as $mysqldump) {
-						if (@file_exists($mysqldump)) {
-							return str_replace("\\", "/", $mysqldump);
-						}
+				foreach($search as $mysqldump)
+				{
+					if(file_exists($mysqldump))
+					{
+						return str_replace("\\","/",$mysqldump);
 					}
 				}
 			}
-
-			unset($search);
-			unset($get_php_ini_path);
-
-			return false;
-			
-		} catch(Exception $ex) {
-			return false;
 		}
+
+		unset($search);
+		unset($get_php_ini_path);
+
+		return false;
 	}
 
-	/**
+    /**
      * Returns the mysqldump path if the server is enabled to execute it otherwise false
 	 *
      * @return boolean|string
      */
     public static function getMySqlDumpPath()
     {
+
         //Is shell_exec possible
         if (!DUP_Util::hasShellExec()) {
             return false;
@@ -124,20 +120,19 @@ class DUP_DB extends wpdb
         $custom_mysqldump_path = DUP_Settings::Get('package_mysqldump_path');
         $custom_mysqldump_path = (strlen($custom_mysqldump_path)) ? $custom_mysqldump_path : '';
 
-        //COMMON WINDOWS PATHS
+        //Common Windows Paths
         if (DUP_Util::isWindows()) {
             $paths = array(
                 $custom_mysqldump_path,
-				self::getWindowsMySqlDumpRealPath(),
+                self::getWindowsMySqlDumpRealPath(),
                 'C:/xampp/mysql/bin/mysqldump.exe',
                 'C:/Program Files/xampp/mysql/bin/mysqldump',
                 'C:/Program Files/MySQL/MySQL Server 6.0/bin/mysqldump',
                 'C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump',
-                'C:/Program Files/MySQL/MySQL Server 5.4/bin/mysqldump',
-				'C:/wamp64/bin/mysql/mysql5.7.21/bin',
+                'C:/Program Files/MySQL/MySQL Server 5.4/bin/mysqldump'
             );
 
-        //COMMON LINUX PATHS
+            //Common Linux Paths
         } else {
             $path1     = '';
             $path2     = '';
@@ -160,7 +155,7 @@ class DUP_DB extends wpdb
                 '/usr/mysql/bin/mysqldump',
                 '/usr/bin/mysqldump',
                 '/opt/local/lib/mysql6/bin/mysqldump',
-                '/opt/local/lib/mysql5/bin/mysqldump',
+                '/opt/local/lib/mysql5/bin/mysqldump'
             );
         }
 

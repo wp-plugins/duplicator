@@ -14,6 +14,49 @@ Duplicator.Debug	= new Object();
 Duplicator.DEBUG_AJAX_RESPONSE = false;
 Duplicator.AJAX_TIMER = null;
 
+Duplicator.parseJSON = function(mixData) {
+    try {
+		var parsed = JSON.parse(mixData);
+		return parsed;
+	} catch (e) {
+		console.log("JSON parse failed - 1");
+		console.log(mixData);
+	}
+
+	if (mixData.indexOf('[') > -1 && mixData.indexOf('{') > -1) {
+		if (mixData.indexOf('{') < mixData.indexOf('[')) {
+			var startBracket = '{';
+			var endBracket = '}';
+		} else {
+			var startBracket = '[';
+			var endBracket = ']';
+		}
+	} else if (mixData.indexOf('[') > -1 && mixData.indexOf('{') === -1) {
+		var startBracket = '[';
+		var endBracket = ']';
+	} else {
+		var startBracket = '{';
+		var endBracket = '}';
+	}
+	
+	var jsonStartPos = mixData.indexOf(startBracket);
+	var jsonLastPos = mixData.lastIndexOf(endBracket);
+	if (jsonStartPos > -1 && jsonLastPos > -1) {
+		var expectedJsonStr = mixData.slice(jsonStartPos, jsonLastPos + 1);
+		try {
+			var parsed = JSON.parse(expectedJsonStr);
+			return parsed;
+		} catch (e) {
+			console.log("JSON parse failed - 2");
+			console.log(mixData);
+			throw e;
+            return false;
+		}
+	}
+	throw "could not parse the JSON";
+    return false;
+}
+
 
 /* ============================================================================
 *  BASE NAMESPACE: All methods at the top of the Duplicator Namespace  
@@ -66,9 +109,22 @@ Duplicator.UI.SaveViewState = function (key, value)
 		jQuery.ajax({
 			type: "POST",
 			url: ajaxurl,
-			dataType: "json",
-			data: {action : 'DUP_CTRL_UI_SaveViewState', key: key, value: value, nonce: '<?php echo wp_create_nonce('DUP_CTRL_UI_SaveViewState'); ?>'},
-			success: function(data) {},
+			dataType: "text",
+			data: {
+				action : 'DUP_CTRL_UI_SaveViewState',
+				key: key,
+				value: value,
+				nonce: '<?php echo wp_create_nonce('DUP_CTRL_UI_SaveViewState'); ?>'
+			},
+			success: function(respData) {
+				try {
+					var data = Duplicator.parseJSON(respData);
+				} catch(err) {
+					console.error(err);
+					console.error('JSON parse failed for response data: ' + respData);
+					return false;
+				}
+			},
 			error: function(data) {}
 		});	
 	}

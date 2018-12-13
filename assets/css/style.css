@@ -42,12 +42,12 @@ div#dup-progress-bar-area {width:500px; margin:40px auto 0px auto; padding:25px 
 div#dup-progress-bar-area h2 {margin-bottom:15px}
 
 /*HEADER MESSAGES*/
-div.dup-hdr-success {color:green; font-size:22px; font-weight:bold}
+div.dup-hdr-success {color:#23282d; font-size:22px; font-weight:bold}
 div.dup-hdr-error {color:#A62426; font-size:22px; font-weight:bold}
 
 /*DIALOGS: THICKBOX   */
 #TB_title { padding-bottom: 3px!important; margin-bottom:5px!important; font-size:16px!important;}
-div.dup-dlg-alert-txt {padding:10px 0; font-size:16px}
+div.dup-dlg-alert-txt {padding:10px 0; font-size:16px; line-height:22px}
 div.dup-dlg-alert-btns {position:absolute; bottom:20px; right:20px;}
 div.dup-dlg-confirm-txt {padding:10px 0; font-size:16px}
 div.dup-dlg-confirm-btns {position:absolute; bottom:20px; right:20px;}
@@ -68,12 +68,10 @@ input.parsley-error, textarea.parsley-error {
   border:1px solid #EED3D7 !important;
 }
 div.qtip-content {line-height:16px}
-ul.parsley-errors-list {margin:0 0 -7px 0; font-style: italic}
-			
+ul.parsley-error-list {margin:1px 0px -7px 0px}
 div.notice-safemode {color: maroon;}
 div.cleanup-notice b.title {color: green;font-size: 20px;}
 
 /*SCREEN TABS*/
 div.dup-screen-hlp-info {line-height:26px; padding:10px 0 10px 0}
 #screen-meta-links .button { font-size:13px !important; height:auto !important;font-weight: normal; padding: 3px 6px 3px 16px !important;min-width:72px !important}
-

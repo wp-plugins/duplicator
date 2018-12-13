@@ -1,5 +1,6 @@
 <?php
-	$scan_run = (isset($_POST['action']) && $_POST['action'] == 'duplicator_recursion') ? true :false;	
+	$action = isset($_POST['action']) ? sanitize_text_field($_POST['action']) : '';
+	$scan_run = ($action == 'duplicator_recursion') ? true :false;	
 	$ajax_nonce	= wp_create_nonce('DUP_CTRL_Tools_runScanValidator');
 ?>
 
@@ -42,7 +43,7 @@ SCAN VALIDATOR -->
 		</button>
 
 		<script id="hb-template" type="text/x-handlebars-template">
-			<b>Scan Path:</b> <?php echo DUPLICATOR_WPROOTPATH ?> <br/>
+			<b>Scan Path:</b> <?php echo esc_html(DUPLICATOR_WPROOTPATH); ?> <br/>
 			<b>Scan Results</b><br/>
 			<table>
 				<tr>
@@ -116,17 +117,27 @@ jQuery(document).ready(function($)
 	Duplicator.Tools.runScanValidator = function()
 	{
 		tb_remove();
-		var data = {action : 'DUP_CTRL_Tools_runScanValidator', nonce: '<?php echo $ajax_nonce; ?>', 'scan-recursive': true};
+		var data = {action : 'DUP_CTRL_Tools_runScanValidator', nonce: '<?php echo esc_js($ajax_nonce); ?>', 'scan-recursive': true};
 		
 		$('#hb-result').html('<?php esc_html_e("Scanning Environment... This may take a few minutes.", "duplicator"); ?>');
 		$('#scan-run-btn').html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Running Please Wait...');
 		
 		$.ajax({
 			type: "POST",
+			dataType: "text",
 			url: ajaxurl,
-			dataType: "json",
 			data: data,
-			success: function(data) {Duplicator.Tools.IntScanValidator(data)},
+			success: function(respData) {
+				try {
+					var data = Duplicator.parseJSON(respData);
+				} catch(err) {
+					console.error(err);
+					console.error('JSON parse failed for response data: ' + respData);
+					console.log(respData);
+					return false;
+				}
+				Duplicator.Tools.IntScanValidator(data);
+			},
 			error: function(data) {console.log(data)},
 			done: function(data) {console.log(data)}
 		});	
@@ -139,7 +150,7 @@ jQuery(document).ready(function($)
 		var templateScript = Handlebars.compile(template);
 		var html = templateScript(data);
 		$('#hb-result').html(html);
-		$('#scan-run-btn').html('<?php echo esc_js(__("Run Scan Integrity Validation", "duplicator")); ?>');
+		$('#scan-run-btn').html('<?php esc_html_e("Run Scan Integrity Validation", "duplicator"); ?>');
 	}
 });	
 </script>

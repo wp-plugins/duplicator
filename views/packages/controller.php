@@ -9,23 +9,56 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 $current_view =  (isset($_REQUEST['action']) && $_REQUEST['action'] == 'detail') ? 'detail' : 'main';
+
+$get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
 ?>
 
 <script>
+
+</script>
+
+<script>
     jQuery(document).ready(function($) {
-        /*	----------------------------------------
-         *	METHOD: Triggers the download of an installer/package file
-         *	@param name		Window name to open
-         *	@param button	Button to change color */
-        Duplicator.Pack.DownloadFile = function(event, button) {
-            if (event.data != undefined) {
-                window.open(event.data.name, '_self');
-            } else {
-                $(button).addClass('dup-button-selected');
-                window.open(event, '_self');
+
+        // which: 0=installer, 1=archive, 2=sql file, 3=log
+        Duplicator.Pack.DownloadPackageFile = function (which, packageID)
+		{
+            var actionLocation = ajaxurl + '?action=DUP_CTRL_Package_getPackageFile&which=' + which + '&package_id=' + packageID + '&nonce=' + '<?php echo esc_js($get_package_file_nonce); ?>';
+            if(which == 3) {
+                var win = window.open(actionLocation, '_blank');
+                win.focus();
             }
+            else {
+                location.href = actionLocation;
+            }
+        };
+
+        Duplicator.Pack.DownloadFile = function(file, url)
+        {
+            var link = document.createElement('a');        
+            link.target = "_blank";
+            link.download = file;
+            link.href= url;
+            document.body.appendChild(link);
+            
+            // click event fire
+            if (document.dispatchEvent) {
+                // First create an event
+                var click_ev = document.createEvent("MouseEvents");
+                // initialize the event
+                click_ev.initEvent("click", true /* bubble */, true /* cancelable */);
+                // trigger the event
+                link.dispatchEvent(click_ev);
+            } else if (document.fireEvent) {
+                link.fireEvent('onclick');
+            } else if (link.click()) {
+                link.click()
+            }
+
+            document.body.removeChild(link);
             return false;
-        }
+        };
+
 
         /*	----------------------------------------
          * METHOD: Toggle links with sub-details */

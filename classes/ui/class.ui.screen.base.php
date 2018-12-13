@@ -1,6 +1,4 @@
 <?php
-defined("ABSPATH") or die(""); 
-
 /**
  * The base class for all screen.php files.  This class is used to control items that are common
  * among all screens, namely the Help tab and Screen Options drop down items.  When creating a
@@ -12,9 +10,12 @@ defined("ABSPATH") or die("");
  * @package Duplicator
  * @subpackage classes/ui
  * @copyright (c) 2017, Snapcreek LLC
- * @since 1.1.0
  *
  */
+
+// Exit if accessed directly
+if (! defined('DUPLICATOR_VERSION')) exit;
+
 class DUP_UI_Screen
 {
     /**
@@ -48,7 +49,7 @@ class DUP_UI_Screen
 
         $this->screen->add_help_tab(array(
             'id' => 'dup_help_tab_callback',
-            'title' => __('Support', 'duplicator'),
+            'title' => esc_html__('Support', 'duplicator'),
             'content' => "<p>{$content}</p>"
             )
         );

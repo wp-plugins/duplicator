@@ -1,5 +1,10 @@
 <?php
-if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
+// Exit if accessed directly
+if (! defined('DUPLICATOR_VERSION')) exit;
+
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.archive.config.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.zip.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.multisite.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.password.php');
 
 class DUP_Installer
@@ -13,7 +18,10 @@ class DUP_Installer
     public $OptsDBUser;
 	public $OptsSecureOn = 0;
 	public $OptsSecurePass;
-    //PROTECTED
+    public $numFilesAdded = 0;
+    public $numDirsAdded = 0;
+
+	//PROTECTED
     protected $Package;
 
     /**
@@ -24,203 +32,446 @@ class DUP_Installer
         $this->Package = $package;
     }
 
-    /**
-     *  Build the installer script
-     *
-     *  @param obj $package A reference to the package that this installer object belongs to
-     *
-     *  @return null
-     */
-    public function build($package)
+	 public function build($package, $error_behavior = Dup_ErrorBehavior::Quit)
     {
+        DUP_Log::Info("building installer");
 
         $this->Package = $package;
+        $success       = false;
 
-        DUP_Log::Info("\n********************************************************************************");
-        DUP_Log::Info("MAKE INSTALLER:");
-        DUP_Log::Info("********************************************************************************");
-        DUP_Log::Info("Build Start");
-
-        $template_uniqid = uniqid('').'_'.time();
-        $template_path   = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP."/installer.template_{$template_uniqid}.php");
-        $main_path       = DUP_Util::safePath(DUPLICATOR_PLUGIN_PATH.'installer/build/main.installer.php');
-        @chmod($template_path, 0777);
-        @chmod($main_path, 0777);
-
-        @touch($template_path);
-        $main_data       = file_get_contents("{$main_path}");
-        $template_result = file_put_contents($template_path, $main_data);
-        if ($main_data === false || $template_result == false) {
-            $err_info = "These files may have permission issues. Please validate that PHP has read/write access.\n";
-            $err_info .= "Main Installer: '{$main_path}' \nTemplate Installer: '$template_path'";
-            DUP_Log::Error("Install builder failed to generate files.", "{$err_info}");
+        if ($this->create_enhanced_installer_files()) {
+            $success = $this->add_extra_files($package);
+        } else {
+            DUP_Log::Info("error creating enhanced installer files");
         }
 
-        $embeded_files = array(
-            "assets/inc.libs.css.php"				=> "@@INC.LIBS.CSS.PHP@@",
-            "assets/inc.css.php"					=> "@@INC.CSS.PHP@@",
-            "assets/inc.libs.js.php"				=> "@@INC.LIBS.JS.PHP@@",
-            "assets/inc.js.php"						=> "@@INC.JS.PHP@@",
-            "classes/utilities/class.u.php"			=> "@@CLASS.U.PHP@@",
-            "classes/class.csrf.php"				=> "@@CLASS.CSRF.PHP@@",
-            "classes/class.server.php"				=> "@@CLASS.SERVER.PHP@@",
-            "classes/class.db.php"					=> "@@CLASS.DB.PHP@@",
-            "classes/class.logging.php"				=> "@@CLASS.LOGGING.PHP@@",
-            "classes/class.engine.php"				=> "@@CLASS.ENGINE.PHP@@",
-			"classes/class.http.php"				=> "@@CLASS.HTTP.PHP@@",
-            "classes/config/class.conf.wp.php"		=> "@@CLASS.CONF.WP.PHP@@",
-            "classes/config/class.conf.srv.php"		=> "@@CLASS.CONF.SRV.PHP@@",
-			"classes/class.password.php"			=> "@@CLASS.PASSWORD.PHP@@",
-			"ctrls/ctrl.step1.php"					=> "@@CTRL.STEP1.PHP@@",
-            "ctrls/ctrl.step2.php"					=> "@@CTRL.STEP2.PHP@@",
-            "ctrls/ctrl.step3.php"					=> "@@CTRL.STEP3.PHP@@",
-			"view.init1.php"						=> "@@VIEW.INIT1.PHP@@",
-            "view.step1.php"						=> "@@VIEW.STEP1.PHP@@",
-            "view.step2.php"						=> "@@VIEW.STEP2.PHP@@",
-            "view.step3.php"						=> "@@VIEW.STEP3.PHP@@",
-            "view.step4.php"						=> "@@VIEW.STEP4.PHP@@",
-            "view.help.php"							=> "@@VIEW.HELP.PHP@@",);
 
-        foreach ($embeded_files as $name => $token) {
-            $file_path = DUPLICATOR_PLUGIN_PATH."installer/build/{$name}";
-            @chmod($file_path, 0777);
+        if ($success) {
+            $package->BuildProgress->installer_built = true;
+        } else {
+            $error_message = 'Error adding installer';
 
-            $search_data = @file_get_contents($template_path);
-            $insert_data = @file_get_contents($file_path);
-            file_put_contents($template_path, str_replace("${token}", "{$insert_data}", $search_data));
-            if ($search_data === false || $insert_data == false) {
-                DUP_Log::Error("Installer generation failed at {$token}.", '');
+            $package->BuildProgress->set_failed($error_message);
+            $package->Update();
+
+            DUP_Log::error($error_message, "Marking build progress as failed because couldn't add installer files", $error_behavior);
+            //$package->BuildProgress->failed = true;
+            //$package->setStatus(DUP_PackageStatus::ERROR);
+        }
+
+		return $success;
+    }
+
+    private function create_enhanced_installer_files()
+    {
+        $success = false;
+
+        if ($this->create_enhanced_installer()) {
+            $success = $this->create_archive_config_file();
+        }
+
+        return $success;
+    }
+
+    private function create_enhanced_installer()
+    {
+        $success = true;
+
+		$archive_filepath        = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
+        $installer_filepath     = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php";
+        $template_filepath      = DUPLICATOR_PLUGIN_PATH.'/installer/installer.tpl';
+        $mini_expander_filepath = DUPLICATOR_PLUGIN_PATH.'/lib/dup_archive/classes/class.duparchive.mini.expander.php';
+
+        // Replace the @@ARCHIVE@@ token
+        $installer_contents = file_get_contents($template_filepath);
+
+        if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::DupArchive) {
+            $mini_expander_string = file_get_contents($mini_expander_filepath);
+
+            if ($mini_expander_string === false) {
+                DUP_Log::error(DUP_U::__('Error reading DupArchive mini expander'), DUP_U::__('Error reading DupArchive mini expander'), Dup_ErrorBehavior::LogOnly);
+                return false;
             }
-            @chmod($file_path, 0644);
+        } else {
+            $mini_expander_string = '';
         }
 
-        @chmod($template_path, 0644);
-        @chmod($main_path, 0644);
+        $search_array  = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
+        $package_hash = $this->Package->getPackageHash();
+        $replace_array = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, $mini_expander_string);
 
-        DUP_Log::Info("Build Finished");
-        $this->createFromTemplate($template_path);
-        $storePath  = "{$this->Package->StorePath}/{$this->File}";
-        $this->Size = @filesize($storePath);
-        $this->addBackup();
+        $installer_contents = str_replace($search_array, $replace_array, $installer_contents);
+
+        if (@file_put_contents($installer_filepath, $installer_contents) === false) {
+            DUP_Log::error(esc_html__('Error writing installer contents', 'duplicator'), esc_html__("Couldn't write to $installer_filepath", 'duplicator'));
+            $success = false;
+        }
+
+        $yn = file_exists($installer_filepath) ? 'yes' : 'no';
+
+        if ($success) {
+            $storePath  = "{$this->Package->StorePath}/{$this->File}";
+            $this->Size = @filesize($storePath);
+        }
+
+        return $success;
     }
 
     /**
-     *  Puts an installer zip file in the archive for backup purposes.
-     *
-     * @return null
-     */
-    private function addBackup()
+	 * Create archive.txt file */
+    private function create_archive_config_file()
     {
-
-        $zipPath   = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
-        $installer = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php";
-
-        $zipArchive = new ZipArchive();
-        if ($zipArchive->open($zipPath, ZIPARCHIVE::CREATE) === TRUE) {
-            if ($zipArchive->addFile($installer, "installer-backup.php")) {
-                DUP_Log::Info("Added to archive");
-            } else {
-                DUP_Log::Info("Unable to add installer-backup.php to archive.", "Installer File Path [{$installer}]");
-            }
-            $zipArchive->close();
-        }
-    }
-
-    /**
-     * Generates the final installer file from the template file
-     *
-     * @param string $template The path to the installer template which is originally copied from main.installer.php
-     *
-     * @return null
-     */
-    private function createFromTemplate($template)
-    {
-
         global $wpdb;
 
-        DUP_Log::Info("Preparing for use");
-        $installer = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php";
+        $success                 = true;
+        $archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.txt";
+        $ac                      = new DUP_Archive_Config();
+        $extension               = strtolower($this->Package->Archive->Format);
 
-        //Option values to delete at install time
-        $deleteOpts = $GLOBALS['DUPLICATOR_OPTS_DELETE'];
+		$hasher = new DUP_PasswordHash(8, FALSE);
+		$pass_hash = $hasher->HashPassword($this->Package->Installer->OptsSecurePass);
 
-		 DUP_Log::Info("PACK SIZE: {$this->Package->Size}");
+        //READ-ONLY: COMPARE VALUES
+        $ac->created     = $this->Package->Created;
+        $ac->version_dup = DUPLICATOR_VERSION;
+        $ac->version_wp  = $this->Package->VersionWP;
+        $ac->version_db  = $this->Package->VersionDB;
+        $ac->version_php = $this->Package->VersionPHP;
+        $ac->version_os  = $this->Package->VersionOS;
+        $ac->dbInfo      = $this->Package->Database->info;
 
-		 $hasher = new DUP_PasswordHash(8, FALSE);
-		 $pass_hash = $hasher->HashPassword($this->Package->Installer->OptsSecurePass);
+        //READ-ONLY: GENERAL
+       // $ac->installer_base_name  = $global->installer_base_name;
+		$ac->installer_base_name  = 'installer.php';
+        $ac->package_name         = "{$this->Package->NameHash}_archive.{$extension}";
+        $ac->package_hash         = $this->Package->getPackageHash();
+        $ac->package_notes        = $this->Package->Notes;
+        $ac->url_old              = get_option('siteurl');
+        $ac->opts_delete          = json_encode($GLOBALS['DUPLICATOR_OPTS_DELETE']);
+        $ac->blogname             = esc_html(get_option('blogname'));
+        $ac->wproot               = DUPLICATOR_WPROOTPATH;
+        $ac->relative_content_dir = str_replace(ABSPATH, '', WP_CONTENT_DIR);
+        $ac->exportOnlyDB		  = $this->Package->Archive->ExportOnlyDB;
+        $ac->installSiteOverwriteOn = DUPLICATOR_INSTALL_SITE_OVERWRITE_ON;
+		$ac->wplogin_url		  = wp_login_url();
 
-        $replace_items = Array(
-            //COMPARE VALUES
-            "fwrite_created" => $this->Package->Created,
-            "fwrite_version_dup" => DUPLICATOR_VERSION,
-            "fwrite_version_wp" => $this->Package->VersionWP,
-            "fwrite_version_db" => $this->Package->VersionDB,
-            "fwrite_version_php" => $this->Package->VersionPHP,
-            "fwrite_version_os" => $this->Package->VersionOS,
-            //GENERAL
-            "fwrite_url_old" => get_option('siteurl'),
-            "fwrite_archive_name" => "{$this->Package->NameHash}_archive.zip",
-			"fwrite_archive_onlydb" => $this->Package->Archive->ExportOnlyDB,
-            "fwrite_package_notes"	=> $this->Package->Notes,
-			"fwrite_package_size"	=> $this->Package->Archive->Size,
-            "fwrite_secure_name"	=> $this->Package->NameHash,
-            "fwrite_dbhost"			=> $this->Package->Installer->OptsDBHost,
-            "fwrite_dbport"			=> $this->Package->Installer->OptsDBPort,
-            "fwrite_dbname"			=> $this->Package->Installer->OptsDBName,
-            "fwrite_dbuser"			=> $this->Package->Installer->OptsDBUser,
-			"fwrite_secureon"		=> $this->Package->Installer->OptsSecureOn,
-			"fwrite_securepass"		=> $pass_hash,
-            "fwrite_dbpass" => '',
-            "fwrite_wp_tableprefix" => $wpdb->prefix,
-            "fwrite_opts_delete" => json_encode($deleteOpts),
-            "fwrite_blogname" => esc_html(get_option('blogname')),
-            "fwrite_wproot" => DUPLICATOR_WPROOTPATH,
-            "fwrite_wplogin_url" => wp_login_url(),
-            "package_hash" => $this->Package->getPackageHash(),
-            "fwrite_duplicator_version" => DUPLICATOR_VERSION
-        );
+        //PRE-FILLED: GENERAL
+        $ac->secure_on   = $this->Package->Installer->OptsSecureOn;
+        $ac->secure_pass = $pass_hash;
+        $ac->skipscan    = false;
+        $ac->dbhost      = $this->Package->Installer->OptsDBHost;
+        $ac->dbname      = $this->Package->Installer->OptsDBName;
+        $ac->dbuser      = $this->Package->Installer->OptsDBUser;
+        $ac->dbpass      = '';
+        $ac->wp_tableprefix = $wpdb->base_prefix;
 
-        if (file_exists($template) && is_readable($template)) {
-            $err_msg     = "ERROR: Unable to read/write installer. \nERROR INFO: Check permission/owner on file and parent folder.\nInstaller File = <{$installer}>";
-            $install_str = $this->parseTemplate($template, $replace_items);
-            (empty($install_str)) ? DUP_Log::Error("{$err_msg}", "DUP_Installer::createFromTemplate => file-empty-read") : DUP_Log::Info("Template parsed with new data");
+        $ac->mu_mode = DUP_MU::getMode();
 
-            //INSTALLER FILE
-            $fp = (!file_exists($installer)) ? fopen($installer, 'x+') : fopen($installer, 'w');
-            if (!$fp || !fwrite($fp, $install_str, strlen($install_str))) {
-                DUP_Log::Error("{$err_msg}", "DUP_Installer::createFromTemplate => file-write-error");
+        $json = json_encode($ac);
+
+        DUP_Log::TraceObject('json', $json);
+
+        if (file_put_contents($archive_config_filepath, $json) === false) {
+            DUP_Log::error("Error writing archive config", "Couldn't write archive config at $archive_config_filepath", Dup_ErrorBehavior::LogOnly);
+            $success = false;
+        }
+
+        return $success;
+    }
+
+	/**
+     *  Puts an installer zip file in the archive for backup purposes.
+     */
+    private function add_extra_files($package)
+    {
+        $success                 = false;
+        $installer_filepath      = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php";
+        $scan_filepath           = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_scan.json";
+        $sql_filepath            = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Database->File}");
+        $archive_filepath        = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
+        $archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.txt";
+
+        DUP_Log::Info("add_extra_files1");
+
+        if (file_exists($installer_filepath) == false) {
+            DUP_Log::error("Installer $installer_filepath not present", '', Dup_ErrorBehavior::LogOnly);
+            return false;
+        }
+
+        DUP_Log::Info("add_extra_files2");
+        if (file_exists($sql_filepath) == false) {
+            DUP_Log::error("Database SQL file $sql_filepath not present", '', Dup_ErrorBehavior::LogOnly);
+            return false;
+        }
+
+        DUP_Log::Info("add_extra_files3");
+        if (file_exists($archive_config_filepath) == false) {
+            DUP_Log::error("Archive configuration file $archive_config_filepath not present", '', Dup_ErrorBehavior::LogOnly);
+            return false;
+        }
+
+        DUP_Log::Info("add_extra_files4");
+        if ($package->Archive->file_count != 2) {
+            DUP_Log::Info("Doing archive file check");
+            // Only way it's 2 is if the root was part of the filter in which case the archive won't be there
+            DUP_Log::Info("add_extra_files5");
+            if (file_exists($archive_filepath) == false) {
+
+                DUP_Log::error("$error_text. **RECOMMENDATION: $fix_text", '', Dup_ErrorBehavior::LogOnly);
+
+                return false;
+            }
+            DUP_Log::Info("add_extra_files6");
+        }
+
+        if($package->Archive->Format == 'DAF') {
+            DUP_Log::Info("add_extra_files7");
+            $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
+        } else {
+            DUP_Log::Info("add_extra_files8");
+            $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
+        }
+
+        // No sense keeping the archive config around
+        @unlink($archive_config_filepath);
+
+        $package->Archive->Size = @filesize($archive_filepath);
+
+        return $success;
+    }
+
+    private function add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath)
+    {
+        $success = false;
+
+        try {
+            DUP_Log::Info("add_extra_files_using_da1");
+			$htaccess_filepath = DUPLICATOR_WPROOTPATH . '.htaccess';
+			$webconf_filepath  = DUPLICATOR_WPROOTPATH . 'web.config';
+			$wpconfig_filepath = DUPLICATOR_WPROOTPATH . 'wp-config.php';
+
+            $logger = new DUP_DupArchive_Logger();
+
+            DupArchiveEngine::init($logger, 'DUP_Log::profile');
+
+            $embedded_scan_ark_file_path = $this->getEmbeddedScanFilePath();
+            DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $scan_filepath, $embedded_scan_ark_file_path);
+            $this->numFilesAdded++;
+
+			if(file_exists($htaccess_filepath)) {
+				try {
+					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $htaccess_filepath, DUPLICATOR_HTACCESS_ORIG_FILENAME);
+					$this->numFilesAdded++;
+				} catch (Exception $ex) {
+					// Non critical so bury exception
+				}
+			}
+
+			if(file_exists($webconf_filepath)) {
+				try {
+					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $webconf_filepath, DUPLICATOR_WEBCONFIG_ORIG_FILENAME);
+					$this->numFilesAdded++;
+				} catch (Exception $ex) {
+					// Non critical so bury exception
+				}
+			}
+
+			if(file_exists($wpconfig_filepath)) {
+				$conf_ark_file_path = $this->getWPConfArkFilePath();
+                DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, $conf_ark_file_path);
+				$this->numFilesAdded++;
+			}
+
+            $this->add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath);
+
+            $success = true;
+        } catch (Exception $ex) {
+            DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage(), Dup_ErrorBehavior::ThrowException);
+        }
+
+        return $success;
+    }
+
+    private function add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath)
+    {
+        /* @var $global DUP_Global_Entity */
+     //   $global                    = DUP_Global_Entity::get_instance();
+       // $installer_backup_filename = $global->get_installer_backup_filename();
+        $installer_backup_filename = 'installer-backup.php';
+
+		$installer_backup_filepath = dirname($installer_filepath) . "/{$installer_backup_filename}";
+
+        DUP_Log::Info('Adding enhanced installer files to archive using DupArchive');
+
+		SnapLibIOU::copy($installer_filepath, $installer_backup_filepath);
+
+		DupArchiveEngine::addFileToArchiveUsingBaseDirST($archive_filepath, dirname($installer_backup_filepath), $installer_backup_filepath);
+
+		SnapLibIOU::rm($installer_backup_filepath);
+
+        $this->numFilesAdded++;
+
+        $base_installer_directory = DUPLICATOR_PLUGIN_PATH.'installer';
+        $installer_directory      = "$base_installer_directory/dup-installer";
+
+        $counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $installer_directory, $base_installer_directory, true);
+        $this->numFilesAdded += $counts->numFilesAdded;
+        $this->numDirsAdded += $counts->numDirsAdded;
+
+        $archive_config_relative_path = $this->getArchiveTxtFilePath();
+
+        DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $archive_config_filepath, $archive_config_relative_path);
+        $this->numFilesAdded++;
+
+        // Include dup archive
+        $duparchive_lib_directory = DUPLICATOR_PLUGIN_PATH.'lib/dup_archive';
+        $duparchive_lib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $duparchive_lib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+        $this->numFilesAdded += $duparchive_lib_counts->numFilesAdded;
+        $this->numDirsAdded += $duparchive_lib_counts->numDirsAdded;
+
+        // Include snaplib
+        $snaplib_directory = DUPLICATOR_PLUGIN_PATH.'lib/snaplib';
+        $snaplib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+        $this->numFilesAdded += $snaplib_counts->numFilesAdded;
+        $this->numDirsAdded += $snaplib_counts->numDirsAdded;
+
+        // Include fileops
+        $fileops_directory = DUPLICATOR_PLUGIN_PATH.'lib/fileops';
+        $fileops_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $fileops_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+        $this->numFilesAdded += $fileops_counts->numFilesAdded;
+        $this->numDirsAdded += $fileops_counts->numDirsAdded;
+    }
+
+    private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath)
+    {
+		$htaccess_filepath  = DUPLICATOR_WPROOTPATH . '.htaccess';
+		$webconfig_filepath = DUPLICATOR_WPROOTPATH . 'web.config';
+		$wpconfig_filepath  = DUPLICATOR_WPROOTPATH . 'wp-config.php';
+
+        $success = false;
+
+        $zipArchive = new ZipArchive();
+
+        if ($zipArchive->open($zip_filepath, ZIPARCHIVE::CREATE) === TRUE) {
+            DUP_Log::Info("Successfully opened zip $zip_filepath");
+
+			if(file_exists($htaccess_filepath)) {
+				DUP_Zip_U::addFileToZipArchive($zipArchive, $htaccess_filepath, DUPLICATOR_HTACCESS_ORIG_FILENAME, true);
+			}
+
+			if(file_exists($webconfig_filepath)) {
+				DUP_Zip_U::addFileToZipArchive($zipArchive, $webconfig_filepath, DUPLICATOR_WEBCONFIG_ORIG_FILENAME, true);
+			}
+
+			if(file_exists($wpconfig_filepath)) {
+                $conf_ark_file_path = $this->getWPConfArkFilePath();
+				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, $conf_ark_file_path, true);
+			}
+
+            $embedded_scan_file_path = $this->getEmbeddedScanFilePath();
+            if (DUP_Zip_U::addFileToZipArchive($zipArchive, $scan_filepath, $embedded_scan_file_path, true)) {
+                if ($this->add_installer_files_using_zip_archive($zipArchive, $installer_filepath, $archive_config_filepath, true)) {
+                    DUP_Log::info("Installer files added to archive");
+                    DUP_Log::info("Added to archive");
+
+                    $success = true;
+                } else {
+                    DUP_Log::error("Unable to add enhanced enhanced installer files to archive.", '', Dup_ErrorBehavior::LogOnly);
+                }
+            } else {
+                DUP_Log::error("Unable to add scan file to archive.", '', Dup_ErrorBehavior::LogOnly);
             }
 
-            @fclose($fp);
-        } else {
-            DUP_Log::Error("Installer Template missing or unreadable.", "Template [{$template}]");
+            if ($zipArchive->close() === false) {
+                DUP_Log::error("Couldn't close archive when adding extra files.", '');
+                $success = false;
+            }
+
+            DUP_Log::Info('After ziparchive close when adding installer');
         }
-        @unlink($template);
-        DUP_Log::Info("Complete [{$installer}]");
+
+        return $success;
+    }
+
+    // Add installer directory to the archive and the archive.cfg
+    private function add_installer_files_using_zip_archive(&$zip_archive, $installer_filepath, $archive_config_filepath, $is_compressed)
+    {
+        $success                   = false;
+        /* @var $global DUP_Global_Entity */
+       // $global                    = DUP_Global_Entity::get_instance();
+//        $installer_backup_filename = $global->get_installer_backup_filename();
+		$installer_backup_filename = 'installer-backup.php';
+
+        DUP_Log::Info('Adding enhanced installer files to archive using ZipArchive');
+
+        //   if ($zip_archive->addFile($installer_filepath, $installer_backup_filename)) {
+        if (DUP_Zip_U::addFileToZipArchive($zip_archive, $installer_filepath, $installer_backup_filename, true)) {
+            DUPLICATOR_PLUGIN_PATH.'installer/';
+
+            $installer_directory = DUPLICATOR_PLUGIN_PATH.'installer/dup-installer';
+
+
+            if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $installer_directory, true, '', $is_compressed)) {
+                $archive_config_local_name = $this->getArchiveTxtFilePath();
+
+                // if ($zip_archive->addFile($archive_config_filepath, $archive_config_local_name)) {
+                if (DUP_Zip_U::addFileToZipArchive($zip_archive, $archive_config_filepath, $archive_config_local_name, true)) {
+
+                    $snaplib_directory = DUPLICATOR_PLUGIN_PATH . 'lib/snaplib';
+                 //   $fileops_directory = DUPLICATOR_PLUGIN_PATH . 'lib/fileops';
+
+                    //DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+                    if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $snaplib_directory, true, 'dup-installer/lib/', $is_compressed))// &&
+                 //       DUP_Zip_U::addDirWithZipArchive($zip_archive, $fileops_directory, true, 'dup-installer/lib/', $is_compressed)) {
+					{
+                        $success = true;
+                    } else {
+                      //  DUP_Log::error("Error adding directory {$snaplib_directory} or {$fileops_directory} to zipArchive", '', false);
+						  DUP_Log::error("Error adding directory {$snaplib_directory} to zipArchive", '', Dup_ErrorBehavior::LogOnly);
+                    }
+                } else {
+                    DUP_Log::error("Error adding $archive_config_filepath to zipArchive", '', Dup_ErrorBehavior::LogOnly);
+                }
+            } else {
+                DUP_Log::error("Error adding directory $installer_directory to zipArchive", '', Dup_ErrorBehavior::LogOnly);
+            }
+        } else {
+            DUP_Log::error("Error adding backup installer file to zipArchive", '', Dup_ErrorBehavior::LogOnly);
+        }
+
+        return $success;
     }
 
     /**
-     *  Tokenize a file based on an array key 
-     *
-     *  @param string $filename		The filename to tokenize
-     *  @param array  $data			The array of key value items to tokenize
+     * Get wp-config.php file path along with name in archive file
      */
-    private function parseTemplate($filename, $data)
+    private function getWPConfArkFilePath()
     {
-        $q = file_get_contents($filename);
-        foreach ($data as $key => $value) {
-            //NOTE: Use var_export as it's probably best and most "thorough" way to
-            //make sure the values are set correctly in the template.  But in the template,
-            //need to make things properly formatted so that when real syntax errors
-            //exist they are easy to spot.  So the values will be surrounded by quotes
-
-            $find = array("'%{$key}%'", "\"%{$key}%\"");
-            $q    = str_replace($find, var_export($value, true), $q);
-            //now, account for places that do not surround with quotes...  these
-            //places do NOT need to use var_export as they are not inside strings
-            $q    = str_replace('%'.$key.'%', $value, $q);
+        if (DUPLICATOR_INSTALL_SITE_OVERWRITE_ON) {
+            $package_hash = $this->Package->getPackageHash();
+            $conf_ark_file_path = 'dup-wp-config-arc__'.$package_hash.'.txt';
+        } else {
+            $conf_ark_file_path = 'wp-config.php';
         }
-        return $q;
+        return $conf_ark_file_path;
     }
+
+    /**
+     * Get scan.json file path along with name in archive file
+     */
+    private function getEmbeddedScanFilePath() {
+        $package_hash = $this->Package->getPackageHash();
+        $embedded_scan_ark_file_path = 'dup-installer/dup-scan__'.$package_hash.'.json';
+        return $embedded_scan_ark_file_path;
+    }
+
+    /**
+     * Get archive.txt file path along with name in archive file
+     */
+    private function getArchiveTxtFilePath() {
+        $package_hash = $this->Package->getPackageHash();
+        $archive_txt_file_path = 'dup-installer/dup-archive__'.$package_hash.'.txt';
+        return $archive_txt_file_path;
+    }
+
 }
-?>

@@ -3,20 +3,24 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.dialog.php');
 $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) : 'list';
 $_GET['_wpnonce'] = isset($_GET['_wpnonce']) ? $_GET['_wpnonce'] : null;
 
+$txt_invalid_msg1 = __("An invalid request was made to this page.", 'duplicator');
+$txt_invalid_msg2 = __("Please retry by going to the", 'duplicator');
+$txt_invalid_lnk  = __("Packages Screen", 'duplicator');
+
 switch ($current_tab) {
 	case 'new1':
 		if (!wp_verify_nonce($_GET['_wpnonce'], 'new1-package')) {
-			die('Security check disrupted, please return to step 1.');
+			die(printf("%s <br/>%s <a href='admin.php?page=duplicator'>%s</a>.", $txt_invalid_msg1, $txt_invalid_msg2, $txt_invalid_lnk));
 		}
 		break;
 	case 'new2':
 		if (!wp_verify_nonce($_GET['_wpnonce'], 'new2-package')) {
-			die('Security check disrupted, please return to step 1.');
+			die(printf("%s <br/>%s <a href='admin.php?page=duplicator'>%s</a>.", $txt_invalid_msg1, $txt_invalid_msg2, $txt_invalid_lnk));
 		}
 		break;
 	case 'new3':
 		if (!wp_verify_nonce($_GET['_wpnonce'], 'new3-package')) {
-			die('Security check disrupted, please return to step 1.');
+			die(printf("%s <br/>%s <a href='admin.php?page=duplicator'>%s</a>.", $txt_invalid_msg1, $txt_invalid_msg2, $txt_invalid_lnk));
 		}
 		break;
 }

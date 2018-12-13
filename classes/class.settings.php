@@ -1,10 +1,20 @@
 <?php
-if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
+// Exit if accessed directly
+if (! defined('DUPLICATOR_VERSION')) exit;
 
+
+abstract class DUP_Archive_Build_Mode
+{
+    const Unconfigured = -1;
+    const Auto         = 0; // should no longer be used
+  //  const Shell_Exec   = 1;
+    const ZipArchive   = 2;
+    const DupArchive   = 3;
+}
 
 class DUP_Settings
 {
-	
+
 	const OPT_SETTINGS = 'duplicator_settings';
 
 	public static $Data;
@@ -30,12 +40,12 @@ class DUP_Settings
 	public static function Get($key = '') {
 		$result = null;
 		if (isset(self::$Data[$key])) {
-			$result = self::$Data[$key]; 
+			$result = self::$Data[$key];
 		} else {
 			$defaults = self::GetAllDefaults();
 			if (isset($defaults[$key])) {
 				$result = $defaults[$key];
-			} 
+			}
 		}
 		return $result;
 	}
@@ -79,38 +89,20 @@ class DUP_Settings
 		self::$Data = $defaults;
 		return self::Save();
 	}
-	
-	/**
-	*  LegacyClean: Cleans up legacy data
-	*/
-	public static function LegacyClean() {
-		global $wpdb;
 
-		//PRE 5.0
-		$table = $wpdb->prefix."duplicator";
-		$wpdb->query("DROP TABLE IF EXISTS $table");
-		delete_option('duplicator_pack_passcount'); 
-		delete_option('duplicator_add1_passcount'); 
-		delete_option('duplicator_add1_clicked'); 
-		delete_option('duplicator_options'); 
-		
-		//PRE 5.n
-		//Next version here if needed
-	}
-	
 	/**
 	*  DeleteWPOption: Cleans up legacy data
 	*/
 	public static function DeleteWPOption($optionName) {
-		
+
 		if ( in_array($optionName, $GLOBALS['DUPLICATOR_OPTS_DELETE']) ) {
-			return delete_option($optionName); 
+			return delete_option($optionName);
 		}
 		return false;
 	}
-	
-	
-	public static function GetAllDefaults() {	
+
+
+	public static function GetAllDefaults() {
 		$default = array();
 		$default['version'] = self::$Version;
 
@@ -120,7 +112,7 @@ class DUP_Settings
 		$default['uninstall_files']		= isset(self::$Data['uninstall_files'])  ? self::$Data['uninstall_files']  : true;
 		//Flag used to remove all tables
 		$default['uninstall_tables']	= isset(self::$Data['uninstall_tables']) ? self::$Data['uninstall_tables'] : true;
-		
+
 		//Flag used to show debug info
 		$default['package_debug']			 = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
 		//Flag used to enable mysqldump
@@ -131,10 +123,15 @@ class DUP_Settings
 		$default['package_phpdump_qrylimit'] = isset(self::$Data['package_phpdump_qrylimit']) ? self::$Data['package_phpdump_qrylimit'] : "100";
 		//Optional mysqldump search path
 		$default['package_zip_flush']		 = isset(self::$Data['package_zip_flush']) ? self::$Data['package_zip_flush'] : false;
-		
+
 		//Flag for .htaccess file
 		$default['storage_htaccess_off'] = isset(self::$Data['storage_htaccess_off']) ? self::$Data['storage_htaccess_off'] : false;
-		
+
+		// Initial archive build mode
+		$default['archive_build_mode'] = isset(self::$Data['archive_build_mode']) ? self::$Data['archive_build_mode'] : DUP_Archive_Build_Mode::ZipArchive;
+
+        $default['active_package_id'] = -1;
+
 		return $default;
 	}
 }
