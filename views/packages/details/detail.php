@@ -59,7 +59,7 @@ $dup_install_secure_pass = isset($package->Installer->OptsSecurePass) ? DUP_Util
 </style>
 
 <?php if ($package_id == 0) :?>
-	<div class="notice notice-error is-dismissible"><p><?php esc_html_e('Invlaid Package ID request.  Please try again!', 'duplicator'); ?></p></div>
+	<div class="notice notice-error is-dismissible"><p><?php esc_html_e('Invalid Package ID request.  Please try again!', 'duplicator'); ?></p></div>
 <?php endif; ?>
 	
 <div class="toggle-box">
@@ -288,7 +288,7 @@ ARCHIVE -->
 		<tr>
 			<td><?php esc_html_e('Build Mode', 'duplicator') ?>: </td>
 			<td>
-				<a href="?page=duplicator-settings" target="_blank"><?php echo esc_html($dbbuild_mode); ?></a>
+				<a href="?page=duplicator-settings&tab=package" target="_blank"><?php echo esc_html($dbbuild_mode); ?></a>
 				<?php if ($mysqlcompat_on) : ?>
 					<br/>
 					<small style="font-style:italic; color:maroon">
