@@ -253,10 +253,18 @@ VIEW: STEP 3- INPUT -->
 						</div><br style="clear:both" />
 						<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode'] > 0) ? 'disabled="true"' : ''; ?>>
 							<?php
+							$exclude_plugins = array(
+								'really-simple-ssl/rlrsssl-really-simple-ssl.php',
+								'simple-google-recaptcha/simple-google-recaptcha.php',
+							);
 							$selected_string = ($_POST['exe_safe_mode'] > 0) ? '' : 'selected="selected"';
 							foreach ($active_plugins as $plugin) {
-								$plugin_dirname = dirname($plugin);
-								echo "<option {$selected_string} value='" . DUPX_U::esc_attr( $plugin ) . "'>" . DUPX_U::esc_attr($plugin_dirname) . '</option>';
+								$label = dirname($plugin) == '.' ? $plugin : dirname($plugin);
+                                if (in_array($plugin, $exclude_plugins)) {
+                                    echo "<option value='" . DUPX_U::esc_attr($plugin) . "'>" . DUPX_U::esc_html($label) . '</option>';
+                                } else {
+									echo "<option {$selected_string} value='" . DUPX_U::esc_attr( $plugin ) . "'>" . DUPX_U::esc_html($label) . '</option>';
+								}
 							}
 							?>
 						</select>
@@ -465,9 +473,9 @@ DUPX.runUpdate = function()
             } catch(err) {
                 console.error(err);
                 console.error('JSON parse failed for response data: ' + respData);
-				var status  = "<b>Server Code:</b> "	+ xhr.status		+ "<br/>";
+				var status  = "<b>Server Code:</b> "	+ xHr.status		+ "<br/>";
 				status += "<b>Status:</b> "			+ textStatus	+ "<br/>";
-				status += "<b>Response:</b> "		+ xhr.responseText  + "<hr/>";
+				status += "<b>Response:</b> "		+ xHr.responseText  + "<hr/>";
 				status += "<b>Additional Troubleshooting Tips:</b><br/>";
 				status += "- Check the <a href='./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>' target='dup-installer'>dup-installer-log.txt</a> file for warnings or errors.<br/>";
 				status += "- Check the web server and PHP error logs. <br/>";

@@ -464,19 +464,13 @@ class DupArchiveEngine
     // Single-threaded file expansion
     public static function expandFiles($archiveFilePath, $relativeFilePaths, $destPath)
     {
-        DUP_PRO_LOG::trace("Opening archive: {$archiveFilePath}");
-        
         // Not setting timeout timestamp so it will never timeout
         DupArchiveUtil::tlog("opening archive {$archiveFilePath}");
 
         $archiveHandle = SnapLibIOU::fopen($archiveFilePath, 'r');
 
-        DUP_PRO_LOG::trace("archiveHandle: ".var_export($archiveHandle,true));
-
         /* @var $expandState DupArchiveSimpleExpandState */
         $expandState = new DupArchiveSimpleExpandState();
-
-        DUP_PRO_LOG::trace("Initialize class DupArchiveSimpleExpandState(): ".var_export($expandState,true));
 
         $expandState->archiveHeader = DupArchiveHeader::readFromArchive($archiveHandle);
         $expandState->isCompressed  = $expandState->archiveHeader->isCompressed;
@@ -487,8 +481,6 @@ class DupArchiveEngine
 //        $expandState->basePath    = $destPath . '/tempExtract';   // RSR remove once extract works
         $expandState->basePath      = $destPath;   // RSR remove once extract works
         
-        DUP_PRO_LOG::trace("expandState Setup: ".var_export($expandState,true));
-
         // TODO: Filter out all directories/files except those in the list
         self::expandItems($expandState, $archiveHandle);
 

@@ -35,19 +35,4 @@ class DUP_MU
             return 0;
         }
     }
-
-    public static function getGeneration()
-	{
-		if (self::getMode() == 0) {
-			return DUP_PRO_MU_Generations::NotMultisite;
-		} else {
-			$sitesDir = WP_CONTENT_DIR.'/uploads/sites';
-
-			if (file_exists($sitesDir)) {
-				return DUP_PRO_MU_Generations::ThreeFivePlus;
-			} else {
-				return DUP_PRO_MU_Generations::PreThreeFive;
-			}
-		}
-	}
 }

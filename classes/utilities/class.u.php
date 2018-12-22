@@ -506,19 +506,28 @@ class DUP_Util
         $path_ssdir  = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH);
         $path_plugin = DUP_Util::safePath(DUPLICATOR_PLUGIN_PATH);
 
-        //--------------------------------
-        //CHMOD DIRECTORY ACCESS
-        //wordpress root directory
-        @chmod($path_wproot, 0755);
+        if (!file_exists($path_ssdir)) {
+            $old_root_perm = @fileperms($path_wproot);
 
-        //snapshot directory
-        @mkdir($path_ssdir, 0755);
-        @chmod($path_ssdir, 0755);
+            //--------------------------------
+            //CHMOD DIRECTORY ACCESS
+            //wordpress root directory
+            @chmod($path_wproot, 0755);
 
-        //snapshot tmp directory
+            //snapshot directory
+            @mkdir($path_ssdir, 0755);
+            @chmod($path_ssdir, 0755);
+
+            // restore original root perms
+            @chmod($path_wproot, $old_root_perm );
+        }
+
         $path_ssdir_tmp = $path_ssdir.'/tmp';
-        @mkdir($path_ssdir_tmp, 0755);
-        @chmod($path_ssdir_tmp, 0755);
+        if (!file_exists($path_ssdir_tmp)) {
+            //snapshot tmp directory
+            @mkdir($path_ssdir_tmp, 0755);
+            @chmod($path_ssdir_tmp, 0755);
+        }
 
         //plugins dir/files
         @chmod($path_plugin.'files', 0755);
@@ -526,38 +535,51 @@ class DUP_Util
         //--------------------------------
         //FILE CREATION
         //SSDIR: Create Index File
-        $ssfile = @fopen($path_ssdir.'/index.php', 'w');
-        @fwrite($ssfile,
-                '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
-        @fclose($ssfile);
+        $fileName = $path_ssdir.'/index.php';
+        if (!file_exists($fileName)) {
+            $ssfile = @fopen($fileName, 'w');
+            @fwrite($ssfile,
+                    '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
+            @fclose($ssfile);
+        }
 
         //SSDIR: Create token file in snapshot
-        $tokenfile = @fopen($path_ssdir.'/dtoken.php', 'w');
-        @fwrite($tokenfile,
-                '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
-        @fclose($tokenfile);
+        $fileName = $path_ssdir.'/dtoken.php';
+        if (!file_exists($fileName)) {
+            $tokenfile = @fopen($fileName, 'w');
+            @fwrite($tokenfile,
+                    '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
+            @fclose($tokenfile);
+        }
 
         //SSDIR: Create .htaccess
         $storage_htaccess_off = DUP_Settings::Get('storage_htaccess_off');
+        $fileName = $path_ssdir.'/.htaccess';
         if ($storage_htaccess_off) {
-            @unlink($path_ssdir.'/.htaccess');
-        } else {
-            $htfile   = @fopen($path_ssdir.'/.htaccess', 'w');
+            @unlink($fileName);
+        } else if (!file_exists($fileName)) {
+            $htfile   = @fopen($fileName, 'w');
             $htoutput = "Options -Indexes";
             @fwrite($htfile, $htoutput);
             @fclose($htfile);
         }
 
         //SSDIR: Robots.txt file
-        $robotfile = @fopen($path_ssdir.'/robots.txt', 'w');
-        @fwrite($robotfile, "User-agent: * \nDisallow: /".DUPLICATOR_SSDIR_NAME.'/');
-        @fclose($robotfile);
+        $fileName = $path_ssdir.'/robots.txt';
+        if (!file_exists($fileName)) {
+            $robotfile = @fopen($fileName, 'w');
+            @fwrite($robotfile, "User-agent: * \nDisallow: /".DUPLICATOR_SSDIR_NAME.'/');
+            @fclose($robotfile);
+        }
 
         //PLUG DIR: Create token file in plugin
-        $tokenfile2 = @fopen($path_plugin.'installer/dtoken.php', 'w');
-        @fwrite($tokenfile2,
+        $fileName = $path_plugin.'installer/dtoken.php';
+        if (!file_exists($fileName)) {
+            $tokenfile2 = @fopen($fileName, 'w');
+            @fwrite($tokenfile2,
                 '<?php @error_reporting(0); @require_once("../../../../wp-admin/admin.php"); global $wp_query; $wp_query->set_404(); header("HTTP/1.1 404 Not Found", true, 404); header("Status: 404 Not Found"); @include(get_template_directory () . "/404.php"); ?>');
-        @fclose($tokenfile2);
+            @fclose($tokenfile2);
+        }
     }
 
     /**

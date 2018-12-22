@@ -177,8 +177,10 @@ class DUP_Zip extends DUP_Archive
                 $error_message = "ZipArchive close failure.";
 
                 DUP_Log::Error($error_message,
-                        "This hosted server may have a disk quota limit.\nCheck to make sure this archive file can be stored.",
-                        Dup_ErrorBehavior::LogOnly);
+					"The ZipArchive engine is having issues zipping up the files on this server. For more details visit the FAQ\n"
+					. "I'm getting a ZipArchive close failure when building. How can I resolve this?\n"
+					. "[https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-165-q]",
+                      Dup_ErrorBehavior::LogOnly);
 
                 $buildProgress->set_failed($error_message);
                 return;

@@ -343,7 +343,8 @@ VALIDATION
 					<b>Options:</b>
 					<ul style="margin-bottom: 0">
 						<li>If the archive was already manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
-						<li>If the wp-config file is not needed then remove it.</li>
+						<li>Empty the directory of all files, except for the installer.php and archive.zip/daf files.</li>
+						<li>Advanced Users: Can attempt to manually remove the wp-config file only if the archive was manually extracted.</li>
 					</ul>
 				<?php
                 }

@@ -75,7 +75,6 @@ class DUP_IO
         {
             if (self::createDir($dest_dir, 0755, true) === false)
             {
-                DUP_PRO_LOG::traceError("Error creating $dest_dir.");
                 return false;
             }
         }

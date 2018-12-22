@@ -20,11 +20,10 @@ class DUPX_DB
      * @param string    $username   The server DB user name
      * @param string    $password   The server DB password
      * @param string    $dbname     The server DB name
-     * @param int       $port       The server DB port
      *
      * @return database connection handle
      */
-    public static function connect($host, $username, $password, $dbname = '', $port = null)
+    public static function connect($host, $username, $password, $dbname = '')
     {
         //sock connections
         if ('sock' === substr($host, -4)) {
@@ -349,8 +348,8 @@ class DUPX_DB
             if (function_exists('mysqli_set_charset') && self::hasAbility($dbh, 'set_charset')) {
                 return mysqli_set_charset($dbh, $charset);
             } else {
-                $sql = " SET NAMES ".mysqli_real_escape_string($this->dbh, $charset);
-                if (!empty($collate)) $sql .= " COLLATE ".mysqli_real_escape_string($this->dbh, $collate);
+                $sql = " SET NAMES ".mysqli_real_escape_string($dbh, $charset);
+                if (!empty($collate)) $sql .= " COLLATE ".mysqli_real_escape_string($dbh, $collate);
                 return mysqli_query($dbh, $sql);
             }
         }

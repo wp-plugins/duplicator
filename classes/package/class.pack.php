@@ -312,15 +312,18 @@ class DUP_Package
                 )
             );
 
-        $validator->filter_var($this->Installer->OptsDBHost, FILTER_VALIDATE_URL ,  array(
-                    'valkey' => 'OptsDBHost' ,
-                    'errmsg' => __('MySQL Server Host: <b>%1$s</b> isn\'t a valid host', 'duplicator'),
-                    'acc_vals' => array(
-                        '' ,
-                        'localhost'
-                    )
-                )
-            );
+		//FILTER_VALIDATE_DOMAIN throws notice message on PHP 5.6
+		if (defined('FILTER_VALIDATE_DOMAIN')) {
+			$validator->filter_var($this->Installer->OptsDBHost, FILTER_VALIDATE_DOMAIN ,  array(
+						'valkey' => 'OptsDBHost' ,
+						'errmsg' => __('MySQL Server Host: <b>%1$s</b> isn\'t a valid host', 'duplicator'),
+						'acc_vals' => array(
+							'' ,
+							'localhost'
+						)
+					)
+				);
+		}
 
         $validator->filter_var($this->Installer->OptsDBPort, FILTER_VALIDATE_INT , array(
                     'valkey' => 'OptsDBPort' ,
@@ -335,6 +338,14 @@ class DUP_Package
             );
 
         return $validator;
+    }
+
+    /**
+     *
+     * @return bool return true if package is a active_package_id and status is bewteen 0 and 100
+     */
+    public function isRunning() {
+        return DUP_Settings::Get('active_package_id') == $this->ID && $this->Status >= 0 && $this->Status < 100;
     }
 
 	/**
@@ -441,6 +452,43 @@ class DUP_Package
     }
 
     /**
+     * Get package archive size.
+     * If package isn't complete it get size from sum of temp files.
+     *
+     * @return int size in byte 
+     */
+    public function getArchiveSize() {
+        $size = 0;
+
+        if ($this->Status >= 100) {
+            $size = $this->Archive->Size;
+        } else {
+            $tmpSearch = glob(DUPLICATOR_SSDIR_PATH_TMP . "/{$this->NameHash}_*");
+            if (is_array($tmpSearch)) {
+                $result = array_map('filesize', $tmpSearch);
+                $size = array_sum($result);
+            }
+        }
+
+        return $size;
+    }
+
+    /**
+     * Return true if active package exist and have an active status
+     *
+     * @return bool
+     */
+    public static function is_active_package_present()
+    {
+        $activePakcs = self::get_all_by_status(array(
+                array('op' => '>=', 'status' => DUP_PackageStatus::CREATED),
+                array('op' => '<', 'status' => DUP_PackageStatus::COMPLETE)
+                ), true);
+
+        return in_array( DUP_Settings::Get('active_package_id') , $activePakcs);
+    }
+
+    /**
      * Get all packages with status conditions
      * @global wpdb $wpdb
      * @param array $conditions es. [
@@ -450,11 +498,15 @@ class DUP_Package
      *                                  [ 'op' => '<' ,
      *                                    'status' =>  DUP_PackageStatus::COMPLETED ]
      *                              ]
-     * @return DUP_Package[]
+     * @param bool $getIds if true return array of id
+     *
+     * @return DUP_Package[]|int[]
      */
-    public static function get_all_by_status($conditions = array())
+    public static function get_all_by_status($conditions = array(),$getIds = false)
     {
         global $wpdb;
+        $result = array();
+
         $tablePrefix = DUP_Util::getTablePrefix();
         $table = $tablePrefix . "duplicator_packages";
 
@@ -475,23 +527,30 @@ class DUP_Package
             $where = ' WHERE '.implode($relation, $str_conds).' ';
         }
 
-        $packages = array();
-        $rows     = $wpdb->get_results("SELECT * FROM `{$table}` {$where} ORDER BY id DESC", ARRAY_A);
+        $cols = $getIds ? 'id' : '*';
+        $rows = $wpdb->get_results("SELECT {$cols} FROM `{$table}` {$where} ORDER BY id DESC", ARRAY_A);
 
         if ($rows != null) {
-            foreach ($rows as $row) {
-                $Package = unserialize($row['package']);
-                if ($Package) {
-                    // We was not storing Status in Lite 1.2.52, so it is for backward compatibility
-                    if (!isset($Package->Status)) {
-                        $Package->Status = $row['status'];
-                    }
+            if ($getIds) {
+                foreach ($rows as $row) {
+                     $result[] = (int) $row['id'];
+                }
+            } else {
+                foreach ($rows as $row) {
+                    $Package = unserialize($row['package']);
+                    if ($Package) {
+                        // We was not storing Status in Lite 1.2.52, so it is for backward compatibility
+                        if (!isset($Package->Status)) {
+                            $Package->Status = $row['status'];
+                        }
 
-                    $packages[] = $Package;
+                        $result[] = $Package;
+                    }
                 }
             }
         }
-        return $packages;
+
+        return $result;
     }
 
     /**
@@ -729,13 +788,8 @@ class DUP_Package
 			return;
 		}
 
-        $iterator = new FilesystemIterator(DUPLICATOR_SSDIR_PATH_TMP);
-
-        // if tmp is empty return
-        if (!$iterator->valid()) {
-            return;
-        }
-
+        $globs = glob(DUPLICATOR_SSDIR_PATH_TMP.'/*.*');
+        
         // RUNNING PACKAGES
         $active_pack = self::get_all_by_status(array(
             'relation' => 'AND',
@@ -743,8 +797,9 @@ class DUP_Package
             array('op' => '<' , 'status' => DUP_PackageStatus::COMPLETE )
         ));
         $active_files = array();
-        foreach($active_pack as $package) {
-            $active_files[] = $package->NameHash;
+
+        foreach($active_pack as $package) {                            
+            $active_files[] = $package->NameHash; // 20181221_dup_c0b2f1198a92f4f6c47a621494adc5cb_20181221173955
         }
 
         // ERRORS PACKAGES
@@ -762,39 +817,43 @@ class DUP_Package
         // Calculate delta time for old files
         $oldTimeToClean = time() - DUPLICATOR_TEMP_CLEANUP_SECONDS;
 
-        foreach ($iterator as $fileinfo) {
+        // foreach ($iterator as $fileinfo) {
+        foreach ($globs as $glob_full_path) {
             // Don't remove sub dir
-            if ($fileinfo->isDir()) {
+            // if ($fileinfo->isDir()) {
+            if (is_dir($glob_full_path)) {
                 continue;
             }
 
+            $file_name = basename($glob_full_path);
             // skip all active packages
             foreach ($active_files  as $c_nameHash) {
-                if (strpos($fileinfo->getFilename(), $c_nameHash) === 0) {
+                if (strpos($file_name, $c_nameHash) === 0) {
                     continue 2;
                 }
             }
 
             // Remove all old files
-            if ($fileinfo->getCTime() <= $oldTimeToClean) {
-                @unlink($fileinfo->getRealPath());
+            if (filemtime($glob_full_path) <= $oldTimeToClean) {
+                @unlink($glob_full_path);
                 continue;
             }
 
             // remove all error packages files
             foreach ($force_del_files  as $c_nameHash) {
-                if (strpos($fileinfo->getFilename(), $c_nameHash) === 0) {
-                    @unlink($fileinfo->getRealPath());
+                if (strpos($file_name, $c_nameHash) === 0) {
+                    @unlink($glob_full_path);
                     continue 2;
                 }
             }
 
+            $file_info = pathinfo($glob_full_path);
             // skip json file for pre build packages
-            if (in_array($fileinfo->getExtension(),$extension_filter) || in_array($fileinfo->getFilename() , $active_files)) {
+            if (in_array($file_info['extension'], $extension_filter) || in_array($file_name, $active_files)) {
                 continue;
             }
 
-            @unlink($fileinfo->getRealPath());
+            @unlink($glob_full_path);
         }
     }
 
@@ -1211,7 +1270,7 @@ class DUP_Package
      *
      * @param int $id A valid package id form the duplicator_packages table
      *
-     * @return obj  A copy of the DUP_Package object
+     * @return DUP_Package A copy of the DUP_Package object
      */
     public static function getByID($id)
     {

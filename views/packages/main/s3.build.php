@@ -584,8 +584,8 @@ jQuery(document).ready(function ($)
 		var seconds = ((millis % 60000) / 1000).toFixed(0);
 		var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 		$('#dup-msg-error-response-time span.data').html(status);
-		$('#dup-create-area-nolink').hide();
-		$('#dup-create-area-link').show();
+		//$('#dup-create-area-nolink').hide();
+		//$('#dup-create-area-link').show();
 	};
 
 	Duplicator.Pack.WireDownloadLinks = function(data)

@@ -104,6 +104,9 @@
 	div#data-db-tablelist {max-height:250px; overflow-y:scroll; border:1px solid silver; padding:8px; background: #efefef; border-radius: 4px}
 	div#data-db-tablelist td{padding:0 5px 3px 20px; min-width:100px}
 	div#data-db-size1, div#data-ll-totalsize {display:inline-block; font-size:11px; margin-right:1px;}
+	/*FILES */
+	div#dup-confirm-area {color:maroon; display:none; text-align: center; font-size:14px; line-height:24px; font-weight: bold; margin: -5px 0 10px 0}
+	div#dup-confirm-area label {font-size:14px !important}
 	
 	/*WARNING-CONTINUE*/
 	div#dup-scan-warning-continue {display:none; text-align:center; padding:0 0 15px 0}
@@ -250,10 +253,19 @@ TOOL BAR:STEPS -->
 			</div>
 		</div>
 
+		<div id="dup-confirm-area"> 
+			<label for="duplicator-confirm-check"><?php esc_html_e('Do you want to continue?', 'duplicator'); 
+			echo '<br/> '; 
+			esc_html_e('At least one or more checkboxes was checked in "Quick Filters".', 'duplicator') ?><br/> 
+			<i style="font-weight:normal"><?php esc_html_e('To apply a "Quick Filter" click the "Add Filters & Rescan" button', 'duplicator') ?></i><br/> 
+			<input type="checkbox" id="duplicator-confirm-check" onclick="jQuery('#dup-build-button').removeAttr('disabled');"> 
+			<?php esc_html_e('Yes. Continue without applying any file filters.', 'duplicator') ?></label><br/> 
+		</div> 
+
 		<div class="dup-button-footer" style="display:none">
 			<input type="button" value="&#9664; <?php esc_html_e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1&_wpnonce=<?php echo wp_create_nonce('new1-package');?>')" class="button button-large" />
 			<input type="button" value="<?php esc_attr_e("Rescan", 'duplicator') ?>" onclick="Duplicator.Pack.rescan()" class="button button-large" />
-			<input type="submit" value="<?php esc_attr_e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
+			<input type="submit"  onclick="Duplicator.Pack.startBuild();" value="<?php esc_attr_e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
 		</div>
 	</div>
 
@@ -344,7 +356,26 @@ jQuery(document).ready(function($)
 			Duplicator.Pack.initLiteLimitData(data);
 		<?php endif; ?>
 	}
-	
+
+	Duplicator.Pack.startBuild = function()
+	{
+		if ($('#duplicator-confirm-check').is(":checked")) {
+			$('#form-duplicator').submit();
+			return true;
+		}
+
+		var sizeChecks = $('#hb-files-large-result input:checked');
+		var addonChecks = $('#hb-addon-sites-result input:checked');
+		var utf8Checks = $('#hb-files-utf8-result input:checked');
+		if (sizeChecks.length > 0 || addonChecks.length > 0 || utf8Checks.length > 0) {
+			$('#dup-confirm-area').show();
+			$('#dup-build-button').prop('disabled', true);
+			return false;
+		} else {
+			$('#form-duplicator').submit();
+		}
+	}
+
 	//Toggles each scan item to hide/show details
 	Duplicator.Pack.toggleScanItem = function(item)
 	{
@@ -362,7 +393,7 @@ jQuery(document).ready(function($)
 	//Returns the scanner without a page refresh
 	Duplicator.Pack.rescan = function()
 	{
-		$('#dup-msg-success,#dup-msg-error,.dup-button-footer').hide();
+		$('#dup-msg-success,#dup-msg-error, #dup-confirm-area, .dup-button-footer').hide();
 		$('#dup-progress-bar-area').show();
 		Duplicator.Pack.runScanner();
 	}

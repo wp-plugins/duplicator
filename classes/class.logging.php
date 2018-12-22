@@ -276,7 +276,7 @@ class DUP_Log
 
 			if (file_exists($backup_log_filepath)) {
 				if (@unlink($backup_log_filepath) === false) {
-					DUP_PRO_Low_U::errLog("Couldn't delete backup log $backup_log_filepath");
+					self::errLog("Couldn't delete backup log $backup_log_filepath");
 				}
 			}
 

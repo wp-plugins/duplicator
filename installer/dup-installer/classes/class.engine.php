@@ -188,7 +188,7 @@ class DUPX_UpdateEngine
                 if (!$fullsearch) {
                     $colList = self::getTextColumns($conn, $table);
                     if ($colList != null && is_array($colList)) {
-                        array_walk($colList, set_sql_column_safe);
+                        array_walk($colList, 'set_sql_column_safe');
                         $colList = implode(',', $colList);
                     }
                     $colMsg = (empty($colList)) ? '*' : '~';
@@ -230,6 +230,7 @@ class DUPX_UpdateEngine
                         //Loops every cell
                         foreach ($columns as $column => $primary_key) {
                             $report['scan_cells']++;
+                            if (!isset($row[$column]))  continue;
                             $edited_data = $data_to_fix = $row[$column];
                             $base64converted = false;
                             $txt_found = false;
