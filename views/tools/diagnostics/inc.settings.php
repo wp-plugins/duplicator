@@ -29,7 +29,10 @@ SERVER SETTINGS -->
 		</tr>
 		<tr>
 			<td><?php esc_html_e("Duplicator Version", 'duplicator'); ?></td>
-			<td><?php echo esc_html(DUPLICATOR_VERSION); ?></td>
+			<td>
+				<?php echo esc_html(DUPLICATOR_VERSION); ?> -
+				<?php echo esc_html(DUPLICATOR_VERSION_BUILD); ?>
+			</td>
 		</tr>
 		<tr>
 			<td><?php esc_html_e("Operating System", 'duplicator'); ?></td>
