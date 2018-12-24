@@ -61,7 +61,34 @@ class DUPX_U
         }
     }
 
-	/**
+    /**
+     * Add replace strings to substitute old url to new url
+     * 1) no protocol old url to no protocol new url (es. //www.hold.url  => //www.new.url)
+     * 2) wrong protocol new url to right protocol new url (es. http://www.new.url => https://www.new.url)
+     *
+     * @param string $old
+     * @param string $new
+     */
+    public static function replacmentUrlOldToNew($old, $new)
+    {
+        //SEARCH WITH NO PROTOCOL: RAW "//"
+        $url_old_raw = str_ireplace(array('http://', 'https://'), '//', $old);
+        $url_new_raw = str_ireplace(array('http://', 'https://'), '//', $new);
+        DUPX_U::queueReplacementWithEncodings($url_old_raw, $url_new_raw);
+
+        //FORCE NEW PROTOCOL "//"
+        $url_new_info   = parse_url($new);
+        $url_new_domain = $url_new_info['scheme'].'://'.$url_new_info['host'];
+
+        if ($url_new_info['scheme'] == 'http') {
+            $url_new_wrong_protocol = 'https://'.$url_new_info['host'];
+        } else {
+            $url_new_wrong_protocol = 'http://'.$url_new_info['host'];
+        }
+        DUPX_U::queueReplacementWithEncodings($url_new_wrong_protocol, $url_new_domain);
+    }
+
+    /**
 	 * Does one string contain other
 	 *
 	 * @param string $haystack		The full string to search
@@ -145,7 +172,7 @@ class DUPX_U
             return false;
         }
     }
-    
+
 	/**
 	 *  A safe method used to copy larger files
 	 *
@@ -489,8 +516,8 @@ class DUPX_U
 	public static function unsetSafePath($path)
 	{
 		return str_replace("/", "\\", $path);
-	}	 
-	
+	}
+
 	/**
      *  Check PHP version
      *
@@ -502,7 +529,7 @@ class DUPX_U
     {
         return (version_compare(PHP_VERSION, $version) >= 0);
 	}
-	
+
 	// START ESCAPING AND SANITIZATION
 	/**
 	 * Escaping for HTML blocks.
@@ -584,7 +611,7 @@ class DUPX_U
 	 */
 	public static function esc_textarea( $text )
 	{
-		$safe_text = htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );		
+		$safe_text = htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
 		/**
 		 * Filters a string cleaned and escaped for output in a textarea element.
 		 *
@@ -911,7 +938,7 @@ class DUPX_U
 		return ( ! in_array( $i, $allowedentitynames ) ) ? "&amp;$i;" : "&$i;";
 	}
 
-    
+
     /**
     * Helper function to determine if a Unicode value is valid.
     *
@@ -924,7 +951,7 @@ class DUPX_U
                 ($i >= 0xe000 && $i <= 0xfffd) ||
                 ($i >= 0x10000 && $i <= 0x10ffff) );
     }
-        
+
 	/**
 	 * Callback for wp_kses_normalize_entities() regular expression.
 	 *
@@ -1104,7 +1131,7 @@ class DUPX_U
 		return $good_protocol_url;
 	}
 
-	
+
 	/**
 	 * Removes any invalid control characters in $string.
 	 *
@@ -1263,7 +1290,7 @@ class DUPX_U
 	}
 
 	// SANITIZE Functions
-	
+
 	/**
 	 * Normalize EOL characters and strip duplicate whitespace.
 	 *
@@ -1420,7 +1447,7 @@ class DUPX_U
 		return $matches[0];
 	}
 
-	
+
 	/**
 	 * Remove slashes from a string or array of strings.
 	 *
@@ -1486,7 +1513,7 @@ class DUPX_U
 		return is_string($value) ? stripslashes($value) : $value;
 	}
 
-	
+
 	/**
 	 * Normalize a filesystem path.
 	 *
