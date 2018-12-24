@@ -378,9 +378,14 @@ class DUPX_Bootstrap
 
 	public function postExtractProcessing()
 	{
-		$dproInstallerDir = dirname(__FILE__) . '/dup-installer';
+		$dproInstallerDir = dirname(__FILE__) . '/dup-installer';                
 		$libDir = $dproInstallerDir . '/lib';
 		$fileopsDir = $libDir . '/fileops';
+        
+        if(!file_exists($dproInstallerDir)) {
+        
+            return 'Can\'t extract installer directory. See <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-022-q">this FAQ item</a> for details on how to resolve.</a>';
+        }
 
 		$sourceFilepath = "{$fileopsDir}/fileops.ppp";
 		$destFilepath = "{$fileopsDir}/fileops.php";
@@ -389,7 +394,7 @@ class DUPX_Bootstrap
 			if(@rename($sourceFilepath, $destFilepath) === false) {
 				return "Error renaming {$sourceFilepath}";
 			}
-		}
+		}                
 	}
 
 	/**
