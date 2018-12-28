@@ -42,6 +42,10 @@ if (DUP_Settings::Get('uninstall_files')) {
 			if (strstr($file, '_archive.zip')) 
 				@unlink("{$file}");
 		}
+		foreach (glob("{$ssdir}/*_archive.daf") as $file) {
+			if (strstr($file, '_archive.daf'))
+				@unlink("{$file}");
+		}
 		foreach (glob("{$ssdir}/*_scan.json") as $file) {
 			if (strstr($file, '_scan.json'))
 				@unlink("{$file}");
