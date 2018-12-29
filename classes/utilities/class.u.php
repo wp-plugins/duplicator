@@ -38,6 +38,13 @@ class DUP_Util
     public static $PHP7_plus;
 
     /**
+     * array of ini disable functions
+     * 
+     * @var array
+     */
+    private static $iniDisableFuncs = null;
+
+    /**
      *  Initialized on load (see end of file)
      */
     public static function init()
@@ -697,6 +704,34 @@ class DUP_Util
         global $wpdb;
         $tablePrefix = (is_multisite() && is_plugin_active_for_network('duplicator/duplicator.php')) ? $wpdb->base_prefix : $wpdb->prefix;
         return $tablePrefix;
+    }
+
+    /**
+     * return ini disable functions array
+     *
+     * @return array
+     */
+    public static function getIniDisableFuncs() {
+        if (is_null(self::$iniDisableFuncs)) {
+            $tmpFuncs = ini_get ( 'disable_functions' );
+            $tmpFuncs = explode(',',$tmpFuncs);
+            self::$iniDisableFuncs = array();
+            foreach ($tmpFuncs as $cFunc) {
+                self::$iniDisableFuncs[] = trim($cFunc);
+            }
+        }
+
+        return self::$iniDisableFuncs;
+    }
+
+    /**
+     * Check if functione exists and isn't in ini disable_functions
+     *
+     * @param string $function_name
+     * @return bool
+     */
+    public static function isIniFunctionEnalbe($function_name) {
+        return function_exists($function_name) && !in_array($function_name, self::getIniDisableFuncs());
     }
 }
 DUP_Util::init();
