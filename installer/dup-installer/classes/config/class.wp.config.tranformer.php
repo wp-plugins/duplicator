@@ -149,6 +149,23 @@ class WPConfigTransformer {
 		$separator = (string) $separator;
 		$placement = (string) $placement;
 
+		// Custom code by the SnapCreek Team
+		if ( false === strpos( $this->wp_config_src, $anchor ) ) {
+			$other_anchor_points = array(
+				'/** Absolute path to the WordPress directory',
+				"if ( !defined('ABSPATH') )",
+				'/** Sets up WordPress vars and included files',
+				'require_once(ABSPATH',
+			);
+			foreach ($other_anchor_points as $anchor_point) {
+				$anchor_point    = (string) $anchor_point;
+				if ( false !== strpos( $this->wp_config_src, $anchor_point ) ) {
+					$anchor = $anchor_point;
+					break;
+				}
+			}
+		}
+
 		if ( false === strpos( $this->wp_config_src, $anchor ) ) {
 			throw new Exception( 'Unable to locate placement anchor.' );
 		}
