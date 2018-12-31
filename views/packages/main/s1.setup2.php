@@ -492,7 +492,7 @@ INSTALLER -->
 
 
 <div class="dup-button-footer">
-    <input type="button" value="<?php esc_attr_e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> onclick="Duplicator.Pack.ConfirmReset()" />
+    <input type="button" value="<?php esc_attr_e("Reset", 'duplicator') ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> onclick="Duplicator.Pack.ConfirmReset();" />
     <input type="submit" value="<?php esc_html_e("Next", 'duplicator') ?> &#9654;" class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' :'disabled="disabled"'; ?> />
 </div>
 
@@ -594,9 +594,8 @@ jQuery(document).ready(function ($)
 	Duplicator.Pack.ResetSettings = function () 
 	{
 		var key = 'duplicator_package_active';
-
 		jQuery('#dup-form-opts-action').val(key);
-		jQuery('#dup-form-opts').attr('action', '?page=duplicator&tab=new1')
+		jQuery('#dup-form-opts').attr('action', '');
 		jQuery('#dup-form-opts').submit();
 	}
 

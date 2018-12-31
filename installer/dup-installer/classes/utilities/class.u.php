@@ -1266,11 +1266,12 @@ class DUPX_U
 		$string2 = strtolower($string2);
 
 		$allowed = false;
-		foreach ( (array) $allowed_protocols as $one_protocol )
+		foreach ( (array) $allowed_protocols as $one_protocol ) {
 			if ( strtolower($one_protocol) == $string2 ) {
 				$allowed = true;
 				break;
 			}
+		}
 
 		if ($allowed)
 			return "$string2:";
