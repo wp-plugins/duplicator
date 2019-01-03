@@ -30,7 +30,7 @@ class DUP_Zip extends DUP_Archive
             $timerAllStart     = DUP_Util::getMicrotime();
             $package_zip_flush = DUP_Settings::Get('package_zip_flush');
 
-            self::$compressDir  = rtrim(DUP_Util::safePath($archive->PackDir), '/');
+            self::$compressDir  = rtrim(wp_normalize_path(DUP_Util::safePath($archive->PackDir)), '/');
             self::$sqlPath      = DUP_Util::safePath("{$archive->Package->StorePath}/{$archive->Package->Database->File}");
             self::$zipPath      = DUP_Util::safePath("{$archive->Package->StorePath}/{$archive->File}");
             self::$zipArchive   = new ZipArchive();
@@ -92,7 +92,9 @@ class DUP_Zip extends DUP_Archive
             //ZIP DIRECTORIES
             $info = '';
             foreach (self::$scanReport->ARC->Dirs as $dir) {
-                if (is_readable($dir) && self::$zipArchive->addEmptyDir(ltrim(str_replace(self::$compressDir, '', $dir), '/'))) {
+                $emptyDir = $archive->getLocalDirPath($dir);
+
+                if (is_readable($dir) && self::$zipArchive->addEmptyDir($emptyDir)) {
                     self::$countDirs++;
                     $lastDirSuccess = $dir;
                 } else {
@@ -117,7 +119,9 @@ class DUP_Zip extends DUP_Archive
             $info = '';
             if (self::$networkFlush) {
                 foreach (self::$scanReport->ARC->Files as $file) {
-                    if (is_readable($file) && self::$zipArchive->addFile($file, ltrim(str_replace(self::$compressDir, '', $file), '/'))) {
+                    $localFileName = $archive->getLocalFilePath($file);
+
+                    if (is_readable($file) && self::$zipArchive->addFile($file, $localFileName)) {
                         Dup_Log::Info("Adding {$file} to zip");
                         self::$limitItems++;
                         self::$countFiles++;
@@ -144,7 +148,9 @@ class DUP_Zip extends DUP_Archive
             //Normal
             else {
                 foreach (self::$scanReport->ARC->Files as $file) {
-                    if (is_readable($file) && self::$zipArchive->addFile($file, ltrim(str_replace(self::$compressDir, '', $file), '/'))) {
+                    $localFileName = $archive->getLocalFilePath($file);
+
+                    if (is_readable($file) && self::$zipArchive->addFile($file, $localFileName)) {
                         self::$countFiles++;
                     } else {
                         $info .= "FILE: [{$file}]\n";
@@ -202,5 +208,5 @@ class DUP_Zip extends DUP_Archive
             $buildProgress->set_failed($error_message);
             return;
         }
-    }
+    }    
 }

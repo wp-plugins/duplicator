@@ -131,6 +131,16 @@ if (isset($_POST['search'])) {
 	}
 }
 
+
+// Replace email address (xyz@oldomain.com to xyz@newdomain.com).
+$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+$post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
+$at_new_domain = '@'.DUPX_U::getDomain($post_url_new);
+$at_old_domain = '@'.DUPX_U::getDomain($post_url_old);
+if ($at_new_domain !== $at_old_domain) {
+	DUPX_U::queueReplacementWithEncodings($at_old_domain, $at_new_domain);
+}
+
 // DIRS PATHS
 DUPX_U::queueReplacementWithEncodings($_POST['path_old'] , $_POST['path_new'] );
 $path_old_unsetSafe = rtrim(DUPX_U::unsetSafePath($_POST['path_old']), '\\');
@@ -318,7 +328,9 @@ if (isset($_POST['cache_path']) && $_POST['cache_path']) {
 	$config_transformer->remove('constant', 'WPCACHEHOME');
 }
 
-if ($config_transformer->exists('constant', 'WP_CONTENT_DIR')) {
+if ($GLOBALS['DUPX_AC']->is_outer_root_wp_content_dir) {
+	$config_transformer->remove('constant', 'WP_CONTENT_DIR');
+} elseif ($config_transformer->exists('constant', 'WP_CONTENT_DIR')) {
 	$wp_content_dir_const_val = $config_transformer->get_value('constant', 'WP_CONTENT_DIR');
 	$wp_content_dir_const_val = DUPX_U::wp_normalize_path($wp_content_dir_const_val);
 	$new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wp_content_dir_const_val, $count);
@@ -329,7 +341,9 @@ if ($config_transformer->exists('constant', 'WP_CONTENT_DIR')) {
 
 //WP_CONTENT_URL
 // '/' added to prevent word boundary with domains that have the same root path
-if ($config_transformer->exists('constant', 'WP_CONTENT_URL')) {
+if ($GLOBALS['DUPX_AC']->is_outer_root_wp_content_dir) {
+	$config_transformer->remove('constant', 'WP_CONTENT_URL');
+} elseif ($config_transformer->exists('constant', 'WP_CONTENT_URL')) {
 	$wp_content_url_const_val = $config_transformer->get_value('constant', 'WP_CONTENT_URL');
 	$new_path = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $wp_content_url_const_val, $count);
 	if ($count > 0) {

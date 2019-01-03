@@ -166,6 +166,8 @@ class DUP_Installer
         $ac->wp_tableprefix = $wpdb->base_prefix;
 
         $ac->mu_mode = DUP_MU::getMode();
+        $ac->is_outer_root_wp_config_file = (!file_exists(DUPLICATOR_WPROOTPATH . 'wp-config.php')) ? true : false;
+        $ac->is_outer_root_wp_content_dir = $this->Package->Archive->isOuterWPContentDir();
 
         $json = json_encode($ac);
 
@@ -224,12 +226,14 @@ class DUP_Installer
             DUP_Log::Info("add_extra_files6");
         }
 
+        $wpconfig_filepath = $package->Archive->getWPConfigFilePath();
+
         if($package->Archive->Format == 'DAF') {
             DUP_Log::Info("add_extra_files7");
-            $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
+            $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath, $wpconfig_filepath);
         } else {
             DUP_Log::Info("add_extra_files8");
-            $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
+            $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath, $wpconfig_filepath);
         }
 
         // No sense keeping the archive config around
@@ -240,15 +244,14 @@ class DUP_Installer
         return $success;
     }
 
-    private function add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath)
+    private function add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath, $wpconfig_filepath)
     {
         $success = false;
 
         try {
             DUP_Log::Info("add_extra_files_using_da1");
 			$htaccess_filepath = DUPLICATOR_WPROOTPATH . '.htaccess';
-			$webconf_filepath  = DUPLICATOR_WPROOTPATH . 'web.config';
-			$wpconfig_filepath = DUPLICATOR_WPROOTPATH . 'wp-config.php';
+            $webconf_filepath  = DUPLICATOR_WPROOTPATH . 'web.config';
 
             $logger = new DUP_DupArchive_Logger();
 
@@ -267,7 +270,7 @@ class DUP_Installer
 				}
 			}
 
-			if(file_exists($webconf_filepath)) {
+			if (file_exists($webconf_filepath)) {
 				try {
 					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $webconf_filepath, DUPLICATOR_WEBCONFIG_ORIG_FILENAME);
 					$this->numFilesAdded++;
@@ -342,14 +345,12 @@ class DUP_Installer
         $this->numDirsAdded += $fileops_counts->numDirsAdded;
     }
 
-    private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath)
+    private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath, $wpconfig_filepath)
     {
 		$htaccess_filepath  = DUPLICATOR_WPROOTPATH . '.htaccess';
-		$webconfig_filepath = DUPLICATOR_WPROOTPATH . 'web.config';
-		$wpconfig_filepath  = DUPLICATOR_WPROOTPATH . 'wp-config.php';
+        $webconfig_filepath = DUPLICATOR_WPROOTPATH . 'web.config';
 
         $success = false;
-
         $zipArchive = new ZipArchive();
 
         if ($zipArchive->open($zip_filepath, ZIPARCHIVE::CREATE) === TRUE) {
@@ -363,7 +364,7 @@ class DUP_Installer
 				DUP_Zip_U::addFileToZipArchive($zipArchive, $webconfig_filepath, DUPLICATOR_WEBCONFIG_ORIG_FILENAME, true);
 			}
 
-			if(file_exists($wpconfig_filepath)) {
+            if(!empty($wpconfig_filepath)) {
                 $conf_ark_file_path = $this->getWPConfArkFilePath();
 				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, $conf_ark_file_path, true);
 			}

@@ -159,18 +159,26 @@ class DUPX_U
      */
     public static function isURLActive($url, $port, $timeout = 5)
     {
-        if (function_exists('fsockopen')) {
-            @ini_set("default_socket_timeout", 5);
-            $port      = isset($port) && is_integer($port) ? $port : 80;
-            $connected = @fsockopen($url, $port, $errno, $errstr, $timeout); //website and port
-            if ($connected) {
-                @fclose($connected);
-                return true;
-            }
-            return false;
-        } else {
-            return false;
-        }
+		 $exists = false;
+		 if (function_exists('get_headers')) {
+			$url =  is_integer($port) ? $url . ':' . $port 	: $url;
+		    $headers = @get_headers($url);
+			if (is_array($headers) && strpos($headers[0], '404') === false) {
+				 $exists = true;
+			}
+		} else {
+			if (function_exists('fsockopen')) {
+				@ini_set("default_socket_timeout", 5);
+				$port = isset($port) && is_integer($port) ? $port : 80;
+				$host = parse_url($url, PHP_URL_HOST);
+				$connected = @fsockopen($host, $port, $errno, $errstr, $timeout); //website and port
+				if ($connected) {
+					@fclose($connected);
+					$exists = true;
+				}
+			}
+		}
+		return $exists;
     }
 
 	/**
@@ -368,6 +376,21 @@ class DUPX_U
 		return preg_match('/[^\x20-\x7f]/', $string);
 	}
 
+	/**
+	 * Is an object traversable
+	 *
+	 * @param object $obj The object to evaluate
+	 *
+	 * @return bool Returns true if the object can be looped over safely
+	 */
+	public static function isTraversable($obj)
+	{
+		if (is_null($obj))
+			return false;
+
+		return (is_array($obj) || $obj instanceof Traversable);
+	}
+
     /**
      * Is the server running Windows operating system
      *
@@ -530,6 +553,25 @@ class DUPX_U
         return (version_compare(PHP_VERSION, $version) >= 0);
 	}
 
+
+    /**
+     * @param $url string The URL whichs domain you want to get
+     * @return bool|string The domain part of the given URL
+     */
+    public static function getDomain($url)
+    {
+        $pieces = parse_url($url);
+        $domain = isset($pieces['host']) ? $pieces['host'] : '';
+        if(strpos($domain,".") !== false){
+            if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+                return $regs['domain'];
+            }
+        }else{
+            return $domain;
+        }
+
+        return false;
+	}
 	// START ESCAPING AND SANITIZATION
 	/**
 	 * Escaping for HTML blocks.

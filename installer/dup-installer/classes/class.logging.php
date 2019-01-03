@@ -30,6 +30,7 @@ class DUPX_Log
 	 *  Used to write debug info to the text log file
 	 *  @param string $msg		Any text data
 	 *  @param int $loglevel	Log level
+	 *	1 = Light, 2 = Detailed, 3 = Debug
 	 */
 	public static function info($msg, $logging = 1)
 	{
@@ -60,4 +61,58 @@ class DUPX_Log
 
 }
 
+class DUPX_Handler {
 
+	/**
+	 * Error handler
+	 *
+	 * Only log Notice messages if duplicator logging level is Debug (Not Light/Detailed)
+	 * See Step 1 > Options > Logging in UI
+	 *
+	 * @param  integer $errno   Error level
+	 * @param  string  $errstr  Error message
+	 * @param  string  $errfile Error file
+	 * @param  integer $errline Error line
+	 * @return void
+	 */
+	public static function error($errno, $errstr, $errfile, $errline) 
+	{
+		$msg = $errstr.' (Code: '.$errno.', line '.$errline.' in '.$errfile.')';
+
+		switch ($errno) {
+			case E_ERROR :		
+				$log_message = '*** PHP Fatal Error Message: ' . $msg;
+				DUPX_Log::error($log_message);
+				break;
+			case E_WARNING :	
+				$log_message = '*** PHP Warning Message: ' . $msg;
+				DUPX_Log::info($log_message);
+				break;
+			case E_NOTICE  :
+				if ($GLOBALS["LOGGING"] > 2) {
+					$log_message = '*** PHP Notice Message: ' . $msg;
+					DUPX_Log::info($log_message);
+				}
+				break;
+			default :
+				$log_message = "***  PHP Issue Message ({$errno}): " . $msg;
+				DUPX_Log::info($log_message);
+				break;
+		}
+	}
+
+	/**
+	 * Shutdown handler
+	 *
+	 * @return void
+	 */
+	public static function shutdown()
+	{
+		if (($error = error_get_last())) {
+			DUPX_Handler::error($error['type'], $error['message'], $error['file'], $error['line']);
+		}
+	}
+}
+
+@set_error_handler('DUPX_Handler::error');
+@register_shutdown_function('DUPX_Handler::shutdown');

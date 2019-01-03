@@ -58,7 +58,7 @@ class DUP_DupArchive
             $done   = false;
 
 			DUP_LOG::trace("c5");
-            DupArchiveEngine::init(new DUP_DupArchive_Logger());
+            DupArchiveEngine::init(new DUP_DupArchive_Logger(), null, $archive);
 
 			DUP_LOG::trace("c6");
 			DUP_Package::safeTmpCleanup(true);
@@ -183,6 +183,7 @@ class DUP_DupArchive
 					DUP_LOG::Trace("Create state is working");
                     //die(0);//rsr
             
+                    // DupArchiveEngine::addItemsToArchive($createState, $scanReport->ARC, $archive);
                     DupArchiveEngine::addItemsToArchive($createState, $scanReport->ARC);
 
                     $buildProgress->set_build_failures($createState->failures);

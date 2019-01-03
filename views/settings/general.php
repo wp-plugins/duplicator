@@ -78,7 +78,10 @@ $package_debug = DUP_Settings::Get('package_debug');
     <table class="form-table">
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Version", 'duplicator'); ?></label></th>
-            <td><?php echo DUPLICATOR_VERSION ?></td>
+            <td>
+				<?php echo DUPLICATOR_VERSION ?> &nbsp;
+				<i><small>(<?php echo DUPLICATOR_VERSION_BUILD ?>)</small></i>
+			</td>
         </tr>	
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Uninstall", 'duplicator'); ?></label></th>

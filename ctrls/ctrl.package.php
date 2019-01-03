@@ -455,9 +455,9 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 						header("Content-Type: application/octet-stream");
 						header("Content-Disposition: attachment; filename=\"{$fileName}\";");
 
-						DUP_LOG::trace("streaming $filePath");
-
-						while(!feof($fp)) {
+                        DUP_LOG::trace("streaming $filePath");
+						
+						while(!feof($fp)) {					
 							$buffer = fread($fp, 2048);
 							print $buffer;
 						}

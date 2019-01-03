@@ -18,7 +18,8 @@ $installer_state	  = DUPX_InstallerState::getInstance();
 if ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) {
 	$is_wpconfarc_present = file_exists("{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt");	
 } else {
-	$is_wpconfarc_present = file_exists("{$root_path}/wp-config.php");
+	$outer_root_path = dirname($root_path); 
+	$is_wpconfarc_present = file_exists("{$root_path}/wp-config.php") || (@file_exists("{$outer_root_path}/wp-config.php") && !@file_exists("{$outer_root_path}/wp-settings.php"));
 }
 
 $is_overwrite_mode    =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
@@ -54,9 +55,24 @@ if ($is_dbonly) {
 }
 $notice['30'] = $fulldays <= 180					? 'Good' : 'Warn';
 $notice['40'] = DUPX_Server::$php_version_53_plus	? 'Good' : 'Warn';
+
+$packagePHP = $GLOBALS['DUPX_AC']->version_php;
+$currentPHP = DUPX_Server::$php_version;
+$packagePHPMajor = intval($packagePHP);
+$currentPHPMajor = intval($currentPHP);
+$notice['45'] = ($packagePHPMajor === $currentPHPMajor || $GLOBALS['DUPX_AC']->exportOnlyDB) ? 'Good' : 'Warn';
+
 $notice['50'] = empty($openbase)					? 'Good' : 'Warn';
 $notice['60'] = !$max_time_warn						? 'Good' : 'Warn';
 $notice['70'] = $GLOBALS['DUPX_AC']->mu_mode == 0	? 'Good' : 'Warn';
+$notice['80'] = !$GLOBALS['DUPX_AC']->is_outer_root_wp_config_file	? 'Good' : 'Warn';
+if ($GLOBALS['DUPX_AC']->exportOnlyDB) {
+	$notice['90'] = 'Good';
+} else {
+	$notice['90'] = (!$GLOBALS['DUPX_AC']->is_outer_root_wp_content_dir) 
+						? 'Good' 
+						: 'Warn';
+}
 $all_notice	  = in_array('Warn', $notice)			? 'Warn' : 'Good';
 
 //SUMMATION
@@ -352,7 +368,7 @@ VALIDATION
 			</div>
 
 		<!-- NOTICE 20: ARCHIVE EXTRACTED -->
-		<?php elseif ($is_wpconfarc_present) :?>
+		<?php elseif ($is_wpconfarc_present && file_exists('{$root_path}/dup-installer')) :?>
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Archive Extracted</div>
 			<div class="info" id="s1-notice20">
@@ -410,7 +426,6 @@ VALIDATION
 		<div class="title" data-type="toggle" data-target="#s1-notice40"><i class="fa fa-caret-right"></i> PHP Version 5.2</div>
 		<div class="info" id="s1-notice40">
 			<?php
-				$currentPHP = DUPX_Server::$php_version;
 				$cssStyle   = DUPX_Server::$php_version_53_plus	 ? 'color:green' : 'color:red';
 				echo "<b style='{$cssStyle}'>This server is currently running PHP version [{$currentPHP}]</b>.<br/>"
 				. "Duplicator allows PHP 5.2 to be used during install but does not officially support it.  If you're using PHP 5.2 we strongly recommend NOT using it and having your "
@@ -422,6 +437,18 @@ VALIDATION
 				. "If your server is running <b>PHP 5.3+</b> please feel free to reach out for help if you run into issues with your migration/install.";
 			?>
 		</div>
+
+		<!-- NOTICE 45 -->
+		<div class="status <?php echo ($notice['45'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['45']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice45"><i class="fa fa-caret-right"></i> PHP Version Mismatch</div>
+		<div class="info" id="s1-notice45">
+			<?php
+                $cssStyle   = $notice['45'] == 'Good' ? 'color:green' : 'color:red';
+				echo "<b style='{$cssStyle}'>You are migrating site from the PHP {$packagePHP} to the PHP {$currentPHP}</b>.<br/>"
+                    ."If this servers PHP version is different to the PHP version of your package was created it might cause problems with proper functioning of your website
+						and/or plugins and themes.   It is highly recommended to try and use the same version of PHP if you are able to do so. <br/>";
+                ?>
+            </div>
 
 		<!-- NOTICE 50 -->
 		<div class="status <?php echo ($notice['50'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['50']); ?></div>
@@ -479,6 +506,26 @@ VALIDATION
 			 Additional manual custom configurations will need to be made to finalize this multisite migration.
 
 			 <i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn_exe&utm_campaign=duplicator_pro' target='_blank'>[upgrade to pro]</a></i>
+		</div>
+
+		<!-- NOTICE 80 -->
+		<div class="status <?php echo ($notice['80'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['80']); ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice80"><i class="fa fa-caret-right"></i> WordPress wp-config Location</div>
+		<div class="info" id="s1-notice80">
+			If the wp-config.php file was moved up one level and out of the WordPress root folder in the package creation site then this test will show a warning.
+			<br/><br/>
+			This Duplicator installer will place this wp-config.php file in the WordPress setup root folder of this installation site to help stabilize the install process.
+			This process will not break anything in your installation site, but the details are here for your information.
+		</div>
+
+		<!-- NOTICE 90 -->
+		<div class="status <?php echo ($notice['90'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['90']); ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice90"><i class="fa fa-caret-right"></i> WordPress wp-content Location</div>
+		<div class="info" id="s1-notice90">
+			If the wp-content directory was moved and not located at the WordPress root folder in the package creation site then this test will show a warning.
+			<br/><br/>
+			Duplicator Installer will place this wp-content directory in the WordPress setup root folder of this installation site. It will not break anything in your installation
+			site. It is just for your information.
 		</div>
 	</div>
 
@@ -992,7 +1039,8 @@ DUPX.kickOffDupArchiveExtract = function ()
 	var isClientSideKickoff = DUPX.isClientSideKickoff();
 
 	<?php
-	if (!$GLOBALS['DUPX_AC']->installSiteOverwriteOn && file_exists($root_path.'/wp-config.php')) {
+	$outer_root_path = dirname($root_path);
+	if (!$GLOBALS['DUPX_AC']->installSiteOverwriteOn && (file_exists($root_path.'/wp-config.php') || (@file_exists($outer_root_path.'/wp-config.php') && !@file_exists("{$outer_root_path}/wp-settings.php")))) {
 		?>
 		$('#s1-input-form').hide();
 		$('#s1-result-form').show();

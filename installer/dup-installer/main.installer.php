@@ -117,8 +117,8 @@ if (!empty($GLOBALS['view'])) {
 // CSRF checking
 if (!empty($post_view)) {
 	$csrf_views = array(
-		// 'secure',
-		// 'step1',
+		'secure',
+		'step1',
 		'step2',
 		'step3',
 		'step4',

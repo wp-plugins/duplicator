@@ -37,6 +37,7 @@ class DUPX_DB
 
             $dbh = @mysqli_connect($host, $username, $password, $dbname, $port);
         }
+        $dbh->options(MYSQLI_OPT_LOCAL_INFILE, false);
         return $dbh;
     }
 
@@ -106,9 +107,11 @@ class DUPX_DB
                 $localhost[] = $row["Collation"];
             }
 
-			foreach($collations as $key => $val) {
-				$status[$key]['name']  = $val;
-			 	$status[$key]['found'] = (in_array($val, $localhost)) ? 1 : 0 ;
+			if (DUPX_U::isTraversable($collations)) {
+				foreach($collations as $key => $val) {
+					$status[$key]['name']  = $val;
+					$status[$key]['found'] = (in_array($val, $localhost)) ? 1 : 0 ;
+				}
 			}
 		}
 		$result->free();

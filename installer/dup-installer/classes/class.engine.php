@@ -163,9 +163,11 @@ class DUPX_UpdateEngine
 
                 // Get a list of columns in this table
                 $fields = mysqli_query($conn, 'DESCRIBE ' . mysqli_real_escape_string($conn, $table));
-                while ($column = mysqli_fetch_array($fields)) {
-                    $columns[$column['Field']] = $column['Key'] == 'PRI' ? true : false;
-                }
+				if (DUPX_U::isTraversable($fields)) {
+					while ($column = mysqli_fetch_array($fields)) {
+						$columns[$column['Field']] = $column['Key'] == 'PRI' ? true : false;
+					}
+				}
 
                 // Count the number of rows we have in the table if large we'll split into blocks
                 $row_count = mysqli_query($conn, "SELECT COUNT(*) FROM `".mysqli_real_escape_string($conn, $table)."`");

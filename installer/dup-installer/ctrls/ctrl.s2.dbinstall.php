@@ -138,7 +138,7 @@ Please check these items: <br/><br/>
             case 'CUSTOM':
                 $dbmysqlmode_opts = $this->post['dbmysqlmode_opts'];
 
-                $qry_session_custom = @mysqli_query($this->dbh, "SET SESSION sql_mode = '".mysqli_real_escape_string($dbh, $dbmysqlmode_opts)."'");
+                $qry_session_custom = @mysqli_query($this->dbh, "SET SESSION sql_mode = '".mysqli_real_escape_string($this->dbh, $dbmysqlmode_opts)."'");
                 if ($qry_session_custom == false) {
                     $sql_error = mysqli_error($this->dbh);
                     $log       = "WARNING: A custom sql_mode setting issue has been detected:\n{$sql_error}.\n";
@@ -151,15 +151,14 @@ Please check these items: <br/><br/>
         //Set defaults incase the variable could not be read
         $this->drop_tbl_log   = 0;
         $this->rename_tbl_log = 0;
-        $sql_file_size1       = DUPX_U::readableByteSize(@filesize("{$GLOBALS['DUPX_INIT']}/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql"));
-        $sql_file_size2       = DUPX_U::readableByteSize(@filesize("{$this->root_path}/{$GLOBALS['SQL_FILE_NAME']}"));
-        $collate_fb           = $this->dbcollatefb ? 'On' : 'Off';
+        $sql_file_size	= DUPX_U::readableByteSize(@filesize("{$GLOBALS['DUPX_INIT']}/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql"));
+        $collate_fb		= $this->dbcollatefb ? 'On' : 'Off';
 
         DUPX_Log::info("--------------------------------------");
         DUPX_Log::info('DATABASE-ENVIRONMENT');
         DUPX_Log::info("--------------------------------------");
         DUPX_Log::info("MYSQL VERSION:\tThis Server: {$this->dbvar_version} -- Build Server: {$GLOBALS['DUPX_AC']->version_db}");
-        DUPX_Log::info("FILE SIZE:\tdup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql ({$sql_file_size1}) - installer-data.sql ({$sql_file_size2})");
+        DUPX_Log::info("FILE SIZE:\tdup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql ({$sql_file_size})");
         DUPX_Log::info("TIMEOUT:\t{$this->dbvar_maxtime}");
         DUPX_Log::info("MAXPACK:\t{$this->dbvar_maxpacks}");
         DUPX_Log::info("SQLMODE:\t{$this->dbvar_sqlmode}");
@@ -221,13 +220,13 @@ Please check these items: <br/><br/>
         if (!empty($sql_data)) {
             $this->sql_result_data = $sql_data;
         }
-        
+
         $handle = fopen($this->sql_file_path, 'rb');
        	if ($handle === false) {
             return false;
         }
 
-        @mysqli_autocommit($dbh, false);
+        @mysqli_autocommit($this->dbh, false);
 
         $query = null;
         $delimiter = ';';
@@ -253,7 +252,7 @@ Please check these items: <br/><br/>
                     if (0 === strpos($query, "DELIMITER")) {
                         // Ending delimiter
                         // control never comes in this if condition, but written
-                        if ('DELIMITER ;' == $query) { 
+                        if ('DELIMITER ;' == $query) {
                             $delimiter = ';';
                         } else { // starting delimiter
                             $delimiter =  substr($query, 10);
@@ -265,7 +264,11 @@ Please check these items: <br/><br/>
                         continue;
                     }
 
-                    @mysqli_free_result(@mysqli_query($this->dbh, $query));
+					$result = @mysqli_query($this->dbh, $query);
+					if ($result instanceof mysqli_result){
+						@mysqli_free_result($result);
+					}
+
                     $err = mysqli_error($this->dbh);
                     //Check to make sure the connection is alive
                     if (!empty($err)) {
@@ -273,7 +276,7 @@ Please check these items: <br/><br/>
                             mysqli_close($this->dbh);
                             $this->dbh = DUPX_DB::connect($this->post['dbhost'], $this->post['dbuser'], $this->post['dbpass'], $this->post['dbname']);
                             // Reset session setup
-                            @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($dbh, $GLOBALS['DB_MAX_TIME']));
+                            @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
                             DUPX_DB::setCharset($this->dbh, $this->post['dbcharset'], $this->post['dbcollate']);
                         }
                         DUPX_Log::info("**ERROR** database error write '{$err}' - [sql=".substr($query, 0, 75)."...]");
@@ -314,10 +317,12 @@ Please check these items: <br/><br/>
         $this->dbdelete_count += (abs($dbdelete_count1) + abs($dbdelete_count2));
 
         //Reset Duplicator Options
-        foreach ($GLOBALS['DUPX_AC']->opts_delete as $value) {
-            mysqli_query($this->dbh, "DELETE FROM `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` WHERE `option_name` = '".mysqli_real_escape_string($dbh, $value)."'");
-        }
-
+		if (DUPX_U::isTraversable($GLOBALS['DUPX_AC']->opts_delete)) {
+			foreach ($GLOBALS['DUPX_AC']->opts_delete as $value) {
+				mysqli_query($this->dbh, "DELETE FROM `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` WHERE `option_name` = '".mysqli_real_escape_string($this->dbh, $value)."'");
+			}
+		}
+		
         //Remove views from DB
         if (!$this->dbobj_views) {
             $this->dropViews();

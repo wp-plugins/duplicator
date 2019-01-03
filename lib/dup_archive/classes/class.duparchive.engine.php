@@ -62,10 +62,12 @@ if(!class_exists('DupArchiveEngine')) {
 class DupArchiveEngine
 {
 
-    public static function init($logger, $profilingFunction = null)
+    public static $archive;
+    public static function init($logger, $profilingFunction = null, $archive = null)
     {
         DupArchiveUtil::$logger = $logger;
         DupArchiveUtil::$profilingFunction = $profilingFunction;
+        self::$archive = $archive;
     }
 
     public static function getNextHeaderType($archiveHandle)
@@ -280,10 +282,14 @@ class DupArchiveEngine
                 if (isset($scanFSInfo->DirectoryAliases) && array_key_exists($directory, $scanFSInfo->DirectoryAliases)) {
                     $relativeDirectoryPath = $scanFSInfo->DirectoryAliases[$directory];
                 } else {
-                    $relativeDirectoryPath = substr($directory, $basepathLength);
-                    $relativeDirectoryPath = ltrim($relativeDirectoryPath, '/');
-                    if ($createState->newBasePath !== null) {
-                        $relativeDirectoryPath = $createState->newBasePath . $relativeDirectoryPath;
+                    if (null === self::$archive) {
+                        $relativeDirectoryPath = substr($directory, $basepathLength);
+                        $relativeDirectoryPath = ltrim($relativeDirectoryPath, '/');
+                        if ($createState->newBasePath !== null) {
+                            $relativeDirectoryPath = $createState->newBasePath . $relativeDirectoryPath;
+                        }
+                    } else {
+                        $relativeDirectoryPath = self::$archive->getLocalDirPath($directory, $createState->newBasePath);
                     }
                 }
 
@@ -317,10 +323,14 @@ class DupArchiveEngine
                 if (isset($scanFSInfo->FileAliases) && array_key_exists($filepath, $scanFSInfo->FileAliases)) {
                     $relativeFilePath = $scanFSInfo->FileAliases[$filepath];
                 } else {
-                    $relativeFilePath = substr($filepath, $basepathLength);
-                    $relativeFilePath = ltrim($relativeFilePath, '/');
-                    if ($createState->newBasePath !== null) {
-                        $relativeFilePath = $createState->newBasePath . $relativeFilePath;
+                    if (null === self::$archive) {
+                        $relativeFilePath = substr($filepath, $basepathLength);
+                        $relativeFilePath = ltrim($relativeFilePath, '/');
+                        if ($createState->newBasePath !== null) {
+                            $relativeFilePath = $createState->newBasePath . $relativeFilePath;
+                        }
+                    } else {
+                        $relativeFilePath = self::$archive->getLocalFilePath($filepath, $createState->newBasePath);
                     }
                 }
 

@@ -64,7 +64,9 @@ if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
 	//ERR_ZIPMANUAL
 	if ('ziparchive' == $post_archive_engine && !$GLOBALS['DUPX_AC']->installSiteOverwriteOn) {
 		//ERR_CONFIG_FOUND
-		if (file_exists($wpconfig_ark_path)) {
+		$outer_root_path = dirname($root_path);
+		
+		if ((file_exists($wpconfig_ark_path) || (@file_exists("{$outer_root_path}/wp-config.php") && !@file_exists("{$outer_root_path}/wp-settings.php"))) && @file_exists("{$root_path}/wp-admin") && @file_exists("{$root_path}/wp-includes")) {
 			DUPX_Log::error(ERR_CONFIG_FOUND);
 		}
 	}
