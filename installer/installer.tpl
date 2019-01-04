@@ -787,10 +787,14 @@ class DUPX_Bootstrap
     }
 }
 
-$boot  = new DUPX_Bootstrap();
-$boot_error = $boot->run();
-$auto_refresh = isset($_POST['auto-fresh']) ? true : false;
-DUPX_CSRF::resetAllTokens();
+try {
+    $boot  = new DUPX_Bootstrap();
+    $boot_error = $boot->run();
+    $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
+    DUPX_CSRF::resetAllTokens();
+} catch (Exception $e) {
+   $boot_error = $e->getMessage();
+}
 
 if ($boot_error == null) {
 	$step1_csrf_token = DUPX_CSRF::generate('step1');
