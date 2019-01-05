@@ -280,6 +280,16 @@
 	table.help-opt td:first-child {font-weight:bold; padding-right:10px; white-space:nowrap}
 	table.help-opt th {background: #333; color: #fff;border:1px solid #333; padding:3px}
 
+    /* ============================
+    VIEW EXCEPTION
+	============================	*/
+    .exception-trace {
+        overflow: auto;
+        border: 1px solid lightgray;
+        padding: 10px;
+        margin: 0;
+    }
+
 
 	/*!
 	 * password indicator

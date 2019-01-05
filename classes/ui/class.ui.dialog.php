@@ -57,6 +57,25 @@ class DUP_UI_Dialog
     public $jscallback;
 
     /**
+     *
+     * @var string
+     */
+    public $okText;
+
+    /**
+     *
+     * @var string
+     */
+    public $cancelText;
+
+    /**
+     * If true close dialog on confirm
+     * @var bool
+     */
+    public $closeOnConfirm = false;
+
+
+    /**
      * The id given to the full dialog
      */
     private $id;
@@ -75,6 +94,8 @@ class DUP_UI_Dialog
         $this->progressText = __('Processing please wait...', 'duplicator');
         $this->uniqid		= substr(uniqid('',true),0,14) . rand();
         $this->id           = 'dup-dlg-'.$this->uniqid;
+        $this->okText       = __('OK', 'duplicator');
+        $this->cancelText   = __('Cancel', 'duplicator');
     }
 
     /**
@@ -104,6 +125,12 @@ class DUP_UI_Dialog
      */
     public function initAlert()
     {
+        $onClickClose = '';
+        if (!is_null($this->jscallback)) {
+            $onClickClose .= $this->jscallback.';';
+        }
+        $onClickClose .= 'tb_remove();';
+
         $ok = __('OK', 'duplicator');
 
         $html = '
@@ -113,7 +140,7 @@ class DUP_UI_Dialog
 				<br/><br/>
 			</div>
 			<div class="dup-dlg-alert-btns">
-				<input type="button" class="button button-large" value="'.esc_attr($ok).'" onclick="tb_remove()" />
+				<input type="button" class="button button-large" value="'.esc_attr($this->okText).'" onclick="'.$onClickClose.'" />
 			</div>
 		</div>';
 
@@ -144,11 +171,13 @@ class DUP_UI_Dialog
      */
     public function initConfirm()
     {
-        $ok     = __('OK', 'duplicator');
-        $cancel = __('Cancel', 'duplicator');
-
         $progress_data  = '';
         $progress_func2 = '';
+
+        $onClickConfirm = '';
+        if (!is_null($this->jscallback)) {
+            $onClickConfirm .= $this->jscallback.';';
+        }
 
         //Enable the progress spinner
         if ($this->progressOn) {
@@ -162,6 +191,11 @@ class DUP_UI_Dialog
 						jQuery(obj).closest('.dup-dlg-confirm-btns').find('input').attr('disabled', 'true');
 					}
 				</script>";
+            $onClickConfirm .= $progress_func2.';';
+        }
+
+        if ($this->closeOnConfirm) {
+             $onClickConfirm .= 'tb_remove();';
         }
 
         $html =
@@ -172,8 +206,8 @@ class DUP_UI_Dialog
 					'.$progress_data.'
 				</div>
 				<div class="dup-dlg-confirm-btns">
-					<input type="button" class="button button-large" value="'.esc_attr($ok).'" onclick="'.$this->jscallback.$progress_func2.'" />
-					<input type="button" class="button button-large" value="'.esc_attr($cancel).'" onclick="tb_remove()" />
+					<input type="button" class="button button-large" value="'.esc_attr($this->okText).'" onclick="'.$onClickConfirm.'" />
+					<input type="button" class="button button-large" value="'.esc_attr($this->cancelText).'" onclick="tb_remove()" />
 				</div>
 			</div>';
 

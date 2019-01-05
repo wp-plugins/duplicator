@@ -156,6 +156,10 @@ class DUP_Util
 		@ob_flush();
     }
 
+    public static function isWpDebug() {
+        return defined('WP_DEBUG') && WP_DEBUG;
+    }
+
     /**
      * Returns the wp-snapshot URL
      *

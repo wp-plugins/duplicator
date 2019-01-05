@@ -1,5 +1,7 @@
 <?php
 
+defined("ABSPATH") or die("");
+
 DUP_Util::hasCapability('manage_options');
 
 global $wpdb;
@@ -7,6 +9,9 @@ global $wpdb;
 //COMMON HEADER DISPLAY
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.dialog.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.messages.php');
+
 $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) : 'general';
 ?>
 

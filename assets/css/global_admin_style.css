@@ -3,6 +3,10 @@
  * Included in all admin pages
  * ================================================ */
 
+.no_display {
+    display: none;
+}
+
 .dup-updated {
 	margin-left: 0;
 	background: #fff;

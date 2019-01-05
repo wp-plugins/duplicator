@@ -56,7 +56,7 @@ class DUP_Settings
 	*  @param string $value		The value to set
 	*  remarks:	 The Save() method must be called to write the Settings object to the DB
 	*/
-	public static function Set($key = '', $value) {
+	public static function Set($key, $value) {
 		if (isset(self::$Data[$key])) {
 			self::$Data[$key] = ($value == null) ? '' : $value;
 		} elseif (!empty($key)) {

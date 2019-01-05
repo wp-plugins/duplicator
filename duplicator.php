@@ -165,6 +165,7 @@ if (is_admin() == true)
 	require_once 'ctrls/ctrl.package.php';
 	require_once 'ctrls/ctrl.tools.php';
 	require_once 'ctrls/ctrl.ui.php';
+    require_once 'ctrls/class.web.services.php';
 
 	/** ========================================================
 	 * ACTIVATE/DEACTIVE/UPDATE HOOKS
@@ -248,6 +249,7 @@ if (is_admin() == true)
 	add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
 	
 	//CTRL ACTIONS
+    DUP_Web_Services::init();
     add_action('wp_ajax_duplicator_active_package_info',        'duplicator_active_package_info');
     add_action('wp_ajax_duplicator_package_scan',				'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_build',				'duplicator_package_build');
