@@ -57,7 +57,6 @@ class DUP_Database
             $mode                 = ($mysqlDumpPath && $package_mysqldump) ? 'MYSQLDUMP' : 'PHP';
             $reserved_db_filepath = DUPLICATOR_WPROOTPATH.'database.sql';
 
-
             $log = "\n********************************************************************************\n";
             $log .= "DATABASE:\n";
             $log .= "********************************************************************************\n";
@@ -74,7 +73,6 @@ class DUP_Database
                 $error_message = 'Reserved SQL file detected';
 
                 $package->BuildProgress->set_failed($error_message);
-
                 $package->Update();
 
                 DUP_Log::Error($error_message,
@@ -255,7 +253,7 @@ class DUP_Database
         $tables       = $wpdb->get_col('SHOW TABLES');
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
         $tblAllCount  = count($tables);
-        $tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
+        //$tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
 
         if (is_array($filterTables) && $this->FilterOn) {
             foreach ($tables as $key => $val) {
@@ -389,7 +387,6 @@ class DUP_Database
      */
     private function phpDump()
     {
-    
         global $wpdb;
     
         $wpdb->query("SET session wait_timeout = ".DUPLICATOR_DB_MAX_TIME);
@@ -398,7 +395,7 @@ class DUP_Database
     
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
         $tblAllCount  = count($tables);
-        $tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
+        //$tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
         $qryLimit     = DUP_Settings::Get('package_phpdump_qrylimit');
     
         if (is_array($filterTables) && $this->FilterOn) {
@@ -425,8 +422,6 @@ class DUP_Database
         //All creates must be created before inserts do to foreign key constraints
         foreach ($tables as $table) {
             $rewrite_table_as = $this->rewriteTableNameAs($table);
-            //$sql_del = ($GLOBALS['duplicator_opts']['dbadd_drop']) ? "DROP TABLE IF EXISTS {$table};\n\n" : "";
-            //@fwrite($handle, $sql_del);
             $create = $wpdb->get_row("SHOW CREATE TABLE `{$table}`", ARRAY_N);
             $count = 1;
             $create_table_query = str_replace($table, $rewrite_table_as, $create[1], $count);
@@ -465,7 +460,6 @@ class DUP_Database
             }
     
             $row_count = $wpdb->get_var("SELECT Count(*) FROM `{$table}`");
-            //DUP_Log::Info("{$table} ({$row_count})");
     
             if ($row_count > $qryLimit) {
                 $row_count = ceil($row_count / $qryLimit);
@@ -521,7 +515,8 @@ class DUP_Database
         fclose($handle);
     }
 
-    private function rewriteTableNameAs($table) {
+    private function rewriteTableNameAs($table)
+	{
         $table_prefix = $this->getTablePrefix();
         if (!isset($this->sameNameTableExists)) {
             global $wpdb;

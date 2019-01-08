@@ -2,20 +2,20 @@
 	$dbvar_maxtime  = DUP_DB::getVariable('wait_timeout');
 	$dbvar_maxpacks = DUP_DB::getVariable('max_allowed_packet');
 	$dbvar_maxtime  = is_null($dbvar_maxtime)  ? __("unknow", 'duplicator') : $dbvar_maxtime;
-	$dbvar_maxpacks = is_null($dbvar_maxpacks) ? __("unknow", 'duplicator') : $dbvar_maxpacks;	
-	
+	$dbvar_maxpacks = is_null($dbvar_maxpacks) ? __("unknow", 'duplicator') : $dbvar_maxpacks;
+
 	$space = @disk_total_space(DUPLICATOR_WPROOTPATH);
 	$space_free = @disk_free_space(DUPLICATOR_WPROOTPATH);
 	$perc = @round((100/$space)*$space_free,2);
 	$mysqldumpPath = DUP_DB::getMySqlDumpPath();
 	$mysqlDumpSupport = ($mysqldumpPath) ? $mysqldumpPath : 'Path Not Found';
-	
+
 	$client_ip_address = DUP_Server::getClientIP();
 	$error_log_path = ini_get('error_log');
 ?>
 
 <!-- ==============================
-SERVER SETTINGS -->	
+SERVER SETTINGS -->
 <div class="dup-box">
 <div class="dup-box-title">
 	<i class="fa fa-tachometer"></i>
@@ -23,7 +23,7 @@ SERVER SETTINGS -->
 	<div class="dup-box-arrow"></div>
 </div>
 <div class="dup-box-panel" id="dup-settings-diag-srv-panel" style="<?php echo esc_html($ui_css_srv_panel); ?>">
-	<table class="widefat" cellspacing="0">		   
+	<table class="widefat" cellspacing="0">
 		<tr>
 			<td class='dup-settings-diag-header' colspan="2"><?php esc_html_e("General", 'duplicator'); ?></td>
 		</tr>
@@ -41,23 +41,23 @@ SERVER SETTINGS -->
 		<tr>
 			<td><?php esc_html_e("Timezone", 'duplicator'); ?></td>
 			<td><?php echo esc_html(date_default_timezone_get()); ?> &nbsp; <small><i>This is a <a href='options-general.php'>WordPress setting</a></i></small></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Server Time", 'duplicator'); ?></td>
 			<td><?php echo date("Y-m-d H:i:s"); ?></td>
-		</tr>				   
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Web Server", 'duplicator'); ?></td>
 			<td><?php echo esc_html($_SERVER['SERVER_SOFTWARE']); ?></td>
-		</tr>				   
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Root Path", 'duplicator'); ?></td>
 			<td><?php echo esc_html(DUPLICATOR_WPROOTPATH) ?></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td><?php esc_html_e("ABSPATH", 'duplicator'); ?></td>
 			<td><?php echo esc_html(ABSPATH); ?></td>
-		</tr>			
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Plugins Path", 'duplicator'); ?></td>
 			<td><?php echo esc_html(DUP_Util::safePath(WP_PLUGIN_DIR)); ?></td>
@@ -65,11 +65,11 @@ SERVER SETTINGS -->
 		<tr>
 			<td><?php esc_html_e("Loaded PHP INI", 'duplicator'); ?></td>
 			<td><?php echo esc_html(php_ini_loaded_file()); ?></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Server IP", 'duplicator'); ?></td>
 			<td><?php echo esc_html($_SERVER['SERVER_ADDR']); ?></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Client IP", 'duplicator'); ?></td>
 			<td><?php echo esc_html($client_ip_address);?></td>
@@ -84,7 +84,7 @@ SERVER SETTINGS -->
 		<tr>
 			<td><?php esc_html_e("Language", 'duplicator'); ?></td>
 			<td><?php bloginfo('language'); ?></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Charset", 'duplicator'); ?></td>
 			<td><?php bloginfo('charset'); ?></td>
@@ -99,7 +99,7 @@ SERVER SETTINGS -->
 		<tr>
 			<td><?php esc_html_e("Version", 'duplicator'); ?></td>
 			<td><?php echo esc_html(phpversion()); ?></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td>SAPI</td>
 			<td><?php echo esc_html(PHP_SAPI); ?></td>
@@ -115,9 +115,9 @@ SERVER SETTINGS -->
 		<tr>
 			<td><a href="http://php.net/manual/en/features.safe-mode.php" target="_blank"><?php esc_html_e("Safe Mode", 'duplicator'); ?></a></td>
 			<td>
-			<?php echo (((strtolower(@ini_get('safe_mode')) == 'on')	  ||  (strtolower(@ini_get('safe_mode')) == 'yes') || 
-						 (strtolower(@ini_get('safe_mode')) == 'true') ||  (ini_get("safe_mode") == 1 )))  
-						 ? esc_html__('On', 'duplicator') : esc_html__('Off', 'duplicator'); 
+			<?php echo (((strtolower(@ini_get('safe_mode')) == 'on')	  ||  (strtolower(@ini_get('safe_mode')) == 'yes') ||
+						 (strtolower(@ini_get('safe_mode')) == 'true') ||  (ini_get("safe_mode") == 1 )))
+						 ? esc_html__('On', 'duplicator') : esc_html__('Off', 'duplicator');
 			?>
 			</td>
 		</tr>
@@ -147,7 +147,7 @@ SERVER SETTINGS -->
 		<tr>
 			<td><a href="http://us3.php.net/shell_exec" target="_blank"><?php esc_html_e("Shell Exec", 'duplicator'); ?></a></td>
 			<td><?php echo (DUP_Util::hasShellExec()) ? esc_html__("Is Supported", 'duplicator') : esc_html__("Not Supported", 'duplicator'); ?></td>
-		</tr>            
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Shell Exec Zip", 'duplicator'); ?></td>
 			<td><?php echo (DUP_Util::getZipPath() != null) ? esc_html__("Is Supported", 'duplicator') : esc_html__("Not Supported", 'duplicator'); ?></td>
@@ -162,7 +162,7 @@ SERVER SETTINGS -->
         </tr>
 		<tr>
 			<td class='dup-settings-diag-header' colspan="2">MySQL</td>
-		</tr>					   
+		</tr>
 		<tr>
 			<td><?php esc_html_e("Version", 'duplicator'); ?></td>
 			<td><?php echo esc_html(DUP_DB::getVersion()); ?></td>
@@ -198,10 +198,10 @@ SERVER SETTINGS -->
 					  <?php esc_html_e("On shared hosts check your control panel for the 'TRUE' disk space quota value.", 'duplicator'); ?>
 				  </small>
 			 </td>
-		 </tr>	
+		 </tr>
 
 	</table><br/>
 
-</div> <!-- end .dup-box-panel -->	
-</div> <!-- end .dup-box -->	
+</div> <!-- end .dup-box-panel -->
+</div> <!-- end .dup-box -->
 <br/>

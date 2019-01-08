@@ -1,36 +1,36 @@
 <style>
-    /*================================================
-    PAGE-SUPPORT:*/
-    div.dup-support-all {font-size:13px; line-height:20px}
-    table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
-    table.dup-support-hlp-hdrs {background-color:#efefef;}
-    table.dup-support-hlp-hdrs td {
-        padding:2px; height:52px;
-        font-weight:bold; font-size:17px;
-        background-image:-ms-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-        background-image:-moz-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-        background-image:-o-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-        background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #DEDEDE));
-        background-image:-webkit-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
-        background-image:linear-gradient(to bottom, #FFFFFF 0%, #DEDEDE 100%);
-    }
-    table.dup-support-hlp-hdrs td img{margin-left:7px}
-    div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
-    div.dup-support-give-area {width:400px; height:165px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
-    div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
+/*================================================
+PAGE-SUPPORT:*/
+div.dup-support-all {font-size:13px; line-height:20px}
+table.dup-support-hlp-hdrs {border-collapse:collapse; width:100%; border-bottom:1px solid #dfdfdf}
+table.dup-support-hlp-hdrs {background-color:#efefef;}
+table.dup-support-hlp-hdrs td {
+	padding:2px; height:52px;
+	font-weight:bold; font-size:17px;
+	background-image:-ms-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:-moz-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:-o-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #DEDEDE));
+	background-image:-webkit-linear-gradient(top, #FFFFFF 0%, #DEDEDE 100%);
+	background-image:linear-gradient(to bottom, #FFFFFF 0%, #DEDEDE 100%);
+}
+table.dup-support-hlp-hdrs td img{margin-left:7px}
+div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
+div.dup-support-give-area {width:400px; height:165px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
 
-    img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
-    img#dup-img-5stars {opacity:0.7;}
-    img#dup-img-5stars:hover {opacity:1.0;}
-	div.social-item {float:right; width: 170px; padding:10px 10px 20px 0px; border:0px solid red; text-align: left; font-size:20px}
+img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
+img#dup-img-5stars {opacity:0.7;}
+img#dup-img-5stars:hover {opacity:1.0;}
+div.social-item {float:right; width: 170px; padding:10px 10px 20px 0px; border:0px solid red; text-align: left; font-size:20px}
 
-	/* EMAIL AREA */
-	div.dup-support-email-area {width:825px; height:355px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
-	#mce-EMAIL {font-size:20px; height:40px; width:500px}
-	#mce-responses {width:300px}
-	#mc-embedded-subscribe { height: 35px; font-size: 16px; font-weight: bold}
-	div.mce_inline_error {width:300px; margin: auto !important}
-	div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
+/* EMAIL AREA */
+div.dup-support-email-area {width:825px; height:355px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+#mce-EMAIL {font-size:20px; height:40px; width:500px}
+#mce-responses {width:300px}
+#mc-embedded-subscribe { height: 35px; font-size: 16px; font-weight: bold}
+div.mce_inline_error {width:300px; margin: auto !important}
+div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
 </style>
 
 
@@ -138,7 +138,7 @@
 									</div>
                                     <div style="margin-top:10px; margin-left:100px; width: 650px;text-align:left">
                                         <small>
-                                            <input type="checkbox" name="privacy" id="privacy-checkbox"></input>
+                                            <input type="checkbox" name="privacy" id="privacy-checkbox" />
                                             <label for="privacy-checkbox" style="padding-left:5px; display:block; margin-top:-20px; margin-left:20px;">Check box  this box if you would like us to contact you by email with helpful information about Duplicator and other Snap Creek products.<br/></br> We will process your data in accordance with our <a target="_blank" href="//snapcreek.com/privacy-policy">privacy policy</a>. You may withdraw this consent at any time by <a target="_blank" href="mailto:admin@snapcreek.com">emailing us</a> or updating your information by clicking the unsubscribe link in the emails you receive.</span></label>
                                         </small>
 
@@ -161,8 +161,8 @@
     </div>
 </div><br/><br/><br/><br/>
 <script>
-	jQuery(document).ready(function($){
-
+	jQuery(document).ready(function($)
+	{
         $('input[type="checkbox"][name="privacy"]').change(function() {
         if(this.checked) {
              $("#mc-embedded-subscribe").prop("disabled", false);

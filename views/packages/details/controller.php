@@ -16,42 +16,42 @@ $err_link_ticket	= '<a target="_blank" href="https://snapcreek.com/duplicator/do
 
 <style>
     .narrow-input { width: 80px; }
-    .wide-input {width: 400px; } 
+    .wide-input {width: 400px; }
 	 table.form-table tr td { padding-top: 25px; }
 	 div.all-packages {float:right; margin-top: -30px; }
 	 div.all-packages a.add-new-h2 {font-size: 16px}
 </style>
 
 <div class="wrap">
-    <?php 
-		duplicator_header(__("Package Details &raquo; {$package->Name}", 'duplicator')); 
+    <?php
+		duplicator_header(__("Package Details &raquo; {$package->Name}", 'duplicator'));
 	?>
-	
+
 	<?php if ($err_found) :?>
 	<div class="error">
 		<p>
-			<?php echo esc_html__('This package contains an error.  Please review the ', 'duplicator') . $err_link_log .  esc_html__(' for details.', 'duplicator'); ?> 
-			<?php echo esc_html__('For help visit the ', 'duplicator') . $err_link_faq . esc_html__(' and ', 'duplicator') . $err_link_ticket; ?> 
+			<?php echo esc_html__('This package contains an error.  Please review the ', 'duplicator') . $err_link_log .  esc_html__(' for details.', 'duplicator'); ?>
+			<?php echo esc_html__('For help visit the ', 'duplicator') . $err_link_faq . esc_html__(' and ', 'duplicator') . $err_link_ticket; ?>
 		</p>
 	</div>
 	<?php endif; ?>
-	
-    <h2 class="nav-tab-wrapper">  
-        <a href="?page=duplicator&action=detail&tab=detail&id=<?php echo absint($package_id); ?>" class="nav-tab <?php echo ($current_tab == 'detail') ? 'nav-tab-active' : '' ?>"> 
+
+    <h2 class="nav-tab-wrapper">
+        <a href="?page=duplicator&action=detail&tab=detail&id=<?php echo absint($package_id); ?>" class="nav-tab <?php echo ($current_tab == 'detail') ? 'nav-tab-active' : '' ?>">
 			<?php esc_html_e('Details', 'duplicator'); ?>
-		</a> 
-		<a href="?page=duplicator&action=detail&tab=transfer&id=<?php echo absint($package_id); ?>" class="nav-tab <?php echo ($current_tab == 'transfer') ? 'nav-tab-active' : '' ?>"> 
+		</a>
+		<a href="?page=duplicator&action=detail&tab=transfer&id=<?php echo absint($package_id); ?>" class="nav-tab <?php echo ($current_tab == 'transfer') ? 'nav-tab-active' : '' ?>">
 			<?php esc_html_e('Transfer', 'duplicator'); ?>
-		</a> 		
+		</a>
     </h2>
 	<div class="all-packages"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php esc_html_e('Packages', 'duplicator'); ?></a></div>
-	
+
     <?php
     switch ($current_tab) {
-        case 'detail': include('detail.php');            
+        case 'detail': include('detail.php');
             break;
 		case 'transfer': include('transfer.php');
-            break; 
+            break;
     }
     ?>
 </div>

@@ -4,7 +4,6 @@
 </style>
 
 <div class="panel">
-
 	<br/>
 	<div class="area">
 		<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-dpro-300x50.png"); ?>"  />

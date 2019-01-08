@@ -1,5 +1,4 @@
 <?php
-defined("ABSPATH") or die("");
 /**
  * Utility class for zipping up content
  *
@@ -67,11 +66,8 @@ class DUP_Zip_U
         // TODO: Unzip using either shell unzip or ziparchive
         if($useShellUnZip) {
             $shellExecPath = DUPX_Server::get_unzip_filepath();
-
             $filenameString = implode(' ', $relativeFilesToExtract);
-
             $command = "{$shellExecPath} -o -qq \"{$archiveFilepath}\" {$filenameString} -d {$destinationDirectory} 2>&1";
-
             $stderr = shell_exec($command);
 
             if ($stderr != '') {
@@ -81,7 +77,6 @@ class DUP_Zip_U
             }
         } else {
             $zipArchive = new ZipArchive();
-
             $result = $zipArchive->open($archiveFilepath);
 
             if($result !== true) {
@@ -149,7 +144,6 @@ class DUP_Zip_U
     public static function addFileToZipArchive(&$zipArchive, $filepath, $localName, $isCompressed)
     {
 		$added = $zipArchive->addFile($filepath, $localName);
-
         return $added;
     }
 }

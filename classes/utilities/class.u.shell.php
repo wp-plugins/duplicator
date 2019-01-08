@@ -1,6 +1,4 @@
 <?php
-defined("ABSPATH") or die("");
-
 // Exit if accessed directly
 if (! defined('DUPLICATOR_VERSION')) exit;
 
@@ -28,19 +26,19 @@ class DUP_Shell_U
     }
 
     /**
-     * 
+     *
      * @return boolean
      *
      */
     public static function isPopenEnabled() {
 
         if (!DUP_Util::isIniFunctionEnalbe('popen') || !DUP_Util::isIniFunctionEnalbe('proc_open')) {
-            $ret = false; 
-        } else { 
-            $ret = true; 
+            $ret = false;
+        } else {
+            $ret = true;
         }
 
-        $ret = apply_filters('duplicator_pro_is_popen_enabled', $ret); 
-        return $ret; 
+        $ret = apply_filters('duplicator_pro_is_popen_enabled', $ret);
+        return $ret;
     }
 }

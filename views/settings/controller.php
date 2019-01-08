@@ -1,5 +1,4 @@
 <?php
-
 defined("ABSPATH") or die("");
 
 DUP_Util::hasCapability('manage_options');
@@ -15,12 +14,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.messages.php');
 $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) : 'general';
 ?>
 
-<style>
-
-</style>
-
 <div class="wrap">
-	
     <?php duplicator_header(__("Settings", 'duplicator')) ?>
 
 	<h2 class="nav-tab-wrapper">

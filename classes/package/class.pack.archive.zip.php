@@ -54,11 +54,8 @@ class DUP_Zip extends DUP_Archive
             $isZipOpen = (self::$zipArchive->open(self::$zipPath, ZIPARCHIVE::CREATE) === TRUE);
             if (!$isZipOpen) {
                 $error_message = "Cannot open zip file with PHP ZipArchive.";
-
                 $buildProgress->set_failed($error_message);
-
                 DUP_Log::Error($error_message, "Path location [".self::$zipPath."]", Dup_ErrorBehavior::LogOnly);
-
                 return;
             }
             DUP_Log::Info("ARCHIVE DIR:  ".self::$compressDir);
@@ -195,18 +192,15 @@ class DUP_Zip extends DUP_Archive
             $timerAllEnd = DUP_Util::getMicrotime();
             $timerAllSum = DUP_Util::elapsedTime($timerAllEnd, $timerAllStart);
 
-
             self::$zipFileSize = @filesize(self::$zipPath);
             DUP_Log::Info("COMPRESSED SIZE: ".DUP_Util::byteSize(self::$zipFileSize));
             DUP_Log::Info("ARCHIVE RUNTIME: {$timerAllSum}");
             DUP_Log::Info("MEMORY STACK: ".DUP_Server::getPHPMemory());
         } catch (Exception $e) {
             $error_message = "Runtime error in class.pack.archive.zip.php constructor.";
-
             DUP_Log::Error($error_message, "Exception: {$e}", Dup_ErrorBehavior::LogOnly);
-
             $buildProgress->set_failed($error_message);
             return;
         }
-    }    
+    }
 }

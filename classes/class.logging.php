@@ -11,7 +11,6 @@ abstract class Dup_ErrorBehavior
 	const LogOnly			 = 0;
 	const ThrowException	 = 1;
 	const Quit			 = 2;
-
 }
 
 class DUP_Log
@@ -40,7 +39,6 @@ class DUP_Log
 	public static function Open($name)
 	{
 		if (!isset($name)) throw new Exception("A name value is required to open a file log.");
-		//self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH . "/{$name}.log", "c+");
 		self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH."/{$name}.log", "a+");
 	}
 
@@ -63,7 +61,6 @@ class DUP_Log
 	public static function Info($msg)
 	{
 		self::Trace($msg);
-
 		@fwrite(self::$logFileHandle, "{$msg} \n");
 	}
 
@@ -75,7 +72,6 @@ class DUP_Log
 	public static function TraceFileExists()
 	{
 		$file_path = self::getTraceFilepath();
-
 		return file_exists($file_path);
 	}
 
@@ -145,13 +141,10 @@ class DUP_Log
 
 	public static function TraceObject($msg, $o, $log_private_members = true)
 	{
-
 		if (self::$traceEnabled) {
-
 			if (!$log_private_members) {
 				$o = get_object_vars($o);
 			}
-
 			self::Trace($msg.':'.print_r($o, true));
 		}
 	}
@@ -162,7 +155,6 @@ class DUP_Log
 		$auth_key	 .= defined('DB_HOST') ? DB_HOST : 'dbh';
 		$auth_key	 .= defined('DB_NAME') ? DB_NAME : 'dbn';
 		$auth_key	 .= defined('DB_USER') ? DB_USER : 'dbu';
-
 		return hash('md5', $auth_key);
 	}
 
@@ -171,7 +163,6 @@ class DUP_Log
 		$default_key		 = self::getDefaultKey();
 		$backup_log_filename = "dup_$default_key.log1";
 		$backup_path		 = DUPLICATOR_SSDIR_PATH."/".$backup_log_filename;
-
 		return $backup_path;
 	}
 
@@ -185,7 +176,6 @@ class DUP_Log
 		$default_key	 = self::getDefaultKey();
 		$log_filename	 = "dup_$default_key.log";
 		$file_path		 = DUPLICATOR_SSDIR_PATH."/".$log_filename;
-
 		return $file_path;
 	}
 
@@ -198,7 +188,6 @@ class DUP_Log
 	{
 		$file_path	 = self::GetTraceFilepath();
 		$backup_path = self::GetBackupTraceFilepath();
-
 		self::trace("deleting $file_path");
 		@unlink($file_path);
 		self::trace("deleting $backup_path");
@@ -214,7 +203,6 @@ class DUP_Log
 	{
 
 		error_log($msg.' DETAIL:'.$detail);
-
 		$source = self::getStack(debug_backtrace());
 
 		$err_msg = "\n==================================================================================\n";

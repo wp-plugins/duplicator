@@ -84,7 +84,7 @@ if ($section == "info" || $section == '') {
 							$removed_files = true;
 						} else if (is_dir($path)) {
 							$file_path = $path;
-							
+
 							// Extra protection to ensure we only are deleting the installer directory
 							if(DUP_STR::contains($path, 'dup-installer')) {
 								DUP_IO::deleteTree($path);
@@ -98,7 +98,7 @@ if ($section == "info" || $section == '') {
 								: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - ".esc_html($file_path)."	</div>";
 						}
 					}
-	
+
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be removed is from installer
 					//So just show a message if removing from plugin.
@@ -110,7 +110,7 @@ if ($section == "info" || $section == '') {
 							$html .= (@unlink($package_path))
 										? "<div class='success'><i class='fa fa-check'></i> ".esc_html($txt_removed)." - ".esc_html($package_path)."</div>"
 										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> ".esc_html($txt_found)." - ".esc_html($package_path)."</div>";
-						} 
+						}
 					}
 					echo $html;
 
@@ -144,7 +144,7 @@ if ($section == "info" || $section == '') {
 		$safe_msg = __('Please test the entire site to validate the migration process!');
 
 		switch(get_option("duplicator_exe_safe_mode")){
-			
+
 			//safe_mode basic
 			case 1:
 				$safe_msg = __('NOTICE: Safe mode (Basic) was enabled during install, be sure to re-enable all your plugins.');
@@ -187,7 +187,7 @@ if ($section == "info" || $section == '') {
 <form id="dup-settings-form" action="<?php echo admin_url( 'admin.php?page=duplicator-tools&tab=diagnostics&section=info' ); ?>" method="post">
 	<?php wp_nonce_field( 'duplicator_settings_page', '_wpnonce', false ); ?>
 	<input type="hidden" id="dup-remove-options-value" name="remove-options" value="">
-	
+
 	<?php
 		if (isset($_POST['remove-options'])) {
 			$remove_options = sanitize_text_field($_POST['remove-options']);
@@ -199,7 +199,7 @@ if ($section == "info" || $section == '') {
 				case 'duplicator_package_active' : 	$remove_response = __('Active package settings reset.', 'duplicator'); break;
 			}
 		}
-		
+
 		if (! empty($remove_response))  {
 			echo "<div id='message' class='notice notice-success is-dismissible dup-wpnotice-box'><p>".esc_html($remove_response)."</p></div>";
 		}

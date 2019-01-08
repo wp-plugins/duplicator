@@ -73,7 +73,7 @@ $package_debug = DUP_Settings::Get('package_debug');
 
     <?php if ($action_updated) : ?>
         <div id="message" class="notice notice-success is-dismissible dup-wpnotice-box"><p><?php echo esc_html($action_response); ?></p></div>
-    <?php endif; ?>	
+    <?php endif; ?>
 
 
     <h3 class="title"><?php esc_html_e("Plugin", 'duplicator') ?> </h3>
@@ -85,14 +85,14 @@ $package_debug = DUP_Settings::Get('package_debug');
 				<?php echo DUPLICATOR_VERSION ?> &nbsp;
 				<i><small>(<?php echo DUPLICATOR_VERSION_BUILD ?>)</small></i>
 			</td>
-        </tr>	
+        </tr>
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Uninstall", 'duplicator'); ?></label></th>
             <td>
-                <input type="checkbox" name="uninstall_settings" id="uninstall_settings" <?php echo ($uninstall_settings) ? 'checked="checked"' : ''; ?> /> 
+                <input type="checkbox" name="uninstall_settings" id="uninstall_settings" <?php echo ($uninstall_settings) ? 'checked="checked"' : ''; ?> />
                 <label for="uninstall_settings"><?php esc_html_e("Delete Plugin Settings", 'duplicator') ?> </label><br/>
 
-                <input type="checkbox" name="uninstall_files" id="uninstall_files" <?php echo ($uninstall_files) ? 'checked="checked"' : ''; ?> /> 
+                <input type="checkbox" name="uninstall_files" id="uninstall_files" <?php echo ($uninstall_files) ? 'checked="checked"' : ''; ?> />
                 <label for="uninstall_files"><?php esc_html_e("Delete Entire Storage Directory", 'duplicator') ?></label><br/>
 
             </td>
@@ -100,9 +100,9 @@ $package_debug = DUP_Settings::Get('package_debug');
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Storage", 'duplicator'); ?></label></th>
             <td>
-                <?php esc_html_e("Full Path", 'duplicator'); ?>: 
+                <?php esc_html_e("Full Path", 'duplicator'); ?>:
                 <?php echo DUP_Util::safePath(DUPLICATOR_SSDIR_PATH); ?><br/><br/>
-                <input type="checkbox" name="storage_htaccess_off" id="storage_htaccess_off" <?php echo ($storage_htaccess_off) ? 'checked="checked"' : ''; ?> /> 
+                <input type="checkbox" name="storage_htaccess_off" id="storage_htaccess_off" <?php echo ($storage_htaccess_off) ? 'checked="checked"' : ''; ?> />
                 <label for="storage_htaccess_off"><?php esc_html_e("Disable .htaccess File In Storage Directory", 'duplicator') ?> </label>
                 <p class="description">
                     <?php esc_html_e("Disable if issues occur when downloading installer/archive files.", 'duplicator'); ?>
@@ -186,7 +186,7 @@ $package_debug = DUP_Settings::Get('package_debug');
 		<br/>
 		<input type="submit" name="submit" id="submit" class="button-primary" value="<?php esc_attr_e("Save General Settings", 'duplicator') ?>" style="display: inline-block;" />
 	</p>
-	
+
 </form>
 
 <!-- ==========================================
@@ -219,7 +219,7 @@ $msg_response_success->is_dismissible = true;
 $msg_response_success->initMessage();
 ?>
 <script>
-jQuery(document).ready(function($) 
+jQuery(document).ready(function($)
 {
     var msgDebug = <?php echo DUP_Util::isWpDebug() ? 'true' : 'false'; ?>;
 
@@ -232,7 +232,7 @@ jQuery(document).ready(function($)
 
     Duplicator.Pack.ConfirmResetAll = function ()
     {
-<?php $reset_confirm->showConfirm(); ?>
+		<?php $reset_confirm->showConfirm(); ?>
     };
 
     Duplicator.Pack.ResetAll = function ()
@@ -253,22 +253,22 @@ jQuery(document).ready(function($)
                 if (result.success) {
                     var message = '<?php _e('Packages successfully reset', 'duplicator'); ?>';
                     if (msgDebug) {
-                        message += '<br><br>' + result.data.message;
-                        message += '<br><br>' + result.data.html;
+						console.log(result.data.message);
+						console.log(result.data.html);
                     }
-<?php
-$msg_response_success->updateMessage('message');
-$msg_response_success->showMessage();
-?>
+				<?php
+				$msg_response_success->updateMessage('message');
+				$msg_response_success->showMessage();
+				?>
                 } else {
                     var message = '<?php _e('RESPONSE ERROR!', 'duplicator'); ?>'+ '<br><br>' + result.data.message;
                     if (msgDebug) {
                         message += '<br><br>' + result.data.html;
                     }
-<?php
-$msg_response_error->updateMessage('message');
-$msg_response_error->showMessage();
-?>
+				<?php
+				$msg_response_error->updateMessage('message');
+				$msg_response_error->showMessage();
+				?>
                 }
             },
             error: function (result) {

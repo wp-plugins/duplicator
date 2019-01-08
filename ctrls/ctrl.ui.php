@@ -7,7 +7,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.viewstate.php');
 
 /**
  * Controller for Tools 
- * @package Dupicator\ctrls
+ * @package Duplicator\ctrls
  */
 class DUP_CTRL_UI extends DUP_CTRL_Base
 {	 

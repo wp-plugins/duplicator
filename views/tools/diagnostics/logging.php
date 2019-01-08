@@ -1,6 +1,6 @@
 <?php
-require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php'); 
-require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
+require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 function _duplicatorSortFiles($a,$b) {
 	return filemtime($b) - filemtime($a);
@@ -10,14 +10,14 @@ $logs = glob(DUPLICATOR_SSDIR_PATH . '/*.log') ;
 if ($logs != false && count($logs))  {
 	usort($logs, '_duplicatorSortFiles');
 	@chmod(DUP_Util::safePath($logs[0]), 0644);
-} 
+}
 
 $logname	 = (isset($_GET['logname'])) ? trim(sanitize_text_field($_GET['logname'])) : "";
 $refresh	 = (isset($_POST['refresh']) && $_POST['refresh'] == 1) ? 1 : 0;
 $auto		 = (isset($_POST['auto'])    && $_POST['auto'] == 1)    ? 1 : 0;
 
 //Check for invalid file
-if (!empty($logname)) 
+if (!empty($logname))
 {
 	$validFiles = array_map('basename', $logs);
 	if (validate_file($logname, $validFiles) > 0) {
@@ -42,7 +42,7 @@ $logfound = (strlen($logname) > 0) ? true :false;
 	td#dup-log-panel-left div.opts {float:right;}
 	td#dup-log-panel-right {vertical-align: top; padding-left:15px; max-width: 375px}
 	#dup-log-content {padding:5px; background: #fff; min-height:500px; width:99%; border:1px solid silver;overflow:scroll; word-wrap: break-word; margin:0;}
-	
+
 	/* OPTIONS */
 	div.dup-log-hdr {font-weight: bold; font-size:16px; padding:2px; }
 	div.dup-log-hdr small{font-weight:normal; font-style: italic}
@@ -54,7 +54,7 @@ $logfound = (strlen($logname) > 0) ? true :false;
 </style>
 
 <script>
-jQuery(document).ready(function($) 
+jQuery(document).ready(function($)
 {
 	Duplicator.Tools.FullLog = function() {
 		var $panelL = $('#dup-log-panel-left');
@@ -63,17 +63,17 @@ jQuery(document).ready(function($)
 		if ($panelR.is(":visible") ) {
 			$panelR.hide(400);
 			$panelL.css({width: '100%'});
-		} else { 
+		} else {
 			$panelR.show(200);
 			$panelL.css({width: '75%'});
 		}
 	}
-	
+
 	Duplicator.Tools.Refresh = function() {
 		$('#refresh').val(1);
 		$('#dup-form-logs').submit();
 	}
-	
+
 	Duplicator.Tools.RefreshAuto = function() {
 		if ( $("#dup-auto-refresh").is(":checked")) {
 			$('#auto').val(1);
@@ -82,11 +82,11 @@ jQuery(document).ready(function($)
 			$('#auto').val(0);
 		}
 	}
-	
+
 	Duplicator.Tools.GetLog = function(log) {
 		window.location =  log;
 	}
-	
+
 	Duplicator.Tools.WinResize = function() {
 		var height = $(window).height() - 225;
 		$("#dup-log-content").css({height: height + 'px'});
@@ -97,7 +97,7 @@ jQuery(document).ready(function($)
             $('#dup-log-content').text(data);
         }, 'text');
     };
-	
+
 	var duration = 10;
 	var count = duration;
 	var timerInterval;
@@ -117,9 +117,9 @@ jQuery(document).ready(function($)
 	}
 
 	function startTimer() {
-		timerInterval = setInterval(timer, 1000); 
+		timerInterval = setInterval(timer, 1000);
 	}
-	
+
 	//INIT Events
 	$(window).resize(Duplicator.Tools.WinResize);
 	$('#dup-options').click(Duplicator.Tools.FullLog);
@@ -141,7 +141,7 @@ jQuery(document).ready(function($)
 		<?php if ($auto)  :	?>
 			$("#dup-auto-refresh").prop('checked', true);
 			Duplicator.Tools.RefreshAuto();
-		<?php endif; ?>	
+		<?php endif; ?>
 	<?php endif; ?>
 });
 </script>
@@ -159,23 +159,23 @@ jQuery(document).ready(function($)
 		- <?php esc_html_e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'duplicator') ?>. <br/>
 		- <?php esc_html_e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'duplicator') ?>. <br/>
 	</div>
-<?php else: ?>	
+<?php else: ?>
 	<table id="dup-log-panels">
 		<tr>
 			<td id="dup-log-panel-left">
 				<div class="name">
 					<i class='fa fa-list-alt'></i> <b><?php echo basename($logurl); ?></b> &nbsp; | &nbsp;
-					<i style="cursor: pointer" 
-						data-tooltip-title="<?php esc_attr_e("Host Recommendation:", 'duplicator'); ?>" 
+					<i style="cursor: pointer"
+						data-tooltip-title="<?php esc_attr_e("Host Recommendation:", 'duplicator'); ?>"
 						data-tooltip="<?php esc_attr_e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
 						 <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
 							<?php
 								printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
-								esc_html__("Consider our recommended", 'duplicator'), 
+								esc_html__("Consider our recommended", 'duplicator'),
 								esc_html__("host list", 'duplicator'),
 								esc_html__("if you’re unhappy with your current provider", 'duplicator'));
 							?>
-					</i>					
+					</i>
 				</div>
 				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php esc_html_e("Options", 'duplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
 				<br style="clear:both" />
@@ -184,8 +184,8 @@ jQuery(document).ready(function($)
 			<td id="dup-log-panel-right">
 				<h2><?php esc_html_e("Options", 'duplicator') ?> </h2>
 				<div class="dup-opts-items">
-					<input type="button" class="button button-small" id="dup-refresh" value="<?php esc_attr_e("Refresh", 'duplicator') ?>" /> &nbsp; 
-					<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" /> 
+					<input type="button" class="button button-small" id="dup-refresh" value="<?php esc_attr_e("Refresh", 'duplicator') ?>" /> &nbsp;
+					<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" />
 					<label id="dup-auto-refresh-lbl" for="dup-auto-refresh">
 						<?php esc_attr_e("Auto Refresh", 'duplicator') ?>
 						[<div id="dup-refresh-count"></div>]
@@ -198,23 +198,22 @@ jQuery(document).ready(function($)
 				</div>
 
 				<div class="dup-log-file-list">
-					<?php 
-						$count=0; 
+					<?php
+						$count=0;
 						$active = basename($logurl);
-						foreach ($logs as $log) { 
+						foreach ($logs as $log) {
 							$time = date('m/d/y h:i:s', filemtime($log));
 							$name = basename($log);
 							$url  = '?page=duplicator-tools&tab=diagnostics&section=log&logname=' . esc_html($name);
-							echo ($active == $name) 
+							echo ($active == $name)
 								? "<span class='dup-log' title='".esc_attr($name)."'>".esc_html($time)."-".esc_html($name)."</span>"
 								: "<a href='javascript:void(0)'  title='".esc_attr($name)."' onclick='Duplicator.Tools.GetLog(\"".esc_js($url)."\")'>".esc_html($time)."-".esc_html($name)."</a>";
 							if ($count > 20) break;
-						} 
+						}
 					?>
 				</div>
 			</td>
 		</tr>
 	</table>
-<?php endif; ?>	
+<?php endif; ?>
 </form>
-	

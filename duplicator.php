@@ -345,8 +345,6 @@ if (is_admin() == true)
         $perms = 'export';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $main_menu = add_menu_page('Duplicator Plugin', 'Duplicator', $perms, 'duplicator', 'duplicator_get_menu', $icon_svg);
-		//$main_menu = add_menu_page('Duplicator Plugin', 'Duplicator', $perms, 'duplicator', 'duplicator_get_menu', plugins_url('duplicator/assets/img/logo-menu.svg'));
-
         $perms = 'export';
         $perms = apply_filters($wpfront_caps_translator, $perms);
 		$lang_txt = esc_html__('Packages', 'duplicator');
@@ -455,11 +453,9 @@ if (is_admin() == true)
         return $links;
     }
 
-
 	/** ========================================================
 	 * GENERAL
      * =====================================================  */
-
 	/**
 	 * Used for installer files to redirect if accessed directly
      *

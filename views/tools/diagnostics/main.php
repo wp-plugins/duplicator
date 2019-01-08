@@ -7,7 +7,7 @@
 	div#dup-tools-delete-moreinfo {display: none; padding: 5px 0 0 20px; border:1px solid silver; background-color: #fff; border-radius: 5px; padding:10px; margin:5px; width:750px }
 	div.dup-alert-no-files-msg {padding:10px 0 10px 0}
 	div.dup-alert-secure-note {font-style: italic; max-width:800px; padding:15px 0 20px 0}
-	
+
 	div#message {margin:0px 0px 10px 0px}
 	div#dup-server-info-area { padding:10px 5px;  }
 	div#dup-server-info-area table { padding:1px; background:#dfdfdf;  -webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px; width:100% !important; box-shadow:0 8px 6px -6px #777; }
@@ -52,7 +52,7 @@ switch ($section) {
         echo "<div class='lite-sub-tabs'><a href='".esc_url($tools_url."&section=info")."'>".esc_html($txt_diagnostic)."</a>  &nbsp;|&nbsp;<b>".esc_html($txt_log)."</b>  &nbsp;|&nbsp; <a href='".esc_url($tools_url."&section=support")."'>".esc_html($txt_support)."</a></div>";
         include(dirname(__FILE__) . '/logging.php');
         break;
-	
+
     case 'support':
         echo "<div class='lite-sub-tabs'><a href='".esc_url($tools_url."&section=info")."'>".esc_html($txt_diagnostic)."</a> &nbsp;|&nbsp; <a href='".esc_url($tools_url."&section=log")."'>".esc_html($txt_log)."</a> &nbsp;|&nbsp; <b>".esc_html($txt_support)."</b> </div>";
         include(dirname(__FILE__) . '/support.php');

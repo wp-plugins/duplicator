@@ -71,7 +71,7 @@ class DUP_STR
      * @return bool Returns true if the $haystack string starts with the $needle
      */
     public static function startsWith($haystack, $needle)
-    {   
+    {
         $length = strlen($needle);
         return (substr($haystack, 0, $length) === $needle);
     }

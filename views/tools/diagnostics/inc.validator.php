@@ -1,6 +1,6 @@
 <?php
 	$action = isset($_POST['action']) ? sanitize_text_field($_POST['action']) : '';
-	$scan_run = ($action == 'duplicator_recursion') ? true :false;	
+	$scan_run = ($action == 'duplicator_recursion') ? true :false;
 	$ajax_nonce	= wp_create_nonce('DUP_CTRL_Tools_runScanValidator');
 ?>
 
@@ -27,14 +27,14 @@ SCAN VALIDATOR -->
 		<?php esc_html_e("Scan Validator", 'duplicator'); ?>
 		<div class="dup-box-arrow"></div>
 	</div>
-	<div class="dup-box-panel" style="display: <?php echo $scan_run ? 'block' : 'none';  ?>">	
-		<?php 
-			esc_html_e("This utility will help to find unreadable files and sys-links in your environment  that can lead to issues during the scan process.  ", "duplicator"); 
+	<div class="dup-box-panel" style="display: <?php echo $scan_run ? 'block' : 'none';  ?>">
+		<?php
+			esc_html_e("This utility will help to find unreadable files and sys-links in your environment  that can lead to issues during the scan process.  ", "duplicator");
 			esc_html_e("The utility will also shows how many files and directories you have in your system.  This process may take several minutes to run.  ", "duplicator");
-			esc_html_e("If there is a recursive loop on your system then the process has a built in check to stop after a large set of files and directories have been scanned.  ", "duplicator"); 
+			esc_html_e("If there is a recursive loop on your system then the process has a built in check to stop after a large set of files and directories have been scanned.  ", "duplicator");
 			esc_html_e("A message will show indicated that that a scan depth has been reached. If you have issues with the package scanner (step 2) during the build process then try to add "
 			. "The paths below to your file filters to allow the scanner to finish.", "duplicator");
-		?> 
+		?>
 		<br/><br/>
 
 
@@ -65,7 +65,7 @@ SCAN VALIDATOR -->
 				<i>No Unreadable items found</i> <br/>
 			{{/if}}
 			<br/>
-			
+
 			<b>Symbolic Links:</b> <br/>
 			{{#if payload.symLinks}}
 				{{#each payload.symLinks}}
@@ -98,30 +98,29 @@ SCAN VALIDATOR -->
 
 			<br/>
 		</script>
-		<div id="hb-result"></div>	
+		<div id="hb-result"></div>
 
-	</div> 
-</div> 
+	</div>
+</div>
 <br/>
 
-<script>	
-jQuery(document).ready(function($) 
+<script>
+jQuery(document).ready(function($)
 {
-	Duplicator.Tools.ConfirmScanValidator = function() 
+	Duplicator.Tools.ConfirmScanValidator = function()
 	{
 		<?php $confirm1->showConfirm(); ?>
 	}
-	
-	
+
 	//Run request to: admin-ajax.php?action=DUP_CTRL_Tools_runScanValidator
 	Duplicator.Tools.runScanValidator = function()
 	{
 		tb_remove();
 		var data = {action : 'DUP_CTRL_Tools_runScanValidator', nonce: '<?php echo esc_js($ajax_nonce); ?>', 'scan-recursive': true};
-		
+
 		$('#hb-result').html('<?php esc_html_e("Scanning Environment... This may take a few minutes.", "duplicator"); ?>');
 		$('#scan-run-btn').html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Running Please Wait...');
-		
+
 		$.ajax({
 			type: "POST",
 			dataType: "text",
@@ -140,11 +139,11 @@ jQuery(document).ready(function($)
 			},
 			error: function(data) {console.log(data)},
 			done: function(data) {console.log(data)}
-		});	
+		});
 	}
-	
+
 	//Process Ajax Template
-	Duplicator.Tools.IntScanValidator= function(data) 
+	Duplicator.Tools.IntScanValidator= function(data)
 	{
 		var template = $('#hb-template').html();
 		var templateScript = Handlebars.compile(template);
@@ -152,6 +151,6 @@ jQuery(document).ready(function($)
 		$('#hb-result').html(html);
 		$('#scan-run-btn').html('<?php esc_html_e("Run Scan Integrity Validation", "duplicator"); ?>');
 	}
-});	
+});
 </script>
 

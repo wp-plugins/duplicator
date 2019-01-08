@@ -7,7 +7,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.scancheck.php'
 
 /**
  * Controller for Tools 
- * @package Dupicator\ctrls
+ * @package Duplicator\ctrls
  */
 class DUP_CTRL_Tools extends DUP_CTRL_Base
 {	 
@@ -76,7 +76,6 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 
         Dup_Util::hasCapability('export');
 
-        $request     = stripslashes_deep($_REQUEST);
         $file_path   = DUP_Log::GetTraceFilepath();
         $backup_path = DUP_Log::GetBackupTraceFilepath();
         $zip_path    = DUPLICATOR_SSDIR_PATH."/".DUPLICATOR_ZIPPED_LOG_FILENAME;

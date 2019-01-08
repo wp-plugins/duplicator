@@ -15,7 +15,6 @@ defined("ABSPATH") or die("");
 
 class DUP_UI_Messages
 {
-    
     const UNIQUE_ID_PREFIX = 'dup_ui_msg_';
     const NOTICE           = 'updated';
     const WARNING          = 'update-nag';

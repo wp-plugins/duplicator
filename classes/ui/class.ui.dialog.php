@@ -131,8 +131,6 @@ class DUP_UI_Dialog
         }
         $onClickClose .= 'tb_remove();';
 
-        $ok = __('OK', 'duplicator');
-
         $html = '
 		<div id="'.esc_attr($this->id).'" style="display:none">
 			<div class="dup-dlg-alert-txt">

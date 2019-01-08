@@ -5,7 +5,6 @@
 </style>
 
 <div class="panel">
-
 	<br/>
 	<div class="area" style="width:450px">
 		<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50.png"  />

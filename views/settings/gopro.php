@@ -33,7 +33,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 </style>
 
 <div class="dup-pro-area">
-	<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-dpro-300x50.png"); ?>"  /> 
+	<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-dpro-300x50.png"); ?>"  />
 	<div style="font-size:18px; font-style:italic; color:gray">
 		<?php esc_html_e('The simplicity of Duplicator', 'duplicator') ?>
 		<?php esc_html_e('with power for the professional.', 'duplicator') ?>
@@ -45,11 +45,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<th class="check-column"><?php esc_html_e('Free', 'duplicator') ?></th>
 			<th class="check-column"><?php esc_html_e('Professional', 'duplicator') ?></th>
 		</tr>
-		<!-- =====================
-		CORE FEATURES
-		<tr>
-			<td colspan="3" class="group-header"><?php esc_html_e('Core Features', 'duplicator') ?></td>
-		</tr> -->
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Backup Files & Database', 'duplicator') ?></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -74,15 +69,10 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="feature-column"><?php esc_html_e('Scheduled Backups', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>		
-		<!-- =====================
-		CLOUD STORAGE 
-		<tr>
-			<td colspan="3" class="group-header"><?php esc_html_e('Cloud Storage', 'duplicator') ?></td>
-		</tr>-->
+		</tr>
 		<tr>
 			<td class="feature-column">
-				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/amazon-64.png") ?>" style='height:16px; width:16px'  />  
+				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/amazon-64.png") ?>" style='height:16px; width:16px'  />
 				<?php esc_html_e('Amazon S3 Storage', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
@@ -90,7 +80,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		</tr>
 		<tr>
 			<td class="feature-column">
-				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/dropbox-64.png"); ?>" style='height:16px; width:16px'  /> 
+				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/dropbox-64.png"); ?>" style='height:16px; width:16px'  />
 				<?php esc_html_e('Dropbox Storage ', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
@@ -98,7 +88,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		</tr>
 		<tr>
 			<td class="feature-column">
-				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/google_drive_64px.png"); ?>" style='height:16px; width:16px'  /> 
+				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/google_drive_64px.png"); ?>" style='height:16px; width:16px'  />
 				<?php esc_html_e('Google Drive Storage', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
@@ -114,18 +104,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		</tr>
         		<tr>
 			<td class="feature-column">
-				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px'  /> 
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px'  />
 				<?php esc_html_e('Remote FTP/SFTP Storage', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-
-		<!-- =====================
-		ENHANCED PROCCESING 
-		<tr>
-			<td colspan="3" class="group-header"><?php esc_html_e('Improved Processing', 'duplicator') ?></td>
-		</tr>-->
         <tr>
             <td class="feature-column"><?php _e('Overwrite Live Site', 'duplicator') ?><sup>
 					<i class="fa fa-question-circle dup-gopro-help"
@@ -158,13 +142,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="feature-column"><?php esc_html_e('Background Processing', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>		
-		
-		<!-- =====================
-		ROBUST INSTALLATION 
-		<tr>
-			<td colspan="3" class="group-header"><?php esc_html_e('Robust Installation', 'duplicator') ?></td>
-		</tr>-->
+		</tr>
         <tr>
             <td class="feature-column"><?php esc_html_e('Installer Passwords', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -200,13 +178,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-
-		
-		<!-- =====================
-		MULTI-SITE
-		<tr>
-			<td colspan="3" class="group-header"><?php esc_html_e('Multisite', 'duplicator') ?></td>
-		</tr>-->
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Multisite Network Migration', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -227,17 +198,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-		<!--tr>
-			<td class="feature-column"><?php esc_html_e('Duplicate Subsite in Network', 'duplicator') ?></td>
-			<td class="check-column"></td>
-			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr-->
-		
-		<!-- =====================
-		ENHANCED EXPERIENCE
-		<tr>
-			<td colspan="3" class="group-header"><?php esc_html_e('Enhanced Experience', 'duplicator') ?></td>
-		</tr>-->
+
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Email Alerts', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -248,7 +209,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="feature-column"><?php esc_html_e('Manual Transfers', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>		
+		</tr>
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Active Customer Support', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -258,7 +219,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="feature-column"><?php esc_html_e('Plus Many Other Features...', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>			
+		</tr>
 	</table>
 
 	<br style="clear:both" />

@@ -28,7 +28,6 @@ class DUP_UI_Screen
      */
     public function __construct()
     {
-
     }
 
     /**

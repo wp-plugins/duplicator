@@ -176,7 +176,7 @@ class DUP_Validator
 
         return $result;
     }
-    
+
     /**
      * validation of predefined regular expressions
      *
