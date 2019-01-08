@@ -308,14 +308,19 @@ FORM DATA: User-Interface views -->
             /** delete view output **/
             ob_clean();
             $exceptionError = $e;
-        } finally {
-            /** flush view output **/
-            ob_end_flush();
         }
+
+        /** flush view output **/
+        ob_end_flush();
         
     }
 
     if ($exceptionError !== false) {
+        DUPX_Log::info("--------------------------------------");
+        DUPX_Log::info('EXCEPTION: '.$exceptionError->getMessage());
+        DUPX_Log::info('TRACE:');
+        DUPX_Log::info($exceptionError->getTraceAsString());
+        DUPX_Log::info("--------------------------------------");
         /**
          *   $exceptionError call in view
          */

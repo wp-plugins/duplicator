@@ -216,7 +216,6 @@ $msg_response_error->initMessage();
 $msg_response_success                 = new DUP_UI_Messages('', DUP_UI_Messages::NOTICE);
 $msg_response_success->hide_on_init   = true;
 $msg_response_success->is_dismissible = true;
-$msg_response_success->auto_hide_delay = 3000;
 $msg_response_success->initMessage();
 ?>
 <script>
