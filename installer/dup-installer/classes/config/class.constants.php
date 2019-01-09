@@ -84,7 +84,6 @@ class DUPX_Constants
 			? @fopen($GLOBALS['LOG_FILE_PATH'], "w+")
 			: @fopen($GLOBALS['LOG_FILE_PATH'], "a+");
 
-		$GLOBALS['FW_USECDN'] = false;
 		$GLOBALS['HOST_NAME'] = strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
 	}
 }

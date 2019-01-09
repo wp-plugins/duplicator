@@ -512,23 +512,6 @@ class DUPX_U
     }
 
 	/**
-	 * Tests a CDN URL to see if it responds
-	 *
-	 * @param string $url	The URL to ping
-	 * @param string $port	The URL port to use
-	 *
-	 * @return bool Returns true if the CDN URL is active
-	 */
-	public static function tryCDN($url, $port)
-	{
-		if ($GLOBALS['FW_USECDN']) {
-			return DUPX_HTTP::is_url_active($url, $port);
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 *  Makes path unsafe for any OS for PHP used primarily to show default
 	 *  Windows OS path standard
 	 *

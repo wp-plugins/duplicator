@@ -285,32 +285,44 @@ VIEW: STEP 3- INPUT -->
 			</div><br/>
 			<div class="hdr-sub3">WP-Config File</div>
 			<?php
-				require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.wp.config.tranformer.php');
-				$root_path		= $GLOBALS['DUPX_ROOT'];
-				$root_path = $GLOBALS['DUPX_ROOT'];
-				$wpconfig_ark_path	= ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) ? "{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt" : "{$root_path}/wp-config.php";
+            require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.wp.config.tranformer.php');
+			$root_path		= $GLOBALS['DUPX_ROOT'];
+			$root_path = $GLOBALS['DUPX_ROOT'];
+			$wpconfig_ark_path	= ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) ? "{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt" : "{$root_path}/wp-config.php";
+
+            if (file_exists($wpconfig_ark_path)) {
 				$config_transformer = new WPConfigTransformer($wpconfig_ark_path);
+            } else {
+                $config_transformer = null;
+            }
+            
 			?>
 			<table class="dupx-opts dupx-advopts">
+                <?php
+                if (file_exists($wpconfig_ark_path)) { ?>
 				<tr>
 					<td>Cache:</td>
-					<td style="width:100px">
+					<td>
 						<?php
 						$wp_cache_val = false;
-						if ($config_transformer->exists('constant', 'WP_CACHE')) {
+						if (!is_null($config_transformer) && $config_transformer->exists('constant', 'WP_CACHE')) {
 							$wp_cache_val = $config_transformer->get_value('constant', 'WP_CACHE');
 						}
 						?>
 						<input type="checkbox" name="cache_wp" id="cache_wp" <?php SnapLibUIU::echoChecked($wp_cache_val);?> /> <label for="cache_wp">Keep Enabled</label>
 					</td>
-					<td>
+				</tr>
+                <tr>
+					<td></td>
+                    <td>
 						<?php
 						$wpcachehome_val = '';
-						if ($config_transformer->exists('constant', 'WPCACHEHOME')) {
+						if (!is_null($config_transformer) && $config_transformer->exists('constant', 'WPCACHEHOME')) {
 							$wpcachehome_val = $config_transformer->get_value('constant', 'WPCACHEHOME');
 						}
 						?>
 						<input type="checkbox" name="cache_path" id="cache_path" <?php SnapLibUIU::echoChecked($wpcachehome_val);?> /> <label for="cache_path">Keep Home Path</label>
+                        <br><br>
 					</td>
 				</tr>
 				<tr>
@@ -318,14 +330,20 @@ VIEW: STEP 3- INPUT -->
 					<td>
 						<?php
 						$force_ssl_admin_val = false;
-						if ($config_transformer->exists('constant', 'FORCE_SSL_ADMIN')) {
+						if (!is_null($config_transformer) && $config_transformer->exists('constant', 'FORCE_SSL_ADMIN')) {
 							$force_ssl_admin_val = $config_transformer->get_value('constant', 'FORCE_SSL_ADMIN');
 						}
 						?>
 						<input type="checkbox" name="ssl_admin" id="ssl_admin" <?php SnapLibUIU::echoChecked($force_ssl_admin_val);?> /> <label for="ssl_admin">Enforce on Admin</label>
 					</td>
-					<td></td>
 				</tr>
+                <?php } else { ?>
+                <tr>
+                    <td>wp-config.php not found</td>
+                    <td>No action on the wp-config is possible.<br>
+                        After migration, be sure to insert a properly modified wp-config for correct wordpress operation.</td>
+                </tr>
+                <?php } ?>
 			</table><br/>
 			<i>
 				Need more control? With <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=wpconfig" target="_blank">Duplicator Pro</a> 

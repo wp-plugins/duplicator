@@ -170,13 +170,14 @@ $package_debug = DUP_Settings::Get('package_debug');
             <th scope="row"><label><?php esc_html_e("Settings", 'duplicator'); ?></label></th>
             <td>
                 <button class="button"  onclick="Duplicator.Pack.ConfirmResetAll(); return false;">
-                    <i class="fa fa-repeat"></i> <?php esc_html_e('Reset packages', 'duplicator'); ?>
+                    <i class="fa fa-repeat"></i> <?php esc_html_e('Reset Packages', 'duplicator'); ?>
                 </button>
-                <p class="description">
-                    <?php esc_html_e("Reset all temporary packages.", 'duplicator'); ?>
+                <p class="description" style="width:700px">
+                    <?php esc_html_e("This process will reset all packages by deleting those without a completed status, reset the active package id and perform a "
+						. "cleanup of the build tmp file.", 'duplicator'); ?>
                     <i class="fa fa-question-circle"
                         data-tooltip-title="<?php esc_attr_e("Reset Settings", 'duplicator'); ?>"
-                        data-tooltip="<?php esc_attr_e('Reset the temporary packages to an abnormal state and restore the package creation function.', 'duplicator'); ?>"></i>
+                        data-tooltip="<?php esc_attr_e('This action should only be used if the packages screen is having issues or a build is stuck.', 'duplicator'); ?>"></i>
                 </p>
             </td>
         </tr>

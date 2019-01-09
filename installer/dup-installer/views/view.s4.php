@@ -224,7 +224,7 @@ VIEW: STEP 4- INPUT -->
 			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step3.warnlist">
-					 <div data-bind="text: $data"></div>
+					 <div data-bind="html: $data"></div>
 				</div>
 				<div data-bind="visible: status.step3.warnlist.length == 0">
 					No notices found
