@@ -157,12 +157,25 @@ switch ($post_archive_engine) {
 		$zip = new ZipArchive();
 
 		if ($zip->open($archive_path) === TRUE) {
-
+            for($i = 0; $i < $zip->numFiles; $i++) {
+                $extract_filename = $zip->getNameIndex($i);
+                try {
+                    //rsr uncomment if debugging     DUPX_Log::info("Attempting to extract {$extract_filename}. Time:". time());
+                    if (!$zip->extractTo($target , $extract_filename)) {
+                        DUPX_Log::info("FILE EXTRACION ERROR: ".$extract_filename);
+                    } else {
+                        DUPX_Log::info("DONE: ".$extract_filename,2);
+                    }
+                } catch (Exception $ex) {
+                    DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:" . $ex->getMessage());
+                }
+            }
+            /*
 			if (!$zip->extractTo($target)) {
 				$zip_err_msg = ERR_ZIPEXTRACTION;
 				$zip_err_msg .= "<br/><br/><b>To resolve error see <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q' target='_blank'>https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q</a></b>";
 				DUPX_Log::error($zip_err_msg);
-			}
+			}*/
 			$log = print_r($zip, true);
 
 			//FILE-TIMESTAMP

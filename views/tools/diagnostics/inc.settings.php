@@ -157,6 +157,12 @@ SERVER SETTINGS -->
             <td><?php echo extension_loaded('suhosin') ? esc_html__("Enabled", 'duplicator') : esc_html__("Disabled", 'duplicator'); ?></td>
         </tr>
 		<tr>
+			<td><?php esc_html_e("Architecture ", 'duplicator'); ?></td>
+			<td>                    
+				<?php echo DUP_Util::getArchitectureString(); ?>
+			</td>
+		</tr>
+		<tr>
             <td><?php esc_html_e("Error Log File ", 'duplicator'); ?></td>
             <td><?php echo esc_html($error_log_path); ?></td>
         </tr>

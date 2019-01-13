@@ -309,9 +309,32 @@ class DUP_Archive
 			$wp_content_upload.'/wpbackitup_backups'
 		);
 
+		if (class_exists('BackWPup')) {
+			$upload_dir = wp_upload_dir(null, false, true);
+			$this->FilterInfo->Dirs->Core[] = trailingslashit(str_replace( '\\',
+					'/',
+					$upload_dir['basedir'])).'backwpup-'.BackWPup::get_plugin_data('hash').'-backups/';
+			
+			$backwpup_cfg_logfolder = get_site_option('backwpup_cfg_logfolder');
+			if (false !== $backwpup_cfg_logfolder) {
+				$this->FilterInfo->Dirs->Core[] = $wp_content.'/'.$backwpup_cfg_logfolder;
+			}
+		}
 		if ($GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS_ON']) {
 			$this->FilterInfo->Files->Global = $GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS'];
 		}
+
+		// Prevent adding double wp-content dir conflicts
+        if ($this->isOuterWPContentDir()) {
+            $default_wp_content_dir_path = DUP_Util::safePath(ABSPATH.'wp-content');
+            if (file_exists($default_wp_content_dir_path)) {
+                if (is_dir($default_wp_content_dir_path)) {
+                    $this->FilterInfo->Dirs->Core[] = $default_wp_content_dir_path;
+                } else {
+                    $this->FilterInfo->Files->Core[] = $default_wp_content_dir_path;
+                }
+            }
+        }        
 
 		$this->FilterDirsAll	 = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Core);
 		$this->FilterExtsAll	 = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);

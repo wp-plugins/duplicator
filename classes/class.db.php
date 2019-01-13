@@ -175,6 +175,64 @@ class DUP_DB extends wpdb
 	}
 
 	/**
+     * Returns all collation types that are assigned to the tables in
+	 * the current database.  Each element in the array is unique
+	 *
+	 * @param array $excludeTables A list of tables to exclude from the search
+	 *
+     * @return array	Returns an array with all the collation types being used
+     */
+	public static function getTableCollationList($excludeTables)
+	{
+		global $wpdb;
+		$collations = array();
+
+		try {
+			$query = $wpdb->get_results("SHOW TABLE STATUS FROM `{$wpdb->dbname}`");
+
+			foreach($query  as $key => $row) {
+				if (! in_array($row->Name, $excludeTables)) {
+					if (! empty($row->Collation))
+						$collations[] = $row->Collation;
+				}
+			}
+			
+			$collations = array_unique($collations, SORT_STRING);
+			$collations = array_values($collations);
+			return $collations;
+			
+		} catch (Exception $ex) {
+			return $collations;
+		}
+	}
+
+	/**
+	 * Returns the correct database build mode PHP, MYSQLDUMP, PHPCHUNKING
+	 *
+	 * @return string	Returns a string with one of theses three values PHP, MYSQLDUMP, PHPCHUNKING
+	 */
+	public static function getBuildMode()
+	{
+        $global = DUP_PRO_Global_Entity::get_instance();
+
+        $mysqlDumpPath = DUP_PRO_DB::getMySqlDumpPath();
+        
+        if (($mysqlDumpPath === false) && ($global->package_mysqldump)) {
+            DUP_PRO_LOG::trace("Forcing into PHP mode - the mysqldump executable wasn't found!");
+            $global->package_mysqldump = false;
+            $global->save();
+        }
+
+		if ($global->package_mysqldump) {
+			return 'MYSQLDUMP';
+		} else if($global->package_phpdump_mode == DUP_PRO_PHPDump_Mode::Multithreaded) {
+			return 'PHPCHUNKING';
+		} else {
+			return 'PHP';
+		}
+	}
+
+	/**
 	 * Returns an escaped SQL string
 	 *
 	 * @param string	$sql						The SQL to escape

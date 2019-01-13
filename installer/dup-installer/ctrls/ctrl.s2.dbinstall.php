@@ -363,7 +363,7 @@ Please check these items: <br/><br/>
     private function dropProcs()
     {
         $sql    = "SHOW PROCEDURE STATUS";
-        $found  = null;
+        $found  = array();
         if ($result = mysqli_query($this->dbh, $sql)) {
             while ($row = mysqli_fetch_row($result)) {
                 $found[] = $row[1];
@@ -387,7 +387,7 @@ Please check these items: <br/><br/>
             while ($row = mysqli_fetch_row($result)) {
                 $found_views[] = $row[0];
             }
-            if (count($found_views) > 0) {
+            if (!is_null($found_views) && count($found_views) > 0) {
                 foreach ($found_views as $view_name) {
                     $sql    = "DROP VIEW `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $view_name)."`";
                     if (!$result = mysqli_query($this->dbh, $sql)) {

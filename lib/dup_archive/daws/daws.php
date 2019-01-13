@@ -282,16 +282,14 @@ function generateCallTrace()
 
 function terminate_missing_variables($errno, $errstr, $errfile, $errline)
 {
-    echo "<br/>ERROR: $errstr $errfile $errline<br/>";
-    //  if (($errno == E_NOTICE) and ( strstr($errstr, "Undefined variable"))) die("$errstr in $errfile line $errline");
-
-
     SnapLibLogger::log("ERROR $errno, $errstr, {$errfile}:{$errline}");
     SnapLibLogger::log(generateCallTrace());
     //  DaTesterLogging::clearLog();
 
-    exit(1);
-    //return false; // Let the PHP error handler handle all the rest
+    /**
+     * INTERCEPT ON processRequest AND RETURN JSON STATUS
+     */
+    throw new Exception("ERROR:{$errfile}:{$errline} | ".$errstr , $errno);
 }
 
 $daws = new DAWS();

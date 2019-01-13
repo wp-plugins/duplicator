@@ -54,6 +54,22 @@ class DUP_Util
 		self::$PHP7_plus		 = version_compare(PHP_VERSION, '7.0.0', '>=');
 	}
 
+	public static function getArchitectureString()
+    {
+        $php_int_size = PHP_INT_SIZE;
+        
+        switch($php_int_size) {
+            case 4:
+                return DUP_PRO_U::esc_html__('32-bit', 'duplicator');
+                break;
+            case 8:
+                return DUP_PRO_U::esc_html__('64-bit', 'duplicator');
+                break;
+            default:
+                return DUP_PRO_U::esc_html__('Unknown', 'duplicator');
+        }
+    }
+
 	public static function objectCopy($srcObject, $destObject, $skipMemberArray = null)
 	{
 		foreach ($srcObject as $member_name => $member_value) {

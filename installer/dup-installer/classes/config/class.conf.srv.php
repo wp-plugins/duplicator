@@ -214,8 +214,8 @@ HTACCESS;
 		$status		= false;
 		$file_name  = SnapLibIOU::getFileName($file_path);
 		$hash		= self::$fileHash;
+		$source = self::getTypeName($type);
 		if (is_file($file_path)) {
-			$source = self::getTypeName($type);
 			if (! self::backupExists($type)) {
 				$status = copy($file_path, "{$file_path}-{$hash}-duplicator.bak");
 				$status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}-duplicator.bak")

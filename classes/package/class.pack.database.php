@@ -2,6 +2,42 @@
 // Exit if accessed directly
 if (! defined('DUPLICATOR_VERSION')) exit;
 
+/**
+ * Class for gathering system information about a database
+ *
+ * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
+ *
+ */
+class DUP_DatabaseInfo
+{
+    /**
+     * The SQL file was built with mysqldump or PHP
+     */
+    public $buildMode;
+
+    /**
+     * A unique list of all the collation table types used in the database
+     */
+    public $collationList;
+
+    /**
+     * Does the database name have any filtered characters in it
+     */
+    public $isNameUpperCase;
+
+    /**
+     * The real name of the database
+     */
+    public $name;
+
+    //CONSTRUCTOR
+    function __construct()
+    {
+        $this->collationList = array();
+    }
+}
+
 class DUP_Database
 {
     //PUBLIC
@@ -30,6 +66,7 @@ class DUP_Database
         $this->EOFMarker    = "";
         $package_zip_flush  = DUP_Settings::Get('package_zip_flush');
         $this->networkFlush = empty($package_zip_flush) ? false : $package_zip_flush;
+        $this->info = new DUP_DatabaseInfo();
     }
 
     /**
@@ -213,6 +250,15 @@ class DUP_Database
         $info['TableCount'] = $tblCount;
 
         return $info;
+    }
+
+    public function setInfoObj() {
+        global $wpdb;
+
+        $this->info->name				 = $wpdb->dbname;
+        $this->info->isNameUpperCase	 = preg_match('/[A-Z]/', $wpdb->dbname) ? 1 : 0;
+        $this->info->collationList		 = DUP_DB::getTableCollationList($filterTables);
+        $this->info->buildMode           = DUP_DB::getBuildMode();
     }
 
     /**

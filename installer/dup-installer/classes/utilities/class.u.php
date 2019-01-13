@@ -162,7 +162,9 @@ class DUPX_U
 		 $exists = false;
 		 if (function_exists('get_headers')) {
 			$url =  is_integer($port) ? $url . ':' . $port 	: $url;
-		    $headers = @get_headers($url);
+			DUPX_Handler::$should_log = false;
+			$headers = @get_headers($url);
+			DUPX_Handler::$should_log = true;
 			if (is_array($headers) && strpos($headers[0], '404') === false) {
 				 $exists = true;
 			}
@@ -448,6 +450,7 @@ class DUPX_U
 	{
 		$val	 = trim($val);
 		$last	 = strtolower($val[strlen($val) - 1]);
+		$val	 = intval($val);
 		switch ($last) {
 			// The 'G' modifier is available since PHP 5.1.0
 			case 'g':
