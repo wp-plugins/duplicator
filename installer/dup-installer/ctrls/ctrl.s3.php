@@ -153,21 +153,32 @@ $old_urls_list = array(
     $_POST['url_old']
 );
 
-// urls from wp-config
-if (!is_null($config_transformer)) {
-    if ($config_transformer->exists('constant', 'WP_HOME')) {
-        $old_urls_list[] = $config_transformer->get_value('constant', 'WP_HOME');
+try {
+    // urls from wp-config
+    if (!is_null($config_transformer)) {
+        if ($config_transformer->exists('constant', 'WP_HOME')) {
+            $old_urls_list[] = $config_transformer->get_value('constant', 'WP_HOME');
+        }
+
+        if ($config_transformer->exists('constant', 'WP_SITEURL')) {
+            $old_urls_list[] = $config_transformer->get_value('constant', 'WP_SITEURL');
+        }
     }
 
-    if ($config_transformer->exists('constant', 'WP_SITEURL')) {
-        $old_urls_list[] = $config_transformer->get_value('constant', 'WP_SITEURL');
-    }
-}
 
-// urls from db
-$dbUrls = mysqli_query($dbh, 'SELECT * FROM `'.mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix).'options` where option_name IN (\'siteurl\',\'home\')');
-while ($row = $dbUrls->fetch_object()) {
-     $old_urls_list[] = $row->option_value;
+    // urls from db
+    $dbUrls = mysqli_query($dbh, 'SELECT * FROM `'.mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix).'options` where option_name IN (\'siteurl\',\'home\')');
+    if ($dbUrls) {
+        while ($row = $dbUrls->fetch_object()) {
+             $old_urls_list[] = $row->option_value;
+        }
+    } else {
+        DUPX_Log::info('DB ERROR: '. mysqli_error($dbh));
+    }
+} catch(Exception $e) {
+    DUPX_Log::info('CONTINUE EXCEPTION: '.$exceptionError->getMessage());
+    DUPX_Log::info('TRACE:');
+    DUPX_Log::info($exceptionError->getTraceAsString());
 }
 
 $old_urls_list = array_unique ($old_urls_list);
