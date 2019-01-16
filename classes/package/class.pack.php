@@ -789,6 +789,9 @@ class DUP_Package
 		}
 
         $globs = glob(DUPLICATOR_SSDIR_PATH_TMP.'/*.*');
+		if (! is_array($globs) || $globs === FALSE) {
+			return;
+		}
         
         // RUNNING PACKAGES
         $active_pack = self::get_all_by_status(array(
@@ -817,10 +820,8 @@ class DUP_Package
         // Calculate delta time for old files
         $oldTimeToClean = time() - DUPLICATOR_TEMP_CLEANUP_SECONDS;
 
-        // foreach ($iterator as $fileinfo) {
         foreach ($globs as $glob_full_path) {
             // Don't remove sub dir
-            // if ($fileinfo->isDir()) {
             if (is_dir($glob_full_path)) {
                 continue;
             }
