@@ -12,11 +12,6 @@ if (! defined('DUPLICATOR_VERSION')) exit;
 class DUP_DatabaseInfo
 {
     /**
-     * The SQL file was built with mysqldump or PHP
-     */
-    public $buildMode;
-
-    /**
      * A unique list of all the collation table types used in the database
      */
     public $collationList;
@@ -258,7 +253,6 @@ class DUP_Database
         $this->info->name				 = $wpdb->dbname;
         $this->info->isNameUpperCase	 = preg_match('/[A-Z]/', $wpdb->dbname) ? 1 : 0;
         $this->info->collationList		 = DUP_DB::getTableCollationList($filterTables);
-        $this->info->buildMode           = DUP_DB::getBuildMode();
     }
 
     /**
