@@ -70,7 +70,7 @@ PHP SETTINGS -->
 		$test = ($test) ? 'ON' : 'OFF';
 		echo '<hr size="1" /><span id="data-srv-php-openbase"></span>&nbsp;<b>' . esc_html__('PHP Open Base Dir', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
 		_e('Issues might occur when [open_basedir] is enabled. Work with your server admin to disable this value in the php.ini file if you’re having issues building a package.', 'duplicator');
-		echo "&nbsp;<i><a href='http://www.php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . esc_html__('details', 'duplicator') . "]</a></i><br/>";
+		echo "&nbsp;<i><a href='http://php.net/manual/en/ini.core.php#ini.open-basedir' target='_blank'>[" . esc_html__('details', 'duplicator') . "]</a></i><br/>";
 
 		//MAX_EXECUTION_TIME
 		$test = (@set_time_limit(0)) ? 0 : ini_get("max_execution_time");

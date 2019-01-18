@@ -51,8 +51,10 @@ if ($section == "info" || $section == '') {
 	 if ($_GET['action'] != 'display')  :	?>
 		<div id="message" class="notice notice-success is-dismissible  dup-wpnotice-box">
 			<p><b><?php echo esc_html($action_response); ?></b></p>
-			<?php if ( $_GET['action'] == 'installer') :  ?>
-				<?php
+			<?php 
+                if ( $_GET['action'] == 'installer') :
+                    $remove_error = false;
+
 					// Move installer log before cleanup
 					$installer_log_path = DUPLICATOR_INSTALLER_DIRECTORY.'/dup-installer-log__'.DUPLICATOR_INSTALLER_HASH_PATTERN.'.txt';
 					$glob_files = glob($installer_log_path);
@@ -93,9 +95,12 @@ if ($section == "info" || $section == '') {
 						}
 
 						if (!empty($file_path)) {
-							echo (file_exists($file_path))
-								? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - ".esc_html($file_path)."  </div>"
-								: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - ".esc_html($file_path)."	</div>";
+                            if (file_exists($file_path)) {
+                                echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - ".esc_html($file_path)."  </div>";
+                                $remove_error = true;
+                            } else {
+                                echo "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - ".esc_html($file_path)."	</div>";
+                            }
 						}
 					}
 
@@ -129,6 +134,15 @@ if ($section == "info" || $section == '') {
 						 . 'the FAQ link <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-295-q" target="_blank">Which files need to be removed after an install?</a>', 'duplicator');
 
 						echo '<br/><br/>';
+
+                        if ($remove_error) {
+                            echo  __('Some of the installer files did not get removed, ', 'duplicator').
+                                    '<a href="#" onclick="Duplicator.Tools.deleteInstallerFiles(); return false;" >'.
+                                    __('please retry the installer cleanup process', 'duplicator').
+                                    '</a>.'.
+                                    __(' If this process continues please see the previous FAQ link.', 'duplicator').
+                                    '<br><br>';
+                        }
 
 						echo '<b><i class="fa fa-thumbs-o-up"></i> ' . esc_html__('Help Support Duplicator', 'duplicator') . ':</b>&nbsp;';
 						_e('The Duplicator team has worked many years to make moving a WordPress site a much easier process.  Show your support with a '

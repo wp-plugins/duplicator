@@ -340,6 +340,73 @@ class DUPX_Bootstrap
 					throw $ex;
 				}
 			}
+
+			$is_apache = (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false);
+			$is_nginx = (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false);
+
+			$sapi_type = php_sapi_name();
+			$php_ini_data = array(						
+						'max_execution_time' => 3600,
+						'max_input_time' => -1,
+						'ignore_user_abort' => 'On',
+						'post_max_size' => '4096M',
+						'upload_max_filesize' => '4096M',
+						'memory_limit' => '4096M',
+						'default_socket_timeout' => 3600,
+						'pcre.backtrack_limit' => 99999999999,
+					);
+			$sapi_type_first_three_chars = substr($sapi_type, 0, 3);
+			if ('fpm' === $sapi_type_first_three_chars) {
+				self::log("SAPI: FPM");
+				if ($is_apache) {
+					self::log('Server: Apache');
+				} elseif ($is_nginx) {
+					self::log('Server: Nginx');
+				}
+
+				if ($is_apache || $is_nginx) {
+					$htaccess_data = array();
+					foreach ($php_ini_data as $php_ini_key=>$php_ini_val) {
+						if ($is_apache) {
+							$htaccess_data[] = 'SetEnv PHP_VALUE "'.$php_ini_key.' = '.$php_ini_val.'"';
+						} elseif ($is_nginx) {
+							if ('On' == $php_ini_val || 'Off' == $php_ini_val) {
+								$htaccess_data[] = 'php_flag '.$php_ini_key.' '.$php_ini_val;
+							} else {
+								$htaccess_data[] = 'php_value '.$php_ini_key.' '.$php_ini_val;
+							}							
+						}
+					}				
+				
+					$htaccess_text = implode("\n", $htaccess_data);
+					$htaccess_file_path = dirname(__FILE__).'/dup-installer/.htaccess';
+					self::log("creating {$htaccess_file_path} with the content:");
+					self::log($htaccess_text);
+					@file_put_contents($htaccess_file_path, $htaccess_text);
+				}
+			} elseif ('cgi' === $sapi_type_first_three_chars || 'litespeed' === $sapi_type) {
+				if ('cgi' === $sapi_type_first_three_chars) {
+					self::log("SAPI: CGI");
+				} else {
+					self::log("SAPI: litespeed");
+				}
+				if (version_compare(phpversion(), 5.5) >= 0 && (!$is_apache || 'litespeed' === $sapi_type)) {
+					$ini_data = array();
+					foreach ($php_ini_data as $php_ini_key=>$php_ini_val) {
+						$ini_data[] = $php_ini_key.' = '.$php_ini_val;
+					}
+					$ini_text = implode("\n", $ini_data);
+					$ini_file_path = dirname(__FILE__).'/dup-installer/.user.ini';
+					self::log("creating {$ini_file_path} with the content:");
+					self::log($ini_text);
+					@file_put_contents($ini_file_path, $ini_text);
+				} else{
+					self::log("No need to create dup-installer/.htaccess or dup-installer/.user.ini");
+				}
+			} else {
+				self::log("No need to create dup-installer/.htaccess or dup-installer/.user.ini");
+				self::log("SAPI: Unrecognized");
+			}
 		} else {
 			self::log("Didn't need to extract the installer.");
 		}

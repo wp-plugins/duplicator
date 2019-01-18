@@ -28,9 +28,12 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 
 date_default_timezone_set('UTC'); // Some machines don’t have this set so just do it here.
-@ignore_user_abort(true); 
-@set_time_limit(1800); 
-@ini_set('memory_limit', '2048M'); 
+@ignore_user_abort(true);
+@set_time_limit(3600);
+@ini_set('memory_limit', '4096M');
+@ini_set('max_input_time', '-1');
+@ini_set('pcre.backtrack_limit', PHP_INT_MAX);
+@ini_set('default_socket_timeout', 3600);
 
 ob_start();
 try {
