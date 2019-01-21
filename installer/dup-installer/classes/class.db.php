@@ -42,7 +42,9 @@ class DUPX_DB
             }
             
         }
-        $dbh->options(MYSQLI_OPT_LOCAL_INFILE, false);
+        if (method_exists($dbh, 'options')) {
+            $dbh->options(MYSQLI_OPT_LOCAL_INFILE, false);
+        }
         return $dbh;
     }
 
