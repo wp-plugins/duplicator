@@ -211,6 +211,28 @@ class DUPX_Bootstrap
 				return $error;
 			}
 
+			// For .daf
+			if (!$isZip) {
+												
+				if (!filter_var(self::ARCHIVE_SIZE, FILTER_VALIDATE_INT) || self::ARCHIVE_SIZE > 2147483647) {
+				
+					$os_first_three_chars = substr(PHP_OS, 0, 3);
+					$os_first_three_chars = strtoupper($os_first_three_chars);
+					$no_of_bits = PHP_INT_SIZE * 8;
+
+					if ($no_of_bits == 32) {
+
+						if ('WIN' === $os_first_three_chars) {
+							$error  = 'Windows PHP limitations prevents extraction of archives larger than 2GB. Please do the following: <ol><li>Download and use the <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q">Windows DupArchive extractor</a> to extract all files from the archive.</li><li>Perform a <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q">Manual Extract Install</a> starting at step 4.</li></ol>';
+						} else 	{					
+							$error  = 'This archive is too large for 32-bit PHP. Ask your host to upgrade the server to 64-bit PHP or install on another system has 64-bit PHP.';
+						}
+
+						return $error;
+					}					
+				}
+			}
+
 			//SIZE CHECK ERROR
 			if (($this->archiveRatio < 90) && ($this->archiveActualSize > 0) && ($this->archiveExpectedSize > 0)) {
 				$this->log("ERROR: The expected archive size should be around [{$archiveExpectedEasy}].  The actual size is currently [{$archiveActualEasy}].");
@@ -293,8 +315,10 @@ class DUPX_Bootstrap
 						if ($extract_success) {
 							self::log('Successfully extracted with ZipArchive');
 						} else {
-							$error = 'Error extracting with ZipArchive. ';
+							// $error = 'Error extracting with ZipArchive. ';
+							$error = "This archive is not properly formatted and does not contain a dup-installer directory. Please make sure you are attempting to install the original archive and not one that has been reconstructed.";
 							self::log($error);
+							return $error;
 						}
 					} else {
 						self::log("WARNING: ZipArchive is not enabled.");
