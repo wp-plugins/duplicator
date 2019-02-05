@@ -178,8 +178,14 @@ class DUPX_Bootstrap
 
         //$archive_extension = strtolower(pathinfo($archive_filepath)['extension']);
         $archive_extension		= strtolower(pathinfo($archive_filepath, PATHINFO_EXTENSION));
-		$manual_extract_found   = file_exists($installer_directory."/main.installer.php");
-
+		$manual_extract_found   = (
+									file_exists($installer_directory."/main.installer.php")
+									&&
+									file_exists($installer_directory."/dup-archive__".self::PACKAGE_HASH.".txt")
+									&&
+									file_exists($installer_directory."/dup-database__".self::PACKAGE_HASH.".sql")
+									);
+                                    
         $isZip = ($archive_extension == 'zip');
 
 		//MANUAL EXTRACTION NOT FOUND
@@ -211,25 +217,26 @@ class DUPX_Bootstrap
 				return $error;
 			}
 
-			// For .daf
-			if (!$isZip) {
-												
-				if (!filter_var(self::ARCHIVE_SIZE, FILTER_VALIDATE_INT) || self::ARCHIVE_SIZE > 2147483647) {
-				
-					$os_first_three_chars = substr(PHP_OS, 0, 3);
-					$os_first_three_chars = strtoupper($os_first_three_chars);
-					$no_of_bits = PHP_INT_SIZE * 8;
+			if (!filter_var(self::ARCHIVE_SIZE, FILTER_VALIDATE_INT) || self::ARCHIVE_SIZE > 2147483647) {
+			
+				$os_first_three_chars = substr(PHP_OS, 0, 3);
+				$os_first_three_chars = strtoupper($os_first_three_chars);
+				$no_of_bits = PHP_INT_SIZE * 8;
 
-					if ($no_of_bits == 32) {
-
+				if ($no_of_bits == 32) {
+					if ($isZip) { // ZIP
+						if ('WIN' === $os_first_three_chars) {
+							$error = "This package is currently {$archiveExpectedEasy} and it's on a Windows OS. PHP on Windows does not support files larger than 2GB. Please use the file filters to get your package lower to support this server or try the package on a Linux server.";
+							return $error;
+						}
+					} else { // DAF
 						if ('WIN' === $os_first_three_chars) {
 							$error  = 'Windows PHP limitations prevents extraction of archives larger than 2GB. Please do the following: <ol><li>Download and use the <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q">Windows DupArchive extractor</a> to extract all files from the archive.</li><li>Perform a <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q">Manual Extract Install</a> starting at step 4.</li></ol>';
 						} else 	{					
 							$error  = 'This archive is too large for 32-bit PHP. Ask your host to upgrade the server to 64-bit PHP or install on another system has 64-bit PHP.';
 						}
-
 						return $error;
-					}					
+					}
 				}
 			}
 
@@ -250,20 +257,26 @@ class DUPX_Bootstrap
 
 		}
 
-		// INSTALL DIRECTORY: Check if its setup correctly AND we are not in overwrite mode
-		// disable extract installer mode by passing GET var like installer.php?extract-installer=0 or installer.php?extract-installer=disable
-        if ((isset($_GET['extract-installer']) && ('0' == $_GET['extract-installer'] || 'disable' == $_GET['extract-installer'] || 'false' == $_GET['extract-installer'])) && file_exists($installer_directory)) {
-//RSR for testing        if (file_exists($installer_directory)) {
 
-			self::log("$installer_directory already exists");
-			$extract_installer = !file_exists($installer_directory."/main.installer.php");
+        // OLD COMPATIBILITY MODE
+        if (isset($_GET['extract-installer']) && !isset($_GET['force-extract-installer'])) {
+            $_GET['force-extract-installer'] = $_GET['extract-installer'];
+        }
+        
+        if ($manual_extract_found) {
+			// INSTALL DIRECTORY: Check if its setup correctly AND we are not in overwrite mode
+			if (isset($_GET['force-extract-installer']) && ('1' == $_GET['force-extract-installer'] || 'enable' == $_GET['force-extract-installer'] || 'false' == $_GET['force-extract-installer'])) {
 
-			($extract_installer)
-				? self::log("But main.installer.php doesn't so extracting anyway")
-				: self::log("main.installer.php also exists so not going to extract installer directory");
+				self::log("Manual extract found with force extract installer get parametr");
+				$extract_installer = true;
 
+			} else {
+				$extract_installer = false;
+				self::log("Manual extract found so not going to extract dup-installer dir");
+			}
 		} else {
-			self::log("Going to overwrite installer directory since either in overwrite mode or installer directory doesn't exist");
+			$extract_installer = true;
+			self::log("Manual extract didn't found so going to extract dup-installer dir");
 		}
 
 		if ($extract_installer && file_exists($installer_directory)) {
@@ -315,10 +328,14 @@ class DUPX_Bootstrap
 						if ($extract_success) {
 							self::log('Successfully extracted with ZipArchive');
 						} else {
-							// $error = 'Error extracting with ZipArchive. ';
-							$error = "This archive is not properly formatted and does not contain a dup-installer directory. Please make sure you are attempting to install the original archive and not one that has been reconstructed.";
-							self::log($error);
-							return $error;
+							if (0 == $this->installer_files_found) {
+								$error = "This archive is not properly formatted and does not contain a dup-installer directory. Please make sure you are attempting to install the original archive and not one that has been reconstructed.";
+								self::log($error);
+								return $error;
+							} else {
+								$error = 'Error extracting with ZipArchive. ';
+								self::log($error);
+							}
 						}
 					} else {
 						self::log("WARNING: ZipArchive is not enabled.");
@@ -632,14 +649,14 @@ class DUPX_Bootstrap
 			$folder_prefix = self::INSTALLER_DIR_NAME.'/';
 			self::log("Extracting all files from archive within ".self::INSTALLER_DIR_NAME);
 
-			$installer_files_found = 0;
+			$this->installer_files_found = 0;
 
 			for ($i = 0; $i < $zipArchive->numFiles; $i++) {
 				$stat		 = $zipArchive->statIndex($i);
 				$filename	 = $stat['name'];
 
 				if ($this->startsWith($filename, $folder_prefix)) {
-					$installer_files_found++;
+					$this->installer_files_found++;
 
 					if ($zipArchive->extractTo($destination, $filename) === true) {
 						self::log("Success: {$filename} >>> {$destination}");
@@ -665,7 +682,7 @@ class DUPX_Bootstrap
                     $filename	 = $stat['name'];
 
                     if ($this->startsWith($filename, $folder_prefix)) {
-                        $installer_files_found++;
+                        $this->installer_files_found++;
 
                         if ($zipArchive->extractTo($destination, $filename) === true) {
                             self::log("Success: {$filename} >>> {$destination}");
@@ -685,7 +702,7 @@ class DUPX_Bootstrap
 				$success = false;
 			}
 
-			if ($installer_files_found < 10) {
+			if ($this->installer_files_found < 10) {
 				self::log("Couldn't find the installer directory in the archive!");
 
 				$success = false;

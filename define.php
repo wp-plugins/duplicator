@@ -3,7 +3,7 @@
 if (function_exists('plugin_dir_url')) 
 {		
     define('DUPLICATOR_VERSION',        '1.3.5');
-	define('DUPLICATOR_VERSION_BUILD',  '2019-01-30_17:15');
+	define('DUPLICATOR_VERSION_BUILD',  '2019-02-05_16:20');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	

@@ -21,30 +21,31 @@ require_once (DUPLICATOR_PLUGIN_PATH.'lib/forceutf8/Encoding.php');
  */
 class DUP_Archive
 {
-	//PUBLIC
-	public $FilterDirs;
-	public $FilterFiles;
-	public $FilterExts;
-	public $FilterDirsAll	 = array();
-	public $FilterFilesAll	 = array();
-	public $FilterExtsAll	 = array();
-	public $FilterOn;
-	public $ExportOnlyDB;
-	public $File;
-	public $Format;
-	public $PackDir;
-	public $Size			 = 0;
-	public $Dirs			 = array();
-	public $Files			 = array();
-	public $FilterInfo;
-	public $RecursiveLinks	 = array();
-	//PROTECTED
-	protected $Package;
-	private $tmpFilterDirsAll	 = array();
-	private $wpCorePaths		 = array();
-	private $wpCoreExactPaths	 = array();
+    //PUBLIC
+    public $FilterDirs;
+    public $FilterFiles;
+    public $FilterExts;
+    public $FilterDirsAll     = array();
+    public $FilterFilesAll    = array();
+    public $FilterExtsAll     = array();
+    public $FilterOn;
+    public $ExportOnlyDB;
+    public $File;
+    public $Format;
+    public $PackDir;
+    public $Size              = 0;
+    public $Dirs              = array();
+    public $Files             = array();
+    public $FilterInfo;
+    public $RecursiveLinks    = array();
+    public $file_count        = -1;
+    //PROTECTED
+    protected $Package;
+    private $tmpFilterDirsAll = array();
+    private $wpCorePaths      = array();
+    private $wpCoreExactPaths = array();
 
-	/**
+    /**
 	 *  Init this object
 	 */
 	public function __construct($package)
@@ -126,7 +127,28 @@ class DUP_Archive
 		}
 	}
 
-	/**
+    /**
+     *
+     * @return int return  DUP_Archive_Build_Mode
+     */
+    public function getBuildMode()
+    {
+        switch ($this->Format) {
+            case 'TAR': break;
+            case 'TAR-GZIP': break;
+            case 'DAF':
+                return DUP_Archive_Build_Mode::DupArchive;
+            default:
+                if (class_exists('ZipArchive')) {
+                    return DUP_Archive_Build_Mode::ZipArchive;
+                } else {
+                    return DUP_Archive_Build_Mode::Unconfigured;
+                }
+                break;
+        }
+    }
+
+    /**
 	 *  Builds a list of files and directories to be included in the archive
 	 *
 	 *  Get the directory size recursively, but don't calc the snapshot directory, exclusion directories
@@ -140,6 +162,7 @@ class DUP_Archive
 		$rootPath	 = DUP_Util::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
 		$rootPath	 = (trim($rootPath) == '') ? '/' : $rootPath;
 
+		$this->RecursiveLinks = array();
 		//If the root directory is a filter then skip it all
 		if (in_array($this->PackDir, $this->FilterDirsAll) || $this->Package->Archive->ExportOnlyDB) {
 			$this->Dirs = array();
@@ -509,8 +532,7 @@ class DUP_Archive
 	 *
 	 * @return array	Returns an array of directories to include in the archive
 	 */
-	private function getFileLists($path)
-	{
+	private function getFileLists($path) {
 		$handle = @opendir($path);
 
 		if ($handle) {
@@ -520,59 +542,54 @@ class DUP_Archive
 					continue;
 				}
 
-				$fullPath		 = str_replace("\\", '/', "{$path}/{$file}");
-				$relative_path	 = $fullPath;
+				$fullPath = str_replace("\\", '/', "{$path}/{$file}");
 
-				if (is_link($relative_path)) {
-					$is_link = true;
+				// @todo: Don't leave it like this. Convert into an option on the package to not follow symbolic links
+				// if (is_dir($fullPath) && (is_link($fullPath) == false))
+				if (is_dir($fullPath)) {
 
-					//Convert relative path of link to absolute path
-					chdir($relative_path);
-					$real_path = realpath(readlink($relative_path));
-					chdir(dirname(__FILE__));
-				} else {
-					$is_link	 = false;
-					$real_path	 = realpath($relative_path);
-				}
+                    $add = true;
+                    if (!is_link($fullPath)){
+                        foreach ($this->tmpFilterDirsAll as $key => $val) {
+                            $trimmedFilterDir = rtrim($val, '/');
+                            if ($fullPath == $trimmedFilterDir || strpos($fullPath, $trimmedFilterDir . '/') !== false) {
+                                $add = false;
+                                unset($this->tmpFilterDirsAll[$key]);
+                                break;
+                            }
+                        }
+                    } else{
+                        //Convert relative path of link to absolute path
+                        chdir($fullPath);
+						$link_path = str_replace("\\", '/', realpath(readlink($fullPath)));
+                        chdir(dirname(__FILE__));
 
-				$exclude_check = array_unique(array($real_path, $relative_path));
-
-				if (is_dir($real_path)) {
-					$exclude = false;
-
-					foreach ($this->tmpFilterDirsAll as $key => $val) {
-						$trimmedFilterDir = rtrim($val, '/');
-						foreach ($exclude_check as $c_check) {
-							if ($c_check == $trimmedFilterDir || strpos($c_check, $trimmedFilterDir.'/') !== false) {
-								$exclude = true;
-								unset($this->tmpFilterDirsAll[$key]);
-								break 2;
+                        $link_pos = strpos($fullPath,$link_path);
+                        if($link_pos === 0 && (strlen($link_path) <  strlen($fullPath))){
+                            $add = false;
+                            $this->RecursiveLinks[] = $fullPath;
+                            $this->FilterDirsAll[] = $fullPath;
+                        } else {
+							foreach ($this->tmpFilterDirsAll as $key => $val) {
+								$trimmedFilterDir = rtrim($val, '/');
+								if ($fullPath == $trimmedFilterDir || strpos($fullPath, $trimmedFilterDir . '/') !== false) {
+									$add = false;
+									unset($this->tmpFilterDirsAll[$key]);
+									break;
+								}
 							}
 						}
-					}
+                    }
 
-					if (!$exclude) {
-						if ($is_link) {
-							$this->RecursiveLinks[] = $relative_path;
-						}
-
-						$this->getFileLists($relative_path);
-						$this->Dirs[] = $relative_path;
-					}
+                    if ($add) {
+                        $this->getFileLists($fullPath);
+                        $this->Dirs[] = $fullPath;
+                    }
 				} else {
-					$exclude = false;
-					if (in_array(pathinfo($file, PATHINFO_EXTENSION), $this->FilterExtsAll) || in_array($file, $this->FilterFilesAll)) {
-						$exclude = true;
-					} else {
-						foreach ($exclude_check as $c_check) {
-							if (in_array($c_check, $this->FilterFilesAll)) {
-								$exclude = true;
-								break;
-							}
-						}
-					}
-					if (!$exclude) {
-						$this->Files[] = $relative_path;
+					if ( ! (in_array(pathinfo($file, PATHINFO_EXTENSION), $this->FilterExtsAll)
+						|| in_array($fullPath, $this->FilterFilesAll)
+						|| in_array($file, $this->FilterFilesAll))) {
+						$this->Files[] = $fullPath;
 					}
 				}
 			}

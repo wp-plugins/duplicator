@@ -123,16 +123,11 @@ class DUP_CTRL_Result
 			case 'JSON' :
 				return json_encode($this);
 				break;
-
 			case 'PHP' :
 				return $this;
 				break;
-
 			default:
-				if (!headers_sent()) {
-					header('Content-Type: application/json');
-				}
-				return die(json_encode($this));
+                wp_send_json($this);
 				break;
 		}
 	}

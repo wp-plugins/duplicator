@@ -73,6 +73,7 @@ class DUP_Zip extends DUP_Archive
             //ADD SQL
             $sql_ark_file_path = $archive->Package->getSqlArkFilePath();
             $isSQLInZip = self::$zipArchive->addFile(self::$sqlPath, $sql_ark_file_path);
+
             if ($isSQLInZip) {
                 DUP_Log::Info("SQL ADDED: ".basename(self::$sqlPath));
             } else {
@@ -109,6 +110,11 @@ class DUP_Zip extends DUP_Archive
                 DUP_Log::Info($info);
             }
 
+            /**
+             * count update for integrity check
+             */
+            $sumItems   = (self::$countDirs + self::$countFiles);
+
             /* ZIP FILES: Network Flush
              *  This allows the process to not timeout on fcgi
              *  setups that need a response every X seconds */
@@ -127,7 +133,6 @@ class DUP_Zip extends DUP_Archive
                     }
                     //Trigger a flush to the web server after so many files have been loaded.
                     if (self::$limitItems > DUPLICATOR_ZIP_FLUSH_TRIGGER) {
-                        $sumItems         = (self::$countDirs + self::$countFiles);
                         self::$zipArchive->close();
                         self::$zipArchive->open(self::$zipPath);
                         self::$limitItems = 0;
@@ -170,6 +175,13 @@ class DUP_Zip extends DUP_Archive
 
             DUP_Log::Info(print_r(self::$zipArchive, true));
 
+            /**
+             * count update for integrity check
+             */
+            $archive->file_count = self::$countDirs + self::$countFiles;
+            DUP_Log::Info("FILE ADDED TO ZIP: ".$archive->file_count);
+
+
             //--------------------------------
             //LOG FINAL RESULTS
             DUP_Util::fcgiFlush();
@@ -196,6 +208,9 @@ class DUP_Zip extends DUP_Archive
             DUP_Log::Info("COMPRESSED SIZE: ".DUP_Util::byteSize(self::$zipFileSize));
             DUP_Log::Info("ARCHIVE RUNTIME: {$timerAllSum}");
             DUP_Log::Info("MEMORY STACK: ".DUP_Server::getPHPMemory());
+            
+
+            
         } catch (Exception $e) {
             $error_message = "Runtime error in class.pack.archive.zip.php constructor.";
             DUP_Log::Error($error_message, "Exception: {$e}", Dup_ErrorBehavior::LogOnly);
