@@ -10,9 +10,10 @@
  * @copyright (c) 2017, Snapcreek LLC
  *
  */
-
 // Exit if accessed directly
-if (! defined('DUPLICATOR_VERSION')) exit;
+if (!defined('DUPLICATOR_VERSION')) {
+    exit;
+}
 
 class DUP_Validator
 {
@@ -20,21 +21,20 @@ class DUP_Validator
      * @var array $patterns
      */
     private static $patterns = array(
-        //'fdir' => '/^([a-zA-Z]:|\/|\\\\\\\\)[\\p{L}\s0-9-_!%&()=\[\]#@,.;+\\\\\/]+$/u',
-        //'ffile' => '/^([a-zA-Z]:|\/|\\\\\\\\)[\\p{L}\s0-9-_!%&()=\[\]#@,.;+\\\\\/]+\.[A-Za-z0-9]{2,4}$/u',
         'fdir' => '/^([a-zA-Z]:[\\\\\/]|\/|\\\\\\\\|\/\/)[^<>\0]+$/',
-        'ffile' =>  '/^([a-zA-Z]:[\\\\\/]|\/|\\\\\\\\|\/\/)[^<>\0]+$/',
-        'fext' => '/^\.?[A-Za-z0-9]{2,4}$/',
-        'email' => '[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+',
+        'ffile' => '/^([a-zA-Z]:[\\\\\/]|\/|\\\\\\\\|\/\/)[^<>\0]+$/',
+        'fext' => '/^\.?[^\\\\\/*:<>\0?"|\s\.]+$/',
+        'email' => '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/',
         'empty' => '/^$/',
         'nempty' => '/^.+$/',
     );
 
-    const FILTER_VALIDATE_IS_EMPTY = 'empty';
+    const FILTER_VALIDATE_IS_EMPTY  = 'empty';
     const FILTER_VALIDATE_NOT_EMPTY = 'nempty';
-    const FILTER_VALIDATE_FILE   = 'ffile';
-    const FILTER_VALIDATE_FOLDER = 'fdir';
-    const FILTER_VALIDATE_FILE_EXT = 'fext';
+    const FILTER_VALIDATE_FILE      = 'ffile';
+    const FILTER_VALIDATE_FOLDER    = 'fdir';
+    const FILTER_VALIDATE_FILE_EXT  = 'fext';
+    const FILTER_VALIDATE_EMAIL     = 'email';
 
     /**
      * @var array $errors [ ['key' => string field key,
@@ -142,7 +142,7 @@ class DUP_Validator
         $success = true;
         $result  = null;
 
-        if (isset($options['acc_vals']) && in_array($variable , $options['acc_vals'])) {
+        if (isset($options['acc_vals']) && in_array($variable, $options['acc_vals'])) {
             return $variable;
         }
 
@@ -212,19 +212,19 @@ class DUP_Validator
      * @param string $filter
      * @param array $options
      */
-    public function explode_filter_custom($variable, $delimiter , $filter, $options = array()) {
+    public function explode_filter_custom($variable, $delimiter, $filter, $options = array())
+    {
         if (empty($variable)) {
             return array();
         }
 
         $vals = explode($delimiter, trim($variable, $delimiter));
-        $res = array();
+        $res  = array();
 
-            foreach ($vals as $val) {
-                $res[] = $this->filter_custom($val, $filter, $options);
-            }
+        foreach ($vals as $val) {
+            $res[] = $this->filter_custom($val, $filter, $options);
+        }
 
         return $res;
     }
-
 }

@@ -168,7 +168,7 @@ try {
 
     // urls from db
     $dbUrls = mysqli_query($dbh, 'SELECT * FROM `'.mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix).'options` where option_name IN (\'siteurl\',\'home\')');
-    if ($dbUrls) {
+    if ($dbUrls instanceof mysqli_result) {
         while ($row = $dbUrls->fetch_object()) {
              $old_urls_list[] = $row->option_value;
         }

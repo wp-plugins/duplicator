@@ -85,6 +85,8 @@ class DUPX_Constants
 			: @fopen($GLOBALS['LOG_FILE_PATH'], "a+");
 
 		$GLOBALS['HOST_NAME'] = strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+
+        if (!defined('MAX_STRLEN_SERIALIZED_CHECK')) { define('MAX_STRLEN_SERIALIZED_CHECK', 2000000); }
 	}
 }
 

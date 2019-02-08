@@ -277,23 +277,28 @@ class DUPX_UpdateEngine
                                     }
                                 }
 
-                                //Replace logic - level 1: simple check on any string or serlized strings
-                                foreach ($list as $item) {
-									$objArr = array();
-                                    $edited_data = self::recursiveUnserializeReplace($item['search'], $item['replace'], $edited_data, false, $objArr);
-                                }
-
-                                //Replace logic - level 2: repair serialized strings that have become broken
-                                $serial_check = self::fixSerialString($edited_data);
-                                if ($serial_check['fixed']) {
-                                    $edited_data = $serial_check['data'];
-                                } elseif ($serial_check['tried'] && !$serial_check['fixed']) {
+                                if (self::isSerialized($edited_data) && strlen($edited_data) > MAX_STRLEN_SERIALIZED_CHECK) {
+                                     // skip search and replace for too big serialized string
                                     $serial_err++;
+                                } else {
+                                    //Replace logic - level 1: simple check on any string or serlized strings
+                                    foreach ($list as $item) {
+                                        $objArr = array();
+                                        $edited_data = self::recursiveUnserializeReplace($item['search'], $item['replace'], $edited_data, false, $objArr);
+                                    }
+
+                                    //Replace logic - level 2: repair serialized strings that have become broken
+                                    $serial_check = self::fixSerialString($edited_data);
+                                    if ($serial_check['fixed']) {
+                                        $edited_data = $serial_check['data'];
+                                    } elseif ($serial_check['tried'] && !$serial_check['fixed']) {
+                                        $serial_err++;
+                                    }
                                 }
                             }
 
                             //Change was made
-                            if ($edited_data != $data_to_fix || $serial_err > 0) {
+                            if ($serial_err > 0 || $edited_data != $data_to_fix) {
                                 $report['updt_cells']++;
                                 //Base 64 encode
                                 if ($base64converted) {
