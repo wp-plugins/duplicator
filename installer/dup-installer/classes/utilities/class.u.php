@@ -542,23 +542,30 @@ class DUPX_U
 
     /**
      * @param $url string The URL whichs domain you want to get
-     * @return bool|string The domain part of the given URL
+     * @return string The domain part of the given URL
+     *                  www.myurl.co.uk     => myurl.co.uk
+     *                  www.google.com      => google.com
+     *                  my.test.myurl.co.uk => myurl.co.uk
+     *                  www.myurl.localweb  => myurl.localweb
+     *
      */
     public static function getDomain($url)
     {
         $pieces = parse_url($url);
         $domain = isset($pieces['host']) ? $pieces['host'] : '';
-        if(strpos($domain,".") !== false){
+        if (strpos($domain, ".") !== false) {
             if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
                 return $regs['domain'];
+            } else {
+                $exDomain = explode('.', $domain);
+                return implode('.', array_slice($exDomain, -2, 2));
             }
-        }else{
+        } else {
             return $domain;
         }
+    }
 
-        return false;
-	}
-	// START ESCAPING AND SANITIZATION
+    // START ESCAPING AND SANITIZATION
 	/**
 	 * Escaping for HTML blocks.
 	 *

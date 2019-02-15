@@ -34,8 +34,11 @@ class DUP_JSON
 	public static function customEncode($value, $iteration = 1)
 	{
 		if (DUP_Util::$on_php_53_plus) {
-
-			$encoded = json_encode($value);
+			if (function_exists('wp_json_encode')) {
+				$encoded = wp_json_encode($value);
+			} else {
+				$encoded = json_encode($value);
+			}
 
 			switch (json_last_error()) {
 				case JSON_ERROR_NONE:
