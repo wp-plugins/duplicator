@@ -251,7 +251,7 @@ class DUPX_U
                 }
 
                 if (basename($safePath) === 'dup-installer') {
-                    $result = dirname($safePath);
+                    $result = ($safePath === 'dup-installer') ? '' : dirname($safePath);
                     break;
                 }
             }

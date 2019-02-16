@@ -657,6 +657,7 @@ class DUPX_Bootstrap
 				if ($checkSubFolder == false) {
 					$filenameCheck = $stat['name'];
 					$filename = $stat['name'];
+                    $tmpSubFolder = null;
 				} else {
                     $safePath = rtrim(self::setSafePath($stat['name']) , '/');
 					$tmpArray = explode('/' , $safePath);
@@ -675,7 +676,7 @@ class DUPX_Bootstrap
 				if ($this->startsWith($filenameCheck , $folder_prefix)) {
 					$this->installer_files_found++;
 
-					if (isset($tmpSubFolder) && !in_array($tmpSubFolder , $subFolderArchiveList)) {
+					if (!empty($tmpSubFolder) && !in_array($tmpSubFolder , $subFolderArchiveList)) {
 						$subFolderArchiveList[] = $tmpSubFolder;
 					}
 
