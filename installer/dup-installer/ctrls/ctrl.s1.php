@@ -154,22 +154,45 @@ switch ($post_archive_engine) {
 			DUPX_Log::error(ERR_ZIPARCHIVE);
 		}
 
+        $dupInstallerFolder = DUPX_U::findDupInstallerFolder($archive_path);
+        if (!empty($dupInstallerFolder)) {
+            DUPX_Log::info("ARCHIVE dup-installer SUBFOLDER:\"".$dupInstallerFolder."\"");
+        }
+
+        $dupInstallerZipPath = $dupInstallerFolder.'/dup-installer';
+
 		$zip = new ZipArchive();
 
 		if ($zip->open($archive_path) === TRUE) {
             for($i = 0; $i < $zip->numFiles; $i++) {
                 $extract_filename = $zip->getNameIndex($i);
+                
+                // skip dup-installer folder. Alrady extracted in bootstrap
+                if (strpos($extract_filename , $dupInstallerZipPath) === 0) {
+                    continue;
+                }
+
+                // skip no dupInstallerFolder files
+                if (!empty($dupInstallerFolder) && strpos($extract_filename , $dupInstallerFolder) !== 0) {
+                    continue;
+                }
+
                 try {
-                    //rsr uncomment if debugging     DUPX_Log::info("Attempting to extract {$extract_filename}. Time:". time());
                     if (!$zip->extractTo($target , $extract_filename)) {
                         DUPX_Log::info("FILE EXTRACION ERROR: ".$extract_filename);
                     } else {
                         DUPX_Log::info("DONE: ".$extract_filename,2);
                     }
+                    
                 } catch (Exception $ex) {
                     DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:" . $ex->getMessage());
                 }
             }
+
+            if (!empty($dupInstallerFolder)) {
+                DUPX_U::moveUpfromSubFolder($target.'/'.$dupInstallerFolder , true);
+            }
+            
             /*
 			if (!$zip->extractTo($target)) {
 				$zip_err_msg = ERR_ZIPEXTRACTION;
