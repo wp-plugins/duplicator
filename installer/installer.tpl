@@ -1,5 +1,17 @@
 <?php
+
+if (!defined('KB_IN_BYTES')) { define('KB_IN_BYTES', 1024); }
+if (!defined('MB_IN_BYTES')) { define('MB_IN_BYTES', 1024 * KB_IN_BYTES); }
+if (!defined('GB_IN_BYTES')) { define('GB_IN_BYTES', 1024 * MB_IN_BYTES); }
+if (!defined('DUPLICATOR_PHP_MAX_MEMORY')) { define('DUPLICATOR_PHP_MAX_MEMORY', 4096 * MB_IN_BYTES); }
+
 date_default_timezone_set('UTC'); // Some machines don’t have this set so just do it here.
+@ignore_user_abort(true);
+@set_time_limit(3600);
+@ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
+@ini_set('max_input_time', '-1');
+@ini_set('pcre.backtrack_limit', PHP_INT_MAX);
+@ini_set('default_socket_timeout', 3600);
 
 class DUPX_CSRF {
 	
@@ -392,7 +404,7 @@ class DUPX_Bootstrap
 						'ignore_user_abort' => 'On',
 						'post_max_size' => '4096M',
 						'upload_max_filesize' => '4096M',
-						'memory_limit' => '4096M',
+						'memory_limit' => DUPLICATOR_PHP_MAX_MEMORY,
 						'default_socket_timeout' => 3600,
 						'pcre.backtrack_limit' => 99999999999,
 					);
