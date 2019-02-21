@@ -57,7 +57,8 @@
     
     /* Building package */
  
-    .dup-pack-info .building-info {display: none;}
+    .dup-pack-info .building-info {display: none; color: #2C8021; font-style: italic}
+	.dup-pack-info .building-info .perc {font-weight: bold}
     .dup-pack-info.is-running .building-info {display: inline;}
     .dup-pack-info.is-running .get-btns button {display: none;}
 
@@ -225,8 +226,13 @@ TOOL-BAR -->
 					</td>
 					<td class="pack-size"><?php echo DUP_Util::byteSize($pack_archive_size); ?></td>
 					<td class='pack-name'>
-						<?php	echo ($pack_dbonly) ? "{$pack_name} <sup title='".esc_attr($txt_dbonly)."'>DB</sup>" : esc_html($pack_name); ?>
-                        <span class="building-info" ><i class="fa fa-gear fa-spin"></i> <b>Building Package</b> <span class="perc"><?php echo $pack_perc; ?></span>%</span>
+						<?php	echo ($pack_dbonly) ? "{$pack_name} <sup title='".esc_attr($txt_dbonly)."'>DB</sup>" : esc_html($pack_name); ?><br/>
+                        <span class="building-info" >
+							<i class="fa fa-gear fa-spin"></i> <b>Building Package</b> <span class="perc"><?php echo $pack_perc; ?></span>%
+							&nbsp; <i class="fa fa-question-circle" style="color:#2C8021"
+								data-tooltip-title="<?php esc_attr_e("Package Build Running", 'duplicator'); ?>"
+								data-tooltip="<?php esc_attr_e('To stop or reset this package build goto Settings > Advanced > Reset Packages', 'duplicator'); ?>"></i>
+						</span>
 					</td>
 					<td class="get-btns">
 						<button id="<?php echo esc_attr("{$uniqueid}_installer.php"); ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo absint($Package->ID); ?>); return false;">

@@ -909,7 +909,6 @@ DUPX.pingDAWS = function ()
 	}
 
 	console.log("pingDAWS:action=" + request.action);
-	console.log("daws url=" + DUPX.DAWS.Url);
 
 	$.ajax({
 		type: "POST",
@@ -1349,15 +1348,9 @@ DUPX.onSafeModeSwitch = function ()
 };
 
 //DOCUMENT LOAD
-$(document).ready(function ()
-{
-    DUPX.FILEOPS = new Object();
-
-    DUPX.FILEOPS.url = document.URL.substr(0, document.URL.lastIndexOf('/')) + '/lib/fileops/fileops.php';
-    DUPX.FILEOPS.standardTimeoutInSec = 25;
-
+$(document).ready(function() {
 	DUPX.DAWS = new Object();
-	DUPX.DAWS.Url = document.URL.substr(0,document.URL.lastIndexOf('/')) + '/lib/dup_archive/daws/daws.php';
+	DUPX.DAWS.Url = window.location.href + '?is_daws=1&daws_csrf_token=<?php echo DUPX_CSRF::generate('daws');?>';
 	DUPX.DAWS.StatusPeriodInMS = 5000;
 	DUPX.DAWS.PingWorkerTimeInSec = 9;
 	DUPX.DAWS.KickoffWorkerTimeInSec = 6; // Want the initial progress % to come back quicker

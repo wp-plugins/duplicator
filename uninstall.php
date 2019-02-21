@@ -55,6 +55,10 @@ if (DUP_Settings::Get('uninstall_files')) {
 			if (strstr($file, '.log')) 
 				@unlink("{$file}");
 		}
+        foreach (glob("{$ssdir}/*.log1") as $file) {
+			if (strstr($file, '.log1'))
+				@unlink("{$file}");
+		}
 
 		//Check for core files and only continue removing data if the snapshots directory
 		//has not been edited by 3rd party sources, this helps to keep the system stable

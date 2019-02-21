@@ -1,4 +1,5 @@
 <?php
+defined("ABSPATH") or die("");
 /** Absolute path to the DAWS directory. - necessary for php protection */
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');

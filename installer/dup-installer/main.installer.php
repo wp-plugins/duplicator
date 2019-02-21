@@ -48,6 +48,7 @@ try {
     $GLOBALS['DUPX_ROOT']  = str_replace("\\", '/', (realpath(dirname(__FILE__) . '/..')));
     $GLOBALS['DUPX_INIT']  = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
     $GLOBALS['DUPX_ENFORCE_PHP_INI']  = false;
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
 
     // ?view=help
     if (!empty($_GET['view']) && 'help' == $_GET['view']) {
@@ -59,6 +60,15 @@ try {
             // RSR TODO: Fail gracefully
             die("Bootloader parameter not specified");
         }
+    } else if (isset($_GET['is_daws']) && 1 == $_GET['is_daws']) { // For daws action
+        $post_ctrl_csrf_token = isset($_GET['daws_csrf_token']) ? $_GET['daws_csrf_token'] : '';
+        if (DUPX_CSRF::check($post_ctrl_csrf_token, 'daws')) {
+            require_once($GLOBALS['DUPX_INIT'].'/lib/dup_archive/daws/daws.php');
+            die();
+        } else {
+            die("An invalid request was made to 'daws'.  In order to protect this request from unauthorized access please "
+            . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
+        }        
     } else {
         if (!isset($_POST['archive'])) {
             if (isset($_COOKIE['archive'])) {
@@ -83,7 +93,6 @@ try {
     require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
-    require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
 
     $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
     if ($GLOBALS['DUPX_AC'] == null) {
