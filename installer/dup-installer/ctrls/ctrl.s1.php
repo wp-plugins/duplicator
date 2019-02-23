@@ -164,6 +164,7 @@ switch ($post_archive_engine) {
 		$zip = new ZipArchive();
 
 		if ($zip->open($archive_path) === TRUE) {
+			$extract_filenames = array(); 
             for($i = 0; $i < $zip->numFiles; $i++) {
                 $extract_filename = $zip->getNameIndex($i);
                 
@@ -175,19 +176,20 @@ switch ($post_archive_engine) {
                 // skip no dupInstallerFolder files
                 if (!empty($dupInstallerFolder) && strpos($extract_filename , $dupInstallerFolder) !== 0) {
                     continue;
-                }
+				}
+				$extract_filenames[] =  $extract_filename;
+			}
 
-                try {
-                    if (!$zip->extractTo($target , $extract_filename)) {
-                        DUPX_Log::info("FILE EXTRACION ERROR: ".$extract_filename);
-                    } else {
-                        DUPX_Log::info("DONE: ".$extract_filename,2);
-                    }
-                    
-                } catch (Exception $ex) {
-                    DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:" . $ex->getMessage());
-                }
-            }
+			try {
+				if (!$zip->extractTo($target , $extract_filenames)) {
+					DUPX_Log::info("FILE EXTRACION ERROR: ".implode(',', $extract_filenames));
+				} else {
+					DUPX_Log::info("DONE: ".$extract_filename,2);
+				}
+				
+			} catch (Exception $ex) {
+				DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:" . $ex->getMessage());
+			}
 
             if (!empty($dupInstallerFolder)) {
                 DUPX_U::moveUpfromSubFolder($target.'/'.$dupInstallerFolder , true);

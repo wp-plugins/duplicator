@@ -72,19 +72,30 @@ class DUPX_Constants
 		$GLOBALS['LOGGING']				= isset($_POST['logging']) ? $_POST['logging'] : 1;
 		$GLOBALS['CURRENT_ROOT_PATH']	= str_replace('\\', '/', realpath(dirname(__FILE__) . "/../../../"));
 		$GLOBALS['LOG_FILE_PATH']		= $GLOBALS['DUPX_INIT'] . '/' . $GLOBALS["LOG_FILE_NAME"];
+        $GLOBALS["NOTICES_FILE_NAME"]	= "dup-installer-notices__{$GLOBALS['PACKAGE_HASH']}.json";
+        $GLOBALS["NOTICES_FILE_PATH"]	= $GLOBALS['DUPX_INIT'] . '/' . $GLOBALS["NOTICES_FILE_NAME"];
 		$GLOBALS['CHOWN_ROOT_PATH']		= @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
 		$GLOBALS['CHOWN_LOG_PATH']		= @chmod("{$GLOBALS['LOG_FILE_PATH']}", 0644);
+        $GLOBALS['CHOWN_NOTICES_PATH']	= @chmod("{$GLOBALS['NOTICES_FILE_PATH']}", 0644);
 		$GLOBALS['URL_SSL']				= (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;
 		$GLOBALS['URL_PATH']			= ($GLOBALS['URL_SSL']) ? "https://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}" : "http://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}";
 		$GLOBALS['PHP_MEMORY_LIMIT']	= ini_get('memory_limit') === false ? 'n/a' : ini_get('memory_limit');
 		$GLOBALS['PHP_SUHOSIN_ON']		= extension_loaded('suhosin') ? 'enabled' : 'disabled';
 
-		//Restart log if user starts from step 1
-		$GLOBALS['LOG_FILE_HANDLE'] = ($GLOBALS["VIEW"] == "step1")
-			? @fopen($GLOBALS['LOG_FILE_PATH'], "w+")
-			: @fopen($GLOBALS['LOG_FILE_PATH'], "a+");
+        /**
+         * Inizialize notices manager and load file
+         */
+        $noticesManager = DUPX_NOTICE_MANAGER::getInstance();
 
-		$GLOBALS['HOST_NAME'] = strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+        //Restart log if user starts from step 1
+        if ($GLOBALS["VIEW"] == "step1") {
+            $GLOBALS['LOG_FILE_HANDLE'] = @fopen($GLOBALS['LOG_FILE_PATH'], "w+");
+            $noticesManager->resetNotices();
+        } else {
+            $GLOBALS['LOG_FILE_HANDLE'] = @fopen($GLOBALS['LOG_FILE_PATH'], "a+");
+        }
+
+        $GLOBALS['HOST_NAME'] = strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
 
         if (!defined('MAX_STRLEN_SERIALIZED_CHECK')) { define('MAX_STRLEN_SERIALIZED_CHECK', 2000000); }
 	}

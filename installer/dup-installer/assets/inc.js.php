@@ -118,7 +118,7 @@
 			(icon.length)
 				? $(icon).addClass(style[src].open )
 				: $(this).html("- " + text );
-			target.show();
+			target.show().removeClass('no-display');
 		} else {
 			(icon.length)
 				? $(icon).addClass(style[src].close)

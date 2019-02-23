@@ -11,6 +11,20 @@
     <p>
         Message: <b><?php echo DUPX_U::esc_html($exceptionError->getMessage()); ?></b><br>
         Please see the <a href="<?php echo $attr_log_link; ?>" target="dup-installer">installer-log.txt</a> file for more details.
+        <?php
+        if ($exceptionError instanceof DupxException) {
+            if ($exceptionError->haveFaqLink()) {
+            ?>
+        <br>
+        See FAQ: <a href="<?php echo $exceptionError->getFaqLinkUrl (); ?>" ><?php echo $exceptionError->getFaqLinkLabel(); ?></a>
+
+        <?php
+            }
+            if (strlen($longMsg = $exceptionError->getLongMsg())) {
+                echo '<br><br>'.$longMsg;
+            }
+        }
+        ?>
     </p>
     <hr>
     Trace:

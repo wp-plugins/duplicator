@@ -9,6 +9,7 @@
 	select {padding-left:0; width:99%}
 	select:disabled {background:#EBEBE4}
 	input.readonly {background-color:#efefef;}
+    .no-display { display: none; }
 
 	/* ============================
 	COMMON VIEWS
@@ -57,6 +58,102 @@
 	div.hdr-sub4:hover  {background-color:#dfdfdf; cursor:pointer}
 	div.toggle-hdr:hover {cursor:pointer; background-color:#f1f1f1; border:1px solid #dcdcdc; }
 	div.toggle-hdr:hover a{color:#000}
+
+     [data-type="toggle"] > i.fa,
+    i.fa.fa-toggle-empty { min-width: 8px; }
+
+	/* ============================
+	NOTICES
+	============================ */
+    /* step messages */
+    #step-messages { padding: 10px 25px 0; }
+    .notice {
+        background: #fff;
+        border-left: 4px solid #fff;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,.5);
+        margin: 5px 0 2px;
+        padding: 1px 12px;
+        border-radius: 4px;
+    }
+
+    .notice-report {
+        border-left: 4px solid #fff;
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 4px;
+    }
+
+    .notice-report .title {
+        padding: 0 10px;
+    }
+
+    .notice-report .info {
+        border-top: 1px solid #dedede;
+        padding: 10px;
+        font-size: 10px;
+        background: #FAFAFA;
+    }
+
+    .notice.l-info,
+    .notice.l-notice {
+        border-left-color: #46b450;
+    }
+    .notice.l-swarning {
+        border-left-color: #d6ef49;
+    }
+    .notice.l-hwarning {
+        border-left-color: #efe348;
+    }
+    .notice.l-critical {
+        border-left-color: #d82929;
+    }
+    .notice.l-fatal {
+        border-left-color: #000000;
+    }
+
+    .report-sections-list .section {
+        border: 1px solid #DFDFDF;
+        margin-bottom: 20px;
+    }
+
+    .report-sections-list .section > .section-title {
+        background-color: #efefef;
+        padding: 3px;
+        font-weight: bold;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .report-sections-list .section > .section-content {
+        padding: 5px;
+    }
+
+    .notice-level-status {
+        border-radius: 4px;
+        padding: 1px 5px 1px 5px;
+        margin: 2px 5px;
+        font-size: 10px;
+        display: inline-block;
+        color: #FFF;
+        font-weight: bold;
+    }
+
+    .notice-level-status.l-info,
+    .notice-level-status.l-notice {
+        background: #46b450;
+    }
+    .notice-level-status.l-swarning {
+        background: #d6ef49;
+    }
+    .notice-level-status.l-hwarning {
+        background: #efe348;
+    }
+    .notice-level-status.l-critical {
+        background: #d82929;
+    }
+    .notice-level-status.l-fatal {
+        background: #000000;
+    }
 
     /*Adv Opts */
     table.dupx-opts {width:100%; border:0px;}

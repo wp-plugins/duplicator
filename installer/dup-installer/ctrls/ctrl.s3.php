@@ -50,6 +50,8 @@ if (!$dbh) {
 	DUPX_Log::error($msg);
 }
 
+$nManager = DUPX_NOTICE_MANAGER::getInstance();
+
 $charset_server	 = @mysqli_character_set_name($dbh);
 @mysqli_query($dbh, "SET wait_timeout = ".mysqli_real_escape_string($dbh, $GLOBALS['DB_MAX_TIME']));
 DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
@@ -286,11 +288,27 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		} else {
 			$newuser_warnmsg = "- Failed to create the user '{$post_wp_username}' \n ";
 			$JSON['step3']['warnlist'][] = $newuser_warnmsg;
+
+            $nManager->addFinalReportNotice(array(
+                        'shortMsg' => 'New admin user create error',
+                        'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+                        'longMsg' => $newuser_warnmsg,
+                        'sections' => 'general'
+                    ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_UPDATE , 'new-user-create-error');
+
 			DUPX_Log::info($newuser_warnmsg);
 		}
 	} else {
 		$newuser_warnmsg = "\nNEW WP-ADMIN USER:\n - Username '{$post_wp_username}' already exists in the database.  Unable to create new account.\n";
 		$JSON['step3']['warnlist'][] = $newuser_warnmsg;
+
+        $nManager->addFinalReportNotice(array(
+                'shortMsg' => 'New admin user create error',
+                'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
+                'longMsg' => $newuser_warnmsg,
+                'sections' => 'general'
+            ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_UPDATE , 'new-user-create-error');
+
 		DUPX_Log::info($newuser_warnmsg);
 	}
 }
@@ -516,12 +534,27 @@ if (file_exists($wpconfig_ark_path)) {
         $msg  .= "See the codex link for more details: https://codex.wordpress.org/Editing_wp-config.php";
         $JSON['step3']['warnlist'][] = $msg;
         DUPX_Log::info($msg);
+
+        $nManager->addFinalReportNotice(array(
+                'shortMsg' => 'wp-config notice',
+                'level' => DUPX_NOTICE_ITEM::NOTICE,
+                'longMsg' => $msg,
+                'sections' => 'general'
+            ));
     }
 } else {
     $msg   = "WP-CONFIG NOTICE: <b>wp-config.php not found.</b><br><br>" ;
     $msg  .= "No action on the wp-config was possible.<br>";
     $msg  .= "Be sure to insert a properly modified wp-config for correct wordpress operation.";
     $JSON['step3']['warnlist'][] = $msg;
+
+    $nManager->addFinalReportNotice(array(
+            'shortMsg' => 'wp-config not found',
+            'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+            'longMsg' => $msg,
+            'sections' => 'general'
+        ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_UPDATE , 'wp-config-not-found');
+
     DUPX_Log::info($msg);
 }
 
@@ -534,6 +567,14 @@ if ($result) {
 			$msg .=	"set please validate settings. These settings can be changed in the wp-admin by going to /wp-admin/options.php'";
 			$JSON['step3']['warnlist'][] = $msg;
 			DUPX_Log::info($msg);
+
+            $nManager->addFinalReportNotice(array(
+                'shortMsg' => 'Media settings notice',
+                'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
+                'longMsg' => $msg,
+                'sections' => 'general'
+            ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_UPDATE , 'media-settings-notice');
+
 			break;
 		}
 	}

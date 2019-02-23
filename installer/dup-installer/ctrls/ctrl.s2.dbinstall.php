@@ -78,50 +78,6 @@ class DUPX_DBInstall
         $this->dbobj_procs     = isset($post['dbobj_procs']) ? DUPX_U::sanitize_text_field($post['dbobj_procs']) : 0;
     }
 
-	/*TODO: Remove after 1.3.2 is released */
-    public function prepareSQL()
-    {
-        $faq_url      = $GLOBALS['FAQ_URL'];
-        @chmod($this->sql_file_path , 0777);
-        $sql_file = file_get_contents($this->sql_file_path, true);
-
-        //ERROR: Reading database.sql file
-        if ($sql_file === false || strlen($sql_file) < 10) {
-            $spacer = str_repeat("&nbsp;", 5);
-            $sql_file_rel_path = "dup-installer/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql";
-            $msg    = "<b>Unable to read/find the ".DUPX_U::esc_html($sql_file_rel_path)." file from the archive.</b><br/>
-Please check these items: <br/><br/>
-1. Validate permissions and/or group-owner rights on these items: <br/>
-{$spacer}- File: dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql file in dup-installer folder<br/>
-{$spacer}- Directory: [".DUPX_U::esc_html($this->root_path)."] <br/>
-{$spacer}<small>See: <a href='".DUPX_U::esc_url($faq_url."#faq-trouble-055-q")."' target='_blank'>".DUPX_U::esc_url($faq_url."#faq-trouble-055-q")."</a></small><br/><br/>
-2. Validate the dup-database__".DUPX_U::esc_html($GLOBALS['DUPX_AC']->package_hash).".sql file exists and is in the dup-installer folder of the archive.zip file <br/>
-{$spacer}<small>See: <a href='".DUPX_U::esc_url($faq_url.'#faq-installer-020-q')."' target='_blank'>{$faq_url}#faq-installer-020-q</a></small><br/><br/>";
-            DUPX_Log::error($msg);
-        }
-
-        //Removes invalid space characters
-        //Complex Subject See: http://webcollab.sourceforge.net/unicode.html
-        $sql_file = $this->nbspFix($sql_file);
-
-        //Write new contents to install-data.sql
-        @chmod($this->sql_result_file_path, 0777);
-        $sql_file_copy_status         = file_put_contents($this->sql_result_file_path, $sql_file);
-        $this->sql_result_data        = explode(";\n", $sql_file);
-        $this->sql_result_data_length = count($this->sql_result_data);
-        $sql_file                     = null;
-
-        //WARNING: Create installer-data.sql failed
-        if ($sql_file_copy_status === false || filesize($this->sql_result_file_path) == 0 || !is_readable($this->sql_result_file_path)) {
-            $sql_file_path = "{$GLOBALS['DUPX_INIT']}/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql";
-            $sql_file_size = DUPX_U::readableByteSize(filesize($sql_file_path));
-            $msg           = "\nWARNING: Unable to properly copy dup-installer/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql ({$sql_file_size}) to {$GLOBALS['SQL_FILE_NAME']}.  Please check these items:\n";
-            $msg           .= "- Validate permissions and/or group-owner rights on dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql and directory [{$GLOBALS['DUPX_INIT']}/] \n";
-            $msg           .= "- see: {$faq_url}#faq-trouble-055-q \n";
-            DUPX_Log::info($msg);
-        }
-    }
-
     public function prepareDB()
     {
         //RUN DATABASE SCRIPT
@@ -226,6 +182,8 @@ Please check these items: <br/><br/>
             return false;
         }
 
+        $nManager = DUPX_NOTICE_MANAGER::getInstance();
+
         @mysqli_autocommit($this->dbh, false);
 
         $query = null;
@@ -240,8 +198,16 @@ Please check these items: <br/><br/>
             if (preg_match('/'.$delimiter.'\s*$/S', $query)) {
                 $query_strlen = strlen(trim($query));
                 if ($this->dbvar_maxpacks < $query_strlen) {
-                    DUPX_Log::info("**ERROR** Query size limit [length={$this->dbvar_maxpacks}] [sql=".substr($this->sql_result_data[$counter], 0, 75)."...]");
+                    $errorMsg = "**ERROR** Query size limit [length={$this->dbvar_maxpacks}] [sql=".substr($this->sql_result_data[$counter], 0, 75)."...]";
                     $this->dbquery_errs++;
+                    $nManager->addNextStepNoticeMessage('QUERY ERROR: size limit' , DUPX_NOTICE_ITEM::SOFT_WARNING , DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'query-size-limit-msg');
+                    $nManager->addFinalReportNotice(array(
+                            'shortMsg' => 'QUERY ERROR: size limit',
+                            'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
+                            'longMsg' => $errorMsg,
+                            'sections' => 'database'
+                    ));
+                    DUPX_Log::info($errorMsg);
                 } elseif ($query_strlen > 0) {
                     $query = $this->nbspFix($query);
                     $query = $this->applyQueryCollationFallback($query);
@@ -279,10 +245,38 @@ Please check these items: <br/><br/>
                             @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
                             DUPX_DB::setCharset($this->dbh, $this->post['dbcharset'], $this->post['dbcollate']);
                         }
-                        DUPX_Log::info("**ERROR** database error write '{$err}' - [sql=".substr($query, 0, 75)."...]");
+                        $errMsg = "**ERROR** database error write '{$err}' - [sql=".substr($query, 0, 75)."...]";
+                        DUPX_Log::info($errMsg);
 
                         if (DUPX_U::contains($err, 'Unknown collation')) {
+                            $nManager->addNextStepNotice(array(
+                                'shortMsg' => 'DATABASE ERROR: database error write',
+                                'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+                                'longMsg' => 'Unknown collation<br>RECOMMENDATION: Try resolutions found at https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q',
+                                'faqLink' => array(
+                                    'url' => 'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q',
+                                    'label' => 'FAQ Link'
+                                )
+                            ), DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'query-collation-write-msg');
+                            $nManager->addFinalReportNotice(array(
+                                'shortMsg' => 'DATABASE ERROR: database error write',
+                                'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+                                'longMsg' => 'Unknown collation<br>RECOMMENDATION: Try resolutions found at https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q'.'<br>'.$errMsg,
+                                'sections' => 'database',
+                                'faqLink' => array(
+                                    'url' => 'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q',
+                                    'label' => 'FAQ Link'
+                                )
+                            ));
                             DUPX_Log::info('RECOMMENDATION: Try resolutions found at https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q');
+                        } else {
+                            $nManager->addNextStepNoticeMessage('DATABASE ERROR: database error write' , DUPX_NOTICE_ITEM::SOFT_WARNING , DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'query-write-msg');
+                            $nManager->addFinalReportNotice(array(
+                                'shortMsg' => 'DATABASE ERROR: database error write',
+                                'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
+                                'longMsg' => $errMsg,
+                                'sections' => 'database'
+                            ));
                         }
 
                         $this->dbquery_errs++;
@@ -301,6 +295,8 @@ Please check these items: <br/><br/>
         }
         @mysqli_commit($this->dbh);
         @mysqli_autocommit($this->dbh, true);
+
+        $nManager ->saveNotices();
 
         //DATA CLEANUP: Perform Transient Cache Cleanup
         //Remove all duplicator entries and record this one since this is a new install.
@@ -400,6 +396,9 @@ Please check these items: <br/><br/>
 
     public function writeLog()
     {
+        $nManager = DUPX_NOTICE_MANAGER::getInstance();
+        $nManager->saveNotices();
+
         DUPX_Log::info("ERRORS FOUND:\t{$this->dbquery_errs}");
         DUPX_Log::info("DROPPED TABLES:\t{$this->drop_tbl_log}");
         DUPX_Log::info("RENAMED TABLES:\t{$this->rename_tbl_log}");

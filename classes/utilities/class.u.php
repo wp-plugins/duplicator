@@ -650,27 +650,88 @@ class DUP_Util
 	}
 
 	/**
-	 * Returns an array of the WordPress core tables.
-	 *
-	 * @return array  Returns all WP core tables
-	 */
-	public static function getWPCoreTables()
-	{
-		global $wpdb;
-		return array(
-			"{$wpdb->prefix}commentmeta",
-			"{$wpdb->prefix}comments",
-			"{$wpdb->prefix}links",
-			"{$wpdb->prefix}options",
-			"{$wpdb->prefix}postmeta",
-			"{$wpdb->prefix}posts",
-			"{$wpdb->prefix}term_relationships",
-			"{$wpdb->prefix}term_taxonomy",
-			"{$wpdb->prefix}termmeta",
-			"{$wpdb->prefix}terms",
-			"{$wpdb->prefix}usermeta",
-			"{$wpdb->prefix}users");
-	}
+     * Returns an array of the WordPress core tables.
+     *
+     * @return array  Returns all WP core tables
+     */
+    public static function getWPCoreTables()
+    {
+        global $wpdb;
+        $result = array();
+        foreach (self::getWPCoreTablesEnd() as $tend) {
+            $result[] = $wpdb->prefix.$tend;
+        }
+        return $result;
+    }
+
+    public static function getWPCoreTablesEnd()
+    {
+        return array(
+            'commentmeta',
+            'comments',
+            'links',
+            'options',
+            'postmeta',
+            'posts',
+            'term_relationships',
+            'term_taxonomy',
+            'termmeta',
+            'terms',
+            'usermeta',
+            'blogs',
+            'blog_versions',
+            'blogmeta',
+            'users',
+            'site',
+            'sitemeta',
+            'signups',
+            'registration_log',
+            'blog_versions');
+    }
+
+    public static function isWPCoreTable($table)
+    {
+        global $wpdb;
+
+        if (strpos($table, $wpdb->prefix) !== 0) {
+            return false;
+        }
+
+        $subTName = substr($table, strlen($wpdb->prefix));
+        $coreEnds = self::getWPCoreTablesEnd();
+
+        if (in_array($subTName, $coreEnds)) {
+            return true;
+        } else if (is_multisite()) {
+            $exTable = explode('_', $subTName);
+            if (count($exTable) >= 2 && is_numeric($exTable[0])) {
+                $tChekc = implode('_', array_slice($exTable, 1));
+                if (get_blog_details((int) $exTable[0], false) !== false && in_array($tChekc, $coreEnds)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static function getWPBlogIdTable($table)
+    {
+        global $wpdb;
+
+        if (!is_multisite() || strpos($table, $wpdb->prefix) !== 0) {
+            return 0;
+        }
+
+        $subTName = substr($table, strlen($wpdb->prefix));
+        $exTable  = explode('_', $subTName);
+        if (count($exTable) >= 2 && is_numeric($exTable[0]) && get_blog_details((int) $exTable[0], false) !== false) {
+            return (int) $exTable[0];
+        } else {
+            return 0;
+        }
+    }
+
 
 	/**
 	 * Finds if its a valid executable or not
