@@ -167,6 +167,32 @@ class DUPX_DBInstall
         }
     }
 
+    public function getRowCountMisMatchTables()
+    {
+        $tableWiseRowCounts = $GLOBALS['DUPX_AC']->dbInfo->tableWiseRowCounts;
+        $skipTables = array(
+            $GLOBALS['DUPX_AC']->wp_tableprefix."duplicator_packages",
+            $GLOBALS['DUPX_AC']->wp_tableprefix."options",
+            $GLOBALS['DUPX_AC']->wp_tableprefix."duplicator_pro_packages",
+            $GLOBALS['DUPX_AC']->wp_tableprefix."duplicator_pro_entities",
+        );
+        $misMatchTables = array();
+        foreach ($tableWiseRowCounts as $table => $rowCount) {
+            if (in_array($table, $skipTables)) {
+                continue;
+            }
+            $sql = "SELECT count(*) as cnt FROM `".mysqli_real_escape_string($this->dbh, $table)."`";
+            $result = mysqli_query($this->dbh, $sql); 
+            if (false !== $result) {
+                $row = mysqli_fetch_assoc($result);
+                if ($rowCount != $row['cnt']) {
+                    $misMatchTables[] = $table;
+                }
+            }
+        }
+        return $misMatchTables;
+    }
+
     public function writeInDB()
     {
         //WRITE DATA

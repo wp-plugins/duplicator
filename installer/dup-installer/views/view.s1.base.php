@@ -73,6 +73,13 @@ if ($GLOBALS['DUPX_AC']->exportOnlyDB) {
 						? 'Good' 
 						: 'Warn';
 }
+
+$space_free = @disk_free_space($GLOBALS['DUPX_ROOT']); 
+$archive_size = filesize($GLOBALS['FW_PACKAGE_PATH']);
+$notice['100'] = ($space_free && $archive_size > $space_free) 
+                    ? 'Warn'
+					: 'Good';
+
 $all_notice	  = in_array('Warn', $notice)			? 'Warn' : 'Good';
 
 //SUMMATION
@@ -527,6 +534,18 @@ VALIDATION
 			Duplicator Installer will place this wp-content directory in the WordPress setup root folder of this installation site. It will not break anything in your installation
 			site. It is just for your information.
 		</div>
+
+		<!-- NOTICE 100 -->
+		<div class="status <?php echo ($notice['100'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['100']); ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice100"><i class="fa fa-caret-right"></i> Sufficient disk space</div>
+		<div class="info" id="s1-notice100">
+        <?php
+        echo ($notice['100'] == 'Good')
+                ? 'You have sufficient disk space in your machine to extract the archive.'
+                : 'You don’t have sufficient disk space in your machine to extract the archive. Ask your host to increase disk space.'
+        ?>
+		</div>
+
 	</div>
 
 </div>
@@ -1037,21 +1056,6 @@ DUPX.kickOffDupArchiveExtract = function ()
 	var request = new Object();
 	var isClientSideKickoff = DUPX.isClientSideKickoff();
 
-	<?php
-	$outer_root_path = dirname($root_path);
-	if (!$GLOBALS['DUPX_AC']->installSiteOverwriteOn && (file_exists($root_path.'/wp-config.php') || (@file_exists($outer_root_path.'/wp-config.php') && !@file_exists("{$outer_root_path}/wp-settings.php")))) {
-		?>
-		$('#s1-input-form').hide();
-		$('#s1-result-form').show();
-		var errorString = "<div class='dupx-ui-error'><b style='color:#B80000;'>INSTALL ERROR!</b><br/>"+'<?php echo ERR_CONFIG_FOUND;?>'+"</div>";
-		$('#ajaxerr-data').html(errorString);
-		DUPX.hideProgressBar();
-		return false;
-		<?php
-	}
-	?>
-	
-
 	request.action = "start_expand";
 	request.archive_filepath = '<?php echo DUPX_U::esc_js($archive_path); ?>';
 	request.restore_directory = '<?php echo DUPX_U::esc_js($root_path); ?>';
@@ -1081,7 +1085,7 @@ DUPX.kickOffDupArchiveExtract = function ()
 	$.ajax({
 		type: "POST",
 		timeout: DUPX.DAWS.KickoffWorkerTimeInSec * 2000,  // Double worker time and convert to ms
-		url: DUPX.DAWS.Url,
+		url: DUPX.DAWS.Url + '&daws_action=start_expand',
 		data: requestString,
 		beforeSend: function () {
 			DUPX.showProgressBar();
@@ -1131,9 +1135,14 @@ DUPX.kickOffDupArchiveExtract = function ()
 					DUPX.DAWSProcessingFailed(errorString);
 				}
 			} else {
-				var errorString = 'kickOffDupArchiveExtract:Error Processing Step 1<br/>';
-				errorString += data.error;
-				DUPX.handleDAWSProcessingProblem(errorString, false);
+				if ('undefined' !== typeof data.isWPAlreadyExistsError
+				&& data.isWPAlreadyExistsError) {
+					DUPX.DAWSProcessingFailed(data.error);
+				} else {
+					var errorString = 'kickOffDupArchiveExtract:Error Processing Step 1<br/>';
+					errorString += data.error;
+					DUPX.handleDAWSProcessingProblem(errorString, false);
+				}
 			}
 		},
 		error: function (xHr, textStatus) {

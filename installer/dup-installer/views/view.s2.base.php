@@ -254,7 +254,7 @@ Auto Posts to view.step3.php  -->
 				$formInput.hide();
 				$formResult.show();
 			},
-			success: function (respData, textStatus, xHr) {
+			success: function (respData, textStatus, xhr) {
 				try {
 					var data = DUPX.parseJSON(respData);
 				} catch(err) {
@@ -310,6 +310,9 @@ Auto Posts to view.step3.php  -->
 					<?php endif; ?>
 					$('#progress-area').fadeOut(700);
 				} else {
+					if (data.error_message) {
+						$('#ajaxerr-data').html(data.error_message);
+					}
 					DUPX.hideProgressBar();
 				}
 			},

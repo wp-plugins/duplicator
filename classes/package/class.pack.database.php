@@ -26,10 +26,17 @@ class DUP_DatabaseInfo
      */
     public $name;
 
+    /**
+     * table wise row counts array, Key as table name and value as row count
+     *  table name => row count
+     */
+    public $tableWiseRowCounts;
+
     //CONSTRUCTOR
     function __construct()
     {
         $this->collationList = array();
+        $this->tableWiseRowCounts = array();
     }
 }
 
@@ -290,7 +297,15 @@ class DUP_Database
         }
 
         //Filter tables
-        $tables       = $wpdb->get_col('SHOW TABLES');
+        $res = $wpdb->get_results('SHOW FULL TABLES', ARRAY_N);
+        $tables = array();
+        $baseTables = array();
+        foreach ($res as $row) {
+            $tables[] = $row[0];
+            if ('BASE TABLE' == $row[1]) {
+                $baseTables[] = $row[0];
+            }
+        }
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
         $tblAllCount  = count($tables);
         //$tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
@@ -416,7 +431,13 @@ class DUP_Database
         $sql_footer = "\n\n/* Duplicator WordPress Timestamp: ".date("Y-m-d H:i:s")."*/\n";
         $sql_footer .= "/* ".DUPLICATOR_DB_EOF_MARKER." */\n";
         file_put_contents($this->dbStorePath, $sql_footer, FILE_APPEND);
-
+        foreach ($tables as $table) {
+            if (in_array($table, $baseTables)) {
+                $row_count = $GLOBALS['wpdb']->get_var("SELECT Count(*) FROM `{$table}`");
+                $rewrite_table_as = $this->rewriteTableNameAs($table);
+                $this->Package->Database->info->tableWiseRowCounts[$rewrite_table_as] = $row_count;
+            }
+        }
         return ($output) ? false : true;
     }
 
@@ -500,6 +521,8 @@ class DUP_Database
             }
     
             $row_count = $wpdb->get_var("SELECT Count(*) FROM `{$table}`");
+            $rewrite_table_as = $this->rewriteTableNameAs($table);
+            $this->Package->Database->info->tableWiseRowCounts[$rewrite_table_as] = $row_count;
     
             if ($row_count > $qryLimit) {
                 $row_count = ceil($row_count / $qryLimit);
@@ -510,8 +533,6 @@ class DUP_Database
             if ($row_count >= 1) {
                 fwrite($handle, "\n/* INSERT TABLE DATA: {$table} */\n");
             }
-    
-            $rewrite_table_as = $this->rewriteTableNameAs($table);
     
             for ($i = 0; $i < $row_count; $i++) {
                 $sql   = "";

@@ -163,6 +163,7 @@ class DUPX_U
 		 if (function_exists('get_headers')) {
 			$url =  is_integer($port) ? $url . ':' . $port 	: $url;
 			DUPX_Handler::$should_log = false;
+			@ini_set("default_socket_timeout", $timeout);
 			$headers = @get_headers($url);
 			DUPX_Handler::$should_log = true;
 			if (is_array($headers) && strpos($headers[0], '404') === false) {
@@ -170,7 +171,7 @@ class DUPX_U
 			}
 		} else {
 			if (function_exists('fsockopen')) {
-				@ini_set("default_socket_timeout", 5);
+				@ini_set("default_socket_timeout", $timeout);
 				$port = isset($port) && is_integer($port) ? $port : 80;
 				$host = parse_url($url, PHP_URL_HOST);
 				$connected = @fsockopen($host, $port, $errno, $errstr, $timeout); //website and port
@@ -246,22 +247,23 @@ class DUPX_U
             for ($i = 0; $i < $zipArchive->numFiles; $i++) {
                 $stat     = $zipArchive->statIndex($i);
                 $safePath = rtrim(self::setSafePath($stat['name']), '/');
-                if (substr_count($safePath, '/') > 1) {
+                if (substr_count($safePath, '/') > 2) {
                     continue;
                 }
 
-                if (basename($safePath) === 'dup-installer') {
-                    $result = ($safePath === 'dup-installer') ? '' : dirname($safePath);
+                $exploded = explode('/',$safePath);
+                if (($dup_index = array_search('dup-installer' , $exploded)) !== false) {
+                    $result = implode('/' , array_slice($exploded , 0 , $dup_index));
                     break;
                 }
             }
             if ($zipArchive->close() !== true) {
                 DUPX_Log::info("Can't close ziparchive:".$archive_filepath);
-                $result = false;
+                return false;
             }
         } else {
             DUPX_Log::info("Can't open zip archive:".$archive_filepath);
-            $result = false;
+            return false;
         }
 
         return $result;

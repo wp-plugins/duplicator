@@ -238,24 +238,24 @@ LONGMSG;
     ?>
 
 	<div class="s4-go-back">
-		Additional Notes:
+		Additional Details:
 		<ul style="margin-top: 1px">
 			<li>
                 <a href="javascript:void(0)" onclick="$('#s4-install-report').toggle(400)">Review Migration Report</a><br/><br>
                 <table class='s4-report-results' style="width:100%">
                     <tbody>
                         <tr>
-                            <td>Database migration status</td>
+                            <td>Database Notices</td>
                             <td>(<?php echo $numDbNotices; ?>)</td>
                             <td><?php $nManager->getSectionErrLevelHtml('database'); ?></td>
                         </tr>
                         <tr>
-                            <td>Search and replace migration status</td>
+                            <td>Search &amp; Replace Notices</td>
                             <td>(<?php echo $numSerNotices; ?>)</td>
                             <td> <?php $nManager->getSectionErrLevelHtml('search_replace'); ?></td>
                         </tr>
                         <tr>
-                            <td>General Notices status</td>
+                            <td>General Notices</td>
                             <td>(<?php echo $numGeneralNotices; ?>)</td>
                             <td><?php $nManager->getSectionErrLevelHtml('general'); ?></td>
                         </tr>
@@ -275,7 +275,7 @@ LONGMSG;
 	INSTALL REPORT -->
 	<div id="s4-install-report" style='display:none'>
 		<table class='s4-report-results' style="width:100%">
-			<tr><th colspan="4">Database Report</th></tr>
+			<tr><th colspan="4"><i class="fa fa-database"></i> Database Report</th></tr>
 			<tr style="font-weight:bold">
 				<td style="width:150px"></td>
 				<td>Tables</td>
@@ -305,9 +305,9 @@ LONGMSG;
 
         <div id="s4-notice-reports" class="report-sections-list">
             <?php
-                $nManager->displayFinalRepostSectionHtml('database' , 'Database notices report');
-                $nManager->displayFinalRepostSectionHtml('search_replace' , 'Search and replace notices report');
-                $nManager->displayFinalRepostSectionHtml('general' , 'General notices report');
+                $nManager->displayFinalRepostSectionHtml('database' , 'Database Notices');
+                $nManager->displayFinalRepostSectionHtml('search_replace' , 'Search &amp; Replace Notices');
+                $nManager->displayFinalRepostSectionHtml('general' , 'General Notices');
             ?>
         </div>
 

@@ -149,14 +149,16 @@ if ($_POST['dbaction'] == 'manual') {
 	DUPX_Log::info("\n** SQL EXECUTION IS IN MANUAL MODE **");
 	DUPX_Log::info("- No SQL script has been executed -");
 	$JSON['pass'] = 1;
-} /*elseif(isset($_POST['continue_chunking']) && $_POST['continue_chunking'] === 'true') {
-    print_r(json_encode($dbinstall->writeInChunks()));
-    die();
-} */ elseif(isset($_POST['continue_chunking']) && ($_POST['continue_chunking'] === 'false' && $_POST['pass'] == 1)) {
-    $JSON['pass'] = 1;
 } elseif(!isset($_POST['continue_chunking'])) {
-	$dbinstall->writeInDB();
-    $JSON['pass'] = 1;
+    $dbinstall->writeInDB();
+	$rowCountMisMatchTables = $dbinstall->getRowCountMisMatchTables();
+    if (empty($rowCountMisMatchTables)) {
+		$JSON['pass'] = 1;
+	} else {
+		$JSON['error'] = 1;
+		$JSON['error_message'] = 'ERROR: Database Table row count verification was failed for table(s):'
+                                    .implode(', ', $rowCountMisMatchTables).'.';
+	}
 }
 
 $dbinstall->profile_end = DUPX_U::getMicrotime();

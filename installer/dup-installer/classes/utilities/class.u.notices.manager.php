@@ -339,7 +339,7 @@ final class DUPX_NOTICE_MANAGER
      */
     public function sortFinalReport()
     {
-        uasort($this->finalReporNotices, array(DUPX_NOTICE_ITEM, 'sortNoticeForPriorityAndLevel'));
+        uasort($this->finalReporNotices, array('DUPX_NOTICE_ITEM', 'sortNoticeForPriorityAndLevel'));
     }
 
     public function displayFinalReport($section)
@@ -490,25 +490,24 @@ final class DUPX_NOTICE_MANAGER
             <div class="title" <?php echo $toggleLinkData; ?>>
                 <i class="<?php echo $iconClasses; ?>"></i>  <?php echo htmlentities($notice->shortMsg); ?>
             </div>
-            <?php if ($haveContent) { ?>
+            <?php if ($haveContent) : ?>
                 <div class="info no-display" id="<?php echo $contentId; ?>">
                     <?php if (!empty($notice->faqLink)) { ?>
-                        <b>See FAQ</b>: <a href="<?php echo $notice->faqLink['url']; ?>" >
+                        <b>See FAQ</b>:
+						<a href="<?php echo $notice->faqLink['url']; ?>" >
                             <?php echo empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']; ?>
                         </a>
                         <?php
                     }
                     if (!empty($notice->faqLink) && !empty($notice->longMsg)) {
-                        echo '<br><br>';
+                        echo '<br/><br/>';
                     }
                     if (!empty($notice->longMsg)) {
-                        echo $notice->longMsg;
+                        echo htmlentities($notice->longMsg);
                     }
                     ?>
                 </div>
-                <?php
-            }
-            ?>
+            <?php endif; ?>
         </div>
         <?php
     }

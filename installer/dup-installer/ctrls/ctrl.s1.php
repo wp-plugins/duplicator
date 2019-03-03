@@ -154,9 +154,15 @@ switch ($post_archive_engine) {
 			DUPX_Log::error(ERR_ZIPARCHIVE);
 		}
 
-        $dupInstallerFolder = DUPX_U::findDupInstallerFolder($archive_path);
+        if (($dupInstallerFolder = DUPX_U::findDupInstallerFolder($archive_path)) === false) {
+            DUPX_Log::info("findDupInstallerFolder error; set no subfolder");
+            // if not found set not subfolder
+            $dupInstallerFolder = '';
+        }
         if (!empty($dupInstallerFolder)) {
             DUPX_Log::info("ARCHIVE dup-installer SUBFOLDER:\"".$dupInstallerFolder."\"");
+        } else {
+            DUPX_Log::info("ARCHIVE dup-installer SUBFOLDER:\"".$dupInstallerFolder."\"", 2);
         }
 
         $dupInstallerZipPath = $dupInstallerFolder.'/dup-installer';
@@ -175,6 +181,7 @@ switch ($post_archive_engine) {
 
                 // skip no dupInstallerFolder files
                 if (!empty($dupInstallerFolder) && strpos($extract_filename , $dupInstallerFolder) !== 0) {
+                    DUPX_Log::info("SKIP NOT DUB FOLDER: \"".$extract_filename."\"", 2);
                     continue;
 				}
 				$extract_filenames[] =  $extract_filename;

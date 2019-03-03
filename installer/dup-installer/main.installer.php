@@ -40,6 +40,7 @@ date_default_timezone_set('UTC'); // Some machines don’t have this set so just
 @ini_set('pcre.backtrack_limit', PHP_INT_MAX);
 @ini_set('default_socket_timeout', 3600);
 
+define('ERR_CONFIG_FOUND', 'A wp-config.php already exists in this location.  This error prevents users from accidentally overwriting a WordPress site or trying to install on top of an existing one.  Extracting an archive on an existing site will overwrite existing files and intermix files causing site incompatibility issues.<br/><br/>  It is highly recommended to place the installer and archive in an empty directory. If you have already manually extracted the archive file that is associated with this installer then choose option #1 below; other-wise consider the other options: <ol><li>Click &gt; Try Again &gt; Options &gt; choose "Manual Archive Extraction".</li><li>Empty the directory except for the archive.zip/daf and installer.php and try again.</li><li>Advanced users only can remove the existing wp-config.php file and try again.</li></ol>');
 ob_start();
 try {
     $exceptionError = false;
@@ -65,9 +66,42 @@ try {
             die("Bootloader parameter not specified");
         }
     } else if (isset($_GET['is_daws']) && 1 == $_GET['is_daws']) { // For daws action
-        $post_ctrl_csrf_token = isset($_GET['daws_csrf_token']) ? $_GET['daws_csrf_token'] : '';
+        require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
+        $post_ctrl_csrf_token = isset($_GET['daws_csrf_token']) ? DUPX_U::sanitize_text_field($_GET['daws_csrf_token']) : '';
         if (DUPX_CSRF::check($post_ctrl_csrf_token, 'daws')) {
-            require_once($GLOBALS['DUPX_INIT'].'/lib/dup_archive/daws/daws.php');
+            require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
+            require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
+            $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
+            $outer_root_path = dirname($GLOBALS['DUPX_ROOT']);
+            if (
+                (isset($_GET['daws_action']) && 'start_expand' == $_GET['daws_action'])
+                &&
+                (
+                    !$GLOBALS['DUPX_AC']->installSiteOverwriteOn 
+                    && (
+                            file_exists($GLOBALS['DUPX_ROOT'].'/wp-config.php') 
+                            || 
+                            (
+                                @file_exists($outer_root_path.'/wp-config.php') 
+                                && 
+                                !@file_exists($GLOBALS['DUPX_ROOT'].'/wp-settings.php')
+                                && 
+                                @file_exists($GLOBALS['DUPX_ROOT'].'/wp-admin') 
+                                &&
+                                @file_exists($GLOBALS['DUPX_ROOT'].'/wp-includes')
+                            )
+                        )
+                )
+            ) {
+                $resp = array(
+                    'pass' => 0,
+                    'isWPAlreadyExistsError' => 1,
+                    'error' => "<b style='color:#B80000;'>INSTALL ERROR!</b><br/>". ERR_CONFIG_FOUND,                    
+                );
+                echo json_encode($resp);
+            } else {
+                require_once($GLOBALS['DUPX_INIT'].'/lib/dup_archive/daws/daws.php');
+            }
             die();
         } else {
             die("An invalid request was made to 'daws'.  In order to protect this request from unauthorized access please "

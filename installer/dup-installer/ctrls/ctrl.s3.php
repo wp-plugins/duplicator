@@ -320,152 +320,189 @@ DUPX_Log::info("\n====================================");
 DUPX_Log::info('CONFIGURATION FILE UPDATES:');
 DUPX_Log::info("====================================\n");
 
-if (file_exists($wpconfig_ark_path)) {
+try {
+    if (file_exists($wpconfig_ark_path)) {
 
-    if (!is_writable($wpconfig_ark_path)) {
-        $err_log = "\nWARNING: Unable to update file permissions and write to dup-wp-config-arc__[HASH].txt.  ";
-        $err_log .= "Check that the wp-config.php is in the archive.zip and check with your host or administrator to enable PHP to write to the wp-config.php file.  ";
-        $err_log .= "If performing a 'Manual Extraction' please be sure to select the 'Manual Archive Extraction' option on step 1 under options.";
-        chmod($wpconfig_ark_path, 0644) ? DUPX_Log::info("File Permission Update: dup-wp-config-arc__[HASH].txt set to 0644") : DUPX_Log::error("{$err_log}");
-    }
+        if (!is_writable($wpconfig_ark_path)) {
+            $err_log = "\nWARNING: Unable to update file permissions and write to dup-wp-config-arc__[HASH].txt.  ";
+            $err_log .= "Check that the wp-config.php is in the archive.zip and check with your host or administrator to enable PHP to write to the wp-config.php file.  ";
+            $err_log .= "If performing a 'Manual Extraction' please be sure to select the 'Manual Archive Extraction' option on step 1 under options.";
+            chmod($wpconfig_ark_path, 0644) ? DUPX_Log::info("File Permission Update: dup-wp-config-arc__[HASH].txt set to 0644") : DUPX_Log::error("{$err_log}");
+        }
 
-    $config_transformer->update('constant', 'WP_HOME', $_POST['url_new'], array('normalize' => true, 'add' => false));
-    $config_transformer->update('constant', 'WP_SITEURL', $_POST['url_new'], array('normalize' => true, 'add' => false));
+        $config_transformer->update('constant', 'WP_HOME', $_POST['url_new'], array('normalize' => true, 'add' => false));
+        $config_transformer->update('constant', 'WP_SITEURL', $_POST['url_new'], array('normalize' => true, 'add' => false));
 
-    //SSL CHECKS
-    if (isset($_POST['ssl_admin']) && $_POST['ssl_admin']) {
-        $config_transformer->update('constant', 'FORCE_SSL_ADMIN', 'true', array('raw' => true, 'normalize' => true));
-    } else {
-        $config_transformer->update('constant', 'FORCE_SSL_ADMIN', 'false', array('raw' => true, 'add' => false, 'normalize' => true));
-    }
+        //SSL CHECKS
+        if (isset($_POST['ssl_admin']) && $_POST['ssl_admin']) {
+            $config_transformer->update('constant', 'FORCE_SSL_ADMIN', 'true', array('raw' => true, 'normalize' => true));
+        } else {
+            $config_transformer->update('constant', 'FORCE_SSL_ADMIN', 'false', array('raw' => true, 'add' => false, 'normalize' => true));
+        }
 
-    if (isset($_POST['cache_wp']) && $_POST['cache_wp']) {
-        $config_transformer->update('constant', 'WP_CACHE', 'true', array('raw' => true, 'normalize' => true));
-    } else {
-        $config_transformer->update('constant', 'WP_CACHE', 'false', array('raw' => true, 'add' => false, 'normalize' => true));
-    }
+        if (isset($_POST['cache_wp']) && $_POST['cache_wp']) {
+            $config_transformer->update('constant', 'WP_CACHE', 'true', array('raw' => true, 'normalize' => true));
+        } else {
+            $config_transformer->update('constant', 'WP_CACHE', 'false', array('raw' => true, 'add' => false, 'normalize' => true));
+        }
 
-    // Cache: [ ] Keep Home Path
-    if (isset($_POST['cache_path']) && $_POST['cache_path']) {
-        if ($config_transformer->exists('constant', 'WPCACHEHOME')) {
-            $wpcachehome_const_val = $config_transformer->get_value('constant', 'WPCACHEHOME');
-            $wpcachehome_const_val = DUPX_U::wp_normalize_path($wpcachehome_const_val);
-            $wpcachehome_new_const_val = str_replace($_POST['path_old'], $_POST['path_new'], $wpcachehome_const_val, $count);
+        // Cache: [ ] Keep Home Path
+        if (isset($_POST['cache_path']) && $_POST['cache_path']) {
+            if ($config_transformer->exists('constant', 'WPCACHEHOME')) {
+                $wpcachehome_const_val = $config_transformer->get_value('constant', 'WPCACHEHOME');
+                $wpcachehome_const_val = DUPX_U::wp_normalize_path($wpcachehome_const_val);
+                $wpcachehome_new_const_val = str_replace($_POST['path_old'], $_POST['path_new'], $wpcachehome_const_val, $count);
+                if ($count > 0) {
+                    $config_transformer->update('constant', 'WPCACHEHOME', $wpcachehome_new_const_val, array('normalize' => true));
+                }
+            }
+        } else {
+            $config_transformer->remove('constant', 'WPCACHEHOME');
+        }
+
+        if ($GLOBALS['DUPX_AC']->is_outer_root_wp_content_dir) {
+            $config_transformer->remove('constant', 'WP_CONTENT_DIR');
+        } elseif ($config_transformer->exists('constant', 'WP_CONTENT_DIR')) {
+            $wp_content_dir_const_val = $config_transformer->get_value('constant', 'WP_CONTENT_DIR');
+            $wp_content_dir_const_val = DUPX_U::wp_normalize_path($wp_content_dir_const_val);
+            $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wp_content_dir_const_val, $count);
             if ($count > 0) {
-                $config_transformer->update('constant', 'WPCACHEHOME', $wpcachehome_new_const_val, array('normalize' => true));
+                $config_transformer->update('constant', 'WP_CONTENT_DIR', $new_path, array('normalize' => true));
             }
         }
+
+        //WP_CONTENT_URL
+        // '/' added to prevent word boundary with domains that have the same root path
+        if ($GLOBALS['DUPX_AC']->is_outer_root_wp_content_dir) {
+            $config_transformer->remove('constant', 'WP_CONTENT_URL');
+        } elseif ($config_transformer->exists('constant', 'WP_CONTENT_URL')) {
+            $wp_content_url_const_val = $config_transformer->get_value('constant', 'WP_CONTENT_URL');
+            $new_path = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $wp_content_url_const_val, $count);
+            if ($count > 0) {
+                $config_transformer->update('constant', 'WP_CONTENT_URL', $new_path, array('normalize' => true));
+            }
+        }
+
+        //WP_TEMP_DIR
+        if ($config_transformer->exists('constant', 'WP_TEMP_DIR')) {
+            $wp_temp_dir_const_val = $config_transformer->get_value('constant', 'WP_TEMP_DIR');
+            $wp_temp_dir_const_val = DUPX_U::wp_normalize_path($wp_temp_dir_const_val);
+            $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wp_temp_dir_const_val, $count);
+            if ($count > 0) {
+                $config_transformer->update('constant', 'WP_TEMP_DIR', $new_path, array('normalize' => true));
+            }
+        }
+
+        // WP_PLUGIN_DIR
+        if ($config_transformer->exists('constant', 'WP_PLUGIN_DIR')) {
+            $wp_plugin_dir_const_val = $config_transformer->get_value('constant', 'WP_PLUGIN_DIR');
+            $wp_plugin_dir_const_val = DUPX_U::wp_normalize_path($wp_plugin_dir_const_val);
+            $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wp_plugin_dir_const_val, $count);
+            if ($count > 0) {
+                $config_transformer->update('constant', 'WP_PLUGIN_DIR', $new_path, array('normalize' => true));
+            }
+        }
+
+        // WP_PLUGIN_URL
+        if ($config_transformer->exists('constant', 'WP_PLUGIN_URL')) {
+            $wp_plugin_url_const_val = $config_transformer->get_value('constant', 'WP_PLUGIN_URL');
+            $new_path = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $wp_plugin_url_const_val, $count);
+            if ($count > 0) {
+                $config_transformer->update('constant', 'WP_PLUGIN_URL', $new_path, array('normalize' => true));
+            }
+        }
+
+        // WPMU_PLUGIN_DIR
+        if ($config_transformer->exists('constant', 'WPMU_PLUGIN_DIR')) {
+            $wpmu_plugin_dir_const_val = $config_transformer->get_value('constant', 'WPMU_PLUGIN_DIR');
+            $wpmu_plugin_dir_const_val = DUPX_U::wp_normalize_path($wpmu_plugin_dir_const_val);
+            $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wpmu_plugin_dir_const_val, $count);
+            if ($count > 0) {
+                $config_transformer->update('constant', 'WPMU_PLUGIN_DIR', $new_path, array('normalize' => true));
+            }
+        }
+
+        // WPMU_PLUGIN_URL
+        if ($config_transformer->exists('constant', 'WPMU_PLUGIN_URL')) {
+            $wpmu_plugin_url_const_val = $config_transformer->get_value('constant', 'WPMU_PLUGIN_URL');
+            $new_path = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $wpmu_plugin_url_const_val, $count);
+            if ($count > 0) {
+                $config_transformer->update('constant', 'WPMU_PLUGIN_URL', $new_path, array('normalize' => true));
+            }
+        }
+
+        // COOKIE_DOMAIN
+        if ($config_transformer->exists('constant', 'COOKIE_DOMAIN')) {
+
+            $post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
+            $post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+
+            $parsed_post_url_old = parse_url($post_url_old);
+            $parsed_post_url_new = parse_url($post_url_new);
+
+            $old_cookie_domain = $parsed_post_url_old['host'];
+            $new_cookie_domain = $parsed_post_url_new['host'];
+
+            $const_val = $config_transformer->get_value('constant', 'COOKIE_DOMAIN');		$old_cookie_domain = $parsed_post_url_old['host'];
+            $const_new_val= str_replace($old_cookie_domain, $new_cookie_domain, $const_val, $count);
+
+            if ($count > 0) {
+                $config_transformer->update('constant', 'COOKIE_DOMAIN', $const_new_val, array('normalize' => true));
+            }
+        }
+
+        $db_host	= isset($_POST['dbhost']) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : '';
+        $db_name	= isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : '';
+        $db_user	= isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : '';
+        $db_pass	= isset($_POST['dbpass']) ? trim($_POST['dbpass']) : '';
+
+        $config_transformer->update('constant', 'DB_NAME', $db_name);
+        $config_transformer->update('constant', 'DB_USER', $db_user);
+        $config_transformer->update('constant', 'DB_PASSWORD', $db_pass);
+        $config_transformer->update('constant', 'DB_HOST', $db_host);
+
+        DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
+
     } else {
-        $config_transformer->remove('constant', 'WPCACHEHOME');
+        DUPX_Log::info("AKR FILE NOT FOUND");
+        DUPX_Log::info("WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
+        DUPX_Log::info("SKIP FILE UPDATES\n");
+
+        $shortMsg = 'wp-config.php not found';
+        $longMsg = <<<LONGMSG
+        Error updating wp-config file.<br>
+        The installation is finished but check the wp-config.php file and manually update the incorrect values.
+LONGMSG;
+    /*    $nManager->addNextStepNotice(array(
+                'shortMsg' => $shortMsg,
+                'level' => DUPX_NOTICE_ITEM::CRITICAL,
+
+        ), DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'wp-config-transformer-exception');*/
+        $nManager->addFinalReportNotice(array(
+                'shortMsg' => $shortMsg,
+                'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+                'longMsg' => $longMsg,
+                'sections' => 'general'
+        ), DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'wp-config-transformer-exception');
+
     }
+} catch (Exception $e) {
+    $shortMsg = 'wp-config.php transformer:'.$e->getMessage();
+    $longMsg = <<<LONGMSG
+        Error updating wp-config file.<br>
+        The installation is finished but check the wp-config.php file and manually update the incorrect values.
+LONGMSG;
+/*    $nManager->addNextStepNotice(array(
+            'shortMsg' => $shortMsg,
+            'level' => DUPX_NOTICE_ITEM::CRITICAL,
 
-    if ($GLOBALS['DUPX_AC']->is_outer_root_wp_content_dir) {
-        $config_transformer->remove('constant', 'WP_CONTENT_DIR');
-    } elseif ($config_transformer->exists('constant', 'WP_CONTENT_DIR')) {
-        $wp_content_dir_const_val = $config_transformer->get_value('constant', 'WP_CONTENT_DIR');
-        $wp_content_dir_const_val = DUPX_U::wp_normalize_path($wp_content_dir_const_val);
-        $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wp_content_dir_const_val, $count);
-        if ($count > 0) {
-            $config_transformer->update('constant', 'WP_CONTENT_DIR', $new_path, array('normalize' => true));
-        }
-    }
-
-    //WP_CONTENT_URL
-    // '/' added to prevent word boundary with domains that have the same root path
-    if ($GLOBALS['DUPX_AC']->is_outer_root_wp_content_dir) {
-        $config_transformer->remove('constant', 'WP_CONTENT_URL');
-    } elseif ($config_transformer->exists('constant', 'WP_CONTENT_URL')) {
-        $wp_content_url_const_val = $config_transformer->get_value('constant', 'WP_CONTENT_URL');
-        $new_path = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $wp_content_url_const_val, $count);
-        if ($count > 0) {
-            $config_transformer->update('constant', 'WP_CONTENT_URL', $new_path, array('normalize' => true));
-        }
-    }
-
-    //WP_TEMP_DIR
-    if ($config_transformer->exists('constant', 'WP_TEMP_DIR')) {
-        $wp_temp_dir_const_val = $config_transformer->get_value('constant', 'WP_TEMP_DIR');
-        $wp_temp_dir_const_val = DUPX_U::wp_normalize_path($wp_temp_dir_const_val);
-        $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wp_temp_dir_const_val, $count);
-        if ($count > 0) {
-            $config_transformer->update('constant', 'WP_TEMP_DIR', $new_path, array('normalize' => true));
-        }
-    }
-
-    // WP_PLUGIN_DIR
-    if ($config_transformer->exists('constant', 'WP_PLUGIN_DIR')) {
-        $wp_plugin_dir_const_val = $config_transformer->get_value('constant', 'WP_PLUGIN_DIR');
-        $wp_plugin_dir_const_val = DUPX_U::wp_normalize_path($wp_plugin_dir_const_val);
-        $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wp_plugin_dir_const_val, $count);
-        if ($count > 0) {
-            $config_transformer->update('constant', 'WP_PLUGIN_DIR', $new_path, array('normalize' => true));
-        }
-    }
-
-    // WP_PLUGIN_URL
-    if ($config_transformer->exists('constant', 'WP_PLUGIN_URL')) {
-        $wp_plugin_url_const_val = $config_transformer->get_value('constant', 'WP_PLUGIN_URL');
-        $new_path = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $wp_plugin_url_const_val, $count);
-        if ($count > 0) {
-            $config_transformer->update('constant', 'WP_PLUGIN_URL', $new_path, array('normalize' => true));
-        }
-    }
-
-    // WPMU_PLUGIN_DIR
-    if ($config_transformer->exists('constant', 'WPMU_PLUGIN_DIR')) {
-        $wpmu_plugin_dir_const_val = $config_transformer->get_value('constant', 'WPMU_PLUGIN_DIR');
-        $wpmu_plugin_dir_const_val = DUPX_U::wp_normalize_path($wpmu_plugin_dir_const_val);
-        $new_path = str_replace($_POST['path_old'], $_POST['path_new'], $wpmu_plugin_dir_const_val, $count);
-        if ($count > 0) {
-            $config_transformer->update('constant', 'WPMU_PLUGIN_DIR', $new_path, array('normalize' => true));
-        }
-    }
-
-    // WPMU_PLUGIN_URL
-    if ($config_transformer->exists('constant', 'WPMU_PLUGIN_URL')) {
-        $wpmu_plugin_url_const_val = $config_transformer->get_value('constant', 'WPMU_PLUGIN_URL');
-        $new_path = str_replace($_POST['url_old'] . '/', $_POST['url_new'] . '/', $wpmu_plugin_url_const_val, $count);
-        if ($count > 0) {
-            $config_transformer->update('constant', 'WPMU_PLUGIN_URL', $new_path, array('normalize' => true));
-        }
-    }
-
-    // COOKIE_DOMAIN
-    if ($config_transformer->exists('constant', 'COOKIE_DOMAIN')) {
-
-        $post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
-        $post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
-
-        $parsed_post_url_old = parse_url($post_url_old);
-        $parsed_post_url_new = parse_url($post_url_new);
-
-        $old_cookie_domain = $parsed_post_url_old['host'];
-        $new_cookie_domain = $parsed_post_url_new['host'];
-
-        $const_val = $config_transformer->get_value('constant', 'COOKIE_DOMAIN');		$old_cookie_domain = $parsed_post_url_old['host'];
-        $const_new_val= str_replace($old_cookie_domain, $new_cookie_domain, $const_val, $count);
-
-        if ($count > 0) {
-            $config_transformer->update('constant', 'COOKIE_DOMAIN', $const_new_val, array('normalize' => true));
-        }
-    }
-
-    $db_host	= isset($_POST['dbhost']) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : '';
-    $db_name	= isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : '';
-    $db_user	= isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : '';
-    $db_pass	= isset($_POST['dbpass']) ? trim($_POST['dbpass']) : '';
-
-    $config_transformer->update('constant', 'DB_NAME', $db_name);
-    $config_transformer->update('constant', 'DB_USER', $db_user);
-    $config_transformer->update('constant', 'DB_PASSWORD', $db_pass);
-    $config_transformer->update('constant', 'DB_HOST', $db_host);
-
-    DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
-
-} else {
-    DUPX_Log::info("AKR FILE NOT FOUND");
-    DUPX_Log::info("WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
-    DUPX_Log::info("SKIP FILE UPDATES\n");
+    ), DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'wp-config-transformer-exception');*/
+    $nManager->addFinalReportNotice(array(
+            'shortMsg' => $shortMsg,
+            'level' => DUPX_NOTICE_ITEM::CRITICAL,
+            'longMsg' => $longMsg,
+            'sections' => 'general'
+    ), DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'wp-config-transformer-exception');
 }
 
 switch ($_POST['config_mode']) {
@@ -614,6 +651,8 @@ foreach ($wpconfig_safe_check as $file) {
 		}
 	}
 }
+
+$nManager->saveNotices();
 
 $ajax3_sum = DUPX_U::elapsedTime(DUPX_U::getMicrotime(), $ajax3_start);
 DUPX_Log::info("\nSTEP-3 COMPLETE @ ".@date('h:i:s')." - RUNTIME: {$ajax3_sum} \n\n");

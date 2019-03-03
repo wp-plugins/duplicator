@@ -70,7 +70,7 @@
     .notice {
         background: #fff;
         border-left: 4px solid #fff;
-        box-shadow: 0 1px 3px 0 rgba(0,0,0,.5);
+        border:1px solid #dfdfdf;
         margin: 5px 0 2px;
         padding: 1px 12px;
         border-radius: 4px;
@@ -95,21 +95,18 @@
     }
 
     .notice.l-info,
-    .notice.l-notice {
-        border-left-color: #46b450;
-    }
-    .notice.l-swarning {
-        border-left-color: #d6ef49;
-    }
-    .notice.l-hwarning {
-        border-left-color: #efe348;
-    }
-    .notice.l-critical {
-        border-left-color: #d82929;
-    }
-    .notice.l-fatal {
-        border-left-color: #000000;
-    }
+    .notice.l-notice {border-left-color: #197b19;}
+    .notice.l-swarning {border-left-color: #636363;}
+    .notice.l-hwarning {border-left-color: #636363;}
+    .notice.l-critical {border-left-color: maroon;}
+    .notice.l-fatal {border-left-color: #000000;}
+
+	.notice.l-info,
+    .notice.l-notice,
+    .notice.l-swarning,
+    .notice.l-hwarning,
+    .notice.l-critical,
+    .notice.l-fatal {padding:2px; margin:4px}
 
     .report-sections-list .section {
         border: 1px solid #DFDFDF;
@@ -139,21 +136,18 @@
     }
 
     .notice-level-status.l-info,
-    .notice-level-status.l-notice {
-        background: #46b450;
-    }
-    .notice-level-status.l-swarning {
-        background: #d6ef49;
-    }
-    .notice-level-status.l-hwarning {
-        background: #efe348;
-    }
-    .notice-level-status.l-critical {
-        background: #d82929;
-    }
-    .notice-level-status.l-fatal {
-        background: #000000;
-    }
+    .notice-level-status.l-notice {background: #197b19;}
+    .notice-level-status.l-swarning {background: #636363;}
+    .notice-level-status.l-hwarning {background: #636363;}
+    .notice-level-status.l-critical {background: maroon;}
+    .notice-level-status.l-fatal {background: #000000;}
+
+	.notice-level-status.l-info,
+    .notice-level-status.l-notice,
+    .notice-level-status.l-swarning,
+    .notice-level-status.l-hwarning,
+    .notice-level-status.l-critical,
+    .notice-level-status.l-fatal {min-width:55px; padding:2px; margin:1px}
 
     /*Adv Opts */
     table.dupx-opts {width:100%; border:0px;}
@@ -337,8 +331,8 @@
 	table.s4-report-results,
 	table.s4-report-errs {border-collapse:collapse;}
 	table.s4-report-errs  td {text-align:center; width:33%}
-	table.s4-report-results th, table.s4-report-errs th {background-color:#efefef; padding:0; font-size:12px; padding:0}
-	table.s4-report-results td, table.s4-report-errs td {padding:0; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:11px}
+	table.s4-report-results th, table.s4-report-errs th {background-color:#bdbdbd; padding:3px; font-size:12px;}
+	table.s4-report-results td, table.s4-report-errs td {padding:3px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:11px}
 	table.s4-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
 	div.s4-err-title {background-color:#dfdfdf; font-weight: bold; margin:-3px 0 15px 0; padding:5px; border-radius:3px; font-size:13px}
 
@@ -349,7 +343,7 @@
 	table.s4-final-step {width:100%;}
 	table.s4-final-step td {padding:5px 15px 5px 5px;font-size:13px; }
 	table.s4-final-step td:first-child {white-space:nowrap; width:165px}
-	div.s4-go-back {border-top:1px dotted #dfdfdf; margin:auto; font-style:italic; font-size:11px; color:#333; padding-top:4px}
+	div.s4-go-back {border-top:1px dotted #dfdfdf; margin:auto;font-size:11px; color:#333; padding-top:4px}
 	div.s4-go-back ul {line-height:18px}
 	button.s4-final-btns {cursor:pointer; color:#fff; font-size:16px; border-radius:5px; padding:7px; background-color:#13659C; border:1px solid gray; width:145px;}
 	button.s4-final-btns:hover {background-color: #dfdfdf;}
