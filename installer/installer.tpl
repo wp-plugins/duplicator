@@ -417,7 +417,7 @@ class DUPX_Bootstrap
 					self::log('Server: Nginx');
 				}
 
-				if ($is_apache || $is_nginx) {
+				if (($is_apache && function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) || $is_nginx) {
 					$htaccess_data = array();
 					foreach ($php_ini_data as $php_ini_key=>$php_ini_val) {
 						if ($is_apache) {
