@@ -23,6 +23,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 
 	DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
 	DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
+    
+    $skip_archive_scan = filter_input(INPUT_POST, 'skip_archive_scan' , FILTER_VALIDATE_BOOLEAN);
+    DUP_Settings::Set('skip_archive_scan', $skip_archive_scan);
 
     if(isset($_REQUEST['trace_log_enabled'])) {
 
@@ -47,16 +50,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	DUP_Util::initSnapshotDirectory();
 }
 
-$trace_log_enabled = DUP_Settings::Get('trace_log_enabled');
-$uninstall_settings = DUP_Settings::Get('uninstall_settings');
-$uninstall_files = DUP_Settings::Get('uninstall_files');
-$uninstall_tables = DUP_Settings::Get('uninstall_tables');
+$trace_log_enabled    = DUP_Settings::Get('trace_log_enabled');
+$uninstall_settings   = DUP_Settings::Get('uninstall_settings');
+$uninstall_files      = DUP_Settings::Get('uninstall_files');
+$uninstall_tables     = DUP_Settings::Get('uninstall_tables');
 $storage_htaccess_off = DUP_Settings::Get('storage_htaccess_off');
-
-$wpfront_integrate = DUP_Settings::Get('wpfront_integrate');
-$wpfront_ready = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
-$package_debug = DUP_Settings::Get('package_debug');
-
+$wpfront_integrate    = DUP_Settings::Get('wpfront_integrate');
+$wpfront_ready        = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
+$package_debug        = DUP_Settings::Get('package_debug');
+$skip_archive_scan    = DUP_Settings::Get('skip_archive_scan');
 ?>
 
 <style>
@@ -181,6 +183,16 @@ $package_debug = DUP_Settings::Get('package_debug');
                 </p>
             </td>
         </tr>
+        <tr valign="top">
+		<th scope="row"><label><?php DUP_PRO_U::esc_html_e('Archive scan'); ?></label></th>
+		<td>
+			<input type="checkbox" name="skip_archive_scan" id="_skip_archive_scan" <?php checked( $skip_archive_scan , true ); ?> value="1" />
+			<label for="_skip_archive_scan"><?php DUP_PRO_U::esc_html_e("Skip") ?> </label><br/>
+			<p class="description">
+				<?php esc_html_e('If enable skip all files check on scan before package creation.', 'duplicator'); ?>
+			</p>
+		</td>
+    </tr>
     </table>
 
     <p class="submit" style="margin: 20px 0px 0xp 5px;">
