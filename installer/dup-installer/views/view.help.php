@@ -495,6 +495,10 @@ STEP 3
 			<td>These plug-ins are the plug-ins that were activated when the package was created and represent the plug-ins that will be activated after the install.</td>
 		</tr>
 		<tr>
+			<td>Update email domains</td>
+			<td>This option allows for emails to be updated.  The domain portion of all email addresses will be updated if this option is enabled.</td>
+		</tr>
+		<tr>
 			<td>Full Search</td>
 			<td>Full search forces a scan of every single cell in the database. If it is not checked then only text based columns are searched which makes the update process much faster.
 			Use this option if you have issues with data not updating correctly.</td>

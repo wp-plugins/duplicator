@@ -133,14 +133,15 @@ if (isset($_POST['search'])) {
 	}
 }
 
-
-// Replace email address (xyz@oldomain.com to xyz@newdomain.com).
-$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
-$post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
-$at_new_domain = '@'.DUPX_U::getDomain($post_url_new);
-$at_old_domain = '@'.DUPX_U::getDomain($post_url_old);
-if ($at_new_domain !== $at_old_domain) {
-	DUPX_U::queueReplacementWithEncodings($at_old_domain, $at_new_domain);
+if (isset($_POST['search_relace_email_domain']) && $_POST['search_relace_email_domain']) {
+    // Replace email address (xyz@oldomain.com to xyz@newdomain.com).
+    $post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+    $post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
+    $at_new_domain = '@'.DUPX_U::getDomain($post_url_new);
+    $at_old_domain = '@'.DUPX_U::getDomain($post_url_old);
+    if ($at_new_domain !== $at_old_domain) {
+        DUPX_U::queueReplacementWithEncodings($at_old_domain, $at_new_domain);
+    }
 }
 
 // DIRS PATHS
