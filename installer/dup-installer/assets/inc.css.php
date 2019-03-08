@@ -110,7 +110,8 @@
 
     .report-sections-list .section {
         border: 1px solid #DFDFDF;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+		box-shadow: 4px 8px 11px -8px rgba(0,0,0,0.41);
     }
 
     .report-sections-list .section > .section-title {
@@ -118,7 +119,7 @@
         padding: 3px;
         font-weight: bold;
         text-align: center;
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .report-sections-list .section > .section-content {
@@ -329,9 +330,9 @@
 	div.s4-final-title {color:#BE2323; font-size:18px}
 	div.s4-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
 	table.s4-report-results,
-	table.s4-report-errs {border-collapse:collapse;}
+	table.s4-report-errs {border-collapse:collapse; box-shadow: 4px 8px 11px -8px rgba(0,0,0,0.41);}
 	table.s4-report-errs  td {text-align:center; width:33%}
-	table.s4-report-results th, table.s4-report-errs th {background-color:#bdbdbd; padding:3px; font-size:12px;}
+	table.s4-report-results th, table.s4-report-errs th {background-color:#d0d0d0; padding:3px; font-size:14px;}
 	table.s4-report-results td, table.s4-report-errs td {padding:3px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:11px}
 	table.s4-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
 	div.s4-err-title {background-color:#dfdfdf; font-weight: bold; margin:-3px 0 15px 0; padding:5px; border-radius:3px; font-size:13px}

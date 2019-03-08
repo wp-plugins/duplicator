@@ -39,6 +39,8 @@ if (isset($_POST['url_new'])) {
 $_POST['ssl_admin']		= isset($_POST['ssl_admin']) ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 $_POST['config_mode']	= (isset($_POST['config_mode'])) ? $_POST['config_mode'] : 'NEW';
+$replace_mail = filter_input(INPUT_POST, 'search_replace_email_domain', FILTER_VALIDATE_BOOLEAN);
+
 
 //MYSQL CONNECTION
 $dbh		 = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
@@ -133,17 +135,6 @@ if (isset($_POST['search'])) {
 	}
 }
 
-if (isset($_POST['search_relace_email_domain']) && $_POST['search_relace_email_domain']) {
-    // Replace email address (xyz@oldomain.com to xyz@newdomain.com).
-    $post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
-    $post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
-    $at_new_domain = '@'.DUPX_U::getDomain($post_url_new);
-    $at_old_domain = '@'.DUPX_U::getDomain($post_url_old);
-    if ($at_new_domain !== $at_old_domain) {
-        DUPX_U::queueReplacementWithEncodings($at_old_domain, $at_new_domain);
-    }
-}
-
 // DIRS PATHS
 DUPX_U::queueReplacementWithEncodings($_POST['path_old'] , $_POST['path_new'] );
 $path_old_unsetSafe = rtrim(DUPX_U::unsetSafePath($_POST['path_old']), '\\');
@@ -184,9 +175,19 @@ try {
     DUPX_Log::info($exceptionError->getTraceAsString());
 }
 
+$at_new_domain = '@'.DUPX_U::getDomain($_POST['url_new']);
+
 $old_urls_list = array_unique ($old_urls_list);
 foreach ($old_urls_list  as $old_url) {
     DUPX_U::replacmentUrlOldToNew($old_url, $_POST['url_new']);
+
+    if ($replace_mail) {
+        $at_old_domain = '@'.DUPX_U::getDomain($old_url);
+
+        if ($at_new_domain !== $at_old_domain) {
+            DUPX_U::queueReplacementWithEncodings($at_old_domain, $at_new_domain);
+        }
+    }
 }
 
 /*=============================================================
