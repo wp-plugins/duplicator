@@ -392,11 +392,11 @@
     Expandable section
 	============================	*/
     .expandable.close .expand-header {
-        cursor: s-resize;
+        cursor:pointer;
     }
 
     .expandable.open .expand-header {
-        cursor: n-resize;
+         cursor:pointer;
     }
 
     .expandable .expand-header::before {
