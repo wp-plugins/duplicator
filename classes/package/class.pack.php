@@ -284,11 +284,7 @@ class DUP_Package
         $report['RPT']['ScanTime'] = DUP_Util::elapsedTime(DUP_Util::getMicrotime(), $timerStart);
         $fp                        = fopen(DUPLICATOR_SSDIR_PATH_TMP."/{$this->ScanFile}", 'w');
 
-        if (function_exists('wp_json_encode')) {
-            fwrite($fp, wp_json_encode($report));
-        } else {
-            fwrite($fp, json_encode($report));
-        }
+        fwrite($fp, DUP_JSON::encodePrettyPrint($report));
         fclose($fp);
 
         return $report;

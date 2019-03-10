@@ -490,24 +490,25 @@ final class DUPX_NOTICE_MANAGER
             <div class="title" <?php echo $toggleLinkData; ?>>
                 <i class="<?php echo $iconClasses; ?>"></i>  <?php echo htmlentities($notice->shortMsg); ?>
             </div>
-            <?php if ($haveContent) : ?>
-                <div class="info no-display" id="<?php echo $contentId; ?>">
+            <?php if ($haveContent) { ?>
+                <div class="info <?php echo $notice->open ? '' : 'no-display'; ?>" id="<?php echo $contentId; ?>">
                     <?php if (!empty($notice->faqLink)) { ?>
-                        <b>See FAQ</b>:
-						<a href="<?php echo $notice->faqLink['url']; ?>" >
+                        <b>See FAQ</b>: <a href="<?php echo $notice->faqLink['url']; ?>" >
                             <?php echo empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']; ?>
                         </a>
                         <?php
                     }
                     if (!empty($notice->faqLink) && !empty($notice->longMsg)) {
-                        echo '<br/><br/>';
+                        echo '<br><br>';
                     }
                     if (!empty($notice->longMsg)) {
                         echo htmlentities($notice->longMsg);
                     }
                     ?>
                 </div>
-            <?php endif; ?>
+                <?php
+            }
+            ?>
         </div>
         <?php
     }
@@ -765,6 +766,12 @@ class DUPX_NOTICE_ITEM
 
     /**
      *
+     * @var bool if true notice start open. For final report only
+     */
+    public $open = false;
+
+    /**
+     *
      * @param string $shortMsg text
      * @param int $level
      * @param string $longMsg html text
@@ -774,7 +781,7 @@ class DUPX_NOTICE_ITEM
      *                              'label' => link text if empty get external url link
      *                          ]
      */
-    public function __construct($shortMsg, $level = self::INFO, $longMsg = '', $sections = array(), $faqLink = null, $priority = 10)
+    public function __construct($shortMsg, $level = self::INFO, $longMsg = '', $sections = array(), $faqLink = null, $priority = 10, $open = false)
     {
         $this->shortMsg = (string) $shortMsg;
         $this->level    = (int) $level;
@@ -782,6 +789,7 @@ class DUPX_NOTICE_ITEM
         $this->sections = is_array($sections) ? $sections : array($sections);
         $this->faqLink  = $faqLink;
         $this->priority = $priority;
+        $this->open     = $open;
     }
 
     /**
@@ -805,7 +813,8 @@ class DUPX_NOTICE_ITEM
             'longMsg' => $this->longMsg,
             'sections' => $this->sections,
             'faqLink' => $this->faqLink,
-            'priority' => $this->priority
+            'priority' => $this->priority,
+            'open' => $this->open
         );
     }
 
@@ -833,7 +842,7 @@ class DUPX_NOTICE_ITEM
             }
         }
         $params = array_merge(self::getDefaultArrayParams(), $array);
-        $result = new self($params['shortMsg'], $params['level'], $params['longMsg'], $params['sections'], $params['faqLink'], $params['priority']);
+        $result = new self($params['shortMsg'], $params['level'], $params['longMsg'], $params['sections'], $params['faqLink'], $params['priority'], $params['open']);
         return $result;
     }
 
@@ -858,7 +867,8 @@ class DUPX_NOTICE_ITEM
             'longMsg' => '',
             'sections' => array(),
             'faqLink' => null,
-            'priority' => 10
+            'priority' => 10,
+            'open' => false
         );
     }
 

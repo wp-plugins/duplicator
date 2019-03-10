@@ -258,6 +258,27 @@ try {
         die("");
     }
 
+    $helpOpenSection = '';
+    switch ($GLOBALS["VIEW"]) {
+        case "secure" :
+            $helpOpenSection = 'section-security';
+            break;
+        case "step1" :
+            $helpOpenSection = 'section-step-1';
+            break;
+        case "step2" :
+            $helpOpenSection = 'section-step-2';
+            break;
+        case "step3" :
+            $helpOpenSection = 'section-step-3';
+            break;
+        case "step4" :
+            $helpOpenSection = 'section-step-4';
+            break;
+        case "help" :
+        default :
+    }
+
 } catch (Exception $e) {
     $exceptionError = $e;
 }
@@ -297,8 +318,12 @@ if (!empty($unespectOutput)) {
 		<td class="wiz-dupx-version">
 			<a href="javascript:void(0)" onclick="DUPX.openServerDetails()">version:<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_dup); ?></a>&nbsp;
 			<?php
-				$help_url = "?view=help&archive={$GLOBALS['FW_ENCODED_PACKAGE_PATH']}&bootloader={$GLOBALS['BOOTLOADER_NAME']}&basic";
-				echo ($GLOBALS['DUPX_AC']->secure_on) 
+				$help_url = "?view=help".
+                "&archive={$GLOBALS['FW_ENCODED_PACKAGE_PATH']}".
+                "&bootloader={$GLOBALS['BOOTLOADER_NAME']}&".
+                "basic".
+                '&open_section='.$helpOpenSection;
+            echo ($GLOBALS['DUPX_AC']->secure_on)
 					? "<a href='{$help_url}#secure' target='_blank'><i class='fa fa-lock'></i></a>"
 					: "<a href='{$help_url}#secure' target='_blank'><i class='fa fa-unlock-alt'></i></a>" ;
 			?>

@@ -8,6 +8,7 @@ require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.arch
 $retry_nonuce           = wp_create_nonce('new1-package');
 $zip_build_nonce        = wp_create_nonce('duplicator_package_build');
 $duparchive_build_nonce = wp_create_nonce('duplicator_duparchive_package_build');
+$active_package_present = true;
 
 //Help support Duplicator
 $atext0  = "<a target='_blank' href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5'>";
@@ -23,6 +24,8 @@ $rand_txt[0] = $atext0;
 ?>
 
 <style>
+    .add-new-h2.disabled {cursor: not-allowed; border-color: #ccc !important; background: #f7f7f7 !important; color: #ccc !important;}
+	a#dup-create-new {margin-left:-5px}
     div#dup-progress-area {text-align:center; max-width:800px; min-height:200px;  border:1px solid silver; border-radius:5px; margin:25px auto 10px auto; padding:0px; box-shadow: 0 8px 6px -6px #999;}
     div.dup-progress-title {font-size:22px;padding:5px 0 20px 0; font-weight: bold}
     div#dup-progress-area div.inner {padding:10px; line-height:22px}
@@ -82,14 +85,20 @@ TOOL BAR: STEPS -->
             </div>
         </td>
         <td style="padding-bottom:4px">
-            <div id="dup-create-area-nolink"><?php esc_html_e("Create New", 'duplicator'); ?></div>
-			<?php
+            <span><a href="?page=duplicator" class="add-new-h2">
+                    <i class="fa fa-archive"></i> <?php esc_html_e("Packages",'duplicator'); ?>
+                </a></span> 
+            <?php
 			$package_url = admin_url('admin.php?page=duplicator&tab=new1');
 			$package_nonce_url = wp_nonce_url($package_url, 'new1-package');
 			?>
-            <div id="dup-create-area-link"><a href="<?php echo $package_nonce_url;?>" class="add-new-h2"><?php esc_html_e("Create New", 'duplicator'); ?></a></div>
-            <div style="float:right;margin: 0px 5px;"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php esc_html_e("Packages",
-                        'duplicator'); ?></a></div>
+			<a id="dup-create-new"
+               onClick="return !jQuery(this).hasClass('disabled');"
+               href="<?php echo $package_nonce_url;?>"
+               class="add-new-h2 <?php echo ($active_package_present ? 'disabled' : ''); ?>"
+               >
+                <?php esc_html_e("Create New", 'duplicator'); ?>
+            </a>
         </td>
     </tr>
 </table>		
@@ -557,7 +566,7 @@ jQuery(document).ready(function ($)
 					console.error(err);
 					console.error('JSON parse failed for response data: ' + respData);
 					console.log('Error retrieving build status');
-				console.log(xHr);
+                    console.log(xHr);
 					return false;
 				}
 				if(data.report.status == 1) {
@@ -600,7 +609,8 @@ jQuery(document).ready(function ($)
 		$('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
 		$('#data-name-hash').text(pack.NameHash || 'error read');
 		$('#data-time').text(data.runtime || 'unable to read time');
-
+        $('#dup-create-new').removeClass('disabled');
+        
 		//Wire Up Downloads
 		$('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});
 		$('#dup-btn-archive').click(function() {

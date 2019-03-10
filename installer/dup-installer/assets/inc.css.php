@@ -355,15 +355,13 @@
 	/* ============================
 	STEP 5 HELP
 	============================	*/
-	div.help-target {float:right;}
+    div.help-target {float:right;}
 	div.help-target a {float:right; font-size:16px; color:#13659C}
 	div#main-help sup {font-size:11px; font-weight:normal; font-style:italic; color:blue}
 	div.help-online {text-align:center; font-size:18px; padding:10px 0 0 0; line-height:24px}
 	div.help {color:#555; font-style:italic; font-size:11px; padding:4px; border-top:1px solid #dfdfdf}
-	div.help-page {padding:5px 0 0 5px}
 	div.help-page fieldset {margin-bottom:25px}
     div#main-help {font-size:13px; line-height:17px}
-	div#main-help h2 {background-color:#F1F1F1; border:1px solid silver; border-radius:4px; padding:15px; margin:28px 0 8px 0; font-size:24px; }
 	div#main-help h3 {border-bottom:1px solid silver; padding:8px; margin:4px 0 8px 0; font-size:20px}
     div#main-help span.step {color:#DB4B38}
 	table.help-opt {width: 100%; border: none; border-collapse: collapse;  margin:5px 0 0 0;}
@@ -371,6 +369,56 @@
 	table.help-opt td, th {padding:7px; border:1px solid silver;}
 	table.help-opt td:first-child {font-weight:bold; padding-right:10px; white-space:nowrap}
 	table.help-opt th {background: #333; color: #fff;border:1px solid #333; padding:3px}
+
+    #main-help section {
+        border: 1px solid silver;
+        margin-top: 28px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    #main-help section h2.header {
+        background-color:#F1F1F1;
+        padding:15px;
+        margin:0;
+        font-size:20px;
+    }
+
+    #main-help section .content {
+        padding: 10px;
+    }
+
+    /* ============================
+    Expandable section
+	============================	*/
+    .expandable.close .expand-header {
+        cursor: s-resize;
+    }
+
+    .expandable.open .expand-header {
+        cursor: n-resize;
+    }
+
+    .expandable .expand-header::before {
+        font-family: FontAwesome;
+        margin-right: 10px;
+    }
+
+    .expandable.close .expand-header::before {
+        content: "\f0fe";
+    }
+
+    .expandable.open .expand-header::before {
+        content: "\f146";
+    }
+
+    .expandable.close .content {
+        display: none;
+    }
+
+    .expandable.open .content {
+        display: block;
+    }
 
     /* ============================
     VIEW EXCEPTION

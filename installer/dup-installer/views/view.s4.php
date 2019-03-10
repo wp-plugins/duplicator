@@ -112,6 +112,8 @@ LONGMSG;
             'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
             'longMsg' => $longMsg,
             'sections' => array('database'),
+            'priority' => 5,
+            'open' => true
         ));
     }
 
@@ -126,6 +128,8 @@ LONGMSG;
             'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
             'longMsg' => $longMsg,
             'sections' => array('database'),
+            'priority' => 5,
+            'open' => true
         ));
     }
 
@@ -147,6 +151,8 @@ LONGMSG;
             'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
             'longMsg' => $longMsg,
             'sections' => array('database'),
+            'priority' => 5,
+            'open' => true
         ));
     }
 
@@ -161,6 +167,8 @@ LONGMSG;
             'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
             'longMsg' => $longMsg,
             'sections' => array('search_replace'),
+            'priority' => 5,
+            'open' => true
         ));
     }
 
@@ -183,7 +191,8 @@ LONGMSG;
             'level' => DUPX_NOTICE_ITEM::INFO,
             'longMsg' => $longMsg,
             'sections' => array('general'),
-            'priority' => 5
+            'priority' => 5,
+            'open' => true
         ));
     }
 

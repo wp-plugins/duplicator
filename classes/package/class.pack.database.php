@@ -12,9 +12,19 @@ if (! defined('DUPLICATOR_VERSION')) exit;
 class DUP_DatabaseInfo
 {
     /**
+     * The SQL file was built with mysqldump or PHP
+     */
+    public $buildMode;
+
+    /**
      * A unique list of all the collation table types used in the database
      */
     public $collationList;
+
+    /**
+     * Does any filtered table have an upper case character in it
+     */
+    public $isTablesUpperCase;
 
     /**
      * Does the database name have any filtered characters in it
@@ -27,10 +37,62 @@ class DUP_DatabaseInfo
     public $name;
 
     /**
+     * The full count of all tables in the database
+     */
+    public $tablesBaseCount;
+
+    /**
+     * The count of tables after the tables filter has been applied
+     */
+    public $tablesFinalCount;
+
+    /**
+     * The number of rows from all filtered tables in the database
+     */
+    public $tablesRowCount;
+
+    /**
+     * The estimated data size on disk from all filtered tables in the database
+     */
+    public $tablesSizeOnDisk;
+
+    /**
+     * Gets the server variable lower_case_table_names
+     *
+     * 0 store=lowercase;	compare=sensitive	(works only on case sensitive file systems )
+     * 1 store=lowercase;	compare=insensitive
+     * 2 store=exact;		compare=insensitive	(works only on case INsensitive file systems )
+     * default is 0/Linux ; 1/Windows
+     */
+    public $varLowerCaseTables;
+
+    /**
+     * The simple numeric version number of the database server
+     * @exmaple: 5.5
+     */
+    public $version;
+
+    /**
+     * The full text version number of the database server
+     * @exmaple: 10.2 mariadb.org binary distribution
+     */
+    public $versionComment;
+
+    /**
      * table wise row counts array, Key as table name and value as row count
      *  table name => row count
      */
     public $tableWiseRowCounts;
+
+    /**
+     * Integer field file structure of table, table name as key
+     */
+    private $intFieldsStruct = array();
+
+    /**
+     * $currentIndex => processedSchemaSize
+     */
+    private $indexProcessedSchemaSize = array();
 
     //CONSTRUCTOR
     function __construct()
@@ -52,6 +114,12 @@ class DUP_Database
     public $Name;
     public $Compatible;
     public $Comments;
+    
+    /**
+     *
+     * @var DUP_DatabaseInfo 
+     */
+    public $info = null;
     //PROTECTED
     protected $Package;
     //PRIVATE
@@ -69,6 +137,7 @@ class DUP_Database
         $package_zip_flush  = DUP_Settings::Get('package_zip_flush');
         $this->networkFlush = empty($package_zip_flush) ? false : $package_zip_flush;
         $this->info = new DUP_DatabaseInfo();
+        $this->info->varLowerCaseTables	 = DUP_Util::isWindows() ? 1 : 0;
     }
 
     /**
@@ -93,7 +162,7 @@ class DUP_Database
             $package_phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
 
             $mysqlDumpPath        = DUP_DB::getMySqlDumpPath();
-            $mode                 = ($mysqlDumpPath && $package_mysqldump) ? 'MYSQLDUMP' : 'PHP';
+            $mode                 = DUP_DB::getBuildMode();
             $reserved_db_filepath = DUPLICATOR_WPROOTPATH.'database.sql';
 
             $log = "\n********************************************************************************\n";
@@ -155,7 +224,7 @@ class DUP_Database
             DUP_Log::Info("SQL RUNTIME: {$time_sum}");
 
             $this->Size = @filesize($this->dbStorePath);
-
+         
             $this->Package->setStatus(DUP_PackageStatus::DBDONE);
         } catch (Exception $e) {
             do_action('duplicator_lite_build_database_fail' , $package);
@@ -172,7 +241,8 @@ class DUP_Database
     {
         global $wpdb;
 
-        $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
+        $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : array();
+        $tblBaseCount	 = 0;
         $tblCount     = 0;
 
         $tables                     = $wpdb->get_results("SHOW TABLE STATUS", ARRAY_A);
@@ -196,6 +266,7 @@ class DUP_Database
 
         //Grab Table Stats
         foreach ($tables as $table) {
+            $tblBaseCount++;
             $name = $table["Name"];
             if ($this->FilterOn && is_array($filterTables)) {
                 if (in_array($name, $filterTables)) {
@@ -240,7 +311,6 @@ class DUP_Database
         $info['Status']['DB_Rows'] = ($info['Rows'] > DUPLICATOR_SCAN_DB_ALL_ROWS) ? 'Warn' : 'Good';
         $info['Status']['DB_Size'] = ($info['Size'] > DUPLICATOR_SCAN_DB_ALL_SIZE) ? 'Warn' : 'Good';
 
-
         $info['Status']['TBL_Case'] = ($tblCaseFound) ? 'Warn' : 'Good';
         $info['Status']['TBL_Rows'] = ($tblRowsFound) ? 'Warn' : 'Good';
         $info['Status']['TBL_Size'] = ($tblSizeFound) ? 'Warn' : 'Good';
@@ -251,12 +321,24 @@ class DUP_Database
         $info['TableList']  = $info['TableList'] or "unknown";
         $info['TableCount'] = $tblCount;
 
+        $this->setInfoObj();
+        $this->info->isTablesUpperCase	 = $tblCaseFound;
+        $this->info->tablesBaseCount	 = $tblBaseCount;
+        $this->info->tablesFinalCount	 = $tblCount;
+        $this->info->tablesRowCount		 = $info['Rows'];
+        $this->info->tablesSizeOnDisk	 = $info['Size'];
+
         return $info;
     }
 
     public function setInfoObj() {
         global $wpdb;
+        $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : array();
 
+        $this->info->buildMode           = DUP_DB::getBuildMode();
+        $this->info->version			 = DUP_DB::getVersion();
+        $this->info->versionComment		 = DUP_DB::getVariable('version_comment');
+        $this->info->varLowerCaseTables	 = DUP_DB::getVariable('lower_case_table_names');
         $this->info->name				 = $wpdb->dbname;
         $this->info->isNameUpperCase	 = preg_match('/[A-Z]/', $wpdb->dbname) ? 1 : 0;
         $this->info->collationList		 = DUP_DB::getTableCollationList($filterTables);
