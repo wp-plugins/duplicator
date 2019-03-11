@@ -50,10 +50,18 @@ try {
     $GLOBALS['DUPX_INIT']  = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
     $GLOBALS['DUPX_ENFORCE_PHP_INI']  = false;
 
-    require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.exceptions.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.notices.manager.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
+    require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php');
+    $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
+
+    if ($GLOBALS['DUPX_AC']->csrf_crypt) {
+        require_once($GLOBALS['DUPX_INIT'].'/classes/Crypt/Rijndael.php');
+        require_once($GLOBALS['DUPX_INIT'].'/classes/Crypt/Random.php');
+    }
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
 
     // ?view=help
     if (!empty($_GET['view']) && 'help' == $_GET['view']) {
@@ -69,9 +77,6 @@ try {
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
         $post_ctrl_csrf_token = isset($_GET['daws_csrf_token']) ? DUPX_U::sanitize_text_field($_GET['daws_csrf_token']) : '';
         if (DUPX_CSRF::check($post_ctrl_csrf_token, 'daws')) {
-            require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
-            require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
-            $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
             $outer_root_path = dirname($GLOBALS['DUPX_ROOT']);
             if (
                 (isset($_GET['daws_action']) && 'start_expand' == $_GET['daws_action'])
@@ -132,7 +137,6 @@ try {
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
 
-    $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
     if ($GLOBALS['DUPX_AC'] == null) {
         die("Can't initialize config globals! Please try to re-run installer.php");
     }
