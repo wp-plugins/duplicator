@@ -460,12 +460,12 @@ final class DUPX_NOTICE_MANAGER
                     ?>
                     <br>
                     See FAQ: <a href="<?php echo $notice->faqLink['url']; ?>" >
-                        <b><?php echo empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']; ?></b>
+                        <b><?php echo htmlentities(empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']); ?></b>
                     </a>
                     <?php
                 }
                 if (!empty($notice->longMsg)) {
-                    echo '<br><br>'.$notice->longMsg;
+                    echo '<br><br>'.($notice->longMsgHtml ? $notice->longMsg : htmlentities($notice->longMsg));
                 }
                 ?>
             </p>
@@ -474,6 +474,11 @@ final class DUPX_NOTICE_MANAGER
         <?php
     }
 
+    /**
+     *
+     * @param string $id
+     * @param DUPX_NOTICE_ITEM $notice
+     */
     private static function finalReportNotice($id, $notice)
     {
         $classes        = array(
@@ -494,7 +499,7 @@ final class DUPX_NOTICE_MANAGER
                 <div class="info <?php echo $notice->open ? '' : 'no-display'; ?>" id="<?php echo $contentId; ?>">
                     <?php if (!empty($notice->faqLink)) { ?>
                         <b>See FAQ</b>: <a href="<?php echo $notice->faqLink['url']; ?>" >
-                            <?php echo empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']; ?>
+                            <?php echo htmlentities(empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']); ?>
                         </a>
                         <?php
                     }
@@ -502,7 +507,7 @@ final class DUPX_NOTICE_MANAGER
                         echo '<br><br>';
                     }
                     if (!empty($notice->longMsg)) {
-                        echo htmlentities($notice->longMsg);
+                        echo $notice->longMsgHtml ? $notice->longMsg : htmlentities($notice->longMsg);
                     }
                     ?>
                 </div>
@@ -640,6 +645,7 @@ LONGMSG;
             'shortMsg' => 'Full elements next step message',
             'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
             'longMsg' => $longMsg,
+            'longMsgHtml' => true,
             'faqLink' => array(
                 'url' => 'http://www.google.it',
                 'label' => 'google link'
@@ -683,6 +689,7 @@ LONGMSG;
             'shortMsg' => 'Full elements final report message',
             'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
             'longMsg' => $longMsg,
+            'longMsgHtml' => true,
             'sections' => $section,
             'faqLink' => array(
                 'url' => 'http://www.google.it',
@@ -694,6 +701,7 @@ LONGMSG;
             'shortMsg' => 'Full elements final report message info high priority',
             'level' => DUPX_NOTICE_ITEM::INFO,
             'longMsg' => $longMsg,
+            'longMsgHtml' => true,
             'sections' => $section,
             'faqLink' => array(
                 'url' => 'http://www.google.it',
@@ -735,6 +743,12 @@ class DUPX_NOTICE_ITEM
      * @var string html text
      */
     public $longMsg = '';
+
+    /**
+     *
+     * @var bool if true long msg can be html
+     */
+    public $longMsgHtml = false;
 
     /**
      *
@@ -780,16 +794,20 @@ class DUPX_NOTICE_ITEM
      *                              'url' => external link
      *                              'label' => link text if empty get external url link
      *                          ]
+     * @param int priority
+     * @param bool open
+     * @param bool longMsgHtml
      */
-    public function __construct($shortMsg, $level = self::INFO, $longMsg = '', $sections = array(), $faqLink = null, $priority = 10, $open = false)
+    public function __construct($shortMsg, $level = self::INFO, $longMsg = '', $sections = array(), $faqLink = null, $priority = 10, $open = false, $longMsgHtml = false)
     {
-        $this->shortMsg = (string) $shortMsg;
-        $this->level    = (int) $level;
-        $this->longMsg  = (string) $longMsg;
-        $this->sections = is_array($sections) ? $sections : array($sections);
-        $this->faqLink  = $faqLink;
-        $this->priority = $priority;
-        $this->open     = $open;
+        $this->shortMsg    = (string) $shortMsg;
+        $this->level       = (int) $level;
+        $this->longMsg     = (string) $longMsg;
+        $this->sections    = is_array($sections) ? $sections : array($sections);
+        $this->faqLink     = $faqLink;
+        $this->priority    = $priority;
+        $this->open        = $open;
+        $this->longMsgHtml = $longMsgHtml;
     }
 
     /**
@@ -814,7 +832,8 @@ class DUPX_NOTICE_ITEM
             'sections' => $this->sections,
             'faqLink' => $this->faqLink,
             'priority' => $this->priority,
-            'open' => $this->open
+            'open' => $this->open,
+            'longMsgHtml' => $this->longMsgHtml
         );
     }
 
@@ -842,7 +861,7 @@ class DUPX_NOTICE_ITEM
             }
         }
         $params = array_merge(self::getDefaultArrayParams(), $array);
-        $result = new self($params['shortMsg'], $params['level'], $params['longMsg'], $params['sections'], $params['faqLink'], $params['priority'], $params['open']);
+        $result = new self($params['shortMsg'], $params['level'], $params['longMsg'], $params['sections'], $params['faqLink'], $params['priority'], $params['open'], $params['longMsgHtml']);
         return $result;
     }
 
@@ -856,7 +875,10 @@ class DUPX_NOTICE_ITEM
      *                          'faqLink' => [
      *                              'url' => external link
      *                              'label' => link text if empty get external url link
-     *                          ]
+     *                          ],
+     *                          priority
+     *                          open
+     *                          longMsgHtml
      *                      ]
      */
     public static function getDefaultArrayParams()
@@ -868,7 +890,8 @@ class DUPX_NOTICE_ITEM
             'sections' => array(),
             'faqLink' => null,
             'priority' => 10,
-            'open' => false
+            'open' => false,
+            'longMsgHtml' => false
         );
     }
 

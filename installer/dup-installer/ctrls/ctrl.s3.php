@@ -484,6 +484,7 @@ LONGMSG;
                 'shortMsg' => $shortMsg,
                 'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
                 'longMsg' => $longMsg,
+                'longMsgHtml' => true,
                 'sections' => 'general'
         ), DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'wp-config-transformer-exception');
 
@@ -503,6 +504,7 @@ LONGMSG;
             'shortMsg' => $shortMsg,
             'level' => DUPX_NOTICE_ITEM::CRITICAL,
             'longMsg' => $longMsg,
+            'longMsgHtml' => true,
             'sections' => 'general'
     ), DUPX_NOTICE_MANAGER::ADD_UNIQUE , 'wp-config-transformer-exception');
 }
@@ -591,6 +593,7 @@ if (file_exists($wpconfig_ark_path)) {
             'shortMsg' => 'wp-config not found',
             'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
             'longMsg' => $msg,
+            'longMsgHtml' => true,
             'sections' => 'general'
         ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_UPDATE , 'wp-config-not-found');
 

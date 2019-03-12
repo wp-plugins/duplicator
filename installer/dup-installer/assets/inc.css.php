@@ -69,10 +69,10 @@
     #step-messages { padding: 10px 25px 0; }
     .notice {
         background: #fff;
-        border-left: 4px solid #fff;
         border:1px solid #dfdfdf;
-        margin: 5px 0 2px;
-        padding: 1px 12px;
+        border-left: 4px solid #fff;
+        margin: 4px;
+        padding: 2px;
         border-radius: 4px;
     }
 
@@ -101,13 +101,6 @@
     .notice.l-critical {border-left-color: maroon;}
     .notice.l-fatal {border-left-color: #000000;}
 
-	.notice.l-info,
-    .notice.l-notice,
-    .notice.l-swarning,
-    .notice.l-hwarning,
-    .notice.l-critical,
-    .notice.l-fatal {padding:2px; margin:4px}
-
     .report-sections-list .section {
         border: 1px solid #DFDFDF;
         margin-bottom: 25px;
@@ -128,12 +121,13 @@
 
     .notice-level-status {
         border-radius: 4px;
-        padding: 1px 5px 1px 5px;
-        margin: 2px 5px;
+        padding: 2px;
+        margin: 1px;
         font-size: 10px;
         display: inline-block;
         color: #FFF;
         font-weight: bold;
+        min-width:55px;
     }
 
     .notice-level-status.l-info,
@@ -142,13 +136,6 @@
     .notice-level-status.l-hwarning {background: #636363;}
     .notice-level-status.l-critical {background: maroon;}
     .notice-level-status.l-fatal {background: #000000;}
-
-	.notice-level-status.l-info,
-    .notice-level-status.l-notice,
-    .notice-level-status.l-swarning,
-    .notice-level-status.l-hwarning,
-    .notice-level-status.l-critical,
-    .notice-level-status.l-fatal {min-width:55px; padding:2px; margin:1px}
 
     /*Adv Opts */
     table.dupx-opts {width:100%; border:0px;}
