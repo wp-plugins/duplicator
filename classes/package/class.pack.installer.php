@@ -95,7 +95,7 @@ class DUP_Installer
 
 		$search_array	 = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@CSRF_CRYPT@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
 		$package_hash	 = $this->Package->getPackageHash();
-		$replace_array	 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, DUPLICATOR_PRO_INSTALLER_CSRF_CRYPT, $mini_expander_string);
+		$replace_array	 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, DUPLICATOR_INSTALLER_CSRF_CRYPT, $mini_expander_string);
 		$installer_contents = str_replace($search_array, $replace_array, $installer_contents);
 
 		if (@file_put_contents($installer_filepath, $installer_contents) === false) {
@@ -164,7 +164,7 @@ class DUP_Installer
 		$ac->mu_mode						 = DUP_MU::getMode();
 		$ac->is_outer_root_wp_config_file	 = (!file_exists(DUPLICATOR_WPROOTPATH.'wp-config.php')) ? true : false;
 		$ac->is_outer_root_wp_content_dir	 = $this->Package->Archive->isOuterWPContentDir();
-		$ac->csrf_crypt = DUPLICATOR_PRO_INSTALLER_CSRF_CRYPT;
+		$ac->csrf_crypt = DUPLICATOR_INSTALLER_CSRF_CRYPT;
 
         $json = DUP_JSON::encodePrettyPrint($ac);
         DUP_Log::TraceObject('json', $json);

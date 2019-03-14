@@ -28,7 +28,8 @@ defined("ABSPATH") or die("");
 	}
 	
 	if (isset($_POST['dbpass'])) {
-		$_POST['dbpass'] = trim($_POST['dbpass']);
+		$post_db_pass = DUPX_U::wp_unslash($_POST['dbpass']);
+		$_POST['dbpass'] = trim($post_db_pass);
 	} else {
 		$_POST['dbpass'] = null;
 	}
