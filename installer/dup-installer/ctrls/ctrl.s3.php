@@ -460,7 +460,7 @@ try {
 
         $config_transformer->update('constant', 'DB_NAME', $db_name);
         $config_transformer->update('constant', 'DB_USER', $db_user);
-        $config_transformer->update('constant', 'DB_PASSWORD', $db_pass);
+        $config_transformer->update('constant', 'DB_PASSWORD', addslashes($db_pass));
         $config_transformer->update('constant', 'DB_HOST', $db_host);
 
         DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");

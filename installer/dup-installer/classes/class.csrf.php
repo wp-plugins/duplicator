@@ -1,27 +1,25 @@
 <?php
+defined("ABSPATH") or die("");
+
+
 class DUPX_CSRF {
 	
 	/** Session var name
 	 * @var string
 	 */
 	public static $prefix = '_DUPX_CSRF';
-	private static $cipher;
 	
 	/** Generate DUPX_CSRF value for form
 	 * @param	string	$form	- Form name as session key
 	 * @return	string	- token
 	 */
 	public static function generate($form = NULL) {
-		$cookieName = self::getCookieName($form);
-		if (!empty($_COOKIE[$cookieName])) {
-			$token = $_COOKIE[$cookieName];
+		if (!empty($_COOKIE[DUPX_CSRF::$prefix . '_' . $form])) {
+			$token = $_COOKIE[DUPX_CSRF::$prefix . '_' . $form];
 		} else {
             $token = DUPX_CSRF::token() . DUPX_CSRF::fingerprint();
 		}
-		if (self::isCrypt()) {
-			// $cookieName = self::encrypt($cookieName);
-			$token = self::encrypt($token);
-		}
+		$cookieName = DUPX_CSRF::$prefix . '_' . $form;
         $ret = DUPX_CSRF::setCookie($cookieName, $token);
 		return $token;
 	}
@@ -35,12 +33,7 @@ class DUPX_CSRF {
 		if (!self::isCookieEnabled()) {
 			return true;
 		}
-		$cookieName = self::getCookieName($form);
-		// if (self::isCrypt()) {
-			// $cookieName = self::decrypt($cookieName);
-			// $token = self::decrypt($token);
-		// }
-		if (isset($_COOKIE[$cookieName]) && $_COOKIE[$cookieName] == $token) { // token OK
+		if (isset($_COOKIE[DUPX_CSRF::$prefix . '_' . $form]) && $_COOKIE[DUPX_CSRF::$prefix . '_' . $form] == $token) { // token OK
 			return true;
 			// return (substr($token, -32) == DUPX_CSRF::fingerprint()); // fingerprint OK?
 		}
@@ -67,7 +60,13 @@ class DUPX_CSRF {
 
 	public static function setCookie($cookieName, $cookieVal) {
 		$_COOKIE[$cookieName] = $cookieVal;
+		$domainPath = self::getDomainPath();
 		return setcookie($cookieName, $cookieVal, time() + 10800, '/');
+	}
+
+	public static function getDomainPath() {
+		return '/';
+		// return str_replace('main.installer.php', '', $_SERVER['SCRIPT_NAME']);
 	}
 	
 	/**
@@ -78,76 +77,13 @@ class DUPX_CSRF {
 	}
 
 	public static function resetAllTokens() {
-		// $cookiePrefix = DUPX_CSRF::$prefix.'_'.self::getPackageHash().'_';
-		$cookiePrefix = DUPX_CSRF::$prefix.'_';
 		foreach ($_COOKIE as $cookieName => $cookieVal) {
-			if (0 === strpos($cookieName, $cookiePrefix) || 'archive' == $cookieName || 'bootloader' == $cookieName) {
-				$baseUrl = self::getBaseUrl();
-				setcookie($cookieName, '', time() - 86400, $baseUrl);	
+			$step1Key = DUPX_CSRF::$prefix . '_step1';
+			if ($step1Key != $cookieName && (0 === strpos($cookieName, DUPX_CSRF::$prefix) || 'archive' == $cookieName || 'bootloader' == $cookieName)) {
+				// $domainPath = self::getDomainPath();
+				setcookie($cookieName, '', time() - 86400, '/');
+				unset($_COOKIE[$cookieName]);
 			}
 		}
-		$_COOKIE = array();
-	}
-
-	private static function getBaseUrl() {
-		// output: /myproject/index.php
-		$currentPath = $_SERVER['PHP_SELF']; 
-		
-		// output: Array ( [dirname] => /myproject [basename] => index.php [extension] => php [filename] => index ) 
-		$pathInfo = pathinfo($currentPath); 
-		
-		// output: localhost
-		$hostName = $_SERVER['HTTP_HOST']; 
-		
-		// output: http://
-		$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https://'?'https://':'http://';
-		
-		// return: http://localhost/myproject/
-		return $protocol.$hostName.$pathInfo['dirname']."/";
-	}
-
-	private static function getCookieName($form) {
-		return DUPX_CSRF::$prefix . '_' . self::getPackageHash() . '_' . $form;
-	}
-
-	private static function isCrypt() {
-		if (class_exists('DUPX_Bootstrap')) {
-			return DUPX_Bootstrap::CSRF_CRYPT;
-		} else {
-			return $GLOBALS['DUPX_AC']->csrf_crypt;
-		}
-	}
-
-	private static function getCryptKey() {
-		return 'snapcreek-'.self::getPackageHash();
-	}
-
-	private static function getPackageHash() {
-		if (class_exists('DUPX_Bootstrap')) {
-			return DUPX_Bootstrap::PACKAGE_HASH;
-		} else {
-			return $GLOBALS['DUPX_AC']->package_hash;
-		}
-	}
-
-	private static function getCipher() {
-		if (!isset(self::$cipher)) {
-			self::$cipher = new Crypt_Rijndael();
-			$cryptKey = self::getCryptKey();
-			self::$cipher->setKey($cryptKey);
-		}
-		return self::$cipher;
-	}
-
-	private static function encrypt($val) {
-		$cipher = self::getCipher();
-		$val = $cipher->encrypt($val);
-		return base64_encode($val);
-	}
-
-	private static function decrypt($val) {
-		$cipher = self::getCipher();
-		$val = base64_decode($val);
-		return $cipher->decrypt($val);
 	}
 }
