@@ -266,7 +266,7 @@ class SnapLibUtil
 				}
 
 				// Now, pass the array (or whatever was returned from jsonSerialize through).
-				return _wp_json_prepare_data( $data );
+				return self::_wp_json_prepare_data( $data );
 
 			default:
 				return null;
