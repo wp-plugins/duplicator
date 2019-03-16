@@ -802,7 +802,7 @@ jQuery(document).ready(function($)
             $('#hb-files-large-result').html(html);
         }
 		//ADDON SITES
-        if ($('#hb-addon-large').length > 0) {
+        if ($('#hb-addon-sites').length > 0) {
             var template = $('#hb-addon-sites').html();
             var templateScript = Handlebars.compile(template);
             var html = templateScript(data);
