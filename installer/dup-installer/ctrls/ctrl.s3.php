@@ -453,14 +453,15 @@ try {
             }
         }
 
-        $db_host	= isset($_POST['dbhost']) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : '';
-        $db_name	= isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : '';
-        $db_user	= isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : '';
-        $db_pass    = isset($_POST['dbpass']) ? trim(DUPX_U::wp_unslash($_POST['dbpass'])) : '';
+        $db_host = isset($_POST['dbhost']) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : '';
+        $db_name = isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : '';
+        $db_user = isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : '';
+        $db_pass = isset($_POST['dbpass']) ? SnapLibUtil::wp_json_encode(trim($_POST['dbpass'])) : "''";
+        $db_pass = str_replace(array('\x00','\/'), array('','/'), $db_pass);
 
         $config_transformer->update('constant', 'DB_NAME', $db_name);
         $config_transformer->update('constant', 'DB_USER', $db_user);
-        $config_transformer->update('constant', 'DB_PASSWORD', $db_pass);
+        $config_transformer->update('constant', 'DB_PASSWORD', $db_pass, array('raw' => true));
         $config_transformer->update('constant', 'DB_HOST', $db_host);
 
         DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
