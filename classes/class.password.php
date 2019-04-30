@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 #
 # Portable PHP password hashing framework.
 #

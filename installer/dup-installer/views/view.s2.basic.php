@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 /* @var $state DUPX_InstallerState */
@@ -24,7 +24,7 @@ if($is_standard_mode) {
 } else {
 	$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 	$outerWPConfigPath	= dirname($GLOBALS['DUPX_ROOT'])."/wp-config.php";
-	require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.wp.config.tranformer.php');
+	require_once($GLOBALS['DUPX_INIT'].'/lib/config/class.wp.config.tranformer.php');
 	$config_transformer = file_exists($wpConfigPath) 
 							? new WPConfigTransformer($wpConfigPath)
 							: new WPConfigTransformer($outerWPConfigPath);
@@ -65,7 +65,7 @@ BASIC PANEL -->
 				click the 'Apply button' to set the placeholder values.  To use different database settings click the 'Reset button' to clear and set new values.
 				<br/><br/>
 				
-				<i><i class="fa fa-warning"></i> Warning: Please note that reusing an existing site's database will <u>overwrite</u> all of its data. If you're not 100% sure about
+				<i><i class="fas fa-exclamation-triangle fa-sm"></i> Warning: Please note that reusing an existing site's database will <u>overwrite</u> all of its data. If you're not 100% sure about
 				using these database settings, then create a new database and use the new credentials instead.</i>
 			</div>
 
@@ -120,9 +120,9 @@ BASIC PANEL -->
 	<div class="hdr-sub1 toggle-hdr" id="s2-opts-hdr-basic" data-type="toggle" data-target="#s2-opts-basic">
 		<a href="javascript:void(0)"><i class="fa fa-plus-square"></i>Options</a>
 	</div>
-	<div id="s2-opts-basic" class="s2-opts" style="display:none;padding-top:0">
+	<div id="s2-opts-basic" class="s2-opts hdr-sub1-area" style="display:none;padding-top:0">
 		<div class="help-target">
-			<a href="<?php echo DUPX_U::esc_url($GLOBALS['_HELP_URL_PATH'].'#help-s2');?>" target="_blank"><i class="fa fa-question-circle"></i></a>
+			 <?php DUPX_View_Funcs::helpIconLink('step2'); ?>
 		</div>
 
 		<table class="dupx-opts dupx-advopts dupx-advopts-space">
@@ -142,7 +142,9 @@ BASIC PANEL -->
 					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
 					<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
 						<input type="text" name="dbmysqlmode_opts" value="" /><br/>
-						<small>Separate additional <a href="<?php echo DUPX_U::esc_attr($GLOBALS['_HELP_URL_PATH'].'#help-mysql-mode');?>" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
+						<small>Separate additional <?php
+                            DUPX_View_Funcs::helpLink('step2', 'sql modes');
+                            ?> with commas &amp; no spaces.<br/>
 							Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
 					</div>
 				</td>
@@ -171,9 +173,9 @@ BASIC: DB VALIDATION -->
 	<a href="javascript:void(0)"><i class="fa fa-minus-square"></i>Validation</a>
 </div>
 
-<div id="s2-dbtest-area-basic" class="s2-dbtest-area">
+<div id="s2-dbtest-area-basic" class="s2-dbtest-area hdr-sub1-area">
 	<div id="s2-dbrefresh-basic">
-		<a href="javascript:void(0)" onclick="DUPX.testDBConnect()"><i class="fa fa-refresh"></i> Retry Test</a>
+		<a href="javascript:void(0)" onclick="DUPX.testDBConnect()"><i class="fa fa-sync"></i> Retry Test</a>
 	</div>
 	<div style="clear:both"></div>
 	<div id="s2-dbtest-hb-basic" class="s2-dbtest-hb">
@@ -190,13 +192,13 @@ BASIC: DB VALIDATION -->
 <div class="footer-buttons">
 	<?php if ($is_dbtest_mode) : ?>
 		<div style="text-align: center; font-size:11px; margin-top: -20px">
-			<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fa fa-database"></i> Test Database</button>
+			<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fas fa-database fa-sm"></i> Test Database</button>
 			<br/><br/>
 			Notice: This a database only connection view.<br/>  
 			To continue with the install, close this browser window/tab.
 		</div>
 	<?php else : ?>
-		<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fa fa-database"></i> Test Database</button>
+		<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fas fa-database fa-sm"></i> Test Database</button>
 		<button id="s2-next-btn-basic" type="button" onclick="DUPX.confirmDeployment()" class="default-btn disabled" disabled="true"
 				title="The 'Test Database' connectivity requirements must pass to continue with install!">
 			Next <i class="fa fa-caret-right"></i>

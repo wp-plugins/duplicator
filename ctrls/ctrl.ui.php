@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
 if (! defined('DUPLICATOR_VERSION')) exit;
 
@@ -15,7 +16,6 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 	function __construct() 
 	{
 		add_action('wp_ajax_DUP_CTRL_UI_SaveViewState',	      array($this,	  'SaveViewState'));
-		add_action('wp_ajax_DUP_CTRL_UI_GetViewStateList',	  array($this,	  'GetViewStateList'));
 	}
 
 
@@ -39,14 +39,10 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
      */
 	public function SaveViewState($post) 
 	{
+		check_ajax_referer('DUP_CTRL_UI_SaveViewState', 'nonce');
+		DUP_Util::hasCapability('export');
+
 		$post = $this->postParamMerge($post);
-
-		$nonce = sanitize_text_field($post['nonce']);
-		if (!wp_verify_nonce($nonce, 'DUP_CTRL_UI_SaveViewState')) {
-			die('An unathorized security request was made to this page. Please try again!');
-		}
-
-
 		$result = new DUP_CTRL_Result($this);
 	
 		try 
@@ -75,10 +71,8 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
     }
 	
 	/** 
-     * Returns a JSON list of all saved view state items
-	 * 
-	 * @notes: Testing: See Testing Interface
-	 * URL = /wp-admin/admin-ajax.php?action=DUP_CTRL_UI_GetViewStateList
+   * Returns a JSON list of all saved view state items
+	 *
 	 * 
 	 * <code>
 	 *	See SaveViewState()
@@ -103,7 +97,5 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 		{
 			$result->processError($exc);
 		}
-    }
-	
-	
+  }	
 }

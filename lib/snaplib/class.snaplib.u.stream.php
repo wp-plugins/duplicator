@@ -1,12 +1,20 @@
 <?php
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Snap stream utils
+ *
+ * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
+ *
+ * @package SnapLib
+ * @copyright (c) 2017, Snapcreek LLC
+ * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
+ *
  */
-if(!class_exists('SnapLibStreamU')) {
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
 class SnapLibStreamU
 {
+
     public static function streamGetLine($handle, $length, $ending)
     {
         $line = stream_get_line($handle, $length, $ending);
@@ -17,5 +25,4 @@ class SnapLibStreamU
 
         return $line;
     }
-}
 }

@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	$sql = "SELECT * FROM `{$wpdb->prefix}options` WHERE  `option_name` LIKE  '%duplicator_%' AND  `option_name` NOT LIKE '%duplicator_pro%' ORDER BY option_name";
 ?>
 

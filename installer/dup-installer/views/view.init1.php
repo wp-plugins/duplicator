@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
@@ -69,7 +70,7 @@ VIEW: STEP 0 - PASSWORD -->
 			<div id="i1-pass-input">
 				<div id="i1-pass-toggle">
 					<input type="password" name="secure-pass" id="secure-pass" required="required" />
-					<button type="button" id="secure-btn" class="pass-toggle" onclick="DUPX.togglePassword()" title="Show/Hide Password"><i class="fa fa-eye"></i></button>
+					<button type="button" id="secure-btn" class="pass-toggle" onclick="DUPX.togglePassword()" title="Show/Hide Password"><i class="fas fa-eye fa-xs"></i></button>
 				</div><br/>
 			</div>
 			<div style="margin-top: 15px">
@@ -101,10 +102,10 @@ VIEW: STEP 0 - PASSWORD -->
 		var $input = $('#secure-pass');
 		var $lock  = $('#secure-btn');
 		if (($input).attr('type') == 'text') {
-			$lock.html('<i class="fa fa-eye"></i>');
+			$lock.html('<i class="fas fa-eye fa-xs"></i>');
 			$input.attr('type', 'password');
 		} else {
-			$lock.html('<i class="fa fa-eye-slash"></i>');
+			$lock.html('<i class="fas fa-eye-slash fa-xs"></i>');
 			$input.attr('type', 'text');
 		}
 	}

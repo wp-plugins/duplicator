@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
@@ -10,11 +10,37 @@ $admin_base		= basename($GLOBALS['DUPX_AC']->wplogin_url);
 $admin_redirect ="{$url_new_rtrim}/wp-admin/admin.php?page=duplicator-tools&tab=diagnostics";
 
 $safe_mode		= DUPX_U::sanitize_text_field($_POST['exe_safe_mode']);
-$admin_redirect = "{$admin_redirect}&package={$GLOBALS['DUPX_AC']->package_name}&installer_name={$GLOBALS['BOOTLOADER_NAME']}&safe_mode={$safe_mode}" ;
+$admin_redirect = "{$admin_redirect}&in={$GLOBALS['BOOTLOADER_NAME']}&sm={$safe_mode}" ;
 $admin_redirect = urlencode($admin_redirect);
 $admin_url_qry  = (strpos($admin_base, '?') === false) ? '?' : '&';
 $admin_login	= "{$url_new_rtrim}/{$admin_base}{$admin_url_qry}redirect_to={$admin_redirect}";
 
+// Few machines doen's have utf8_decode
+if (!function_exists('utf8_decode')) {
+    function utf8_decode($s) {
+        $s = (string) $s;
+        $len = strlen($s);
+        for ($i = 0, $j = 0; $i < $len; ++$i, ++$j) {
+            switch ($s[$i] & "\xF0") {
+                case "\xC0":
+                case "\xD0":
+                    $c = (\ord($s[$i] & "\x1F") << 6) | \ord($s[++$i] & "\x3F");
+                    $s[$j] = $c < 256 ? \chr($c) : '?';
+                    break;
+                case "\xF0":
+                    ++$i;
+                    // no break
+                case "\xE0":
+                    $s[$j] = '?';
+                    $i += 2;
+                    break;
+                default:
+                    $s[$j] = $s[$i];
+            }
+        }
+        return substr($s, 0, $j);
+    }
+}
 //Sanitize
 $json_result = true;
 $_POST['json'] = isset($_POST['json']) ? DUPX_U::esc_attr($_POST['json']) : 'json data not set';
@@ -43,7 +69,7 @@ if ($json_decode == NULL || $json_decode == FALSE) {
 VIEW: STEP 4- INPUT -->
 <form id='s4-input-form' method="post" class="content-form" style="line-height:20px">
 	<input type="hidden" name="url_new" id="url_new" value="<?php echo DUPX_U::esc_attr($url_new_rtrim); ?>" />
-	<div class="logfile-link"><a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_TIME']); ?>" target="dup-installer">dup-installer-log.txt</a></div>
+	<div class="logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
 
 	<div class="hdr-main">
 		Step <span class="step">4</span> of 4: Test Site
@@ -60,7 +86,7 @@ VIEW: STEP 4- INPUT -->
 	<table class="s4-final-step">
 		<tr style="vertical-align: top">
 			<td style="padding-top:10px">
-				<button type="button" class="s4-final-btns" onclick="DUPX.getAdminLogin()"><i class="fa fa-wordpress"></i> Admin Login</button>
+				<button type="button" class="s4-final-btns" onclick="DUPX.getAdminLogin()"><i class="fab fa-wordpress"></i> Admin Login</button>
 			</td>
 			<td>
 				Login to the WordPress Admin to finalize this install.<br/>
@@ -78,9 +104,9 @@ VIEW: STEP 4- INPUT -->
 		</tr>
 	</table>
 	<i style="color:maroon; font-size:12px">
-		<b><i class="fa fa-exclamation-triangle"></i> IMPORTANT FINAL STEPS:</b> Login into the WordPress Admin to remove all
-		<a href="?view=help&archive=<?php echo DUPX_U::esc_attr($GLOBALS['FW_ENCODED_PACKAGE_PATH']); ?>&bootloader=<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>&basic#help-s4" target="_blank">installation files</a>
-		and keep this site secure.   This install is NOT complete until all installer files are removed.
+		<b><i class="fa fa-exclamation-triangle fa-sm"></i> IMPORTANT FINAL STEPS:</b> Login into the WordPress Admin to remove all <?php 
+        DUPX_View_Funcs::helpLink('step4', 'installation files'); ?> and finalize the install process.
+        This install is NOT complete until all installer files are removed.  Leaving the installer files on this server can lead to security issues.
 	</i>
 	<br/><br/><br/>
 
@@ -246,6 +272,18 @@ LONGMSG;
         ));
     }
 
+    $numFilesNotices = $nManager->countFinalReportNotices('files', DUPX_NOTICE_ITEM::NOTICE, '>=');
+
+    if ($numFilesNotices == 0) {
+        $nManager->addFinalReportNotice(array(
+            'shortMsg' => 'No files extraction errors',
+            'level' => DUPX_NOTICE_ITEM::INFO,
+            'longMsg' => '',
+            'sections' => 'files',
+            'priority' => 5
+        ));
+    }
+
     $nManager->sortFinalReport();
     ?>
 
@@ -256,6 +294,11 @@ LONGMSG;
                 <a href="javascript:void(0)" onclick="$('#s4-install-report').toggle(400)">Review Migration Report</a><br/><br>
                 <table class='s4-report-results' style="width:100%">
                     <tbody>
+                        <tr>
+                            <td>Files notices</td>
+                            <td>(<?php echo $numFilesNotices; ?>)</td>
+                            <td> <?php $nManager->getSectionErrLevelHtml('files'); ?></td>
+                        </tr>
                         <tr>
                             <td>Database Notices</td>
                             <td>(<?php echo $numDbNotices; ?>)</td>
@@ -276,10 +319,14 @@ LONGMSG;
 			</li>
 			<li>
 				Review this sites <a href="<?php echo DUPX_U::esc_attr($url_new_rtrim); ?>" target="_blank">front-end</a> or
-				re-run the installer and <a href="<?php echo DUPX_U::esc_url("{$url_new_rtrim}/installer.php"); ?>">go back to step 1</a>.
+				re-run the installer and <a href="<?php echo DUPX_U::esc_url("{$url_new_rtrim}/installer.php"); ?>">go back to step 1</a>
 			</li>
-			<li>If the .htaccess file was reset some plugin settings might need to be re-saved.</li>
-			<li>For additional help and questions visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a>.</li>
+            <?php
+            $wpconfigNotice = $nManager->getFinalReporNoticeById('wp-config-changes');
+            $htaccessNorice = $nManager->getFinalReporNoticeById('htaccess-changes');
+            ?>
+			<li>Please validate <?php echo $wpconfigNotice->longMsg; ?> and <?php echo $htaccessNorice->longMsg; ?></li>
+			<li>For additional help and questions visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a></li>
 		</ul>
 	</div>
 
@@ -287,7 +334,7 @@ LONGMSG;
 	INSTALL REPORT -->
 	<div id="s4-install-report" style='display:none'>
 		<table class='s4-report-results' style="width:100%">
-			<tr><th colspan="4"><i class="fa fa-database"></i> Database Report</th></tr>
+			<tr><th colspan="4"><i class="fas fa-database fa-sm"></i> Database Report</th></tr>
 			<tr style="font-weight:bold">
 				<td style="width:150px"></td>
 				<td>Tables</td>
@@ -317,6 +364,7 @@ LONGMSG;
 
         <div id="s4-notice-reports" class="report-sections-list">
             <?php
+                $nManager->displayFinalRepostSectionHtml('files' , 'Files notices report');
                 $nManager->displayFinalRepostSectionHtml('database' , 'Database Notices');
                 $nManager->displayFinalRepostSectionHtml('search_replace' , 'Search &amp; Replace Notices');
                 $nManager->displayFinalRepostSectionHtml('general' , 'General Notices');

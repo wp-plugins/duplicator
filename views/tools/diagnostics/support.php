@@ -1,3 +1,6 @@
+<?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+?>
 <style>
     div.dup-support-all {font-size:13px; line-height:20px}
     div.dup-support-txts-links {width:100%;font-size:14px; font-weight:bold; line-height:26px; text-align:center}
@@ -37,7 +40,7 @@
         <!-- HELP LINKS -->
         <div class="dup-support-hlp-area">
             <div class="dup-support-hlp-hdrs">
-                <i class="fa fa-cube fa-2x pull-left"></i>
+                <i class="fas fa-cube fa-2x fa-pull-left"></i>
                 <div><?php esc_html_e('Knowledgebase', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
@@ -59,7 +62,7 @@
         <!-- ONLINE SUPPORT -->
         <div class="dup-support-hlp-area">
             <div class="dup-support-hlp-hdrs">
-                <i class="fa fa-lightbulb-o fa-2x pull-left"></i>
+                <i class="far fa-lightbulb fa-2x fa-pull-left"></i>
                 <div><?php esc_html_e('Online Support', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
@@ -80,7 +83,7 @@
         <div class="dup-support-hlp-area">
 
             <div class="dup-support-hlp-hdrs">
-                <i class="fa fa-bolt fa-2x pull-left"></i>
+                <i class="fa fa-bolt fa-sm fa-2x fa-pull-left"></i>
                 <div><?php esc_html_e('Approved Hosting', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
@@ -97,7 +100,7 @@
         <div class="dup-support-hlp-area">
 
             <div class="dup-support-hlp-hdrs">
-                <i class="fa fa-code-fork fa-2x pull-left"></i>
+                <i class="fas fa-code-branch fa-2x fa-pull-left"></i>
                 <div><?php esc_html_e('Alternatives', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">

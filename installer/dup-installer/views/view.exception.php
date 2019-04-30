@@ -1,8 +1,9 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     $log_link = './'.$GLOBALS["LOG_FILE_NAME"];
     $attr_log_link = DUPX_U::esc_attr($log_link);
 ?>
-<div class="dupx-logfile-link"><a href="<?php echo $attr_log_link;?>" target="dup-installer">installer-log.txt</a></div>
+<div class="dupx-logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
 <div class="hdr-main">
 	Exception error
 </div><br/>
@@ -10,7 +11,7 @@
     <b style="color:#B80000;">INSTALL ERROR!</b>
     <p>
         Message: <b><?php echo DUPX_U::esc_html($exceptionError->getMessage()); ?></b><br>
-        Please see the <a href="<?php echo $attr_log_link; ?>" target="dup-installer">installer-log.txt</a> file for more details.
+        Please see the <?php DUPX_View_Funcs::installerLogLink(); ?> file for more details.
         <?php
         if ($exceptionError instanceof DupxException) {
             if ($exceptionError->haveFaqLink()) {

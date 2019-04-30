@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	//Nonce Check
 	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( sanitize_text_field($_POST['dup_form_opts_nonce_field']), 'dup_form_opts' ) ) {
 		DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1&_wpnonce='.wp_create_nonce('new1-package'));
@@ -181,7 +182,7 @@ TOOL BAR:STEPS -->
 			</div>	
 		</td>
 		<td>
-			<a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php esc_html_e('Packages', 'duplicator'); ?></a> 
+			<a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e('Packages', 'duplicator'); ?></a> 
 			<span> <?php esc_html_e('Create New', 'duplicator'); ?></span>
 		</td>
 	</tr>
@@ -193,7 +194,7 @@ TOOL BAR:STEPS -->
 
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">
-		<div class="dup-progress-title"><i class="fa fa-circle-o-notch fa-spin"></i> <?php esc_html_e('Scanning Site', 'duplicator'); ?></div>
+		<div class="dup-progress-title"><i class="fas fa-circle-notch fa-spin"></i> <?php esc_html_e('Scanning Site', 'duplicator'); ?></div>
 		<div id="dup-progress-bar"></div>
 		<b><?php esc_html_e('Please Wait...', 'duplicator'); ?></b><br/><br/>
 		<i><?php esc_html_e('Keep this window open during the scan process.', 'duplicator'); ?></i><br/>
@@ -217,7 +218,7 @@ TOOL BAR:STEPS -->
 	<div id="dup-msg-success" style="display:none">
 
 		<div style="text-align:center">
-			<div class="dup-hdr-success"><i class="fa fa-check-square-o fa-lg"></i> <?php esc_html_e('Scan Complete', 'duplicator'); ?></div>
+			<div class="dup-hdr-success"><i class="far fa-check-square fa-lg"></i> <?php esc_html_e('Scan Complete', 'duplicator'); ?></div>
 			<div id="dup-msg-success-subtitle">
 				<?php esc_html_e('Process Time:', 'duplicator'); ?> <span id="data-rpt-scantime"></span>
 			</div>
@@ -429,7 +430,7 @@ jQuery(document).ready(function($)
 	{
 		var result;
 		switch (status) {
-			case false :    result = '<div class="scan-warn"><i class="fa fa-exclamation-triangle"></i></div>'; break;
+			case false :    result = '<div class="scan-warn"><i class="fa fa-exclamation-triangle fa-sm"></i></div>'; break;
 			case 'Warn' :   result = '<div class="badge badge-warn"><?php esc_html_e("Notice", 'duplicator') ?></div>'; break;
 			case true :     result = '<div class="scan-good"><i class="fa fa-check"></i></div>'; break;
 			case 'Good' :   result = '<div class="badge badge-pass"><?php esc_html_e("Good", 'duplicator') ?></div>'; break;

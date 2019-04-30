@@ -1,3 +1,6 @@
+<?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+?>
 <script>
 /* DESCRIPTION: Methods and Objects in this file are global and common in 
  * nature use this file to place all shared methods and varibles */	

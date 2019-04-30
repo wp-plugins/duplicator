@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
 if (! defined('DUPLICATOR_VERSION')) exit;
 
@@ -1494,8 +1495,12 @@ class DUP_Package
 	
 	private function writeLogHeader()
 	{
-		$php_max_time   = @ini_get("max_execution_time");
-        $php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
+        $php_max_time   = @ini_get("max_execution_time");
+        if (SnapLibUtil::wp_is_ini_value_changeable('memory_limit'))
+            $php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
+        else
+            $php_max_memory = @ini_get('memory_limit');
+
         $php_max_time   = ($php_max_time == 0) ? "(0) no time limit imposed" : "[{$php_max_time}] not allowed";
         $php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" : DUPLICATOR_PHP_MAX_MEMORY." ({$php_max_memory} default)";
 

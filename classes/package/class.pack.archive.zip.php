@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
 if (! defined('DUPLICATOR_VERSION')) exit;
 
@@ -122,12 +123,21 @@ class DUP_Zip extends DUP_Archive
             $info = '';
             if (self::$networkFlush) {
                 foreach (self::$scanReport->ARC->Files as $file) {
+                    $file_size = filesize($file);
                     $localFileName = $archive->getLocalFilePath($file);
 
-                    if (is_readable($file) && self::$zipArchive->addFile($file, $localFileName)) {
-                        Dup_Log::Info("Adding {$file} to zip");
-                        self::$limitItems++;
-                        self::$countFiles++;
+                    if (is_readable($file)) {
+                        if ($file_size < DUP_Constants::ZIP_STRING_LIMIT && self::$zipArchive->addFromString($localFileName, file_get_contents($file))) {
+                            Dup_Log::Info("Adding {$file} to zip");
+                            self::$limitItems++;
+                            self::$countFiles++;
+                        } elseif (self::$zipArchive->addFile($file, $localFileName)) {
+                            Dup_Log::Info("Adding {$file} to zip");
+                            self::$limitItems++;
+                            self::$countFiles++;
+                        } else {
+                            $info .= "FILE: [{$file}]\n";
+                        }
                     } else {
                         $info .= "FILE: [{$file}]\n";
                     }
@@ -150,10 +160,17 @@ class DUP_Zip extends DUP_Archive
             //Normal
             else {
                 foreach (self::$scanReport->ARC->Files as $file) {
+                    $file_size = filesize($file);
                     $localFileName = $archive->getLocalFilePath($file);
 
-                    if (is_readable($file) && self::$zipArchive->addFile($file, $localFileName)) {
-                        self::$countFiles++;
+                    if (is_readable($file)) {
+                        if ($file_size < DUP_Constants::ZIP_STRING_LIMIT && self::$zipArchive->addFromString($localFileName, file_get_contents($file))) {
+                            self::$countFiles++;
+                        } elseif (self::$zipArchive->addFile($file, $localFileName)) {
+                            self::$countFiles++;
+                        } else {
+                            $info .= "FILE: [{$file}]\n";
+                        }
                     } else {
                         $info .= "FILE: [{$file}]\n";
                     }

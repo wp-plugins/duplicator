@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 require_once(dirname(__FILE__).'/../util/class.duparchive.util.php');
 require_once(dirname(__FILE__).'/class.duparchive.header.u.php');
 

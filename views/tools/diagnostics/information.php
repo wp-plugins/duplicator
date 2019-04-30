@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 wp_enqueue_script('dup-handlebars');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.scancheck.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.io.php');
@@ -96,7 +97,7 @@ if ($section == "info" || $section == '') {
 
 						if (!empty($file_path)) {
                             if (file_exists($file_path)) {
-                                echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - ".esc_html($file_path)."  </div>";
+                                echo "<div class='failed'><i class='fa fa-exclamation-triangle fa-sm'></i> {$txt_found} - ".esc_html($file_path)."  </div>";
                                 $remove_error = true;
                             } else {
                                 echo "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - ".esc_html($file_path)."	</div>";
@@ -114,7 +115,7 @@ if ($section == "info" || $section == '') {
 						if ($valid_ext && !is_dir($package_path)) {
 							$html .= (@unlink($package_path))
 										? "<div class='success'><i class='fa fa-check'></i> ".esc_html($txt_removed)." - ".esc_html($package_path)."</div>"
-										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> ".esc_html($txt_found)." - ".esc_html($package_path)."</div>";
+										: "<div class='failed'><i class='fa fa-exclamation-triangle fa-sm'></i> ".esc_html($txt_found)." - ".esc_html($package_path)."</div>";
 						}
 					}
 					echo $html;

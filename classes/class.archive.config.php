@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * @copyright 2016 Snap Creek LLC
  */

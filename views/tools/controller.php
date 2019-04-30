@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.dialog.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
@@ -7,7 +8,9 @@ global $wpdb;
 global $wp_version;
 DUP_Util::hasCapability('manage_options');
 $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'diagnostics';
-
+if ('d' == $current_tab) {
+	$current_tab = 'diagnostics';
+}
 ?>
 
 <div class="wrap">	

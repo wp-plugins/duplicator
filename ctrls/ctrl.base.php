@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
 if (! defined('DUPLICATOR_VERSION')) exit;
 
@@ -89,7 +90,7 @@ class DUP_CTRL_Result
 
 	function __construct(DUP_CTRL_Base $CTRL_OBJ)
 	{
-		DUP_Util::hasCapability('read');
+		DUP_Util::hasCapability('export');
 		$this->timeStart = $this->microtimeFloat();
 		$this->CTRL		 = $CTRL_OBJ;
 

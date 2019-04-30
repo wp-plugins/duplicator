@@ -1,6 +1,4 @@
 <?php
-defined("ABSPATH") or die("");
-
 /**
  * Lightweight abstraction layer for common simple database routines
  *
@@ -10,6 +8,8 @@ defined("ABSPATH") or die("");
  * @link http://www.php-fig.org/psr/psr-2/
  *
  */
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
 class DUPX_DB
 {
 
@@ -25,25 +25,32 @@ class DUPX_DB
      */
     public static function connect($host, $username, $password, $dbname = '')
     {
-        //sock connections
-        if ('sock' === substr($host, -4)) {
-            $url_parts = parse_url($host);
-            $dbh       = @mysqli_connect('localhost', $username, $password, $dbname, null, $url_parts['path']);
-        } else {
-            if (strpos($host, ':') !== false) {
-                $port = parse_url($host, PHP_URL_PORT);
-                $host = parse_url($host, PHP_URL_HOST);
-            }
+        $dbh = null;
 
-            if (isset($port)) {
-                $dbh = @mysqli_connect($host, $username, $password, $dbname, $port);
+        try {
+            //sock connections
+            if ('sock' === substr($host, -4)) {
+                $url_parts = parse_url($host);
+                $dbh       = @mysqli_connect('localhost', $username, $password, $dbname, null, $url_parts['path']);
             } else {
-                $dbh = @mysqli_connect($host, $username, $password, $dbname);
+                if (strpos($host, ':') !== false) {
+                    $port = parse_url($host, PHP_URL_PORT);
+                    $host = parse_url($host, PHP_URL_HOST);
+                }
+
+                if (isset($port)) {
+                    $dbh = @mysqli_connect($host, $username, $password, $dbname, $port);
+                } else {
+                    $dbh = @mysqli_connect($host, $username, $password, $dbname);
+                }
             }
-            
-        }
-        if (method_exists($dbh, 'options')) {
-            $dbh->options(MYSQLI_OPT_LOCAL_INFILE, false);
+            if (!$dbh) {
+                DUPX_Log::info('DATABASE CONNECTION ERROR: '.mysqli_connect_error().'[ERRNO:'.mysqli_connect_errno().']');
+            } else if (method_exists($dbh, 'options')) {
+                $dbh->options(MYSQLI_OPT_LOCAL_INFILE, false);
+            }
+        } catch (Exception $e) {
+            DUPX_Log::info('DATABASE CONNECTION EXCEPTION ERROR: '.$e->getMessage());
         }
         return $dbh;
     }
@@ -114,14 +121,14 @@ class DUPX_DB
                 $localhost[] = $row["Collation"];
             }
 
-			if (DUPX_U::isTraversable($collations)) {
-				foreach($collations as $key => $val) {
-					$status[$key]['name']  = $val;
-					$status[$key]['found'] = (in_array($val, $localhost)) ? 1 : 0 ;
-				}
-			}
-		}
-		$result->free();
+            if (DUPX_U::isTraversable($collations)) {
+                foreach ($collations as $key => $val) {
+                    $status[$key]['name']  = $val;
+                    $status[$key]['found'] = (in_array($val, $localhost)) ? 1 : 0;
+                }
+            }
+        }
+        $result->free();
 
         return $status;
     }

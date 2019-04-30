@@ -1,11 +1,17 @@
 <?php
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Snap Logger utils
+ *
+ * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
+ *
+ * @package SnapLib
+ * @copyright (c) 2017, Snapcreek LLC
+ * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
+ *
  */
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-if(!class_exists('SnapLibLogger')) {
 class SnapLibLogger
 {
     public static $logFilepath = null;
@@ -36,14 +42,14 @@ class SnapLibLogger
 
     public static function log($s, $flush = false, $callingFunctionOverride = null)
     {
-     //   echo "{$s}<br/>";
+        //   echo "{$s}<br/>";
         $lfp = self::$logFilepath;
-      //  echo "logging $s to {$lfp}<br/>";
+        //  echo "logging $s to {$lfp}<br/>";
         if (self::$logFilepath === null) {
             throw new Exception('Logging not initialized');
         }
-        
-        if(isset($_SERVER['REQUEST_TIME_FLOAT'])){
+
+        if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
             $timepart = $_SERVER['REQUEST_TIME_FLOAT'];
         } else {
             $timepart = $_SERVER['REQUEST_TIME'];
@@ -68,9 +74,8 @@ class SnapLibLogger
             self::$logHandle = fopen(self::$logFilepath, 'a');
         }
     }
-
     private static $profileLogArray = null;
-    private static $prevTS = -1;
+    private static $prevTS          = -1;
 
     public static function initProfiling()
     {
@@ -82,32 +87,23 @@ class SnapLibLogger
         throw new exception('not implemented');
         $currentTime = microtime(true);
 
-        if(array_key_exists($s, self::$profileLogArray))
-        {
+        if (array_key_exists($s, self::$profileLogArray)) {
             $dSame = $currentTime - self::$profileLogArray[$s];
             $dSame = number_format($dSame, 7);
-        }
-        else
-        {
+        } else {
             $dSame = 'N/A';
         }
 
-        if(self::$prevTS != -1)
-        {
+        if (self::$prevTS != -1) {
             $dPrev = $currentTime - self::$prevTS;
             $dPrev = number_format($dPrev, 7);
-        }
-        else
-        {
+        } else {
             $dPrev = 'N/A';
         }
 
-
-
         self::$profileLogArray[$s] = $currentTime;
-        self::$prevTS = $currentTime;
+        self::$prevTS              = $currentTime;
 
         self::log("  {$dPrev}  :  {$dSame}  :  {$currentTime}  :     {$s}");
     }
-}
 }

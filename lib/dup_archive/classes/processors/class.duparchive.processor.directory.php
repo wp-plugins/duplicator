@@ -1,5 +1,5 @@
 <?php
-
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 require_once(dirname(__FILE__).'/../headers/class.duparchive.header.directory.php');
 
 if(!class_exists('DupArchiveDirectoryProcessor')) {

@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 //-- START OF ACTION STEP 2
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
@@ -56,6 +56,8 @@ $ajax2_start	 = DUPX_U::getMicrotime();
 $root_path		 = $GLOBALS['DUPX_ROOT'];
 $JSON			 = array();
 $JSON['pass']	 = 0;
+
+$nManager = DUPX_NOTICE_MANAGER::getInstance();
 
 /**
 JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
@@ -151,19 +153,18 @@ if ($_POST['dbaction'] == 'manual') {
 	$JSON['pass'] = 1;
 } elseif(!isset($_POST['continue_chunking'])) {
     $dbinstall->writeInDB();
-	$rowCountMisMatchTables = $dbinstall->getRowCountMisMatchTables();
-    if (empty($rowCountMisMatchTables)) {
-		$JSON['pass'] = 1;
-	} else {
-		$JSON['error'] = 1;
-		$JSON['error_message'] = 'ERROR: Database Table row count verification was failed for table(s):'
-                                    .implode(', ', $rowCountMisMatchTables).'.';
+    $rowCountMisMatchTables = $dbinstall->getRowCountMisMatchTables();
+    $JSON['pass'] = 1;
+    if (!empty($rowCountMisMatchTables)) {
+		$errMsg = 'ERROR: Database Table row count verification was failed for table(s): '.implode(', ', $rowCountMisMatchTables);
+		DUPX_Log::info($errMsg);		
 	}
 }
 
 $dbinstall->profile_end = DUPX_U::getMicrotime();
 $dbinstall->writeLog();
 $JSON = $dbinstall->getJSON($JSON);
+$nManager->saveNotices();
 
 //FINAL RESULTS
 $ajax1_sum	 = DUPX_U::elapsedTime(DUPX_U::getMicrotime(), $dbinstall->start_microtime);

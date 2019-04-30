@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
  * Class for server type enum setup
@@ -317,8 +317,185 @@ HTACCESS;
 				break;
 		}
 	}
+    
+    /**
+     *
+     * @staticvar string $path
+     * @return string
+     */
+    public static function getWpconfigArkPath()
+    {
+        static $path = null;
+        if (is_null($path)) {
+            $path = $GLOBALS['DUPX_AC']->installSiteOverwriteOn ? $GLOBALS['DUPX_ROOT'].'/dup-wp-config-arc__'.$GLOBALS['DUPX_AC']->package_hash.'.txt' : $GLOBALS['DUPX_ROOT'].'/wp-config.php';
+        }
+        return $path;
+    }
 
+    /**
+     *
+     * @staticvar string $path
+     * @return string
+     */
+    public static function getHtaccessArkPath()
+    {
+        static $path = null;
+        if (is_null($path)) {
+            $path = $GLOBALS['DUPX_ROOT'].'/htaccess.orig';
+        }
+        return $path;
+    }
 
+    /**
+     *
+     * @staticvar string $path
+     * @return string
+     */
+    public static function getOrigWpConfigPath()
+    {
+        static $path = null;
+        if (is_null($path)) {
+            $path = $GLOBALS['DUPX_INIT'].'/dup-orig-wp-config__'.$GLOBALS['DUPX_AC']->package_hash.'.txt';
+        }
+        return $path;
+    }
+
+    /**
+     *
+     * @staticvar string $path
+     * @return string
+     */
+    public static function getOrigHtaccessPath()
+    {
+        static $path = null;
+        if (is_null($path)) {
+            $path = $GLOBALS['DUPX_INIT'].'/dup-orig-wp-config__'.$GLOBALS['DUPX_AC']->package_hash.'.txt';
+        }
+        return $GLOBALS['DUPX_INIT'].'/dup-orig-htaccess__'.$GLOBALS['DUPX_AC']->package_hash.'.txt';
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public static function copyOriginalConfigFiles()
+    {
+        $wpOrigPath = self::getOrigWpConfigPath();
+        $wpArkPath  = self::getWpconfigArkPath();
+
+        if (file_exists($wpOrigPath)) {
+            if (!@unlink($wpOrigPath)) {
+                DUPX_Log::info('Can\'t delete copy of WP Config orig file');
+            }
+        }
+
+        if (!file_exists($wpArkPath)) {
+            DUPX_Log::info('WP Config ark file don\' exists');
+        }
+
+        if (!@copy($wpArkPath, $wpOrigPath)) {
+            $errors = error_get_last();
+            DUPX_Log::info("COPY ERROR: ".$errors['type']."\n".$errors['message']);
+        } else {
+            echo DUPX_Log::info("Original WP Config file copied", 2);
+        }
+
+        $htOrigPath = self::getOrigHtaccessPath();
+        $htArkPath  = self::getHtaccessArkPath();
+
+        if (file_exists($htOrigPath)) {
+            if (!@unlink($htOrigPath)) {
+                DUPX_Log::info('Can\'t delete copy of htaccess orig file');
+            }
+        }
+
+        if (!file_exists($htArkPath)) {
+            DUPX_Log::info('htaccess ark file don\' exists');
+        }
+
+        if (!@copy($htArkPath, $htOrigPath)) {
+            $errors = error_get_last();
+            DUPX_Log::info("COPY ERROR: ".$errors['type']."\n".$errors['message']);
+        } else {
+            echo DUPX_Log::info("htaccess file copied", 2);
+        }
+    }
+
+    public static function finalReportNotices()
+    {
+        DUPX_Log::info('FINAL REPORT NOTICES');
+
+        self::wpConfigFinalReport();
+        self::htaccessFinalReport();
+    }
+
+    private static function htaccessFinalReport()
+    {
+        $nManager = DUPX_NOTICE_MANAGER::getInstance();
+
+        $orig = file_get_contents(self::getOrigHtaccessPath());
+        $new  = file_get_contents($GLOBALS['DUPX_ROOT'].'/.htaccess');
+
+        $lightBoxContent = '<div class="row-cols-2">'.
+            '<div class="col col-1" style="background-color:#fff7f7"><b style="color:maroon"><i class="fas fa-sticky-note"></i> Original .htaccess</b><pre>'.htmlspecialchars($orig).'</pre></div>'.
+            '<div class="col col-2" style="background-color:#f7fdf1"><b style="color:green"><i class="far fa-sticky-note"></i> New .htaccess</b><pre>'.htmlspecialchars($new).'</pre></div>'.
+            '</div>';
+        $longMsg         = DUPX_U_Html::getLigthBox('.htaccess changes', 'HTACCESS COMPARE', $lightBoxContent, false);
+
+        $nManager->addFinalReportNotice(array(
+            'shortMsg' => 'htaccess changes',
+            'level' => DUPX_NOTICE_ITEM::INFO,
+            'longMsg' => $longMsg,
+            'sections' => 'changes',
+            'open' => true,
+            'longMsgHtml' => true
+            ), DUPX_NOTICE_MANAGER::ADD_UNIQUE, 'htaccess-changes');
+    }
+
+    private static function wpConfigFinalReport()
+    {
+        $nManager = DUPX_NOTICE_MANAGER::getInstance();
+
+        if (($orig = file_get_contents(self::getOrigWpConfigPath())) === false) {
+            $orig = 'Can read origin wp-config.php file';
+        } else {
+            $orig = self::obscureWpConfig($orig);
+        }
+
+        if (($new = file_get_contents($GLOBALS['DUPX_ROOT'].'/wp-config.php')) === false) {
+            $new = 'Can read wp-config.php file';
+        } else {
+            $new = self::obscureWpConfig($new);
+        }
+
+        $lightBoxContent = '<div class="row-cols-2">'.
+            '<div class="col col-1" style="background-color:#fff7f7"><b style="color:maroon"><i class="fas fa-sticky-note"></i> Original wp-config.php</b><pre class="s4-diff-viewer">'.htmlspecialchars($orig).'</pre></div>'.
+            '<div class="col col-2" style="background-color:#f7fdf1"><b style="color:green"><i class="far fa-sticky-note"></i> New wp-config.php</b><pre class="s4-diff-viewer">'.htmlspecialchars($new).'</pre></div>'.
+            '</div>';
+        $longMsg         = DUPX_U_Html::getLigthBox('wp-config.php changes', 'WP-CONFIG.PHP COMPARE', $lightBoxContent, false);
+
+        $nManager->addFinalReportNotice(array(
+            'shortMsg' => 'wp-config.php changes',
+            'level' => DUPX_NOTICE_ITEM::INFO,
+            'longMsg' => $longMsg,
+            'sections' => 'changes',
+            'open' => true,
+            'longMsgHtml' => true
+            ), DUPX_NOTICE_MANAGER::ADD_UNIQUE, 'wp-config-changes');
+    }
+
+    private static function obscureWpConfig($src)
+    {
+        $transformer = new WPConfigTransformerSrc($src);
+        $obsKeys     = array('DB_PASSWORD', 'AUTH_KEY', 'SECURE_AUTH_KEY', 'LOGGED_IN_KEY', 'NONCE_KEY', 'AUTH_SALT', 'SECURE_AUTH_SALT', 'LOGGED_IN_SALT', 'NONCE_SALT');
+        foreach ($obsKeys as $key) {
+            if ($transformer->exists('constant', $key)) {
+                $transformer->update('constant', $key, '**OBSCURED**');
+            }
+        }
+
+        return $transformer->getSrc();
+    }
 }
 
 DUPX_ServerConfig::init();

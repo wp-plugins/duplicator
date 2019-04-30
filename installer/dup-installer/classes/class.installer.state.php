@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 abstract class DUPX_InstallerMode
 {
@@ -55,7 +55,7 @@ class DUPX_InstallerState
 				$outerWPSettingsPath	= dirname($GLOBALS['DUPX_ROOT'])."/wp-settings.php";
 
 				if ((file_exists($wpConfigPath) || (@file_exists($outerWPConfigPath) && !@file_exists($outerWPSettingsPath))) && @file_exists("{$GLOBALS['DUPX_ROOT']}/wp-includes") && @file_exists("{$GLOBALS['DUPX_ROOT']}/wp-admin")) {
-					require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.wp.config.tranformer.php');
+					require_once($GLOBALS['DUPX_INIT'].'/lib/config/class.wp.config.tranformer.php');
 					$config_transformer = file_exists($wpConfigPath)
 											? new WPConfigTransformer($wpConfigPath)
 											: new WPConfigTransformer($outerWPConfigPath);

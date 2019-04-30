@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
 /* @var $global DUP_Global_Entity */
 if (!defined('DUPLICATOR_VERSION')) exit;
@@ -276,7 +277,13 @@ class DUP_Installer
 
 			if (file_exists($wpconfig_filepath)) {
 				$conf_ark_file_path = $this->getWPConfArkFilePath();
-				DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, $conf_ark_file_path);
+				$temp_conf_ark_file_path = $this->getTempWPConfArkFilePath();
+				if (copy($wpconfig_filepath, $temp_conf_ark_file_path)) {
+                    $this->cleanTempWPConfArkFilePath($temp_conf_ark_file_path);					
+					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $temp_conf_ark_file_path, $conf_ark_file_path);
+                } else {
+                    DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, $conf_ark_file_path);
+				}
 				$this->numFilesAdded++;
 			}
 
@@ -331,6 +338,12 @@ class DUP_Installer
 		$fileops_counts		 = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $fileops_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
 		$this->numFilesAdded += $fileops_counts->numFilesAdded;
 		$this->numDirsAdded	 += $fileops_counts->numDirsAdded;
+
+		// Include config
+		$config_directory	 = DUPLICATOR_PLUGIN_PATH.'lib/config';
+		$config_counts		 = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $config_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+		$this->numFilesAdded += $config_counts->numFilesAdded;
+		$this->numDirsAdded	 += $fileops_counts->numDirsAdded;
 	}
 
 	private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath, $wpconfig_filepath)
@@ -354,7 +367,13 @@ class DUP_Installer
 
 			if (!empty($wpconfig_filepath)) {
 				$conf_ark_file_path = $this->getWPConfArkFilePath();
-				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, $conf_ark_file_path, true);
+				$temp_conf_ark_file_path = $this->getTempWPConfArkFilePath();
+                if (copy($wpconfig_filepath, $temp_conf_ark_file_path)) {
+                    $this->cleanTempWPConfArkFilePath($temp_conf_ark_file_path);					
+					DUP_Zip_U::addFileToZipArchive($zipArchive, $temp_conf_ark_file_path, $conf_ark_file_path, true);
+                } else {
+                    DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, $conf_ark_file_path, true);
+                }
 			}
 
 			$embedded_scan_file_path = $this->getEmbeddedScanFilePath();
@@ -400,11 +419,15 @@ class DUP_Installer
 				if (DUP_Zip_U::addFileToZipArchive($zip_archive, $archive_config_filepath, $archive_config_local_name, true)) {
 
 					$snaplib_directory = DUPLICATOR_PLUGIN_PATH.'lib/snaplib';
+					$config_directory = DUPLICATOR_PLUGIN_PATH . 'lib/config';
 
-					if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $snaplib_directory, true, 'dup-installer/lib/', $is_compressed)) {
+					if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $snaplib_directory, true, 'dup-installer/lib/', $is_compressed)
+						&& 
+						DUP_Zip_U::addDirWithZipArchive($zip_archive, $config_directory, true, 'dup-installer/lib/', $is_compressed)
+					) {
 						$success = true;
 					} else {
-						DUP_Log::error("Error adding directory {$snaplib_directory} to zipArchive", '', Dup_ErrorBehavior::LogOnly);
+						DUP_Log::error("Error adding directory {$snaplib_directory} and {$config_directory} to zipArchive", '', Dup_ErrorBehavior::LogOnly);
 					}
 				} else {
 					DUP_Log::error("Error adding $archive_config_filepath to zipArchive", '', Dup_ErrorBehavior::LogOnly);
@@ -432,6 +455,30 @@ class DUP_Installer
 		}
 		return $conf_ark_file_path;
 	}
+
+	/**
+     * Get temp wp-config.php file path along with name in temp folder
+     */
+    private function getTempWPConfArkFilePath() {
+        $temp_conf_ark_file_path = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP).'/'.$this->Package->NameHash.'_wp-config.txt';
+        return $temp_conf_ark_file_path;
+    }
+
+    /**
+     * Clear out sensitive database connection information
+     *
+     * @param $temp_conf_ark_file_path Temp config file path
+     */
+    private static function cleanTempWPConfArkFilePath($temp_conf_ark_file_path) {
+        require_once(DUPLICATOR_PLUGIN_PATH . 'lib/config/class.wp.config.tranformer.php');
+        $transformer = new WPConfigTransformer($temp_conf_ark_file_path);
+        $constants = array('DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST');
+        foreach ($constants as $constant) {
+            if ($transformer->exists('constant', $constant)) {
+                $transformer->update('constant', $constant, '');
+            }
+        }
+    }
 
 	/**
 	 * Get scan.json file path along with name in archive file

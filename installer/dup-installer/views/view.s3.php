@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
@@ -65,7 +65,7 @@ VIEW: STEP 3- INPUT -->
 <form id='s3-input-form' method="post" class="content-form">
 
 	<div class="logfile-link">
-		<a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_TIME']); ?>" target="dup-installer">dup-installer-log.txt</a>
+		<?php DUPX_View_Funcs::installerLogLink(); ?>
 	</div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
@@ -129,9 +129,9 @@ VIEW: STEP 3- INPUT -->
         <a href="javascript:void(0)"><i class="fa fa-plus-square"></i>Replace</a>
     </div>
 
-    <div id='s3-custom-replace' style="display:none;">
+    <div id="s3-custom-replace" class="hdr-sub1-area" style="display:none;">
         <div class="help-target">
-            <a href="<?php echo DUPX_U::esc_url($GLOBALS['_HELP_URL_PATH'].'#help-s3');?>" target="help"><i class="fa fa-question-circle"></i></a>
+            <?php DUPX_View_Funcs::helpIconLink('step3'); ?>
         </div><br/>
 		Add additional search and replace URLs to replace additional data. This option is available only in
 		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=free_inst_replaceopts">Duplicator Pro</a>
@@ -144,7 +144,7 @@ VIEW: STEP 3- INPUT -->
 	<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s3-adv-opts">
 		<a href="javascript:void(0)"><i class="fa fa-plus-square"></i>Options</a>
 	</div>
-	<div id="s3-adv-opts" style="display:none;">
+	<div id="s3-adv-opts" class="hdr-sub1-area" style="display:none;">
 
 	<!-- START TABS -->
 	<div id="tabs">
@@ -158,7 +158,7 @@ VIEW: STEP 3- INPUT -->
 		ADMIN TAB -->
 		<div id="tabs-admin-account">
 			<div class="help-target">
-				<a href="<?php echo DUPX_U::esc_attr($GLOBALS['_HELP_URL_PATH'].'#help-s3');?>" target="help"><i class="fa fa-question-circle"></i></a>
+				<?php DUPX_View_Funcs::helpIconLink('step3'); ?>
 			</div><br/>
 
 			<div class="hdr-sub3">New Admin Account</div>
@@ -199,7 +199,7 @@ VIEW: STEP 3- INPUT -->
 		SCAN TAB -->
 		<div id="tabs-scan-options">
 			<div class="help-target">
-				<a href="<?php echo DUPX_U::esc_attr($GLOBALS['_HELP_URL_PATH'].'#help-s3');?>" target="help"><i class="fa fa-question-circle"></i></a>
+				<?php DUPX_View_Funcs::helpIconLink('step3'); ?>
 			</div><br/>
 			<div class="hdr-sub3">Database Scan Options</div>
 			<table  class="s3-opts">
@@ -281,11 +281,11 @@ VIEW: STEP 3- INPUT -->
 		WP-CONFIG TAB -->
 		<div id="tabs-wp-config-file">
 			<div class="help-target">
-				<a href="<?php echo DUPX_U::esc_attr($GLOBALS['_HELP_URL_PATH'].'#help-s3');?>" target="help"><i class="fa fa-question-circle"></i></a>
+				<?php DUPX_View_Funcs::helpIconLink('step3'); ?>
 			</div><br/>
 			<div class="hdr-sub3">WP-Config File</div>
 			<?php
-            require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.wp.config.tranformer.php');
+            require_once($GLOBALS['DUPX_INIT'].'/lib/config/class.wp.config.tranformer.php');
 			$root_path		= $GLOBALS['DUPX_ROOT'];
 			$root_path = $GLOBALS['DUPX_ROOT'];
 			$wpconfig_ark_path	= ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) ? "{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt" : "{$root_path}/wp-config.php";
@@ -365,7 +365,7 @@ VIEW: STEP 3- INPUT -->
 VIEW: STEP 3 - AJAX RESULT  -->
 <form id='s3-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="logfile-link"><a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_TIME']); ?>" target="dup-installer">dup-installer-log.txt</a></div>
+	<div class="logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
@@ -388,7 +388,7 @@ VIEW: STEP 3 - AJAX RESULT  -->
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
 		<div style="width:500px; margin:auto">
-			<div style="font-size:1.7em; margin-bottom:20px"><i class="fa fa-circle-o-notch fa-spin"></i> Processing Data Replacement</div>
+			<div style="font-size:1.7em; margin-bottom:20px"><i class="fas fa-circle-notch fa-spin"></i> Processing Data Replacement</div>
 			<div id="progress-bar"></div>
 			<h3> Please Wait...</h3><br/><br/>
 			<i>Keep this window open during the replacement process.</i><br/>
@@ -400,7 +400,7 @@ VIEW: STEP 3 - AJAX RESULT  -->
 	<div id="ajaxerr-area" style="display:none">
 		<p>Please try again an issue has occurred.</p>
 		<div style="padding: 0px 10px 10px 10px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the update setup step.  Please see the dup-installer-log.txt file for more details.</div>
+			<div id="ajaxerr-data">An unknown issue has occurred with the update setup step.  Please see the <?php DUPX_View_Funcs::installerLogLink(); ?> file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" onclick='DUPX.hideErrorResult2()' value="&laquo; Try Again"  class="default-btn" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com' target='_blank'>snapcreek.com</a></i>

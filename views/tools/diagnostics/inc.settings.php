@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	$dbvar_maxtime  = DUP_DB::getVariable('wait_timeout');
 	$dbvar_maxpacks = DUP_DB::getVariable('max_allowed_packet');
 	$dbvar_maxtime  = is_null($dbvar_maxtime)  ? __("unknow", 'duplicator') : $dbvar_maxtime;
@@ -18,7 +19,7 @@
 SERVER SETTINGS -->
 <div class="dup-box">
 <div class="dup-box-title">
-	<i class="fa fa-tachometer"></i>
+	<i class="fas fa-tachometer-alt"></i>
 	<?php esc_html_e("Server Settings", 'duplicator') ?>
 	<div class="dup-box-arrow"></div>
 </div>

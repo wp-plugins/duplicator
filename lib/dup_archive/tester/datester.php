@@ -1,6 +1,7 @@
 <?php
-
-ini_set('display_errors', 1);
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+if (SnapLibUtil::wp_is_ini_value_changeable('display_errors'))
+    ini_set('display_errors', 1);
 error_reporting(E_ALL);
 error_reporting(E_ALL);
 set_error_handler("terminate_missing_variables");

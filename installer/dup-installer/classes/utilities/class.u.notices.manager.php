@@ -8,6 +8,7 @@
  * @package SC\DUPX\U
  *
  */
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
  * Notice manager
@@ -18,6 +19,7 @@ final class DUPX_NOTICE_MANAGER
     const ADD_NORMAL               = 0; // add notice in list
     const ADD_UNIQUE               = 1; // add if unique id don't exists
     const ADD_UNIQUE_UPDATE        = 2; // add or update notice unique id
+    const ADD_UNIQUE_APPEND        = 3; // append long msg
     const DEFAULT_UNIQUE_ID_PREFIX = '__auto_unique_id__';
 
     private static $uniqueCountId = 0;
@@ -65,6 +67,9 @@ final class DUPX_NOTICE_MANAGER
         $this->loadNotices();
     }
 
+    /**
+     * save notices from json file
+     */
     public function saveNotices()
     {
         $notices = array(
@@ -87,6 +92,9 @@ final class DUPX_NOTICE_MANAGER
         file_put_contents($this->persistanceFile, $json);
     }
 
+    /**
+     * load notice from json file
+     */
     private function loadNotices()
     {
         if (file_exists($this->persistanceFile)) {
@@ -111,7 +119,7 @@ final class DUPX_NOTICE_MANAGER
     }
 
     /**
-     *
+     * remove all notices and save reset file
      */
     public function resetNotices()
     {
@@ -119,6 +127,61 @@ final class DUPX_NOTICE_MANAGER
         $this->finalReporNotices = array();
         self::$uniqueCountId     = 0;
         $this->saveNotices();
+    }
+
+    /**
+     * return next step notice by id
+     *
+     * @param string $id
+     * @return DUPX_NOTICE_ITEM
+     */
+    public function getNextStepNoticeById($id)
+    {
+        if (isset($this->nextStepNotices[$id])) {
+            return $this->nextStepNotices[$id];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * return last report notice by id
+     *
+     * @param string $id
+     * @return DUPX_NOTICE_ITEM
+     */
+    public function getFinalReporNoticeById($id)
+    {
+        if (isset($this->finalReporNotices[$id])) {
+            return $this->finalReporNotices[$id];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param array|DUPX_NOTICE_ITEM $item // if string add new notice obj with item message and level param
+     *                                            // if array must be [
+     *                                                                   'shortMsg' => text,
+     *                                                                   'level' => level,
+     *                                                                   'longMsg' => html text,
+     *                                                                   'sections' => sections list,
+     *                                                                   'faqLink' => [
+     *                                                                                     'url' => external link
+     *                                                                                     'label' => link text if empty get external url link
+     *                                                                               ]
+     *                                                                 ]
+     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE
+     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
+     *
+     * @return string   // notice insert id
+     *
+     * @throws Exception
+     */
+    public function addBothNextAndFinalReportNotice($item, $mode = self::ADD_NORMAL, $uniqueId = null) {
+        $this->addNextStepNotice($item, $mode, $uniqueId);
+        $this->addFinalReportNotice($item, $mode, $uniqueId);
     }
 
     /**
@@ -252,11 +315,30 @@ final class DUPX_NOTICE_MANAGER
                 }
             // no break -> continue on unique update
             case self::ADD_UNIQUE_UPDATE:
+                if (empty($uniqueId)) {
+                    throw new Exception('uniqueId can\'t be empty');
+                }
                 $insertId = $uniqueId;
+                break;
+            case self::ADD_UNIQUE_APPEND:
+                if (empty($uniqueId)) {
+                    throw new Exception('uniqueId can\'t be empty');
+                }
+                $insertId = $uniqueId;
+                // if item id exist append long msg
+                if (isset($list[$uniqueId])) {
+                    $tempObj                  = self::getObjFromParams($item);
+                    $list[$uniqueId]->longMsg .= $tempObj->longMsg;
+                    $item                     = $list[$uniqueId];
+                }
                 break;
             case self::ADD_NORMAL:
             default:
-                $insertId = self::getNewAutoUniqueId();
+                if (empty($uniqueId)) {
+                    $insertId = self::getNewAutoUniqueId();
+                } else {
+                    $insertId = $uniqueId;
+                }
         }
 
         $list[$insertId] = self::getObjFromParams($item);
@@ -335,13 +417,18 @@ final class DUPX_NOTICE_MANAGER
     }
 
     /**
-     *
+     * sort final report notice from priority and notice level
      */
     public function sortFinalReport()
     {
-        uasort($this->finalReporNotices, array('DUPX_NOTICE_ITEM', 'sortNoticeForPriorityAndLevel'));
+        uasort($this->finalReporNotices, 'DUPX_NOTICE_ITEM::sortNoticeForPriorityAndLevel');
     }
 
+    /**
+     * display final final report notice section
+     *
+     * @param string $section
+     */
     public function displayFinalReport($section)
     {
         foreach ($this->finalReporNotices as $id => $notice) {
@@ -349,10 +436,6 @@ final class DUPX_NOTICE_MANAGER
                 self::finalReportNotice($id, $notice);
             }
         }
-        /*
-          echo '<pre>';
-          print_r($this->finalReporNotices);
-          echo '</pre>'; */
     }
 
     /**
@@ -421,6 +504,12 @@ final class DUPX_NOTICE_MANAGER
         return self::getErrorLevelHtml($this->getSectionErrLevel($section), $echo);
     }
 
+    /**
+     * Displa next step notice message
+     *
+     * @param bool $deleteListAfterDisaply
+     * @return void
+     */
     public function displayStepMessages($deleteListAfterDisaply = true)
     {
         if (empty($this->nextStepNotices)) {
@@ -465,7 +554,14 @@ final class DUPX_NOTICE_MANAGER
                     <?php
                 }
                 if (!empty($notice->longMsg)) {
-                    echo '<br><br>'.($notice->longMsgHtml ? $notice->longMsg : htmlentities($notice->longMsg));
+					//Breaks here are messing up the formatting for Serialization notices
+                    //echo '<br><br>';
+                    if ($notice->longMsgHtml) {
+                        echo $notice->longMsg;
+                    } else {
+						//Do NOT use <pre> tags here or else the formatting is messed up
+                        echo htmlentities($notice->longMsg);
+                    }
                 }
                 ?>
             </p>
@@ -507,7 +603,12 @@ final class DUPX_NOTICE_MANAGER
                         echo '<br><br>';
                     }
                     if (!empty($notice->longMsg)) {
-                        echo $notice->longMsgHtml ? $notice->longMsg : htmlentities($notice->longMsg);
+                        if ($notice->longMsgHtml) {
+                            echo $notice->longMsg;
+                        } else {
+							//Do NOT use <pre> tags here or else the formatting is messed up
+                            echo htmlentities($notice->longMsg);
+                        }
                     }
                     ?>
                 </div>
@@ -518,6 +619,12 @@ final class DUPX_NOTICE_MANAGER
         <?php
     }
 
+    /**
+     * get html class from level
+     *
+     * @param int $level
+     * @return string
+     */
     private static function getClassFromLevel($level)
     {
         switch ($level) {
@@ -536,6 +643,13 @@ final class DUPX_NOTICE_MANAGER
         }
     }
 
+    /**
+     * get level label from level
+     *
+     * @param int $level
+     * @param bool $echo
+     * @return type
+     */
     public static function getErrorLevelHtml($level, $echo = true)
     {
         switch ($level) {
@@ -572,6 +686,13 @@ final class DUPX_NOTICE_MANAGER
         }
     }
 
+    /**
+     * get next step message prefix
+     *
+     * @param int $level
+     * @param bool $echo
+     * @return string
+     */
     public static function getNextStepLevelPrefixMessage($level, $echo = true)
     {
         switch ($level) {
@@ -604,6 +725,11 @@ final class DUPX_NOTICE_MANAGER
         }
     }
 
+    /**
+     * get unique id
+     *
+     * @return string
+     */
     private static function getNewAutoUniqueId()
     {
         self::$uniqueCountId ++;
@@ -627,6 +753,9 @@ final class DUPX_NOTICE_MANAGER
         $manager->saveNotices();
     }
 
+    /**
+     * test function
+     */
     public static function testNextStepFullMessageData()
     {
         $manager = self::getInstance();
@@ -654,6 +783,9 @@ LONGMSG;
         $manager->saveNotices();
     }
 
+    /**
+     * test function
+     */
     public static function testFinalReporMessaesLevels()
     {
         $section = 'general';
@@ -668,6 +800,9 @@ LONGMSG;
         $manager->saveNotices();
     }
 
+    /**
+     * test function
+     */
     public static function testFinalReportFullMessages()
     {
         $section = 'general';

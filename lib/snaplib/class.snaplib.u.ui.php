@@ -1,13 +1,19 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
+ *
+ * @package SnapLib
+ * @copyright (c) 2017, Snapcreek LLC
+ * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
+ *
  */
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-if(!class_exists('SnapLibUIU')) {
 class SnapLibUIU
 {
+
     public static function echoBoolean($val)
     {
         echo $val ? 'true' : 'false';
@@ -37,6 +43,4 @@ class SnapLibUIU
     {
         return ($val ? 'selected' : '');
     }
-}
-
 }

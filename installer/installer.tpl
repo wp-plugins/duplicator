@@ -1,5 +1,9 @@
 <?php
 
+if ( !defined('DUPXABSPATH') ) {
+    define('DUPXABSPATH', dirname(__FILE__));
+}
+
 if (!defined('KB_IN_BYTES')) { define('KB_IN_BYTES', 1024); }
 if (!defined('MB_IN_BYTES')) { define('MB_IN_BYTES', 1024 * KB_IN_BYTES); }
 if (!defined('GB_IN_BYTES')) { define('GB_IN_BYTES', 1024 * MB_IN_BYTES); }
@@ -7,11 +11,52 @@ if (!defined('DUPLICATOR_PHP_MAX_MEMORY')) { define('DUPLICATOR_PHP_MAX_MEMORY',
 
 date_default_timezone_set('UTC'); // Some machines don’t have this set so just do it here.
 @ignore_user_abort(true);
+
+if (!function_exists('wp_is_ini_value_changeable')) {
+    /**
+    * Determines whether a PHP ini value is changeable at runtime.
+    *
+    * @staticvar array $ini_all
+    *
+    * @link https://secure.php.net/manual/en/function.ini-get-all.php
+    *
+    * @param string $setting The name of the ini setting to check.
+    * @return bool True if the value is changeable at runtime. False otherwise.
+    */
+    function wp_is_ini_value_changeable( $setting ) {
+        static $ini_all;
+
+        if ( ! isset( $ini_all ) ) {
+            $ini_all = false;
+            // Sometimes `ini_get_all()` is disabled via the `disable_functions` option for "security purposes".
+            if ( function_exists( 'ini_get_all' ) ) {
+                $ini_all = ini_get_all();
+            }
+        }
+
+        // Bit operator to workaround https://bugs.php.net/bug.php?id=44936 which changes access level to 63 in PHP 5.2.6 - 5.2.17.
+        if ( isset( $ini_all[ $setting ]['access'] ) && ( INI_ALL === ( $ini_all[ $setting ]['access'] & 7 ) || INI_USER === ( $ini_all[ $setting ]['access'] & 7 ) ) ) {
+            return true;
+        }
+
+        // If we were unable to retrieve the details, fail gracefully to assume it's changeable.
+        if ( ! is_array( $ini_all ) ) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
 @set_time_limit(3600);
-@ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-@ini_set('max_input_time', '-1');
-@ini_set('pcre.backtrack_limit', PHP_INT_MAX);
-@ini_set('default_socket_timeout', 3600);
+if (wp_is_ini_value_changeable('memory_limit'))
+    @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
+if (wp_is_ini_value_changeable('max_input_time'))
+    @ini_set('max_input_time', '-1');
+if (wp_is_ini_value_changeable('pcre.backtrack_limit'))
+    @ini_set('pcre.backtrack_limit', PHP_INT_MAX);
+if (wp_is_ini_value_changeable('default_socket_timeout'))
+    @ini_set('default_socket_timeout', 3600);
 
 // phpseclib 1.0.14 for the Rijndael Symmetric key encryption
 /**
@@ -2824,7 +2869,8 @@ if (!function_exists('crypt_random_string')) {
             }
 
             session_id(1);
-            ini_set('session.use_cookies', 0);
+            if (wp_is_ini_value_changeable('session.use_cookies'))
+                ini_set('session.use_cookies', 0);
             session_cache_limiter('');
             session_start();
 
@@ -2848,7 +2894,8 @@ if (!function_exists('crypt_random_string')) {
             if ($old_session_id != '') {
                 session_id($old_session_id);
                 session_start();
-                ini_set('session.use_cookies', $old_use_cookies);
+                if (wp_is_ini_value_changeable('session.use_cookies'))
+                    ini_set('session.use_cookies', $old_use_cookies);
                 session_cache_limiter($old_session_cache_limiter);
             } else {
                 if ($_OLD_SESSION !== false) {
@@ -4067,26 +4114,51 @@ class Crypt_Rijndael extends Crypt_Base
     }
 }
 
-
 class DUPX_CSRF {
 	
 	/** Session var name
 	 * @var string
 	 */
 	public static $prefix = '_DUPX_CSRF';
+	private static $cipher;
+	private static $CSRFVars;
+
+	public static function setKeyVal($key, $val) {
+		$CSRFVars = self::getCSRFVars();
+		$CSRFVars[$key] = $val;
+		self::saveCSRFVars($CSRFVars);
+		self::$CSRFVars = false;
+	}
+
+	public static function getVal($key) {
+		$CSRFVars = self::getCSRFVars();
+		if (isset($CSRFVars[$key])) {
+			return $CSRFVars[$key];
+		} else {
+			return false;
+		}
+
+	}
 	
 	/** Generate DUPX_CSRF value for form
 	 * @param	string	$form	- Form name as session key
 	 * @return	string	- token
 	 */
 	public static function generate($form = NULL) {
-		if (!empty($_COOKIE[DUPX_CSRF::$prefix . '_' . $form])) {
-			$token = $_COOKIE[DUPX_CSRF::$prefix . '_' . $form];
+		$keyName = self::getKeyName($form);
+
+		$existingToken = self::getVal($keyName);
+		if (false !== $existingToken) {
+			$token = $existingToken;
 		} else {
-            $token = DUPX_CSRF::token() . DUPX_CSRF::fingerprint();
+			$token = DUPX_CSRF::token() . DUPX_CSRF::fingerprint();
+			if (self::isCrypt()) {
+				// $keyName = self::encrypt($keyName);
+				$token = self::encrypt($token);
+			}
 		}
-		$cookieName = DUPX_CSRF::$prefix . '_' . $form;
-        $ret = DUPX_CSRF::setCookie($cookieName, $token);
+		
+		self::setKeyVal($keyName, $token);
 		return $token;
 	}
 	
@@ -4096,10 +4168,13 @@ class DUPX_CSRF {
 	 * @return	boolean
 	 */
 	public static function check($token, $form = NULL) {
-		if (!self::isCookieEnabled()) {
-			return true;
-		}
-		if (isset($_COOKIE[DUPX_CSRF::$prefix . '_' . $form]) && $_COOKIE[DUPX_CSRF::$prefix . '_' . $form] == $token) { // token OK
+		$keyName = self::getKeyName($form);
+		// if (self::isCrypt()) {
+			// $keyName = self::decrypt($keyName);
+			// $token = self::decrypt($token);
+		// }
+		$CSRFVars = self::getCSRFVars();
+		if (isset($CSRFVars[$keyName]) && $CSRFVars[$keyName] == $token) { // token OK
 			return true;
 			// return (substr($token, -32) == DUPX_CSRF::fingerprint()); // fingerprint OK?
 		}
@@ -4124,33 +4199,87 @@ class DUPX_CSRF {
 		return strtoupper(md5(implode('|', array($_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']))));
 	}
 
-	public static function setCookie($cookieName, $cookieVal) {
-		$_COOKIE[$cookieName] = $cookieVal;
-		$domainPath = self::getDomainPath();
-		return setcookie($cookieName, $cookieVal, time() + 10800, '/');
+	private static function getKeyName($form) {
+		return DUPX_CSRF::$prefix . '_' . $form;
 	}
 
-	public static function getDomainPath() {
-		return '/';
-		// return str_replace('main.installer.php', '', $_SERVER['SCRIPT_NAME']);
-	}
-	
-	/**
-	* @return bool
-	*/
-	protected static function isCookieEnabled() {
-		return (count($_COOKIE) > 0);
+	private static function isCrypt() {
+		if (class_exists('DUPX_Bootstrap')) {
+			return DUPX_Bootstrap::CSRF_CRYPT;
+		} else {
+			return $GLOBALS['DUPX_AC']->csrf_crypt;
+		}
 	}
 
-	public static function resetAllTokens() {
-		foreach ($_COOKIE as $cookieName => $cookieVal) {
-			$step1Key = DUPX_CSRF::$prefix . '_step1';
-			if ($step1Key != $cookieName && (0 === strpos($cookieName, DUPX_CSRF::$prefix) || 'archive' == $cookieName || 'bootloader' == $cookieName)) {
-				// $domainPath = self::getDomainPath();
-				setcookie($cookieName, '', time() - 86400, '/');
-				unset($_COOKIE[$cookieName]);
+	private static function getCryptKey() {
+		return 'snapcreek-'.self::getPackageHash();
+	}
+
+	private static function getPackageHash() {
+		if (class_exists('DUPX_Bootstrap')) {
+			return DUPX_Bootstrap::PACKAGE_HASH;
+		} else {
+			return $GLOBALS['DUPX_AC']->package_hash;
+		}
+	}
+
+	private static function getFilePath() {
+		if (class_exists('DUPX_Bootstrap')) {
+			$dupInstallerfolderPath = dirname(__FILE__).'/dup-installer/';
+		} else {
+			$dupInstallerfolderPath = $GLOBALS['DUPX_INIT'].'/';
+		}
+		$packageHash = self::getPackageHash();
+		$fileName = 'dup-installer-csrf__'.$packageHash.'.txt';
+		$filePath = $dupInstallerfolderPath.$fileName;
+		return $filePath;
+	}
+
+	private static function getCSRFVars() {
+		if (!isset(self::$CSRFVars) || false === self::$CSRFVars) {
+			$filePath = self::getFilePath();
+			if (file_exists($filePath)) {
+				$contents = file_get_contents($filePath);
+				if (empty($contents)) {
+					self::$CSRFVars = array();
+				} else {
+					$CSRFobjs = json_decode($contents);
+					foreach ($CSRFobjs as $key => $value) {
+						self::$CSRFVars[$key] = $value;
+					}
+				}
+			} else {
+				self::$CSRFVars = array();
 			}
 		}
+		return self::$CSRFVars;
+	}
+
+	private static function saveCSRFVars($CSRFVars) {
+		$contents = json_encode($CSRFVars);
+		$filePath = self::getFilePath();
+		file_put_contents($filePath, $contents);
+	}
+
+	private static function getCipher() {
+		if (!isset(self::$cipher)) {
+			self::$cipher = new Crypt_Rijndael();
+			$cryptKey = self::getCryptKey();
+			self::$cipher->setKey($cryptKey);
+		}
+		return self::$cipher;
+	}
+
+	private static function encrypt($val) {
+		$cipher = self::getCipher();
+		$val = $cipher->encrypt($val);
+		return base64_encode($val);
+	}
+
+	private static function decrypt($val) {
+		$cipher = self::getCipher();
+		$val = base64_decode($val);
+		return $cipher->decrypt($val);
 	}
 }
 
@@ -5171,15 +5300,14 @@ try {
     $boot  = new DUPX_Bootstrap();
     $boot_error = $boot->run();
     $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
-    DUPX_CSRF::resetAllTokens();
 } catch (Exception $e) {
    $boot_error = $e->getMessage();
 }
 
 if ($boot_error == null) {
 	$step1_csrf_token = DUPX_CSRF::generate('step1');
-	DUPX_CSRF::setCookie('archive', $boot->archive);
-	DUPX_CSRF::setCookie('bootloader', $boot->bootloader);
+	DUPX_CSRF::setKeyVal('archive', $boot->archive);
+	DUPX_CSRF::setKeyVal('bootloader', $boot->bootloader);
 }
 ?>
 

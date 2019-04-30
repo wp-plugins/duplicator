@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 ?>
@@ -54,7 +54,7 @@ defined("ABSPATH") or die("");
 					</ul>
 				</li>
 				<li>If using the 'Basic' option then try using the <a href="javascript:void(0)" onclick="DUPX.togglePanels('cpanel')">'cPanel'</a> option.</li>
-				<li><i class="fa fa-file-code-o"> </i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
+				<li><i class="far fa-file-code"> </i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
 			</ul>
 		</div>
 
@@ -75,7 +75,7 @@ defined("ABSPATH") or die("");
 			<div class="sub-title">TROUBLESHOOT</div>
 			<ul>
 				<li>Contact your host and have them upgrade your MySQL server.</li>
-				<li><i class="fa fa-file-code-o"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
+				<li><i class="far fa-file-code"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
 			</ul>
 		</div>
 
@@ -105,7 +105,7 @@ defined("ABSPATH") or die("");
 						</ul>
 					</li>
 					<li>If using the 'Basic' option then try using the <a href="javascript:void(0)" onclick="DUPX.togglePanels('cpanel')">'cPanel'</a> option.</li>
-					<li><i class="fa fa-file-code-o"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
+					<li><i class="far fa-file-code"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
 				</ul>
 
 			</div>
@@ -145,7 +145,7 @@ defined("ABSPATH") or die("");
 							<li><i class="fa fa-video-camera"></i> <a href="https://www.youtube.com/watch?v=CHwxXGPnw48" target="_video">Add database user in cPanel newer versions</a></li>
 						</ul>
 					</li>
-					<li><i class="fa fa-file-code-o"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
+					<li><i class="far fa-file-code"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
 				</ul>
 			</div>
 		{{/if_neq}}
@@ -202,7 +202,7 @@ defined("ABSPATH") or die("");
 							<li><i class="fa fa-video-camera"></i> <a href="https://www.youtube.com/watch?v=FfX-B-h3vo0" target="_video">How to grant user privileges in phpMyAdmin</a></li>
 						</ul>
 					</li>
-				<li><i class="fa fa-file-code-o"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
+				<li><i class="far fa-file-code"></i> <a href='{{{faqURL}}}#faq-installer-100-q' target='_help'>I'm running into issues with the Database what can I do?</a></li>
 			</ul>
 		</div>
 
@@ -238,7 +238,7 @@ defined("ABSPATH") or die("");
 
 			<div class="sub-title">TROUBLESHOOT</div>
 			<ul>
-				<li><i class="fa fa-file-code-o"></i> <a href='{{{faqURL}}}#faq-installer-110-q' target='_help'>What is Compatibility mode & 'Unknown Collation' errors?</a></li>
+				<li><i class="far fa-file-code"></i> <a href='{{{faqURL}}}#faq-installer-110-q' target='_help'>What is Compatibility mode & 'Unknown Collation' errors?</a></li>
 			</ul>
 
 		</div>
@@ -330,7 +330,7 @@ DUPX.testDBConnect = function ()
 	$dbButton = $('#s2-dbtest-btn-basic');
 
 	$dbArea.show(250);
-	$dbResult.html("<div class='message'><i class='fa fa-circle-o-notch fa-spin fa-fw'></i>Running Database Validation. <br/>  Please wait...</div>");
+	$dbResult.html("<div class='message'><i class='fas fa-question-circle fa-sm'></i>Running Database Validation. <br/>  Please wait...</div>");
 	$dbButton.attr('disabled', 'true');
 
 	if (document.location.href.indexOf('?') > -1) {

@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 global $wp_version;
 global $wpdb;
@@ -124,7 +124,7 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 					</div><br/>
 				<?php else : ?>
 					<div class="dup-feature-notfound">
-						<i class="fa fa-exclamation-triangle"></i>
+						<i class="fa fa-exclamation-triangle fa-sm"></i>
 						<?php
 							_e('Mysqldump was not found at its default location or the location provided.  Please enter a custom path to a valid location where mysqldump can run.  '
 								. 'If the problem persist contact your host or server administrator.  ', 'duplicator');
@@ -139,7 +139,7 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 				<?php endif; ?>
 
 				<label><?php esc_html_e("Custom Path", 'duplicator'); ?></label>
-				<i class="fa fa-question-circle"
+				<i class="fas fa-question-circle fa-sm"
 					data-tooltip-title="<?php esc_attr_e("mysqldump path:", 'duplicator'); ?>"
 					data-tooltip="<?php esc_attr_e('Add a custom path if the path to mysqldump is not properly detected.   For all paths use a forward slash as the '
 					. 'path seperator.  On Linux systems use mysqldump for Windows systems use mysqldump.exe.  If the path tried does not work please contact your hosting '
@@ -149,7 +149,7 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 				<div class="dup-feature-notfound">
 				<?php
 					if (!$mysqlDumpFound && strlen($mysqldump_exe_file)) {
-						_e('<i class="fa fa-exclamation-triangle"></i> The custom path provided is not recognized as a valid mysqldump file:<br/>', 'duplicator');
+						_e('<i class="fa fa-exclamation-triangle fa-sm"></i> The custom path provided is not recognized as a valid mysqldump file:<br/>', 'duplicator');
 						$mysqldump_path = esc_html($package_mysqldump_path);
 						echo "'".esc_html($mysqldump_path)."'";
 					}
@@ -173,7 +173,7 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 					<?php esc_html_e("Multi-Threaded",'duplicator'); ?>
 				</option>
 			</select>
-			<i style="margin-right:7px;" class="fa fa-question-circle"
+			<i style="margin-right:7px;" class="fas fa-question-circle fa-sm"
 				data-tooltip-title="<?php esc_attr_e("PHP Code Mode:",'duplicator'); ?>"
 				data-tooltip="<?php
 					esc_attr_e('Single-Threaded mode attempts to create the entire database script in one request.  Multi-Threaded mode allows the database script '
@@ -190,7 +190,7 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 						}
 					?>
 				</select>
-				<i class="fa fa-question-circle"
+				<i class="fas fa-question-circle fa-sm"
 				   data-tooltip-title="<?php esc_attr_e("PHP Query Limit Size", 'duplicator'); ?>"
 				   data-tooltip="<?php esc_attr_e('A higher limit size will speed up the database build time, however it will use more memory.  If your host has memory caps start off low.', 'duplicator'); ?>"></i>
 

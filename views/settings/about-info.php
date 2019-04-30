@@ -1,3 +1,6 @@
+<?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+?>
 <style>
 /*================================================
 PAGE-SUPPORT:*/
@@ -84,16 +87,16 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
             <div class="dup-support-hlp-txt">
 				<div class="social-images">
 					<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
-						<div class="social-item"><i class="fa fa-facebook-square fa-lg"></i> <?php esc_html_e('Facebook', 'duplicator') ?></div>
+						<div class="social-item"><i class="fab fa-facebook-square fa-lg"></i> <?php esc_html_e('Facebook', 'duplicator') ?></div>
 					</a>
 					<a href="https://twitter.com/home?status=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator/duplicator-free/"  target="_blank">
-						<div class="social-item"><i class="fa fa-twitter-square fa-lg"></i> <?php esc_html_e('Twitter', 'duplicator') ?></div>
+						<div class="social-item"><i class="fab fa-twitter-square fa-lg"></i> <?php esc_html_e('Twitter', 'duplicator') ?></div>
 					</a>
 					<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=" target="_blank">
-						<div class="social-item"><i class="fa fa-linkedin-square fa-lg"></i> <?php esc_html_e('LinkedIn', 'duplicator') ?></div>
+						<div class="social-item"><i class="fab fa-linkedin fa-lg"></i> <?php esc_html_e('LinkedIn', 'duplicator') ?></div>
 					</a>
 					<a href="https://plus.google.com/share?url=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
-						<div class="social-item"><i class="fa fa-google-plus-square fa-lg"></i> <?php esc_html_e('Google+', 'duplicator') ?></div>
+						<div class="social-item"><i class="fab fa-google-plus-g	fa-lg"></i> <?php esc_html_e('Google+', 'duplicator') ?></div>
 					</a>
 				</div>
             </div>

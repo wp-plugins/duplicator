@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Used to display notices in the WordPress Admin area
  * This class takes advantage of the admin_notice action.
@@ -86,7 +87,7 @@ class DUP_UI_Notice
      */
     public static function redirect($location)
     {
-        echo '<div class="dup-redirect"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i>';
+        echo '<div class="dup-redirect"><i class="fas fa-circle-notch fa-spin fa-fw"></i>';
 		esc_html__('Redirecting Please Wait...', 'duplicator');
 		echo '</div>';
 		echo "<script>window.location = '{$location}';</script>";

@@ -1,5 +1,5 @@
 <?php
-
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 //---------- DUPARCHIVE MINI EXPANDER: The contents of this file will be injected into the installer bootlog at build time ------------------------
 
 class DupArchiveHeaderMiniU

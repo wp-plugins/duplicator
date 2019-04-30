@@ -24,36 +24,25 @@
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
 /** Absolute path to the Installer directory. - necessary for php protection */
-if ( !defined('ABSPATH') )
-	define('ABSPATH', dirname(__FILE__) . '/');
-
-if (!defined('KB_IN_BYTES')) { define('KB_IN_BYTES', 1024); }
-if (!defined('MB_IN_BYTES')) { define('MB_IN_BYTES', 1024 * KB_IN_BYTES); }
-if (!defined('GB_IN_BYTES')) { define('GB_IN_BYTES', 1024 * MB_IN_BYTES); }
-if (!defined('DUPLICATOR_PHP_MAX_MEMORY')) { define('DUPLICATOR_PHP_MAX_MEMORY', 4096 * MB_IN_BYTES); }
-
-date_default_timezone_set('UTC'); // Some machines don’t have this set so just do it here.
-@ignore_user_abort(true);
-@set_time_limit(3600);
-@ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-@ini_set('max_input_time', '-1');
-@ini_set('pcre.backtrack_limit', PHP_INT_MAX);
-@ini_set('default_socket_timeout', 3600);
+if ( !defined('DUPXABSPATH') ) {
+    define('DUPXABSPATH', dirname(__FILE__));
+}
 
 define('ERR_CONFIG_FOUND', 'A wp-config.php already exists in this location.  This error prevents users from accidentally overwriting a WordPress site or trying to install on top of an existing one.  Extracting an archive on an existing site will overwrite existing files and intermix files causing site incompatibility issues.<br/><br/>  It is highly recommended to place the installer and archive in an empty directory. If you have already manually extracted the archive file that is associated with this installer then choose option #1 below; other-wise consider the other options: <ol><li>Click &gt; Try Again &gt; Options &gt; choose "Manual Archive Extraction".</li><li>Empty the directory except for the archive.zip/daf and installer.php and try again.</li><li>Advanced users only can remove the existing wp-config.php file and try again.</li></ol>');
+
 ob_start();
 try {
+    $GLOBALS['DUPX_ROOT']     = str_replace("\\", '/', (realpath(dirname(__FILE__).'/..')));
+    $GLOBALS['DUPX_ROOT_URL'] = 'http'.(!empty($_SERVER['HTTPS']) ? 's' : '').'://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF']);
+    $GLOBALS['DUPX_INIT']     = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
+    require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.boot.php');
+    /**
+     * init constants and include
+     */
+    DUPX_Boot::init();
+
     $exceptionError = false;
 
-    $GLOBALS['DUPX_DEBUG'] = (isset($_GET['debug']) && $_GET['debug'] == 1) ? true : false;
-    $GLOBALS['DUPX_ROOT']  = str_replace("\\", '/', (realpath(dirname(__FILE__) . '/..')));
-    $GLOBALS['DUPX_INIT']  = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
-    $GLOBALS['DUPX_ENFORCE_PHP_INI']  = false;
-
-    require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.exceptions.php');
-    require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
-    require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.notices.manager.php');
-    require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
     require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php');
     $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
 
@@ -114,16 +103,18 @@ try {
         }        
     } else {
         if (!isset($_POST['archive'])) {
-            if (isset($_COOKIE['archive'])) {
-                $_POST['archive'] = $_COOKIE['archive'];
+            $archive = DUPX_CSRF::getVal('archive');
+            if (false !== $archive) {
+                $_POST['archive'] = $archive;
             } else {
                 // RSR TODO: Fail gracefully
                 die("Archive parameter not specified");
             }
         }
         if (!isset($_POST['bootloader'])) {
-            if (isset($_COOKIE['bootloader'])) {
-                $_POST['bootloader'] = $_COOKIE['bootloader'];
+            $bootloader = DUPX_CSRF::getVal('bootloader');
+            if (false !== $bootloader) {
+                $_POST['bootloader'] = $bootloader;
             } else {
                 // RSR TODO: Fail gracefully
                 die("Bootloader parameter not specified");
@@ -131,7 +122,6 @@ try {
         }
     }
 
-    require_once($GLOBALS['DUPX_INIT'].'/lib/snaplib/snaplib.all.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
@@ -205,9 +195,9 @@ try {
     require_once($GLOBALS['DUPX_INIT'] . '/classes/class.http.php');
     require_once($GLOBALS['DUPX_INIT'] . '/classes/class.server.php');
     require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.conf.srv.php');
+    require_once($GLOBALS['DUPX_INIT'] . '/classes/class.view.php');
 
     $GLOBALS['_CURRENT_URL_PATH'] = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
-    $GLOBALS['_HELP_URL_PATH']    = "?view=help&archive={$GLOBALS['FW_PACKAGE_NAME']}&bootloader={$GLOBALS['BOOTLOADER_NAME']}&basic";
     $GLOBALS['NOW_TIME']		  = @date("His");
 
     if (!chdir($GLOBALS['DUPX_INIT'])) {
@@ -261,28 +251,6 @@ try {
         @fclose($GLOBALS["LOG_FILE_HANDLE"]);
         die("");
     }
-
-    $helpOpenSection = '';
-    switch ($GLOBALS["VIEW"]) {
-        case "secure" :
-            $helpOpenSection = 'section-security';
-            break;
-        case "step1" :
-            $helpOpenSection = 'section-step-1';
-            break;
-        case "step2" :
-            $helpOpenSection = 'section-step-2';
-            break;
-        case "step3" :
-            $helpOpenSection = 'section-step-3';
-            break;
-        case "step4" :
-            $helpOpenSection = 'section-step-4';
-            break;
-        case "help" :
-        default :
-    }
-
 } catch (Exception $e) {
     $exceptionError = $e;
 }
@@ -301,7 +269,7 @@ if (!empty($unespectOutput)) {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex,nofollow">
 	<title>Duplicator</title>
-	<link rel='stylesheet' href='assets/font-awesome/css/font-awesome.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/font-awesome/css/all.min.css' type='text/css' media='all' />
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.css.php');
@@ -317,24 +285,16 @@ if (!empty($unespectOutput)) {
 <table cellspacing="0" class="header-wizard">
 	<tr>
 		<td style="width:100%;">
-			<div class="dupx-branding-header">Duplicator</div>
+			<div class="dupx-branding-header">Duplicator <?php echo ($GLOBALS["VIEW"] == 'help') ? 'help' : ''; ?></div>
 		</td>
 		<td class="wiz-dupx-version">
+            <?php  if ($GLOBALS["VIEW"] !== 'help') { ?>
 			<a href="javascript:void(0)" onclick="DUPX.openServerDetails()">version:<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_dup); ?></a>&nbsp;
-			<?php
-				$help_url = "?view=help".
-                "&archive={$GLOBALS['FW_ENCODED_PACKAGE_PATH']}".
-                "&bootloader={$GLOBALS['BOOTLOADER_NAME']}&".
-                "basic".
-                '&open_section='.$helpOpenSection;
-            echo ($GLOBALS['DUPX_AC']->secure_on)
-					? "<a href='{$help_url}#secure' target='_blank'><i class='fa fa-lock'></i></a>"
-					: "<a href='{$help_url}#secure' target='_blank'><i class='fa fa-unlock-alt'></i></a>" ;
-			?>
-			
+			<?php DUPX_View_Funcs::helpLockLink(); ?>
 			<div style="padding: 6px 0">
-				<a href="<?php echo DUPX_U::esc_url($help_url);?>" target="_blank">help</a> <i class="fa fa-question-circle"></i>
+                <?php DUPX_View_Funcs::helpLink($GLOBALS["VIEW"]); ?>
 			</div>
+            <?php } ?>
 		</td>
 	</tr>
 </table>

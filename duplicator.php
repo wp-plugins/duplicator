@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.3.10
+  Version: 1.3.12
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -28,7 +28,14 @@
   David Coveney of Interconnect IT Ltd
   https://github.com/interconnectit/Search-Replace-DB/
   ================================================================================ */
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+if ( !defined('DUPXABSPATH') ) {
+    define('DUPXABSPATH', dirname(__FILE__));
+}
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
 require_once("define.php");
 
 if (!function_exists('sanitize_textarea_field')) {
@@ -148,7 +155,9 @@ if (!function_exists('wp_normalize_path')) {
 
 if (is_admin() == true) 
 {
-	//Classes
+    require_once 'deactivation.php';
+    require_once 'lib/snaplib/snaplib.all.php';
+    require_once 'classes/class.constants.php';
     require_once 'classes/class.settings.php';
     require_once 'classes/class.logging.php';    
     require_once 'classes/utilities/class.u.php';
@@ -262,8 +271,6 @@ if (is_admin() == true)
     add_action('wp_ajax_duplicator_package_build',				'duplicator_package_build');
     add_action('wp_ajax_duplicator_package_delete',				'duplicator_package_delete');
     add_action('wp_ajax_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
-    add_action('wp_ajax_nopriv_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
-
 
 	$GLOBALS['CTRLS_DUP_CTRL_UI']		= new DUP_CTRL_UI();
 	$GLOBALS['CTRLS_DUP_CTRL_Tools']	= new DUP_CTRL_Tools();
@@ -292,7 +299,7 @@ if (is_admin() == true)
 	{
         /* CSS */
         wp_register_style('dup-jquery-ui', DUPLICATOR_PLUGIN_URL . 'assets/css/jquery-ui.css', null, "1.11.2");
-        wp_register_style('dup-font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/font-awesome.min.css', null, '4.7.0');
+        wp_register_style('dup-font-awesome', DUPLICATOR_PLUGIN_URL . 'assets/css/fontawesome-all.min.css', null, '5.7.2');
         wp_register_style('dup-plugin-global-style', DUPLICATOR_PLUGIN_URL . 'assets/css/global_admin_style.css', null , DUPLICATOR_VERSION);
         wp_register_style('dup-plugin-style', DUPLICATOR_PLUGIN_URL . 'assets/css/style.css', array('dup-plugin-global-style') , DUPLICATOR_VERSION);
 
@@ -356,7 +363,7 @@ if (is_admin() == true)
         $perms = apply_filters($wpfront_caps_translator, $perms);
 		$lang_txt = esc_html__('Packages', 'duplicator');
         $page_packages = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator', 'duplicator_get_menu');
-		$GLOBALS['DUP_PRO_Package_Screen'] = new DUP_Package_Screen($page_packages);
+        $GLOBALS['DUP_PRO_Package_Screen'] = new DUP_Package_Screen($page_packages);
 
 		$perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
@@ -414,7 +421,7 @@ if (is_admin() == true)
         wp_enqueue_style('dup-jquery-ui');
         wp_enqueue_style('dup-font-awesome');
 		wp_enqueue_style('dup-plugin-style');
-		wp_enqueue_style('dup-jquery-qtip');
+        wp_enqueue_style('dup-jquery-qtip');
     }
 
 

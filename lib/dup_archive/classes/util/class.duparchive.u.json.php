@@ -1,5 +1,5 @@
 <?php
-
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 if(!class_exists('DupArchiveJsonU')) {
 class DupArchiveJsonU
 {

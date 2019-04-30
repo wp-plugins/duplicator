@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
@@ -42,6 +42,8 @@ $JSON['pass']		= 0;
 $ajax1_error_level = error_reporting();
 error_reporting(E_ERROR);
 
+$nManager = DUPX_NOTICE_MANAGER::getInstance();
+
 //===============================
 //ARCHIVE ERROR MESSAGES
 //===============================
@@ -73,20 +75,36 @@ if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
 }
 
 DUPX_Log::info("********************************************************************************");
-DUPX_Log::info('* DUPLICATOR-LITE: Install-Log');
-DUPX_Log::info('* STEP-1 START @ ' . @date('h:i:s'));
+DUPX_Log::info('* DUPLICATOR-PRO: Install-Log');
+DUPX_Log::info('* STEP-1 START @ '.@date('h:i:s'));
 DUPX_Log::info("* VERSION: {$GLOBALS['DUPX_AC']->version_dup}");
 DUPX_Log::info('* NOTICE: Do NOT post to public sites or forums!!');
 DUPX_Log::info("********************************************************************************");
+
+$colSize = 60;
+$os      = defined('PHP_OS') ? PHP_OS : 'unknown';
+$log     = str_pad(str_pad('PACKAGE INFO', 13, '_', STR_PAD_RIGHT).' '.'CURRENT SERVER', $colSize, ' ', STR_PAD_RIGHT).'| '.'ORIGINAL SERVER'."\n".
+    str_pad(str_pad('PHP VERSION', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->version_php, $colSize, ' ', STR_PAD_RIGHT).'| '.phpversion()."\n".
+    str_pad(str_pad('OS', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->version_os, $colSize, ' ', STR_PAD_RIGHT).'| '.$os."\n".
+    str_pad('CREATED', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->created."\n".
+    str_pad('WP VERSION', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->version_wp."\n".
+    str_pad('DUP VERSION', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->version_dup."\n".
+    str_pad('DB', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->version_db."\n".
+    str_pad('DB TABLES', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->dbInfo->tablesFinalCount."\n".
+    str_pad('DB ROWS', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->dbInfo->tablesRowCount."\n".
+    str_pad('DB FILE SIZE', 13, '_', STR_PAD_RIGHT).':'.$GLOBALS['DUPX_AC']->dbInfo->tablesSizeOnDisk."\n".
+    "********************************************************************************";
+DUPX_Log::info($log);
+
 DUPX_Log::info("PHP:\t\t".phpversion().' | SAPI: '.php_sapi_name());
-DUPX_Log::info("PHP MEMORY:\t".$GLOBALS['PHP_MEMORY_LIMIT'].' | SUHOSIN: '.$GLOBALS['PHP_SUHOSIN_ON']);
-DUPX_Log::info("SERVER:\t\t{$_SERVER['SERVER_SOFTWARE']}");
-DUPX_Log::info("DOC ROOT:\t{$root_path}");
-DUPX_Log::info("DOC ROOT 755:\t".var_export($GLOBALS['CHOWN_ROOT_PATH'], true));
-DUPX_Log::info("LOG FILE 644:\t".var_export($GLOBALS['CHOWN_LOG_PATH'], true));
-DUPX_Log::info("REQUEST URL:\t{$GLOBALS['URL_PATH']}");
-DUPX_Log::info("SAFE MODE :\t{$_POST['exe_safe_mode']}");
-DUPX_Log::info("CONFIG MODE :\t{$_POST['config_mode']}");
+DUPX_Log::info("PHP MEMORY:\t".DUPX_Log::varToString($GLOBALS['PHP_MEMORY_LIMIT']).' | SUHOSIN: '.DUPX_Log::varToString($GLOBALS['PHP_SUHOSIN_ON']));
+DUPX_Log::info("SERVER:\t\t".DUPX_Log::varToString($_SERVER['SERVER_SOFTWARE']));
+DUPX_Log::info("DOC ROOT:\t".DUPX_Log::varToString($root_path));
+DUPX_Log::info("DOC ROOT 755:\t".DUPX_Log::varToString($GLOBALS['CHOWN_ROOT_PATH']));
+DUPX_Log::info("LOG FILE 644:\t".DUPX_Log::varToString($GLOBALS['CHOWN_LOG_PATH']));
+DUPX_Log::info("REQUEST URL:\t".DUPX_Log::varToString($GLOBALS['URL_PATH']));
+DUPX_Log::info("SAFE MODE :\t".DUPX_Log::varToString($_POST['exe_safe_mode']));
+DUPX_Log::info("CONFIG MODE :\t".DUPX_Log::varToString($_POST['config_mode']));
 
 $log = "--------------------------------------\n";
 $log .= "POST DATA\n";
@@ -107,7 +125,7 @@ $log .= "ARCHIVE SETUP\n";
 $log .= "--------------------------------------\n";
 $log .= "NAME:\t{$GLOBALS['FW_PACKAGE_NAME']}\n";
 $log .= "SIZE:\t".DUPX_U::readableByteSize(@filesize($GLOBALS['FW_PACKAGE_PATH']));
-DUPX_Log::info($log . "\n");
+ DUPX_Log::info($log."\n", DUPX_Log::LV_DEFAULT, true);
 
 
 $target	 = $root_path;
@@ -154,7 +172,7 @@ switch ($post_archive_engine) {
 			DUPX_Log::error(ERR_ZIPARCHIVE);
 		}
 
-        if (($dupInstallerFolder = DUPX_U::findDupInstallerFolder($archive_path)) === false) {
+        if (($$extract_filenamesdupInstallerFolder = DUPX_U::findDupInstallerFolder($archive_path)) === false) {
             DUPX_Log::info("findDupInstallerFolder error; set no subfolder");
             // if not found set not subfolder
             $dupInstallerFolder = '';
@@ -170,7 +188,9 @@ switch ($post_archive_engine) {
 		$zip = new ZipArchive();
 
 		if ($zip->open($archive_path) === TRUE) {
-			$extract_filenames = array(); 
+			$extract_filenames = array();
+            DUPX_Handler::setMode(DUPX_Handler::MODE_VAR , false , false);
+
             for($i = 0; $i < $zip->numFiles; $i++) {
                 $extract_filename = $zip->getNameIndex($i);
                 
@@ -184,30 +204,67 @@ switch ($post_archive_engine) {
                     DUPX_Log::info("SKIP NOT DUB FOLDER: \"".$extract_filename."\"", 2);
                     continue;
 				}
-				$extract_filenames[] =  $extract_filename;
-			}
 
-			try {
-				if (!$zip->extractTo($target , $extract_filenames)) {
-					DUPX_Log::info("FILE EXTRACION ERROR: ".implode(',', $extract_filenames));
-				} else {
-					DUPX_Log::info("DONE: ".$extract_filename,2);
-				}
-				
-			} catch (Exception $ex) {
-				DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:" . $ex->getMessage());
+                try {
+                    if (!$zip->extractTo($target , $extract_filename)) {
+                        DUPX_Log::info("FILE EXTRACION ERROR: ".$extract_filename);
+                        if (SnapLibUtilWp::isWpCore($extract_filename, SnapLibUtilWp::PATH_RELATIVE)) {
+                            $shortMsg      = 'Can\'t extract wp core file: '.$extract_filename;
+                            $finalShortMsg = 'Wp core file '.$extract_filename.' not extracted';
+                            $errLevel      = DUPX_NOTICE_ITEM::CRITICAL;
+                        } else {
+                            $shortMsg      = 'Can\'t extract file: '.$extract_filename;
+                            $finalShortMsg = 'File '.$extract_filename.' not extracted';
+                            $errLevel      = DUPX_NOTICE_ITEM::SOFT_WARNING;
+                        }
+                        $longMsg = DUPX_Handler::getVarLogClean();
+
+                        $nManager->addNextStepNotice(array(
+                            'shortMsg' => $shortMsg,
+                            'longMsg' => $longMsg,
+                            'level' => $errLevel
+                        ));
+                        $nManager->addFinalReportNotice(array(
+                            'shortMsg' => $finalShortMsg,
+                            'longMsg' => $longMsg,
+                            'level' => $errLevel,
+                            'sections' => array('files'),
+                        ));
+                    } else {
+                        DUPX_Log::info("DONE: ".$extract_filename,2);
+                    }
+                } catch (Exception $ex) {
+                    DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:".$ex->getMessage());
+
+                    if (SnapLibUtilWp::isWpCore($extract_filename, SnapLibUtilWp::PATH_RELATIVE)) {
+                        $shortMsg      = 'Can\'t extract wp core file: '.$extract_filename;
+                        $finalShortMsg = 'Wp core file '.$extract_filename.' not extracted';
+                        $errLevel      = DUPX_NOTICE_ITEM::CRITICAL;
+                    } else {
+                        $shortMsg      = 'Can\'t extract file: '.$extract_filename;
+                        $finalShortMsg = 'File '.$extract_filename.' not extracted';
+                        $errLevel      = DUPX_NOTICE_ITEM::SOFT_WARNING;
+                    }
+                    $longMsg = $ex->getMessage();
+
+                    $nManager->addNextStepNotice(array(
+                        'shortMsg' => $shortMsg,
+                        'longMsg' => $longMsg,
+                        'level' => $errLevel
+                    ));
+                    $nManager->addFinalReportNotice(array(
+                        'shortMsg' => $finalShortMsg,
+                        'longMsg' => $longMsg,
+                        'level' => $errLevel,
+                        'sections' => array('files'),
+                    ));
+                }
 			}
 
             if (!empty($dupInstallerFolder)) {
                 DUPX_U::moveUpfromSubFolder($target.'/'.$dupInstallerFolder , true);
             }
             
-            /*
-			if (!$zip->extractTo($target)) {
-				$zip_err_msg = ERR_ZIPEXTRACTION;
-				$zip_err_msg .= "<br/><br/><b>To resolve error see <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q' target='_blank'>https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q</a></b>";
-				DUPX_Log::error($zip_err_msg);
-			}*/
 			$log = print_r($zip, true);
 
 			//FILE-TIMESTAMP
@@ -220,6 +277,9 @@ switch ($post_archive_engine) {
 				$now  = @date("Y-m-d H:i:s");
 				$log .= "File timestamp set to Current: {$now}\n";
 			}
+
+            // set handler as default
+            DUPX_Handler::setMode();
 
 			$close_response = $zip->close();
 			$log .= "<<< ZipArchive Unzip Complete: " . var_export($close_response, true);
@@ -335,7 +395,7 @@ if ($_POST['set_file_perms'] || $_POST['set_dir_perms']) {
 }
 
 DUPX_ServerConfig::afterExtractionSetup();
-
+$nManager->saveNotices();
 
 //FINAL RESULTS
 $ajax1_sum	 = DUPX_U::elapsedTime(DUPX_U::getMicrotime(), $ajax1_start);

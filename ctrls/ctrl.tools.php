@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
 if (! defined('DUPLICATOR_VERSION')) exit;
 
@@ -30,12 +31,12 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
      */
 	public function runScanValidator($post)
 	{
+        check_ajax_referer('DUP_CTRL_Tools_runScanValidator', 'nonce');
+        DUP_Util::hasCapability('export');
+
         @set_time_limit(0);
         $post = $this->postParamMerge($post);
-        $action = sanitize_text_field($post['action']);
-		check_ajax_referer($action, 'nonce');
-		
-		$result = new DUP_CTRL_Result($this);
+        $result = new DUP_CTRL_Result($this);
 		 
 		try 
 		{
@@ -69,11 +70,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
     {
         DUP_Log::Trace("enter");
         
-        $nonce = sanitize_text_field($_GET['nonce']);
-        if (!wp_verify_nonce($nonce, 'DUP_CTRL_Tools_getTraceLog')) {
-            die('An unathorized security request was made to this page. Please try again!');
-        }
-
+        check_ajax_referer('DUP_CTRL_Tools_getTraceLog', 'nonce');
         Dup_Util::hasCapability('export');
 
         $file_path   = DUP_Log::GetTraceFilepath();

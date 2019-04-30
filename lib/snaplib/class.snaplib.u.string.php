@@ -1,12 +1,20 @@
 <?php
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Snap strings utils
+ *
+ * Standard: PSR-2
+ * @link http://www.php-fig.org/psr/psr-2
+ *
+ * @package SnapLib
+ * @copyright (c) 2017, Snapcreek LLC
+ * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
+ *
  */
-if(!class_exists('SnapLibStringU')) {
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
 class SnapLibStringU
 {
+
     public static function boolToString($b)
     {
         return ($b ? 'true' : 'false');
@@ -14,14 +22,12 @@ class SnapLibStringU
 
     public static function truncateString($s, $maxWidth)
     {
-        if(strlen($s) > $maxWidth)
-        {
-            $s = substr($s, 0, $maxWidth - 3) . '...';
+        if (strlen($s) > $maxWidth) {
+            $s = substr($s, 0, $maxWidth - 3).'...';
         }
 
         return $s;
     }
-
 
     /**
      * Returns true if the $haystack string starts with the $needle
@@ -41,7 +47,7 @@ class SnapLibStringU
     {
         $retVal = json_encode($value);
 
-        if($retVal === false) {
+        if ($retVal === false) {
             throw new Exception("Error JSON encoding data");
         }
 
@@ -52,13 +58,12 @@ class SnapLibStringU
     {
         $retVal = json_decode($json, $assoc);
 
-        if($retVal === null)
-        {
+        if ($retVal === null) {
             throw new Exception("Error decoding JSON");
         }
     }
-	
-	/**
+
+    /**
      * Returns true if the $needle is found in the $haystack
      *
      * @param string  $haystack     The full string to search in
@@ -71,6 +76,4 @@ class SnapLibStringU
         $pos = strpos($haystack, $needle);
         return ($pos !== false);
     }
-
-}
 }

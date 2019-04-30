@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 DUP_Util::hasCapability('manage_options');
 global $wpdb;
 
@@ -44,7 +45,7 @@ $err_link_ticket	= '<a target="_blank" href="https://snapcreek.com/duplicator/do
 			<?php esc_html_e('Transfer', 'duplicator'); ?>
 		</a>
     </h2>
-	<div class="all-packages"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php esc_html_e('Packages', 'duplicator'); ?></a></div>
+	<div class="all-packages"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e('Packages', 'duplicator'); ?></a></div>
 
     <?php
     switch ($current_tab) {

@@ -1,11 +1,12 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
 //-- START OF ACTION STEP 3: Update the database
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
-require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.wp.config.tranformer.php');
+require_once($GLOBALS['DUPX_INIT'].'/lib/config/class.wp.config.tranformer.php');
+require_once($GLOBALS['DUPX_INIT'].'/lib/config/class.wp.config.tranformer.src.php');
 
 /** JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
   cause errors in the JSON data Here we hide the status so warning level is reset at it at the end */
@@ -110,7 +111,9 @@ DUPX_Log::info($log);
 // INIZIALIZE WP_CONFIG TRANSFORMER
 //===============================================
 $root_path = $GLOBALS['DUPX_ROOT'];
-$wpconfig_ark_path	= ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) ? "{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt" : "{$root_path}/wp-config.php";
+$wpconfig_ark_path	= DUPX_ServerConfig::getWpconfigArkPath();
+DUPX_ServerConfig::copyOriginalConfigFiles();
+
 $config_transformer =  null;
 if (is_readable($wpconfig_ark_path)) {
     $config_transformer = new WPConfigTransformer($wpconfig_ark_path);
@@ -456,8 +459,8 @@ try {
         $db_host = isset($_POST['dbhost']) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : '';
         $db_name = isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : '';
         $db_user = isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : '';
-        $db_pass = isset($_POST['dbpass']) ? SnapLibUtil::wp_json_encode(trim($_POST['dbpass'])) : "''";
-        $db_pass = str_replace(array('\x00','\/'), array('','/'), $db_pass);
+        $db_pass = isset($_POST['dbpass']) ? trim($_POST['dbpass']) : '';
+        $db_pass = DUPX_U::getEscapedGenericString($db_pass);
 
         $config_transformer->update('constant', 'DB_NAME', $db_name);
         $config_transformer->update('constant', 'DB_USER', $db_user);
@@ -657,7 +660,7 @@ foreach ($wpconfig_safe_check as $file) {
 		}
 	}
 }
-
+DUPX_ServerConfig::finalReportNotices();
 $nManager->saveNotices();
 
 $ajax3_sum = DUPX_U::elapsedTime(DUPX_U::getMicrotime(), $ajax3_start);

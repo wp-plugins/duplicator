@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
  * Walks every table in db that then walks every row and column replacing searches with replaces
@@ -230,6 +230,7 @@ class DUPX_UpdateEngine
                         $upd = false;
                         $serial_err = 0;
                         $is_unkeyed = !in_array(true, $columns);
+                        $rowErrors = array();
 
                         //Loops every cell
                         foreach ($columns as $column => $primary_key) {
@@ -280,8 +281,11 @@ class DUPX_UpdateEngine
                                 }
 
                                 if (self::isSerialized($edited_data) && strlen($edited_data) > MAX_STRLEN_SERIALIZED_CHECK) {
-                                     // skip search and replace for too big serialized string
+                                    // skip search and replace for too big serialized string
                                     $serial_err++;
+                                    $trimLen            = DUPX_Log::isLevel(DUPX_Log::LV_HARD_DEBUG) ? 10000 : 150;
+                                    $rowErrors[$column] = 'ENGINE: serialize data too big to convert; data len:'.strlen($edited_data).' Max size:'.MAX_STRLEN_SERIALIZED_CHECK;
+                                    $rowErrors[$column] .= "\n\tDATA: ".mb_strimwidth($edited_data, 0, $trimLen, ' [...]');
                                 } else {
                                     //Replace logic - level 1: simple check on any string or serlized strings
                                     foreach ($list as $item) {
@@ -295,6 +299,9 @@ class DUPX_UpdateEngine
                                         $edited_data = $serial_check['data'];
                                     } elseif ($serial_check['tried'] && !$serial_check['fixed']) {
                                         $serial_err++;
+                                        $trimLen            = DUPX_Log::isLevel(DUPX_Log::LV_HARD_DEBUG) ? 10000 : 150;
+                                        $rowErrors[$column] = 'ENGINE: serialize data serial check error';
+                                        $rowErrors[$column] .= "\n\tDATA: ".mb_strimwidth($edited_data, 0, $trimLen, ' [...]');
                                     }
                                 }
                             }
@@ -321,25 +328,23 @@ class DUPX_UpdateEngine
                             $sql	= "UPDATE `".mysqli_real_escape_string($conn, $table)."` SET " . implode(', ', $upd_sql) . ' WHERE ' . implode(' AND ', array_filter($where_sql));
 							$result	= mysqli_query($conn, $sql);
                             if ($result) {
-                                if ($serial_err > 0) {
-                                    $errMsg = "SELECT " . implode(', ',
-                                            $upd_col) . " FROM `".mysqli_real_escape_string($conn, $table)."`  WHERE " . implode(' AND ',
-                                            array_filter($where_sql)) . ';';
-                                    $report['errser'][] = $errMsg;
+                                foreach ($rowErrors as $errCol => $msgCol) {
+                                    $longMsg = $msgCol."\n\tTABLE:".$table.' COLUMN: '.$errCol. ' WHERE: '.implode(' AND ', array_filter($where_sql));
+                                    $report['errser'][] = $longMsg;
 
                                     $nManager->addFinalReportNotice(array(
                                         'shortMsg' => 'DATA-REPLACE ERROR: Serialization',
                                         'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
-                                        'longMsg' => $errMsg,
+                                        'longMsg' => $longMsg,
                                         'sections' => 'search_replace'
                                     ));
                                 }
                                 $report['updt_rows']++;
                             } else {
                                 $errMsg = mysqli_error($conn);
-								$report['errsql'][]	= ($GLOBALS['LOGGING'] == 1)
-									? 'DB ERROR: ' . $errMsg
-									: 'DB ERROR: ' . $errMsg . "\nSQL: [{$sql}]\n";
+								$report['errsql'][]	= (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG))
+									? 'DB ERROR: ' . $errMsg . "\nSQL: ".mb_strimwidth($sql, 0, 100000, ' [...]')."\n"
+                                    : 'DB ERROR: ' . $errMsg;
 
                                 $nManager->addFinalReportNotice(array(
                                     'shortMsg' => 'DATA-REPLACE ERRORS: MySQL',
@@ -348,10 +353,8 @@ class DUPX_UpdateEngine
                                     'sections' => 'search_replace'
                                 ));
 							}
-
 							//DEBUG ONLY:
-                            DUPX_Log::info("\t{$sql}\n", 3);
-
+                            DUPX_Log::info("\t".mb_strimwidth($sql, 0, 100000, ' [...]')."\n", DUPX_Log::LV_HARD_DEBUG);
                         } elseif ($upd) {
                             $errMsg = sprintf("Row [%s] on Table [%s] requires a manual update.", $current_row, $table);
                             $report['errkey'][] = $errMsg;
@@ -404,7 +407,7 @@ class DUPX_UpdateEngine
     {
         // some unseriliased data cannot be re-serialised eg. SimpleXMLElements
         try {
-            DUPX_Handler::$should_log = false;
+            DUPX_Handler::setMode(DUPX_Handler::MODE_OFF);
             if (is_string($data) && ($unserialized = @unserialize($data)) !== false) {
                 $data = self::recursiveUnserializeReplace($from, $to, $unserialized, true, $objArr, $fixpartials);
             } elseif (is_array($data)) {
@@ -465,7 +468,7 @@ class DUPX_UpdateEngine
                 }
             }
 
-            DUPX_Handler::$should_log = true;
+            DUPX_Handler::setMode();
             if ($serialised) {
                 return serialize($data);
             }
@@ -486,8 +489,23 @@ class DUPX_UpdateEngine
      */
     public static function isSerialized($data)
     {
-        $test = @unserialize(($data));
-        return ($test !== false || $test === 'b:0;') ? true : false;
+        if (!is_string($data)) {
+            return false;
+        } else if ($data === 'b:0;') {
+            return true;
+        } else {
+            try {
+                DUPX_Handler::setMode(DUPX_Handler::MODE_OFF);
+                $unserialize_ret = @unserialize($data) !== false;
+                DUPX_Handler::setMode();
+                return $unserialize_ret;
+            } catch (Exception $e) {
+                DUPX_Log::info("Unserialize exception: ".$e->getMessage());
+                //DEBUG ONLY:
+                DUPX_Log::info("Serialized data\n".$data, DUPX_Log::LV_DEBUG);
+                return false;
+            }
+        }
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * The base class for all screen.php files.  This class is used to control items that are common
  * among all screens, namely the Help tab and Screen Options drop down items.  When creating a
@@ -70,8 +71,8 @@ class DUP_UI_Screen
             "<div class='dup-screen-hlp-info'><b>".esc_html($txt_title).":</b> <br/>"
             ."<i class='fa fa-home'></i> <a href='https://snapcreek.com/duplicator/docs/' target='_sc-home'>".esc_html($txt_home)."</a> <br/>"
             ."<i class='fa fa-book'></i> <a href='https://snapcreek.com/duplicator/docs/guide/' target='_sc-guide'>".esc_html($txt_guide)."</a> <br/>"
-            ."<i class='fa fa-file-code-o'></i> <a href='https://snapcreek.com/duplicator/docs/faqs-tech/' target='_sc-faq'>".esc_html($txt_faq)."</a> <br/>"
-			."<i class='fa fa-gear'></i> <a href='admin.php?page=duplicator-settings&tab=package'>".esc_html($txt_sets)."</a></div>"
+            ."<i class='far fa-file-code'></i> <a href='https://snapcreek.com/duplicator/docs/faqs-tech/' target='_sc-faq'>".esc_html($txt_faq)."</a> <br/>"
+			."<i class='fa fa-cog'></i> <a href='admin.php?page=duplicator-settings&tab=package'>".esc_html($txt_sets)."</a></div>"
         );
     }
 }

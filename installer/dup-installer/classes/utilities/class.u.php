@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
  * Various Static Utility methods for working with the installer
@@ -162,16 +162,20 @@ class DUPX_U
 		 $exists = false;
 		 if (function_exists('get_headers')) {
 			$url =  is_integer($port) ? $url . ':' . $port 	: $url;
-			DUPX_Handler::$should_log = false;
-			@ini_set("default_socket_timeout", $timeout);
-			$headers = @get_headers($url);
-			DUPX_Handler::$should_log = true;
+			DUPX_Handler::setMode(DUPX_Handler::MODE_OFF);
+			if (SnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout')) {
+				@ini_set("default_socket_timeout", $timeout);
+            }
+            $headers = @get_headers($url);
+			DUPX_Handler::setMode();
 			if (is_array($headers) && strpos($headers[0], '404') === false) {
 				 $exists = true;
 			}
 		} else {
 			if (function_exists('fsockopen')) {
-				@ini_set("default_socket_timeout", $timeout);
+                if (SnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout')) {
+                    @ini_set("default_socket_timeout", $timeout); 
+                }
 				$port = isset($port) && is_integer($port) ? $port : 80;
 				$host = parse_url($url, PHP_URL_HOST);
 				$connected = @fsockopen($host, $port, $errno, $errstr, $timeout); //website and port
@@ -1737,6 +1741,45 @@ class DUPX_U
         }
 
         return $decoded;
+    }
+
+    /**
+     *
+     * @param array $matches
+     * @return string
+     */
+    public static function encodeUtf8CharFromRegexMatch($matches)
+    {
+        if (empty($matches) || !is_array($matches)) {
+            return '';
+        } else {
+            return json_decode('"'.$matches[0].'"');
+        }
+    }
+
+    /**
+     * this function escape generic string to prevent security issue.
+     * Used to replace string in wp transformer
+     * 
+     * for example
+     * abc'" become "abc'\""
+     *
+     * @param string $str input string
+     * @param bool $addQuote if true add " before and after string
+     * @return string
+     */
+    public static function getEscapedGenericString($str, $addQuote = true)
+    {
+        $result = SnapLibUtil::wp_json_encode(trim($str));
+        $result = str_replace(array('\/', '$'), array('/', '\\$'), $result);
+        $result = preg_replace_callback(
+            '/\\\\u[a-fA-F0-9]{4}/m', array(__CLASS__, 'encodeUtf8CharFromRegexMatch'), $result
+        );
+
+        if (!$addQuote) {
+            $result = substr($result, 1 , strlen($result) -2);
+        }
+        return $result;
     }
 }
 DUPX_U::init();

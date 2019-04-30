@@ -1,5 +1,5 @@
 <?php
-defined("ABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
@@ -28,7 +28,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<div class="hdr-main">Database Validation	</div>
 	<?php else : ?>
 		<div class="dupx-logfile-link">
-			<a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_TIME']); ?>" target="dup-installer">dup-installer-log.txt</a>
+			<?php DUPX_View_Funcs::installerLogLink(); ?>
 		</div>
 		<div class="hdr-main">Step <span class="step">2</span> of 4: Install Database	</div>
 		<div class="s2-btngrp">
@@ -92,7 +92,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 	</table>
 	<br/><br/>
 
-	<small><i class="fa fa-exclamation-triangle"></i> WARNING: Be sure these database parameters are correct! Entering the wrong information WILL overwrite an existing database.
+	<small><i class="fa fa-exclamation-triangle fa-sm"></i> WARNING: Be sure these database parameters are correct! Entering the wrong information WILL overwrite an existing database.
 		Make sure to have backups of all your data before proceeding.</small><br/>
 </div>
 
@@ -102,7 +102,7 @@ VIEW: STEP 2 - AJAX RESULT
 Auto Posts to view.step3.php  -->
 <form id='s2-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>" target="dup-installer">dup-installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
 	<div class="hdr-main">
 		Step <span class="step">2</span> of 4: Install Database
 	</div>
@@ -132,7 +132,7 @@ Auto Posts to view.step3.php  -->
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
 		<div style="width:500px; margin:auto">
-			<div style="font-size:1.7em; margin-bottom:20px"><i class="fa fa-circle-o-notch fa-spin"></i> Installing Database</div>
+			<div style="font-size:1.7em; margin-bottom:20px"><i class="fas fa-circle-notch fa-spin"></i> Installing Database</div>
 			<div id="progress-bar"></div>
 			<h3> Please Wait...</h3><br/><br/>
 			<i>Keep this window open during the creation process.</i><br/>
@@ -144,7 +144,7 @@ Auto Posts to view.step3.php  -->
 	<div id="ajaxerr-area" style="display:none">
 		<p>Please try again an issue has occurred.</p>
 		<div style="padding: 0px 10px 10px 0px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the dup-installer-log.txt file for more details.</div>
+			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the <?php DUPX_View_Funcs::installerLogLink(); ?> file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" onclick="$('#s2-result-form').hide();  $('#s2-input-form').show(200);  $('#dbchunk_retry').val(0);" value="&laquo; Try Again" class="default-btn" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/' target='_blank'>snapcreek.com</a></i>
