@@ -11,7 +11,7 @@ WordPress migration and backups are much easier with Duplicator! Clone, backup, 
 
 == Description ==
 
-> With over **10 million downloads** Duplicator successfully gives WordPress users the ability to migrate, copy, move or clone a site from one location to another and also serves as a simple backup utility. Duplicator handles serialized and base64 serialized replacements.  Standard WordPress migration and WordPress backups are easily handled by this plugin as are **zero downtime migrations**.
+> With over **15 million downloads** Duplicator successfully gives WordPress users the ability to migrate, copy, move or clone a site from one location to another and also serves as a simple backup utility. Duplicator handles serialized and base64 serialized replacements.  Standard WordPress migration and WordPress backups are easily handled by this plugin as are **zero downtime migrations**.
 
 For complete details visit [snapcreek.com](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=desc_details&utm_campaign=duplicator_free).  
 
