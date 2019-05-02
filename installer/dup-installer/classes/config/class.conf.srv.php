@@ -487,7 +487,20 @@ HTACCESS;
     private static function obscureWpConfig($src)
     {
         $transformer = new WPConfigTransformerSrc($src);
-        $obsKeys     = array('DB_PASSWORD', 'AUTH_KEY', 'SECURE_AUTH_KEY', 'LOGGED_IN_KEY', 'NONCE_KEY', 'AUTH_SALT', 'SECURE_AUTH_SALT', 'LOGGED_IN_SALT', 'NONCE_SALT');
+        $obsKeys     = array(
+            'DB_NAME',
+            'DB_USER',
+            'DB_HOST',
+            'DB_PASSWORD',
+            'AUTH_KEY',
+            'SECURE_AUTH_KEY',
+            'LOGGED_IN_KEY',
+            'NONCE_KEY',
+            'AUTH_SALT',
+            'SECURE_AUTH_SALT',
+            'LOGGED_IN_SALT',
+            'NONCE_SALT');
+        
         foreach ($obsKeys as $key) {
             if ($transformer->exists('constant', $key)) {
                 $transformer->update('constant', $key, '**OBSCURED**');
