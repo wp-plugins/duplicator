@@ -40,30 +40,34 @@ try {
      * init constants and include
      */
     DUPX_Boot::init();
+    DUPX_Boot::initArchiveAndLog();
+
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.db.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.http.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.server.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.conf.srv.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.view.php');
 
     $exceptionError = false;
+    // DUPX_log::error thotw an exception
+    DUPX_Log::setThrowExceptionOnError(true);
 
-    require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php');
-    $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
-
-    if ($GLOBALS['DUPX_AC']->csrf_crypt) {
-        require_once($GLOBALS['DUPX_INIT'].'/classes/Crypt/Rijndael.php');
-        require_once($GLOBALS['DUPX_INIT'].'/classes/Crypt/Random.php');
-    }
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
 
     // ?view=help
     if (!empty($_GET['view']) && 'help' == $_GET['view']) {
         if (!isset($_GET['archive'])) {
             // RSR TODO: Fail gracefully
-            die("Archive parameter not specified");
+            DUPX_Log::error("Archive parameter not specified");
         }
         if (!isset($_GET['bootloader'])) {
             // RSR TODO: Fail gracefully
-            die("Bootloader parameter not specified");
+            DUPX_Log::error("Bootloader parameter not specified");
         }
     } else if (isset($_GET['is_daws']) && 1 == $_GET['is_daws']) { // For daws action
-        require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
         $post_ctrl_csrf_token = isset($_GET['daws_csrf_token']) ? DUPX_U::sanitize_text_field($_GET['daws_csrf_token']) : '';
         if (DUPX_CSRF::check($post_ctrl_csrf_token, 'daws')) {
             $outer_root_path = dirname($GLOBALS['DUPX_ROOT']);
@@ -92,13 +96,13 @@ try {
                     'isWPAlreadyExistsError' => 1,
                     'error' => "<b style='color:#B80000;'>INSTALL ERROR!</b><br/>". ERR_CONFIG_FOUND,                    
                 );
-                echo json_encode($resp);
+                echo DupLiteSnapLibUtil::wp_json_encode($resp);
             } else {
                 require_once($GLOBALS['DUPX_INIT'].'/lib/dup_archive/daws/daws.php');
             }
-            die();
+            die('');
         } else {
-            die("An invalid request was made to 'daws'.  In order to protect this request from unauthorized access please "
+            DUPX_Log::error("An invalid request was made to 'daws'.  In order to protect this request from unauthorized access please "
             . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
         }        
     } else {
@@ -108,7 +112,7 @@ try {
                 $_POST['archive'] = $archive;
             } else {
                 // RSR TODO: Fail gracefully
-                die("Archive parameter not specified");
+                DUPX_Log::error("Archive parameter not specified");
             }
         }
         if (!isset($_POST['bootloader'])) {
@@ -117,18 +121,15 @@ try {
                 $_POST['bootloader'] = $bootloader;
             } else {
                 // RSR TODO: Fail gracefully
-                die("Bootloader parameter not specified");
+                DUPX_Log::error("Bootloader parameter not specified");
             }
         }
     }
 
-    require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
-    require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
-    require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
-    require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
+    DUPX_InstallerState::init($GLOBALS['INIT']);
 
     if ($GLOBALS['DUPX_AC'] == null) {
-        die("Can't initialize config globals! Please try to re-run installer.php");
+        DUPX_Log::error("Can't initialize config globals! Please try to re-run installer.php");
     }
 
     //Password Check
@@ -153,7 +154,7 @@ try {
     // TODO: If this is the very first step
     $GLOBALS['DUPX_STATE'] = DUPX_InstallerState::getInstance($init_state);
     if ($GLOBALS['DUPX_STATE'] == null) {
-        die("Can't initialize installer state! Please try to re-run installer.php");
+        DUPX_Log::error("Can't initialize installer state! Please try to re-run installer.php");
     }
 
     if (!empty($GLOBALS['view'])) {
@@ -176,49 +177,25 @@ try {
 
         if (in_array($post_view, $csrf_views)) {
             if (isset($_POST['csrf_token']) && !DUPX_CSRF::check($_POST['csrf_token'], $post_view)) {
-                /*
-                var_dump($_POST['csrf_token']);
-                echo '<br/>';
-                echo '<pre>';
-                var_dump($_COOKIE);
-                echo '</pre>';
-                echo '<br/>';
-                */
-                die("An invalid request was made to '{$post_view}'.  In order to protect this request from unauthorized access please "
+                DUPX_Log::error("An invalid request was made to '{$post_view}'.  In order to protect this request from unauthorized access please "
                 . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
             }
         }
     }
-
-    require_once($GLOBALS['DUPX_INIT'] . '/classes/class.db.php');
-    require_once($GLOBALS['DUPX_INIT'] . '/classes/class.logging.php');
-    require_once($GLOBALS['DUPX_INIT'] . '/classes/class.http.php');
-    require_once($GLOBALS['DUPX_INIT'] . '/classes/class.server.php');
-    require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.conf.srv.php');
-    require_once($GLOBALS['DUPX_INIT'] . '/classes/class.view.php');
 
     $GLOBALS['_CURRENT_URL_PATH'] = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
     $GLOBALS['NOW_TIME']		  = @date("His");
 
     if (!chdir($GLOBALS['DUPX_INIT'])) {
         // RSR TODO: Can't change directories
-        echo "Can't change to directory ".$GLOBALS['DUPX_INIT'];
-        exit(1);
+        DUPX_Log::error("Can't change to directory ".$GLOBALS['DUPX_INIT']);
     }
 
     if (isset($_POST['ctrl_action'])) {
         $post_ctrl_csrf_token = isset($_POST['ctrl_csrf_token']) ? $_POST['ctrl_csrf_token'] : '';
         $post_ctrl_action = DUPX_U::sanitize_text_field($_POST['ctrl_action']);
         if (!DUPX_CSRF::check($post_ctrl_csrf_token, $post_ctrl_action)) {
-            /*
-            var_dump($post_ctrl_csrf_token);
-            echo '<br/>';
-            echo '<pre>';
-            var_dump($_COOKIE);
-            echo '</pre>';
-            echo '<br/>';
-            */
-            die("An invalid request was made to '{$post_ctrl_action}'.  In order to protect this request from unauthorized access please "
+            DUPX_Log::error("An invalid request was made to '{$post_ctrl_action}'.  In order to protect this request from unauthorized access please "
                 . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
         }
         require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.base.php');
@@ -228,11 +205,13 @@ try {
             $pass_hasher = new DUPX_PasswordHash(8, FALSE);
             $pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['DUPX_AC']->secure_pass);
             if (! $pass_check) {
-                die("Unauthorized Access:  Please provide a password!");
+                DUPX_Log::error("Unauthorized Access:  Please provide a password!");
             }
         }
 
-        switch ($_POST['ctrl_action']) {
+        // the controllers must die in case of error
+        DUPX_Log::setThrowExceptionOnError(false);
+        switch ($post_ctrl_action) {
             case "ctrl-step1" :
                 require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.s1.php');
                 break;
@@ -247,9 +226,12 @@ try {
                 require_once($GLOBALS['DUPX_INIT'].'/classes/class.engine.php');
                 require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.s3.php');
                 break;
+            default:
+                DUPX_Log::setThrowExceptionOnError(true);
+                DUPX_Log::error('No valid action request');
         }
-        @fclose($GLOBALS["LOG_FILE_HANDLE"]);
-        die("");
+        DUPX_Log::setThrowExceptionOnError(true);
+        DUPX_Log::error('Ctrl action problem');
     }
 } catch (Exception $e) {
     $exceptionError = $e;
@@ -261,7 +243,8 @@ try {
 $unespectOutput = ob_get_contents();
 ob_clean();
 if (!empty($unespectOutput)) {
-    // @todo something for report unespected output
+    DUPX_Log::info('ERROR: Unespect output '.DUPX_Log::varToString($unespectOutput));
+    $exceptionError = new Exception('Unespected output '.DUPX_Log::varToString($unespectOutput));
 }
 ?><!DOCTYPE html>
 <html>
@@ -270,6 +253,18 @@ if (!empty($unespectOutput)) {
 	<meta name="robots" content="noindex,nofollow">
 	<title>Duplicator</title>
     <link rel='stylesheet' href='assets/font-awesome/css/all.min.css' type='text/css' media='all' />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/dup-installer/favicon/lite01_apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/dup-installer/favicon/lite01_favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/dup-installer/favicon/lite01_favicon-16x16.png">
+    <link rel="manifest" href="/dup-installer/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/dup-installer/favicon/lite01_safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/dup-installer/favicon/lite01_favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/favicon/dup-installer/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+	<link rel='stylesheet' href='assets/font-awesome/css/font-awesome.min.css' type='text/css' media='all' />
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.css.php');

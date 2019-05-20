@@ -67,8 +67,8 @@ class DupArchiveHeader// extends HeaderBase
     {
         $isCompressedString = DupArchiveUtil::boolToString($this->isCompressed);
 
-        //SnapLibIOU::fwrite($archiveHandle, "<A><V>{$this->version}</V><C>{$isCompressedString}</C></A>");
-		SnapLibIOU::fwrite($archiveHandle, '<A><V>'.$this->version.'</V><C>'.$isCompressedString.'</C></A>');
+        //DupLiteSnapLibIOU::fwrite($archiveHandle, "<A><V>{$this->version}</V><C>{$isCompressedString}</C></A>");
+		DupLiteSnapLibIOU::fwrite($archiveHandle, '<A><V>'.$this->version.'</V><C>'.$isCompressedString.'</C></A>');
     }
 }
 }

@@ -23,7 +23,7 @@ class DUPX_InstallerState
         self::$state_filepath = dirname(__FILE__).'/../installer-state.txt';
 
         if($clearState) {
-            SnapLibIOU::rm(self::$state_filepath);
+            DupLiteSnapLibIOU::rm(self::$state_filepath);
         }
     }
 
@@ -81,10 +81,8 @@ class DUPX_InstallerState
 
     public function save()
     {
-		$data = SnapLibStringU::jsonEncode($this);
+		$data = DupLiteSnapLibUtil::wp_json_encode($this);
 
-        SnapLibIOU::filePutContents(self::$state_filepath, $data);
+        DupLiteSnapLibIOU::filePutContents(self::$state_filepath, $data);
     }
 }
-
-DUPX_InstallerState::init($GLOBALS['INIT']);

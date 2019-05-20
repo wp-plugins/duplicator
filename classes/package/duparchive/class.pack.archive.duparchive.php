@@ -195,7 +195,7 @@ class DUP_DupArchive
 
                     $totalFileCount = count($scanReport->ARC->Files);
 
-                    $package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, $createState->currentFileIndex);
+                    $package->Status = DupLiteSnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, $createState->currentFileIndex);
 
                     $buildProgress->retries = 0;
 
@@ -296,7 +296,7 @@ class DUP_DupArchive
                         $totalFileCount = count($scanReport->ARC->Files);
                         $archiveSize    = @filesize($expandState->archivePath);
 
-                        $package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::COMPLETE, $archiveSize,
+                        $package->Status = DupLiteSnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::COMPLETE, $archiveSize,
                                 $expandState->archiveOffset);
                         DUP_LOG::TraceObject("package status after expand=", $package->Status);
                         DUP_LOG::Trace("archive size:{$archiveSize} expand offset:{$expandState->archiveOffset}");

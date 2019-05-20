@@ -76,18 +76,18 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         $data = new stdClass();
 
         if($this->currentFileHeader != null) {
-            $data->currentFileHeaderString      = json_encode($this->currentFileHeader);
+            $data->currentFileHeaderString      = DupLiteSnapLibUtil::wp_json_encode($this->currentFileHeader);
         } else {
             $data->currentFileHeaderString      = null;
         }
 
         if($this->archiveHeader != null) {
-            $data->archiveHeaderString      = json_encode($this->archiveHeader);
+            $data->archiveHeaderString      = DupLiteSnapLibUtil::wp_json_encode($this->archiveHeader);
         } else {
             $data->archiveHeaderString      = null;
         }
 
-        $data->failuresString = json_encode($this->failures, JSON_FORCE_OBJECT);
+        $data->failuresString = DupLiteSnapLibUtil::wp_json_encode($this->failures, JSON_FORCE_OBJECT);
 
         // Object members auto skipped
         DUP_Util::objectCopy($this, $data);

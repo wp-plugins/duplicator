@@ -13,16 +13,20 @@
  */
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-$dir = dirname(__FILE__);
+if (!defined('DUPLITE_SNAPLIB_INCLUDE_ALL')) {
+    define('DUPLITE_SNAPLIB_INCLUDE_ALL', true);
 
-require_once($dir.'/class.snaplib.exceptions.php');
-require_once($dir.'/class.snaplib.logger.php');
-require_once($dir.'/class.snaplib.u.util.php');
-require_once($dir.'/class.snaplib.u.io.php');
-require_once($dir.'/class.snaplib.u.net.php');
-require_once($dir.'/class.snaplib.u.os.php');
-require_once($dir.'/class.snaplib.u.stream.php');
-require_once($dir.'/class.snaplib.u.string.php');
-require_once($dir.'/class.snaplib.u.ui.php');
-require_once($dir.'/class.snaplib.u.url.php');
-require_once($dir.'/class.snaplib.u.wp.php');
+    $dir = dirname(__FILE__);
+
+    require_once($dir.'/class.snaplib.exceptions.php');
+    require_once($dir.'/class.snaplib.logger.php');
+    require_once($dir.'/class.snaplib.u.util.php');
+    require_once($dir.'/class.snaplib.u.io.php');
+    require_once($dir.'/class.snaplib.u.net.php');
+    require_once($dir.'/class.snaplib.u.os.php');
+    require_once($dir.'/class.snaplib.u.stream.php');
+    require_once($dir.'/class.snaplib.u.string.php');
+    require_once($dir.'/class.snaplib.u.ui.php');
+    require_once($dir.'/class.snaplib.u.url.php');
+    require_once($dir.'/class.snaplib.u.wp.php');
+}

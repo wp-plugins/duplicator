@@ -79,7 +79,7 @@ function duplicator_package_build()
     $json['runtime'] = $Package->Runtime;
     $json['exeSize'] = $Package->ExeSize;
     $json['archiveSize'] = $Package->ZipSize;
-    $json_response   = json_encode($json);
+    $json_response   = DupLiteSnapLibUtil::wp_json_encode($json);
 
     //Simulate a Host Build Interrupt
 	//die(0);
@@ -183,7 +183,7 @@ function duplicator_duparchive_package_build()
         $json['status'] = 4;
     }
 
-    $json_response = json_encode($json);
+    $json_response = DupLiteSnapLibUtil::wp_json_encode($json);
 
     Dup_Log::TraceObject('json response', $json_response);
     error_reporting($errLevel);
@@ -246,7 +246,8 @@ function duplicator_package_delete()
                         _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_database.sql"));
                         _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_installer.php"));
                         _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_scan.json"));
-						_unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log"));
+                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_wp-config.txt"));
+                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log"));
 
                         //Unfinished Zip files
                         $tmpZip = DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_archive.zip.*";
@@ -260,12 +261,12 @@ function duplicator_package_delete()
         }
     } catch (Exception $e) {
         $json['error'] = "{$e}";
-        die(json_encode($json));
+        die(DupLiteSnapLibUtil::wp_json_encode($json));
     }
 
     $json['ids']     = "{$postIDs}";
     $json['removed'] = $delCount;
-    echo json_encode($json);
+    echo DupLiteSnapLibUtil::wp_json_encode($json);
     die();
 }
 

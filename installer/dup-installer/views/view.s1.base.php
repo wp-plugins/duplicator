@@ -38,8 +38,8 @@ $openbase	= ini_get("open_basedir");
 $datetime1	= $GLOBALS['DUPX_AC']->created;
 $datetime2	= date("Y-m-d H:i:s");
 $fulldays	= round(abs(strtotime($datetime1) - strtotime($datetime2))/86400);
-$root_path	= SnapLibIOU::safePath($GLOBALS['DUPX_ROOT'], true);
-$archive_path	= SnapLibIOU::safePath($GLOBALS['FW_PACKAGE_PATH'], true);
+$root_path	= DupLiteSnapLibIOU::safePath($GLOBALS['DUPX_ROOT'], true);
+$archive_path	= DupLiteSnapLibIOU::safePath($GLOBALS['FW_PACKAGE_PATH'], true);
 $wpconf_path	= "{$root_path}/wp-config.php";
 $max_time_zero	= ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? false : @set_time_limit(0);
 $max_time_size	= 314572800;  //300MB
@@ -210,7 +210,7 @@ ARCHIVE
 						<div class="s1-archive-failed-msg">
 						<b class="dupx-fail">Archive File Not Found!</b><br/>
 							The installer file and the archive are bound together as a package when the archive is built.  They must be downloaded together and used
-							together at install time.  The archive file name should <u>not</u> be changed when it is downloaded because the file name is strongly bound
+							together at install time.  The archive file name should <u>NOT</u> be changed when it is downloaded because the file name is strongly bound
 							to the installer. When downloading the package files make sure both files are from the same package line in the packages view within the
 							Duplicator WordPress admin.
 							<br/><br/>
@@ -567,31 +567,35 @@ OPTIONS
         <tr>
             <td>Extraction:</td>
             <td>
-                <?php $num_selections = ($archive_config->isZipArchive() ? 3 : 2); ?>
+                <?php 
+                $options = array();
+                $options[] = '<option '.($is_wpconfarc_present ? '' : 'disabled').' value="manual">Manual Archive Extraction '.($is_wpconfarc_present ? '' : '*').'</option>';
+                if($archive_config->isZipArchive()){
+                        //ZIP-ARCHIVE
+                        if (!$zip_archive_enabled){
+                            $options[] = '<option value="ziparchive" disabled="true">PHP ZipArchive (not detected on server)</option>';
+                        } elseif ($zip_archive_enabled &&!$shell_exec_zip_enabled) {
+                            $options[] = '<option value="ziparchive" selected="true">PHP ZipArchive</option>';
+                        } else {
+                            $options[] = '<option value="ziparchive">PHP ZipArchive</option>';
+                        }
+                        //SHELL-EXEC UNZIP
+                        if (!$shell_exec_zip_enabled){
+                            $options[] = '<option value="shellexec_unzip" disabled="true">Shell Exec Unzip (not detected on server)</option>';
+                        } else {
+                            $options[] = '<option value="shellexec_unzip" selected="true">Shell Exec Unzip</option>';
+                        }
+                }
+                else {
+                    $options[] = '<option value="duparchive" selected="true">DupArchive</option>';
+                }
+                $num_selections = count($options);
+                ?>
                 <select id="archive_engine" name="archive_engine" size="<?php echo DUPX_U::esc_attr($num_selections); ?>">
-					<option <?php echo ($is_wpconfarc_present ? '' : 'disabled'); ?> value="manual">Manual Archive Extraction <?php echo ($is_wpconfarc_present ? '' : '*'); ?></option>
-                    <?php
-                        if($archive_config->isZipArchive()){
-
-                            //ZIP-ARCHIVE
-                            if (!$zip_archive_enabled){
-                                echo '<option value="ziparchive" disabled="true">PHP ZipArchive (not detected on server)</option>';
-                            } elseif ($zip_archive_enabled &&!$shell_exec_zip_enabled) {
-                                echo '<option value="ziparchive" selected="true">PHP ZipArchive</option>';
-                            } else {
-                                echo '<option value="ziparchive">PHP ZipArchive</option>';
-                            }
-
-                            //SHELL-EXEC UNZIP
-                            if (!$shell_exec_zip_enabled){
-                                echo '<option value="shellexec_unzip" disabled="true">Shell Exec Unzip (not detected on server)</option>';
-                            } else {
-                                echo '<option value="shellexec_unzip" selected="true">Shell Exec Unzip</option>';
-                            }
-                    }
-                    else {
-                        echo '<option value="duparchive" selected="true">DupArchive</option>';
-                    }
+					<?php
+                        foreach($options as $opt) {
+                            echo $opt;
+                        }
                     ?>
                 </select><br/>
 				<?php if(!$is_wpconfarc_present) :?>
@@ -606,9 +610,9 @@ OPTIONS
 			<td>Permissions:</td>
 			<td>
 				<input type="checkbox" name="set_file_perms" id="set_file_perms" value="1" onclick="jQuery('#file_perms_value').prop('disabled', !jQuery(this).is(':checked'));"/>
-				<label for="set_file_perms">All Files</label><input name="file_perms_value" id="file_perms_value" style="width:30px; margin-left:7px;" value="644" disabled> &nbsp;
+				<label for="set_file_perms">All Files</label><input name="file_perms_value" id="file_perms_value" style="width:45px; margin-left:7px;" value="644" disabled> &nbsp;
 				<input type="checkbox" name="set_dir_perms" id="set_dir_perms" value="1" onclick="jQuery('#dir_perms_value').prop('disabled', !jQuery(this).is(':checked'));"/>
-				<label for="set_dir_perms">All Directories</label><input name="dir_perms_value" id="dir_perms_value" style="width:30px; margin-left:7px;" value="755" disabled>
+				<label for="set_dir_perms">All Directories</label><input name="dir_perms_value" id="dir_perms_value" style="width:45px; margin-left:7px;" value="755" disabled>
 			</td>
 		</tr>
 	</table><br/><br/>
@@ -798,7 +802,7 @@ DUPX.getManaualArchiveOpt = function ()
 DUPX.startExtraction = function()
 {
 	var isManualExtraction = ($("#archive_engine").val() == "manual");
-	var zipEnabled = <?php echo SnapLibStringU::boolToString($archive_config->isZipArchive()); ?>;
+	var zipEnabled = <?php echo DupLiteSnapLibStringU::boolToString($archive_config->isZipArchive()); ?>;
 
 	$("#operation-text").text("Extracting Archive Files");
 

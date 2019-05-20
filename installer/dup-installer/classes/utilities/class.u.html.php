@@ -8,11 +8,14 @@
  * @package SC\DUPX\U
  *
  */
-defined("DUPXABSPATH") or die("");
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
+/**
+ *
+ */
 class DUPX_U_Html
 {
-    protected static $lightboxUniqueId = 0;
+    protected static $uniqueId = 0;
 
     /**
      * inizialize css for html elements
@@ -20,6 +23,8 @@ class DUPX_U_Html
     public static function css()
     {
         self::lightBoxCss();
+        self::moreContentCss();
+        self::inputPasswordToggleCss();
     }
 
     /**
@@ -28,12 +33,14 @@ class DUPX_U_Html
     public static function js()
     {
         self::lightBoxJs();
+        self::moreContentJs();
+        self::inputPasswordToggleJs();
     }
 
     private static function getUniqueId()
     {
-        self::$lightboxUniqueId ++;
-        return 'dup-light-'.self::$lightboxUniqueId.'-'.str_replace('.', '-', microtime(true));
+        self::$uniqueId ++;
+        return 'dup-html-id-'.self::$uniqueId.'-'.str_replace('.', '-', microtime(true));
     }
 
     public static function getLigthBox($linkLabelHtml, $titleContent, $htmlContent, $echo = true, $htmlAfterContent = '')
@@ -68,10 +75,10 @@ class DUPX_U_Html
         if ($enableTargetDownload) {
             $path = parse_url($url, PHP_URL_PATH);
             if (!empty($path)) {
-                $urlPath = parse_url($url,PHP_URL_PATH);
+                $urlPath  = parse_url($url, PHP_URL_PATH);
                 $fileName = basename($urlPath);
             } else {
-                $fileName = parse_url($url,PHP_URL_HOST);
+                $fileName = parse_url($url, PHP_URL_HOST);
             }
             $afterContent .= '<a target="_blank" class="button download-button" title="Download" download="'.DUPX_U::esc_attr($fileName).'" href="'.DUPX_U::esc_attr($url).'" onclick="function () { event.preventDefault(); return false;}" ><i class="fa fa-2x fa-download"></i></a>';
         }
@@ -175,10 +182,9 @@ class DUPX_U_Html
                 width: 50%;
                 box-sizing: border-box;
                 float: left;
-                border: 1px solid #8e8d8d;
+                border-right: 1px solid black;
                 height: 100%;
                 overflow: auto;
-				padding:5px;
             }
 
             .dub-ligthbox-content .row-cols-2 .col-2 {
@@ -292,11 +298,252 @@ class DUPX_U_Html
                     toggleLightbox($(this).closest('.dub-ligthbox-content'));
                 });
 
-                $(window).keydown(function(event){
+                $(window).keydown(function (event) {
                     if (event.key === 'Escape' && currentLightboxOpen !== null) {
                         currentLightboxOpen.find('.close-button').trigger('click');
                     }
                 });
+            });
+        </script>
+        <?php
+    }
+
+    /**
+     *
+     * @param string $htmlContent
+     * @param string|string[] $classes additiona classes on main div
+     * @param int $step pixel foreach more step
+     * @param string $id id on main div
+     * @param bool $echo
+     *
+     * @return string|void
+     */
+    public static function getMoreContent($htmlContent, $classes = array(), $step = 200, $id = '', $echo = true)
+    {
+        $inputCls    = filter_var($classes, FILTER_SANITIZE_STRING, FILTER_FORCE_ARRAY);
+        $mainClasses = array_merge(array('more-content'), $inputCls);
+        $atStep      = max(100, $step);
+        $idAttr      = empty($id) ? '' : 'id="'.$id.'" ';
+        ob_start();
+        ?>
+        <div <?php echo $idAttr; ?>class="<?php echo implode(' ', $mainClasses); ?>" data-more-step="<?php echo $atStep; ?>" style="max-height: <?php echo $atStep; ?>px">
+            <div class="more-wrapper" ><?php echo $htmlContent; ?></div>
+            <button class="more-button" type="button">[ show more ]</button>
+            <button class="all-button" type="button" >[ show all ]</button>
+        </div>
+        <?php
+        if ($echo) {
+            ob_end_flush();
+        } else {
+            return ob_get_clean();
+        }
+    }
+
+    protected static function moreContentCss()
+    {
+        ?>
+        <style>
+            .more-content {
+                overflow: hidden;
+                position: relative;
+                max-height: 0;
+            }
+
+            .more-content.more::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                height: 60px;
+                width: 100%;
+                background-image: linear-gradient(transparent, rgba(255,255,255,0.95) 70%);
+            }
+
+            .more-content .more-button,
+            .more-content .all-button {
+                position: absolute;
+                bottom: 0;
+                z-index: 1000;
+                display: none;
+                background: rgba(255,255,255,0.5);
+                border: 0 none;
+                padding: 10px 10px 0;
+                margin: 0;
+                color: #365899;
+                cursor: pointer;
+            }
+
+            .more-content .more-button:hover,
+            .more-content .all-button:hover {
+                text-decoration: underline;
+            }
+
+            .more-content .more-button {
+                left: 0;
+            }
+
+            .more-content .all-button {
+                right: 0;
+            }
+
+            .more-content.more .more-button,
+            .more-content.more .all-button {
+                display: block;
+            }
+
+        </style>
+        <?php
+    }
+
+    protected static function moreContentJs()
+    {
+        ?>
+        <script>
+            $(document).ready(function ()
+            {
+                function moreCheck(moreCont, moreWrap) {
+                    if (moreWrap.height() > moreCont.height()) {
+                        moreCont.addClass('more');
+                    } else {
+                        moreCont.removeClass('more');
+                    }
+                }
+
+                $('.more-content').each(function () {
+                    var moreCont = $(this);
+                    var step = moreCont.data('more-step');
+                    var moreWrap = $(this).find('.more-wrapper');
+
+                    moreCont.find('.more-button').click(function () {
+                        moreCont.css('max-height', "+=" + step + "px");
+                        moreCheck(moreCont, moreWrap);
+                    });
+
+                    moreCont.find('.all-button').click(function () {
+                        moreCont.css('max-height', "none");
+                        moreCheck(moreCont, moreWrap);
+                    });
+
+                    moreCheck(moreCont, moreWrap);
+                });
+            });
+        </script>
+        <?php
+    }
+
+    public static function inputPasswordToggle($name, $id = '', $classes = array(), $attrs = array())
+    {
+        if (!is_array($attrs)) {
+            $attrs = array();
+        }
+        if (!is_array($classes)) {
+            if (empty($classes)) {
+                $classes = array();
+            } else {
+                $classes = array($classes);
+            }
+        }
+        $idAttr    = empty($id) ? '_id_'.$name : $id;
+        $classes[] = 'input-password-group';
+
+        $attrs['type'] = 'password';
+        $attrs['name'] = $name;
+        $attrs['id']   = $idAttr;
+        $attrsHtml     = array();
+
+        foreach ($attrs as $atName => $atValue) {
+            $attrsHtml[] = $atName.'="'.DUPX_U::esc_attr($atValue).'"';
+        }
+        ?>
+        <span class="<?php echo implode(' ', $classes); ?>" >
+            <input <?php echo implode(' ', $attrsHtml); ?> />
+            <button type="button" title="Show the password"><i class="fas fa-eye fa-xs"></i></button>
+        </span>
+        <?php
+    }
+
+    protected static function inputPasswordToggleCss()
+    {
+        ?>
+        <style>
+            .input-password-group {
+                display: inline-block;
+                width:100%;
+                border: 1px solid darkgray;
+                border-radius: 4px;
+                overflow: hidden;
+                position: relative;
+            }
+            .input-password-group input:not([type=checkbox]):not([type=radio]):not([type=button])  {
+                width: calc(100% - 30px) !important;
+                padding: 4px;
+                line-height: 20px;
+                height: 30px;
+                box-sizing: border-box;
+                display: inline-block;
+                border-radius: 0;
+                border: 0 none;
+                border-right: 1px solid darkgray;
+            }
+            .input-password-group button {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                box-sizing: border-box;
+                padding: 0;
+                margin: 0;
+                border: 0 none;
+                overflow: hidden;
+                float: right;
+                cursor: pointer;
+            }
+
+            .input-password-group button i {
+                line-height: 30px;
+                margin: 0;
+                padding: 0;
+            }
+
+            .input-password-group .parsley-errors-list {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 10px;
+            }
+            
+        </style>
+        <?php
+    }
+
+    protected static function inputPasswordToggleJs()
+    {
+        ?>
+        <script>
+            $(document).ready(function () {
+                $('.input-password-group').each(function () {
+                    var group = $(this);
+                    var pwdInput = group.find('input');
+                    var pwdLock = group.find('button');
+
+                    pwdLock.click(function () {
+                        if (pwdInput.attr('type') === 'password') {
+                            pwdInput.attr({
+                                'type': 'text',
+                                'title': 'Hide the password'
+                            });
+                            pwdLock.find('i')
+                                    .removeClass('fa-eye')
+                                    .addClass('fa-eye-slash');
+                        } else {
+                            pwdInput.attr({
+                                'type': 'password',
+                                'title': 'Show the password'
+                            });
+                            pwdLock.find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+                        }
+                    });
+                });
+
             });
         </script>
         <?php

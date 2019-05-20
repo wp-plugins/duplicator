@@ -5,331 +5,334 @@
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package SnapLib
+ * @package DupLiteSnapLib
  * @copyright (c) 2017, Snapcreek LLC
  * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
  *
  */
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-require_once(dirname(__FILE__).'/class.snaplib.u.string.php');
-require_once(dirname(__FILE__).'/class.snaplib.u.os.php');
+if (!class_exists('DupLiteSnapLibIOU', false)) {
 
-class SnapLibIOU
-{
-    // Real upper bound of a signed int is 214748364.
-    // The value chosen below, makes sure we have a buffer of ~4.7 million.
-    const FileSizeLimit32BitPHP = 1900000000;
+    require_once(dirname(__FILE__).'/class.snaplib.u.string.php');
+    require_once(dirname(__FILE__).'/class.snaplib.u.os.php');
 
-    public static function rmPattern($filePathPattern)
+    class DupLiteSnapLibIOU
     {
-        @array_map('unlink', glob($filePathPattern));
-    }
+        // Real upper bound of a signed int is 214748364.
+        // The value chosen below, makes sure we have a buffer of ~4.7 million.
+        const FileSizeLimit32BitPHP = 1900000000;
 
-    public static function chmodPattern($filePathPattern, $mode)
-    {
-        $filePaths = glob($filePathPattern);
-
-        $modes = array();
-
-        foreach ($filePaths as $filePath) {
-            $modes[] = $mode;
+        public static function rmPattern($filePathPattern)
+        {
+            @array_map('unlink', glob($filePathPattern));
         }
 
-        @array_map('chmod', $filePaths, $modes);
-    }
+        public static function chmodPattern($filePathPattern, $mode)
+        {
+            $filePaths = glob($filePathPattern);
 
-    public static function copy($source, $dest, $overwriteIfExists = true)
-    {
-        if (file_exists($dest)) {
-            if ($overwriteIfExists) {
-                self::rm($dest);
-            } else {
-                throw new Exception("Can't copy {$source} to {$dest} because {$dest} already exists!");
-            }
-        }
+            $modes = array();
 
-        if (copy($source, $dest) === false) {
-            throw new Exception("Error copying {$source} to {$dest}");
-        }
-    }
-
-    public static function safePath($path, $real = false)
-    {
-        if ($real) {
-            $path = realpath($path);
-        }
-
-        return str_replace("\\", "/", $path);
-    }
-
-    public static function massMove($fileSystemObjects, $destination, $exclusions = null, $exceptionOnError = true)
-    {
-        $failures = array();
-
-        $destination = rtrim($destination, '/\\');
-
-        if (!file_exists($destination)) {
-            self::mkdir($destination);
-        }
-
-        foreach ($fileSystemObjects as $fileSystemObject) {
-            $shouldMove = true;
-
-            if ($exclusions != null) {
-
-                foreach ($exclusions as $exclusion) {
-                    if (preg_match($exclusion, $fileSystemObject) === 1) {
-                        $shouldMove = false;
-                        break;
-                    }
-                }
+            foreach ($filePaths as $filePath) {
+                $modes[] = $mode;
             }
 
-            if ($shouldMove) {
-
-                $newName = $destination.'/'.basename($fileSystemObject);
-
-                if (!file_exists($fileSystemObject)) {
-                    $failures[] = "Tried to move {$fileSystemObject} to {$newName} but it didn't exist!";
-                } else if (!@rename($fileSystemObject, $newName)) {
-                    $failures[] = "Couldn't move {$fileSystemObject} to {$newName}";
-                }
-            }
+            @array_map('chmod', $filePaths, $modes);
         }
 
-        if ($exceptionOnError && count($failures) > 0) {
-            throw new Exception(implode(',', $failures));
-        }
-
-        return $failures;
-    }
-
-    public static function rename($oldname, $newname, $removeIfExists = false)
-    {
-        if ($removeIfExists) {
-            if (file_exists($newname)) {
-                if (is_dir($newname)) {
-                    self::rmdir($newname);
+        public static function copy($source, $dest, $overwriteIfExists = true)
+        {
+            if (file_exists($dest)) {
+                if ($overwriteIfExists) {
+                    self::rm($dest);
                 } else {
-                    self::rm($newname);
+                    throw new Exception("Can't copy {$source} to {$dest} because {$dest} already exists!");
                 }
             }
-        }
 
-        if (!@rename($oldname, $newname)) {
-            throw new Exception("Couldn't rename {$oldname} to {$newname}");
-        }
-    }
-
-    public static function fopen($filepath, $mode, $throwOnError = true)
-    {
-        if (SnapLibOSU::$isWindows) {
-
-            if (strlen($filepath) > SnapLibOSU::WindowsMaxPathLength) {
-                throw new Exception("Skipping a file that exceeds allowed Windows path length. File: {$filepath}");
+            if (copy($source, $dest) === false) {
+                throw new Exception("Error copying {$source} to {$dest}");
             }
         }
 
-        if (SnapLibStringU::startsWith($mode, 'w') || SnapLibStringU::startsWith($mode, 'c') || file_exists($filepath)) {
-            $file_handle = @fopen($filepath, $mode);
-        } else {
-            if ($throwOnError) {
-                throw new Exception("$filepath doesn't exist");
-            } else {
-                return false;
+        public static function safePath($path, $real = false)
+        {
+            if ($real) {
+                $path = realpath($path);
             }
+
+            return str_replace("\\", "/", $path);
         }
 
-        if ($file_handle === false) {
-            if ($throwOnError) {
-                throw new Exception("Error opening $filepath");
-            } else {
-                return false;
+        public static function massMove($fileSystemObjects, $destination, $exclusions = null, $exceptionOnError = true)
+        {
+            $failures = array();
+
+            $destination = rtrim($destination, '/\\');
+
+            if (!file_exists($destination)) {
+                self::mkdir($destination);
             }
-        } else {
-            return $file_handle;
-        }
-    }
 
-    public static function touch($filepath, $time = null)
-    {
-        if ($time === null) {
-            $time = time();
-        }
+            foreach ($fileSystemObjects as $fileSystemObject) {
+                $shouldMove = true;
 
-        if (@touch($filepath, $time) === null) {
-            throw new Exception("Couldn't update time on {$filepath}");
-        }
-    }
+                if ($exclusions != null) {
 
-    public static function rmdir($dirname, $mustExist = false)
-    {
-        if (file_exists($dirname)) {
-            @chmod($dirname, 0755);
-            if (@rmdir($dirname) === false) {
-                throw new Exception("Couldn't remove {$dirname}");
-            }
-        } else if ($mustExist) {
-            throw new Exception("{$dirname} doesn't exist");
-        }
-    }
+                    foreach ($exclusions as $exclusion) {
+                        if (preg_match($exclusion, $fileSystemObject) === 1) {
+                            $shouldMove = false;
+                            break;
+                        }
+                    }
+                }
 
-    public static function rm($filepath, $mustExist = false)
-    {
-        if (file_exists($filepath)) {
-            @chmod($filepath, 0644);
-            if (@unlink($filepath) === false) {
-                throw new Exception("Couldn't remove {$filepath}");
-            }
-        } else if ($mustExist) {
-            throw new Exception("{$filepath} doesn't exist");
-        }
-    }
+                if ($shouldMove) {
 
-    public static function fwrite($handle, $string)
-    {
-        $bytes_written = @fwrite($handle, $string);
+                    $newName = $destination.'/'.basename($fileSystemObject);
 
-        if ($bytes_written === false) {
-            throw new Exception('Error writing to file.');
-        } else {
-            return $bytes_written;
-        }
-    }
-
-    public static function fgets($handle, $length)
-    {
-        $line = fgets($handle, $length);
-
-        if ($line === false) {
-            throw new Exception('Error reading line.');
-        }
-
-        return $line;
-    }
-
-    public static function fclose($handle, $exception_on_fail = true)
-    {
-        if ((@fclose($handle) === false) && $exception_on_fail) {
-            throw new Exception("Error closing file");
-        }
-    }
-
-    public static function flock($handle, $operation)
-    {
-        if (@flock($handle, $operation) === false) {
-            throw new Exception("Error locking file");
-        }
-    }
-
-    public static function ftell($file_handle)
-    {
-        $position = @ftell($file_handle);
-
-        if ($position === false) {
-            throw new Exception("Couldn't retrieve file offset for $filepath");
-        } else {
-            return $position;
-        }
-    }
-
-    public static function rrmdir($dir)
-    {
-        if (is_dir($dir)) {
-            $objects = scandir($dir);
-            foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (is_dir($dir."/".$object)) {
-                        SnapLibIOU::rrmdir($dir."/".$object);
-                    } else {
-                        //unlink($dir."/".$object);
-                        self::rm($dir."/".$object);
+                    if (!file_exists($fileSystemObject)) {
+                        $failures[] = "Tried to move {$fileSystemObject} to {$newName} but it didn't exist!";
+                    } else if (!@rename($fileSystemObject, $newName)) {
+                        $failures[] = "Couldn't move {$fileSystemObject} to {$newName}";
                     }
                 }
             }
-            rmdir($dir);
-        }
-    }
 
-    public static function filesize($filename)
-    {
-        $file_size = @filesize($filename);
-
-        if ($file_size === false) {
-            throw new Exception("Error retrieving file size of $filename");
-        }
-
-        return $file_size;
-    }
-
-    public static function fseek($handle, $offset, $whence = SEEK_SET)
-    {
-        $ret_val = @fseek($handle, $offset, $whence);
-
-        if ($ret_val !== 0) {
-            $filepath = stream_get_meta_data($handle);
-            $filepath = $filepath["uri"];
-            $filesize = self::filesize($filepath);
-            if ($ret_val === false) {
-                throw new Exception("Trying to fseek($offset, $whence) and came back false");
+            if ($exceptionOnError && count($failures) > 0) {
+                throw new Exception(implode(',', $failures));
             }
-            //This check is not strict, but in most cases 32 Bit PHP will be the issue
-            else if (abs($offset) > self::FileSizeLimit32BitPHP || $filesize > self::FileSizeLimit32BitPHP || ($offset < 0 && $whence == SEEK_SET)) {
-                throw new SnapLib_32BitSizeLimitException("Trying to seek on a file beyond the capability of 32 bit PHP. offset=$offset filesize=$filesize");
+
+            return $failures;
+        }
+
+        public static function rename($oldname, $newname, $removeIfExists = false)
+        {
+            if ($removeIfExists) {
+                if (file_exists($newname)) {
+                    if (is_dir($newname)) {
+                        self::rmdir($newname);
+                    } else {
+                        self::rm($newname);
+                    }
+                }
+            }
+
+            if (!@rename($oldname, $newname)) {
+                throw new Exception("Couldn't rename {$oldname} to {$newname}");
+            }
+        }
+
+        public static function fopen($filepath, $mode, $throwOnError = true)
+        {
+            if (DupLiteSnapLibOSU::$isWindows) {
+
+                if (strlen($filepath) > DupLiteSnapLibOSU::WindowsMaxPathLength) {
+                    throw new Exception("Skipping a file that exceeds allowed Windows path length. File: {$filepath}");
+                }
+            }
+
+            if (DupLiteSnapLibStringU::startsWith($mode, 'w') || DupLiteSnapLibStringU::startsWith($mode, 'c') || file_exists($filepath)) {
+                $file_handle = @fopen($filepath, $mode);
             } else {
-                throw new Exception("Error seeking to file offset $offset. Retval = $ret_val");
+                if ($throwOnError) {
+                    throw new Exception("$filepath doesn't exist");
+                } else {
+                    return false;
+                }
             }
-        }
-    }
 
-    public static function filemtime($filename)
-    {
-        $mtime = filemtime($filename);
-
-        if ($mtime === E_WARNING) {
-            throw new Exception("Cannot retrieve last modified time of $filename");
-        }
-
-        return $mtime;
-    }
-
-    public static function mkdir($pathname, $mode = 0755, $recursive = false)
-    {
-        if (SnapLibOSU::$isWindows) {
-
-            if (strlen($pathname) > SnapLibOSU::WindowsMaxPathLength) {
-                throw new Exception("Skipping creating directory that exceeds allowed Windows path length. File: {$pathname}");
+            if ($file_handle === false) {
+                if ($throwOnError) {
+                    throw new Exception("Error opening $filepath");
+                } else {
+                    return false;
+                }
+            } else {
+                return $file_handle;
             }
         }
 
-        if (!file_exists($pathname)) {
-            if (@mkdir($pathname, $mode, $recursive) === false) {
-                throw new Exception("Error creating directory {$pathname}");
+        public static function touch($filepath, $time = null)
+        {
+            if ($time === null) {
+                $time = time();
             }
-        } else {
-            if (@chmod($pathname, $mode) === false) {
-                throw new Exception("Error setting mode on directory {$pathname}");
+
+            if (@touch($filepath, $time) === null) {
+                throw new Exception("Couldn't update time on {$filepath}");
             }
         }
-    }
 
-    public static function filePutContents($filename, $data)
-    {
-        if (file_put_contents($filename, $data) === false) {
-            throw new Exception("Couldn't write data to {$filename}");
+        public static function rmdir($dirname, $mustExist = false)
+        {
+            if (file_exists($dirname)) {
+                @chmod($dirname, 0755);
+                if (@rmdir($dirname) === false) {
+                    throw new Exception("Couldn't remove {$dirname}");
+                }
+            } else if ($mustExist) {
+                throw new Exception("{$dirname} doesn't exist");
+            }
         }
-    }
 
-    public static function getFileName($file_path)
-    {
-        $info = new SplFileInfo($file_path);
-        return $info->getFilename();
-    }
+        public static function rm($filepath, $mustExist = false)
+        {
+            if (file_exists($filepath)) {
+                @chmod($filepath, 0644);
+                if (@unlink($filepath) === false) {
+                    throw new Exception("Couldn't remove {$filepath}");
+                }
+            } else if ($mustExist) {
+                throw new Exception("{$filepath} doesn't exist");
+            }
+        }
 
-    public static function getPath($file_path)
-    {
-        $info = new SplFileInfo($file_path);
-        return $info->getPath();
+        public static function fwrite($handle, $string)
+        {
+            $bytes_written = @fwrite($handle, $string);
+
+            if ($bytes_written === false) {
+                throw new Exception('Error writing to file.');
+            } else {
+                return $bytes_written;
+            }
+        }
+
+        public static function fgets($handle, $length)
+        {
+            $line = fgets($handle, $length);
+
+            if ($line === false) {
+                throw new Exception('Error reading line.');
+            }
+
+            return $line;
+        }
+
+        public static function fclose($handle, $exception_on_fail = true)
+        {
+            if ((@fclose($handle) === false) && $exception_on_fail) {
+                throw new Exception("Error closing file");
+            }
+        }
+
+        public static function flock($handle, $operation)
+        {
+            if (@flock($handle, $operation) === false) {
+                throw new Exception("Error locking file");
+            }
+        }
+
+        public static function ftell($file_handle)
+        {
+            $position = @ftell($file_handle);
+
+            if ($position === false) {
+                throw new Exception("Couldn't retrieve file offset for $filepath");
+            } else {
+                return $position;
+            }
+        }
+
+        public static function rrmdir($dir)
+        {
+            if (is_dir($dir)) {
+                $objects = scandir($dir);
+                foreach ($objects as $object) {
+                    if ($object != "." && $object != "..") {
+                        if (is_dir($dir."/".$object)) {
+                            DupLiteSnapLibIOU::rrmdir($dir."/".$object);
+                        } else {
+                            //unlink($dir."/".$object);
+                            self::rm($dir."/".$object);
+                        }
+                    }
+                }
+                rmdir($dir);
+            }
+        }
+
+        public static function filesize($filename)
+        {
+            $file_size = @filesize($filename);
+
+            if ($file_size === false) {
+                throw new Exception("Error retrieving file size of $filename");
+            }
+
+            return $file_size;
+        }
+
+        public static function fseek($handle, $offset, $whence = SEEK_SET)
+        {
+            $ret_val = @fseek($handle, $offset, $whence);
+
+            if ($ret_val !== 0) {
+                $filepath = stream_get_meta_data($handle);
+                $filepath = $filepath["uri"];
+                $filesize = self::filesize($filepath);
+                if ($ret_val === false) {
+                    throw new Exception("Trying to fseek($offset, $whence) and came back false");
+                }
+                //This check is not strict, but in most cases 32 Bit PHP will be the issue
+                else if (abs($offset) > self::FileSizeLimit32BitPHP || $filesize > self::FileSizeLimit32BitPHP || ($offset < 0 && $whence == SEEK_SET)) {
+                    throw new DupLiteSnapLib_32BitSizeLimitException("Trying to seek on a file beyond the capability of 32 bit PHP. offset=$offset filesize=$filesize");
+                } else {
+                    throw new Exception("Error seeking to file offset $offset. Retval = $ret_val");
+                }
+            }
+        }
+
+        public static function filemtime($filename)
+        {
+            $mtime = filemtime($filename);
+
+            if ($mtime === E_WARNING) {
+                throw new Exception("Cannot retrieve last modified time of $filename");
+            }
+
+            return $mtime;
+        }
+
+        public static function mkdir($pathname, $mode = 0755, $recursive = false)
+        {
+            if (DupLiteSnapLibOSU::$isWindows) {
+
+                if (strlen($pathname) > DupLiteSnapLibOSU::WindowsMaxPathLength) {
+                    throw new Exception("Skipping creating directory that exceeds allowed Windows path length. File: {$pathname}");
+                }
+            }
+
+            if (!file_exists($pathname)) {
+                if (@mkdir($pathname, $mode, $recursive) === false) {
+                    throw new Exception("Error creating directory {$pathname}");
+                }
+            } else {
+                if (@chmod($pathname, $mode) === false) {
+                    throw new Exception("Error setting mode on directory {$pathname}");
+                }
+            }
+        }
+
+        public static function filePutContents($filename, $data)
+        {
+            if (file_put_contents($filename, $data) === false) {
+                throw new Exception("Couldn't write data to {$filename}");
+            }
+        }
+
+        public static function getFileName($file_path)
+        {
+            $info = new SplFileInfo($file_path);
+            return $info->getFilename();
+        }
+
+        public static function getPath($file_path)
+        {
+            $info = new SplFileInfo($file_path);
+            return $info->getPath();
+        }
     }
 }

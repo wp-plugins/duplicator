@@ -1,5 +1,4 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Custom exceptions
  *
@@ -9,6 +8,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * @package SC\DUPX\U
  *
  */
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
  * Dup installer custom exception

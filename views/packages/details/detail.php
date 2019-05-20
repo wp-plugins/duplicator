@@ -202,7 +202,7 @@ STORAGE -->
 							<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/ftp-64.png"); ?>" />
 							<?php echo sprintf(esc_html__('%1$s, %2$s, %3$s, %4$s, %5$s and other storage options available in', 'duplicator'), 'Amazon', 'Dropbox', 'Google Drive', 'OneDrive', 'FTP/SFTP'); ?>
                             <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage_detail&utm_campaign=duplicator_pro" target="_blank"><?php esc_html_e('Duplicator Pro', 'duplicator');?></a>
-							 <i class="fa fa-lightbulb-o"
+							 <i class="far fa-lightbulb"
 								data-tooltip-title="<?php esc_attr_e('Additional Storage:', 'duplicator'); ?>"
 								data-tooltip="<?php esc_attr_e('Duplicator Pro allows you to create a package and then store it at a custom location on this server or to a cloud '
 										. 'based location such as Google Drive, Amazon, Dropbox or FTP.', 'duplicator'); ?>">

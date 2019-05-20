@@ -51,11 +51,11 @@ class DUPX_Constants
 
 		//PHP INI SETUP: all time in seconds
 		if (!$GLOBALS['DUPX_ENFORCE_PHP_INI']) {
-			if (SnapLibUtil::wp_is_ini_value_changeable('mysql.connect_timeout'))@ini_set('mysql.connect_timeout', '5000');
-			if (SnapLibUtil::wp_is_ini_value_changeable('memory_limit'))  @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-			if (SnapLibUtil::wp_is_ini_value_changeable('max_execution_time'))  @ini_set("max_execution_time", '5000');
-			if (SnapLibUtil::wp_is_ini_value_changeable('max_input_time'))  @ini_set("max_input_time", '5000');
-			if (SnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout'))  @ini_set('default_socket_timeout', '5000');
+			if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('mysql.connect_timeout'))@ini_set('mysql.connect_timeout', '5000');
+			if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('memory_limit'))  @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
+			if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('max_execution_time'))  @ini_set("max_execution_time", '5000');
+			if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('max_input_time'))  @ini_set("max_input_time", '5000');
+			if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout'))  @ini_set('default_socket_timeout', '5000');
 			@set_time_limit(0);
 		}
 

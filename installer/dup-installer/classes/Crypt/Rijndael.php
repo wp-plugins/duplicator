@@ -1,5 +1,5 @@
 <?php
-defined('DUPXABSPATH') || exit;
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Pure-PHP implementation of Rijndael.
  *

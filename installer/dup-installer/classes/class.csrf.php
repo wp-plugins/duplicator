@@ -7,7 +7,6 @@ class DUPX_CSRF {
 	 * @var string
 	 */
 	public static $prefix = '_DUPX_CSRF';
-	private static $cipher;
 	private static $CSRFVars;
 
 	public static function setKeyVal($key, $val) {
@@ -39,10 +38,6 @@ class DUPX_CSRF {
 			$token = $existingToken;
 		} else {
 			$token = DUPX_CSRF::token() . DUPX_CSRF::fingerprint();
-			if (self::isCrypt()) {
-				// $keyName = self::encrypt($keyName);
-				$token = self::encrypt($token);
-			}
 		}
 		
 		self::setKeyVal($keyName, $token);
@@ -56,14 +51,9 @@ class DUPX_CSRF {
 	 */
 	public static function check($token, $form = NULL) {
 		$keyName = self::getKeyName($form);
-		// if (self::isCrypt()) {
-			// $keyName = self::decrypt($keyName);
-			// $token = self::decrypt($token);
-		// }
 		$CSRFVars = self::getCSRFVars();
 		if (isset($CSRFVars[$keyName]) && $CSRFVars[$keyName] == $token) { // token OK
 			return true;
-			// return (substr($token, -32) == DUPX_CSRF::fingerprint()); // fingerprint OK?
 		}
 		return FALSE;
 	}
@@ -88,18 +78,6 @@ class DUPX_CSRF {
 
 	private static function getKeyName($form) {
 		return DUPX_CSRF::$prefix . '_' . $form;
-	}
-
-	private static function isCrypt() {
-		if (class_exists('DUPX_Bootstrap')) {
-			return DUPX_Bootstrap::CSRF_CRYPT;
-		} else {
-			return $GLOBALS['DUPX_AC']->csrf_crypt;
-		}
-	}
-
-	private static function getCryptKey() {
-		return 'snapcreek-'.self::getPackageHash();
 	}
 
 	private static function getPackageHash() {
@@ -143,30 +121,9 @@ class DUPX_CSRF {
 	}
 
 	private static function saveCSRFVars($CSRFVars) {
-		$contents = json_encode($CSRFVars);
+		$contents = DupLiteSnapLibUtil::wp_json_encode($CSRFVars);
 		$filePath = self::getFilePath();
 		file_put_contents($filePath, $contents);
-	}
-
-	private static function getCipher() {
-		if (!isset(self::$cipher)) {
-			self::$cipher = new Crypt_Rijndael();
-			$cryptKey = self::getCryptKey();
-			self::$cipher->setKey($cryptKey);
-		}
-		return self::$cipher;
-	}
-
-	private static function encrypt($val) {
-		$cipher = self::getCipher();
-		$val = $cipher->encrypt($val);
-		return base64_encode($val);
-	}
-
-	private static function decrypt($val) {
-		$cipher = self::getCipher();
-		$val = base64_decode($val);
-		return $cipher->decrypt($val);
 	}
 }
 

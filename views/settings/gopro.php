@@ -35,9 +35,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 <div class="dup-pro-area">
 	<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-dpro-300x50.png"); ?>"  />
-	<div style="font-size:18px; font-style:italic; color:gray">
+	<div style="font-size:18px; font-style:italic; color:gray; border-bottom: 1px solid silver; padding-bottom:10px; margin-bottom: -30px">
 		<?php esc_html_e('The simplicity of Duplicator', 'duplicator') ?>
-		<?php esc_html_e('with power for the professional.', 'duplicator') ?>
+		<?php esc_html_e('with power for everyone.', 'duplicator') ?>
 	</div>
 
 	<table id="comparison-table">
@@ -212,7 +212,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
 		<tr>
-			<td class="feature-column"><?php esc_html_e('Active Customer Support', 'duplicator') ?></td>
+			<td class="feature-column">
+				<?php esc_html_e('Active Customer Support', 'duplicator') ?>
+				<sup><i  class="fa fa-question-circle dup-gopro-help"
+						data-tooltip-title="<?php esc_attr_e("Support", 'duplicator'); ?>"
+                        data-tooltip="<?php esc_attr_e('Pro users get top priority for any requestst to our support desk.  In most cases responses will be answered in under 24 hours.', 'duplicator'); ?>"/></i></sup>
+			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>

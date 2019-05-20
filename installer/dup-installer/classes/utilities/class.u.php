@@ -46,8 +46,8 @@ class DUPX_U
     {
         array_push($GLOBALS['REPLACE_LIST'], array('search' => $search, 'replace' => $replace));
 
-        $search_json  = str_replace('"', "", json_encode($search));
-        $replace_json = str_replace('"', "", json_encode($replace));
+        $search_json  = str_replace('"', "", DupLiteSnapLibUtil::wp_json_encode($search));
+        $replace_json = str_replace('"', "", DupLiteSnapLibUtil::wp_json_encode($replace));
 
         if ($search != $search_json) {
             array_push($GLOBALS['REPLACE_LIST'], array('search' => $search_json, 'replace' => $replace_json));
@@ -163,7 +163,7 @@ class DUPX_U
 		 if (function_exists('get_headers')) {
 			$url =  is_integer($port) ? $url . ':' . $port 	: $url;
 			DUPX_Handler::setMode(DUPX_Handler::MODE_OFF);
-			if (SnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout')) {
+			if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout')) {
 				@ini_set("default_socket_timeout", $timeout);
             }
             $headers = @get_headers($url);
@@ -173,7 +173,7 @@ class DUPX_U
 			}
 		} else {
 			if (function_exists('fsockopen')) {
-                if (SnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout')) {
+                if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout')) {
                     @ini_set("default_socket_timeout", $timeout); 
                 }
 				$port = isset($port) && is_integer($port) ? $port : 80;
@@ -1770,7 +1770,7 @@ class DUPX_U
      */
     public static function getEscapedGenericString($str, $addQuote = true)
     {
-        $result = SnapLibUtil::wp_json_encode(trim($str));
+        $result = DupLiteSnapLibUtil::wp_json_encode(trim($str));
         $result = str_replace(array('\/', '$'), array('/', '\\$'), $result);
         $result = preg_replace_callback(
             '/\\\\u[a-fA-F0-9]{4}/m', array(__CLASS__, 'encodeUtf8CharFromRegexMatch'), $result

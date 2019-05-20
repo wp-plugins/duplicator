@@ -64,7 +64,7 @@ if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
 	}
 
 	//ERR_ZIPMANUAL
-	if ('ziparchive' == $post_archive_engine && !$GLOBALS['DUPX_AC']->installSiteOverwriteOn) {
+	if (('ziparchive' == $post_archive_engine || 'shellexec_unzip' == $post_archive_engine) && !$GLOBALS['DUPX_AC']->installSiteOverwriteOn) {
 		//ERR_CONFIG_FOUND
 		$outer_root_path = dirname($root_path);
 		
@@ -207,57 +207,66 @@ switch ($post_archive_engine) {
 
                 try {
                     if (!$zip->extractTo($target , $extract_filename)) {
-                        DUPX_Log::info("FILE EXTRACION ERROR: ".$extract_filename);
-                        if (SnapLibUtilWp::isWpCore($extract_filename, SnapLibUtilWp::PATH_RELATIVE)) {
-                            $shortMsg      = 'Can\'t extract wp core file: '.$extract_filename;
-                            $finalShortMsg = 'Wp core file '.$extract_filename.' not extracted';
+                        if (DupLiteSnapLibUtilWp::isWpCore($extract_filename, DupLiteSnapLibUtilWp::PATH_RELATIVE)) {
+                            DUPX_Log::info("FILE CORE EXTRACION ERROR: ".$extract_filename);
+                            $shortMsg      = 'Can\'t extract wp core files';
+                            $finalShortMsg = 'Wp core files not extracted';
                             $errLevel      = DUPX_NOTICE_ITEM::CRITICAL;
+                            $idManager      = 'wp-extract-error-file-core';
                         } else {
-                            $shortMsg      = 'Can\'t extract file: '.$extract_filename;
-                            $finalShortMsg = 'File '.$extract_filename.' not extracted';
+                            DUPX_Log::info("FILE EXTRACION ERROR: ".$extract_filename);
+                            $shortMsg      = 'Can\'t extract files';
+                            $finalShortMsg = 'Files not extracted';
                             $errLevel      = DUPX_NOTICE_ITEM::SOFT_WARNING;
+                            $idManager      = 'wp-extract-error-file-no-core';
                         }
-                        $longMsg = DUPX_Handler::getVarLogClean();
+                        $longMsg = 'FILE: <b>'.htmlspecialchars($extract_filename).'</b><br>Message: '.htmlspecialchars(DUPX_Handler::getVarLogClean()).'<br><br>';
 
                         $nManager->addNextStepNotice(array(
                             'shortMsg' => $shortMsg,
                             'longMsg' => $longMsg,
+                            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
                             'level' => $errLevel
-                        ));
+                        ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_APPEND, $idManager);
                         $nManager->addFinalReportNotice(array(
                             'shortMsg' => $finalShortMsg,
                             'longMsg' => $longMsg,
+                            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
                             'level' => $errLevel,
                             'sections' => array('files'),
-                        ));
+                        ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_APPEND, $idManager);
                     } else {
                         DUPX_Log::info("DONE: ".$extract_filename,2);
                     }
                 } catch (Exception $ex) {
-                    DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:".$ex->getMessage());
-
-                    if (SnapLibUtilWp::isWpCore($extract_filename, SnapLibUtilWp::PATH_RELATIVE)) {
-                        $shortMsg      = 'Can\'t extract wp core file: '.$extract_filename;
-                        $finalShortMsg = 'Wp core file '.$extract_filename.' not extracted';
+                    if (DupLiteSnapLibUtilWp::isWpCore($extract_filename, DupLiteSnapLibUtilWp::PATH_RELATIVE)) {
+                        DUPX_Log::info("FILE CORE EXTRACION ERROR: {$extract_filename} | MSG:".$ex->getMessage());
+                        $shortMsg      = 'Can\'t extract wp core files';
+                        $finalShortMsg = 'Wp core files not extracted';
                         $errLevel      = DUPX_NOTICE_ITEM::CRITICAL;
+                        $idManager      = 'wp-extract-error-file-core';
                     } else {
-                        $shortMsg      = 'Can\'t extract file: '.$extract_filename;
-                        $finalShortMsg = 'File '.$extract_filename.' not extracted';
+                        DUPX_Log::info("FILE EXTRACION ERROR: {$extract_filename} | MSG:".$ex->getMessage());
+                        $shortMsg      = 'Can\'t extract files';
+                        $finalShortMsg = 'Files not extracted';
                         $errLevel      = DUPX_NOTICE_ITEM::SOFT_WARNING;
+                        $idManager      = 'wp-extract-error-file-no-core';
                     }
-                    $longMsg = $ex->getMessage();
+                    $longMsg = 'FILE: <b>'.htmlspecialchars($extract_filename).'</b><br>Message: '.htmlspecialchars($ex->getMessage()).'<br><br>';
 
                     $nManager->addNextStepNotice(array(
                         'shortMsg' => $shortMsg,
                         'longMsg' => $longMsg,
+                        'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
                         'level' => $errLevel
-                    ));
+                    ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_APPEND, $idManager);
                     $nManager->addFinalReportNotice(array(
                         'shortMsg' => $finalShortMsg,
                         'longMsg' => $longMsg,
+                        'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
                         'level' => $errLevel,
                         'sections' => array('files'),
-                    ));
+                    ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_APPEND, $idManager);
                 }
 			}
 
@@ -404,4 +413,4 @@ DUPX_Log::info("\nSTEP-1 COMPLETE @ " . @date('h:i:s') . " - RUNTIME: {$ajax1_su
 $JSON['pass'] = 1;
 error_reporting($ajax1_error_level);
 fclose($GLOBALS["LOG_FILE_HANDLE"]);
-die(json_encode($JSON));
+die(DupLiteSnapLibUtil::wp_json_encode($JSON));

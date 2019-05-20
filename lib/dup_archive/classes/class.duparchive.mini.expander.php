@@ -127,7 +127,7 @@ class DupArchiveMiniGlobHeader //extends HeaderBase
         fread($archiveHandle, 4);
 
         if ($skipGlob) {
-          //  SnapLibIOU::fseek($archiveHandle, $instance->storedSize, SEEK_CUR);
+          //  DupLiteSnapLibIOU::fseek($archiveHandle, $instance->storedSize, SEEK_CUR);
 		    if(fseek($archiveHandle, $instance->storedSize, SEEK_CUR) === -1)
 			{
                 throw new Exception("Can't fseek when skipping glob at location:".ftell($archiveHandle));

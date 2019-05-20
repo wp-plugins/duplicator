@@ -1,5 +1,4 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Class used to control values about the package meta data
  *
@@ -9,6 +8,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * @package SC\DUPX\ArchiveConfig
  *
  */
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 class DUPX_ArchiveConfig
 {

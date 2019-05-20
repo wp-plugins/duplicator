@@ -88,8 +88,7 @@ final class DUPX_NOTICE_MANAGER
             $notices['finalReport'][$uniqueId] = $notice->toArray();
         }
 
-        $json = json_encode($notices, JSON_PRETTY_PRINT);
-        file_put_contents($this->persistanceFile, $json);
+        file_put_contents($this->persistanceFile, DupLiteSnapLibUtil::wp_json_encode_pprint($notices));
     }
 
     /**
@@ -104,12 +103,16 @@ final class DUPX_NOTICE_MANAGER
             $this->nextStepNotices   = array();
             $this->finalReporNotices = array();
 
-            foreach ($notices['nextStep'] as $uniqueId => $notice) {
-                $this->nextStepNotices[$uniqueId] = DUPX_NOTICE_ITEM::getItemFromArray($notice);
+            if (!empty($notices['nextStep'])) {
+                foreach ($notices['nextStep'] as $uniqueId => $notice) {
+                    $this->nextStepNotices[$uniqueId] = DUPX_NOTICE_ITEM::getItemFromArray($notice);
+                }
             }
 
-            foreach ($notices['finalReport'] as $uniqueId => $notice) {
-                $this->finalReporNotices[$uniqueId] = DUPX_NOTICE_ITEM::getItemFromArray($notice);
+            if (!empty($notices['finalReport'])) {
+                foreach ($notices['finalReport'] as $uniqueId => $notice) {
+                    $this->finalReporNotices[$uniqueId] = DUPX_NOTICE_ITEM::getItemFromArray($notice);
+                }
             }
 
             self::$uniqueCountId = $notices['globalData']['uniqueCountId'];
@@ -172,14 +175,15 @@ final class DUPX_NOTICE_MANAGER
      *                                                                                     'label' => link text if empty get external url link
      *                                                                               ]
      *                                                                 ]
-     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE
-     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
+     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE | ADD_UNIQUE_APPEND
+     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE or ADD_UNIQUE_APPEND
      *
      * @return string   // notice insert id
      *
      * @throws Exception
      */
-    public function addBothNextAndFinalReportNotice($item, $mode = self::ADD_NORMAL, $uniqueId = null) {
+    public function addBothNextAndFinalReportNotice($item, $mode = self::ADD_NORMAL, $uniqueId = null)
+    {
         $this->addNextStepNotice($item, $mode, $uniqueId);
         $this->addFinalReportNotice($item, $mode, $uniqueId);
     }
@@ -197,8 +201,8 @@ final class DUPX_NOTICE_MANAGER
      *                                                                                     'label' => link text if empty get external url link
      *                                                                               ]
      *                                                                 ]
-     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE
-     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
+     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE | ADD_UNIQUE_APPEND
+     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE or ADD_UNIQUE_APPEND
      *
      * @return string   // notice insert id
      *
@@ -217,8 +221,8 @@ final class DUPX_NOTICE_MANAGER
      *
      * @param string $message
      * @param int $level        // warning level
-     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE
-     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
+     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE | ADD_UNIQUE_APPEND
+     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE or ADD_UNIQUE_APPEND
      *
      * @return string   // notice insert id
      *
@@ -245,8 +249,8 @@ final class DUPX_NOTICE_MANAGER
      *                                                                                     'label' => link text if empty get external url link
      *                                                                               ]
      *                                                                 ]
-     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE
-     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
+     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE | ADD_UNIQUE_APPEND
+     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE or ADD_UNIQUE_APPEND
      *
      * @return string   // notice insert id
      *
@@ -266,8 +270,8 @@ final class DUPX_NOTICE_MANAGER
      * @param string $message
      * @param string|string[] $sections   // message sections on final report
      * @param int $level        // warning level
-     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE
-     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
+     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE | ADD_UNIQUE_APPEND
+     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE or ADD_UNIQUE_APPEND
      *
      * @return string   // notice insert id
      *
@@ -296,8 +300,8 @@ final class DUPX_NOTICE_MANAGER
      *                                                                                     'label' => link text if empty get external url link
      *                                                                               ]
      *                                                                 ]
-     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE
-     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
+     * @param int $mode         // ADD_NORMAL | ADD_UNIQUE | ADD_UNIQUE_UPDATE | ADD_UNIQUE_APPEND
+     * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE or ADD_UNIQUE_APPEND
      *
      * @return string   // notice insert id
      *
@@ -536,36 +540,48 @@ final class DUPX_NOTICE_MANAGER
      */
     private static function stepMsg($notice)
     {
-        $classes = array(
+        $classes     = array(
             'notice',
+            'next-step',
             self::getClassFromLevel($notice->level)
         );
+        $haveContent = !empty($notice->faqLink) || !empty($notice->longMsg);
         ?>
         <div class="<?php echo implode(' ', $classes); ?>">
-            <p>
+            <div class="title">
+                <?php echo self::getNextStepLevelPrefixMessage($notice->level).': <b>'.htmlentities($notice->shortMsg).'</b>'; ?>
+            </div>
+            <?php if ($haveContent) { ?>
+                <div class="title-separator" ></div>
                 <?php
-                echo self::getNextStepLevelPrefixMessage($notice->level).': <b>'.htmlentities($notice->shortMsg).'</b>';
+                ob_start();
                 if (!empty($notice->faqLink)) {
                     ?>
-                    <br>
                     See FAQ: <a href="<?php echo $notice->faqLink['url']; ?>" >
                         <b><?php echo htmlentities(empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']); ?></b>
                     </a>
                     <?php
                 }
+                if (!empty($notice->faqLink) && !empty($notice->longMsg)) {
+                    echo '<br><br>';
+                }
                 if (!empty($notice->longMsg)) {
-					//Breaks here are messing up the formatting for Serialization notices
-                    //echo '<br><br>';
-                    if ($notice->longMsgHtml) {
-                        echo $notice->longMsg;
-                    } else {
-						//Do NOT use <pre> tags here or else the formatting is messed up
-                        echo htmlentities($notice->longMsg);
+                    switch ($notice->longMsgMode) {
+                        case DUPX_NOTICE_ITEM::MSG_MODE_PRE:
+                            echo '<pre>'.htmlentities($notice->longMsg).'</pre>';
+                            break;
+                        case DUPX_NOTICE_ITEM::MSG_MODE_HTML:
+                            echo $notice->longMsg;
+                            break;
+                        case DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT:
+                        default:
+                            echo htmlentities($notice->longMsg);
                     }
                 }
-                ?>
-            </p>
-            <!--<button type="button" class="notice-dismiss"><span class="screen-reader-text">Nascondi questa notifica.</span></button>-->
+                $longContent = ob_get_clean();
+                DUPX_U_Html::getMoreContent($longContent, 'info', 200);
+            }
+            ?>
         </div>
         <?php
     }
@@ -591,9 +607,17 @@ final class DUPX_NOTICE_MANAGER
             <div class="title" <?php echo $toggleLinkData; ?>>
                 <i class="<?php echo $iconClasses; ?>"></i>  <?php echo htmlentities($notice->shortMsg); ?>
             </div>
-            <?php if ($haveContent) { ?>
-                <div class="info <?php echo $notice->open ? '' : 'no-display'; ?>" id="<?php echo $contentId; ?>">
-                    <?php if (!empty($notice->faqLink)) { ?>
+            <?php
+            if ($haveContent) {
+                $infoClasses = array('info');
+                if (!$notice->open) {
+                    $infoClasses[] = 'no-display';
+                }
+                ?>
+                <div id="<?php echo $contentId; ?>" class="<?php echo implode(' ', $infoClasses); ?>" >
+                    <?php
+                    if (!empty($notice->faqLink)) {
+                        ?>
                         <b>See FAQ</b>: <a href="<?php echo $notice->faqLink['url']; ?>" >
                             <?php echo htmlentities(empty($notice->faqLink['label']) ? $notice->faqLink['url'] : $notice->faqLink['label']); ?>
                         </a>
@@ -603,11 +627,16 @@ final class DUPX_NOTICE_MANAGER
                         echo '<br><br>';
                     }
                     if (!empty($notice->longMsg)) {
-                        if ($notice->longMsgHtml) {
-                            echo $notice->longMsg;
-                        } else {
-							//Do NOT use <pre> tags here or else the formatting is messed up
-                            echo htmlentities($notice->longMsg);
+                        switch ($notice->longMsgMode) {
+                            case DUPX_NOTICE_ITEM::MSG_MODE_PRE:
+                                echo '<pre>'.htmlentities($notice->longMsg).'</pre>';
+                                break;
+                            case DUPX_NOTICE_ITEM::MSG_MODE_HTML:
+                                echo $notice->longMsg;
+                                break;
+                            case DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT:
+                            default:
+                                echo htmlentities($notice->longMsg);
                         }
                     }
                     ?>
@@ -617,6 +646,56 @@ final class DUPX_NOTICE_MANAGER
             ?>
         </div>
         <?php
+    }
+
+    /**
+     *
+     * @param DUPX_NOTICE_ITEM $notice
+     */
+    private static function noticeToText($notice)
+    {
+        $result = '-----------------------'."\n".
+            '['.self::getNextStepLevelPrefixMessage($notice->level, false).'] '.$notice->shortMsg;
+
+        if (!empty($notice->sections)) {
+            $result .= "\n\t".'SECTIONS: '.implode(',', $notice->sections);
+        }
+        if (!empty($notice->longMsg)) {
+            $result .= "\n\t".'LONG MSG: '.$notice->longMsg;
+        }
+        return $result."\n";
+    }
+
+    public function nextStepLog()
+    {
+        if (!empty($this->nextStepNotices)) {
+            DUPX_Log::info(
+                '===================================='."\n".
+                'NEXT STEP NOTICES'."\n".
+                '====================================');
+            foreach ($this->nextStepNotices as $notice) {
+                DUPX_Log::info(self::noticeToText($notice));
+            }
+            DUPX_Log::info(
+                '====================================');
+        }
+    }
+
+    public function finalReportLog($sections = array())
+    {
+        if (!empty($this->finalReporNotices)) {
+            DUPX_Log::info(
+                '===================================='."\n".
+                'FINAL REPORT NOTICES LIST'."\n".
+                '====================================');
+            foreach ($this->finalReporNotices as $notice) {
+                if (count(array_intersect($notice->sections, $sections)) > 0) {
+                    DUPX_Log::info(self::noticeToText($notice));
+                }
+            }
+            DUPX_Log::info(
+                '====================================');
+        }
     }
 
     /**
@@ -771,15 +850,91 @@ final class DUPX_NOTICE_MANAGER
             </ul>
 LONGMSG;
         $manager->addNextStepNotice(array(
-            'shortMsg' => 'Full elements next step message',
+            'shortMsg' => 'Full elements next step message MODE HTML',
             'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
             'longMsg' => $longMsg,
-            'longMsgHtml' => true,
+            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
             'faqLink' => array(
                 'url' => 'http://www.google.it',
                 'label' => 'google link'
             )
         ));
+
+        $longMsg = <<<LONGMSG
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a auctor erat, et lobortis libero.
+                Suspendisse aliquet neque in massa posuere mollis. Donec venenatis finibus sapien in bibendum. Donec et ex massa.
+
+   Aliquam venenatis dapibus tellus nec ullamcorper. Mauris ante velit, tincidunt sit amet egestas et, mattis non lorem. In semper ex ut velit suscipit,
+       at luctus nunc dapibus. Etiam blandit maximus dapibus. Nullam eu porttitor augue. Suspendisse pulvinar, massa eget condimentum aliquet, dolor massa tempus dui, vel rhoncus tellus ligula non odio.
+           Ut ac faucibus tellus, in lobortis odio.
+LONGMSG;
+        $manager->addNextStepNotice(array(
+            'shortMsg' => 'Full elements next step message MODE PRE',
+            'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+            'longMsg' => $longMsg,
+            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_PRE,
+            'faqLink' => array(
+                'url' => 'http://www.google.it',
+                'label' => 'google link'
+            )
+        ));
+
+        $longMsg = <<<LONGMSG
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a auctor erat, et lobortis libero.
+                Suspendisse aliquet neque in massa posuere mollis. Donec venenatis finibus sapien in bibendum. Donec et ex massa.
+
+   Aliquam venenatis dapibus tellus nec ullamcorper. Mauris ante velit, tincidunt sit amet egestas et, mattis non lorem. In semper ex ut velit suscipit,
+       at luctus nunc dapibus. Etiam blandit maximus dapibus. Nullam eu porttitor augue. Suspendisse pulvinar, massa eget condimentum aliquet, dolor massa tempus dui, vel rhoncus tellus ligula non odio.
+           Ut ac faucibus tellus, in lobortis odio.
+LONGMSG;
+        $manager->addNextStepNotice(array(
+            'shortMsg' => 'Full elements next step message MODE DEFAULT',
+            'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+            'longMsg' => $longMsg,
+            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+            'faqLink' => array(
+                'url' => 'http://www.google.it',
+                'label' => 'google link'
+            )
+        ));
+
+
+        $longMsg = <<<LONGMSG
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus porttitor consectetur. Nunc faucibus elementum nisl nec ornare. Phasellus sit amet urna in diam ultricies ornare nec sit amet nibh. Nulla a aliquet leo. Quisque aliquet posuere lectus sit amet commodo. Nullam tempus enim eget urna rutrum egestas. Aliquam eget lorem nisl. Nulla tincidunt massa erat. Phasellus lectus tellus, mollis sit amet aliquam in, dapibus quis metus. Nunc venenatis nulla vitae convallis accumsan.
+
+Mauris eu ullamcorper metus. Aenean ultricies et turpis eget mollis. Aliquam auctor, elit scelerisque placerat pellentesque, quam augue fermentum lectus, vel pretium nisi justo sit amet ante. Donec blandit porttitor tempus. Duis vulputate nulla ut orci rutrum, et consectetur urna mollis. Sed at iaculis velit. Pellentesque id quam turpis. Curabitur eu ligula velit. Cras gravida, ipsum sed iaculis eleifend, mauris nunc posuere quam, vel blandit nisi justo congue ligula. Phasellus aliquam eu odio ac porttitor. Fusce dictum mollis turpis sit amet fringilla.
+
+Nulla eu ligula mauris. Fusce lobortis ligula elit, a interdum nibh pulvinar eu. Pellentesque rhoncus nec turpis id blandit. Morbi fringilla, justo non varius consequat, arcu ante efficitur ante, sit amet cursus lorem elit vel odio. Phasellus neque ligula, vehicula vel ipsum sed, volutpat dignissim eros. Curabitur at lacus id felis elementum auctor. Nullam ac tempus nisi. Phasellus nibh purus, aliquam nec purus ut, sodales lobortis nulla. Cras viverra dictum magna, ac malesuada nibh dictum ac. Mauris euismod, magna sit amet pretium posuere, ligula nibh ultrices tellus, sit amet pretium odio urna egestas justo. Suspendisse purus erat, eleifend sed magna in, efficitur interdum nibh.
+
+Vivamus nibh nunc, fermentum non tortor volutpat, consectetur vulputate velit. Phasellus lobortis, purus et faucibus mollis, metus eros viverra ante, sit amet euismod nibh est eu orci. Duis sodales cursus lacinia. Praesent laoreet ut ipsum ut interdum. Praesent venenatis massa vitae ligula consequat aliquet. Fusce in purus in odio molestie laoreet at ac augue. Fusce consectetur elit a magna mollis aliquet.
+
+Nulla eros nisi, dapibus eget diam vitae, tincidunt blandit odio. Fusce interdum tellus nec varius condimentum. Fusce non magna a purus sodales imperdiet sit amet vitae ligula. Quisque viverra leo sit amet mi egestas, et posuere nunc tincidunt. Suspendisse feugiat malesuada urna sed tincidunt. Morbi a urna sed magna volutpat pellentesque sit amet ac mauris. Nulla sed ultrices dui. Etiam massa arcu, tempor ut erat at, cursus malesuada ipsum. Duis sit amet felis dolor.
+
+Morbi gravida nisl nunc, vulputate iaculis risus vehicula non. Proin cursus, velit et laoreet consectetur, lacus libero sagittis lacus, quis accumsan odio lectus non erat. Aenean dolor lectus, euismod sit amet justo eget, dictum gravida nisl. Phasellus sed nunc non odio ullamcorper rhoncus non ut ipsum. Duis ante ligula, pellentesque sit amet imperdiet eget, congue vel dui. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla facilisi. Suspendisse luctus leo eget justo mollis, convallis convallis ex suscipit. Integer et justo eget odio lobortis sollicitudin. Pellentesque accumsan rhoncus augue, luctus suscipit ex accumsan nec. Maecenas lacinia consectetur risus at bibendum. Etiam venenatis purus lorem, sit amet elementum turpis tristique eu. Proin vulputate faucibus feugiat. Nunc vehicula congue odio consequat vulputate. Quisque bibendum augue id iaculis faucibus. Donec blandit cursus sem, eget accumsan orci commodo sed.
+
+Suspendisse iaculis est quam, sed scelerisque purus tincidunt non. Cras hendrerit ante turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse purus ipsum, rutrum id sem in, venenatis laoreet metus. Aliquam ac bibendum mauris. Cras egestas rhoncus est, sed lacinia nibh vestibulum id. Proin diam quam, sagittis congue molestie ac, rhoncus et mauris. Phasellus massa neque, ornare vel erat a, rutrum pharetra arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi et nulla eget massa auctor fermentum. Quisque maximus tellus sed cursus cursus. Ut vehicula erat at purus aliquet, quis imperdiet dui sagittis. Nullam eget quam leo.
+
+Nulla magna ipsum, congue nec dui ut, lacinia malesuada felis. Cras mattis metus non maximus venenatis. Aliquam euismod est vitae erat sollicitudin, at pellentesque augue sollicitudin. Curabitur euismod maximus cursus. In tortor dui, convallis sed sapien ac, varius congue metus. Nunc ullamcorper ac orci sit amet finibus. Vivamus molestie nibh vitae quam rhoncus, eu ultrices est molestie. Maecenas consectetur eu quam sit amet placerat.
+
+Curabitur ut fermentum mauris. Donec et congue nibh. Sed cursus elit sit amet convallis varius. Donec malesuada porta odio condimentum varius. Pellentesque ornare tempor ante, ut volutpat nulla lobortis sed. Nunc congue aliquet erat ac elementum. Quisque a ex sit amet turpis placerat sagittis eget ac ligula. Etiam in augue malesuada, aliquam est non, lacinia justo. Vivamus tincidunt dolor orci, id dignissim lorem maximus at. Vivamus ligula mauris, venenatis vel nibh id, lacinia ultrices ipsum. Mauris cursus, urna ac rutrum aliquet, risus ipsum tincidunt purus, sit amet blandit nunc sem sit amet nibh.
+
+Nam eleifend risus lacus, eu pharetra risus egestas eu. Maecenas hendrerit nisl in semper placerat. Vestibulum massa tellus, laoreet non euismod quis, sollicitudin id sapien. Morbi vel cursus metus. Aenean tincidunt nisi est, ut elementum est auctor id. Duis auctor elit leo, ac scelerisque risus suscipit et. Pellentesque lectus nisi, ultricies in elit sed, pulvinar iaculis massa. Morbi viverra eros mi, pretium facilisis neque egestas id. Curabitur non massa accumsan, porttitor sem vitae, ultricies lacus. Curabitur blandit nisl velit. Mauris sollicitudin ultricies purus sit amet placerat. Fusce ac neque sed leo venenatis laoreet ut non ex. Integer elementum rhoncus orci, eu maximus neque tempus eu. Curabitur euismod dignissim tellus, vitae lacinia metus. Mauris imperdiet metus vitae vulputate accumsan. Duis eget luctus nibh, sit amet finibus libero.
+
+LONGMSG;
+        $manager->addNextStepNotice(array(
+            'shortMsg' => 'Full elements LONG LONG',
+            'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+            'longMsg' => $longMsg,
+            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+            'faqLink' => array(
+                'url' => 'http://www.google.it',
+                'label' => 'google link'
+            )
+        ));
+
+
+
+
         $manager->saveNotices();
     }
 
@@ -824,7 +979,7 @@ LONGMSG;
             'shortMsg' => 'Full elements final report message',
             'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
             'longMsg' => $longMsg,
-            'longMsgHtml' => true,
+            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
             'sections' => $section,
             'faqLink' => array(
                 'url' => 'http://www.google.it',
@@ -836,7 +991,7 @@ LONGMSG;
             'shortMsg' => 'Full elements final report message info high priority',
             'level' => DUPX_NOTICE_ITEM::INFO,
             'longMsg' => $longMsg,
-            'longMsgHtml' => true,
+            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
             'sections' => $section,
             'faqLink' => array(
                 'url' => 'http://www.google.it',
@@ -860,12 +1015,15 @@ LONGMSG;
 
 class DUPX_NOTICE_ITEM
 {
-    const INFO         = 0;
-    const NOTICE       = 1;
-    const SOFT_WARNING = 2;
-    const HARD_WARNING = 3;
-    const CRITICAL     = 4;
-    const FATAL        = 5;
+    const INFO             = 0;
+    const NOTICE           = 1;
+    const SOFT_WARNING     = 2;
+    const HARD_WARNING     = 3;
+    const CRITICAL         = 4;
+    const FATAL            = 5;
+    const MSG_MODE_DEFAULT = 'def';
+    const MSG_MODE_HTML    = 'html';
+    const MSG_MODE_PRE     = 'pre';
 
     /**
      *
@@ -883,7 +1041,7 @@ class DUPX_NOTICE_ITEM
      *
      * @var bool if true long msg can be html
      */
-    public $longMsgHtml = false;
+    public $longMsgMode = self::MSG_MODE_DEFAULT;
 
     /**
      *
@@ -931,9 +1089,9 @@ class DUPX_NOTICE_ITEM
      *                          ]
      * @param int priority
      * @param bool open
-     * @param bool longMsgHtml
+     * @param string longMsgMode MSG_MODE_DEFAULT | MSG_MODE_HTML | MSG_MODE_PRE
      */
-    public function __construct($shortMsg, $level = self::INFO, $longMsg = '', $sections = array(), $faqLink = null, $priority = 10, $open = false, $longMsgHtml = false)
+    public function __construct($shortMsg, $level = self::INFO, $longMsg = '', $sections = array(), $faqLink = null, $priority = 10, $open = false, $longMsgMode = self::MSG_MODE_DEFAULT)
     {
         $this->shortMsg    = (string) $shortMsg;
         $this->level       = (int) $level;
@@ -942,7 +1100,7 @@ class DUPX_NOTICE_ITEM
         $this->faqLink     = $faqLink;
         $this->priority    = $priority;
         $this->open        = $open;
-        $this->longMsgHtml = $longMsgHtml;
+        $this->longMsgMode = $longMsgMode;
     }
 
     /**
@@ -956,6 +1114,9 @@ class DUPX_NOTICE_ITEM
      *                              'url' => external link
      *                              'label' => link text if empty get external url link
      *                          ]
+     *                          'priority' => int low first
+     *                          'open' => if true the tab is opene on final report
+     *                          'longMsgMode'=> MSG_MODE_DEFAULT | MSG_MODE_HTML | MSG_MODE_PRE
      *                      ]
      */
     public function toArray()
@@ -968,13 +1129,13 @@ class DUPX_NOTICE_ITEM
             'faqLink' => $this->faqLink,
             'priority' => $this->priority,
             'open' => $this->open,
-            'longMsgHtml' => $this->longMsgHtml
+            'longMsgMode' => $this->longMsgMode
         );
     }
 
     /**
      *
-     * @param array $array [
+     * @return array        [
      *                          'shortMsg' => text,
      *                          'level' => level,
      *                          'longMsg' => html text,
@@ -982,7 +1143,10 @@ class DUPX_NOTICE_ITEM
      *                          'faqLink' => [
      *                              'url' => external link
      *                              'label' => link text if empty get external url link
-     *                          ]
+     *                          ],
+     *                          priority
+     *                          open
+     *                          longMsgMode
      *                      ]
      * @return DUPX_NOTICE_ITEM
      */
@@ -996,7 +1160,7 @@ class DUPX_NOTICE_ITEM
             }
         }
         $params = array_merge(self::getDefaultArrayParams(), $array);
-        $result = new self($params['shortMsg'], $params['level'], $params['longMsg'], $params['sections'], $params['faqLink'], $params['priority'], $params['open'], $params['longMsgHtml']);
+        $result = new self($params['shortMsg'], $params['level'], $params['longMsg'], $params['sections'], $params['faqLink'], $params['priority'], $params['open'], $params['longMsgMode']);
         return $result;
     }
 
@@ -1013,7 +1177,7 @@ class DUPX_NOTICE_ITEM
      *                          ],
      *                          priority
      *                          open
-     *                          longMsgHtml
+     *                          longMsgMode
      *                      ]
      */
     public static function getDefaultArrayParams()
@@ -1026,7 +1190,7 @@ class DUPX_NOTICE_ITEM
             'faqLink' => null,
             'priority' => 10,
             'open' => false,
-            'longMsgHtml' => false
+            'longMsgMode' => self::MSG_MODE_DEFAULT
         );
     }
 

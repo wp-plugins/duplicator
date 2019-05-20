@@ -29,7 +29,7 @@ class DupArchiveFileHeader// extends HeaderBase
 
         // RSR TODO Populate fields based on file already on system
         // profile ok
-        $instance->fileSize           = SnapLibIOU::filesize($filepath);
+        $instance->fileSize           = DupLiteSnapLibIOU::filesize($filepath);
         // end profile ok
 
         // profile ok
@@ -37,7 +37,7 @@ class DupArchiveFileHeader// extends HeaderBase
         // end profile ok
 
         // profile ok
-        $instance->mtime              = SnapLibIOU::filemtime($filepath);
+        $instance->mtime              = DupLiteSnapLibIOU::filemtime($filepath);
         // end profile ok
 
 		if($instance->fileSize > DupArchiveConstants::$MaxFilesizeForHashing) {
@@ -132,7 +132,7 @@ class DupArchiveFileHeader// extends HeaderBase
     {
         $headerString = '<F><FS>'.$this->fileSize.'</FS><MT>'.$this->mtime.'</MT><P>'.$this->permissions.'</P><HA>'.$this->hash.'</HA><RPL>'.$this->relativePathLength.'</RPL><RP>'.$this->relativePath.'</RP></F>';
         
-        //SnapLibIOU::fwrite($archiveHandle, $headerString);
+        //DupLiteSnapLibIOU::fwrite($archiveHandle, $headerString);
         $bytes_written = @fwrite($archiveHandle, $headerString);
 
         if ($bytes_written === false) {

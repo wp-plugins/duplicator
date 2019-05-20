@@ -43,71 +43,57 @@ if ($_POST['secure-try'] && ! $pass_check) {
 
 <!-- =========================================
 VIEW: STEP 0 - PASSWORD -->
-<form method="post" id="i1-pass-form" class="content-form"  data-parsley-validate="" autocomplete="oldpassword">
-	<input type="hidden" name="view" value="secure" />
-	<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('secure'); ?>"> 
-	<input type="hidden" name="secure-try" value="1" />
-	<input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
-	<input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
+<form method="post" id="i1-pass-form" class="content-form"  data-parsley-validate="">
+    <input type="hidden" name="view" value="secure" />
+    <input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('secure'); ?>">
+    <input type="hidden" name="secure-try" value="1" />
+    <input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
+    <input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
 
-	<div class="hdr-main">
-		Installer Password
-	</div>
+    <div class="hdr-main">
+        Installer Password
+    </div>
 
-	<?php if ($page_err) : ?>
-		<div class="error-pane">
-			<p>Invalid Password! Please try again. If the problem persists see the more details link below.</p>
-		</div>
-	<?php endif; ?>
+<?php if ($page_err) : ?>
+        <div class="error-pane">
+            <p>Invalid Password! Please try again...</p>
+        </div>
+<?php endif; ?>
 
-	<div style="text-align: center">
-		This file was password protected when it was created.   If you do not remember the password	check the details of the package on	the site where it was created or visit
-		the online FAQ for <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-030-q" target="_blank">more details</a>.
-		<br/><br/><br/>
+    <div style="text-align: center">
+        This file was password protected when it was created.   If you do not remember the password	check the details of the package on	the site where it was created or visit
+        the online FAQ for <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-030-q" target="_blank">more details</a>.
+        <br/><br/><br/>
+    </div>
 
-		<div class="i1-pass-area">
-			<label for="secure-pass">Enter Password</label>
-			<div id="i1-pass-input">
-				<div id="i1-pass-toggle">
-					<input type="password" name="secure-pass" id="secure-pass" required="required" />
-					<button type="button" id="secure-btn" class="pass-toggle" onclick="DUPX.togglePassword()" title="Show/Hide Password"><i class="fas fa-eye fa-xs"></i></button>
-				</div><br/>
-			</div>
-			<div style="margin-top: 15px">
-				<button type="button" class="default-btn" name="submit-btn" id="submit-btn" onclick="DUPX.checkPassword()">Submit</button>
-			</div>
-		</div>
-	</div>
+    <div class="i1-pass-area">
+        <div class="i1-pass-data">
+            <label for="secure-pass">&nbsp; Enter Password</label>
+            <?php
+            DUPX_U_Html::inputPasswordToggle('secure-pass', 'secure-pass', array(),
+                array(
+                'required' => 'required'
+            ));
+            ?>
+            <br><br>
+            <button type="button" name="secure-btn" id="secure-btn" class="default-btn" onclick="DUPX.checkPassword()">Submit</button>
+        </div>
+    </div>
+
 </form>
 
 <script>
-	/**
-	 * Submits the password for validation
-	 */
-	DUPX.checkPassword = function()
-	{
-		var $form = $('#i1-pass-form');
-		$form.parsley().validate();
-		if (! $form.parsley().isValid()) {
-			return;
-		}
-		$form.submit();
-	}
-
-	/**
-	 * Submits the password for validation
-	 */
-	DUPX.togglePassword = function()
-	{
-		var $input = $('#secure-pass');
-		var $lock  = $('#secure-btn');
-		if (($input).attr('type') == 'text') {
-			$lock.html('<i class="fas fa-eye fa-xs"></i>');
-			$input.attr('type', 'password');
-		} else {
-			$lock.html('<i class="fas fa-eye-slash fa-xs"></i>');
-			$input.attr('type', 'text');
-		}
-	}
+    /**
+     * Submits the password for validation
+     */
+    DUPX.checkPassword = function ()
+    {
+        var $form = $('#i1-pass-form');
+        $form.parsley().validate();
+        if (!$form.parsley().isValid()) {
+            return;
+        }
+        $form.submit();
+    }
 </script>
 <!-- END OF VIEW INIT 1 -->

@@ -43,6 +43,4 @@ class DUP_Archive_Config
 
     public $is_outer_root_wp_config_file;
     public $is_outer_root_wp_content_dir;
-
-    public $csrf_crypt;
 }

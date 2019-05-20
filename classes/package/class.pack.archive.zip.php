@@ -152,7 +152,7 @@ class DUP_Zip extends DUP_Archive
 
                     if(self::$countFiles % 500 == 0) {
                         // Every so many files update the status so the UI can display
-                        $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, self::$countFiles);
+                        $archive->Package->Status = DupLiteSnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, self::$countFiles);
                         $archive->Package->update();
                     }
                 }
@@ -177,7 +177,7 @@ class DUP_Zip extends DUP_Archive
 
                     if(self::$countFiles % 500 == 0) {
                         // Every so many files update the status so the UI can display
-                        $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, self::$countFiles);
+                        $archive->Package->Status = DupLiteSnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, self::$countFiles);
                         $archive->Package->update();
                     }
                 }

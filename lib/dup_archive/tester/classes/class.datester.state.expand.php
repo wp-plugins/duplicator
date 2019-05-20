@@ -22,9 +22,9 @@ class DaTesterExpandState extends DupArchiveExpandState
             self::$instance = new DaTesterExpandState();
 
             if (file_exists($stateFilepath)) {
-                $stateHandle = SnapLibIOU::fopen($stateFilepath, 'r');
+                $stateHandle = DupLiteSnapLibIOU::fopen($stateFilepath, 'r');
 
-                SnapLibIOU::flock($stateHandle, LOCK_EX);
+                DupLiteSnapLibIOU::flock($stateHandle, LOCK_EX);
 
                 $stateString = fread($stateHandle, filesize($stateFilepath));
 
@@ -32,9 +32,9 @@ class DaTesterExpandState extends DupArchiveExpandState
 
                 self::$instance->setFromData($data);
 
-                SnapLibIOU::flock($stateHandle, LOCK_UN);
+                DupLiteSnapLibIOU::flock($stateHandle, LOCK_UN);
 
-                SnapLibIOU::fclose($stateHandle);
+                DupLiteSnapLibIOU::fclose($stateHandle);
             } else {
                 $reset = true;
             }
@@ -74,29 +74,29 @@ class DaTesterExpandState extends DupArchiveExpandState
     {
         $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
 
-        $stateHandle = SnapLibIOU::fopen($stateFilepath, 'w');
+        $stateHandle = DupLiteSnapLibIOU::fopen($stateFilepath, 'w');
 
-        SnapLibIOU::flock($stateHandle, LOCK_EX);
+        DupLiteSnapLibIOU::flock($stateHandle, LOCK_EX);
 
         $this->initMembers();
 
-        SnapLibIOU::fwrite($stateHandle, json_encode($this));
+        DupLiteSnapLibIOU::fwrite($stateHandle, json_encode($this));
 
-        SnapLibIOU::fclose($stateHandle);
+        DupLiteSnapLibIOU::fclose($stateHandle);
     }
 
     public function save()
     {
         $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
 
-        $stateHandle = SnapLibIOU::fopen($stateFilepath, 'w');
+        $stateHandle = DupLiteSnapLibIOU::fopen($stateFilepath, 'w');
 
-        SnapLibIOU::flock($stateHandle, LOCK_EX);
+        DupLiteSnapLibIOU::flock($stateHandle, LOCK_EX);
 
         DupArchiveUtil::tlog("saving state");
-        SnapLibIOU::fwrite($stateHandle, json_encode($this));
+        DupLiteSnapLibIOU::fwrite($stateHandle, json_encode($this));
 
-        SnapLibIOU::fclose($stateHandle);
+        DupLiteSnapLibIOU::fclose($stateHandle);
     }
 
     private function initMembers()

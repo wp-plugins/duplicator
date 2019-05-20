@@ -29,7 +29,7 @@ class DupArchiveFileProcessor
 
         if($sourceHandle === false)
         {
-            $createState->archiveOffset     = SnapLibIOU::ftell($archiveHandle);
+            $createState->archiveOffset     = DupLiteSnapLibIOU::ftell($archiveHandle);
             $createState->currentFileIndex++;
             $createState->currentFileOffset = 0;
             $createState->skippedFileCount++;
@@ -41,7 +41,7 @@ class DupArchiveFileProcessor
         if ($createState->currentFileOffset > 0) {
             DupArchiveUtil::tlog("Continuing {$sourceFilepath} so seeking to {$createState->currentFileOffset}");
 
-            SnapLibIOU::fseek($sourceHandle, $createState->currentFileOffset);
+            DupLiteSnapLibIOU::fseek($sourceHandle, $createState->currentFileOffset);
         } else {
             DupArchiveUtil::tlog("Starting new file entry for {$sourceFilepath}");
 
@@ -79,11 +79,11 @@ class DupArchiveFileProcessor
 
                 DupArchiveUtil::tlog("Need to keep writing {$sourceFilepath} to archive");
                 $createState->currentFileOffset += $createState->globSize;
-                $createState->archiveOffset = SnapLibIOU::ftell($archiveHandle); //??
+                $createState->archiveOffset = DupLiteSnapLibIOU::ftell($archiveHandle); //??
             } else {
 
                 DupArchiveUtil::tlog("Completed writing {$sourceFilepath} to archive");
-                $createState->archiveOffset     = SnapLibIOU::ftell($archiveHandle);
+                $createState->archiveOffset     = DupLiteSnapLibIOU::ftell($archiveHandle);
                 $createState->currentFileIndex++;
                 $createState->currentFileOffset = 0;
             }
@@ -99,7 +99,7 @@ class DupArchiveFileProcessor
         }
 
         // profile ok
-        SnapLibIOU::fclose($sourceHandle);
+        DupLiteSnapLibIOU::fclose($sourceHandle);
         // end profile ok
     }
 
@@ -115,20 +115,20 @@ class DupArchiveFileProcessor
         
         if (!file_exists($parentDir)) {
  
-            SnapLibIOU::mkdir($parentDir, 0755, true);
+            DupLiteSnapLibIOU::mkdir($parentDir, 0755, true);
         }
 
         if ($expandState->currentFileHeader->fileSize > 0) {
 
             if ($expandState->currentFileOffset > 0) {
-                $destFileHandle = SnapLibIOU::fopen($destFilepath, 'r+b');
+                $destFileHandle = DupLiteSnapLibIOU::fopen($destFilepath, 'r+b');
 
                 DupArchiveUtil::tlog('Continuing '.$destFilepath.' so seeking to '.$expandState->currentFileOffset);
 
-                SnapLibIOU::fseek($destFileHandle, $expandState->currentFileOffset);
+                DupLiteSnapLibIOU::fseek($destFileHandle, $expandState->currentFileOffset);
             } else {
                 DupArchiveUtil::tlog('Starting to write new file '.$destFilepath);
-                $destFileHandle = SnapLibIOU::fopen($destFilepath, 'w+b');
+                $destFileHandle = DupLiteSnapLibIOU::fopen($destFilepath, 'w+b');
             }
 
             DupArchiveUtil::tlog('writeToFile for '.$destFilepath.', size '.$expandState->currentFileHeader->fileSize);
@@ -151,7 +151,7 @@ class DupArchiveFileProcessor
                     DupArchiveUtil::tlog('After glob write');
 
                     $expandState->currentFileOffset = ftell($destFileHandle);
-                    $expandState->archiveOffset     = SnapLibIOU::ftell($archiveHandle);
+                    $expandState->archiveOffset     = DupLiteSnapLibIOU::ftell($archiveHandle);
 
                     $moreGlobstoProcess = $expandState->currentFileOffset < $expandState->currentFileHeader->fileSize;
 
@@ -304,7 +304,7 @@ class DupArchiveFileProcessor
                 $expandState->currentFileOffset += $globHeader->originalSize;
 
                 // profile ok
-                $expandState->archiveOffset = SnapLibIOU::ftell($archiveHandle);
+                $expandState->archiveOffset = DupLiteSnapLibIOU::ftell($archiveHandle);
                 
 
                 $moreGlobstoProcess = $expandState->currentFileOffset < $expandState->currentFileHeader->fileSize;

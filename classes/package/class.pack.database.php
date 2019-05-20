@@ -196,7 +196,7 @@ class DUP_Database
                     $this->mysqlDump($mysqlDumpPath);
                     break;
                 case 'PHP' :
-                    $this->phpDump();
+                    $this->phpDump($package);
                     break;
             }
 
@@ -529,7 +529,7 @@ class DUP_Database
      *
      *  @return bool  Returns true if the sql script was successfully created
      */
-    private function phpDump()
+    private function phpDump($package)
     {
         global $wpdb;
     
@@ -599,7 +599,7 @@ class DUP_Database
     
             $table_number++;
             if($table_number % 2 == 0) {
-                $this->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::DBSTART, DUP_PackageStatus::DBDONE, $table_count, $table_number);
+                $this->Package->Status = DupLiteSnapLibUtil::getWorkPercent(DUP_PackageStatus::DBSTART, DUP_PackageStatus::DBDONE, $table_count, $table_number);
                 $this->Package->update();
             }
     
@@ -622,6 +622,37 @@ class DUP_Database
                 $limit = $i * $qryLimit;
                 $query = "SELECT * FROM `{$table}` LIMIT {$limit}, {$qryLimit}";
                 $rows  = $wpdb->get_results($query, ARRAY_A);
+
+                $select_last_error = $wpdb->last_error;
+                if ('' !== $select_last_error) {
+                    $is_select_error = true;
+                    DUP_LOG::trace($select_last_error);
+                    if (false !== stripos($wpdb->last_error, 'is marked as crashed and should be repaired')) {
+                        $ret_repair = $wpdb->query("repair table `{$table}`");
+                        $ret_repair = false;
+                        if ($ret_repair) {
+                            DUP_LOG::trace("Successfully repaired the {$table}"); 
+                            $rows = $wpdb->get_results($query, ARRAY_A);
+                            if ('' !== $wpdb->last_error) {
+                                $is_select_error = false;
+                            }
+                        }
+                    }
+
+                    if ($is_select_error) {
+                        $fix = esc_html__('Please constact your DataBase administrator to fix the error.', 'duplicator');
+                        $errorMessage = $select_last_error.' '.$fix.'.';
+                        $package->BuildProgress->set_failed($errorMessage);
+                        $package->BuildProgress->failed = true;
+                        $package->failed = true;
+                        $package->BuildProgress->Status = DUP_PackageStatus::ERROR;
+                        $package->Status = DUP_PackageStatus::ERROR;
+                        $package->Update();  
+                        DUP_Log::error($select_last_error, $fix, Dup_ErrorBehavior::Quit);                                              
+                        return;
+                    }
+                }
+
                 if (is_array($rows)) {
                     foreach ($rows as $row) {
                         $sql .= "INSERT INTO `{$rewrite_table_as}` VALUES(";

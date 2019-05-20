@@ -243,9 +243,28 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 		</div>
 
+		<!-- ==================================
+		REQ 80: CHECK GTID -->
+		<div class="status {{noticeStyle payload.reqs.80.pass}}">{{reqText payload.reqs.80.pass}}</div>
+			<div class="title" data-type="toggle" data-target="#s2-reqs80"><i class="fa fa-caret-right"></i> {{payload.reqs.80.title}}</div>
+			<div class="info s2-reqs80" id="s2-reqs80">
+				<div class="sub-title">STATUS</div>
+				{{{getInfo payload.reqs.80.pass payload.reqs.80.info}}}<br/>
+
+				<div class="sub-title">DETAILS</div>
+				This test checks to make sure the database server should not have GTID mode enabled.
+				<br/><br/>
+				<div class="sub-title">TROUBLESHOOT</div>
+				<ul>
+					<li><i class="far fa-file-code"></i> <a href='https://dev.mysql.com/doc/refman/5.6/en/replication-gtids-concepts.html' target='_help'>What is GTID?</a></li>
+				</ul>
+			</div>
+
+		</div>
+
 	</div>
 
-
+	
 
 	<!-- ==================================
 	NOTICES
@@ -289,9 +308,54 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 Handlebars.registerHelper('if_eq',		function(a, b, opts) { return (a == b) ? opts.fn(this) : opts.inverse(this);});
 Handlebars.registerHelper('if_neq',		function(a, b, opts) { return (a != b) ? opts.fn(this) : opts.inverse(this);});
 Handlebars.registerHelper('faqURL',		function() { return "https://snapcreek.com/duplicator/docs/faqs-tech/";});
-Handlebars.registerHelper('reqText',	function(req)  { if  (req == -1)  {return ""}; return (req)  ? "Pass" : "Fail";});
-Handlebars.registerHelper('reqStyle',	function(req)  { if  (req == -1)  {return ""}; return (req)  ? "status-badge-pass" : "status-badge-fail";});
-Handlebars.registerHelper('noticeStyle',function(req)  { if  (req == -1)  {return ""}; return (req)  ? "status-badge-pass" : "status-badge-fail";});
+Handlebars.registerHelper('reqText',	function(req)  {
+	switch(req) {
+		case 0:
+			return "Fail";
+			break;
+  		case 1:
+		  return "Pass";
+		  break;
+		case 2:
+		  return "Warn";
+		  break;
+		case -1:
+		default:
+		  return "";
+	}
+});
+Handlebars.registerHelper('reqStyle',	function(req)  { 
+	switch (req) {
+		case 0:
+			return "status-badge-fail"
+			break;
+		case 1:
+			return "status-badge-pass"
+			break;
+		case 2:
+			return "status-badge-warn"
+			break;
+		case -1:
+		default:
+			return "";
+	}
+});
+Handlebars.registerHelper('noticeStyle',function(req)  { 
+	switch (req) {
+		case 0:
+			return "status-badge-fail"
+			break;
+		case 1:
+			return "status-badge-pass"
+			break;
+		case 2:
+			return "status-badge-warn"
+			break;
+		case -1:
+		default:
+			return "";
+	}
+});
 Handlebars.registerHelper('noticeText', function(warn) { if  (warn == -1) {return ""}; return (warn) ? "Good" : "Warn";});
 Handlebars.registerHelper('getInfo',	function(pass, info) {
 	return (pass && pass != -1)
@@ -426,9 +490,11 @@ DUPX.intTestDBResults = function(data, result)
 	$btnTestDB.removeAttr('disabled').removeClass('disabled');
 	$btnNext.removeAttr('disabled').removeClass('disabled');
 
-	if (data.payload.reqsPass == 1) {
+	if (data.payload.reqsPass == 1 || data.payload.reqsPass == 2) {
 		$btnTestDB.addClass('disabled').attr('disabled', 'true');
-		$divReqsAll.hide()
+		if (data.payload.reqsPass == 1) {
+			$divReqsAll.hide()
+		}
 	} else {
 		$btnNext.addClass('disabled').attr('disabled', 'true');
 		$divReqsAll.show();
@@ -436,7 +502,7 @@ DUPX.intTestDBResults = function(data, result)
 
 	data.payload.noticesPass ? $divNoticeAll.hide() : $divNoticeAll.show();
 
-	if (data.payload.reqsPass == 1 && data.payload.noticesPass == 1) {
+	if ((data.payload.reqsPass == 1 || data.payload.reqsPass == 2) && data.payload.noticesPass == 1) {
 		$btnTestDB.addClass('disabled').attr('disabled', 'true');
 	}
 

@@ -133,7 +133,7 @@ TOTAL SIZE -->
 							<div class="directory">
 								<i class="fa fa-caret-right fa-lg dup-nav" onclick="Duplicator.Pack.toggleDirPath(this)"></i> &nbsp;
 								{{#if directory.iscore}}
-									<i class="fa fa-window-close-o chk-off" title="<?php esc_attr_e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
+									<i class="far fa-window-close chk-off" title="<?php esc_attr_e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
 								{{else}}
 									<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="lf_dir_{{@index}}" onclick="Duplicator.Pack.filesOff(this)" />
 								{{/if}}
@@ -273,7 +273,7 @@ FILE NAME CHECKS -->
 								{{/if}}
 										
 								{{#if directory.iscore}}
-									<i class="fa fa-window-close-o chk-off" title="<?php esc_attr_e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
+									<i class="far fa-window-close chk-off" title="<?php esc_attr_e('Core WordPress directories should not be filtered. Use caution when excluding files.', 'duplicator'); ?>"></i>
 								{{else}}		
 									<input type="checkbox" name="dir_paths[]" value="{{directory.dir}}" id="nc1_dir_{{@index}}" onclick="Duplicator.Pack.filesOff(this)" />
 								{{/if}}

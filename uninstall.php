@@ -52,6 +52,10 @@ if (DUP_Settings::Get('uninstall_files')) {
 			if (strstr($file, '_scan.json'))
 				@unlink("{$file}");
 		}
+		foreach (glob("{$ssdir}/*_wp-config.txt") as $file) {
+			if (strstr($file, '_wp-config.txt'))
+				@unlink("{$file}");
+		}
 		foreach (glob("{$ssdir}/*.log") as $file) {
 			if (strstr($file, '.log')) 
 				@unlink("{$file}");

@@ -139,6 +139,15 @@ class DUP_Settings
 
 		return $default;
 	}
+
+    public static function get_create_date_format()
+    {
+        static $ui_create_frmt = null;
+        if (is_null($ui_create_frmt)) {
+            $ui_create_frmt = is_numeric(self::Get('package_ui_created')) ? self::Get('package_ui_created') : 1;
+        }
+        return $ui_create_frmt;
+    }
 }
 //Init Class
 DUP_Settings::init();

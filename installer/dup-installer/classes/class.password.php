@@ -227,5 +227,3 @@ class DUPX_PasswordHash
 		return $hash === $stored_hash;
 	}
 }
-
-?>

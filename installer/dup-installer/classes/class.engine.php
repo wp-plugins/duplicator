@@ -350,6 +350,7 @@ class DUPX_UpdateEngine
                                     'shortMsg' => 'DATA-REPLACE ERRORS: MySQL',
                                     'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
                                     'longMsg' => $errMsg,
+                                    'longMsgMode'=> DUPX_NOTICE_ITEM::MSG_MODE_PRE,
                                     'sections' => 'search_replace'
                                 ));
 							}

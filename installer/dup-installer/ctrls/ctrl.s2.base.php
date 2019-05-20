@@ -172,4 +172,4 @@ DUPX_Log::info("\nINSERT DATA RUNTIME: " . DUPX_U::elapsedTime($dbinstall->profi
 DUPX_Log::info('STEP-2 COMPLETE @ '.@date('h:i:s')." - RUNTIME: {$ajax1_sum}");
 
 error_reporting($ajax2_error_level);
-die(json_encode($JSON));
+die(DupLiteSnapLibUtil::wp_json_encode($JSON));

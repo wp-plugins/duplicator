@@ -173,8 +173,15 @@ VIEW: STEP 3- INPUT -->
 				</tr>
 				<tr>
 					<td>Password:</td>
-					<td><input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" /></td>
-				</tr>
+					<td>
+                        <?php
+                        DUPX_U_Html::inputPasswordToggle('wp_password', 'wp_password', array(),
+                            array(
+                            'placeholder' => '(6 or more characters)',
+                            'title' => '6 characters minimum'
+                        ));
+                        ?>
+                </tr>
 				<tr>
 					<td>Email:</td>
 					<td><input type="text" name="wp_mail" id="wp_mail" value="" title=""  placeholder="" /></td>
@@ -234,7 +241,7 @@ VIEW: STEP 3- INPUT -->
 							<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',true);">[All]</a>
 							<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',false);">[None]</a>
 						</div><br style="clear:both" />
-						<select id="tables" name="tables[]" multiple="multiple" style="width:315px; height:100px">
+						<select id="tables" name="tables[]" multiple="multiple" style="width:315px;" size="10">
 							<?php
 							foreach( $all_tables as $table ) {
 								echo '<option selected="selected" value="' . DUPX_U::esc_attr( $table ) . '">' . DUPX_U::esc_html($table) . '</option>';
@@ -250,7 +257,7 @@ VIEW: STEP 3- INPUT -->
 							<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
 							<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 						</div><br style="clear:both" />
-						<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode'] > 0) ? 'disabled="true"' : ''; ?>>
+						<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px;" <?php echo ($_POST['exe_safe_mode'] > 0) ? 'disabled="true"' : ''; ?> size="10">
 							<?php
 							$exclude_plugins = array(
 								'really-simple-ssl/rlrsssl-really-simple-ssl.php',
@@ -309,7 +316,7 @@ VIEW: STEP 3- INPUT -->
 							$wp_cache_val = $config_transformer->get_value('constant', 'WP_CACHE');
 						}
 						?>
-						<input type="checkbox" name="cache_wp" id="cache_wp" <?php SnapLibUIU::echoChecked($wp_cache_val);?> /> <label for="cache_wp">Keep Enabled</label>
+						<input type="checkbox" name="cache_wp" id="cache_wp" <?php DupLiteSnapLibUIU::echoChecked($wp_cache_val);?> /> <label for="cache_wp">Keep Enabled</label>
 					</td>
 				</tr>
                 <tr>
@@ -321,7 +328,7 @@ VIEW: STEP 3- INPUT -->
 							$wpcachehome_val = $config_transformer->get_value('constant', 'WPCACHEHOME');
 						}
 						?>
-						<input type="checkbox" name="cache_path" id="cache_path" <?php SnapLibUIU::echoChecked($wpcachehome_val);?> /> <label for="cache_path">Keep Home Path</label>
+						<input type="checkbox" name="cache_path" id="cache_path" <?php DupLiteSnapLibUIU::echoChecked($wpcachehome_val);?> /> <label for="cache_path">Keep Home Path</label>
                         <br><br>
 					</td>
 				</tr>
@@ -334,7 +341,7 @@ VIEW: STEP 3- INPUT -->
 							$force_ssl_admin_val = $config_transformer->get_value('constant', 'FORCE_SSL_ADMIN');
 						}
 						?>
-						<input type="checkbox" name="ssl_admin" id="ssl_admin" <?php SnapLibUIU::echoChecked($force_ssl_admin_val);?> /> <label for="ssl_admin">Enforce on Admin</label>
+						<input type="checkbox" name="ssl_admin" id="ssl_admin" <?php DupLiteSnapLibUIU::echoChecked($force_ssl_admin_val);?> /> <label for="ssl_admin">Enforce on Admin</label>
 					</td>
 				</tr>
                 <?php } else { ?>

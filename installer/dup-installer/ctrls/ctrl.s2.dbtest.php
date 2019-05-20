@@ -68,7 +68,7 @@ class DUPX_DBTest
 		$this->ac = DUPX_ArchiveConfig::getInstance();
 
 		//REQUIRMENTS
-		//Pass States: skipped = -1		failed = 0		passed = 1
+		//Pass States: skipped = -1		failed = 0		passed = 1   warned = 2
 		$this->reqs[5]	 = array('title' => "Create Database User", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[10]	 = array('title' => "Verify Host Connection", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[20]	 = array('title' => "Check Server Version", 'info' => "{$default_msg}", 'pass' => -1);
@@ -76,7 +76,8 @@ class DUPX_DBTest
 		$this->reqs[40]	 = array('title' => "Confirm Database Visibility", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[50]	 = array('title' => "Manual Table Check", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[60]	 = array('title' => "Test User Table Privileges", 'info' => "{$default_msg}", 'pass' => -1);
-        $this->reqs[70]	 = array('title' => "Check Collation Capability", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[70]	 = array('title' => "Check Collation Capability", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[80]	 = array('title' => "Check GTID mode", 'info' => "{$default_msg}", 'pass' => -1);
 		//NOTICES
 		$this->notices[10]	 = array('title' => "Table Case Sensitivity", 'info' => "{$default_msg}", 'pass' => -1);
        }
@@ -99,7 +100,7 @@ class DUPX_DBTest
 			$result = $this->out;
 			return $result;
 		} elseif ($this->responseMode == 'JSON') {
-			$result = json_encode($this->out);
+			$result = DupLiteSnapLibUtil::wp_json_encode($this->out);
 			return $result;
 		} else {
 			die('Please specific the responseMode property');
@@ -143,6 +144,7 @@ class DUPX_DBTest
 		//NOTICES
 		$this->n10All($this->notices[10]);
 		$this->r70All($this->reqs[70]);
+		$this->r80All($this->reqs[80]);
 		$this->basicCleanup();
 	}
 
@@ -450,6 +452,48 @@ class DUPX_DBTest
 	}
 
 	/**
+	 * Check GTID mode
+	 *
+	 * @return null
+	 */
+	private function r80All(&$test)
+	{
+		try {
+			if ($this->isFailedState($test)) {
+				return;
+			}
+
+			$gtid_mode_enabled = false;
+			$query  = "SELECT @@GLOBAL.GTID_MODE";
+			$result = mysqli_query($this->dbh, $query);
+
+			if ($result = mysqli_query($this->dbh, $query)) {
+				if ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
+					if ('ON' == $row[0] || 'on' == $row[0])
+						$gtid_mode_enabled = true;
+				}
+			}
+
+			// $gtid_mode_enabled = true;
+			if ($gtid_mode_enabled) {
+				$test['pass'] = 2;
+				$test['info'] = "Your database server have GTID mode is on, It might make a trouble in Database installation.<br/>"
+								 . "<small>Details: You might face the error something like Statement violates GTID consistency. "
+								 . "You should ask hosting provider to make off GTID off. "
+								 . "You can make off GTID mode as decribed in the <a href='https://dev.mysql.com/doc/refman/5.7/en/replication-mode-change-online-disable-gtids.html' target='_blank'>https://dev.mysql.com/doc/refman/5.7/en/replication-mode-change-online-disable-gtids.html</a>"
+								 . "</small>";
+			} else {
+				$test['pass'] = 1;
+				$test['info'] = "The installer have not detected GTID mode.";
+			}
+		} catch (Exception $ex) {			
+			//Return '1' to allow user to continue
+			$test['pass'] = 1;
+			$test['info'] = "Failure in attempt to check GTID mode status.<br/>" . $this->formatError($ex);
+		}
+	}
+
+	/**
 	 * Table Case Compatibility
 	 *
 	 * Failure occurs when:
@@ -690,6 +734,15 @@ class DUPX_DBTest
 				$last_error	 = $this->reqs[$key]['info'];
 				break;
 			}
+		}
+
+		if (1 == $req_status) {
+			foreach ($this->reqs as $key => $value) {
+				if ($this->reqs[$key]['pass'] == 2) {
+					$req_status = 2;
+					break;
+				}
+			}	
 		}
 
 		//Only show notice summary if a test was ran

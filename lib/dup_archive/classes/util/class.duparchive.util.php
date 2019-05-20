@@ -122,7 +122,7 @@ class DupArchiveUtil
         {
             if($callingFunctionName === null)
             {
-                $callingFunctionName = SnapLibUtil::getCallingFunctionName();
+                $callingFunctionName = DupLiteSnapLibUtil::getCallingFunctionName();
             }
 
             self::$logger->log($s, $flush, $callingFunctionName);
@@ -140,7 +140,7 @@ class DupArchiveUtil
 
             if($callingFunctionName === null)
             {
-                $callingFunctionName = SnapLibUtil::getCallingFunctionName();
+                $callingFunctionName = DupLiteSnapLibUtil::getCallingFunctionName();
             }
 
             self::log("####{$s}", $flush, $callingFunctionName);
@@ -167,7 +167,7 @@ class DupArchiveUtil
 
         if($callingFunctionName === null)
         {
-            $callingFunctionName = SnapLibUtil::getCallingFunctionName();
+            $callingFunctionName = DupLiteSnapLibUtil::getCallingFunctionName();
         }
 
         self::tlog($s, $flush, $callingFunctionName);
@@ -180,7 +180,7 @@ class DupArchiveUtil
 
         if($callingFunctionName === null)
         {
-            $callingFunctionName = SnapLibUtil::getCallingFunctionName();
+            $callingFunctionName = DupLiteSnapLibUtil::getCallingFunctionName();
         }
 
         self::log($s, $flush, $callingFunctionName);

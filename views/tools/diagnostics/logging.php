@@ -169,7 +169,7 @@ jQuery(document).ready(function($)
 					<i style="cursor: pointer"
 						data-tooltip-title="<?php esc_attr_e("Host Recommendation:", 'duplicator'); ?>"
 						data-tooltip="<?php esc_attr_e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
-						 <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+						 <i class="far fa-lightbulb" aria-hidden="true"></i>
 							<?php
 								printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
 								esc_html__("Consider our recommended", 'duplicator'),

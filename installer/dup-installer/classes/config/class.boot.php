@@ -55,16 +55,16 @@ class DUPX_Boot
         @set_time_limit(3600);
 
         $ini_get_default_charset = ini_get("default_charset");
-        if (empty($ini_get_default_charset) && SnapLibUtil::wp_is_ini_value_changeable('default_charset')) {
+        if (empty($ini_get_default_charset) && DupLiteSnapLibUtil::wp_is_ini_value_changeable('default_charset')) {
             @ini_set("default_charset", 'utf-8');
         }
-        if (SnapLibUtil::wp_is_ini_value_changeable('memory_limit')) {
+        if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('memory_limit')) {
             @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
         }
-        if (SnapLibUtil::wp_is_ini_value_changeable('max_input_time')) {
+        if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('max_input_time')) {
             @ini_set('max_input_time', '-1');
         }
-        if (SnapLibUtil::wp_is_ini_value_changeable('pcre.backtrack_limit')) {
+        if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('pcre.backtrack_limit')) {
             @ini_set('pcre.backtrack_limit', PHP_INT_MAX);
         }
     }
@@ -88,5 +88,12 @@ class DUPX_Boot
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.notices.manager.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.html.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
+    }
+
+    public static function initArchiveAndLog()
+    {
+        require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
+        $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
+        require_once($GLOBALS['DUPX_INIT'].'/classes/class.logging.php');
     }
 }

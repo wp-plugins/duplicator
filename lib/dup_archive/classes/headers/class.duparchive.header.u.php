@@ -22,7 +22,7 @@ class DupArchiveHeaderU
             throw new Exception("Invalid starting element. Was expecting {$expectedStart} but got {$startingElement}");
         }
 
-        //return SnapLibStreamU::streamGetLine($archiveHandle, self::MaxStandardHeaderFieldLength, $expectedEnd);
+        //return DupLiteSnapLibStreamU::streamGetLine($archiveHandle, self::MaxStandardHeaderFieldLength, $expectedEnd);
 
         $headerString = stream_get_line($archiveHandle, self::MaxStandardHeaderFieldLength, $expectedEnd);
 

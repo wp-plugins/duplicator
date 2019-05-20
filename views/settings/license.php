@@ -14,7 +14,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 		<?php esc_html_e('Duplicator Free'); ?>
 		<div style="padding: 10px">
 			<i class="far fa-check-square"></i> <?php esc_html_e('Basic Features'); ?> <br/>
-			<i class="fa fa-square-o"></i> <a href="admin.php?page=duplicator-gopro"><?php esc_html_e('Pro Features'); ?></a><br>
+			<i class="far fa-square"></i> <a href="admin.php?page=duplicator-gopro"><?php esc_html_e('Pro Features'); ?></a><br>
 		</div>
 	</td>
 </tr>

@@ -94,9 +94,9 @@ class DUP_Installer
 			$mini_expander_string = '';
 		}
 
-		$search_array	 = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@CSRF_CRYPT@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
+		$search_array	 = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
 		$package_hash	 = $this->Package->getPackageHash();
-		$replace_array	 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, DUPLICATOR_INSTALLER_CSRF_CRYPT, $mini_expander_string);
+		$replace_array	 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, $mini_expander_string);
 		$installer_contents = str_replace($search_array, $replace_array, $installer_contents);
 
 		if (@file_put_contents($installer_filepath, $installer_contents) === false) {
@@ -144,7 +144,7 @@ class DUP_Installer
         $ac->package_hash           = $this->Package->getPackageHash();
         $ac->package_notes          = $this->Package->Notes;
         $ac->url_old                = get_option('siteurl');
-        $ac->opts_delete            = DUP_JSON::encode($GLOBALS['DUPLICATOR_OPTS_DELETE']);
+        $ac->opts_delete            = DupLiteSnapLibUtil::wp_json_encode_pprint($GLOBALS['DUPLICATOR_OPTS_DELETE']);
         $ac->blogname               = esc_html(get_option('blogname'));
         $ac->wproot                 = DUPLICATOR_WPROOTPATH;
         $ac->relative_content_dir   = str_replace(ABSPATH, '', WP_CONTENT_DIR);
@@ -165,9 +165,8 @@ class DUP_Installer
 		$ac->mu_mode						 = DUP_MU::getMode();
 		$ac->is_outer_root_wp_config_file	 = (!file_exists(DUPLICATOR_WPROOTPATH.'wp-config.php')) ? true : false;
 		$ac->is_outer_root_wp_content_dir	 = $this->Package->Archive->isOuterWPContentDir();
-		$ac->csrf_crypt = DUPLICATOR_INSTALLER_CSRF_CRYPT;
 
-        $json = DUP_JSON::encodePrettyPrint($ac);
+        $json = DupLiteSnapLibUtil::wp_json_encode_pprint($ac);
         DUP_Log::TraceObject('json', $json);
 
 		if (file_put_contents($archive_config_filepath, $json) === false) {
@@ -303,9 +302,9 @@ class DUP_Installer
 		$installer_backup_filepath = dirname($installer_filepath)."/{$installer_backup_filename}";
 
 		DUP_Log::Info('Adding enhanced installer files to archive using DupArchive');
-		SnapLibIOU::copy($installer_filepath, $installer_backup_filepath);
+		DupLiteSnapLibIOU::copy($installer_filepath, $installer_backup_filepath);
 		DupArchiveEngine::addFileToArchiveUsingBaseDirST($archive_filepath, dirname($installer_backup_filepath), $installer_backup_filepath);
-		SnapLibIOU::rm($installer_backup_filepath);
+		DupLiteSnapLibIOU::rm($installer_backup_filepath);
 
 		$this->numFilesAdded++;
 
@@ -470,14 +469,16 @@ class DUP_Installer
      * @param $temp_conf_ark_file_path Temp config file path
      */
     private static function cleanTempWPConfArkFilePath($temp_conf_ark_file_path) {
-        require_once(DUPLICATOR_PLUGIN_PATH . 'lib/config/class.wp.config.tranformer.php');
-        $transformer = new WPConfigTransformer($temp_conf_ark_file_path);
-        $constants = array('DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST');
-        foreach ($constants as $constant) {
-            if ($transformer->exists('constant', $constant)) {
-                $transformer->update('constant', $constant, '');
-            }
-        }
+		if (function_exists('token_get_all')) {
+			require_once(DUPLICATOR_PLUGIN_PATH . 'lib/config/class.wp.config.tranformer.php');
+			$transformer = new WPConfigTransformer($temp_conf_ark_file_path);
+			$constants = array('DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST');
+			foreach ($constants as $constant) {
+				if ($transformer->exists('constant', $constant)) {
+					$transformer->update('constant', $constant, '');
+				}
+			}
+		}
     }
 
 	/**

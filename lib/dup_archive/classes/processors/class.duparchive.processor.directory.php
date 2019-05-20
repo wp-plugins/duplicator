@@ -12,7 +12,7 @@ class DupArchiveDirectoryProcessor
 		$directoryHeader = new DupArchiveDirectoryHeader();
 
 		$directoryHeader->permissions        = substr(sprintf('%o', fileperms($sourceDirectoryPath)), -4);
-		$directoryHeader->mtime              = SnapLibIOU::filemtime($sourceDirectoryPath);
+		$directoryHeader->mtime              = DupLiteSnapLibIOU::filemtime($sourceDirectoryPath);
 		$directoryHeader->relativePath       = $relativeDirectoryPath;
 		$directoryHeader->relativePathLength = strlen($directoryHeader->relativePath);
 

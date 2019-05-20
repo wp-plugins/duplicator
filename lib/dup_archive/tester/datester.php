@@ -1,6 +1,6 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
-if (SnapLibUtil::wp_is_ini_value_changeable('display_errors'))
+if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('display_errors'))
     ini_set('display_errors', 1);
 error_reporting(E_ALL);
 error_reporting(E_ALL);
@@ -146,9 +146,9 @@ class DaTester
     public function processRequest()
     {
         try {
-            $this->lockHandle = SnapLibIOU::fopen($this->paths->processLockFilepath, 'c+');
+            $this->lockHandle = DupLiteSnapLibIOU::fopen($this->paths->processLockFilepath, 'c+');
             
-            SnapLibIOU::flock($this->lockHandle, LOCK_EX);
+            DupLiteSnapLibIOU::flock($this->lockHandle, LOCK_EX);
 
             $this->logger = new DaTesterLogging($this->paths->logFilepath);
 
@@ -202,7 +202,7 @@ class DaTester
                     DupArchiveEngine::createArchive($this->paths->archiveFilepath, $this->params->compress);
 
                     $daTesterCreateState->archivePath     = $this->paths->archiveFilepath;
-                    $daTesterCreateState->archiveOffset   = SnapLibIOU::filesize($this->paths->archiveFilepath);
+                    $daTesterCreateState->archiveOffset   = DupLiteSnapLibIOU::filesize($this->paths->archiveFilepath);
                     $daTesterCreateState->working         = true;
                     $daTesterCreateState->timeSliceInSecs = $this->params->workerTime;
                     $daTesterCreateState->basePath        = $this->paths->dataDirectory;
@@ -417,7 +417,7 @@ class DaTester
                 exit(1);
             }
 
-            SnapLibIOU::flock($this->lockHandle, LOCK_UN);
+            DupLiteSnapLibIOU::flock($this->lockHandle, LOCK_UN);
 
             $this->logger->log("Unlocked file");
 
@@ -430,7 +430,7 @@ class DaTester
 
                 $this->logger->logObject("SPAWNING CUSTOM WORKER AT $url FOR ACTION {$this->params->action}", $data);
 
-                SnapLibNetU::postWithoutWait($url, $data);
+                DupLiteSnapLibNetU::postWithoutWait($url, $data);
 
                 $this->logger->log('After post without wait');
             } else {
@@ -477,8 +477,8 @@ class DaTester
             @unlink($this->paths->scanFilepath);
         }
 
-        $handle = SnapLibIOU::fopen($this->paths->archiveFilepath, 'w');
-        SnapLibIOU::fclose($handle);
+        $handle = DupLiteSnapLibIOU::fopen($this->paths->archiveFilepath, 'w');
+        DupLiteSnapLibIOU::fclose($handle);
 
         //$this->logger->clearLog();
     }
@@ -486,11 +486,11 @@ class DaTester
     private function clearExpandFiles()
     {
         if (file_exists($this->paths->restoreDirectory)) {
-            SnapLibIOU::rrmdir($this->paths->restoreDirectory);
+            DupLiteSnapLibIOU::rrmdir($this->paths->restoreDirectory);
         }
 
         if (file_exists($this->paths->tempDirectory)) {
-            SnapLibIOU::rrmdir($this->paths->tempDirectory);
+            DupLiteSnapLibIOU::rrmdir($this->paths->tempDirectory);
         }
 
         mkdir($this->paths->restoreDirectory);

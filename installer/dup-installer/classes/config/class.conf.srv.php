@@ -212,7 +212,7 @@ HTACCESS;
 	private static function createBackup($file_path, $type)
 	{
 		$status		= false;
-		$file_name  = SnapLibIOU::getFileName($file_path);
+		$file_name  = DupLiteSnapLibIOU::getFileName($file_path);
 		$hash		= self::$fileHash;
 		$source = self::getTypeName($type);
 		if (is_file($file_path)) {
@@ -241,7 +241,7 @@ HTACCESS;
 		$status = false;
 		if (is_file($file_path)) {
 			$source		= self::getTypeName($type);
-			$file_name  = SnapLibIOU::getFileName($file_path);
+			$file_name  = DupLiteSnapLibIOU::getFileName($file_path);
 			$status = @unlink($file_path);
 			if ($status === FALSE) {
 				@chmod($file_path, 0777);
@@ -448,7 +448,7 @@ HTACCESS;
             'longMsg' => $longMsg,
             'sections' => 'changes',
             'open' => true,
-            'longMsgHtml' => true
+            'longMsgMode'=> DUPX_NOTICE_ITEM::MSG_MODE_HTML
             ), DUPX_NOTICE_MANAGER::ADD_UNIQUE, 'htaccess-changes');
     }
 
@@ -480,7 +480,7 @@ HTACCESS;
             'longMsg' => $longMsg,
             'sections' => 'changes',
             'open' => true,
-            'longMsgHtml' => true
+            'longMsgMode'=> DUPX_NOTICE_ITEM::MSG_MODE_HTML
             ), DUPX_NOTICE_MANAGER::ADD_UNIQUE, 'wp-config-changes');
     }
 
