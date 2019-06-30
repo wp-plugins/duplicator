@@ -575,18 +575,11 @@ class DupArchiveEngine
 
                             if (!$expandState->validateOnly) {
                                 $directory = $expandState->basePath . '/' . $directoryHeader->relativePath;
-
-                                $mode = $directoryHeader->permissions;
-
+                                $mode = 'u+rwx';
                                 if ($expandState->directoryModeOverride != -1) {
                                     $mode = $expandState->directoryModeOverride;
                                 }
-
-                                if (!file_exists($directory)) {
-                                    $createdDirectory = @mkdir($directory, $mode, true);
-                                } else {
-                                    $createdDirectory = true;
-                                }
+                                $createdDirectory = DupLiteSnapLibIOU::dirWriteCheckOrMkdir($directory, $mode, true);
                             }
 
                             if ($createdDirectory) {

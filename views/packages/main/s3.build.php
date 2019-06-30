@@ -502,7 +502,7 @@ jQuery(document).ready(function ($)
 
 								for (var j = 0; j < len; j++) {
 									failure = data.failures[j];
-									errorMessage += failure.subject + ":" + failure.description + "\n";
+									errorMessage += failure + "\n";
 								}
 								alert(errorMessage);
 							}

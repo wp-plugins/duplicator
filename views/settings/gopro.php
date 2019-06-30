@@ -216,7 +216,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 				<?php esc_html_e('Active Customer Support', 'duplicator') ?>
 				<sup><i  class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php esc_attr_e("Support", 'duplicator'); ?>"
-                        data-tooltip="<?php esc_attr_e('Pro users get top priority for any requestst to our support desk.  In most cases responses will be answered in under 24 hours.', 'duplicator'); ?>"/></i></sup>
+                        data-tooltip="<?php esc_attr_e('Pro users get top priority for any requests to our support desk.  In most cases responses will be answered in under 24 hours.', 'duplicator'); ?>"/></i></sup>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>

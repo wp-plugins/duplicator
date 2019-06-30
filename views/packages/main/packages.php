@@ -278,7 +278,7 @@ $alert2->initAlert();
 
 $confirm1               = new DUP_UI_Dialog();
 $confirm1->title        = __('Delete Packages?', 'duplicator');
-$confirm1->message      = __('Are you sure, you want to delete the selected package(s)?', 'duplicator');
+$confirm1->message      = __('Are you sure you want to delete the selected package(s)?', 'duplicator');
 $confirm1->progressText = __('Removing Packages, Please Wait...', 'duplicator');
 $confirm1->jscallback   = 'Duplicator.Pack.Delete()';
 $confirm1->initConfirm();

@@ -19,6 +19,8 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.arch
  */
 function duplicator_package_scan()
 {
+    DUP_Handler::init_error_handler();
+
     check_ajax_referer('duplicator_package_scan', 'nonce');
     DUP_Util::hasCapability('export');
 
@@ -49,6 +51,8 @@ function duplicator_package_scan()
  */
 function duplicator_package_build()
 {
+    DUP_Handler::init_error_handler();
+
     check_ajax_referer('duplicator_package_build', 'nonce');
     DUP_Util::hasCapability('export');
 
@@ -95,6 +99,8 @@ function duplicator_package_build()
  */
 function duplicator_duparchive_package_build()
 {
+    DUP_Handler::init_error_handler();
+
     DUP_LOG::Trace("call to duplicator_duparchive_package_build");
 
     check_ajax_referer('duplicator_duparchive_package_build', 'nonce');
@@ -199,6 +205,7 @@ function duplicator_duparchive_package_build()
  */
 function duplicator_package_delete()
 {
+    DUP_Handler::init_error_handler();
     check_ajax_referer('duplicator_package_delete', 'nonce');
     DUP_Util::hasCapability('export');    
 
@@ -233,27 +240,26 @@ function duplicator_package_delete()
                     $nameHash  = "{$row['name']}_{$row['hash']}";
                     $delResult = $wpdb->query($wpdb->prepare("DELETE FROM `{$tblName}` WHERE id = %d", $id));
                     if ($delResult != 0) {
+                        //TMP FILES
+                        $globTmpFiles = glob(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}*"));
+                        foreach ($globTmpFiles as $globTmpFile) {
+                            _unlinkFile($globTmpFile);
+                        }
 
-						//TMP FILES
-						_unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_archive.daf"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_archive.zip"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_database.sql"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_installer.php"));
-
-						//WP-SNAPSHOT FILES
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_archive.daf"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_archive.zip"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_database.sql"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_installer.php"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_scan.json"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}_wp-config.txt"));
-                        _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log"));
+                        //WP-SNAPSHOT FILES
+                        $globSnapshotFiles = glob(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}*"));
+                        foreach ($globSnapshotFiles as $globSnapshotFile) {
+                            _unlinkFile($globSnapshotFile);
+                        }
+                        // _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log"));
 
                         //Unfinished Zip files
+                        /*
                         $tmpZip = DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_archive.zip.*";
                         if ($tmpZip !== false) {
                             array_map('unlink', glob($tmpZip));
                         }
+                        */
                         $delCount++;
                     }
                 }
@@ -280,8 +286,10 @@ function duplicator_package_delete()
 function duplicator_active_package_info()
 {
     ob_start();
-    DUP_Util::hasCapability('export');
     try {
+        DUP_Handler::init_error_handler();
+        DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
+
         if (!check_ajax_referer('duplicator_active_package_info', 'nonce', false)) {
             throw new Exception(__('An unathorized security request was made to this page. Please try again!','duplicator'));
         }
@@ -350,6 +358,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
      */
     public function addQuickFilters($post)
     {
+        DUP_Handler::init_error_handler();
+
         check_ajax_referer('DUP_CTRL_Package_addQuickFilters', 'nonce');
         DUP_Util::hasCapability('export');
         $post   = $this->postParamMerge($post);
@@ -404,6 +414,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
      */
     function getPackageFile($post)
     {
+        DUP_Handler::init_error_handler();
+
         check_ajax_referer('DUP_CTRL_Package_getPackageFile', 'nonce' );
         DUP_Util::hasCapability('export');
         $params = $this->postParamMerge($post);
@@ -501,6 +513,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
      */
 	public function getActivePackageStatus($post)
 	{
+        DUP_Handler::init_error_handler();
+        
         check_ajax_referer('DUP_CTRL_Package_getActivePackageStatus', 'nonce');
         DUP_Util::hasCapability('export');
 

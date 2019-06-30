@@ -16,15 +16,18 @@ abstract class Dup_ErrorBehavior
 
 class DUP_Log
 {
-	static $debugging = true;
-	private static $traceEnabled;
+    /**
+     * The file handle used to write to the package log file
+     */
+    private static $logFileHandle = null;
 
-	/**
-	 * The file handle used to write to the log file
-	 * @var file resource
-	 */
-	public static $logFileHandle = null;
+    /**
+     * Get the setting which indicates if tracing is enabled
+     */
+    private static $traceEnabled = false;
 
+    public static $profileLogs = null;
+    
 	/**
 	 * Init this static object
 	 */
@@ -33,37 +36,71 @@ class DUP_Log
 		self::$traceEnabled = (DUP_Settings::Get('trace_log_enabled') == 1);
 	}
 
-	/**
-	 *  Open a log file connection for writing
-	 *  @param string $name Name of the log file to create
-	 */
-	public static function Open($name)
-	{
-		if (!isset($name)) throw new Exception("A name value is required to open a file log.");
-		self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH."/{$name}.log", "a+");
-	}
+    /**
+     * Open a log file connection for writing to the package log file
+     *
+     * @param string $nameHas The Name of the log file to create
+     *
+     * @return nul
+     */
+    public static function Open($nameHash)
+    {
+        if (!isset($nameHash)) {
+            throw new Exception("A name value is required to open a file log.");
+        }
+        self::Close();
+        if ((self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log", "a+")) === false) {
+            self::$logFileHandle = null;
+            return false;
+        } else {
+            /**
+             * By initializing the error_handler on opening the log, I am sure that when a package is processed, the handler is active.
+             */
+            DUP_Handler::init_error_handler();
+            return true;
+        }
+    }
+
+    /**
+     * Close the package log file connection if is opened
+     *
+     * @return bool Returns TRUE on success or FALSE on failure.
+     */
+    public static function Close()
+    {
+        if (!is_null(self::$logFileHandle)) {
+            $result              = @fclose(self::$logFileHandle);
+            self::$logFileHandle = null;
+        }
+        return $result;
+    }
 
 	/**
-	 *  Close the log file connection
-	 */
-	public static function Close()
-	{
-		@fclose(self::$logFileHandle);
-	}
-
-	/**
-	 *  General information logging
+	 *  General information send to the package log if opened
 	 *  @param string $msg	The message to log
 	 *
 	 *  REPLACE TO DEBUG: Memory consumption as script runs
 	 * 	$results = DUP_Util::byteSize(memory_get_peak_usage(true)) . "\t" . $msg;
 	 * 	@fwrite(self::$logFileHandle, "{$results} \n");
-	 */
-	public static function Info($msg)
-	{
-		self::Trace($msg);
-		@fwrite(self::$logFileHandle, "{$msg} \n");
-	}
+     *
+     *  @param string $msg	The message to log
+     *
+     *  @return null
+     */
+    public static function Info($msg)
+    {
+        self::Trace($msg);
+        if (!is_null(self::$logFileHandle)) {
+            @fwrite(self::$logFileHandle, $msg."\n");
+        }
+    }
+
+    public static function print_r_info($val, $name = '')
+    {
+        $msg = empty($name) ? '' : 'VALUE '.$name.': ';
+        $msg .= print_r($val, true);
+        self::info($msg);
+    }
 
 	/**
 	 * Does the trace file exists
@@ -133,6 +170,13 @@ class DUP_Log
 			self::WriteToTrace($formatted_logging_message);
 		}
 	}
+
+    public static function print_r_trace($val, $name = '', $calling_function_override = null)
+    {
+        $msg = empty($name) ? '' : 'VALUE '.$name.': ';
+        $msg .= print_r($val, true);
+        self::trace($msg, $calling_function_override);
+    }
 
 	public static function errLog($message)
 	{
@@ -279,4 +323,202 @@ class DUP_Log
 		}
 	}
 }
+
+class DUP_Handler
+{
+    const MODE_OFF         = 0; // don't write in log
+    const MODE_LOG         = 1; // write errors in log file
+    const MODE_VAR         = 2; // put php errors in $varModeLog static var
+    const SHUTDOWN_TIMEOUT = 'tm';
+
+    /**
+     *
+     * @var bool
+     */
+    private static $inizialized = false;
+
+    /**
+     *
+     * @var array
+     */
+    private static $shutdownReturns = array(
+        'tm' => 'timeout'
+    );
+
+    /**
+     *
+     * @var int
+     */
+    private static $handlerMode = self::MODE_LOG;
+
+    /**
+     *
+     * @var bool // print code reference and errno at end of php error line  [CODE:10|FILE:test.php|LINE:100]
+     */
+    private static $codeReference = true;
+
+    /**
+     *
+     * @var bool // print prefix in php error line [PHP ERR][WARN] MSG: .....
+     */
+    private static $errPrefix = true;
+
+    /**
+     *
+     * @var string // php errors in MODE_VAR
+     */
+    private static $varModeLog = '';
+
+    /**
+     * This function only initializes the error handler the first time it is called
+     */
+    public static function init_error_handler()
+    {
+        if (!self::$inizialized) {
+            @set_error_handler(array(__CLASS__, 'error'));
+            @register_shutdown_function(array(__CLASS__, 'shutdown'));
+            self::$inizialized = true;
+        }
+    }
+
+    /**
+     * Error handler
+     *
+     * @param  integer $errno   Error level
+     * @param  string  $errstr  Error message
+     * @param  string  $errfile Error file
+     * @param  integer $errline Error line
+     * @return void
+     */
+    public static function error($errno, $errstr, $errfile, $errline)
+    {
+        switch (self::$handlerMode) {
+            case self::MODE_OFF:
+                if ($errno == E_ERROR) {
+                    $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
+                    DUP_Log::Error($log_message);
+                }
+                break;
+            case self::MODE_VAR:
+                self::$varModeLog .= self::getMessage($errno, $errstr, $errfile, $errline)."\n";
+                break;
+            case self::MODE_LOG:
+            default:
+                switch ($errno) {
+                    case E_ERROR :
+                        $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
+                        DUP_Log::Error($log_message);
+                        break;
+                    case E_NOTICE :
+                    case E_WARNING :
+                    default :
+                        $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
+                        DUP_Log::Info($log_message);
+                        break;
+                }
+        }
+    }
+
+    private static function getMessage($errno, $errstr, $errfile, $errline)
+    {
+        $result = '';
+
+        if (self::$errPrefix) {
+            $result = '[PHP ERR]';
+            switch ($errno) {
+                case E_ERROR :
+                    $result .= '[FATAL]';
+                    break;
+                case E_WARNING :
+                    $result .= '[WARN]';
+                    break;
+                case E_NOTICE :
+                    $result .= '[NOTICE]';
+                    break;
+                default :
+                    $result .= '[ISSUE]';
+                    break;
+            }
+            $result .= ' MSG:';
+        }
+
+        $result .= $errstr;
+
+        if (self::$codeReference) {
+            $result .= ' [CODE:'.$errno.'|FILE:'.$errfile.'|LINE:'.$errline.']';
+        }
+
+        return $result;
+    }
+
+    /**
+     * if setMode is called without params set as default
+     *
+     * @param int $mode
+     * @param bool $errPrefix // print prefix in php error line [PHP ERR][WARN] MSG: .....
+     * @param bool $codeReference // print code reference and errno at end of php error line  [CODE:10|FILE:test.php|LINE:100]
+     */
+    public static function setMode($mode = self::MODE_LOG, $errPrefix = true, $codeReference = true)
+    {
+        switch ($mode) {
+            case self::MODE_OFF:
+            case self::MODE_VAR:
+                self::$handlerMode = $mode;
+                break;
+            case self::MODE_LOG:
+            default:
+                self::$handlerMode = self::MODE_LOG;
+        }
+
+        self::$varModeLog    = '';
+        self::$errPrefix     = $errPrefix;
+        self::$codeReference = $codeReference;
+    }
+
+    /**
+     *
+     * @return string // return var log string in MODE_VAR
+     */
+    public static function getVarLog()
+    {
+        return self::$varModeLog;
+    }
+
+    /**
+     *
+     * @return string // return var log string in MODE_VAR and clean var
+     */
+    public static function getVarLogClean()
+    {
+        $result           = self::$varModeLog;
+        self::$varModeLog = '';
+        return $result;
+    }
+
+    /**
+     *
+     * @param string $status // timeout
+     * @param string
+     */
+    public static function setShutdownReturn($status, $str)
+    {
+        self::$shutdownReturns[$status] = $str;
+    }
+
+    /**
+     * Shutdown handler
+     *
+     * @return void
+     */
+    public static function shutdown()
+    {
+        if (($error = error_get_last())) {
+            if (preg_match('/^Maximum execution time (?:.+) exceeded$/i', $error['message'])) {
+                echo self::$shutdownReturns[self::SHUTDOWN_TIMEOUT];
+            }
+            self::error($error['type'], $error['message'], $error['file'], $error['line']);
+        }
+    }
+}
+
 DUP_Log::Init();

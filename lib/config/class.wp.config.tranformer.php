@@ -7,6 +7,8 @@ if (!class_exists('WPConfigTransformer')):
  */
 class WPConfigTransformer {
 
+    const REPLACE_TEMP_STIRNG = '_1_2_RePlAcE_3_4_TeMp_5_6_StRiNg_7_8_';
+
 	/**
 	 * Path to the wp-config.php file.
 	 *
@@ -93,7 +95,7 @@ class WPConfigTransformer {
 	 *
 	 * @return array
 	 */
-	public function get_value( $type, $name ) {
+	public function get_value( $type, $name, $get_real_value = true) {
 		$wp_config_src = file_get_contents( $this->wp_config_path );
 		if ( ! trim( $wp_config_src ) ) {
 			throw new Exception( 'wp-config.php file is empty.' );
@@ -113,15 +115,40 @@ class WPConfigTransformer {
 
 		// Duplicator Extra
 		$val = $this->wp_configs[ $type ][ $name ]['value'];
-		if (is_string($val)) {
-			$val = trim($val, '"');
-			$val = trim($val, "'");
-		}
+        if ($get_real_value) {
+            return self::getRealValFromVal($val);
+        } else {
+            return $val;
+        }
 
 		return $val;
 	}
 
-	/**
+    public static function getRealValFromVal($val)
+    {
+        if ($val[0] == '\'') {
+            // string with '
+            $result = substr($val, 1, strlen($val) - 2);
+            return str_replace(array('\\\'' , '\\\\'), array('\'', '\\'), $result);
+        } else if ($val[0] == '"') {
+            // string with "
+            return json_decode(str_replace('\\$', '$', $val));
+        } else if (strcasecmp($val, 'true')) {
+            return true;
+        } else if (strcasecmp($val, 'false')) {
+            return false;
+        } else if (strcasecmp($val, 'null')) {
+            return null;
+        } else if (preg_match('/^[-+]?[0-9]+$/', $val)) {
+            return (int) $val;
+        } else if (preg_match('/^[-+]?[0-9]+\.[0-9]+$/', $val)) {
+            return (float) $val;
+        } else {
+            return $val;
+        }
+    }
+
+        /**
 	 * Adds a config to the wp-config.php file.
 	 *
 	 * @throws Exception If the config value provided is not a string.
@@ -275,16 +302,12 @@ class WPConfigTransformer {
 			$new_src      = implode( '', $new_parts );
 		}
 
-        // regex: (^\$|^(?:\\\\)+|[^\\](?:\\\\)+|[^\\])\$
-        // subst: $1\\$
-        $safe_new_src = preg_replace('/(^\$|^(?:\\\\\\\\)+|[^\\\\](?:\\\\\\\\)+|[^\\\\])\$/m', '$1\\\\$' , trim($new_src));
-
-		$contents = preg_replace(
+        $contents = preg_replace(
 			sprintf( '/(?<=^|;|<\?php\s|<\?\s)(\s*?)%s/m', preg_quote( trim( $old_src ), '/' ) ),
-			'$1' . $safe_new_src,
+			'$1' . self::REPLACE_TEMP_STIRNG ,
 			$this->wp_config_src
 		);
-
+        $contents = str_replace(self::REPLACE_TEMP_STIRNG, trim($new_src), $contents);
 		return $this->save( $contents );
 	}
 

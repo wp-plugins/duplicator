@@ -113,10 +113,7 @@ class DupArchiveFileProcessor
  
         $moreGlobstoProcess = true;
         
-        if (!file_exists($parentDir)) {
- 
-            DupLiteSnapLibIOU::mkdir($parentDir, 0755, true);
-        }
+        DupLiteSnapLibIOU::dirWriteCheckOrMkdir($parentDir, 'u+rwx');
 
         if ($expandState->currentFileHeader->fileSize > 0) {
 
@@ -192,9 +189,9 @@ class DupArchiveFileProcessor
             }
 
             if (!$moreGlobstoProcess && $expandState->validateOnly && ($expandState->validationType == DupArchiveValidationTypes::Full)) {
-
-                @chmod($destFilepath, 0644);
-                
+                if (!is_writable($destFilepath)) {
+                    DupLiteSnapLibIOU::chmod($destFilepath, 'u+rw');
+                }
                 if (@unlink($destFilepath) === false) {
               //      $expandState->addFailure(DupArchiveFailureTypes::File, $destFilepath, "Couldn't delete {$destFilepath} during validation", false);
                     // TODO: Have to know how to handle this - want to report it but don’t want to mess up validation - some non critical errors could be important to validation
@@ -256,14 +253,11 @@ class DupArchiveFileProcessor
 
     public static function setFileMode($expandState, $filePath)
     {
-        $mode = $expandState->currentFileHeader->permissions;
-
-        if($expandState->fileModeOverride != -1) {
-
+        $mode = 'u+rw';
+        if($expandState->fileModeOverride !== -1) {
             $mode = $expandState->fileModeOverride;
         }
-
-        @chmod($filePath, $mode);
+        DupLiteSnapLibIOU::chmod($filePath, $mode);
     }
 
     public static function standardValidateFileEntry(&$expandState, $archiveHandle)

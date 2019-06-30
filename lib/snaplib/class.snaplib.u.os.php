@@ -16,15 +16,41 @@ if (!class_exists('DupLiteSnapLibOSU', false)) {
 
     class DupLiteSnapLibOSU
     {
-        const WindowsMaxPathLength = 259;
+        const DEFAULT_WINDOWS_MAXPATH = 260;
+        const DEFAULT_LINUX_MAXPATH   = 4096;
 
-        public static $isWindows;
-
-        public static function init()
+        /**
+         * return true if current SO is windows
+         * 
+         * @staticvar bool $isWindows
+         * @return bool
+         */
+        public static function isWindows()
         {
+            static $isWindows = null;
+            if (is_null($isWindows)) {
+                $isWindows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+            }
+            return $isWindows;
+        }
 
-            self::$isWindows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+        /**
+         *  return current SO path path len
+         * @staticvar int $maxPath
+         * @return int
+         */
+        public static function maxPathLen()
+        {
+            static $maxPath = null;
+            if (is_null($maxPath)) {
+                if (defined('PHP_MAXPATHLEN')) {
+                    $maxPath = PHP_MAXPATHLEN;
+                } else {
+                    // for PHP < 5.3.0
+                    $maxPath = self::isWindows() ? self::DEFAULT_WINDOWS_MAXPATH : self::DEFAULT_LINUX_MAXPATH;
+                }
+            }
+            return $maxPath;
         }
     }
-    DupLiteSnapLibOSU::init();
 }

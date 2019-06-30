@@ -285,6 +285,7 @@ LONGMSG;
     }
 
     $nManager->sortFinalReport();
+    $nManager->finalReportLog(array('general','files','database','search_replace'));
     ?>
 
 	<div class="s4-go-back">

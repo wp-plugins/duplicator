@@ -1,9 +1,13 @@
 <?php
+/* ------------------------------ NOTICE ----------------------------------
 
-if ( !defined('DUPXABSPATH') ) {
-    define('DUPXABSPATH', dirname(__FILE__));
-}
+    If you're seeing this text when browsing to the installer, it means your
+    web server is not set up properly.
 
+    Please contact your host and ask them to enable "PHP" processing on your
+    account.
+    ----------------------------- NOTICE ---------------------------------*/
+    
 if (!defined('KB_IN_BYTES')) { define('KB_IN_BYTES', 1024); }
 if (!defined('MB_IN_BYTES')) { define('MB_IN_BYTES', 1024 * KB_IN_BYTES); }
 if (!defined('GB_IN_BYTES')) { define('GB_IN_BYTES', 1024 * MB_IN_BYTES); }
@@ -25,7 +29,6 @@ if (!function_exists('wp_is_ini_value_changeable')) {
     */
     function wp_is_ini_value_changeable( $setting ) {
         static $ini_all;
-
         if ( ! isset( $ini_all ) ) {
             $ini_all = false;
             // Sometimes `ini_get_all()` is disabled via the `disable_functions` option for "security purposes".
@@ -57,132 +60,8 @@ if (wp_is_ini_value_changeable('pcre.backtrack_limit'))
     @ini_set('pcre.backtrack_limit', PHP_INT_MAX);
 if (wp_is_ini_value_changeable('default_socket_timeout'))
     @ini_set('default_socket_timeout', 3600);
-
-class DUPX_CSRF {
-	
-	/** Session var name
-	 * @var string
-	 */
-	public static $prefix = '_DUPX_CSRF';
-	private static $CSRFVars;
-
-	public static function setKeyVal($key, $val) {
-		$CSRFVars = self::getCSRFVars();
-		$CSRFVars[$key] = $val;
-		self::saveCSRFVars($CSRFVars);
-		self::$CSRFVars = false;
-	}
-
-	public static function getVal($key) {
-		$CSRFVars = self::getCSRFVars();
-		if (isset($CSRFVars[$key])) {
-			return $CSRFVars[$key];
-		} else {
-			return false;
-		}
-
-	}
-	
-	/** Generate DUPX_CSRF value for form
-	 * @param	string	$form	- Form name as session key
-	 * @return	string	- token
-	 */
-	public static function generate($form = NULL) {
-		$keyName = self::getKeyName($form);
-
-		$existingToken = self::getVal($keyName);
-		if (false !== $existingToken) {
-			$token = $existingToken;
-		} else {
-			$token = DUPX_CSRF::token() . DUPX_CSRF::fingerprint();
-		}
-		
-		self::setKeyVal($keyName, $token);
-		return $token;
-	}
-	
-	/** Check DUPX_CSRF value of form
-	 * @param	string	$token	- Token
-	 * @param	string	$form	- Form name as session key
-	 * @return	boolean
-	 */
-	public static function check($token, $form = NULL) {
-		$keyName = self::getKeyName($form);
-		$CSRFVars = self::getCSRFVars();
-		if (isset($CSRFVars[$keyName]) && $CSRFVars[$keyName] == $token) { // token OK
-			return true;
-		}
-		return FALSE;
-	}
-	
-	/** Generate token
-	 * @param	void
-	 * @return  string
-	 */
-	protected static function token() {
-		mt_srand((double) microtime() * 10000);
-		$charid = strtoupper(md5(uniqid(rand(), TRUE)));
-		return substr($charid, 0, 8) . substr($charid, 8, 4) . substr($charid, 12, 4) . substr($charid, 16, 4) . substr($charid, 20, 12);
-	}
-	
-	/** Returns "digital fingerprint" of user
-	 * @param 	void
-	 * @return 	string 	- MD5 hashed data
-	 */
-	protected static function fingerprint() {
-		return strtoupper(md5(implode('|', array($_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']))));
-	}
-
-	private static function getKeyName($form) {
-		return DUPX_CSRF::$prefix . '_' . $form;
-	}
-
-	private static function getPackageHash() {
-		if (class_exists('DUPX_Bootstrap')) {
-			return DUPX_Bootstrap::PACKAGE_HASH;
-		} else {
-			return $GLOBALS['DUPX_AC']->package_hash;
-		}
-	}
-
-	private static function getFilePath() {
-		if (class_exists('DUPX_Bootstrap')) {
-			$dupInstallerfolderPath = dirname(__FILE__).'/dup-installer/';
-		} else {
-			$dupInstallerfolderPath = $GLOBALS['DUPX_INIT'].'/';
-		}
-		$packageHash = self::getPackageHash();
-		$fileName = 'dup-installer-csrf__'.$packageHash.'.txt';
-		$filePath = $dupInstallerfolderPath.$fileName;
-		return $filePath;
-	}
-
-	private static function getCSRFVars() {
-		if (!isset(self::$CSRFVars) || false === self::$CSRFVars) {
-			$filePath = self::getFilePath();
-			if (file_exists($filePath)) {
-				$contents = file_get_contents($filePath);
-				if (empty($contents)) {
-					self::$CSRFVars = array();
-				} else {
-					$CSRFobjs = json_decode($contents);
-					foreach ($CSRFobjs as $key => $value) {
-						self::$CSRFVars[$key] = $value;
-					}
-				}
-			} else {
-				self::$CSRFVars = array();
-			}
-		}
-		return self::$CSRFVars;
-	}
-
-	private static function saveCSRFVars($CSRFVars) {
-		$contents = json_encode($CSRFVars);
-		$filePath = self::getFilePath();
-		file_put_contents($filePath, $contents);
-	}
-}
+    
+DUPX_Handler::init_error_handler();
 
 /**
  * Bootstrap utility to exatract the core installer
@@ -197,19 +76,14 @@ class DUPX_CSRF {
  *		installer.php?unzipmode=ziparchive
  *		installer.php?unzipmode=shellexec
  */
+ 
+/*** CLASS DEFINITION START ***/
 
 abstract class DUPX_Bootstrap_Zip_Mode
 {
 	const AutoUnzip		= 0;
 	const ZipArchive	= 1;
 	const ShellExec		= 2;
-}
-
-abstract class DUPX_Connectivity
-{
-	const OK		= 0;
-	const Error		= 1;
-	const Unknown	= 2;
 }
 
 class DUPX_Bootstrap
@@ -237,6 +111,9 @@ class DUPX_Bootstrap
 	 */
 	public function __construct()
 	{
+        // clean log file
+        self::log('', true);
+        
 		//ARCHIVE_SIZE will be blank with a root filter so we can estimate
 		//the default size of the package around 17.5MB (18088000)
 		$archiveActualSize		        = @filesize(self::ARCHIVE_FILENAME);
@@ -266,7 +143,7 @@ class DUPX_Bootstrap
 	public function run()
 	{
 		date_default_timezone_set('UTC'); // Some machines don't have this set so just do it here
-		@unlink('./dup-installer-bootlog__'.self::PACKAGE_HASH.'.txt');
+        
 		self::log('==DUPLICATOR INSTALLER BOOTSTRAP v@@VERSION@@==');
 		self::log('----------------------------------------------------');
 		self::log('Installer bootstrap start');
@@ -298,7 +175,7 @@ class DUPX_Bootstrap
 
 			//MISSING ARCHIVE FILE
 			if (! file_exists($archive_filepath)) {
-				self::log("ERROR: Archive file not found!");
+				self::log("[ERROR] Archive file not found!");
 				$archive_candidates = ($isZip) ? $this->getFilesWithExtension('zip') : $this->getFilesWithExtension('daf');
 				$candidate_count = count($archive_candidates);
 				$candidate_html  = "- No {$archive_extension} files found -";
@@ -306,12 +183,17 @@ class DUPX_Bootstrap
 				if ($candidate_count >= 1) {
 					$candidate_html = "<ol>";
 					foreach($archive_candidates as $archive_candidate) {
-						$candidate_html .=  "<li> {$archive_candidate}</li>";
+						$fineDiffObj = new FineDiff($archive_candidate, $archive_filename, FineDiff::$characterGranularity);
+						$candidate_html .=  '<li class="diff-list"> '.$fineDiffObj->renderDiffToHTML().'</li>';
 					}
 				   $candidate_html .=  "</ol>";
 				}
 
-				$error  = "<b>Archive not found!</b> The <i>'Required File'</i> below should be present in the <i>'Extraction Path'</i>.  "
+				$error  = "<style>
+                                            .diff-list del { color: red; background: #fdd; text-decoration: none; }
+                                            .diff-list ins { color: green; background: #dfd; text-decoration: none; }
+                                        </style>
+                                        <b>Archive not found!</b> The <i>'Required File'</i> below should be present in the <i>'Extraction Path'</i>.  "
 					. "The archive file name must be the <u>exact</u> name of the archive file placed in the extraction path character for character.<br/><br/>  "
 					. "If the file does not have the correct name then rename it to the <i>'Required File'</i> below.   When downloading the package files make "
 					. "sure both files are from the same package line in the packages view.  If the archive is not finished downloading please wait for it to complete.<br/><br/>"
@@ -324,33 +206,34 @@ class DUPX_Bootstrap
 				return $error;
 			}
 
-			if (!filter_var(self::ARCHIVE_SIZE, FILTER_VALIDATE_INT) || self::ARCHIVE_SIZE > 2147483647) {
-			
-				$os_first_three_chars = substr(PHP_OS, 0, 3);
-				$os_first_three_chars = strtoupper($os_first_three_chars);
+			if (!self::checkInputVaslidInt(self::ARCHIVE_SIZE)) {
 				$no_of_bits = PHP_INT_SIZE * 8;
+                $error  = 'Current is a '.$no_of_bits.'-bit SO. This archive is too large for '.$no_of_bits.'-bit PHP.'.'<br>';
+                $this->log('[ERROR] '.$error);
+                $error  .= 'Possibibles solutions:<br>';
+                $error  .= '- Use the file filters to get your package lower to support this server or try the package on a Linux server.'.'<br>';
+                $error  .= '- Perform a <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q">Manual Extract Install</a>'.'<br>';
+                 
+                switch ($no_of_bits == 32) {
+                    case 32:
+                        $error  .= '- Ask your host to upgrade the server to 64-bit PHP or install on another system has 64-bit PHP'.'<br>';
+                        break;
+                    case 64:
+                        $error  .= '- Ask your host to upgrade the server to 128-bit PHP or install on another system has 128-bit PHP'.'<br>';
+                        break;
+                }
 
-				if ($no_of_bits == 32) {
-					if ($isZip) { // ZIP
-						if ('WIN' === $os_first_three_chars) {
-							$error = "This package is currently {$archiveExpectedEasy} and it's on a Windows OS. PHP on Windows does not support files larger than 2GB. Please use the file filters to get your package lower to support this server or try the package on a Linux server.";
-							return $error;
-						}
-					} else { // DAF
-						if ('WIN' === $os_first_three_chars) {
-							$error  = 'Windows PHP limitations prevents extraction of archives larger than 2GB. Please do the following: <ol><li>Download and use the <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q">Windows DupArchive extractor</a> to extract all files from the archive.</li><li>Perform a <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q">Manual Extract Install</a> starting at step 4.</li></ol>';
-						} else 	{					
-							$error  = 'This archive is too large for 32-bit PHP. Ask your host to upgrade the server to 64-bit PHP or install on another system has 64-bit PHP.';
-						}
-						return $error;
-					}
-				}
+                if (self::isWindows()) {
+                    $error .= '- <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q">Windows DupArchive extractor</a> to extract all files from the archive.'.'<br>';
+                }
+                
+                return $error;
 			}
 
 			//SIZE CHECK ERROR
 			if (($this->archiveRatio < 90) && ($this->archiveActualSize > 0) && ($this->archiveExpectedSize > 0)) {
 				$this->log("ERROR: The expected archive size should be around [{$archiveExpectedEasy}].  The actual size is currently [{$archiveActualEasy}].");
-				$this->log("The archive file may not have fully been downloaded to the server");
+				$this->log("ERROR: The archive file may not have fully been downloaded to the server");
 				$percent = round($this->archiveRatio);
 
 				$autochecked = isset($_POST['auto-fresh']) ? "checked='true'" : '';
@@ -373,20 +256,18 @@ class DUPX_Bootstrap
         if ($manual_extract_found) {
 			// INSTALL DIRECTORY: Check if its setup correctly AND we are not in overwrite mode
 			if (isset($_GET['force-extract-installer']) && ('1' == $_GET['force-extract-installer'] || 'enable' == $_GET['force-extract-installer'] || 'false' == $_GET['force-extract-installer'])) {
-
 				self::log("Manual extract found with force extract installer get parametr");
 				$extract_installer = true;
-
 			} else {
 				$extract_installer = false;
 				self::log("Manual extract found so not going to extract dup-installer dir");
 			}
 		} else {
 			$extract_installer = true;
-			self::log("Manual extract didn't found so going to extract dup-installer dir");
 		}
 
 		if ($extract_installer && file_exists($installer_directory)) {
+            self::log("EXTRACT dup-installer dir");
 			$scanned_directory = array_diff(scandir($installer_directory), array('..', '.'));
 			foreach ($scanned_directory as $object) {
 				$object_file_path = $installer_directory.'/'.$object;
@@ -394,7 +275,7 @@ class DUPX_Bootstrap
 					if (unlink($object_file_path)) {
 						self::log('Successfully deleted the file '.$object_file_path);
 					} else {
-						$error .= 'Error deleting the file '.$object_file_path.' Please manually delete it and try again.';
+						$error .= '[ERROR] Error deleting the file '.$object_file_path.' Please manually delete it and try again.';
 						self::log($error);
 					}
 				}
@@ -410,19 +291,19 @@ class DUPX_Bootstrap
 			$destination = dirname(__FILE__);
 			if (!is_writable($destination)) {
 				self::log("destination folder for extraction is not writable");
-				if (@chmod($destination, 0755)) {
-					self::log("Permission of destination folder changed to 0755");
+				if (self::chmod($destination, 'u+rwx')) {
+					self::log("Permission of destination folder changed to u+rwx");
 				} else {
-					self::log("Permission of destination folder failed to change to 0755");
+					self::log("[ERROR] Permission of destination folder failed to change to u+rwx");
 				}
 			}
 
 			if (!is_writable($destination)) {
+                self::log("WARNING: The {$destination} directory is not writable.");
 				$error	= "NOTICE: The {$destination} directory is not writable on this server please talk to your host or server admin about making ";
 				$error	.= "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-055-q'>writable {$destination} directory</a> on this server. <br/>";
 				return $error; 
 			}
-
 
 			if ($isZip) {
 				$zip_mode = $this->getZipMode();
@@ -436,11 +317,11 @@ class DUPX_Bootstrap
 							self::log('Successfully extracted with ZipArchive');
 						} else {
 							if (0 == $this->installer_files_found) {
-								$error = "This archive is not properly formatted and does not contain a dup-installer directory. Please make sure you are attempting to install the original archive and not one that has been reconstructed.";
+								$error = "[ERROR] This archive is not properly formatted and does not contain a dup-installer directory. Please make sure you are attempting to install the original archive and not one that has been reconstructed.";
 								self::log($error);
 								return $error;
 							} else {
-								$error = 'Error extracting with ZipArchive. ';
+								$error = '[ERROR] Error extracting with ZipArchive. ';
 								self::log($error);
 							}
 						}
@@ -460,7 +341,7 @@ class DUPX_Bootstrap
 								self::log('Successfully extracted with Shell Exec');
 								$error = null;
 							} else {
-								$error .= 'Error extracting with Shell Exec. Please manually extract archive then choose Advanced > Manual Extract in installer.';
+								$error .= '[ERROR] Error extracting with Shell Exec. Please manually extract archive then choose Advanced > Manual Extract in installer.';
 								self::log($error);
 							}
 						} else {
@@ -475,6 +356,7 @@ class DUPX_Bootstrap
 				if (!$extract_success && $zip_mode == DUPX_Bootstrap_Zip_Mode::AutoUnzip) {
 					$unzip_filepath = $this->getUnzipFilePath();
 					if (!class_exists('ZipArchive') && empty($unzip_filepath)) {
+                        self::log("WARNING: ZipArchive and Shell Exec are not enabled on this server.");
 						$error	 = "NOTICE: ZipArchive and Shell Exec are not enabled on this server please talk to your host or server admin about enabling ";
 						$error	 .= "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q'>ZipArchive</a> or <a target='_blank' href='http://php.net/manual/en/function.shell-exec.php'>Shell Exec</a> on this server or manually extract archive then choose Advanced > Manual Extract in installer.";	
 					}
@@ -484,7 +366,7 @@ class DUPX_Bootstrap
 				try {
 					DupArchiveMiniExpander::expandDirectory($archive_filepath, self::INSTALLER_DIR_NAME, dirname(__FILE__));
 				} catch (Exception $ex) {
-					self::log("Error expanding installer subdirectory:".$ex->getMessage());
+					self::log("[ERROR] Error expanding installer subdirectory:".$ex->getMessage());
 					throw $ex;
 				}
 			}
@@ -553,10 +435,10 @@ class DUPX_Bootstrap
 				}
 			} else {
 				self::log("No need to create dup-installer/.htaccess or dup-installer/.user.ini");
-				self::log("SAPI: Unrecognized");
+				self::log("ERROR:  SAPI: Unrecognized");
 			}
 		} else {
-			self::log("Didn't need to extract the installer.");
+			self::log("ERROR: Didn't need to extract the installer.");
 		}
 
 		if (empty($error)) {
@@ -583,9 +465,13 @@ class DUPX_Bootstrap
 			$server_port = $_SERVER['SERVER_PORT'];
 		}
 
-
-		//$current_url .= $_SERVER['HTTP_HOST'];//WAS SERVER_NAME and caused problems on some boxes
-		$current_url .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];//WAS SERVER_NAME and caused problems on some boxes
+		// for ngrok url and Local by Flywheel Live URL
+		if (isset($_SERVER['HTTP_X_ORIGINAL_HOST'])) {
+			$host = $_SERVER['HTTP_X_ORIGINAL_HOST'];
+		} else {
+			$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];//WAS SERVER_NAME and caused problems on some boxes
+		}
+		$current_url .= $host;
 		if(strpos($current_url,':') === false) {
                    $current_url = $current_url.':'.$server_port;
                 }
@@ -612,7 +498,7 @@ class DUPX_Bootstrap
                                 $this->mainInstallerURL .= '?'.$_SERVER['QUERY_STRING'];
                         }
 
-                        self::log("No detected errors so redirecting to the main installer. Main Installer URI = {$this->mainInstallerURL}");
+                        self::log("DONE: No detected errors so redirecting to the main installer. Main Installer URI = {$this->mainInstallerURL}");
                     }
                 }
 
@@ -639,7 +525,7 @@ class DUPX_Bootstrap
 			}
 		}                
 	}
-
+        
 	/**
      * Indicates if site is running https or not
      *
@@ -665,13 +551,9 @@ class DUPX_Bootstrap
      */
 	private function fixInstallerPerms()
 	{
-		$file_perms = substr(sprintf('%o', fileperms(__FILE__)), -4);
-		$file_perms = octdec($file_perms);
-		//$dir_perms = substr(sprintf('%o', fileperms(dirname(__FILE__))), -4);
+		$file_perms = 'u+rw';
+		$dir_perms = 'u+rwx';
 
-		// No longer using existing directory permissions since that can cause problems.  Just set it to 755
-		$dir_perms = '755';
-		$dir_perms = octdec($dir_perms);
 		$installer_dir_path = $this->installerContentsPath;
 
 		$this->setPerms($installer_dir_path, $dir_perms, false);
@@ -682,7 +564,7 @@ class DUPX_Bootstrap
      * Set the permissions of a given directory and optionally all files
      *
      * @param string $directory		The full path to the directory where perms will be set
-     * @param string $perms			The given permission sets to use such as '0755'
+     * @param string $perms			The given permission sets to use such as '0755' or 'u+rw'
 	 * @param string $do_files		Also set the permissions of all the files in the directory
      *
      * @return null
@@ -708,34 +590,41 @@ class DUPX_Bootstrap
      * Set the permissions of a single directory or file
      *
      * @param string $path			The full path to the directory or file where perms will be set
-     * @param string $perms			The given permission sets to use such as '0755'
+     * @param string $perms			The given permission sets to use such as '0755' or 'u+rw'
      *
      * @return bool		Returns true if the permission was properly set
      */
 	private function setPermsOnItem($path, $perms)
 	{
-		$result = @chmod($path, $perms);
+		$result = self::chmod($path, $perms);
 		$perms_display = decoct($perms);
 		if ($result === false) {
-			self::log("Couldn't set permissions of $path to {$perms_display}<br/>");
+			self::log("ERROR: Couldn't set permissions of $path to {$perms_display}<br/>");
 		} else {
 			self::log("Set permissions of $path to {$perms_display}<br/>");
 		}
 		return $result;
 	}
 
-
-	/**
+    
+    /**
      * Logs a string to the dup-installer-bootlog__[HASH].txt file
      *
      * @param string $s			The string to log to the log file
      *
-     * @return null
+     * @return boog|int // This function returns the number of bytes that were written to the file, or FALSE on failure. 
      */
-	public static function log($s)
+	public static function log($s, $deleteOld = false)
 	{
-		$timestamp = date('M j H:i:s');
-		file_put_contents('./dup-installer-bootlog__'.self::PACKAGE_HASH.'.txt', "$timestamp $s\n", FILE_APPEND);
+        static $logfile = null;
+        if (is_null($logfile)) {
+            $logfile = dirname(__FILE__).'/dup-installer-bootlog__'.self::PACKAGE_HASH.'.txt';
+        }
+        if ($deleteOld && file_exists($logfile)) {
+            @unlink($logfile);
+        }
+        $timestamp = date('M j H:i:s');
+		return @file_put_contents($logfile, '['.$timestamp.'] '.$s."\n", FILE_APPEND);
 	}
 
 	/**
@@ -751,7 +640,7 @@ class DUPX_Bootstrap
 		$zipArchive	 = new ZipArchive();
 		$subFolderArchiveList   = array();
 
-		if ($zipArchive->open($archive_filepath) === true) {
+		if (($zipOpenRes = $zipArchive->open($archive_filepath)) === true) {
 			self::log("Successfully opened $archive_filepath");
 			$destination = dirname(__FILE__);
 			$folder_prefix = self::INSTALLER_DIR_NAME.'/';
@@ -790,7 +679,7 @@ class DUPX_Bootstrap
 					if ($zipArchive->extractTo($destination, $filename) === true) {
 						self::log("Success: {$filename} >>> {$destination}");
 					} else {
-						self::log("Error extracting {$filename} from archive archive file");
+						self::log("[ERROR] Error extracting {$filename} from archive archive file");
 						$success = false;
 						break;
 					}
@@ -824,7 +713,7 @@ class DUPX_Bootstrap
 				        if ($zipArchive->extractTo($destination, $filename) === true) {
 				            self::log("Success: {$filename} >>> {$destination}");
 				        } else {
-				            self::log("Error extracting {$filename} from archive archive file");
+				            self::log("[ERROR] Error extracting {$filename} from archive archive file");
 				            $success = false;
 				            break;
 				        }
@@ -836,27 +725,227 @@ class DUPX_Bootstrap
 			if ($zipArchive->close() === true) {
 				self::log("Successfully closed archive file");
 			} else {
-				self::log("Problem closing archive file");
+				self::log("[ERROR] Problem closing archive file");
 				$success = false;
 			}
 			
 			if ($success != false && $this->installer_files_found < 10) {
 				if ($checkSubFolder) {
-					self::log("Couldn't find the installer directory in the archive!");
+					self::log("[ERROR] Couldn't find the installer directory in the archive!");
 					$success = false;
 				} else {
-					self::log("Couldn't find the installer directory in archive root! Check subfolder");
+					self::log("[ERROR] Couldn't find the installer directory in archive root! Check subfolder");
 					$this->extractInstallerZipArchive($archive_filepath, true);
 				}
 			}
 		} else {
-			self::log("Couldn't open archive archive file with ZipArchive");
+			self::log("[ERROR] Couldn't open archive archive file with ZipArchive CODE[".$zipOpenRes."]");
 			$success = false;
 		}
 
 		return $success;
 	}
     
+    /**
+     * return true if current SO is windows
+     * 
+     * @staticvar bool $isWindows
+     * @return bool
+     */
+    public static function isWindows()
+    {
+        static $isWindows = null;
+        if (is_null($isWindows)) {
+            $isWindows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+        }
+        return $isWindows;
+    }
+
+    /**
+     * return current SO path path len
+     * @staticvar int $maxPath
+     * @return int
+     */
+    public static function maxPathLen()
+    {
+        static $maxPath = null;
+        if (is_null($maxPath)) {
+            if (defined('PHP_MAXPATHLEN')) {
+                $maxPath = PHP_MAXPATHLEN;
+            } else {
+                // for PHP < 5.3.0
+                $maxPath = self::isWindows() ? 260 : 4096;
+            }
+        }
+        return $maxPath;
+    }
+    
+    /**
+     * this function make a chmod only if the are different from perms input and if chmod function is enabled
+     *
+     * this function handles the variable MODE in a way similar to the chmod of lunux
+     * So the MODE variable can be
+     * 1) an octal number (0755)
+     * 2) a string that defines an octal number ("644")
+     * 3) a string with the following format [ugoa]*([-+=]([rwx]*)+
+     *
+     * examples
+     * u+rw         add read and write at the user
+     * u+rw,uo-wx   add read and write ad the user and remove wx at groupd and other
+     * a=rw         is equal at 666
+     * u=rwx,go-rwx is equal at 700
+     *
+     * @param string $file
+     * @param int|string $mode
+     * @return boolean
+     */
+    public static function chmod($file, $mode)
+    {
+        if (!file_exists($file)) {
+            return false;
+        }
+
+        $octalMode = 0;
+
+        if (is_int($mode)) {
+            $octalMode = $mode;
+        } else if (is_string($mode)) {
+            $mode = trim($mode);
+            if (preg_match('/([0-7]{1,3})/', $mode)) {
+                $octalMode = intval(('0'.$mode), 8);
+            } else if (preg_match_all('/(a|[ugo]{1,3})([-=+])([rwx]{1,3})/', $mode, $gMatch, PREG_SET_ORDER)) {
+                if (!function_exists('fileperms')) {
+                    return false;
+                }
+
+                // start by file permission
+                $octalMode = (fileperms($file) & 0777);
+
+                foreach ($gMatch as $matches) {
+                    // [ugo] or a = ugo
+                    $group = $matches[1];
+                    if ($group === 'a') {
+                        $group = 'ugo';
+                    }
+                    // can be + - =
+                    $action = $matches[2];
+                    // [rwx]
+                    $gPerms = $matches[3];
+
+                    // reset octal group perms
+                    $octalGroupMode = 0;
+
+                    // Init sub perms
+                    $subPerm = 0;
+                    $subPerm += strpos($gPerms, 'x') !== false ? 1 : 0; // mask 001
+                    $subPerm += strpos($gPerms, 'w') !== false ? 2 : 0; // mask 010
+                    $subPerm += strpos($gPerms, 'r') !== false ? 4 : 0; // mask 100
+
+                    $ugoLen = strlen($group);
+
+                    if ($action === '=') {
+                        // generate octal group permsissions and ugo mask invert
+                        $ugoMaskInvert = 0777;
+                        for ($i = 0; $i < $ugoLen; $i++) {
+                            switch ($group[$i]) {
+                                case 'u':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 6; // mask xxx000000
+                                    $ugoMaskInvert  = $ugoMaskInvert & 077;
+                                    break;
+                                case 'g':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 3; // mask 000xxx000
+                                    $ugoMaskInvert  = $ugoMaskInvert & 0707;
+                                    break;
+                                case 'o':
+                                    $octalGroupMode = $octalGroupMode | $subPerm; // mask 000000xxx
+                                    $ugoMaskInvert  = $ugoMaskInvert & 0770;
+                                    break;
+                            }
+                        }
+                        // apply = action
+                        $octalMode = $octalMode & ($ugoMaskInvert | $octalGroupMode);
+                    } else {
+                        // generate octal group permsissions
+                        for ($i = 0; $i < $ugoLen; $i++) {
+                            switch ($group[$i]) {
+                                case 'u':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 6; // mask xxx000000
+                                    break;
+                                case 'g':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 3; // mask 000xxx000
+                                    break;
+                                case 'o':
+                                    $octalGroupMode = $octalGroupMode | $subPerm; // mask 000000xxx
+                                    break;
+                            }
+                        }
+                        // apply + or - action
+                        switch ($action) {
+                            case '+':
+                                $octalMode = $octalMode | $octalGroupMode;
+                                break;
+                            case '-':
+                                $octalMode = $octalMode & ~$octalGroupMode;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // if input permissions are equal at file permissions return true without performing chmod
+        if (function_exists('fileperms') && $octalMode === (fileperms($file) & 0777)) {
+            return true;
+        }
+
+        if (!function_exists('chmod')) {
+            return false;
+        }
+
+        return @chmod($file, $octalMode);
+    }
+    
+    public static function checkInputVaslidInt($input) {
+        return (filter_var($input, FILTER_VALIDATE_INT) === 0 || filter_var($input, FILTER_VALIDATE_INT));
+    }
+
+            
+    /**
+     * this function creates a folder if it does not exist and performs a chmod.
+     * it is different from the normal mkdir function to which an umask is applied to the input permissions.
+     * 
+     * this function handles the variable MODE in a way similar to the chmod of lunux
+     * So the MODE variable can be
+     * 1) an octal number (0755)
+     * 2) a string that defines an octal number ("644")
+     * 3) a string with the following format [ugoa]*([-+=]([rwx]*)+
+     *
+     * @param string $path
+     * @param int|string $mode
+     * @param bool $recursive
+     * @param resource $context // not used for windows bug
+     * @return boolean bool TRUE on success or FALSE on failure.
+     *
+     * @todo check recursive true and multiple chmod
+     */
+    public static function mkdir($path, $mode = 0777, $recursive = false, $context = null)
+    {
+        if (strlen($path) > self::maxPathLen()) {
+            throw new Exception('Skipping a file that exceeds allowed max path length ['.self::maxPathLen().']. File: '.$filepath);
+        }
+
+        if (!file_exists($path)) {
+            if (!function_exists('mkdir')) {
+                return false;
+            }
+            if (!@mkdir($path, 0777, $recursive)) {
+                return false;
+            }
+        }
+
+        return self::chmod($path, $mode);
+    }
+
     /**
      * move all folder content up to parent
      *
@@ -878,7 +967,7 @@ class DUPX_Bootstrap
 
         $success = true;
         if (($subList = glob(rtrim($subFolderName, '/').'/*', GLOB_NOSORT)) === false) {
-            self::log("Problem glob folder ".$subFolderName);
+            self::log("[ERROR] Problem glob folder ".$subFolderName);
             return false;
         } else {
             foreach ($subList as $cName) {
@@ -900,7 +989,7 @@ class DUPX_Bootstrap
         }
 
         if (!$success) {
-            self::log("Problem om moveUpfromSubFolder subFolder:".$subFolderName);
+            self::log("[ERROR] Problem om moveUpfromSubFolder subFolder:".$subFolderName);
         }
 
         return $success;
@@ -934,7 +1023,7 @@ class DUPX_Bootstrap
                 $unzip_command	 = "$unzip_filepath -q $archive_filepath snaplib/* 2>&1";
                 self::log("Executing $unzip_command");
                 $stderr	 .= shell_exec($unzip_command);
-				mkdir($lib_directory);
+				self::mkdir($lib_directory,'u+rwx');
                 rename($local_lib_directory, $snaplib_directory);
             }
 
@@ -942,7 +1031,7 @@ class DUPX_Bootstrap
 				self::log("Shell exec unzip succeeded");
 				$success = true;
 			} else {
-				self::log("Shell exec unzip failed. Output={$stderr}");
+				self::log("[ERROR] Shell exec unzip failed. Output={$stderr}");
 			}
 		}
 
@@ -1144,12 +1233,12 @@ class DUPX_Bootstrap
             } else {
                 $success = @unlink($fullPath);
                 if ($success === false) {
-                    self::log( __FUNCTION__.": Problem deleting file:".$fullPath);
+                    self::log('[ERROR] '.__FUNCTION__.": Problem deleting file:".$fullPath);
                 }
             }
 
             if ($success === false) {
-                self::log("Problem deleting dir:".$directory);
+                self::log("[ERROR] Problem deleting dir:".$directory);
                 break;
             }
         }
@@ -1174,7 +1263,7 @@ class DUPX_Bootstrap
             $success = @unlink($path);
 
             if ($success === false) {
-                self::log( __FUNCTION__.": Problem deleting file:".$path);
+                self::log('[ERROR] '. __FUNCTION__.": Problem deleting file:".$path);
             }
         }
 
@@ -1197,6 +1286,696 @@ class DUPX_Bootstrap
 		return str_replace("\\", "/", $path);
 	}
 }
+
+class DUPX_Handler
+{
+    /**
+     *
+     * @var bool
+     */
+    private static $inizialized = false;
+    
+    /**
+     * This function only initializes the error handler the first time it is called
+     */
+    public static function init_error_handler()
+    {
+        if (!self::$inizialized) {
+            @set_error_handler(array(__CLASS__, 'error'));
+            @register_shutdown_function(array(__CLASS__, 'shutdown'));
+            self::$inizialized = true;
+        }
+    }
+    
+    /**
+     * Error handler
+     *
+     * @param  integer $errno   Error level
+     * @param  string  $errstr  Error message
+     * @param  string  $errfile Error file
+     * @param  integer $errline Error line
+     * @return void
+     */
+    public static function error($errno, $errstr, $errfile, $errline)
+    {
+        switch ($errno) {
+            case E_ERROR :
+                $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
+                if (DUPX_Bootstrap::log($log_message) === false) {
+                    $log_message = "Can\'t wrinte logfile\n\n".$log_message;
+                }
+                die('<pre>'.htmlspecialchars($log_message).'</pre>');
+                break;
+            case E_NOTICE :
+            case E_WARNING :
+            default :
+                $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
+                DUPX_Bootstrap::log($log_message);
+                break;
+        }
+    }
+
+    private static function getMessage($errno, $errstr, $errfile, $errline)
+    {
+        $result = '[PHP ERR]';
+        switch ($errno) {
+            case E_ERROR :
+                $result .= '[FATAL]';
+                break;
+            case E_WARNING :
+                $result .= '[WARN]';
+                break;
+            case E_NOTICE :
+                $result .= '[NOTICE]';
+                break;
+            default :
+                $result .= '[ISSUE]';
+                break;
+        }
+        $result .= ' MSG:';
+        $result .= $errstr;
+        $result .= ' [CODE:'.$errno.'|FILE:'.$errfile.'|LINE:'.$errline.']';
+        return $result;
+    }
+
+    /**
+     * Shutdown handler
+     *
+     * @return void
+     */
+    public static function shutdown()
+    {
+        if (($error = error_get_last())) {
+            DUPX_Handler::error($error['type'], $error['message'], $error['file'], $error['line']);
+        }
+    }
+}
+
+class DUPX_CSRF {
+	
+	/** Session var name
+	 * @var string
+	 */
+	public static $prefix = '_DUPX_CSRF';
+	private static $CSRFVars;
+
+	public static function setKeyVal($key, $val) {
+		$CSRFVars = self::getCSRFVars();
+		$CSRFVars[$key] = $val;
+		self::saveCSRFVars($CSRFVars);
+		self::$CSRFVars = false;
+	}
+
+	public static function getVal($key) {
+		$CSRFVars = self::getCSRFVars();
+		if (isset($CSRFVars[$key])) {
+			return $CSRFVars[$key];
+		} else {
+			return false;
+		}
+
+	}
+	
+	/** Generate DUPX_CSRF value for form
+	 * @param	string	$form	- Form name as session key
+	 * @return	string	- token
+	 */
+	public static function generate($form = NULL) {
+		$keyName = self::getKeyName($form);
+
+		$existingToken = self::getVal($keyName);
+		if (false !== $existingToken) {
+			$token = $existingToken;
+		} else {
+			$token = self::token() . self::fingerprint();
+		}
+		
+		self::setKeyVal($keyName, $token);
+		return $token;
+	}
+	
+	/** Check DUPX_CSRF value of form
+	 * @param	string	$token	- Token
+	 * @param	string	$form	- Form name as session key
+	 * @return	boolean
+	 */
+	public static function check($token, $form = NULL) {
+		$keyName = self::getKeyName($form);
+		$CSRFVars = self::getCSRFVars();
+		if (isset($CSRFVars[$keyName]) && $CSRFVars[$keyName] == $token) { // token OK
+			return true;
+		}
+		return FALSE;
+	}
+	
+	/** Generate token
+	 * @param	void
+	 * @return  string
+	 */
+	protected static function token() {
+		mt_srand((double) microtime() * 10000);
+		$charid = strtoupper(md5(uniqid(rand(), TRUE)));
+		return substr($charid, 0, 8) . substr($charid, 8, 4) . substr($charid, 12, 4) . substr($charid, 16, 4) . substr($charid, 20, 12);
+	}
+	
+	/** Returns "digital fingerprint" of user
+	 * @param 	void
+	 * @return 	string 	- MD5 hashed data
+	 */
+	protected static function fingerprint() {
+		return strtoupper(md5(implode('|', array($_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']))));
+	}
+
+	private static function getKeyName($form) {
+		return self::$prefix . '_' . $form;
+	}
+
+	private static function getPackageHash() {
+		if (class_exists('DUPX_Bootstrap')) {
+			return DUPX_Bootstrap::PACKAGE_HASH;
+		} else {
+			return $GLOBALS['DUPX_AC']->package_hash;
+		}
+	}
+
+	private static function getFilePath() {
+		if (class_exists('DUPX_Bootstrap')) {
+			$dupInstallerfolderPath = dirname(__FILE__).'/dup-installer/';
+		} else {
+			$dupInstallerfolderPath = $GLOBALS['DUPX_INIT'].'/';
+		}
+		$packageHash = self::getPackageHash();
+		$fileName = 'dup-installer-csrf__'.$packageHash.'.txt';
+		$filePath = $dupInstallerfolderPath.$fileName;
+		return $filePath;
+	}
+
+	private static function getCSRFVars() {
+		if (!isset(self::$CSRFVars) || false === self::$CSRFVars) {
+			$filePath = self::getFilePath();
+			if (file_exists($filePath)) {
+				$contents = file_get_contents($filePath);
+				if (empty($contents)) {
+					self::$CSRFVars = array();
+				} else {
+					$CSRFobjs = json_decode($contents);
+					foreach ($CSRFobjs as $key => $value) {
+						self::$CSRFVars[$key] = $value;
+					}
+				}
+			} else {
+				self::$CSRFVars = array();
+			}
+		}
+		return self::$CSRFVars;
+	}
+
+	private static function saveCSRFVars($CSRFVars) {
+		$contents = json_encode($CSRFVars);
+		$filePath = self::getFilePath();
+		file_put_contents($filePath, $contents);
+	}
+}
+
+/**
+ * Copyright (c) 2011 Raymond Hill (http://raymondhill.net/blog/?p=441)
+ * @copyright Copyright 2011 (c) Raymond Hill (http://raymondhill.net/blog/?p=441)
+ * @link http://www.raymondhill.net/finediff/
+ * @version 0.6
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+abstract class FineDiffOp
+{
+
+    abstract public function getFromLen();
+
+    abstract public function getToLen();
+
+    abstract public function getOpcode();
+}
+
+class FineDiffDeleteOp extends FineDiffOp
+{
+
+    public function __construct($len)
+    {
+        $this->fromLen = $len;
+    }
+
+    public function getFromLen()
+    {
+        return $this->fromLen;
+    }
+
+    public function getToLen()
+    {
+        return 0;
+    }
+
+    public function getOpcode()
+    {
+        if ($this->fromLen === 1) {
+            return 'd';
+        }
+        return "d{$this->fromLen}";
+    }
+}
+
+class FineDiffInsertOp extends FineDiffOp
+{
+
+    public function __construct($text)
+    {
+        $this->text = $text;
+    }
+
+    public function getFromLen()
+    {
+        return 0;
+    }
+
+    public function getToLen()
+    {
+        return strlen($this->text);
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    public function getOpcode()
+    {
+        $to_len = strlen($this->text);
+        if ($to_len === 1) {
+            return "i:{$this->text}";
+        }
+        return "i{$to_len}:{$this->text}";
+    }
+}
+
+class FineDiffReplaceOp extends FineDiffOp
+{
+
+    public function __construct($fromLen, $text)
+    {
+        $this->fromLen = $fromLen;
+        $this->text = $text;
+    }
+
+    public function getFromLen()
+    {
+        return $this->fromLen;
+    }
+
+    public function getToLen()
+    {
+        return strlen($this->text);
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    public function getOpcode()
+    {
+        if ($this->fromLen === 1) {
+            $del_opcode = 'd';
+        } else {
+            $del_opcode = "d{$this->fromLen}";
+        }
+        $to_len = strlen($this->text);
+        if ($to_len === 1) {
+            return "{$del_opcode}i:{$this->text}";
+        }
+        return "{$del_opcode}i{$to_len}:{$this->text}";
+    }
+}
+
+class FineDiffCopyOp extends FineDiffOp
+{
+
+    public function __construct($len)
+    {
+        $this->len = $len;
+    }
+
+    public function getFromLen()
+    {
+        return $this->len;
+    }
+
+    public function getToLen()
+    {
+        return $this->len;
+    }
+
+    public function getOpcode()
+    {
+        if ($this->len === 1) {
+            return 'c';
+        }
+        return "c{$this->len}";
+    }
+
+    public function increase($size)
+    {
+        return $this->len += $size;
+    }
+}
+
+class FineDiffOps
+{
+
+    public function appendOpcode($opcode, $from, $from_offset, $from_len)
+    {
+        if ($opcode === 'c') {
+            $edits[] = new FineDiffCopyOp($from_len);
+        } else if ($opcode === 'd') {
+            $edits[] = new FineDiffDeleteOp($from_len);
+        } else /* if ( $opcode === 'i' ) */ {
+            $edits[] = new FineDiffInsertOp(substr($from, $from_offset, $from_len));
+        }
+    }
+
+    public $edits = array();
+
+}
+
+class FineDiff
+{
+
+    public function __construct($from_text = '', $to_text = '', $granularityStack = null)
+    {
+        // setup stack for generic text documents by default
+        $this->granularityStack = $granularityStack ? $granularityStack : FineDiff::$characterGranularity;
+        $this->edits = array();
+        $this->from_text = $from_text;
+        $this->doDiff($from_text, $to_text);
+    }
+
+    public function getOps()
+    {
+        return $this->edits;
+    }
+
+    public function renderDiffToHTML()
+    {
+        $in_offset = 0;
+        ob_start();
+        foreach ($this->edits as $edit) {
+            $n = $edit->getFromLen();
+            if ($edit instanceof FineDiffCopyOp) {
+                FineDiff::renderDiffToHTMLFromOpcode('c', $this->from_text, $in_offset, $n);
+            } else if ($edit instanceof FineDiffDeleteOp) {
+                FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
+            } else if ($edit instanceof FineDiffInsertOp) {
+                FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
+            } else /* if ( $edit instanceof FineDiffReplaceOp ) */ {
+                FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
+                FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
+            }
+            $in_offset += $n;
+        }
+        return ob_get_clean();
+    }
+
+    const characterDelimiters = "";
+
+    public static $characterGranularity = array(
+        FineDiff::characterDelimiters
+    );
+
+    private function doDiff($from_text, $to_text)
+    {
+        $this->last_edit = false;
+        $this->stackpointer = 0;
+        $this->from_text = $from_text;
+        $this->from_offset = 0;
+        // can't diff without at least one granularity specifier
+        if (empty($this->granularityStack)) {
+            return;
+        }
+        $this->_processGranularity($from_text, $to_text);
+    }
+
+    private function _processGranularity($from_segment, $to_segment)
+    {
+        $delimiters = $this->granularityStack[$this->stackpointer++];
+        $has_next_stage = $this->stackpointer < count($this->granularityStack);
+        foreach (FineDiff::doFragmentDiff($from_segment, $to_segment, $delimiters) as $fragment_edit) {
+            // increase granularity
+            if ($fragment_edit instanceof FineDiffReplaceOp && $has_next_stage) {
+                $this->_processGranularity(
+                    substr($this->from_text, $this->from_offset, $fragment_edit->getFromLen()), $fragment_edit->getText()
+                );
+            }
+            // fuse copy ops whenever possible
+            else if ($fragment_edit instanceof FineDiffCopyOp && $this->last_edit instanceof FineDiffCopyOp) {
+                $this->edits[count($this->edits) - 1]->increase($fragment_edit->getFromLen());
+                $this->from_offset += $fragment_edit->getFromLen();
+            } else {
+                /* $fragment_edit instanceof FineDiffCopyOp */
+                /* $fragment_edit instanceof FineDiffDeleteOp */
+                /* $fragment_edit instanceof FineDiffInsertOp */
+                $this->edits[] = $this->last_edit = $fragment_edit;
+                $this->from_offset += $fragment_edit->getFromLen();
+            }
+        }
+        $this->stackpointer--;
+    }
+
+    private static function doFragmentDiff($from_text, $to_text, $delimiters)
+    {
+        // Empty delimiter means character-level diffing.
+        // In such case, use code path optimized for character-level
+        // diffing.
+        if (empty($delimiters)) {
+            return FineDiff::doCharDiff($from_text, $to_text);
+        }
+
+        $result = array();
+
+        // fragment-level diffing
+        $from_text_len = strlen($from_text);
+        $to_text_len = strlen($to_text);
+        $from_fragments = FineDiff::extractFragments($from_text, $delimiters);
+        $to_fragments = FineDiff::extractFragments($to_text, $delimiters);
+
+        $jobs = array(array(0, $from_text_len, 0, $to_text_len));
+
+        $cached_array_keys = array();
+
+        while ($job = array_pop($jobs)) {
+
+            // get the segments which must be diff'ed
+            list($from_segment_start, $from_segment_end, $to_segment_start, $to_segment_end) = $job;
+
+            // catch easy cases first
+            $from_segment_length = $from_segment_end - $from_segment_start;
+            $to_segment_length = $to_segment_end - $to_segment_start;
+            if (!$from_segment_length || !$to_segment_length) {
+                if ($from_segment_length) {
+                    $result[$from_segment_start * 4] = new FineDiffDeleteOp($from_segment_length);
+                } else if ($to_segment_length) {
+                    $result[$from_segment_start * 4 + 1] = new FineDiffInsertOp(substr($to_text, $to_segment_start, $to_segment_length));
+                }
+                continue;
+            }
+
+            // find longest copy operation for the current segments
+            $best_copy_length = 0;
+
+            $from_base_fragment_index = $from_segment_start;
+
+            $cached_array_keys_for_current_segment = array();
+
+            while ($from_base_fragment_index < $from_segment_end) {
+                $from_base_fragment = $from_fragments[$from_base_fragment_index];
+                $from_base_fragment_length = strlen($from_base_fragment);
+                // performance boost: cache array keys
+                if (!isset($cached_array_keys_for_current_segment[$from_base_fragment])) {
+                    if (!isset($cached_array_keys[$from_base_fragment])) {
+                        $to_all_fragment_indices = $cached_array_keys[$from_base_fragment] = array_keys($to_fragments, $from_base_fragment, true);
+                    } else {
+                        $to_all_fragment_indices = $cached_array_keys[$from_base_fragment];
+                    }
+                    // get only indices which falls within current segment
+                    if ($to_segment_start > 0 || $to_segment_end < $to_text_len) {
+                        $to_fragment_indices = array();
+                        foreach ($to_all_fragment_indices as $to_fragment_index) {
+                            if ($to_fragment_index < $to_segment_start) {
+                                continue;
+                            }
+                            if ($to_fragment_index >= $to_segment_end) {
+                                break;
+                            }
+                            $to_fragment_indices[] = $to_fragment_index;
+                        }
+                        $cached_array_keys_for_current_segment[$from_base_fragment] = $to_fragment_indices;
+                    } else {
+                        $to_fragment_indices = $to_all_fragment_indices;
+                    }
+                } else {
+                    $to_fragment_indices = $cached_array_keys_for_current_segment[$from_base_fragment];
+                }
+                // iterate through collected indices
+                foreach ($to_fragment_indices as $to_base_fragment_index) {
+                    $fragment_index_offset = $from_base_fragment_length;
+                    // iterate until no more match
+                    for (;;) {
+                        $fragment_from_index = $from_base_fragment_index + $fragment_index_offset;
+                        if ($fragment_from_index >= $from_segment_end) {
+                            break;
+                        }
+                        $fragment_to_index = $to_base_fragment_index + $fragment_index_offset;
+                        if ($fragment_to_index >= $to_segment_end) {
+                            break;
+                        }
+                        if ($from_fragments[$fragment_from_index] !== $to_fragments[$fragment_to_index]) {
+                            break;
+                        }
+                        $fragment_length = strlen($from_fragments[$fragment_from_index]);
+                        $fragment_index_offset += $fragment_length;
+                    }
+                    if ($fragment_index_offset > $best_copy_length) {
+                        $best_copy_length = $fragment_index_offset;
+                        $best_from_start = $from_base_fragment_index;
+                        $best_to_start = $to_base_fragment_index;
+                    }
+                }
+                $from_base_fragment_index += strlen($from_base_fragment);
+                // If match is larger than half segment size, no point trying to find better
+                // TODO: Really?
+                if ($best_copy_length >= $from_segment_length / 2) {
+                    break;
+                }
+                // no point to keep looking if what is left is less than
+                // current best match
+                if ($from_base_fragment_index + $best_copy_length >= $from_segment_end) {
+                    break;
+                }
+            }
+
+            if ($best_copy_length) {
+                $jobs[] = array($from_segment_start, $best_from_start, $to_segment_start, $best_to_start);
+                $result[$best_from_start * 4 + 2] = new FineDiffCopyOp($best_copy_length);
+                $jobs[] = array($best_from_start + $best_copy_length, $from_segment_end, $best_to_start + $best_copy_length, $to_segment_end);
+            } else {
+                $result[$from_segment_start * 4] = new FineDiffReplaceOp($from_segment_length, substr($to_text, $to_segment_start, $to_segment_length));
+            }
+        }
+
+        ksort($result, SORT_NUMERIC);
+        return array_values($result);
+    }
+
+    private static function doCharDiff($from_text, $to_text)
+    {
+        $result = array();
+        $jobs = array(array(0, strlen($from_text), 0, strlen($to_text)));
+        while ($job = array_pop($jobs)) {
+            // get the segments which must be diff'ed
+            list($from_segment_start, $from_segment_end, $to_segment_start, $to_segment_end) = $job;
+            $from_segment_len = $from_segment_end - $from_segment_start;
+            $to_segment_len = $to_segment_end - $to_segment_start;
+
+            // catch easy cases first
+            if (!$from_segment_len || !$to_segment_len) {
+                if ($from_segment_len) {
+                    $result[$from_segment_start * 4 + 0] = new FineDiffDeleteOp($from_segment_len);
+                } else if ($to_segment_len) {
+                    $result[$from_segment_start * 4 + 1] = new FineDiffInsertOp(substr($to_text, $to_segment_start, $to_segment_len));
+                }
+                continue;
+            }
+            if ($from_segment_len >= $to_segment_len) {
+                $copy_len = $to_segment_len;
+                while ($copy_len) {
+                    $to_copy_start = $to_segment_start;
+                    $to_copy_start_max = $to_segment_end - $copy_len;
+                    while ($to_copy_start <= $to_copy_start_max) {
+                        $from_copy_start = strpos(substr($from_text, $from_segment_start, $from_segment_len), substr($to_text, $to_copy_start, $copy_len));
+                        if ($from_copy_start !== false) {
+                            $from_copy_start += $from_segment_start;
+                            break 2;
+                        }
+                        $to_copy_start++;
+                    }
+                    $copy_len--;
+                }
+            } else {
+                $copy_len = $from_segment_len;
+                while ($copy_len) {
+                    $from_copy_start = $from_segment_start;
+                    $from_copy_start_max = $from_segment_end - $copy_len;
+                    while ($from_copy_start <= $from_copy_start_max) {
+                        $to_copy_start = strpos(substr($to_text, $to_segment_start, $to_segment_len), substr($from_text, $from_copy_start, $copy_len));
+                        if ($to_copy_start !== false) {
+                            $to_copy_start += $to_segment_start;
+                            break 2;
+                        }
+                        $from_copy_start++;
+                    }
+                    $copy_len--;
+                }
+            }
+            // match found
+            if ($copy_len) {
+                $jobs[] = array($from_segment_start, $from_copy_start, $to_segment_start, $to_copy_start);
+                $result[$from_copy_start * 4 + 2] = new FineDiffCopyOp($copy_len);
+                $jobs[] = array($from_copy_start + $copy_len, $from_segment_end, $to_copy_start + $copy_len, $to_segment_end);
+            }
+            // no match,  so delete all, insert all
+            else {
+                $result[$from_segment_start * 4] = new FineDiffReplaceOp($from_segment_len, substr($to_text, $to_segment_start, $to_segment_len));
+            }
+        }
+        ksort($result, SORT_NUMERIC);
+        return array_values($result);
+    }
+
+    private static function extractFragments($text, $delimiters)
+    {
+        // special case: split into characters
+        if (empty($delimiters)) {
+            $chars = str_split($text, 1);
+            $chars[strlen($text)] = '';
+            return $chars;
+        }
+        $fragments = array();
+        $start = $end = 0;
+        for (;;) {
+            $end += strcspn($text, $delimiters, $end);
+            $end += strspn($text, $delimiters, $end);
+            if ($end === $start) {
+                break;
+            }
+            $fragments[$start] = substr($text, $start, $end - $start);
+            $start = $end;
+        }
+        $fragments[$start] = '';
+        return $fragments;
+    }
+
+    private static function renderDiffToHTMLFromOpcode($opcode, $from, $from_offset, $from_len)
+    {
+        if ($opcode === 'c') {
+            echo htmlspecialchars(substr($from, $from_offset, $from_len));
+        } else if ($opcode === 'd') {
+            $deletion = substr($from, $from_offset, $from_len);
+            if (strcspn($deletion, " \n\r") === 0) {
+                $deletion = str_replace(array("\n", "\r"), array('\n', '\r'), $deletion);
+            }
+            echo '<del>', htmlspecialchars($deletion), '</del>';
+        } else /* if ( $opcode === 'i' ) */ {
+            echo '<ins>', htmlspecialchars(substr($from, $from_offset, $from_len)), '</ins>';
+        }
+    }
+}
+
+/*** CLASS DEFINITION END ***/
 
 try {
     $boot  = new DUPX_Bootstrap();

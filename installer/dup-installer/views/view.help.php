@@ -1,12 +1,15 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
-//The help for both pro and lite are shared.  Pro is where the master lives.  Use the flag below to
-//indicate if this help lives in lite or pro
-//$pro_version = true;
+	//The help for both pro and lite are shared.  Pro is where the master lives.  Use the flag below to
+    //indicate if this help lives in lite or pro
+	//$pro_version = true;
 
 $open_section = filter_input(INPUT_GET, 'open_section', FILTER_SANITIZE_STRING, array('options' => array('default' => '')));
 
 ?>
+<div class="hdr-main">
+    HELP
+</div>
 <!-- =========================================
 HELP FORM -->
 <div id="main-help">
@@ -35,18 +38,18 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
 
             <table class="help-opt">
                 <tr>
-                    <th>Option</th>
+                    <th class="col-opt">Option</th>
                     <th>Details</th>
                 </tr>
                 <tr>
-                    <td>Locked</td>
+                    <td class="col-opt">Locked</td>
                     <td>
                         "Locked" means a password is protecting each step of the installer.  This option is recommended on all installers
                         that are accessible via a public URL but not required.
                     </td>
                 </tr>
                 <tr>
-                    <td>Unlocked</td>
+                    <td class="col-opt">Unlocked</td>
                     <td>
                         "Unlocked" means that if your installer is on a public server that anyone can access it.  This is a less secure way to run your installer. If you are running the
                         installer very quickly then removing all the installer files, then the chances of exposing it is going to be low depending	on your sites access history.
@@ -82,25 +85,25 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
 
             <table class="help-opt">
             <tr>
-                <th>Option</th>
+                <th class="col-opt">Option</th>
                 <th>Details</th>
             </tr>
             <tr>
-                <td>Standard Install</td>
+                <td class="col-opt">Standard Install</td>
                 <td>
                     This mode indicates that the installer and archive have been placed into an empty directory and the site is ready for a fresh/new redeployment.
                     This is the most common mode and the mode that has been around the longest.
                 </td>
             </tr>
             <tr>
-                <td>Standard Install <br/> Database Only</td>
+                <td class="col-opt">Standard Install <br/> Database Only</td>
                 <td>
                     This mode indicates that the installer and archive were manually moved or transferred to a location and that only the Database will be installed
                     at this location.
                 </td>
             </tr>
             <tr>
-                <td>Overwrite Install <sup>pro</sup></td>
+                <td class="col-opt">Overwrite Install <sup>pro</sup></td>
                 <td>
                     This mode indicates that the installer was started in a location that contains an existing site.  With this mode <b>the existing site will be overwritten</b> with
                     the contents of the archive.zip/daf and the database.sql file.  This is an advanced option and users should be pre-paired to know that state of their database
@@ -108,7 +111,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                 </td>
             </tr>
             <tr>
-                <td>Overwrite Install <br/> Database Only <sup>pro</sup></td>
+                <td class="col-opt">Overwrite Install <br/> Database Only <sup>pro</sup></td>
                 <td>
                     This mode indicates that the installer was started in a location that contains an existing site.  With this mode <b>the existing site will be overwritten</b> with
                     the contents of the database.sql file.  This is an advanced option and users should be pre-paired to know that state of their database and site files ahead of time.
@@ -148,14 +151,14 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
             The options for step 1 can help better prepare your site should your server need additional settings beyond most general configuration.
             <table class="help-opt">
                 <tr>
-                    <th>Option</th>
+                    <th class="col-opt">Option</th>
                     <th>Details</th>
                 </tr>
                 <tr>
                     <td colspan="2" class="section">General Options</td>
                 </tr>
                 <tr>
-                    <td>Extraction</td>
+                    <td class="col-opt">Extraction</td>
                     <td>
                         <b>Manual Archive Extraction</b><br/>
                         Set the Extraction value to "Manual Archive Extraction" when the archive file has already been manually extracted on the server.  This can be done through your hosts
@@ -175,7 +178,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                     </td>
                 </tr>
                 <tr>
-                    <td>Permissions</td>
+                    <td class="col-opt">Permissions</td>
                     <td>
                         <b>All Files:</b> Check the 'All Files' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
                         to recursively set the octal value on all the files being extracted. Typically this value is 644 on most servers and hosts.
@@ -191,7 +194,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                     <td colspan="2" class="section">Advanced Options</td>
                 </tr>
                 <tr>
-                    <td>Safe Mode</td>
+                    <td class="col-opt">Safe Mode</td>
                     <td>
                         Safe mode is designed to configure the site with specific options at install time to help over come issues that may happen during the install were the site
                         is having issues.  These options should only be used if you run into issues after you have tried to run an install.
@@ -205,7 +208,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                     </td>
                 </tr>
                 <tr>
-                    <td>Config Files </td>
+                    <td class="col-opt">Config Files </td>
                     <td>
                         When dealing with configuration files (.htaccess, web.config and .user.ini) the installer can apply different modes:
                         <br/><br/>
@@ -234,12 +237,12 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                 </tr>
 
                 <tr>
-                    <td>File Times</td>
+                    <td class="col-opt">File Times</td>
                     <td>When the archive is extracted should it show the current date-time or keep the original time it had when it was built.  This setting will be applied to
                     all files and directories.</td>
                 </tr>
                 <tr>
-                    <td>Logging</td>
+                    <td class="col-opt">Logging</td>
                     <td>
                         The level of detail that will be sent to the log file (installer-log.txt).  The recommend setting for most installs should be 'Light'.
                         Note if you use Debug the amount of data written can be very large.  Debug is only recommended for support.
@@ -280,27 +283,27 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
             <i>The cPanel connectivity option is only available for Duplicator Pro.</i>
             <table class="help-opt">
                 <tr>
-                    <th>Option</th>
+                    <th class="col-opt">Option</th>
                     <th>Details</th>
                 </tr>
                 <tr>
-                    <td>Host</td>
+                    <td class="col-opt">Host</td>
                     <td>This should be the primary domain account URL that is associated with your host.  Most hosts will require you to register a primary domain name.
                     This should be the URL that you place in the host field.  For example if your primary domain name is "mysite.com" then you would enter in
                     "https://mysite.com:2083".  The port 2038 is the common	port number that cPanel works on.  If you do not know your primary domain name please contact your
                     hosting provider or server administrator.</td>
                 </tr>
                 <tr>
-                    <td>Username</td>
+                    <td class="col-opt">Username</td>
                     <td>The cPanel username used to login to your cPanel account.  <i>This is <b>not</b> the same thing as your WordPress administrator account</i>.
                     If your unsure of this name please contact your hosting provider or server administrator.</td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td class="col-opt">Password</td>
                     <td>The password of the cPanel user</td>
                 </tr>
                 <tr>
-                    <td>Troubleshoot</td>
+                    <td class="col-opt">Troubleshoot</td>
                     <td>
                         <b>Common cPanel Connection Issues:</b><br/>
                         - Your host does not use <a href="http://cpanel.com/" target="_blank">cPanel Software</a> <br/>
@@ -317,11 +320,11 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
             The database setup options allow you to connect to an existing database or in the case of cPanel connect or create a new database.
             <table class="help-opt">
                 <tr>
-                    <th>Option</th>
+                    <th class="col-opt">Option</th>
                     <th>Details</th>
                 </tr>
                 <tr>
-                    <td>Action</td>
+                    <td class="col-opt">Action</td>
                     <td>
                         <b>Create New Database:</b> Will attempt to create a new database if it does not exist.  When using the 'Basic' option this option will not work on many
                         hosting	providers as the ability to create new databases is normally locked down.  If the database does not exist then you will need to login to your
@@ -345,23 +348,23 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                     </td>
                 </tr>
                 <tr>
-                    <td>Host</td>
+                    <td class="col-opt">Host</td>
                     <td>The name of the host server that the database resides on.  Many times this will be 'localhost', however each hosting provider will have it's own naming
                     convention please check with your server administrator or host to valid for sure the name needed.  To add a port number just append it to the host i.e.
                     'localhost:3306'.</td>
                 </tr>
                 <tr>
-                    <td>Database</td>
+                    <td class="col-opt">Database</td>
                     <td>The name of the database to which this installation will connect and install the new tables and data into.  Some hosts will require a prefix while others
                     do not.  Be sure to know exactly how your host requires the database name to be entered.</td>
                 </tr>
                 <tr>
-                    <td>User</td>
+                    <td class="col-opt">User</td>
                     <td>The name of a MySQL database server user. This is special account that has privileges to access a database and can read from or write to that database.
                     <i>This is <b>not</b> the same thing as your WordPress administrator account</i>.</td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td class="col-opt">Password</td>
                     <td>The password of the MySQL database server user.</td>
                 </tr>
 
@@ -372,18 +375,18 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
             <h3>Options</h3>
             <table class="help-opt">
                 <tr>
-                    <th>Option</th>
+                    <th class="col-opt">Option</th>
                     <th>Details</th>
                 </tr>
                 <tr>
-                    <td>Prefix<sup>pro*</sup></td>
+                    <td class="col-opt">Prefix<sup>pro*</sup></td>
                     <td>By default, databases are prefixed with the cPanel account's username (for example, myusername_databasename).  However you can ignore this option if
                     your host does not use the default cPanel username prefix schema.  Check the 'Ignore cPanel Prefix' and the username prefixes will be ignored.
                     This will still require you to enter in the cPanels required setup prefix if they require one.  The checkbox will be set to read-only if your host has
                     disabled prefix settings.  Please see your host full requirements when using the cPanel options.</td>
                 </tr>
                 <tr>
-                    <td>Legacy</td>
+                    <td class="col-opt">Legacy</td>
                     <td>When creating a database table, the Mysql version being used may not support the collation type of the Mysql version where the table was created.
                     In this scenario, the installer will fallback to a legacy collation type to try and create the table. This value should only be checked if you receive an error when
                     testing the database.
@@ -397,22 +400,22 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                     </td>
                 </tr>
                 <tr>
-                    <td>Spacing</td>
+                    <td class="col-opt">Spacing</td>
                     <td>The process will remove utf8 characters represented as 'xC2' 'xA0' and replace with a uniform space.  Use this option if you find strange question
                     marks in you posts</td>
                 </tr>
                 <tr>
-                    <td>Mode</td>
+                    <td class="col-opt">Mode</td>
                     <td>The MySQL mode option will allow you to set the mode for this session.  It is very useful when running into conversion issues.  For a full overview please
                     see the	<a href="https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html" target="_blank">MySQL mode documentation</a> specific to your version.</td>
                 </tr>
                 <tr>
-                    <td>Charset</td>
+                    <td class="col-opt">Charset</td>
                     <td>When the database is populated from the SQL script it will use this value as part of its connection.  Only change this value if you know what your
                     databases character set should be.</td>
                 </tr>
                 <tr>
-                    <td>Collation</td>
+                    <td class="col-opt">Collation</td>
                     <td>When the database is populated from the SQL script it will use this value as part of its connection.  Only change this value if you know what your
                     databases collation set should be.</td>
                 </tr>
@@ -425,18 +428,18 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
 
             <table class="help-opt">
                 <tr>
-                    <th>Option</th>
+                    <th class="col-opt">Option</th>
                     <th>Details</th>
                 </tr>
                 <tr>
-                    <td>Test<br/>Database</td>
+                    <td class="col-opt">Test<br/>Database</td>
                     <td>
                         The 'Test Database' button will help validate if the connection parameters are correct for this server and help with details about any issues
                         that may arise.
                     </td>
                 </tr>
                 <tr>
-                    <td>Troubleshoot</td>
+                    <td class="col-opt">Troubleshoot</td>
                     <td>
                         <b>Common Database Connection Issues:</b><br/>
                         - Double check case sensitive values 'User', 'Password' &amp; the 'Database Name' <br/>
@@ -481,62 +484,62 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
             <h3>Options</h3>
             <table class="help-opt">
                 <tr>
-                    <th>Option</th>
+                    <th class="col-opt">Option</th>
                     <th>Details</th>
                 </tr>
                 <tr>
                     <td colspan="2" class="section">New Admin Account</td>
                 </tr>
                 <tr>
-                    <td>Username</td>
+                    <td class="col-opt">Username</td>
                     <td>A new WordPress username to create.  This will create a new WordPress administrator account.  Please note that usernames are not changeable from the within the UI.</td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td class="col-opt">Password</td>
                     <td>The new password for the new user.  Must be at least 6 characters long.</td>
                 </tr>
                 <tr>
                     <td colspan="2" class="section">Scan Options</td>
                 </tr>
                 <tr>
-                    <td>Cleanup <sup>pro</sup></td>
+                    <td class="col-opt">Cleanup <sup>pro</sup></td>
                     <td>The checkbox labeled Remove schedules &amp; storage endpoints will empty the Duplicator schedule and storage settings.  This is recommended to keep enabled so that you do not have unwanted schedules and storage options enabled.</td>
                 </tr>
                 <tr>
-                    <td>Old URL</td>
+                    <td class="col-opt">Old URL</td>
                     <td>The old URL of the original values that the package was created with.  These values should not be changed, unless you know the underlying reasons</td>
                 </tr>
                 <tr>
-                    <td>Old Path</td>
+                    <td class="col-opt">Old Path</td>
                     <td>The old path of the original values that the package was created with.  These values should not be changed, unless you know the underlying reasons</td>
                 </tr>
                 <tr>
-                    <td>Site URL</td>
+                    <td class="col-opt">Site URL</td>
                     <td> For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.  If you're not sure about this value then leave it the same as the new settings URL.</td>
                 </tr>
                 <tr>
-                    <td>Scan Tables</td>
+                    <td class="col-opt">Scan Tables</td>
                     <td>Select the tables to be updated. This process will update all of the 'Old Settings' with the 'New Settings'. Hold down the 'ctrl key' to select/deselect multiple.</td>
                 </tr>
                 <tr>
-                    <td>Activate Plugins</td>
+                    <td class="col-opt">Activate Plugins</td>
                     <td>These plug-ins are the plug-ins that were activated when the package was created and represent the plug-ins that will be activated after the install.</td>
                 </tr>
                 <tr>
-                    <td>Update email domains</td>
+                    <td class="col-opt">Update email domains</td>
                     <td>The domain portion of all email addresses will be updated if this option is enabled.</td>
                 </tr>
                 <tr>
-                    <td>Full Search</td>
+                    <td class="col-opt">Full Search</td>
                     <td>Full search forces a scan of every single cell in the database. If it is not checked then only text based columns are searched which makes the update process much faster.
                     Use this option if you have issues with data not updating correctly.</td>
                 </tr>
                 <tr>
-                    <td>Post GUID</td>
+                    <td class="col-opt">Post GUID</td>
                     <td>If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.</td>
                 </tr>
                 <tr>
-                    <td>Cross search <sup>pro</sup></td>
+                    <td class="col-opt">Cross search <sup>pro</sup></td>
                     <td>
                         This option enables the searching and replacing of subsite domains and paths that link to each other.  <br>
                         Check this option if hyperlinks of at least one subsite point to another subsite.<br>
@@ -544,15 +547,29 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                         Check this option If you unsure if you need this option.<br></td>
                 </tr>
                 <tr>
+                    <td class="col-opt"> Max size check for serialize objects</td>
+                    <td>
+                        Large serialized objects can cause a fatal error when Duplicator attempts to transform them. <br>
+                        If a fatal error is generated, lower this limit. <br>
+                        If a warning of this type appears in the final report <br>
+                        <pre style="white-space: pre-line;">
+                            DATA-REPLACE ERROR: Serialization
+                            ENGINE: serialize data too big to convert; data len: XXX Max size: YYY
+                            DATA: .....
+                        </pre>
+                        And you think that the serialized object is necessary you can increase the limit or <b>set it to 0 to have no limit</b>.
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2" class="section">WP-Config File</td>
                 </tr>
                 <tr>
-                    <td>Config SSL</td>
+                    <td class="col-opt">Config SSL</td>
                     <td>Turn off SSL support for WordPress. This sets FORCE_SSL_ADMIN in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Enforce on Login"
                         will turn off SSL support for WordPress Logins.</td>
                 </tr>
                 <tr>
-                    <td>Config Cache</td>
+                    <td class="col-opt">Config Cache</td>
                     <td>Turn off Cache support for WordPress. This sets WP_CACHE in your wp-config file to false if true, otherwise it will create the setting if not set.  The "Keep Home Path"
                     sets WPCACHEHOME in your wp-config file to nothing if true, otherwise nothing is changed.</td>
                 </tr>

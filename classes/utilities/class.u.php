@@ -466,21 +466,43 @@ class DUP_Util
 		return base64_encode($string);
 	}
 
-	/**
-	 * Does the current user have the capability
-	 *
-	 * @return null Dies if user doesn't have the correct capability
-	 */
-	public static function hasCapability($permission = 'read')
-	{
-		$capability	 = $permission;
-		$capability	 = apply_filters('wpfront_user_role_editor_duplicator_translate_capability', $capability);
+    const SECURE_ISSUE_DIE   = 'die';
+    const SECURE_ISSUE_THROW = 'throw';
+    const SECURE_ISSUE_RETURN = 'return';
 
-		if (!current_user_can($capability)) {
-			wp_die(__('You do not have sufficient permissions to access this page.', 'duplicator'));
-			return;
-		}
-	}
+    /**
+     * Does the current user have the capability
+     *
+     * @param type $permission
+     * @param type $exit    //  SECURE_ISSUE_DIE die script with die function
+     *                          SECURE_ISSUE_THROW throw an exception if fail
+     *                          SECURE_ISSUE_RETURN return false if fail
+     *
+     * @return boolean      // return false is fail and $exit is SECURE_ISSUE_THROW
+     *                      // true if success
+     *
+     * @throws Exception    // thow exception if $exit is SECURE_ISSUE_THROW
+     */
+    public static function hasCapability($permission = 'read', $exit = self::SECURE_ISSUE_DIE)
+    {
+        $capability = apply_filters('wpfront_user_role_editor_duplicator_translate_capability', $permission);
+
+        if (!current_user_can($capability)) {
+            $exitMsg = __('You do not have sufficient permissions to access this page.', 'duplicator');
+            DUP_LOG::Trace('You do not have sufficient permissions to access this page. PERMISSION: '.$permission);
+
+            switch ($exit) {
+                case self::SECURE_ISSUE_THROW:
+                    throw new Exception($exitMsg);
+                case self::SECURE_ISSUE_RETURN:
+                    return false;
+                case self::SECURE_ISSUE_DIE:
+                default:
+                    wp_die($exitMsg);
+            }
+        }
+        return true;
+    }
 
 	/**
 	 *  Gets the name of the owner of the current PHP script
@@ -539,25 +561,20 @@ class DUP_Util
 			//--------------------------------
 			//CHMOD DIRECTORY ACCESS
 			//wordpress root directory
-			@chmod($path_wproot, 0755);
+            DupLiteSnapLibIOU::chmod($path_wproot, 'u+rwx');
 
 			//snapshot directory
-			@mkdir($path_ssdir, 0755);
-			@chmod($path_ssdir, 0755);
+            DupLiteSnapLibIOU::dirWriteCheckOrMkdir($path_ssdir, 'u+rwx');
 
 			// restore original root perms
-			@chmod($path_wproot, $old_root_perm);
+            DupLiteSnapLibIOU::chmod($path_wproot, $old_root_perm);
 		}
 
 		$path_ssdir_tmp = $path_ssdir.'/tmp';
-		if (!file_exists($path_ssdir_tmp)) {
-			//snapshot tmp directory
-			@mkdir($path_ssdir_tmp, 0755);
-			@chmod($path_ssdir_tmp, 0755);
-		}
+        DupLiteSnapLibIOU::dirWriteCheckOrMkdir($path_ssdir_tmp, 'u+rwx');
 
 		//plugins dir/files
-		@chmod($path_plugin.'files', 0755);
+        DupLiteSnapLibIOU::dirWriteCheckOrMkdir($path_plugin.'files', 'u+rwx');
 
 		//--------------------------------
 		//FILE CREATION
@@ -568,15 +585,6 @@ class DUP_Util
 			@fwrite($ssfile,
 					'<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
 			@fclose($ssfile);
-		}
-
-		//SSDIR: Create token file in snapshot
-		$fileName = $path_ssdir.'/dtoken.php';
-		if (!file_exists($fileName)) {
-			$tokenfile = @fopen($fileName, 'w');
-			@fwrite($tokenfile,
-					'<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
-			@fclose($tokenfile);
 		}
 
 		//SSDIR: Create .htaccess
@@ -597,15 +605,6 @@ class DUP_Util
 			$robotfile = @fopen($fileName, 'w');
 			@fwrite($robotfile, "User-agent: * \nDisallow: /".DUPLICATOR_SSDIR_NAME.'/');
 			@fclose($robotfile);
-		}
-
-		//PLUG DIR: Create token file in plugin
-		$fileName = $path_plugin.'installer/dtoken.php';
-		if (!file_exists($fileName)) {
-			$tokenfile2 = @fopen($fileName, 'w');
-			@fwrite($tokenfile2,
-					'<?php @error_reporting(0); @require_once("../../../../wp-admin/admin.php"); global $wp_query; $wp_query->set_404(); header("HTTP/1.1 404 Not Found", true, 404); header("Status: 404 Not Found"); @include(get_template_directory () . "/404.php"); ?>');
-			@fclose($tokenfile2);
 		}
 	}
 

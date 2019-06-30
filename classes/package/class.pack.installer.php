@@ -76,7 +76,7 @@ class DUP_Installer
 	{
 		$success = true;
 		$archive_filepath		 = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
-		$installer_filepath		 = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php";
+		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php");
 		$template_filepath		 = DUPLICATOR_PLUGIN_PATH.'/installer/installer.tpl';
 		$mini_expander_filepath	 = DUPLICATOR_PLUGIN_PATH.'/lib/dup_archive/classes/class.duparchive.mini.expander.php';
 
@@ -183,7 +183,7 @@ class DUP_Installer
 	private function add_extra_files($package)
 	{
 		$success				 = false;
-		$installer_filepath		 = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php";
+		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php");
 		$scan_filepath			 = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_scan.json";
 		$sql_filepath			 = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Database->File}");
 		$archive_filepath		 = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");

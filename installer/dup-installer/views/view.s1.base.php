@@ -658,9 +658,10 @@ OPTIONS
 		<tr>
 			<td>Logging:</td>
 			<td>
-				<input type="radio" name="logging" id="logging-light" value="1" checked="true"> <label for="logging-light" class="radio">Light</label> &nbsp;
-				<input type="radio" name="logging" id="logging-detailed" value="2"> <label for="logging-detailed" class="radio">Detailed</label> &nbsp;
-				<input type="radio" name="logging" id="logging-debug" value="3"> <label for="logging-debug" class="radio">Debug</label>
+                <input type="radio" name="logging" id="logging-light" value="<?php echo DUPX_Log::LV_DEFAULT; ?>" checked="true"> <label for="logging-light" class="radio">Light</label> &nbsp;
+                <input type="radio" name="logging" id="logging-detailed" value="<?php echo DUPX_Log::LV_DETAILED; ?>"> <label for="logging-detailed" class="radio">Detailed</label> &nbsp;
+                <input type="radio" name="logging" id="logging-debug" value="<?php echo DUPX_Log::LV_DEBUG; ?>"> <label for="logging-debug" class="radio">Debug</label> &nbsp;
+                <input type="radio" name="logging" id="logging-h-debug" value="<?php echo DUPX_Log::LV_HARD_DEBUG; ?>"> <label for="logging-h-debug" class="radio">Hard debug</label>
 			</td>
 		</tr>
 		<?php if(!$archive_config->isZipArchive()): ?>

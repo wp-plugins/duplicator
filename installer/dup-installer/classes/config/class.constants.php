@@ -12,6 +12,14 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  */
 class DUPX_Constants
 {
+    const DEFAULT_MAX_STRLEN_SERIALIZED_CHECK_IN_M = 4; // 0 no limit
+
+    /**
+     *
+     * @var int
+     */
+    public static $maxStrlenSerializeCheck = self::DEFAULT_MAX_STRLEN_SERIALIZED_CHECK;
+
 	/**
 	 * Init method used to auto initialize the global params
 	 *
@@ -36,6 +44,7 @@ class DUPX_Constants
 		//DATABASE SETUP: all time in seconds
 		//max_allowed_packet: max value 1073741824 (1268MB) see my.ini
 		$GLOBALS['DB_MAX_TIME'] = 5000;
+        $GLOBALS['DATABASE_PAGE_SIZE'] = 3500;
 		$GLOBALS['DB_MAX_PACKETS'] = 268435456;
 		$GLOBALS['DBCHARSET_DEFAULT'] = 'utf8';
 		$GLOBALS['DBCOLLATE_DEFAULT'] = 'utf8_general_ci';
@@ -78,9 +87,9 @@ class DUPX_Constants
 		$GLOBALS['LOG_FILE_PATH']		= $GLOBALS['DUPX_INIT'] . '/' . $GLOBALS["LOG_FILE_NAME"];
         $GLOBALS["NOTICES_FILE_NAME"]	= "dup-installer-notices__{$GLOBALS['PACKAGE_HASH']}.json";
         $GLOBALS["NOTICES_FILE_PATH"]	= $GLOBALS['DUPX_INIT'] . '/' . $GLOBALS["NOTICES_FILE_NAME"];
-		$GLOBALS['CHOWN_ROOT_PATH']		= @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
-		$GLOBALS['CHOWN_LOG_PATH']		= @chmod("{$GLOBALS['LOG_FILE_PATH']}", 0644);
-        $GLOBALS['CHOWN_NOTICES_PATH']	= @chmod("{$GLOBALS['NOTICES_FILE_PATH']}", 0644);
+		$GLOBALS['CHOWN_ROOT_PATH']		= DupLiteSnapLibIOU::chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 'u+rwx');
+		$GLOBALS['CHOWN_LOG_PATH']		= DupLiteSnapLibIOU::chmod("{$GLOBALS['LOG_FILE_PATH']}", 'u+rw');
+        $GLOBALS['CHOWN_NOTICES_PATH']	= DupLiteSnapLibIOU::chmod("{$GLOBALS['NOTICES_FILE_PATH']}", 'u+rw');
 		$GLOBALS['URL_SSL']				= (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;
 		$GLOBALS['URL_PATH']			= ($GLOBALS['URL_SSL']) ? "https://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}" : "http://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}";
 		$GLOBALS['PHP_MEMORY_LIMIT']	= ini_get('memory_limit') === false ? 'n/a' : ini_get('memory_limit');
@@ -99,7 +108,13 @@ class DUPX_Constants
             $GLOBALS['LOG_FILE_HANDLE'] = @fopen($GLOBALS['LOG_FILE_PATH'], "a+");
         }
 
-        $GLOBALS['HOST_NAME'] = strlen($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+		// for ngrok url and Local by Flywheel Live URL
+		if (isset($_SERVER['HTTP_X_ORIGINAL_HOST'])) {
+			$host = $_SERVER['HTTP_X_ORIGINAL_HOST'];
+		} else {
+			$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];//WAS SERVER_NAME and caused problems on some boxes
+		}
+        $GLOBALS['HOST_NAME'] = $host;
 
         if (!defined('MAX_STRLEN_SERIALIZED_CHECK')) { define('MAX_STRLEN_SERIALIZED_CHECK', 2000000); }
 	}

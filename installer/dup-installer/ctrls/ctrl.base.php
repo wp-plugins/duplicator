@@ -13,9 +13,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 //Enum used to define the various test statues 
 final class DUPX_CTRL_Status
 {
-	const FAILED	 = 0;
-	const SUCCESS	 = 1;
-
+    const FAILED  = 0;
+    const SUCCESS = 1;
 }
 
 /**
@@ -23,10 +22,10 @@ final class DUPX_CTRL_Status
  */
 class DUPX_CTRL_Report
 {
-	//Properties
-	public $runTime;
-	public $outputType = 'JSON';
-	public $status;
+    //Properties
+    public $runTime;
+    public $outputType = 'JSON';
+    public $status;
 
 }
 
@@ -35,39 +34,41 @@ class DUPX_CTRL_Report
  */
 class DUPX_CTRL_Out
 {
-	public $report = null;
-	public $payload = null;
+    public $report  = null;
+    public $payload = null;
+    private $timeStart;
+    private $timeEnd;
 
-	private $timeStart;
-	private $timeEnd;
+    /**
+     *  Init this instance of the object
+     */
+    public function __construct()
+    {
+        $this->report  = new DUPX_CTRL_Report();
+        $this->payload = null;
+        $this->startProcessTime();
+    }
 
-	/**
-	 *  Init this instance of the object
-	 */
-	public function __construct()
-	{
-		$this->report = new DUPX_CTRL_Report();
-		$this->payload = null;
-		$this->startProcessTime();
-	}
+    public function startProcessTime()
+    {
+        $this->timeStart = $this->microtimeFloat();
+    }
 
-	public function startProcessTime()
-	{
-		$this->timeStart = $this->microtimeFloat();
-	}
+    public function getProcessTime()
+    {
+        $this->timeEnd         = $this->microtimeFloat();
+        $this->report->runTime = $this->timeEnd - $this->timeStart;
+        return $this->report->runTime;
+    }
 
-	public function getProcessTime()
-	{
-		$this->timeEnd = $this->microtimeFloat();
-		$this->report->runTime = $this->timeEnd - $this->timeStart;
-		return $this->report->runTime;
-	}
+    private function microtimeFloat()
+    {
+        list($usec, $sec) = explode(" ", microtime());
+        return ((float) $usec + (float) $sec);
+    }
+}
 
-	private function microtimeFloat()
-	{
-		list($usec, $sec) = explode(" ", microtime());
-		return ((float)$usec + (float)$sec);
-	}
-
-
+class DUPX_CTRL
+{
+    const NAME_MAX_SERIALIZE_STRLEN_IN_M = 'mstrlim';
 }

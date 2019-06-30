@@ -127,7 +127,7 @@ class DUP_Zip extends DUP_Archive
                     $localFileName = $archive->getLocalFilePath($file);
 
                     if (is_readable($file)) {
-                        if ($file_size < DUP_Constants::ZIP_STRING_LIMIT && self::$zipArchive->addFromString($localFileName, file_get_contents($file))) {
+                        if (defined('DUPLICATOR_ZIP_ARCHIVE_ADD_FROM_STR') && DUPLICATOR_ZIP_ARCHIVE_ADD_FROM_STR && $file_size < DUP_Constants::ZIP_STRING_LIMIT && self::$zipArchive->addFromString($localFileName, file_get_contents($file))) {
                             Dup_Log::Info("Adding {$file} to zip");
                             self::$limitItems++;
                             self::$countFiles++;
@@ -164,7 +164,7 @@ class DUP_Zip extends DUP_Archive
                     $localFileName = $archive->getLocalFilePath($file);
 
                     if (is_readable($file)) {
-                        if ($file_size < DUP_Constants::ZIP_STRING_LIMIT && self::$zipArchive->addFromString($localFileName, file_get_contents($file))) {
+                        if (defined('DUPLICATOR_ZIP_ARCHIVE_ADD_FROM_STR') && DUPLICATOR_ZIP_ARCHIVE_ADD_FROM_STR && $file_size < DUP_Constants::ZIP_STRING_LIMIT && self::$zipArchive->addFromString($localFileName, file_get_contents($file))) {
                             self::$countFiles++;
                         } elseif (self::$zipArchive->addFile($file, $localFileName)) {
                             self::$countFiles++;

@@ -131,7 +131,7 @@ class DAWS
                         $expandState->filteredFiles = $filteredFiles;
                         $expandState->fileRenames = $fileRenames;
                         $expandState->fileModeOverride = 0644;
-                        $expandState->directoryModeOverride = 0755;
+                        $expandState->directoryModeOverride = 'u+rwx';
 
 						$expandState->save();
 					}

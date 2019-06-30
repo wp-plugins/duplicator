@@ -31,6 +31,8 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
      */
 	public function runScanValidator($post)
 	{
+        DUP_Handler::init_error_handler();
+        
         check_ajax_referer('DUP_CTRL_Tools_runScanValidator', 'nonce');
         DUP_Util::hasCapability('export');
 

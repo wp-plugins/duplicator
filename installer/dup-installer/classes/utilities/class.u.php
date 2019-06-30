@@ -122,13 +122,11 @@ class DUPX_U
 		}
 
 		// If the destination directory does not exist create it
-		if (!is_dir($dest)) {
-			if (!mkdir($dest)) {
-				// If the destination directory could not be created stop processing
-				return false;
-			}
-		}
-
+        if (!DupLiteSnapLibIOU::dirWriteCheckOrMkdir($dest, 'u+rwx')) {
+            // If the destination directory could not be created stop processing
+            return false;
+        }
+		
 		// Open the source directory to read in files
 		$iterator = new DirectoryIterator($src);
 
@@ -1780,6 +1778,39 @@ class DUPX_U
             $result = substr($result, 1 , strlen($result) -2);
         }
         return $result;
+    }
+
+    /**
+     *
+     * @param array $input // es $_POST $_GET $_REQUEST
+     * @param string $key // key of array to check
+     * @param array $options // array('default' => null, default value to return if key don't exist
+     *                                'trim' => false // if true trim sanitize value
+     *                          )
+     * @return type
+     */
+    public static function isset_sanitize($input, $key, $options = array())
+    {
+        $opt = array_merge(array('default' => null, 'trim' => false), $options);
+        if (isset($input[$key])) {
+            $result = DUPX_U::sanitize_text_field($input[$key]);
+            if ($opt['trim']) {
+                $result = trim($result);
+            }
+            return $result;
+        } else {
+            return $opt['default'];
+        }
+    }
+
+    public static function boolToStr($input)
+    {
+        return $input ? 'true' : 'false';
+    }
+
+    public static function boolToEnable($input)
+    {
+        return $input ? 'enable' : 'disable';
     }
 }
 DUPX_U::init();

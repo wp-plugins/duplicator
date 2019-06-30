@@ -183,7 +183,13 @@ try {
         }
     }
 
-    $GLOBALS['_CURRENT_URL_PATH'] = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
+    // for ngrok url and Local by Flywheel Live URL
+    if (isset($_SERVER['HTTP_X_ORIGINAL_HOST'])) {
+        $host = $_SERVER['HTTP_X_ORIGINAL_HOST'];
+    } else {
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];//WAS SERVER_NAME and caused problems on some boxes
+    }
+    $GLOBALS['_CURRENT_URL_PATH'] = $host . dirname($_SERVER['PHP_SELF']);
     $GLOBALS['NOW_TIME']		  = @date("His");
 
     if (!chdir($GLOBALS['DUPX_INIT'])) {
@@ -198,8 +204,6 @@ try {
             DUPX_Log::error("An invalid request was made to '{$post_ctrl_action}'.  In order to protect this request from unauthorized access please "
                 . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
         }
-        require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.base.php');
-
         //PASSWORD CHECK
         if ($GLOBALS['DUPX_AC']->secure_on) {
             $pass_hasher = new DUPX_PasswordHash(8, FALSE);
@@ -254,17 +258,16 @@ if (!empty($unespectOutput)) {
 	<title>Duplicator</title>
     <link rel='stylesheet' href='assets/font-awesome/css/all.min.css' type='text/css' media='all' />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/dup-installer/favicon/lite01_apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/dup-installer/favicon/lite01_favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/dup-installer/favicon/lite01_favicon-16x16.png">
-    <link rel="manifest" href="/dup-installer/favicon/site.webmanifest">
-    <link rel="mask-icon" href="/dup-installer/favicon/lite01_safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="/dup-installer/favicon/lite01_favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/lite01_apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/lite01_favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/lite01_favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/lite01_safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="favicon/lite01_favicon.ico">
     <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="/favicon/dup-installer/browserconfig.xml">
+    <meta name="msapplication-config" content="favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
-	<link rel='stylesheet' href='assets/font-awesome/css/font-awesome.min.css' type='text/css' media='all' />
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.css.php');
@@ -272,7 +275,7 @@ if (!empty($unespectOutput)) {
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.js.php');
 	?>
 </head>
-<body>
+<body id="body-<?php echo $GLOBALS["VIEW"]; ?>" >
 
 <div id="content">
 
@@ -320,6 +323,8 @@ if (!empty($unespectOutput)) {
 //DUPX_NOTICE_MANAGER::testFinalReportFullMessages();
 /****************************/
 
+DUPX_NOTICE_MANAGER::getInstance()->nextStepLog();
+// display and remove next step notices
 DUPX_NOTICE_MANAGER::getInstance()->displayStepMessages();
 ?>
 

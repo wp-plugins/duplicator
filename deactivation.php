@@ -86,12 +86,14 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
                 'input_type' => '',
                 'input_placeholder' => ''
             ),
+            /*
             array(
                 'id' => 'OTHER',
                 'text' => __('Other', 'duplicator'),
                 'input_type' => 'textarea',
                 'input_placeholder' => __('Please tell us the reason so we can improve it.', 'duplicator')
             )
+            */
         );
 
         $reasons_list_items_html = '';
@@ -356,6 +358,8 @@ if (!function_exists('duplicator_submit_uninstall_reason_action')) {
 
     function duplicator_submit_uninstall_reason_action()
     {
+        DUP_Handler::init_error_handler();
+        
         if (!wp_verify_nonce($_REQUEST['duplicator_ajax_nonce'], 'duplicator_ajax_nonce')) {
             wp_die('Security issue');
         }

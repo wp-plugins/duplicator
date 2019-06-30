@@ -43,7 +43,13 @@ class DUPX_HTTP
 			$isSecure = true;
 		}
 		$protocol = $isSecure ? 'https' : 'http';
-		$url = "{$protocol}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+		// for ngrok url and Local by Flywheel Live URL
+		if (isset($_SERVER['HTTP_X_ORIGINAL_HOST'])) {
+			$host = $_SERVER['HTTP_X_ORIGINAL_HOST'];
+		} else {
+			$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];//WAS SERVER_NAME and caused problems on some boxes
+		}
+		$url = "{$protocol}://{$host}{$_SERVER['REQUEST_URI']}";
 		$url = ($show_query) ? $url : preg_replace('/\?.*/', '', $url);
 		return $url;
 	}

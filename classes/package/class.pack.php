@@ -360,6 +360,11 @@ class DUP_Package
         return DUP_Settings::Get('active_package_id') == $this->ID && $this->Status >= 0 && $this->Status < 100;
     }
 
+    protected function cleanObjectBeforeSave()
+    {
+        $this->Archive->FilterInfo->reset();
+    }
+
 	/**
      * Saves the active package to the package table
      *
@@ -371,7 +376,7 @@ class DUP_Package
 
 		$this->Archive->Format	= strtoupper($extension);
 		$this->Archive->File	= "{$this->NameHash}_archive.{$extension}";
-		$this->Installer->File	= "{$this->NameHash}_installer.php";
+		$this->Installer->File	= apply_filters('duplicator_installer_file_path', "{$this->NameHash}_installer.php");
 		$this->Database->File	= "{$this->NameHash}_database.sql";
 		$this->WPUser          = isset($current_user->user_login) ? $current_user->user_login : 'unknown';
 
@@ -383,6 +388,7 @@ class DUP_Package
 		$this->writeLogHeader();
 
 		//CREATE DB RECORD
+        $this->cleanObjectBeforeSave();
 		$packageObj = serialize($this);
 		if (!$packageObj) {
 			DUP_Log::Error("Unable to serialize package object while building record.");
@@ -720,6 +726,9 @@ class DUP_Package
             if ($rows != null) {
                 $Package = @unserialize($rows[0]->package);
                 if ($Package) {
+                    if (empty($Package->ID)) {
+                        $Package->ID = $rows[0]->id;
+                    }
                     // We was not storing Status in Lite 1.2.52, so it is for backward compatibility
                     if (!isset($Package->Status)) {
                         $Package->Status = $row['status'];
@@ -943,7 +952,7 @@ class DUP_Package
 
         if ($file_type == DUP_PackageFileType::Installer) {
             DUP_Log::Trace("Installer requested");
-            $file_name = $this->getInstallerFilename();
+            $file_name = apply_filters('duplicator_installer_file_path', $this->getInstallerFilename());
         } else if ($file_type == DUP_PackageFileType::Archive) {
             DUP_Log::Trace("Archive requested");
             $file_name = $this->getArchiveFilename();
@@ -1365,6 +1374,8 @@ class DUP_Package
     {
         global $wpdb;
 
+        $this->Status = number_format($this->Status, 1, '.', '');
+        $this->cleanObjectBeforeSave();
         $packageObj = serialize($this);
 
         if (!$packageObj) {
@@ -1500,7 +1511,7 @@ class DUP_Package
         $row = $wpdb->get_row($sql);
         if (is_object($row)) {
             $obj         = @unserialize($row->package);
-            $obj->Status = $row->status;
+            // $obj->Status = $row->status;
         }
         //Incase unserilaize fails
         $obj = (is_object($obj)) ? $obj : null;

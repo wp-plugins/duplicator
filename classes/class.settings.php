@@ -89,7 +89,7 @@ class DUP_Settings
 	public static function SetDefaults()
 	{
 		$defaults	 = self::GetAllDefaults();
-		self::$Data	 = $defaults;
+		self::$Data	 = apply_filters('duplicator_defaults_settings', $defaults);
 		return self::Save();
 	}
 
@@ -130,7 +130,14 @@ class DUP_Settings
 		//Flag for .htaccess file
 		$default['storage_htaccess_off'] = isset(self::$Data['storage_htaccess_off']) ? self::$Data['storage_htaccess_off'] : false;
 		// Initial archive build mode
-		$default['archive_build_mode'] = isset(self::$Data['archive_build_mode']) ? self::$Data['archive_build_mode'] : DUP_Archive_Build_Mode::ZipArchive;
+		if (isset(self::$Data['archive_build_mode'])) {
+			$default['archive_build_mode'] = self::$Data['archive_build_mode'];
+		} else {
+			$is_ziparchive_available = apply_filters('duplicator_is_ziparchive_available', class_exists('ZipArchive'));
+			$default['archive_build_mode'] = $is_ziparchive_available ? DUP_Archive_Build_Mode::ZipArchive : DUP_Archive_Build_Mode::DupArchive;
+		}
+
+		// $default['package_zip_flush'] = apply_filters('duplicator_package_zip_flush_default_setting', '0');
 
         //Skip scan archive
 		$default['skip_archive_scan']		 = isset(self::$Data['skip_archive_scan']) ? self::$Data['skip_archive_scan'] : false;

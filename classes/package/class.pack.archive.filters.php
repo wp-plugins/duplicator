@@ -77,6 +77,14 @@ class DUP_Archive_Filter_Info
      */
     public function __construct()
     {
+        $this->reset();
+    }
+
+        /**
+     * reset and clean all object
+     */
+    public function reset()
+    {
         $this->Dirs  = new DUP_Archive_Filter_Scope_Directory();
         $this->Files = new DUP_Archive_Filter_Scope_File();
         $this->Exts  = new DUP_Archive_Filter_Scope_Base();

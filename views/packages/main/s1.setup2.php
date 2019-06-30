@@ -663,5 +663,7 @@ jQuery(document).ready(function ($)
 	Duplicator.Pack.ToggleDBFilters();
 	Duplicator.Pack.ExportOnlyDB();
 	Duplicator.Pack.EnableInstallerPassword();
+	$('input#package-name').focus().select();
+
 });
 </script>

@@ -276,20 +276,24 @@ HTACCESS;
 				break;
 		}
 
-		if (is_dir(self::$rootPath)){
-			$dir = new DirectoryIterator(self::$rootPath);
-			foreach ($dir as $file) {
-				if ($file->isFile()) {
-					$name = $file->getFilename();
-					if (strpos($name, '-duplicator.bak')) {
-						if (preg_match($pattern, $name))
-							return true;
-					}
-				}
-			}
-		}
+		if (is_dir(self::$rootPath)) {
+            $dir = new DirectoryIterator(self::$rootPath);
+            foreach ($dir as $file) {
+                if ($file->isDot()) {
+                    continue;
+                }
+                if ($file->isFile()) {
+                    $name = $file->getFilename();
+                    if (strpos($name, '-duplicator.bak')) {
+                        if (preg_match($pattern, $name)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
 
-		return false;
+        return false;
 	}
 
 	/**
@@ -317,198 +321,109 @@ HTACCESS;
 				break;
 		}
 	}
-    
+
     /**
+     * Get AddHadler line from existing WP .htaccess file
      *
-     * @staticvar string $path
+     * @param $path string root path
      * @return string
      */
-    public static function getWpconfigArkPath()
+    private static function getOldHtaccessAddhandlerLine($path)
     {
-        static $path = null;
-        if (is_null($path)) {
-            $path = $GLOBALS['DUPX_AC']->installSiteOverwriteOn ? $GLOBALS['DUPX_ROOT'].'/dup-wp-config-arc__'.$GLOBALS['DUPX_AC']->package_hash.'.txt' : $GLOBALS['DUPX_ROOT'].'/wp-config.php';
+        $backupHtaccessPath = $path.'/.htaccess-'.$GLOBALS['DUPX_AC']->package_hash.'.orig';
+        if (file_exists($backupHtaccessPath)) {
+            $htaccessContent = file_get_contents($backupHtaccessPath);
+            if (!empty($htaccessContent)) {
+                // match and trim non commented line  "AddHandler application/x-httpd-XXXX .php" case insenstive
+                $re      = '/^[\s\t]*[^#]?[\s\t]*(AddHandler[\s\t]+.+\.php[ \t]?.*?)[\s\t]*$/mi';
+                $matches = array();
+                if (preg_match($re, $htaccessContent, $matches)) {
+                    return "\n".$matches[1];
+                }
+            }
         }
-        return $path;
+        return '';
     }
 
     /**
+     * Copies the code in htaccess.orig to .htaccess
      *
-     * @staticvar string $path
-     * @return string
+     * @param $path					The root path to the location of the server config files
+     * @param $new_htaccess_name	New name of htaccess (either .htaccess or a backup name)
+     *
+     * @return bool					Returns true if the .htaccess file was retained successfully
      */
-    public static function getHtaccessArkPath()
+    public static function renameHtaccess($path, $new_htaccess_name)
     {
-        static $path = null;
-        if (is_null($path)) {
-            $path = $GLOBALS['DUPX_ROOT'].'/htaccess.orig';
+        $status = false;
+
+        if (!@rename($path.'/htaccess.orig', $path.'/'.$new_htaccess_name)) {
+            $status = true;
         }
-        return $path;
+
+        return $status;
     }
 
     /**
-     *
-     * @staticvar string $path
-     * @return string
-     */
-    public static function getOrigWpConfigPath()
+	 * Sets up the web config file based on the inputs from the installer forms.
+	 *
+	 * @param int $mu_mode		Is this site a specific multi-site mode
+	 * @param object $dbh		The database connection handle for this request
+	 * @param string $path		The path to the config file
+	 *
+	 * @return null
+	 */
+	public static function setup($mu_mode, $mu_generation, $dbh, $path)
     {
-        static $path = null;
-        if (is_null($path)) {
-            $path = $GLOBALS['DUPX_INIT'].'/dup-orig-wp-config__'.$GLOBALS['DUPX_AC']->package_hash.'.txt';
-        }
-        return $path;
-    }
+        DUPX_Log::info("\nWEB SERVER CONFIGURATION FILE UPDATED:");
 
-    /**
-     *
-     * @staticvar string $path
-     * @return string
-     */
-    public static function getOrigHtaccessPath()
-    {
-        static $path = null;
-        if (is_null($path)) {
-            $path = $GLOBALS['DUPX_INIT'].'/dup-orig-wp-config__'.$GLOBALS['DUPX_AC']->package_hash.'.txt';
-        }
-        return $GLOBALS['DUPX_INIT'].'/dup-orig-htaccess__'.$GLOBALS['DUPX_AC']->package_hash.'.txt';
-    }
+        $timestamp    = date("Y-m-d H:i:s");
+        $post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+        $newdata      = parse_url($post_url_new);
+        $newpath      = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
+        $update_msg   = "# This file was updated by Duplicator Pro on {$timestamp}.\n";
+        $update_msg   .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.orig for the .htaccess original file." : "";
+        $update_msg   .= self::getOldHtaccessAddhandlerLine($path);
 
-    /**
-     *
-     * @return string
-     */
-    public static function copyOriginalConfigFiles()
-    {
-        $wpOrigPath = self::getOrigWpConfigPath();
-        $wpArkPath  = self::getWpconfigArkPath();
 
-        if (file_exists($wpOrigPath)) {
-            if (!@unlink($wpOrigPath)) {
-                DUPX_Log::info('Can\'t delete copy of WP Config orig file');
+        // no multisite
+        $empty_htaccess = false;
+        $query_result   = @mysqli_query($dbh, "SELECT option_value FROM `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` WHERE option_name = 'permalink_structure' ");
+
+        if ($query_result) {
+            $row = @mysqli_fetch_array($query_result);
+            if ($row != null) {
+                $permalink_structure = trim($row[0]);
+                $empty_htaccess      = empty($permalink_structure);
             }
         }
 
-        if (!file_exists($wpArkPath)) {
-            DUPX_Log::info('WP Config ark file don\' exists');
-        }
 
-        if (!@copy($wpArkPath, $wpOrigPath)) {
-            $errors = error_get_last();
-            DUPX_Log::info("COPY ERROR: ".$errors['type']."\n".$errors['message']);
+        if ($empty_htaccess) {
+            $tmp_htaccess = '';
         } else {
-            echo DUPX_Log::info("Original WP Config file copied", 2);
+            $tmp_htaccess = <<<HTACCESS
+{$update_msg}
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase {$newpath}
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . {$newpath}index.php [L]
+</IfModule>
+# END WordPress
+HTACCESS;
+            DUPX_Log::info("- Preparing .htaccess file with basic setup.");
         }
 
-        $htOrigPath = self::getOrigHtaccessPath();
-        $htArkPath  = self::getHtaccessArkPath();
-
-        if (file_exists($htOrigPath)) {
-            if (!@unlink($htOrigPath)) {
-                DUPX_Log::info('Can\'t delete copy of htaccess orig file');
-            }
-        }
-
-        if (!file_exists($htArkPath)) {
-            DUPX_Log::info('htaccess ark file don\' exists');
-        }
-
-        if (!@copy($htArkPath, $htOrigPath)) {
-            $errors = error_get_last();
-            DUPX_Log::info("COPY ERROR: ".$errors['type']."\n".$errors['message']);
+        if (@file_put_contents("{$path}/.htaccess", $tmp_htaccess) === FALSE) {
+            DUPX_Log::info("WARNING: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
         } else {
-            echo DUPX_Log::info("htaccess file copied", 2);
+            DUPX_Log::info("- Successfully updated the .htaccess file setting.");
         }
-    }
-
-    public static function finalReportNotices()
-    {
-        DUPX_Log::info('FINAL REPORT NOTICES');
-
-        self::wpConfigFinalReport();
-        self::htaccessFinalReport();
-    }
-
-    private static function htaccessFinalReport()
-    {
-        $nManager = DUPX_NOTICE_MANAGER::getInstance();
-
-        $orig = file_get_contents(self::getOrigHtaccessPath());
-        $new  = file_get_contents($GLOBALS['DUPX_ROOT'].'/.htaccess');
-
-        $lightBoxContent = '<div class="row-cols-2">'.
-            '<div class="col col-1" style="background-color:#fff7f7"><b style="color:maroon"><i class="fas fa-sticky-note"></i> Original .htaccess</b><pre>'.htmlspecialchars($orig).'</pre></div>'.
-            '<div class="col col-2" style="background-color:#f7fdf1"><b style="color:green"><i class="far fa-sticky-note"></i> New .htaccess</b><pre>'.htmlspecialchars($new).'</pre></div>'.
-            '</div>';
-        $longMsg         = DUPX_U_Html::getLigthBox('.htaccess changes', 'HTACCESS COMPARE', $lightBoxContent, false);
-
-        $nManager->addFinalReportNotice(array(
-            'shortMsg' => 'htaccess changes',
-            'level' => DUPX_NOTICE_ITEM::INFO,
-            'longMsg' => $longMsg,
-            'sections' => 'changes',
-            'open' => true,
-            'longMsgMode'=> DUPX_NOTICE_ITEM::MSG_MODE_HTML
-            ), DUPX_NOTICE_MANAGER::ADD_UNIQUE, 'htaccess-changes');
-    }
-
-    private static function wpConfigFinalReport()
-    {
-        $nManager = DUPX_NOTICE_MANAGER::getInstance();
-
-        if (($orig = file_get_contents(self::getOrigWpConfigPath())) === false) {
-            $orig = 'Can read origin wp-config.php file';
-        } else {
-            $orig = self::obscureWpConfig($orig);
-        }
-
-        if (($new = file_get_contents($GLOBALS['DUPX_ROOT'].'/wp-config.php')) === false) {
-            $new = 'Can read wp-config.php file';
-        } else {
-            $new = self::obscureWpConfig($new);
-        }
-
-        $lightBoxContent = '<div class="row-cols-2">'.
-            '<div class="col col-1" style="background-color:#fff7f7"><b style="color:maroon"><i class="fas fa-sticky-note"></i> Original wp-config.php</b><pre class="s4-diff-viewer">'.htmlspecialchars($orig).'</pre></div>'.
-            '<div class="col col-2" style="background-color:#f7fdf1"><b style="color:green"><i class="far fa-sticky-note"></i> New wp-config.php</b><pre class="s4-diff-viewer">'.htmlspecialchars($new).'</pre></div>'.
-            '</div>';
-        $longMsg         = DUPX_U_Html::getLigthBox('wp-config.php changes', 'WP-CONFIG.PHP COMPARE', $lightBoxContent, false);
-
-        $nManager->addFinalReportNotice(array(
-            'shortMsg' => 'wp-config.php changes',
-            'level' => DUPX_NOTICE_ITEM::INFO,
-            'longMsg' => $longMsg,
-            'sections' => 'changes',
-            'open' => true,
-            'longMsgMode'=> DUPX_NOTICE_ITEM::MSG_MODE_HTML
-            ), DUPX_NOTICE_MANAGER::ADD_UNIQUE, 'wp-config-changes');
-    }
-
-    private static function obscureWpConfig($src)
-    {
-        $transformer = new WPConfigTransformerSrc($src);
-        $obsKeys     = array(
-            'DB_NAME',
-            'DB_USER',
-            'DB_HOST',
-            'DB_PASSWORD',
-            'AUTH_KEY',
-            'SECURE_AUTH_KEY',
-            'LOGGED_IN_KEY',
-            'NONCE_KEY',
-            'AUTH_SALT',
-            'SECURE_AUTH_SALT',
-            'LOGGED_IN_SALT',
-            'NONCE_SALT');
-        
-        foreach ($obsKeys as $key) {
-            if ($transformer->exists('constant', $key)) {
-                $transformer->update('constant', $key, '**OBSCURED**');
-            }
-        }
-
-        return $transformer->getSrc();
+        @chmod("{$path}/.htaccess", 0644);
     }
 }
-
 DUPX_ServerConfig::init();

@@ -640,7 +640,7 @@ class DUP_Database
                     }
 
                     if ($is_select_error) {
-                        $fix = esc_html__('Please constact your DataBase administrator to fix the error.', 'duplicator');
+                        $fix = esc_html__('Please contact your DataBase administrator to fix the error.', 'duplicator');
                         $errorMessage = $select_last_error.' '.$fix.'.';
                         $package->BuildProgress->set_failed($errorMessage);
                         $package->BuildProgress->failed = true;

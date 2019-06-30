@@ -62,7 +62,7 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
         public static function getWorkPercent($startingPercent, $endingPercent, $totalTaskCount, $currentTaskCount)
         {
             if ($totalTaskCount > 0) {
-                $percent = floor($startingPercent + (($endingPercent - $startingPercent) * ($currentTaskCount / (float) $totalTaskCount)));
+                $percent = ($startingPercent + (($endingPercent - $startingPercent) * ($currentTaskCount / (float) $totalTaskCount)));
             } else {
                 $percent = 0;
             }

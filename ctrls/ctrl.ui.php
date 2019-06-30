@@ -39,6 +39,7 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
      */
 	public function SaveViewState($post) 
 	{
+        DUP_Handler::init_error_handler();
 		check_ajax_referer('DUP_CTRL_UI_SaveViewState', 'nonce');
 		DUP_Util::hasCapability('export');
 
