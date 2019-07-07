@@ -299,12 +299,10 @@ class DUP_Installer
 	private function add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath)
 	{
 		$installer_backup_filename = 'installer-backup.php';
-		$installer_backup_filepath = dirname($installer_filepath)."/{$installer_backup_filename}";
+		
 
 		DUP_Log::Info('Adding enhanced installer files to archive using DupArchive');
-		DupLiteSnapLibIOU::copy($installer_filepath, $installer_backup_filepath);
-		DupArchiveEngine::addFileToArchiveUsingBaseDirST($archive_filepath, dirname($installer_backup_filepath), $installer_backup_filepath);
-		DupLiteSnapLibIOU::rm($installer_backup_filepath);
+		DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $installer_filepath, $installer_backup_filename);
 
 		$this->numFilesAdded++;
 

@@ -14,7 +14,7 @@ class DUP_Web_Services
 
     /**
      *
-     * @param DUP_PRO_Package $package
+     * @param DUP_Package $package
      */
     public static function package_delete_callback($package)
     {
