@@ -163,12 +163,15 @@ if (is_admin() == true)
         require_once 'classes/host/class.wpengine.host.php';
     }
 
-    $hostName = gethostname();
-    $goDaddyHostNameSuffix = '.secureserver.net';
-    $lenGoDaddyHostNameSuffix = strlen($goDaddyHostNameSuffix);
-    $isGoDaddyHost = apply_filters('duplicator_godaddy_host_check', (false !== $hostName && substr($hostName, - $lenGoDaddyHostNameSuffix) === $goDaddyHostNameSuffix));
-    if ($isGoDaddyHost) {
-        require_once 'classes/host/class.godaddy.host.php';        
+    // gethostname() only present in PHP 5.3
+    if(version_compare(PHP_VERSION, '5.3.0') >= 0) {
+        $hostName = gethostname();
+        $goDaddyHostNameSuffix = '.secureserver.net';
+        $lenGoDaddyHostNameSuffix = strlen($goDaddyHostNameSuffix);
+        $isGoDaddyHost = apply_filters('duplicator_godaddy_host_check', (false !== $hostName && substr($hostName, - $lenGoDaddyHostNameSuffix) === $goDaddyHostNameSuffix));
+        if ($isGoDaddyHost) {
+            require_once 'classes/host/class.godaddy.host.php';        
+        }
     }
 
     require_once 'classes/class.settings.php';
