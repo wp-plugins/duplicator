@@ -7,21 +7,22 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php');
 
+$root_path			  = $GLOBALS['DUPX_ROOT'];
+$is_wpconfarc_present	= file_exists(DUPX_Package::getWpconfigArkPath());
 //ARCHIVE FILE
-$arcCheck = (file_exists($GLOBALS['FW_PACKAGE_PATH'])) ? 'Pass' : 'Fail';
-$arcSize = @filesize($GLOBALS['FW_PACKAGE_PATH']);
+if (file_exists($GLOBALS['FW_PACKAGE_PATH'])) {
+    $arcCheck = 'Pass';
+} else {
+    if ($is_wpconfarc_present) {
+        $arcCheck = 'Warn';
+    } else {
+        $arcCheck = 'Fail';
+    }
+}
+$arcSize = file_exists($GLOBALS['FW_PACKAGE_PATH']) ? @filesize($GLOBALS['FW_PACKAGE_PATH']) : 0;
 $arcSize = is_numeric($arcSize) ? $arcSize : 0;
 
-$root_path			  = $GLOBALS['DUPX_ROOT'];
 $installer_state	  = DUPX_InstallerState::getInstance();
-
-if ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) {
-	$is_wpconfarc_present = file_exists("{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt");	
-} else {
-	$outer_root_path = dirname($root_path); 
-	$is_wpconfarc_present = file_exists("{$root_path}/wp-config.php") || (@file_exists("{$outer_root_path}/wp-config.php") && !@file_exists("{$outer_root_path}/wp-settings.php"));
-}
-
 $is_overwrite_mode    =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 $is_wordpress		  = DUPX_Server::isWordPress();
 $is_dbonly			  = $GLOBALS['DUPX_AC']->exportOnlyDB;
@@ -75,7 +76,7 @@ if ($GLOBALS['DUPX_AC']->exportOnlyDB) {
 }
 
 $space_free = @disk_free_space($GLOBALS['DUPX_ROOT']); 
-$archive_size = filesize($GLOBALS['FW_PACKAGE_PATH']);
+$archive_size = file_exists($GLOBALS['FW_PACKAGE_PATH']) ? filesize($GLOBALS['FW_PACKAGE_PATH']) : 0;
 $notice['100'] = ($space_free && $archive_size > $space_free) 
                     ? 'Warn'
 					: 'Good';
@@ -165,15 +166,17 @@ ARCHIVE
 ==================================== -->
 <div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s1-area-archive-file">
 	<a id="s1-area-archive-file-link"><i class="fa fa-plus-square"></i>Archive</a>
-	<div class="<?php echo ( $arcCheck == 'Pass') ? 'status-badge-pass' : 'status-badge-fail'; ?>">
-		<?php echo ($arcCheck == 'Pass') ? 'Pass' : 'Fail'; ?>
+	<?php
+	$badge = DUPX_View_Funcs::getBadgeClassFromCheckStatus($arcCheck);
+	?>
+	<div class="<?php echo $badge;?>">
+		<?php echo $arcCheck;?>
 	</div>
 </div>
 <div id="s1-area-archive-file" style="display:none" class="hdr-sub1-area">
 <div id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Server</a></li>
-		<!--li><a href="#tabs-2">Cloud</a></li-->
 	</ul>
 	<div id="tabs-1">
 
@@ -204,27 +207,27 @@ ARCHIVE
 			<tr>
 				<td style="vertical-align:top">Status:</td>
 				<td>
-					<?php if ($arcCheck != 'Fail') : ?>
-						<span class="dupx-pass">Archive file successfully detected.</span>
+					<?php if ($arcCheck == 'Fail' || $arcCheck == 'Warn') : ?>
+							<span class="dupx-fail" style="font-style:italic">
+								<?php
+								if ($arcCheck == 'Warn') {
+								?>
+									The archive file named above must be the <u>exact</u> name of the archive file placed in the root path (character for character). But you can proceed with choosing Manual Archive Extraction.
+								<?php
+								} else {
+								?>
+									The archive file named above must be the <u>exact</u> name of the archive file placed in the root path (character for character).
+									When downloading the package files make sure both files are from the same package line.  <br/><br/>
+
+									If the contents of the archive were manually transferred to this location without the archive file then simply create a temp file named with
+									the exact name shown above and place the file in the same directory as the installer.php file.  The temp file will not need to contain any data.
+									Afterward, refresh this page and continue with the install process.
+								<?php
+								}
+								?>
+							</span>
 					<?php else : ?>
-						<div class="s1-archive-failed-msg">
-						<b class="dupx-fail">Archive File Not Found!</b><br/>
-							The installer file and the archive are bound together as a package when the archive is built.  They must be downloaded together and used
-							together at install time.  The archive file name should <u>NOT</u> be changed when it is downloaded because the file name is strongly bound
-							to the installer. When downloading the package files make sure both files are from the same package line in the packages view within the
-							Duplicator WordPress admin.
-							<br/><br/>
-
-							The full archive file name must be <u>exactly</u> the same as when it was built (character for character), or the installer will not work properly.
-							To find out the exact archive name that is bound to this installer open the dup_installer/dup-archive_[HASH].txt file with a text editor and search for
-							the text "package_name":"[HASH]_archive.zip/daf".  Check to see what that value is assigned to and that should be the name of the archive file
-							placed in the same path	as this installer.
-							<br/><br/>
-
-							If the contents of the archive were manually transferred to this location without the archive file then simply create a temp file named the same
-							archive bound to this installer and place the file in the same directory as the installer.php file.  The temp file will not need to contain any data.
-							Afterward, refresh this page and continue with the install process.
-						</div>
+						<span class="dupx-pass">Archive file successfully detected.</span>                                
 					<?php endif; ?>
 				</td>
 			</tr>
@@ -569,41 +572,37 @@ OPTIONS
             <td>
                 <?php 
                 $options = array();
-                $options[] = '<option '.($is_wpconfarc_present ? '' : 'disabled').' value="manual">Manual Archive Extraction '.($is_wpconfarc_present ? '' : '*').'</option>';
+                $extra_attr = ($arcCheck == 'Warn' && $is_wpconfarc_present) ? ' selected="selected"' : '';
+                $options[] = '<option '.($is_wpconfarc_present ? '' : 'disabled').$extra_attr.' value="manual">Manual Archive Extraction '.($is_wpconfarc_present ? '' : '*').'</option>';
                 if($archive_config->isZipArchive()){
-                        //ZIP-ARCHIVE
-                        if (!$zip_archive_enabled){
-                            $options[] = '<option value="ziparchive" disabled="true">PHP ZipArchive (not detected on server)</option>';
-                        } elseif ($zip_archive_enabled &&!$shell_exec_zip_enabled) {
-                            $options[] = '<option value="ziparchive" selected="true">PHP ZipArchive</option>';
-                        } else {
-                            $options[] = '<option value="ziparchive">PHP ZipArchive</option>';
-                        }
-                        //SHELL-EXEC UNZIP
-                        if (!$shell_exec_zip_enabled){
-                            $options[] = '<option value="shellexec_unzip" disabled="true">Shell Exec Unzip (not detected on server)</option>';
-                        } else {
-                            $options[] = '<option value="shellexec_unzip" selected="true">Shell Exec Unzip</option>';
-                        }
-                }
-                else {
-                    $options[] = '<option value="duparchive" selected="true">DupArchive</option>';
+					//ZIP-ARCHIVE
+					$extra_attr = ('Pass' == $arcCheck && $zip_archive_enabled && !$shell_exec_zip_enabled) 
+										? ' selected="selected"'
+										: '';
+					$extra_attr .= ('Pass' != $arcCheck || !$zip_archive_enabled) 
+										? ' disabled="disabled"'
+										: '';
+					$options[] = '<option value="ziparchive"'.$extra_attr.'>PHP ZipArchive</option>';
+					
+					//SHELL-EXEC UNZIP
+					$extra_attr = ('Pass' != $arcCheck || !$shell_exec_zip_enabled) ? ' disabled="disabled"' : '';
+					$extra_attr .= ('Pass' == $arcCheck && $shell_exec_zip_enabled) ? ' selected="selected"' : '';
+					$options[] = '<option value="shellexec_unzip"'.$extra_attr.'>Shell Exec Unzip</option>';
+                } else { // DUPARCHIVE
+                    $extra_attr = ('Pass' == $arcCheck) ? ' selected="selected"' : 'disabled="disabled"';
+                    $options[] = '<option value="duparchive"'.$extra_attr.'>DupArchive</option>';
                 }
                 $num_selections = count($options);
                 ?>
                 <select id="archive_engine" name="archive_engine" size="<?php echo DUPX_U::esc_attr($num_selections); ?>">
-					<?php
-                        foreach($options as $opt) {
-                            echo $opt;
-                        }
-                    ?>
+					<?php echo implode('', $options); ?>
                 </select><br/>
-				<?php if(!$is_wpconfarc_present) :?>
+				<?php if (!$is_wpconfarc_present):?>
 					<span class="sub-notes">
 						*Option enabled when archive has been pre-extracted
 						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">[more info]</a>
 					</span>
-				<?php endif ?>
+			<?php endif; ?>
             </td>
         </tr>
 		<tr>

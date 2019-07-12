@@ -47,6 +47,7 @@ try {
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.db.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.http.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.server.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.package.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.conf.srv.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.view.php');

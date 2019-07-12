@@ -238,6 +238,10 @@ class DUP_Package
         $report['ARC']['DirCount']  = number_format($dirCount);
         $report['ARC']['FileCount'] = number_format($fileCount);
         $report['ARC']['FullCount'] = number_format($fullCount);
+        $report['ARC']['WarnFileCount']       = count($this->Archive->FilterInfo->Files->Warning);
+        $report['ARC']['WarnDirCount']        = count($this->Archive->FilterInfo->Dirs->Warning);
+        $report['ARC']['UnreadableDirCount']  = count($this->Archive->FilterInfo->Dirs->Unreadable);
+        $report['ARC']['UnreadableFileCount'] = count($this->Archive->FilterInfo->Files->Unreadable);
 		$report['ARC']['FilterDirsAll'] = $this->Archive->FilterDirsAll;
 		$report['ARC']['FilterFilesAll'] = $this->Archive->FilterFilesAll;
 		$report['ARC']['FilterExtsAll'] = $this->Archive->FilterExtsAll;
@@ -880,9 +884,8 @@ class DUP_Package
             if ($expected_filecount > 500) {
                 $straight_ratio = (float) $expected_filecount / (float) $this->Archive->file_count;
 
-				$warning_count = $scanReport->ARC->WarnFileCount + $scanReport->ARC->WarnDirCount + $scanReport->ARC->UnreadableFileCount + $scanReport->ARC->UnreadableDirCount;
+                $warning_count = $scanReport->ARC->WarnFileCount + $scanReport->ARC->WarnDirCount + $scanReport->ARC->UnreadableFileCount + $scanReport->ARC->UnreadableDirCount;
                 DUP_LOG::trace("Warn/unread counts) warnfile:{$scanReport->ARC->WarnFileCount} warndir:{$scanReport->ARC->WarnDirCount} unreadfile:{$scanReport->ARC->UnreadableFileCount} unreaddir:{$scanReport->ARC->UnreadableDirCount}");
-
                 $warning_ratio = ((float) ($expected_filecount + $warning_count)) / (float) $this->Archive->file_count;
                 DUP_LOG::trace("Straight ratio is $straight_ratio and warning ratio is $warning_ratio. # Expected=$expected_filecount # Warning=$warning_count and #Archive File {$this->Archive->file_count}");
 
@@ -892,9 +895,9 @@ class DUP_Package
                     if (($warning_ratio < 0.90) || ($warning_ratio > 1.01)) {
                         $error_message = sprintf('ERROR: File count in archive vs expected suggests a bad archive (%1$d vs %2$d).', $this->Archive->file_count, $expected_filecount);
                         $this->BuildProgress->set_failed($error_message);
-                        $this->Status = DUP_PackageStatus::ERROR;
+                        $this->Status  = DUP_PackageStatus::ERROR;
                         $this->update();
-                        
+
                         DUP_Log::error($error_message, '');
                         return;
                     }

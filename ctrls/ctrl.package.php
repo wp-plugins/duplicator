@@ -116,15 +116,13 @@ function duplicator_duparchive_package_build()
     $active_package_id = DUP_Settings::Get('active_package_id');
 
     if ($active_package_id == -1) {
-
         $package = DUP_Package::getActive();
         $package->save('daf');
-        DUP_Log::TraceObject("saving active package as new id={$package->ID}", package);
+        DUP_Log::TraceObject("saving active package as new id={$package->ID}", $package);
         DUP_Settings::Set('active_package_id', $package->ID);
         DUP_Settings::Save();
     } else {
-
-        DUP_Log::TraceObject("getting active package by id {$active_package_id}", package);
+        DUP_Log::TraceObject("getting active package by id {$active_package_id}", $package);
         $package = DUP_Package::getByID($active_package_id);
     }
 

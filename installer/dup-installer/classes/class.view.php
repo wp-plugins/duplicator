@@ -1,6 +1,7 @@
 <?php
 /**
- *
+ * This is the class that manages the functions related to the views
+ * 
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
@@ -69,5 +70,25 @@ class DUPX_View_Funcs
     public static function helpIconLink($section)
     {
         self::helpLink($section, '<i class="fas fa-question-circle fa-sm"></i>');
+    }
+
+    /**
+     * Get badge class attr val from status
+     *
+     * @param string $status
+     * @return string html class attribute
+     */
+    public static function getBadgeClassFromCheckStatus($status)
+    {
+        switch ($status) {
+            case 'Pass':
+                return 'status-badge-pass';
+            case 'Fail':
+                return 'status-badge-fail';
+            case 'Warn':
+                return 'status-badge-warn';
+            default:
+                DUPX_Log::error(sprintf("The arcCheck var has the illegal value %s in switch case", DUPX_Log::varToString($status)));
+        }
     }
 }

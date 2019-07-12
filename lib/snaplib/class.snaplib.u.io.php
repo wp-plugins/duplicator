@@ -152,13 +152,18 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
 
         public static function touch($filepath, $time = null)
         {
+            if (!function_exists('touch')) {
+                return false;
+            }
+
+            if (!is_writeable($filepath)) {
+                return false;
+            }
+
             if ($time === null) {
                 $time = time();
             }
-
-            if (@touch($filepath, $time) === null) {
-                throw new Exception("Couldn't update time on {$filepath}");
-            }
+            return @touch($filepath, $time);
         }
 
         public static function rmdir($dirname, $mustExist = false)

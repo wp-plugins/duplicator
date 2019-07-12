@@ -433,7 +433,6 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
          *
          * @since 2.8.0
          *
-         * @staticvar bool $is_utf8
          * @staticvar bool $utf8_pcre
          *
          * @param string  $string The text which is to be checked.
@@ -446,15 +445,6 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
 
             if (0 === strlen($string)) {
                 return '';
-            }
-
-            // Store the site charset as a static to avoid multiple calls to get_option()
-            static $is_utf8 = null;
-            if (!isset($is_utf8)) {
-                $is_utf8 = in_array(get_option('blog_charset'), array('utf8', 'utf-8', 'UTF8', 'UTF-8'));
-            }
-            if (!$is_utf8) {
-                return $string;
             }
 
             // Check for support for utf8 in the installed PCRE library once and store the result in a static
