@@ -20,7 +20,7 @@ final class DUPX_Package
      * @staticvar string $path
      * @return string
      */
-    public function getWpconfigArkPath()
+    public static function getWpconfigArkPath()
     {
         static $path = null;
         if (is_null($path)) {
@@ -48,7 +48,7 @@ final class DUPX_Package
      * @staticvar string $path
      * @return string
      */
-    public function getOrigWpConfigPath()
+    public static function getOrigWpConfigPath()
     {
         static $path = null;
         if (is_null($path)) {

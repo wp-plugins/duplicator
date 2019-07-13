@@ -178,7 +178,7 @@ switch ($post_archive_engine) {
 			DUPX_Log::error(ERR_ZIPARCHIVE);
 		}
 
-        if (($$extract_filenamesdupInstallerFolder = DUPX_U::findDupInstallerFolder($archive_path)) === false) {
+        if (($dupInstallerFolder = DUPX_U::findDupInstallerFolder($archive_path)) === false) {
             DUPX_Log::info("findDupInstallerFolder error; set no subfolder");
             // if not found set not subfolder
             $dupInstallerFolder = '';
