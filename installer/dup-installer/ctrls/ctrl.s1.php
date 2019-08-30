@@ -418,4 +418,4 @@ DUPX_Log::info("\nSTEP-1 COMPLETE @ " . @date('h:i:s') . " - RUNTIME: {$ajax1_su
 $JSON['pass'] = 1;
 error_reporting($ajax1_error_level);
 fclose($GLOBALS["LOG_FILE_HANDLE"]);
-die(DupLiteSnapLibUtil::wp_json_encode($JSON));
+die(DupLiteSnapJsonU::wp_json_encode($JSON));

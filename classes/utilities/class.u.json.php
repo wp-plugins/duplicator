@@ -35,7 +35,7 @@ class DUP_JSON
 	public static function customEncode($value, $iteration = 1)
 	{
 		if (DUP_Util::$on_php_53_plus) {
-            $encoded = DupLiteSnapLibUtil::wp_json_encode_pprint($value);
+            $encoded = DupLiteSnapJsonU::wp_json_encode_pprint($value);
 
 			switch (json_last_error()) {
 				case JSON_ERROR_NONE:
@@ -66,7 +66,7 @@ class DUP_JSON
     public static function safeEncode($data, $options = 0, $depth = 512)
     {
         try {
-            $jsonString = DupLiteSnapLibUtil::wp_json_encode($data, $options, $depth);
+            $jsonString = DupLiteSnapJsonU::wp_json_encode($data, $options, $depth);
         } catch (Exception $e) {
             $jsonString = false;
         }

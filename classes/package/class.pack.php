@@ -289,7 +289,7 @@ class DUP_Package
         $report['RPT']['ScanTime'] = DUP_Util::elapsedTime(DUP_Util::getMicrotime(), $timerStart);
         $fp                        = fopen(DUPLICATOR_SSDIR_PATH_TMP."/{$this->ScanFile}", 'w');
 
-        fwrite($fp, DupLiteSnapLibUtil::wp_json_encode_pprint($report));
+        fwrite($fp, DupLiteSnapJsonU::wp_json_encode_pprint($report));
         fclose($fp);
 
         return $report;
@@ -482,7 +482,7 @@ class DUP_Package
     public function getArchiveSize() {
         $size = 0;
 
-        if ($this->Status >= 100) {
+        if ($this->Status >= DUP_PackageStatus::COMPLETE) {
             $size = $this->Archive->Size;
         } else {
             $tmpSearch = glob(DUPLICATOR_SSDIR_PATH_TMP . "/{$this->NameHash}_*");
@@ -735,7 +735,7 @@ class DUP_Package
                     }
                     // We was not storing Status in Lite 1.2.52, so it is for backward compatibility
                     if (!isset($Package->Status)) {
-                        $Package->Status = $row['status'];
+                        $Package->Status = $rows[0]->status;
                     }
                     call_user_func($callback, $Package);
                     unset($Package);
@@ -783,23 +783,20 @@ class DUP_Package
         $sql_temp_size = @filesize($sql_temp_path);
         $sql_easy_size = DUP_Util::byteSize($sql_temp_size);
         $sql_done_txt = DUP_Util::tailFile($sql_temp_path, 3);
-        DUP_Log::Trace('rundupa1');
+        DUP_Log::Trace('[DUP ARCHIVE] '.__FUNCTION__.' '.__LINE__);
 
         // Note: Had to add extra size check of 800 since observed bad sql when filter was on 
         if (!strstr($sql_done_txt, 'DUPLICATOR_MYSQLDUMP_EOF') || (!$this->Database->FilterOn && $sql_temp_size < 5120) || ($this->Database->FilterOn && $this->Database->info->tablesFinalCount > 0 && $sql_temp_size < 800)) {
-            DUP_Log::Trace('rundupa2');
+            DUP_Log::Trace('[DUP ARCHIVE] '.__FUNCTION__.' '.__LINE__);
 
             $error_text = "ERROR: SQL file not complete.  The file {$sql_temp_path} looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
             $this->BuildProgress->set_failed($error_text);
-            $this->Status = DUP_PackageStatus::ERROR;
-            $this->update();
-            //$this->setStatus(DUP_PackageStatus::ERROR);
+            $this->setStatus(DUP_PackageStatus::ERROR);
             DUP_Log::Error("$error_text", '', Dup_ErrorBehavior::LogOnly);
-
             return;
         }
 
-        DUP_Log::Trace('rundupa3');
+        DUP_Log::Trace('[DUP ARCHIVE] '.__FUNCTION__.' '.__LINE__);
         DUP_Log::Info("SQL FILE: {$sql_easy_size}");
 
         //------------------------
@@ -833,9 +830,7 @@ class DUP_Package
                 $error_message = "ERROR: The archive file contains no size.";
 
                 $this->BuildProgress->set_failed($error_message);
-                $this->Status = DUP_PackageStatus::ERROR;
-                $this->update();
-                //$this->setStatus(DUP_PackageStatus::ERROR);
+                $this->setStatus(DUP_PackageStatus::ERROR);
                 DUP_Log::error($error_message, "Archive Size: {$zip_easy_size}", Dup_ErrorBehavior::LogOnly);
                 return;
             }
@@ -852,8 +847,7 @@ class DUP_Package
                 //$this->BuildProgress->failed = true;
                 //$this->setStatus(DUP_PackageStatus::ERROR);
                 $this->BuildProgress->set_failed($error_message);
-                $this->Status =  DUP_PackageStatus::ERROR;
-                $this->update();
+                $this->setStatus(DUP_PackageStatus::ERROR);
 
                 DUP_Log::Error($error_message, '', Dup_ErrorBehavior::LogOnly);
                 return;
@@ -1136,7 +1130,7 @@ class DUP_Package
         }
 
         if ($this->BuildProgress->initialized == false) {
-            DUP_Log::Trace('Initializing');
+            DUP_Log::Trace('[DUP ARCHIVE] INIZIALIZE');
             $this->BuildProgress->initialized = true;
             $this->TimerStart = Dup_Util::getMicrotime();
             $this->update();
@@ -1144,29 +1138,28 @@ class DUP_Package
 
         //START BUILD
         if (!$this->BuildProgress->database_script_built) {
-             DUP_Log::Trace('Building database script');
-
+            DUP_Log::Info('[DUP ARCHIVE] BUILDING DATABASE');
             $this->Database->build($this, Dup_ErrorBehavior::ThrowException);
+            DUP_Log::Info('[DUP ARCHIVE] VALIDATING DATABASE');
+            $this->Database->validateTableWiseRowCounts();
             $this->BuildProgress->database_script_built = true;
             $this->update();
-            DUP_LOG::Trace("Built database script");
+            DUP_Log::Info('[DUP ARCHIVE] DONE DATABASE');
         } else if (!$this->BuildProgress->archive_built) {
-             DUP_Log::Trace('e');
-
+            DUP_Log::Info('[DUP ARCHIVE] BUILDING ARCHIVE');
             $this->Archive->build($this);
             $this->update();
+            DUP_Log::Info('[DUP ARCHIVE] DONE ARCHIVE');
         } else if (!$this->BuildProgress->installer_built) {
-
-             DUP_Log::Trace('f');
-             // Installer being built is stuffed into the archive build phase
+            DUP_Log::Info('[DUP ARCHIVE] BUILDING INSTALLER');
+            // Installer being built is stuffed into the archive build phase
         }
 
         if ($this->BuildProgress->has_completed()) {
-
-            DUP_Log::Trace('c');
+            DUP_Log::Info('[DUP ARCHIVE] HAS COMPLETED CLOSING');
 
             if (!$this->BuildProgress->failed) {
-				DUP_LOG::trace("top of loop build progress not failed");
+				DUP_LOG::Info("[DUP ARCHIVE] DUP ARCHIVE INTEGRITY CHECK");
                 // Only makees sense to perform build integrity check on completed archives
                 $this->runDupArchiveBuildIntegrityCheck();
             } else {
@@ -1188,17 +1181,17 @@ class DUP_Package
             DUP_LOG::trace("Done package building");
 
             if (!$this->BuildProgress->failed) {
-
+                DUP_Log::Trace('[DUP ARCHIVE] HAS COMPLETED DONE');
                 $this->setStatus(DUP_PackageStatus::COMPLETE);
 				DUP_LOG::Trace("Cleaning up duparchive temp files");
                 //File Cleanup
                 $this->buildCleanup();
                 do_action('duplicator_lite_build_completed' , $this);
+            } else {
+                DUP_Log::Trace('[DUP ARCHIVE] HAS COMPLETED ERROR');
             }
         }
-
         DUP_Log::Close();
-
         return $this->BuildProgress->has_completed();
     }
 
@@ -1216,6 +1209,7 @@ class DUP_Package
         //PHPs serialze method will return the object, but the ID above is not passed
         //for one reason or another so passing the object back in seems to do the trick
         $this->Database->build($this);
+        $this->Database->validateTableWiseRowCounts();
         $this->Archive->build($this);
         $this->Installer->build($this);
 
@@ -1392,10 +1386,7 @@ class DUP_Package
         $sql .= "package = '" . esc_sql($packageObj) . "'";
         $sql .= "WHERE ID = {$this->ID}";
 
-        DUP_Log::Trace('-------------------------');
-        DUP_Log::Trace("status = {$this->Status}");
-        DUP_Log::Trace("ID = {$this->ID}");
-        DUP_Log::Trace('-------------------------');
+        DUP_Log::Trace("UPDATE PACKAGE ID = {$this->ID} STATUS = {$this->Status}");
 
         //DUP_Log::Trace('####Executing SQL' . $sql . '-----------');
         $wpdb->query($sql);
@@ -1420,8 +1411,9 @@ class DUP_Package
 
     /**
      * Sets the status to log the state of the build
+     * The status level for where the package is
      *
-     * @param $status The status level for where the package is
+     * @param int $status
      *
      * @return void
      */
@@ -1430,18 +1422,17 @@ class DUP_Package
         if (!isset($status)) {
             DUP_Log::Error("Package SetStatus did not receive a proper code.");
         }
-
         $this->Status = $status;
-
         $this->update();
     }
 
     /**
      * Does a hash already exists
+     * Returns 0 if no hash is found, if found returns the table ID
      *
      * @param string $hash An existing hash value
      *
-     * @return int Returns 0 if no hash is found, if found returns the table ID
+     * @return int 
      */
     public function getHashKey($hash)
     {
@@ -1460,7 +1451,7 @@ class DUP_Package
     /**
      * Makes the hashkey for the package files
      *
-     * @return string A unique hashkey
+     * @return string // A unique hashkey
      */
     public function makeHash()
     {
@@ -1481,7 +1472,7 @@ class DUP_Package
      *
      * @see DUP_Package::saveActive
      *
-     * @return obj  A copy of the DUP_Package object
+     * @return DUP_Package // A copy of the DUP_Package object
      */
     public static function getActive()
     {
@@ -1503,18 +1494,21 @@ class DUP_Package
      *
      * @param int $id A valid package id form the duplicator_packages table
      *
-     * @return DUP_Package A copy of the DUP_Package object
+     * @return DUP_Package  // A copy of the DUP_Package object
      */
     public static function getByID($id)
     {
         global $wpdb;
-        $obj = new DUP_Package();
+        $obj         = new DUP_Package();
         $tablePrefix = DUP_Util::getTablePrefix();
-        $sql = $wpdb->prepare("SELECT * FROM `{$tablePrefix}duplicator_packages` WHERE ID = %d", $id);
-        $row = $wpdb->get_row($sql);
+        $sql         = $wpdb->prepare("SELECT * FROM `{$tablePrefix}duplicator_packages` WHERE ID = %d", $id);
+        $row         = $wpdb->get_row($sql);
         if (is_object($row)) {
-            $obj         = @unserialize($row->package);
-            // $obj->Status = $row->status;
+            $obj = @unserialize($row->package);
+            // We was not storing Status in Lite 1.2.52, so it is for backward compatibility
+            if (!isset($obj->Status)) {
+                $obj->Status = $row->status;
+            }
         }
         //Incase unserilaize fails
         $obj = (is_object($obj)) ? $obj : null;
@@ -1524,7 +1518,7 @@ class DUP_Package
     /**
      *  Gets a default name for the package
      *
-     *  @return string   A default package name such as 20170218_blogname
+     *  @return string   // A default package name such as 20170218_blogname
      */
     public static function getDefaultName($preDate = true)
     {
@@ -1568,13 +1562,14 @@ class DUP_Package
     /**
      *  Provides various date formats
      *
-     *  @param $date    The date to format
+     *  @param $utcDate created date in the GMT timezone
      *  @param $format  Various date formats to apply
      *
-     *  @return a formated date based on the $format
+     *  @return string  // a formated date based on the $format
      */
-    public static function getCreatedDateFormat($date, $format = 1)
+    public static function getCreatedDateFormat($utcDate, $format = 1)
     {
+        $date = get_date_from_gmt($utcDate);
         $date = new DateTime($date);
         switch ($format) {
             //YEAR

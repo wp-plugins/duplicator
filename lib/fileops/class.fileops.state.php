@@ -28,9 +28,9 @@ class FileOpsState
             self::$instance = new FileOpsState();
 
             if (file_exists($stateFilepath)) {
-                $stateHandle = DupProSnapLibIOU::fopen($stateFilepath, 'rb');
+                $stateHandle = DupLiteSnapLibIOU::fopen($stateFilepath, 'rb');
 
-                DupProSnapLibIOU::flock($stateHandle, LOCK_EX);
+                DupLiteSnapLibIOU::flock($stateHandle, LOCK_EX);
 
                 $stateString = fread($stateHandle, filesize($stateFilepath));
 
@@ -40,9 +40,9 @@ class FileOpsState
 
               //  self::$instance->fileRenames = (array)(self::$instance->fileRenames);
 
-                DupProSnapLibIOU::flock($stateHandle, LOCK_UN);
+                DupLiteSnapLibIOU::flock($stateHandle, LOCK_UN);
 
-                DupProSnapLibIOU::fclose($stateHandle);
+                DupLiteSnapLibIOU::fclose($stateHandle);
             } else {
                 $reset = true;
             }
@@ -66,29 +66,29 @@ class FileOpsState
     {
         $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
 
-        $stateHandle = DupProSnapLibIOU::fopen($stateFilepath, 'w');
+        $stateHandle = DupLiteSnapLibIOU::fopen($stateFilepath, 'w');
 
-        DupProSnapLibIOU::flock($stateHandle, LOCK_EX);
+        DupLiteSnapLibIOU::flock($stateHandle, LOCK_EX);
 
         $this->initMembers();
 
-        DupProSnapLibIOU::fwrite($stateHandle, json_encode($this));
+        DupLiteSnapLibIOU::fwrite($stateHandle, json_encode($this));
 
-        DupProSnapLibIOU::fclose($stateHandle);
+        DupLiteSnapLibIOU::fclose($stateHandle);
     }
 
     public function save()
     {
         $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
 
-        $stateHandle = DupProSnapLibIOU::fopen($stateFilepath, 'w');
+        $stateHandle = DupLiteSnapLibIOU::fopen($stateFilepath, 'w');
 
-        DupProSnapLibIOU::flock($stateHandle, LOCK_EX);
+        DupLiteSnapLibIOU::flock($stateHandle, LOCK_EX);
 
         DupArchiveUtil::tlog("saving state");
-        DupProSnapLibIOU::fwrite($stateHandle, json_encode($this));
+        DupLiteSnapLibIOU::fwrite($stateHandle, json_encode($this));
 
-        DupProSnapLibIOU::fclose($stateHandle);
+        DupLiteSnapLibIOU::fclose($stateHandle);
     }
 
     private function initMembers()

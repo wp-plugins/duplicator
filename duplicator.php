@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.3.18
+  Version: 1.3.20
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -155,7 +155,9 @@ if (!function_exists('wp_normalize_path')) {
 
 if (is_admin() == true) 
 {
-    require_once 'deactivation.php';
+    if (defined('DUPLICATOR_DEACTIVATION_FEEDBACK') && DUPLICATOR_DEACTIVATION_FEEDBACK) {
+        require_once 'deactivation.php';
+    }
     require_once 'lib/snaplib/snaplib.all.php';
     require_once 'classes/class.constants.php';
     $isWPEngineHost = apply_filters('duplicator_wp_engine_host_check', file_exists(WPMU_PLUGIN_DIR.'/wpengine-common/mu-plugin.php'));
@@ -185,12 +187,18 @@ if (is_admin() == true)
 	require_once 'classes/ui/class.ui.notice.php';
     require_once 'classes/package/class.pack.php';
     require_once 'views/packages/screen.php';
-	 
+
     //Controllers
 	require_once 'ctrls/ctrl.package.php';
 	require_once 'ctrls/ctrl.tools.php';
 	require_once 'ctrls/ctrl.ui.php';
     require_once 'ctrls/class.web.services.php';
+    
+    //Init Class
+    DUP_Settings::init();
+    DUP_Log::Init();
+    DUP_Util::init();
+    DUP_DB::init();
 
 	/** ========================================================
 	 * ACTIVATE/DEACTIVE/UPDATE HOOKS
@@ -278,7 +286,8 @@ if (is_admin() == true)
     add_action('admin_init',		'duplicator_init');
     add_action('admin_menu',		'duplicator_menu');
     add_action('admin_enqueue_scripts', 'duplicator_admin_enqueue_scripts' );
-	add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
+    add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
+    add_action('admin_notices',		array('DUP_UI_Notice', 'installAutoDeactivatePlugins'));
 	
 	//CTRL ACTIONS
     DUP_Web_Services::init();
@@ -329,6 +338,12 @@ if (is_admin() == true)
 
         // Clean tmp folder
         DUP_Package::not_active_files_tmp_cleanup();
+
+        $unhook_third_party_js  = DUP_Settings::Get('unhook_third_party_js');
+        $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
+        if ($unhook_third_party_js || $unhook_third_party_css) {
+            add_action('admin_enqueue_scripts', 'duplicator_unhook_third_party_assets', 99999, 1);
+        }
     }
 
     /**
@@ -503,5 +518,49 @@ if (is_admin() == true)
 		exit;
     }
 
+    if (!function_exists('duplicator_unhook_third_party_assets')) {
+        /**
+         * Remove all external styles and scripts coming from other plugins
+         * which may cause compatibility issue, especially with React
+         *
+         * @return void
+         */
+        function duplicator_unhook_third_party_assets($hook)
+        {
+            /*
+            $hook values in duplicator admin pages:
+                toplevel_page_duplicator
+                duplicator_page_duplicator-tools
+                duplicator_page_duplicator-settings
+                duplicator_page_duplicator-gopro
+            */
+            if (strpos($hook, 'duplicator') !== false && strpos($hook, 'duplicator-pro') === false) {
+                $unhook_third_party_js  = DUP_Settings::Get('unhook_third_party_js');
+                $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
+                $assets = array();
+                if ($unhook_third_party_css)  $assets['styles'] = wp_styles();
+                if ($unhook_third_party_js)  $assets['scripts'] = wp_scripts();
+                foreach ($assets as $type => $asset) {
+                    foreach ($asset->registered as $handle => $dep) {
+                        $src = $dep->src;
+                        // test if the src is coming from /wp-admin/ or /wp-includes/ or /wp-fsqm-pro/.
+                        if (
+                            is_string($src) && // For some built-ins, $src is true|false
+                            strpos($src, 'wp-admin') === false &&
+                            strpos($src, 'wp-include') === false &&
+                            // things below are specific to your plugin, so change them
+							strpos($src, 'duplicator') === false &&
+                            strpos($src, 'woocommerce') === false &&
+                            strpos($src, 'jetpack') === false &&
+                            strpos($src, 'debug-bar') === false
+                        ) {
+                                'scripts' === $type
+                                    ? wp_dequeue_script($handle)
+                                    : wp_dequeue_style($handle);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
-?>

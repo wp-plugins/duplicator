@@ -144,7 +144,7 @@ class DUP_Installer
         $ac->package_hash           = $this->Package->getPackageHash();
         $ac->package_notes          = $this->Package->Notes;
         $ac->url_old                = get_option('siteurl');
-        $ac->opts_delete            = DupLiteSnapLibUtil::wp_json_encode_pprint($GLOBALS['DUPLICATOR_OPTS_DELETE']);
+        $ac->opts_delete            = DupLiteSnapJsonU::wp_json_encode_pprint($GLOBALS['DUPLICATOR_OPTS_DELETE']);
         $ac->blogname               = esc_html(get_option('blogname'));
         $ac->wproot                 = DUPLICATOR_WPROOTPATH;
         $ac->relative_content_dir   = str_replace(ABSPATH, '', WP_CONTENT_DIR);
@@ -166,7 +166,7 @@ class DUP_Installer
 		$ac->is_outer_root_wp_config_file	 = (!file_exists(DUPLICATOR_WPROOTPATH.'wp-config.php')) ? true : false;
 		$ac->is_outer_root_wp_content_dir	 = $this->Package->Archive->isOuterWPContentDir();
 
-        $json = DupLiteSnapLibUtil::wp_json_encode_pprint($ac);
+        $json = DupLiteSnapJsonU::wp_json_encode_pprint($ac);
         DUP_Log::TraceObject('json', $json);
 
 		if (file_put_contents($archive_config_filepath, $json) === false) {

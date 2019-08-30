@@ -126,18 +126,18 @@ class WPConfigTransformer {
 
     public static function getRealValFromVal($val)
     {
-        if ($val[0] == '\'') {
+        if ($val[0] === '\'') {
             // string with '
             $result = substr($val, 1, strlen($val) - 2);
-            return str_replace(array('\\\'' , '\\\\'), array('\'', '\\'), $result);
-        } else if ($val[0] == '"') {
+            return str_replace(array('\\\'', '\\\\'), array('\'', '\\'), $result);
+        } else if ($val[0] === '"') {
             // string with "
             return json_decode(str_replace('\\$', '$', $val));
-        } else if (strcasecmp($val, 'true')) {
+        } else if (strcasecmp($val, 'true') === 0) {
             return true;
-        } else if (strcasecmp($val, 'false')) {
+        } else if (strcasecmp($val, 'false') === 0) {
             return false;
-        } else if (strcasecmp($val, 'null')) {
+        } else if (strcasecmp($val, 'null') === 0) {
             return null;
         } else if (preg_match('/^[-+]?[0-9]+$/', $val)) {
             return (int) $val;

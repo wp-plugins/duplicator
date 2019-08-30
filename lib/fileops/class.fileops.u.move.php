@@ -14,18 +14,18 @@ class FileOpsMoveU
     // returns: array with list of failures
     public static function move($directories, $files, $excludedFiles, $destination)
     {
-        DupProSnapLibLogger::logObject('directories', $directories);
-        DupProSnapLibLogger::logObject('files', $files);
-        DupProSnapLibLogger::logObject('excludedFiles', $excludedFiles);
-        DupProSnapLibLogger::logObject('destination', $destination);
+        DupLiteSnapLibLogger::logObject('directories', $directories);
+        DupLiteSnapLibLogger::logObject('files', $files);
+        DupLiteSnapLibLogger::logObject('excludedFiles', $excludedFiles);
+        DupLiteSnapLibLogger::logObject('destination', $destination);
 
         $failures = array();
 
 
-        $directoryFailures = DupProSnapLibIOU::massMove($directories, $destination, null, false);
-        DupProSnapLibLogger::log('done directories');
-        $fileFailures = DupProSnapLibIOU::massMove($files, $destination, $excludedFiles, false);
-        DupProSnapLibLogger::log('done files');
+        $directoryFailures = DupLiteSnapLibIOU::massMove($directories, $destination, null, false);
+        DupLiteSnapLibLogger::log('done directories');
+        $fileFailures = DupLiteSnapLibIOU::massMove($files, $destination, $excludedFiles, false);
+        DupLiteSnapLibLogger::log('done files');
         return array_merge($directoryFailures, $fileFailures);
     }
 }

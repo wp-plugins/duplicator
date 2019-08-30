@@ -216,7 +216,7 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 		<div class="engine-radio">
 			<input type="radio" name="archive_build_mode" id="archive_build_mode2"  onclick="Duplicator.Pack.ToggleArchiveEngine()"
 				   value="<?php echo esc_attr(DUP_Archive_Build_Mode::DupArchive); ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::DupArchive) ? 'checked="checked"' : ''; ?> />
-			<label for="archive_build_mode2"><?php esc_html_e('DupArchive (beta)'); ?></label> &nbsp; &nbsp;
+			<label for="archive_build_mode2"><?php esc_html_e('DupArchive'); ?></label> &nbsp; &nbsp;
 		</div>
 
 		<br style="clear:both"/>

@@ -394,7 +394,7 @@ DUPX.testDBConnect = function ()
 	$dbButton = $('#s2-dbtest-btn-basic');
 
 	$dbArea.show(250);
-	$dbResult.html("<div class='message'><i class='fas fa-question-circle fa-sm'></i>Running Database Validation. <br/>  Please wait...</div>");
+	$dbResult.html("<div class='message'><i class='fas fa-question-circle fa-sm'></i>&nbsp;Running Database Validation. <br/>  Please wait...</div>");
 	$dbButton.attr('disabled', 'true');
 
 	if (document.location.href.indexOf('?') > -1) {

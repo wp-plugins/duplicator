@@ -46,8 +46,8 @@ class DUPX_U
     {
         array_push($GLOBALS['REPLACE_LIST'], array('search' => $search, 'replace' => $replace));
 
-        $search_json  = str_replace('"', "", DupLiteSnapLibUtil::wp_json_encode($search));
-        $replace_json = str_replace('"', "", DupLiteSnapLibUtil::wp_json_encode($replace));
+        $search_json  = str_replace('"', "", DupLiteSnapJsonU::wp_json_encode($search));
+        $replace_json = str_replace('"', "", DupLiteSnapJsonU::wp_json_encode($replace));
 
         if ($search != $search_json) {
             array_push($GLOBALS['REPLACE_LIST'], array('search' => $search_json, 'replace' => $replace_json));
@@ -652,6 +652,23 @@ class DUPX_U
         return (version_compare(PHP_VERSION, $version) >= 0);
 	}
 
+	/**
+     * Checks if ssl is enabled
+     * @return bool
+     */
+    public static function is_ssl()
+    {
+        if ( isset($_SERVER['HTTPS']) ) {
+            if ( 'on' == strtolower($_SERVER['HTTPS']) )
+                return true;
+            if ( '1' == $_SERVER['HTTPS'] )
+                return true;
+        } elseif ( isset($_SERVER['SERVER_PORT']) && ( '443' == $_SERVER['SERVER_PORT'] ) ) {
+            return true;
+        }
+        
+        return false;
+	}
 
     /**
      * @param $url string The URL whichs domain you want to get
@@ -687,7 +704,7 @@ class DUPX_U
 	 * @return string
 	 */
 	public static function esc_html( $text ) {
-		$safe_text = DupLiteSnapLibUtil::wp_check_invalid_utf8( $text );
+		$safe_text = DupLiteSnapJsonU::wp_check_invalid_utf8( $text );
 		$safe_text = self::_wp_specialchars( $safe_text, ENT_QUOTES );
 		/**
 		 * Filters a string cleaned and escaped for output in HTML.
@@ -713,7 +730,7 @@ class DUPX_U
 	 * @return string Escaped text.
 	 */
 	public static function esc_js( $text ) {
-		$safe_text = DupLiteSnapLibUtil::wp_check_invalid_utf8( $text );
+		$safe_text = DupLiteSnapJsonU::wp_check_invalid_utf8( $text );
 		$safe_text = self::_wp_specialchars( $safe_text, ENT_COMPAT );
 		$safe_text = preg_replace( '/&#(x)?0*(?(1)27|39);?/i', "'", stripslashes( $safe_text ) );
 		$safe_text = str_replace( "\r", '', $safe_text );
@@ -737,7 +754,7 @@ class DUPX_U
 	 * @return string
 	 */
 	public static function esc_attr( $text ) {
-		$safe_text = DupLiteSnapLibUtil::wp_check_invalid_utf8( $text );
+		$safe_text = DupLiteSnapJsonU::wp_check_invalid_utf8( $text );
 		$safe_text = self::_wp_specialchars( $safe_text, ENT_QUOTES );
 		/**
 		 * Filters a string cleaned and escaped for output in an HTML attribute.
@@ -951,27 +968,28 @@ class DUPX_U
 	}
 
 	/**
-	 * Converts and fixes HTML entities.
-	 *
-	 * This function normalizes HTML entities. It will convert `AT&T` to the correct
-	 * `AT&amp;T`, `&#00058;` to `&#58;`, `&#XYZZY;` to `&amp;#XYZZY;` and so on.
-	 *
-	 * @param string $string Content to normalize entities
-	 * @return string Content with normalized entities
-	 */
-	public static function wp_kses_normalize_entities($string) {
-		// Disarm all entities by converting & to &amp;
-		$string = str_replace('&', '&amp;', $string);
+     * Converts and fixes HTML entities.
+     *
+     * This function normalizes HTML entities. It will convert `AT&T` to the correct
+     * `AT&amp;T`, `&#00058;` to `&#58;`, `&#XYZZY;` to `&amp;#XYZZY;` and so on.
+     *
+     * @param string $string Content to normalize entities
+     * @return string Content with normalized entities
+     */
+    public static function wp_kses_normalize_entities($string)
+    {
+        // Disarm all entities by converting & to &amp;
+        $string = str_replace('&', '&amp;', $string);
 
-		// Change back the allowed entities in our entity whitelist
-		$string = preg_replace_callback('/&amp;([A-Za-z]{2,8}[0-9]{0,2});/', 'self::wp_kses_named_entities', $string);
-		$string = preg_replace_callback('/&amp;#(0*[0-9]{1,7});/', 'self::wp_kses_normalize_entities2', $string);
-		$string = preg_replace_callback('/&amp;#[Xx](0*[0-9A-Fa-f]{1,6});/', 'self::wp_kses_normalize_entities3', $string);
+        // Change back the allowed entities in our entity whitelist
+        $string = preg_replace_callback('/&amp;([A-Za-z]{2,8}[0-9]{0,2});/', array(__CLASS__, 'wp_kses_named_entities'), $string);
+        $string = preg_replace_callback('/&amp;#(0*[0-9]{1,7});/', array(__CLASS__, 'wp_kses_normalize_entities2'), $string);
+        $string = preg_replace_callback('/&amp;#[Xx](0*[0-9A-Fa-f]{1,6});/', array(__CLASS__, 'wp_kses_normalize_entities3'), $string);
 
-		return $string;
-	}
+        return $string;
+    }
 
-	/**
+    /**
 	 * Callback for wp_kses_normalize_entities() regular expression.
 	 *
 	 * This function only accepts valid named entity references, which are finite,
@@ -1309,23 +1327,24 @@ class DUPX_U
 	}
 
 	/**
-	 * Convert all entities to their character counterparts.
-	 *
-	 * This function decodes numeric HTML entities (`&#65;` and `&#x41;`).
-	 * It doesn't do anything with other entities like &auml;, but we don't
-	 * need them in the URL protocol whitelisting system anyway.
-	 *
-	 * @param string $string Content to change entities
-	 * @return string Content after decoded entities
-	 */
-	public static function wp_kses_decode_entities($string) {
-		$string = preg_replace_callback('/&#([0-9]+);/', 'self::_wp_kses_decode_entities_chr', $string);
-		$string = preg_replace_callback('/&#[Xx]([0-9A-Fa-f]+);/', 'self::_wp_kses_decode_entities_chr_hexdec', $string);
+     * Convert all entities to their character counterparts.
+     *
+     * This function decodes numeric HTML entities (`&#65;` and `&#x41;`).
+     * It doesn't do anything with other entities like &auml;, but we don't
+     * need them in the URL protocol whitelisting system anyway.
+     *
+     * @param string $string Content to change entities
+     * @return string Content after decoded entities
+     */
+    public static function wp_kses_decode_entities($string)
+    {
+        $string = preg_replace_callback('/&#([0-9]+);/', array(__CLASS__, '_wp_kses_decode_entities_chr'), $string);
+        $string = preg_replace_callback('/&#[Xx]([0-9A-Fa-f]+);/', array(__CLASS__, '_wp_kses_decode_entities_chr_hexdec'), $string);
 
-		return $string;
-	}
+        return $string;
+    }
 
-	/**
+    /**
 	 * Regex callback for wp_kses_decode_entities()
 	 *
 	 * @param array $match preg match
@@ -1491,7 +1510,7 @@ class DUPX_U
 	 * @return string Sanitized string.
 	 */
 	public static function _sanitize_text_fields( $str, $keep_newlines = false ) {
-		$filtered = DupLiteSnapLibUtil::wp_check_invalid_utf8( $str );
+		$filtered = DupLiteSnapJsonU::wp_check_invalid_utf8( $str );
 
 		if ( strpos($filtered, '<') !== false ) {
 			$filtered = self::wp_pre_kses_less_than( $filtered );
@@ -1718,7 +1737,7 @@ class DUPX_U
      */
     public static function getEscapedGenericString($str, $addQuote = true)
     {
-        $result = DupLiteSnapLibUtil::wp_json_encode(trim($str));
+        $result = DupLiteSnapJsonU::wp_json_encode(trim($str));
         $result = str_replace(array('\/', '$'), array('/', '\\$'), $result);
         $result = preg_replace_callback(
             '/\\\\u[a-fA-F0-9]{4}/m', array(__CLASS__, 'encodeUtf8CharFromRegexMatch'), $result

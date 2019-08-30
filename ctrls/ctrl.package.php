@@ -7,7 +7,9 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/ctrls/ctrl.base.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/utilities/class.u.scancheck.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/utilities/class.u.json.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/class.pack.php');
+
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.archive.duparchive.state.create.php');
+require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.archive.duparchive.php');
 /* @var $package DUP_Package */
 
 /**
@@ -83,7 +85,7 @@ function duplicator_package_build()
     $json['runtime'] = $Package->Runtime;
     $json['exeSize'] = $Package->ExeSize;
     $json['archiveSize'] = $Package->ZipSize;
-    $json_response   = DupLiteSnapLibUtil::wp_json_encode($json);
+    $json_response   = DupLiteSnapJsonU::wp_json_encode($json);
 
     //Simulate a Host Build Interrupt
 	//die(0);
@@ -100,9 +102,8 @@ function duplicator_package_build()
 function duplicator_duparchive_package_build()
 {
     DUP_Handler::init_error_handler();
-
-    DUP_LOG::Trace("call to duplicator_duparchive_package_build");
-
+    DUP_Log::Info('[CTRL DUP ARCIVE] CALL TO '.__FUNCTION__);
+    
     check_ajax_referer('duplicator_duparchive_package_build', 'nonce');
     DUP_Util::hasCapability('export');
     header('Content-Type: application/json');
@@ -114,36 +115,45 @@ function duplicator_duparchive_package_build()
     // The DupArchive build process always works on a saved package so the first time through save the active package to the package table.
     // After that, just retrieve it.
     $active_package_id = DUP_Settings::Get('active_package_id');
+    DUP_Log::Info('[CTRL DUP ARCIVE] CURRENT PACKAGE ACTIVE '.$active_package_id);
 
     if ($active_package_id == -1) {
         $package = DUP_Package::getActive();
         $package->save('daf');
-        DUP_Log::TraceObject("saving active package as new id={$package->ID}", $package);
+        DUP_Log::Info('[CTRL DUP ARCIVE] PACKAGE AS NEW ID '.$package->ID.' SAVED | STATUS:'.$package->Status);
+        //DUP_Log::TraceObject("[CTRL DUP ARCIVE] PACKAGE SAVED:", $package);
         DUP_Settings::Set('active_package_id', $package->ID);
         DUP_Settings::Save();
     } else {
-        DUP_Log::TraceObject("getting active package by id {$active_package_id}", $package);
-        $package = DUP_Package::getByID($active_package_id);
+        if (($package = DUP_Package::getByID($active_package_id)) == null) {
+            DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: Get package by id '.$active_package_id.' FAILED');
+            die('Get package by id '.$active_package_id.' FAILED');
+        }
+        DUP_Log::Info('[CTRL DUP ARCIVE] PACKAGE GET BY ID '.$active_package_id.' | STATUS:'.$package->Status);
+        // DUP_Log::TraceObject("getting active package by id {$active_package_id}", $package);
     }
 
     if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$package->ScanFile}")) {
+        DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: The scan result file was not found.  Please run the scan step before building the package.');
         die("The scan result file was not found.  Please run the scan step before building the package.");
     }
 
     if ($package === null) {
+        DUP_Log::Info('[CTRL DUP ARCIVE] There is no active package.');
         die("There is no active package.");
     }
 
     if($package->Status == DUP_PackageStatus::ERROR) {
+        $package->setStatus(DUP_PackageStatus::ERROR);
         $hasCompleted = true;
     } else {
         try {
             $hasCompleted = $package->runDupArchiveBuild();
         }
         catch(Exception $ex) {
-            Dup_Log::Trace('#### caught exception');
-            Dup_Log::Error('Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
-            Dup_Log::Trace('#### after log');
+            DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: caught exception');
+            Dup_Log::Error('[CTRL DUP ARCIVE]  Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
+            DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: after log');
             $package->setStatus(DUP_PackageStatus::ERROR);
             $hasCompleted = true;
         }
@@ -151,17 +161,17 @@ function duplicator_duparchive_package_build()
 
     $json = array();
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
-    DUP_LOG::traceObject("#### failures", $json['failures']);
+    if (!empty($json['failures'])) {
+        DUP_Log::Info('[CTRL DUP ARCIVE] FAILURES', $json['failures']);
+    }
 
     //JSON:Debug Response
     //Pass = 1, Warn = 2, 3 = Failure, 4 = Not Done
     if ($hasCompleted) {
-
-        Dup_Log::Trace('#### completed');
+        DUP_Log::Info('[CTRL DUP ARCIVE] COMPLETED PACKAGE STATUS: '.$package->Status);
 
         if($package->Status == DUP_PackageStatus::ERROR) {
-
-            Dup_Log::Trace('#### error');
+            DUP_Log::Info('[CTRL DUP ARCIVE] ERROR');
             $error_message = __('Error building DupArchive package') . '<br/>';
 
             foreach($json['failures'] as $failure) {
@@ -169,7 +179,7 @@ function duplicator_duparchive_package_build()
             }
 
             Dup_Log::Error("Build failed so sending back error", esc_html($error_message), Dup_ErrorBehavior::LogOnly);
-            Dup_Log::Trace('#### after log 2');
+            DUP_Log::Info('[CTRL DUP ARCIVE] ERROR AFTER LOG 2');
 
             $json['status'] = 3;
         } else {
@@ -182,12 +192,13 @@ function duplicator_duparchive_package_build()
         $json['runtime']     = $package->Runtime;
         $json['exeSize']     = $package->ExeSize;
         $json['archiveSize'] = $package->ZipSize;
+        DUP_Log::Trace('[CTRL DUP ARCIVE] JSON PACKAGE');
     } else {
-        Dup_Log::Info("sending back continue status");
+        DUP_Log::Info('[CTRL DUP ARCIVE] sending back continue status PACKAGE STATUS: '.$package->Status);
         $json['status'] = 4;
     }
 
-    $json_response = DupLiteSnapLibUtil::wp_json_encode($json);
+    $json_response = DupLiteSnapJsonU::wp_json_encode($json);
 
     Dup_Log::TraceObject('json response', $json_response);
     error_reporting($errLevel);
@@ -265,12 +276,12 @@ function duplicator_package_delete()
         }
     } catch (Exception $e) {
         $json['error'] = "{$e}";
-        die(DupLiteSnapLibUtil::wp_json_encode($json));
+        die(DupLiteSnapJsonU::wp_json_encode($json));
     }
 
     $json['ids']     = "{$postIDs}";
     $json['removed'] = $delCount;
-    echo DupLiteSnapLibUtil::wp_json_encode($json);
+    echo DupLiteSnapJsonU::wp_json_encode($json);
     die();
 }
 
@@ -529,7 +540,6 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 
             if($package != null) {
                 $test = DUP_CTRL_Status::SUCCESS;
-
                 $payload['status']  = $package->Status;
             } else {
                 $test = DUP_CTRL_Status::FAILED;

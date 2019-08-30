@@ -16,6 +16,6 @@ if (!class_exists('DupLiteSnapLib_32BitSizeLimitException', false)) {
 
     class DupLiteSnapLib_32BitSizeLimitException extends Exception
     {
-
+        
     }
 }

@@ -10,6 +10,7 @@ require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/class.duparchive.l
 require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/class.duparchive.engine.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.create.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.expand.php');
+require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/class.duparchive.processing.failure.php');
 
 class DUP_DupArchive_Logger extends DupArchiveLoggerBase
 {

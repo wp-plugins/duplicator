@@ -69,7 +69,16 @@ SERVER SETTINGS -->
 		</tr>
 		<tr>
 			<td><?php esc_html_e("Server IP", 'duplicator'); ?></td>
-			<td><?php echo esc_html($_SERVER['SERVER_ADDR']); ?></td>
+			<?php
+			if (isset($_SERVER['SERVER_ADDR'])) {
+				$server_address = $_SERVER['SERVER_ADDR'];
+			} elseif (isset($_SERVER['SERVER_NAME']) && function_exists('gethostbyname')) {
+				$server_address = gethostbyname($_SERVER['SERVER_NAME']);
+			} else {
+				$server_address = __("Can't detect", 'duplicator');
+			}
+			?>
+			<td><?php echo esc_html($server_address); ?></td>
 		</tr>
 		<tr>
 			<td><?php esc_html_e("Client IP", 'duplicator'); ?></td>

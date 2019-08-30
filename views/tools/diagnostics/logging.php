@@ -36,22 +36,32 @@ $logfound = (strlen($logname) > 0) ? true :false;
 ?>
 
 <style>
-	div#dup-refresh-count {display: inline-block}
-	table#dup-log-panels {width:100%; }
-	td#dup-log-panel-left {width:75%;}
-	td#dup-log-panel-left div.name {float:left; margin: 0px 0px 5px 5px;}
-	td#dup-log-panel-left div.opts {float:right;}
-	td#dup-log-panel-right {vertical-align: top; padding-left:15px; max-width: 375px}
-	#dup-log-content {padding:5px; background: #fff; min-height:500px; width:99%; border:1px solid silver;overflow:scroll; word-wrap: break-word; margin:0;}
+    div#dup-refresh-count {display: inline-block}
+    table#dup-log-panels {width:100%; }
+    td#dup-log-panel-left {width:75%;}
+    td#dup-log-panel-left div.name {float:left; margin: 0px 0px 5px 5px;}
+    td#dup-log-panel-left div.opts {float:right;}
+    td#dup-log-panel-right {vertical-align: top; padding-left:15px; max-width: 375px}
+    #dup-log-content {
+        padding:5px; 
+        background: #fff; 
+        min-height:500px; 
+        width: calc(100vw - 630px);; 
+        border:1px solid silver;
+        overflow:scroll; 
+        word-wrap: break-word; 
+        margin:0;
+        line-height: 2;
+    }
 
-	/* OPTIONS */
-	div.dup-log-hdr {font-weight: bold; font-size:16px; padding:2px; }
-	div.dup-log-hdr small{font-weight:normal; font-style: italic}
-	div.dup-log-file-list {font-family:monospace;}
-	div.dup-log-file-list a, span.dup-log{display: inline-block; white-space: nowrap; text-overflow: ellipsis; max-width: 375px; overflow:hidden}
-	div.dup-log-file-list span {color:green}
-	div.dup-opts-items {border:1px solid silver; background: #efefef; padding: 5px; border-radius: 4px; margin:2px 0px 10px -2px;}
-	label#dup-auto-refresh-lbl {display: inline-block;}
+    /* OPTIONS */
+    div.dup-log-hdr {font-weight: bold; font-size:16px; padding:2px; }
+    div.dup-log-hdr small{font-weight:normal; font-style: italic}
+    div.dup-log-file-list {font-family:monospace;}
+    div.dup-log-file-list a, span.dup-log{display: inline-block; white-space: nowrap; text-overflow: ellipsis; max-width: 375px; overflow:hidden}
+    div.dup-log-file-list span {color:green}
+    div.dup-opts-items {border:1px solid silver; background: #efefef; padding: 5px; border-radius: 4px; margin:2px 0px 10px -2px;}
+    label#dup-auto-refresh-lbl {display: inline-block;}
 </style>
 
 <script>

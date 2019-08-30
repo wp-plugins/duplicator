@@ -16,6 +16,7 @@ if (!class_exists('DupLiteSnapLibOSU', false)) {
 
     class DupLiteSnapLibOSU
     {
+
         const DEFAULT_WINDOWS_MAXPATH = 260;
         const DEFAULT_LINUX_MAXPATH   = 4096;
 

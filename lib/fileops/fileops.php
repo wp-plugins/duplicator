@@ -2,7 +2,7 @@
 /** Absolute path to the DAWS directory. - necessary for php protection */
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
-if (DupProSnapLibUtil::wp_is_ini_value_changeable('display_errors'))
+if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('display_errors'))
     @ini_set('display_errors', 1);
 error_reporting(E_ALL);
 set_error_handler("terminate_missing_variables");
@@ -22,15 +22,15 @@ class FileOps
     {
         date_default_timezone_set('UTC'); // Some machines don’t have this set so just do it here.
 
-        DupProSnapLibLogger::init(FileOpsConstants::$LOG_FILEPATH);
+        DupLiteSnapLibLogger::init(FileOpsConstants::$LOG_FILEPATH);
     }
 
     public function processRequest()
     {
         try {
-            DupProSnapLibLogger::clearLog();
+            DupLiteSnapLibLogger::clearLog();
             /* @var $state FileOpsState */
-			DupProSnapLibLogger::log('process request');
+			DupLiteSnapLibLogger::log('process request');
             $retVal = new StdClass();
 
             $retVal->pass = false;
@@ -39,7 +39,7 @@ class FileOps
            if (isset($_REQUEST['action'])) {
                 //$params = $_REQUEST;
                 $params = array();
-                DupProSnapLibLogger::logObject('REQUEST', $_REQUEST);
+                DupLiteSnapLibLogger::logObject('REQUEST', $_REQUEST);
                 
                 foreach($_REQUEST as $key => $value) 
                 {
@@ -48,45 +48,45 @@ class FileOps
 
             } else {
                 $json = file_get_contents('php://input');
-                DupProSnapLibLogger::logObject('json1', $json);
+                DupLiteSnapLibLogger::logObject('json1', $json);
                 $params = json_decode($json, true);
-                DupProSnapLibLogger::logObject('json2', $json);
+                DupLiteSnapLibLogger::logObject('json2', $json);
            }
 
-            DupProSnapLibLogger::logObject('params', $params);
-            DupProSnapLibLogger::logObject('keys', array_keys($params));
+            DupLiteSnapLibLogger::logObject('params', $params);
+            DupLiteSnapLibLogger::logObject('keys', array_keys($params));
 
             $action = $params['action'];
             
             if ($action == 'deltree') {
 
-				DupProSnapLibLogger::log('deltree');
+				DupLiteSnapLibLogger::log('deltree');
 
 
 
 				$config = DeleteConfig();
 
-				$config->workerTime = DupProSnapLibUtil::GetArrayValue($params, 'worker_time');
-				$config->directories = DupProSnapLibUtil::getArrayValue($params, 'directories');
-				$config->throttleDelayInUs = DupProSnapLibUtil::getArrayValue($params, 'throttleDelay', false, 0) * 1000000;
-				$config->excludedDirectories = DupProSnapLibUtil::getArrayValue($params, 'excluded_directories', false, array());
-				$config->excludedFiles = DupProSnapLibUtil::getArrayValue($params, 'excluded_files', false, array());
-				$config->fileLock = DupProSnapLibUtil::GetArrayValue($params, 'fileLock');
+				$config->workerTime = DupLiteSnapLibUtil::GetArrayValue($params, 'worker_time');
+				$config->directories = DupLiteSnapLibUtil::getArrayValue($params, 'directories');
+				$config->throttleDelayInUs = DupLiteSnapLibUtil::getArrayValue($params, 'throttleDelay', false, 0) * 1000000;
+				$config->excludedDirectories = DupLiteSnapLibUtil::getArrayValue($params, 'excluded_directories', false, array());
+				$config->excludedFiles = DupLiteSnapLibUtil::getArrayValue($params, 'excluded_files', false, array());
+				$config->fileLock = DupLiteSnapLibUtil::GetArrayValue($params, 'fileLock');
 
-				DupProSnapLibLogger::logObject('Config', $config);
+				DupLiteSnapLibLogger::logObject('Config', $config);
 
 
 
 				// TODO use appropriate lock type
-				DupProSnapLibIOU::flock($this->lock_handle, LOCK_EX);
+				DupLiteSnapLibIOU::flock($this->lock_handle, LOCK_EX);
 
-                $this->lock_handle = DupProSnapLibIOU::fopen(FileOpsConstants::$PROCESS_LOCK_FILEPATH, 'c+');
+                $this->lock_handle = DupLiteSnapLibIOU::fopen(FileOpsConstants::$PROCESS_LOCK_FILEPATH, 'c+');
 				
 
 
 
 
-                DupProSnapLibIOU::flock($this->lock_handle, LOCK_UN);
+                DupLiteSnapLibIOU::flock($this->lock_handle, LOCK_UN);
 
                 $retVal->pass = true;
                 $retVal->status = new stdClass;
@@ -94,15 +94,15 @@ class FileOps
 
             } else if($action === 'move_files') {
 
-                $directories = DupProSnapLibUtil::getArrayValue($params, 'directories', false, array());
-                $files =  DupProSnapLibUtil::getArrayValue($params, 'files', false, array());
-                $excludedFiles =  DupProSnapLibUtil::getArrayValue($params, 'excluded_files', false, array());
-                $destination = DupProSnapLibUtil::getArrayValue($params, 'destination');                    
+                $directories = DupLiteSnapLibUtil::getArrayValue($params, 'directories', false, array());
+                $files =  DupLiteSnapLibUtil::getArrayValue($params, 'files', false, array());
+                $excludedFiles =  DupLiteSnapLibUtil::getArrayValue($params, 'excluded_files', false, array());
+                $destination = DupLiteSnapLibUtil::getArrayValue($params, 'destination');                    
 
-                DupProSnapLibLogger::log('before move');
+                DupLiteSnapLibLogger::log('before move');
                 $moveErrors = FileOpsMoveU::move($directories, $files, $excludedFiles, $destination);
 
-                DupProSnapLibLogger::log('after move');
+                DupLiteSnapLibLogger::log('after move');
 
                 $retVal->pass = true;
                 $retVal->status = new stdClass();
@@ -118,16 +118,16 @@ class FileOps
         } catch (Exception $ex) {
             $error_message = "Error Encountered:" . $ex->getMessage() . '<br/>' . $ex->getTraceAsString();
 
-            DupProSnapLibLogger::log($error_message);
+            DupLiteSnapLibLogger::log($error_message);
 
             $retVal->pass = false;
             $retVal->error = $error_message;
         }
 
-		DupProSnapLibLogger::logObject("before json encode retval", $retVal);
+		DupLiteSnapLibLogger::logObject("before json encode retval", $retVal);
 
 		$jsonRetVal = json_encode($retVal);
-		DupProSnapLibLogger::logObject("json encoded retval", $jsonRetVal);
+		DupLiteSnapLibLogger::logObject("json encoded retval", $jsonRetVal);
         echo $jsonRetVal;
     }
 }
@@ -156,8 +156,8 @@ function terminate_missing_variables($errno, $errstr, $errfile, $errline)
     //  if (($errno == E_NOTICE) and ( strstr($errstr, "Undefined variable"))) die("$errstr in $errfile line $errline");
 
 
-    DupProSnapLibLogger::log("ERROR $errno, $errstr, {$errfile}:{$errline}");
-    DupProSnapLibLogger::log(generateCallTrace());
+    DupLiteSnapLibLogger::log("ERROR $errno, $errstr, {$errfile}:{$errline}");
+    DupLiteSnapLibLogger::log(generateCallTrace());
     //  DaTesterLogging::clearLog();
 
    // exit(1);

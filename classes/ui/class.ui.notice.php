@@ -92,5 +92,42 @@ class DUP_UI_Notice
 		echo '</div>';
 		echo "<script>window.location = '{$location}';</script>";
 		die(esc_html__('Invalid token permissions to perform this request.', 'duplicator'));
+	}
+	
+	
+    /**
+     * Shows install deactivated function
+     */
+    public static function installAutoDeactivatePlugins() {
+        $reactivatePluginsAfterInstallation = get_option('duplicator_reactivate_plugins_after_installation', false);
+        if (is_array($reactivatePluginsAfterInstallation)) {
+            $shouldBeActivated = array();
+            foreach ($reactivatePluginsAfterInstallation as $pluginSlug => $pluginTitle) {
+                if (!is_plugin_active($pluginSlug)) {
+                    $shouldBeActivated[$pluginSlug] = $pluginTitle;
+                }
+            }
+            
+            if (empty($shouldBeActivated)) {
+                delete_option('duplicator_reactivate_plugins_after_installation', false);
+            } else {
+                $activatePluginsAnchors = array();
+                foreach ($shouldBeActivated as $slug => $title) {
+                    $activateURL = wp_nonce_url(admin_url('plugins.php?action=activate&plugin='.$slug), 'activate-plugin_'.$slug);
+                    $anchorTitle = sprintf(esc_html__('Activate %s', 'duplicator'), $title);
+                    $activatePluginsAnchors[] = '<a href="'.$activateURL.'" 
+                                                    title="'.esc_attr($anchorTitle).'">'.
+                                                    $title.'</a>';
+                }
+
+                echo "<div class='update-nag dpro-admin-notice'>
+                        <p>".
+                            "<b>Warning!</b> Migration Almost Complete! <br/>".
+                            "Plugin(s) listed here was deactivated during installation, Please activate them: <br/>".
+                            implode(' ,', $activatePluginsAnchors).
+                        "</p>".
+                    "</div>";
+            }
+        }
     }
 }

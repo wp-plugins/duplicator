@@ -25,40 +25,44 @@ class DUP_Zip_U
      *
      * @return bool Returns true if the directory was added to the object
      */
-	public static function addDirWithZipArchive(&$zipArchive, $directoryPath, $retainDirectory, $localPrefix, $isCompressed)
+    public static function addDirWithZipArchive(&$zipArchive, $directoryPath, $retainDirectory, $localPrefix, $isCompressed)
     {
-        $success = true;
-
-        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoryPath), RecursiveIteratorIterator::SELF_FIRST);
-
-        foreach ($objects as $path => $object) {
-            $path       = DUP_Util::safePath($path);
-            $local_name = ltrim(str_replace($directoryPath, '', $path), '/');
-
+        $success = TRUE;
+        $directoryPath = rtrim($directoryPath, '/\\').'/';
+		if (!$fp = @opendir($directoryPath)) {
+			return FALSE;
+		}
+		while (FALSE !== ($file = readdir($fp))) {
+			if ($file === '.' || $file === '..')    continue;
+            $objectPath = $directoryPath . $file;
+            // Not used DUP_PRO_U::safePath(), because I would like to decrease max_nest_level
+            // Otherwise we will get the error:
+            // PHP Fatal error:  Uncaught Error: Maximum function nesting level of '512' reached, aborting! in ...
+            // $objectPath = DUP_PRO_U::safePath($objectPath);
+            $objectPath = str_replace("\\", '/', $objectPath);
+            $localName = ltrim(str_replace($directoryPath, '', $objectPath), '/');
             if ($retainDirectory) {
-                $local_name = basename($directoryPath)."/$local_name";
+                $localName = basename($directoryPath)."/$localName";
             }
+            $localName = $localPrefix . $localName;
 
-            $local_name = $localPrefix . $local_name;
-
-            if (!is_dir($path)) {
-                if (is_readable($path)) {
-                       $added = DUP_Zip_U::addFileToZipArchive($zipArchive, $path, $local_name, $isCompressed);
-                } else {
-                    $added = false;
-                }
+			if (is_dir($objectPath)) {
+                $localPrefixArg = substr($localName, 0, strrpos($localName, '/')).'/';
+                $added = self::addDirWithZipArchive($zipArchive, $objectPath, $retainDirectory, $localPrefixArg, $isCompressed);
+			} else if (is_readable($objectPath)) {
+                $added = DUP_Zip_U::addFileToZipArchive($zipArchive, $objectPath, $localName, $isCompressed);                
             } else {
-                $added = true;
+                $added = FALSE;
             }
 
             if (!$added) {
-                DUP_Log::error("Couldn't add file $path to archive", '', Dup_ErrorBehavior::LogOnly);
-                $success = false;
+                DUP_PRO_Log::error("Couldn't add file $objectPath to archive", '', false);
+                $success = FALSE;
                 break;
             }
-        }
-
-        return $success;
+		}
+		@closedir($fp);
+		return $success;
     }
 
 

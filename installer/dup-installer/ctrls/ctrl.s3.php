@@ -47,4 +47,4 @@ try {
 
 $json = $s3Func->getJsonReport();
 DUPX_Log::close();
-die(DupLiteSnapLibUtil::wp_json_encode($json));
+die(DupLiteSnapJsonU::wp_json_encode($json));

@@ -242,4 +242,3 @@ class DUP_DB extends wpdb
 		}
 	}
 }
-DUP_DB::init();

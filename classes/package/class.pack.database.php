@@ -346,6 +346,21 @@ class DUP_Database
     }
 
     /**
+     * Unset tableWiseRowCounts table key for which row count is unstable
+     *
+     * @param object $package The reference to the current package being built     *
+     * @return void
+     */
+    public function validateTableWiseRowCounts() {
+        foreach ($this->Package->Database->info->tableWiseRowCounts as $rewriteTableAs => $rowCount) {
+            $newRowCount = $GLOBALS['wpdb']->get_var("SELECT Count(*) FROM `{$rewriteTableAs}`");
+            if ($rowCount != $newRowCount) {
+                unset($this->Package->Database->info->tableWiseRowCounts[$rewriteTableAs]);
+            }
+        }
+    }
+
+    /**
      *  Build the database script using mysqldump
      *
      *  @return bool  Returns true if the sql script was successfully created
@@ -384,13 +399,23 @@ class DUP_Database
         $tables = array();
         $baseTables = array();
         foreach ($res as $row) {
-            $tables[] = $row[0];
-            if ('BASE TABLE' == $row[1]) {
-                $baseTables[] = $row[0];
+            if (DUP_Util::isTableExists($row[0])) {
+                $tables[] = $row[0];
+                if ('BASE TABLE' == $row[1]) {
+                    $baseTables[] = $row[0];
+                }
             }
         }
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;
         $tblAllCount  = count($tables);
+
+        foreach ($tables as $table) {
+            if (in_array($table, $baseTables)) {
+                $row_count = $GLOBALS['wpdb']->get_var("SELECT Count(*) FROM `{$table}`");
+                $rewrite_table_as = $this->rewriteTableNameAs($table);
+                $this->Package->Database->info->tableWiseRowCounts[$rewrite_table_as] = $row_count;
+            }
+        }
         //$tblFilterOn  = ($this->FilterOn) ? 'ON' : 'OFF';
 
         if (is_array($filterTables) && $this->FilterOn) {
@@ -514,13 +539,6 @@ class DUP_Database
         $sql_footer = "\n\n/* Duplicator WordPress Timestamp: ".date("Y-m-d H:i:s")."*/\n";
         $sql_footer .= "/* ".DUPLICATOR_DB_EOF_MARKER." */\n";
         file_put_contents($this->dbStorePath, $sql_footer, FILE_APPEND);
-        foreach ($tables as $table) {
-            if (in_array($table, $baseTables)) {
-                $row_count = $GLOBALS['wpdb']->get_var("SELECT Count(*) FROM `{$table}`");
-                $rewrite_table_as = $this->rewriteTableNameAs($table);
-                $this->Package->Database->info->tableWiseRowCounts[$rewrite_table_as] = $row_count;
-            }
-        }
         return ($output) ? false : true;
     }
 
@@ -534,7 +552,9 @@ class DUP_Database
         global $wpdb;
     
         $wpdb->query("SET session wait_timeout = ".DUPLICATOR_DB_MAX_TIME);
-        $handle = fopen($this->dbStorePath, 'w+');
+        if (($handle = fopen($this->dbStorePath, 'w+')) == false) {
+            DUP_Log::error('[PHP DUMP] ERROR Can\'t open sbStorePath "'.$this->dbStorePath.'"', Dup_ErrorBehavior::Quit);
+        }
         $tables	 = $wpdb->get_col("SHOW FULL TABLES WHERE Table_Type != 'VIEW'");
     
         $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : null;

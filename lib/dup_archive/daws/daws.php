@@ -249,7 +249,7 @@ class DAWS
 
 		DupLiteSnapLibLogger::logObject("before json encode retval", $retVal);
 
-		$jsonRetVal = DupLiteSnapLibUtil::wp_json_encode($retVal);
+		$jsonRetVal = DupLiteSnapJsonU::wp_json_encode($retVal);
 		DupLiteSnapLibLogger::logObject("json encoded retval", $jsonRetVal);
         echo $jsonRetVal;
     }

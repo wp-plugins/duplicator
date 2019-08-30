@@ -35,7 +35,6 @@
     }
 
     select , option {
-        background-color: lightgray;
         color: black;
     }
     select {

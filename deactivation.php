@@ -127,7 +127,7 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
                         + '		<div class="duplicator-modal-body">'
                         + '		    <h2><?php _e('Quick Feedback', 'duplicator'); ?></h2>'
                         + '			<div class="duplicator-modal-panel active"><p><?php _e('If you have a moment, please let us know why you are deactivating', 'duplicator'); ?>:</p>' 
-                        +                  '<ul>' + <?php echo DupLiteSnapLibUtil::wp_json_encode($reasons_list_items_html); ?> + '</ul>'
+                        +                  '<ul>' + <?php echo DupLiteSnapJsonU::wp_json_encode($reasons_list_items_html); ?> + '</ul>'
                         + '			</div>'
                         + '		</div>'
                         + '		<div class="duplicator-modal-footer">'

@@ -20,6 +20,7 @@ if (!class_exists('DupLiteSnapLibUtilWp', false)) {
      */
     class DupLiteSnapLibUtilWp
     {
+
         const PATH_FULL     = 0;
         const PATH_RELATIVE = 1;
         const PATH_AUTO     = 2;

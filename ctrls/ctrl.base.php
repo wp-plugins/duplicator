@@ -122,7 +122,7 @@ class DUP_CTRL_Result
 
 		switch ($this->CTRL->returnType) {
 			case 'JSON' :
-				return DupLiteSnapLibUtil::wp_json_encode($this);
+				return DupLiteSnapJsonU::wp_json_encode($this);
 				break;
 			case 'PHP' :
 				return $this;
@@ -148,7 +148,7 @@ class DUP_CTRL_Result
 		$payload['Line']	 = $exception->getLine();
 		$payload['Trace']	 = $exception->getTraceAsString();
 		$this->process($payload, DUP_CTRL_Status::ERROR);
-		die(DupLiteSnapLibUtil::wp_json_encode($this));
+		die(DupLiteSnapJsonU::wp_json_encode($this));
 	}
 
 	private function getProcessTime()

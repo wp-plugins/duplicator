@@ -88,7 +88,7 @@ final class DUPX_NOTICE_MANAGER
             $notices['finalReport'][$uniqueId] = $notice->toArray();
         }
 
-        file_put_contents($this->persistanceFile, DupLiteSnapLibUtil::wp_json_encode_pprint($notices));
+        file_put_contents($this->persistanceFile, DupLiteSnapJsonU::wp_json_encode_pprint($notices));
     }
 
     /**

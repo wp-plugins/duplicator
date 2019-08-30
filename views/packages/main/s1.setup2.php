@@ -285,29 +285,30 @@ ARCHIVE -->
 
 						echo '<table id="dup-dbtables"><tr><td valign="top">';
 						foreach ($tables as $table) {
+							if (DUP_Util::isTableExists($table[0])) {
+								if (DUP_Util::isWPCoreTable($table[0])) {
+									$core_css = 'core-table';
+									$core_note = '*';
+								} else {
+									$core_css = 'non-core-table';
+									$core_note = '';
+								}
 
-							if (DUP_Util::isWPCoreTable($table[0])) {
-								$core_css = 'core-table';
-								$core_note = '*';
-							} else {
-								$core_css = 'non-core-table';
-								$core_note = '';
-							}
-
-							if (in_array($table[0], $tableList)) {
-								$checked = 'checked="checked"';
-								$css	 = 'text-decoration:line-through';
-							} else {
-								$checked = '';
-								$css	 = '';
-							}
-							echo  "<label for='dbtables-{$table[0]}' style='{$css}' class='{$core_css}'>"
-								. "<input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />"
-								. "&nbsp;{$table[0]}{$core_note}</label><br />";
-							$counter++;
-							if ($next_row <= $counter) {
-								echo '</td><td valign="top">';
-								$counter = 0;
+								if (in_array($table[0], $tableList)) {
+									$checked = 'checked="checked"';
+									$css	 = 'text-decoration:line-through';
+								} else {
+									$checked = '';
+									$css	 = '';
+								}
+								echo  "<label for='dbtables-{$table[0]}' style='{$css}' class='{$core_css}'>"
+									. "<input class='checkbox dbtable' $checked type='checkbox' name='dbtables[]' id='dbtables-{$table[0]}' value='{$table[0]}' onclick='Duplicator.Pack.ExcludeTable(this)' />"
+									. "&nbsp;{$table[0]}{$core_note}</label><br />";
+								$counter++;
+								if ($next_row <= $counter) {
+									echo '</td><td valign="top">';
+									$counter = 0;
+								}
 							}
 						}
 						echo '</td></tr></table>';

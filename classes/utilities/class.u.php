@@ -330,8 +330,13 @@ class DUP_Util
 	{
 		try {
 			$files = array();
-			foreach (new DirectoryIterator($path) as $file) {
-				$files[] = str_replace("\\", '/', $file->getPathname());
+            if ($dh = opendir($path)) {
+                while (($file = readdir($dh)) !== false) {
+                    if ($file == '.' || $file == '..')  continue;
+                    $full_file_path = trailingslashit($path).$file;
+                    $files[] = str_replace("\\", '/', $full_file_path);
+                }
+                @closedir($dh);
 			}
 			return $files;
 		} catch (Exception $exc) {
@@ -530,7 +535,7 @@ class DUP_Util
 		$user		 = '';
 		try {
 			if (function_exists('exec')) {
-				$user = exec('whoami');
+				$user = @exec('whoami');
 			}
 
 			if (!strlen($user) && function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
@@ -730,8 +735,23 @@ class DUP_Util
         } else {
             return 0;
         }
-    }
+	}
 
+	/**
+     * Check given table is exist in real
+     * 
+     * @param $table string Table name
+     * @return booleam
+     */
+    public static function isTableExists($table)
+    {
+		// It will clear the $GLOBALS['wpdb']->last_error var
+		$GLOBALS['wpdb']->flush();
+		$sql = "SELECT 1 FROM ".esc_sql($table)." LIMIT 1;";
+		$ret = $GLOBALS['wpdb']->get_var($sql);
+		if (empty($GLOBALS['wpdb']->last_error))   return true;
+        return false;
+    }
 
 	/**
 	 * Finds if its a valid executable or not
@@ -817,4 +837,3 @@ class DUP_Util
 		return function_exists($function_name) && !in_array($function_name, self::getIniDisableFuncs());
 	}
 }
-DUP_Util::init();

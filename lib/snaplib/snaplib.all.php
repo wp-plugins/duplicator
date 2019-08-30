@@ -22,6 +22,8 @@ if (!defined('DUPLITE_SNAPLIB_INCLUDE_ALL')) {
     require_once($dir.'/class.snaplib.logger.php');
     require_once($dir.'/class.snaplib.u.util.php');
     require_once($dir.'/class.snaplib.u.io.php');
+    require_once($dir.'/class.snaplib.u.json.php');
+    require_once($dir.'/class.snaplib.jsonSerializable.abstract.php');
     require_once($dir.'/class.snaplib.u.net.php');
     require_once($dir.'/class.snaplib.u.os.php');
     require_once($dir.'/class.snaplib.u.stream.php');

@@ -23,8 +23,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
 	DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
     
-    $skip_archive_scan = filter_input(INPUT_POST, 'skip_archive_scan' , FILTER_VALIDATE_BOOLEAN);
+    $skip_archive_scan = filter_input(INPUT_POST, 'skip_archive_scan', FILTER_VALIDATE_BOOLEAN);
     DUP_Settings::Set('skip_archive_scan', $skip_archive_scan);
+
+    $unhook_third_party_js = filter_input(INPUT_POST, 'unhook_third_party_js', FILTER_VALIDATE_BOOLEAN);
+    DUP_Settings::Set('unhook_third_party_js', $unhook_third_party_js);
+
+    $unhook_third_party_css = filter_input(INPUT_POST, 'unhook_third_party_css', FILTER_VALIDATE_BOOLEAN);
+    DUP_Settings::Set('unhook_third_party_css', $unhook_third_party_css);
 
     if(isset($_REQUEST['trace_log_enabled'])) {
 
@@ -58,6 +64,8 @@ $wpfront_integrate    = DUP_Settings::Get('wpfront_integrate');
 $wpfront_ready        = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
 $package_debug        = DUP_Settings::Get('package_debug');
 $skip_archive_scan    = DUP_Settings::Get('skip_archive_scan');
+$unhook_third_party_js  = DUP_Settings::Get('unhook_third_party_js');
+$unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
 ?>
 
 <style>
@@ -173,7 +181,7 @@ $skip_archive_scan    = DUP_Settings::Get('skip_archive_scan');
                 <button class="button"  onclick="Duplicator.Pack.ConfirmResetAll(); return false;">
                     <i class="fas fa-redo fa-sm"></i> <?php esc_html_e('Reset Packages', 'duplicator'); ?>
                 </button>
-                <p class="description" style="width:700px">
+                <p class="description">
                     <?php esc_html_e("This process will reset all packages by deleting those without a completed status, reset the active package id and perform a "
 						. "cleanup of the build tmp file.", 'duplicator'); ?>
                     <i class="fas fa-question-circle fa-sm"
@@ -183,16 +191,48 @@ $skip_archive_scan    = DUP_Settings::Get('skip_archive_scan');
             </td>
         </tr>
         <tr valign="top">
-		<th scope="row"><label><?php esc_html_e('Archive scan', 'duplicator'); ?></label></th>
-		<td>
-			<input type="checkbox" name="skip_archive_scan" id="_skip_archive_scan" <?php checked( $skip_archive_scan , true ); ?> value="1" />
-			<label for="_skip_archive_scan"><?php esc_html_e("Skip", 'duplicator') ?> </label><br/>
-			 <p class="description" style="width:700px">
-				<?php esc_html_e('If enabled all files check on scan will be skipped before package creation.  '
-					. 'In some cases, this option can be beneficial if the scan process is having issues running or returning errors.', 'duplicator'); ?>
-			</p>
-		</td>
-    </tr>
+            <th scope="row"><label><?php esc_html_e('Archive scan', 'duplicator'); ?></label></th>
+            <td>
+                <input type="checkbox" name="skip_archive_scan" id="_skip_archive_scan" <?php checked( $skip_archive_scan , true ); ?> value="1" />
+                <label for="_skip_archive_scan"><?php esc_html_e("Skip", 'duplicator') ?> </label><br/>
+                <p class="description">
+                    <?php esc_html_e('If enabled all files check on scan will be skipped before package creation.  '
+                        . 'In some cases, this option can be beneficial if the scan process is having issues running or returning errors.', 'duplicator'); ?>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label><?php esc_html_e("Other Plugins/Themes JS", 'duplicator'); ?></label></th>
+            <td>
+                <input type="checkbox" name="unhook_third_party_js" id="unhook_third_party_js" <?php checked($unhook_third_party_js, true); ?>  value="1"/>
+                <label for="unhook_third_party_js"><?php esc_html_e("Unhook them on Duplicator pages", 'duplicator'); ?></label> <br/>
+                <p class="description">
+                    <?php
+                    esc_html_e("Check this option if other plugins/themes JavaScript files are conflicting with Duplicator.", 'duplicator');
+                    ?>
+                    <br>
+                    <?php
+                    esc_html_e("Do not modify this setting unless you know the expected result or have talked to support.", 'duplicator');
+                    ?>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label><?php esc_html_e("Other Plugins/Themes CSS", 'duplicator'); ?></label></th>
+            <td>
+                <input type="checkbox" name="unhook_third_party_css" id="unhook_third_party_css" <?php checked($unhook_third_party_css, true); ?>  value="1"/>
+                <label for="unhook_third_party_css"><?php esc_html_e("Unhook them on Duplicator pages", 'duplicator'); ?></label> <br/>
+                <p class="description">
+                    <?php
+                    esc_html_e("Check this option if other plugins/themes CSS files are conflicting with Duplicator.", 'duplicator');
+                    ?>
+                    <br>
+                    <?php
+                    esc_html_e("Do not modify this setting unless you know the expected result or have talked to support.", 'duplicator');
+                    ?>
+                </p>
+            </td>
+        </tr>
     </table>
 
     <p class="submit" style="margin: 20px 0px 0xp 5px;">

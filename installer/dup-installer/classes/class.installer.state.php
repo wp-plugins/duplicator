@@ -81,7 +81,7 @@ class DUPX_InstallerState
 
     public function save()
     {
-		$data = DupLiteSnapLibUtil::wp_json_encode($this);
+		$data = DupLiteSnapJsonU::wp_json_encode($this);
 
         DupLiteSnapLibIOU::filePutContents(self::$state_filepath, $data);
     }

@@ -191,8 +191,8 @@ class DUPX_DBInstall
                     $errMsg = 'DATABASE: table '.DUPX_Log::varToString($table).' row count mismatch; expected '.DUPX_Log::varToString($rowCount).' in database'.DUPX_Log::varToString($row['cnt']);
                     DUPX_Log::info($errMsg);
                     $nManager->addBothNextAndFinalReportNotice(array(
-                        'shortMsg' => 'Database Table row count validation error',
-                        'level' => DUPX_NOTICE_ITEM::HARD_WARNING,
+                        'shortMsg' => 'Database Table row count validation was failed',
+                        'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
                         'longMsg' => $errMsg."\n",
                         'sections' => 'database'
                     ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_APPEND, 'row-count-mismatch');
