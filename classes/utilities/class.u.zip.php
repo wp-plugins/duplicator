@@ -35,10 +35,10 @@ class DUP_Zip_U
 		while (FALSE !== ($file = readdir($fp))) {
 			if ($file === '.' || $file === '..')    continue;
             $objectPath = $directoryPath . $file;
-            // Not used DUP_PRO_U::safePath(), because I would like to decrease max_nest_level
+            // Not used DUP_U::safePath(), because I would like to decrease max_nest_level
             // Otherwise we will get the error:
             // PHP Fatal error:  Uncaught Error: Maximum function nesting level of '512' reached, aborting! in ...
-            // $objectPath = DUP_PRO_U::safePath($objectPath);
+            // $objectPath = DUP_U::safePath($objectPath);
             $objectPath = str_replace("\\", '/', $objectPath);
             $localName = ltrim(str_replace($directoryPath, '', $objectPath), '/');
             if ($retainDirectory) {
@@ -56,7 +56,7 @@ class DUP_Zip_U
             }
 
             if (!$added) {
-                DUP_PRO_Log::error("Couldn't add file $objectPath to archive", '', false);
+                DUP_Log::error("Couldn't add file $objectPath to archive", '', false);
                 $success = FALSE;
                 break;
             }
