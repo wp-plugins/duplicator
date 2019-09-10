@@ -41,8 +41,8 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
 <div style="width:850px; margin:auto; margin-top: 20px">
 	<table style="width:825px">
 		<tr>
-			<td style="width:90px">
-				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-box.png"); ?>" style='text-align:top; margin:0'  />
+			<td style="width:230px">
+				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-box.png"); ?>" style='text-align:top; margin:0; height:196px; width:196px'  />
 			</td>
 			<td valign="top" style="padding-top:10px; font-size:14px">
 				<?php
@@ -87,6 +87,7 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
 						</tr>
 					</table>
 					<div class="dup-support-hlp-txt">
+						<br/>
 						<div class="social-images">
 							<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
 								<div class="social-item"><i class="fab fa-facebook-square fa-lg"></i> <?php esc_html_e('Facebook', 'duplicator') ?></div>
@@ -96,9 +97,6 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
 							</a>
 							<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=" target="_blank">
 								<div class="social-item"><i class="fab fa-linkedin fa-lg"></i> <?php esc_html_e('LinkedIn', 'duplicator') ?></div>
-							</a>
-							<a href="https://plus.google.com/share?url=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
-								<div class="social-item"><i class="fab fa-google-plus-g	fa-lg"></i> <?php esc_html_e('Google+', 'duplicator') ?></div>
 							</a>
 						</div>
 					</div>

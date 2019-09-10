@@ -180,8 +180,8 @@ class DUP_Database
             //Reserved file found
             if (file_exists($reserved_db_filepath)) {
                 $error_message = 'Reserved SQL file detected';
-
                 $package->BuildProgress->set_failed($error_message);
+                $package->Status = DUP_PackageStatus::ERROR;
                 $package->Update();
 
                 DUP_Log::Error($error_message,
@@ -210,9 +210,8 @@ class DUP_Database
 
             if ($sql_file_size < 1350) {
                 $error_message = "SQL file size too low.";
-
                 $package->BuildProgress->set_failed($error_message);
-
+                $package->Status = DUP_PackageStatus::ERROR;
                 $package->Update();
                 DUP_Log::Error($error_message, "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]", $errorBehavior);
                 do_action('duplicator_lite_build_database_fail' , $package);
@@ -665,7 +664,6 @@ class DUP_Database
                         $package->BuildProgress->set_failed($errorMessage);
                         $package->BuildProgress->failed = true;
                         $package->failed = true;
-                        $package->BuildProgress->Status = DUP_PackageStatus::ERROR;
                         $package->Status = DUP_PackageStatus::ERROR;
                         $package->Update();  
                         DUP_Log::error($select_last_error, $fix, Dup_ErrorBehavior::Quit);                                              

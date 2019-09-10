@@ -266,7 +266,7 @@ TOOL BAR:STEPS -->
 		<div class="dup-button-footer" style="display:none">
 			<input type="button" value="&#9664; <?php esc_html_e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1&_wpnonce=<?php echo wp_create_nonce('new1-package');?>')" class="button button-large" />
 			<input type="button" value="<?php esc_attr_e("Rescan", 'duplicator') ?>" onclick="Duplicator.Pack.rescan()" class="button button-large" />
-			<input type="submit"  onclick="Duplicator.Pack.startBuild();" value="<?php esc_attr_e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
+			<input type="submit"  onclick="return Duplicator.Pack.startBuild();" value="<?php esc_attr_e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
 		</div>
 	</div>
 

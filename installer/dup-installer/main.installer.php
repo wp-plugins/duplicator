@@ -52,6 +52,9 @@ try {
     require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.view.php');
 
+    DUPX_U::init();
+    DUPX_ServerConfig::init();
+
     $exceptionError = false;
     // DUPX_log::error thotw an exception
     DUPX_Log::setThrowExceptionOnError(true);

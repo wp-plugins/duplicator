@@ -426,4 +426,3 @@ HTACCESS;
         @chmod("{$path}/.htaccess", 0644);
     }
 }
-DUPX_ServerConfig::init();

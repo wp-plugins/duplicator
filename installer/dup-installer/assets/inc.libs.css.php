@@ -1,6 +1,7 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 require_once($GLOBALS['DUPX_INIT'] . '/classes/utilities/class.u.php');
+DUPX_U::init();
 ?>
 <style type="text/css">
 /*! jQuery UI - v1.12.1 - 2016-09-14

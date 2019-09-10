@@ -1325,7 +1325,7 @@ class DUP_Package
             $dbcomments   = is_null($dbcomments) ? '- unknown -' : sanitize_text_field($dbcomments);
 
             //PACKAGE
-            $this->Created    = date("Y-m-d H:i:s");
+            $this->Created    = gmdate("Y-m-d H:i:s");
             $this->Version    = DUPLICATOR_VERSION;
             $this->VersionOS  = defined('PHP_OS') ? PHP_OS : 'unknown';
             $this->VersionWP  = $wp_version;

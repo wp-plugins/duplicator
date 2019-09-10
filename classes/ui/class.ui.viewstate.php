@@ -52,6 +52,17 @@ class DUP_UI_ViewState
     }
 
     /**
+     * Sets all the values from the settings array
+     * @param array $view_state states
+     * 
+     * @return boolean Returns whether updated or not
+     */
+    public static function setArray($view_state)
+    {
+        return update_option(self::$optionsViewStateKey, $view_state);
+    }
+
+    /**
      * Return the value of the of view state item
      *
      * @param type $searchKey The key to search on

@@ -50,9 +50,20 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 		{
 			//CONTROLLER LOGIC
 			$post  = stripslashes_deep($_POST);
-			$key   = sanitize_text_field($post['key']);
-			$value = sanitize_text_field($post['value']);
-			$success = DUP_UI_ViewState::save($key, $value);
+
+			if (!empty($post['states'])) {
+				$view_state = DUP_UI_ViewState::getArray();
+				foreach ($post['states'] as $state) {
+					$key   = sanitize_text_field($state['key']);
+					$value = sanitize_text_field($state['value']);
+					$view_state[$key] = $value;
+				}
+				$success = DUP_UI_ViewState::setArray($view_state);
+			} else {
+				$key   = sanitize_text_field($post['key']);
+				$value = sanitize_text_field($post['value']);
+				$success = DUP_UI_ViewState::save($key, $value);
+			}		
 
 			$payload = array();
 			$payload['key']    = esc_html($key);

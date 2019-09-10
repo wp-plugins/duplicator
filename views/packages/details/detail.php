@@ -405,19 +405,37 @@ jQuery(document).ready(function($)
 	Duplicator.Pack.GetLinksText = function() {$('#dup-dlg-quick-path-data').select();};
 
 	Duplicator.Pack.OpenAll = function () {
+		Duplicator.UI.IsSaveViewState = false;
+		var states = [];
 		$("div.dup-box").each(function() {
-			var panel_open = $(this).find('div.dup-box-panel').is(':visible');
+			var pan = $(this).find('div.dup-box-panel');
+			var panel_open = pan.is(':visible');
 			if (! panel_open)
 				$( this ).find('div.dup-box-title').trigger("click");
-		 });
+			states.push({
+				key: pan.attr('id'),
+				value: 1
+			});
+		});
+		Duplicator.UI.SaveMulViewStates(states);
+		Duplicator.UI.IsSaveViewState = true;
 	};
 
 	Duplicator.Pack.CloseAll = function () {
-			$("div.dup-box").each(function() {
-			var panel_open = $(this).find('div.dup-box-panel').is(':visible');
+		Duplicator.UI.IsSaveViewState = false;
+		var states = [];
+		$("div.dup-box").each(function() {
+			var pan = $(this).find('div.dup-box-panel');
+			var panel_open = pan.is(':visible');
 			if (panel_open)
 				$( this ).find('div.dup-box-title').trigger("click");
-		 });
+			states.push({
+				key: pan.attr('id'),
+				value: 0
+			});
+		});
+		Duplicator.UI.SaveMulViewStates(states);
+		Duplicator.UI.IsSaveViewState = true;
 	};
 
 	Duplicator.Pack.TogglePassword = function()

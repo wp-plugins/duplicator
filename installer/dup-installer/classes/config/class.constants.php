@@ -119,5 +119,3 @@ class DUPX_Constants
         if (!defined('MAX_STRLEN_SERIALIZED_CHECK')) { define('MAX_STRLEN_SERIALIZED_CHECK', 2000000); }
 	}
 }
-
-DUPX_Constants::init();

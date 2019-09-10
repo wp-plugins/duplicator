@@ -1101,7 +1101,7 @@ LONGMSG;
         $excludePlugins['js_composer/js_composer.php']  = array(
             'title' => 'WPBakery Page Builder',
             'shortMsg' => "Deactivated Plugin:  WPBakery Page Builder",
-            'longMsg' => "It is deactivated automatically. <strong>You must reactivate from the WordPress admin panel after completing the installation.</strong> After activating it, Your site's frontend will be look good.",
+            'longMsg' => "It is deactivated automatically. <strong>You must reactivate from the WordPress admin panel after completing the installation.</strong> After activating it, your site's frontend will look good.",
             'reactivate' => true
         );
 

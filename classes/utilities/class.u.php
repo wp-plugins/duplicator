@@ -569,7 +569,7 @@ class DUP_Util
             DupLiteSnapLibIOU::chmod($path_wproot, 'u+rwx');
 
 			//snapshot directory
-            DupLiteSnapLibIOU::dirWriteCheckOrMkdir($path_ssdir, 'u+rwx');
+            DupLiteSnapLibIOU::dirWriteCheckOrMkdir($path_ssdir, 'u+rwx,go+rx');
 
 			// restore original root perms
             DupLiteSnapLibIOU::chmod($path_wproot, $old_root_perm);

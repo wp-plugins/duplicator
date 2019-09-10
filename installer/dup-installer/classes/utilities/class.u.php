@@ -1782,4 +1782,3 @@ class DUPX_U
         return $input ? 'enable' : 'disable';
     }
 }
-DUPX_U::init();

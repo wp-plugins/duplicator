@@ -51,8 +51,8 @@ class DUP_Installer
 			$package->BuildProgress->installer_built = true;
 		} else {
 			$error_message = 'Error adding installer';
-
 			$package->BuildProgress->set_failed($error_message);
+			$package->Status = DUP_PackageStatus::ERROR;
 			$package->Update();
 
 			DUP_Log::error($error_message, "Marking build progress as failed because couldn't add installer files", $error_behavior);

@@ -13,6 +13,18 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.arch
 /* @var $package DUP_Package */
 
 /**
+ * Display error if any fatal error occurs occurs while scan ajax call
+ *
+ * @return void
+ */
+function duplicator_package_scan_shutdown() {
+    $logMessage = DUP_Handler::getVarLog();
+    if (!empty($logMessage)) {
+        echo nl2br($logMessage);
+    }
+}
+
+/**
  *  DUPLICATOR_PACKAGE_SCAN
  *  Returns a JSON scan report object which contains data about the system
  *
@@ -22,6 +34,8 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.arch
 function duplicator_package_scan()
 {
     DUP_Handler::init_error_handler();
+    DUP_Handler::setMode(DUP_Handler::MODE_VAR);
+    register_shutdown_function('duplicator_package_scan_shutdown');
 
     check_ajax_referer('duplicator_package_scan', 'nonce');
     DUP_Util::hasCapability('export');

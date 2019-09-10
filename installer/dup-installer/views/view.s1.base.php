@@ -1199,12 +1199,13 @@ DUPX.runStandardExtraction = function ()
 {
 	var $form = $('#s1-input-form');
 
-	//1800000 = 30 minutes
+	//3600000 = 60 minutes
 	//If the extraction takes longer than 30 minutes then user
 	//will probably want to do a manual extraction or even FTP
 	$.ajax({
 		type: "POST",
-		timeout: 1800000,
+		timeout: 3600000,
+		cache: false,
 		url: window.location.href,
 		data: $form.serialize(),
 		beforeSend: function () {

@@ -202,7 +202,10 @@ class DUPX_Bootstrap
 				return $error;
 			}
 
-			if (!self::checkInputVaslidInt(self::ARCHIVE_SIZE)) {
+            // Sometimes the self::ARCHIVE_SIZE is ''.
+            $archive_size = self::ARCHIVE_SIZE;
+
+			if (!empty($archive_size) && !self::checkInputVaslidInt($archive_size)) {
 				$no_of_bits = PHP_INT_SIZE * 8;
                 $error  = 'Current is a '.$no_of_bits.'-bit SO. This archive is too large for '.$no_of_bits.'-bit PHP.'.'<br>';
                 $this->log('[ERROR] '.$error);
