@@ -236,6 +236,8 @@ if (is_admin() == true)
 
             require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
             @dbDelta($sql);
+            
+            DupLiteSnapLibIOU::chmod(DUPLICATOR_SSDIR_PATH, 'u+rwx,go+rx');
         }
 
         //WordPress Options Hooks
@@ -256,7 +258,6 @@ if (is_admin() == true)
         if (DUPLICATOR_VERSION != get_option("duplicator_version_plugin")) {
             duplicator_activate();
             // $snapShotDirPerm = substr(sprintf("%o", fileperms(DUPLICATOR_SSDIR_PATH)),-4);
-            DupLiteSnapLibIOU::chmod(DUPLICATOR_SSDIR_PATH, 'u+rwx,go+rx');
         }
 		load_plugin_textdomain( 'duplicator' );
     }
