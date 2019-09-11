@@ -21,7 +21,7 @@ class DUP_Settings
 	/**
 	 *  Class used to manage all the settings for the plugin
 	 */
-	static function init()
+	public static function init()
 	{
 		self::$Data = get_option(self::OPT_SETTINGS);
 		//when the plugin updated, this will be true

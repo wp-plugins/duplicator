@@ -12,7 +12,7 @@ require_once 'classes/class.settings.php';
 require_once 'classes/utilities/class.u.php';
 
 global $wpdb;
-$DUP_Settings = new DUP_Settings();
+DUP_Settings::init();
 
 $table_name = $wpdb->prefix . "duplicator_packages";
 $wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
