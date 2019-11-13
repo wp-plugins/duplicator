@@ -1079,15 +1079,15 @@ LONGMSG;
             $excludePlugins['really-simple-ssl/rlrsssl-really-simple-ssl.php'] = array(
                     'title' => "Really Simple SSL",
                     'shortMsg' => "Deactivated Plugin:  Really Simple SSL",
-                    'longMsg' => "It is deactivated because You are migrating from SSL (HTTPS) to Non-SSL (HTTP).<br>
-                                  If It was not deactivated, You will not able to login.",
+                    'longMsg' => "This plugin has been deactivated since this migration is going from SSL (HTTPS) to Non-SSL (HTTP).  This will allow you to login to your WordPress Admin.  "
+								. " To reactivate the plugin please go to the admin plugin page.",
                     'reactivate' => false
 
                 );
         }
 
         if ($GLOBALS['DUPX_AC']->url_old != $this->post['siteurl']) {
-            DUPX_Log::info('Simple Google reCAPTCHA [as Package creation site URL and Installation site URL are different] will be Deactivated, If It is activated', DUPX_Log::LV_HARD_DEBUG);
+            DUPX_Log::info('Simple Google reCAPTCHA [as Package creation site URL and installation site URL are different] will be deactivated, If It is activated', DUPX_Log::LV_HARD_DEBUG);
             $excludePlugins['simple-google-recaptcha/simple-google-recaptcha.php'] = array(
                 'title' => "Simple Google reCAPTCHA",
                 'shortMsg' => "Deactivated Plugin:  Simple Google reCAPTCHA",
@@ -1101,11 +1101,12 @@ LONGMSG;
         $excludePlugins['js_composer/js_composer.php']  = array(
             'title' => 'WPBakery Page Builder',
             'shortMsg' => "Deactivated Plugin:  WPBakery Page Builder",
-            'longMsg' => "It is deactivated automatically. <strong>You must reactivate from the WordPress admin panel after completing the installation.</strong> After activating it, your site's frontend will look good.",
+            'longMsg' => "This plugin is deactivated automatically, because it requires a reacivation to work properly.  "
+						. "<b>Please reactivate from the WordPress admin panel after logging in.</b> This will re-enable your site's frontend.",
             'reactivate' => true
         );
 
-        DUPX_Log::info('Activated plugins (If they are activated) listed here will be deactivated: '.DUPX_Log::varToString(array_keys($excludePlugins)));
+        DUPX_Log::info('Deactivated plugins list here: '.DUPX_Log::varToString(array_keys($excludePlugins)));
         return $excludePlugins;
     }
 

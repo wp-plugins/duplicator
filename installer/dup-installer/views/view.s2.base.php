@@ -30,7 +30,10 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<div class="dupx-logfile-link">
 			<?php DUPX_View_Funcs::installerLogLink(); ?>
 		</div>
-		<div class="hdr-main">Step <span class="step">2</span> of 4: Install Database	</div>
+		<div class="hdr-main">
+			Step <span class="step">2</span> of 4: Install Database
+			<div class="sub-header">This step will install the database from the archive.</div>
+		</div>
 		<div class="s2-btngrp">
 			<input id="s2-basic-btn" type="button" value="Basic" class="active" onclick="DUPX.togglePanels('basic')" />
 			<input id="s2-cpnl-btn" type="button" value="cPanel" class="in-active" onclick="DUPX.togglePanels('cpanel')" />
@@ -105,6 +108,7 @@ Auto Posts to view.step3.php  -->
 	<div class="dupx-logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
 	<div class="hdr-main">
 		Step <span class="step">2</span> of 4: Install Database
+		<div class="sub-header">This step will install the database from the archive.</div>
 	</div>
 
 	<!--  POST PARAMS -->

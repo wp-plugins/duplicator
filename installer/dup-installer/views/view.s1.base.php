@@ -107,6 +107,7 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 
 <div class="hdr-main">
 	Step <span class="step">1</span> of 4: Deployment
+	<div class="sub-header">This step will extract the archive file contents.</div>
 </div><br/>
 
 <!-- ====================================
@@ -158,14 +159,13 @@ SETUP TYPE: @todo implement
 	</div><br/>
 
 </div>
-<!--br/><br/-->
 
 
 <!-- ====================================
 ARCHIVE
 ==================================== -->
 <div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s1-area-archive-file">
-	<a id="s1-area-archive-file-link"><i class="fa fa-plus-square"></i>Archive</a>
+	<a id="s1-area-archive-file-link"><i class="fa fa-plus-square"></i>Setup</a>
 	<?php
 	$badge = DUPX_View_Funcs::getBadgeClassFromCheckStatus($arcCheck);
 	?>
@@ -176,7 +176,7 @@ ARCHIVE
 <div id="s1-area-archive-file" style="display:none" class="hdr-sub1-area">
 <div id="tabs">
 	<ul>
-		<li><a href="#tabs-1">Server</a></li>
+		<li><a href="#tabs-1">Archive</a></li>
 	</ul>
 	<div id="tabs-1">
 
@@ -731,7 +731,8 @@ Auto Posts to view.step2.php
 
     <div class="dupx-logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
     <div class="hdr-main">
-        Step <span class="step">1</span> of 4: Extraction
+        Step <span class="step">1</span> of 4: Deployment
+		<div class="sub-header">This step will extract the archive file contents.</div>
     </div>
 
     <!--  POST PARAMS -->

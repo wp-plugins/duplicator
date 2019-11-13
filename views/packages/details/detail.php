@@ -8,9 +8,28 @@ $ui_css_install = (isset($view_state['dup-package-dtl-install-panel']) && $view_
 
 $format = strtolower($package->Archive->Format);
 
-$link_sql			= "{$package->StoreURL}{$package->NameHash}_database.sql";
-$link_archive 		= "{$package->StoreURL}{$package->NameHash}_archive.{$format}";
-$link_installer		= "{$package->StoreURL}{$package->NameHash}_installer.php?get=1&file={$package->NameHash}_installer.php";
+$base_url			= admin_url('admin.php');
+$link_sql			= add_query_arg(
+							array(
+								'action' => 'duplicator_download',
+								'file' => "{$package->NameHash}_database.sql",
+							),
+							$base_url
+						);
+$link_archive 		= add_query_arg(
+							array(
+								'action' => 'duplicator_download',
+								'file' => "{$package->NameHash}_archive.{$format}",
+							),
+							$base_url
+						);
+$link_installer		= add_query_arg(
+							array(
+								'action' => 'duplicator_download',
+								'file' => $package->NameHash.'_installer.php',
+							),
+							$base_url
+						);
 $link_log			= "{$package->StoreURL}{$package->NameHash}.log";
 $link_scan			= "{$package->StoreURL}{$package->NameHash}_scan.json";
 

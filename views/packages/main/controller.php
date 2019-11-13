@@ -35,8 +35,8 @@ switch ($current_tab) {
 	table#dup-toolbar td .button {box-shadow: none !important;}
 	table#dup-toolbar {width:100%; border:0 solid red; padding: 0; margin:8px 0 4px 0; height: 35px}
 	table#dup-toolbar td:last-child {font-size:16px; width:100%; text-align: right; vertical-align: bottom;white-space:nowrap;}
-	table#dup-toolbar td:last-child a {top:0; font-size:16px !important; margin-top:10px }
-	table#dup-toolbar td:last-child span {display:inline-block; font-weight: bold; padding:0 12px 5px 5px; color:#000}
+	table#dup-toolbar td:last-child a {top:0; margin-top:10px; font-weight: bold; }
+	table#dup-toolbar td:last-child span {display:inline-block; font-weight: bold; padding:0 5px 5px 5px; color:#000}
 	hr.dup-toolbar-line {margin:2px 0 10px 0}
 	
     /*WIZARD TABS */

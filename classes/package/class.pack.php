@@ -251,6 +251,28 @@ class DUP_Package
         $report['ARC']['Status']['Size']  = ($this->Archive->Size > DUPLICATOR_SCAN_SIZE_DEFAULT) ? 'Warn' : 'Good';
         $report['ARC']['Status']['Names'] = (count($this->Archive->FilterInfo->Files->Warning) + count($this->Archive->FilterInfo->Dirs->Warning)) ? 'Warn' : 'Good';
         $report['ARC']['Status']['UnreadableItems'] = !empty($this->Archive->RecursiveLinks) || !empty($report['ARC']['UnreadableItems'])? 'Warn' : 'Good';
+        /*
+        $overwriteInstallerParams = apply_filters('duplicator_pro_overwrite_params_data', array());
+        $package_can_be_migrate = !(isset($overwriteInstallerParams['mode_chunking']['value'])
+                                    && $overwriteInstallerParams['mode_chunking']['value'] == 3
+                                    && isset($overwriteInstallerParams['mode_chunking']['formStatus'])
+                                    && $overwriteInstallerParams['mode_chunking']['formStatus'] == 'st_infoonly');
+        */
+        $package_can_be_migrate = true;
+        $report['ARC']['Status']['MigratePackage'] = $package_can_be_migrate ? 'Good' : 'Warn';
+        $report['ARC']['Status']['CanbeMigratePackage'] = $package_can_be_migrate;
+
+        $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '".$GLOBALS['wpdb']->dbname."'", 1);
+        if (count($procedures)) {
+            $create = $GLOBALS['wpdb']->get_row("SHOW CREATE PROCEDURE `".$procedures[0]."`", ARRAY_N);
+            $privileges_to_show_create_proc = empty($create[2]) ? false : true;
+        } else {
+            $privileges_to_show_create_proc = true; 
+        }
+        
+        $privileges_to_show_create_proc = apply_filters('duplicator_privileges_to_show_create_proc', $privileges_to_show_create_proc);
+        $report['ARC']['Status']['showCreateProcStatus'] = $privileges_to_show_create_proc ? 'Good' : 'Warn';
+        $report['ARC']['Status']['showCreateProc'] = $privileges_to_show_create_proc;
 
         //$report['ARC']['Status']['Big']   = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
         $report['ARC']['Dirs']  = $this->Archive->Dirs;

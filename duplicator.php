@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.3.22
+  Version: 1.3.24
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -153,6 +153,46 @@ if (!function_exists('wp_normalize_path')) {
     }
 }
 
+function duplicator_init() {
+    if (isset($_GET['action']) && $_GET['action'] == 'duplicator_download') {
+        $file = sanitize_text_field($_GET['file']);
+        $filepath = DUPLICATOR_SSDIR_PATH.'/'.$file;
+        // Process download
+        if(file_exists($filepath)) {
+            // Clean output buffer
+            if (ob_get_level() !== 0 && @ob_end_clean() === FALSE) {
+                @ob_clean();
+            }
+
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($filepath));
+            flush(); // Flush system output buffer
+
+            try {
+                $fp = @fopen($filepath, 'r');
+                if (false === $fp) {
+                    throw new Exception('Fail to open the file '.$filepath);
+                }
+                while (!feof($fp) && ($data = fread($fp, DUPLICATOR_BUFFER_READ_WRITE_SIZE)) !== FALSE) {
+                    echo $data;
+                }
+                @fclose($fp);
+            } catch (Exception $e) {
+                readfile($filepath);
+            }
+            exit;
+        } else {
+            wp_die('Invalid installer file name!!');
+        }
+    }
+}
+add_action('init', 'duplicator_init');
+
 if (is_admin() == true) 
 {
     if (defined('DUPLICATOR_DEACTIVATION_FEEDBACK') && DUPLICATOR_DEACTIVATION_FEEDBACK) {
@@ -286,7 +326,7 @@ if (is_admin() == true)
     }
     add_action('plugins_loaded', 'duplicator_load_textdomain');
 
-    add_action('admin_init',		'duplicator_init');
+    add_action('admin_init',		'duplicator_admin_init');
     add_action('admin_menu',		'duplicator_menu');
     add_action('admin_enqueue_scripts', 'duplicator_admin_enqueue_scripts' );
     add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
@@ -323,7 +363,7 @@ if (is_admin() == true)
      * @access global
      * @return null
      */
-    function duplicator_init()
+    function duplicator_admin_init()
 	{
         /* CSS */
         wp_register_style('dup-jquery-ui', DUPLICATOR_PLUGIN_URL . 'assets/css/jquery-ui.css', null, "1.11.2");
@@ -412,9 +452,19 @@ if (is_admin() == true)
 		$lang_txt = esc_html__('Settings', 'duplicator');
         $page_settings = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-settings', 'duplicator_get_menu');
 
-		$perms = 'manage_options';
+        $perms = 'manage_options';
+        $admin_color = get_user_option('admin_color');
+        $orange_for_admin_colors = array(
+                                            'fresh',
+                                            'coffee',
+                                            'ectoplasm',
+                                            'midnight'
+                                        );
+        $style = in_array($admin_color, $orange_for_admin_colors) 
+                    ? 'style="color:#f18500"'
+                    : '';
 		$lang_txt = esc_html__('Go Pro!', 'duplicator');
-		$go_pro_link = '<span style="color:#f18500">' . $lang_txt . '</span>';
+		$go_pro_link = '<span '.$style.'>' . $lang_txt . '</span>';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_gopro = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
 

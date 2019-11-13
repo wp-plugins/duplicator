@@ -177,18 +177,6 @@ class DUP_Database
             DUP_Log::Info($log);
             $log = null;
 
-            //Reserved file found
-            if (file_exists($reserved_db_filepath)) {
-                $error_message = 'Reserved SQL file detected';
-                $package->BuildProgress->set_failed($error_message);
-                $package->Status = DUP_PackageStatus::ERROR;
-                $package->Update();
-
-                DUP_Log::Error($error_message,
-                    "The file database.sql was found at [{$reserved_db_filepath}].\n"
-                    ."\tPlease remove/rename this file to continue with the package creation.", $errorBehavior);
-            }
-
             do_action('duplicator_lite_build_database_start' , $package);
 
             switch ($mode) {
@@ -643,32 +631,16 @@ class DUP_Database
                 $rows  = $wpdb->get_results($query, ARRAY_A);
 
                 $select_last_error = $wpdb->last_error;
-                if ('' !== $select_last_error) {
-                    $is_select_error = true;
-                    DUP_LOG::trace($select_last_error);
-                    if (false !== stripos($wpdb->last_error, 'is marked as crashed and should be repaired')) {
-                        $ret_repair = $wpdb->query("repair table `{$table}`");
-                        $ret_repair = false;
-                        if ($ret_repair) {
-                            DUP_LOG::trace("Successfully repaired the {$table}"); 
-                            $rows = $wpdb->get_results($query, ARRAY_A);
-                            if ('' !== $wpdb->last_error) {
-                                $is_select_error = false;
-                            }
-                        }
-                    }
-
-                    if ($is_select_error) {
-                        $fix = esc_html__('Please contact your DataBase administrator to fix the error.', 'duplicator');
-                        $errorMessage = $select_last_error.' '.$fix.'.';
-                        $package->BuildProgress->set_failed($errorMessage);
-                        $package->BuildProgress->failed = true;
-                        $package->failed = true;
-                        $package->Status = DUP_PackageStatus::ERROR;
-                        $package->Update();  
-                        DUP_Log::error($select_last_error, $fix, Dup_ErrorBehavior::Quit);                                              
-                        return;
-                    }
+                if ('' !== $select_last_error) {                    
+                    $fix = esc_html__('Please contact your DataBase administrator to fix the error.', 'duplicator');
+                    $errorMessage = $select_last_error.' '.$fix.'.';
+                    $package->BuildProgress->set_failed($errorMessage);
+                    $package->BuildProgress->failed = true;
+                    $package->failed = true;
+                    $package->Status = DUP_PackageStatus::ERROR;
+                    $package->Update();  
+                    DUP_Log::error($select_last_error, $fix, Dup_ErrorBehavior::Quit);                                              
+                    return;
                 }
 
                 if (is_array($rows)) {

@@ -178,7 +178,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
         <tr>
             <th scope="row"><label><?php esc_html_e("Settings", 'duplicator'); ?></label></th>
             <td>
-                <button class="button"  onclick="Duplicator.Pack.ConfirmResetAll(); return false;">
+                <button class="button" onclick="Duplicator.Pack.ConfirmResetAll(); return false;">
                     <i class="fas fa-redo fa-sm"></i> <?php esc_html_e('Reset Packages', 'duplicator'); ?>
                 </button>
                 <p class="description">

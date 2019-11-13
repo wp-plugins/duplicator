@@ -58,6 +58,8 @@ The underlying logic to backup WordPress, move WordPress and transfer WordPress 
 This plugin does require some technical knowledge.  If you plan to migrate WordPress or backup WordPress please use it at your own risk and don't forget to back up your files and databases beforehand. If you need to move or backup WordPress and would like additional help please visit the Duplicator [resources section](https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wp_org&utm_content=free_disclaimer&utm_campaign=duplicator_free#faq-resource-030-q) .
 
 = Active Contributors =
+<li>[Prashant Baldha](https://profiles.wordpress.org/pmbaldha/) (Development)</li>
+<li>[Andrea Leoni](https://profiles.wordpress.org/andreamk/) (Development)</li>
 <li>[Paal Joachim Romdahl](http://www.easywebdesigntutorials.com) (Training)</li>
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
 <li>[Nicolas Richer](http://nicolasricher.fr) (French)</li>

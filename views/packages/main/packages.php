@@ -26,13 +26,6 @@ $packageTablerowCount = 0;
 	input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
 	button.dup-button-selected {border:1px solid #000 !important; background-color:#dfdfdf !important;}
 	div.dup-quick-start {font-style:italic; font-size: 13px; line-height: 18px; margin-top: 15px}
-
-    .add-new-h2.disabled { 
-        cursor: not-allowed;
-        border-color: #ccc !important;
-        background: #f7f7f7 !important;
-        color: #ccc !important;
-    }
 	
 	/* Table package details */
 	table.dup-pack-table {word-break:break-all;}
@@ -80,12 +73,12 @@ TOOL-BAR -->
 			<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php esc_html_e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.ConfirmDelete()">
 			<span class="btn-separator"></span>
 			<a href="javascript:void(0)" class="button"  title="<?php esc_attr_e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()">
-				<i class="fa fa-question-circle grey-icon"></i>
+				<i class="fa fa-question-circle"></i>
 			</a>
-			<a href="admin.php?page=duplicator-settings&tab=package" class="button grey-icon" title="<?php esc_attr_e("Settings", 'duplicator') ?>"><i class="fas fa-cog"></i></a>
+			<a href="admin.php?page=duplicator-settings&tab=package" class="button" title="<?php esc_attr_e("Settings", 'duplicator') ?>"><i class="fas fa-cog"></i></a>
 		</td>
 		<td>						
-			<span><i class="fa fa-archive fa-sm"></i> <?php esc_html_e("Packages", 'duplicator'); ?></span>
+			<a  href="javascript:void(0)" class="button disabled"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e("Packages", 'duplicator'); ?></a>
 			<?php
 			$package_url = admin_url('admin.php?page=duplicator&tab=new1');
 			$package_nonce_url = wp_nonce_url($package_url, 'new1-package');
@@ -93,7 +86,7 @@ TOOL-BAR -->
 			<a id="dup-create-new" 
                onClick="return Duplicator.Pack.CreateNew(this);"
                href="<?php echo $package_nonce_url;?>"
-               class="add-new-h2 <?php echo ($active_package_present ? 'disabled' : ''); ?>"
+               class="button <?php echo ($active_package_present ? 'disabled' : ''); ?>"
                >
                 <?php esc_html_e("Create New", 'duplicator'); ?>
             </a>

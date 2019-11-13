@@ -429,7 +429,7 @@ class DUPX_DBTest
 
 			if ($invalid === 1) {
 				$test['pass']	 = 0;
-				$test['info']	 = "Please check the 'Legacy' checkbox above under options and then click the 'Retry Test' link.<br/>"
+				$test['info']	 = "Please check the 'Legacy' checkbox in the options section and then click the 'Retry Test' link.<br/>"
 								 . "<small>Details: The database where the package was created has a collation that is not supported on this server.  This issue happens "
 								 . "when a site is moved from an older version of MySQL to a newer version of MySQL. The recommended fix is to update MySQL on this server to support "
 								 . "the collation that is failing below.  If that is not an option for your host then continue by clicking the 'Legacy' checkbox above.  For more "

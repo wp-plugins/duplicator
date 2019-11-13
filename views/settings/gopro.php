@@ -30,7 +30,8 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 	#comparison-table td, #comparison-table th { font-size:1.2rem; padding:11px; }
 	#comparison-table .feature-column { text-align:left; width:46%}
 	#comparison-table .check-column { text-align:center; width:27% }
-	#comparison-table tr:nth-child(2n+2) {background-color:#f6f6f6; }
+	#comparison-table tr:nth-child(2n+2) { background-color:#f6f6f6; }
+	.button.button-large.dup-check-it-btn { line-height: 28px; }
 </style>
 
 <div class="dup-pro-area">

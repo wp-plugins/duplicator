@@ -294,7 +294,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
                     throw new Exception("Trying to fseek($offset, $whence) and came back false");
                 }
                 //This check is not strict, but in most cases 32 Bit PHP will be the issue
-                else if (abs($offset) > self::FileSizeLimit32BitPHP || $filesize > self::FileSizeLimit32BitPHP || ($offset < 0 && $whence == SEEK_SET)) {
+                else if (abs($offset) > self::FileSizeLimit32BitPHP || $filesize > self::FileSizeLimit32BitPHP || ($offset < 0 && ($whence == SEEK_SET || $whence == SEEK_END))) {
                     throw new DupLiteSnapLib_32BitSizeLimitException("Trying to seek on a file beyond the capability of 32 bit PHP. offset=$offset filesize=$filesize");
                 } else {
                     throw new Exception("Error seeking to file offset $offset. Retval = $ret_val");

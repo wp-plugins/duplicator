@@ -210,7 +210,7 @@ LONGMSG;
         ));
     } else {
         $longMsg = <<<LONGMSG
-            The following is a list of notices that may need to be fixed in order to finalize your setup.  These values should only be investigated if you're running into
+            The following is a list of notices that may need to be fixed in order to finalize your setup. These values should only be investigated if you're running into
             issues with your site. For more details see the <a href="https://codex.wordpress.org/Editing_wp-config.php" target="_blank">WordPress Codex</a>.
 LONGMSG;
 
@@ -379,22 +379,13 @@ LONGMSG;
 		<a href='https://snapcreek.com' target='_blank'>Support</a>
 	</div><br/>
 
-    <?php
-		$num = rand(1,2);
-		switch ($num) {
-			case 1:
-				$key = 'free_inst_s3btn_dp1322';
-				$txt = 'Get Duplicator Pro!';
-				break;
-			case 2:
-				$key = 'free_inst_s3btn_gp1322';
-				$txt = 'Go Pro Today!';
-				break;
-			default :
-				$key = 'free_inst_s3btn_gp1322';
-				$txt = 'Go Pro Today!';
-		}
+    <?php  
+        // Switched to Get Duplicator Pro wording based on split testing results
+        $key = 'free_inst_s3btn_dp1324';
+        $txt = 'Get Duplicator Pro!';
 	?>
+    
+    
 
 	<div class="s4-gopro-btn">
 		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=<?php echo DUPX_U::esc_attr($key);?>" target="_blank">

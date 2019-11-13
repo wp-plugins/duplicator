@@ -14,8 +14,8 @@ $open_section = filter_input(INPUT_GET, 'open_section', FILTER_SANITIZE_STRING, 
 HELP FORM -->
 <div id="main-help">
 <div class="help-online"><br/>
-	<i class="far fa-file-alt fa-sm"></i> For complete help visit the
-	<a href="https://snapcreek.com/support/docs/" target="_blank">Online Knowledge-Base</a> <br/>
+	<i class="far fa-file-alt fa-sm"></i> For complete help visit
+	<a href="https://snapcreek.com/support/docs/" target="_blank">Duplicator Migration and Backup Online Help</a> <br/>
 	<small>Features available only in Duplicator Pro are flagged with a <sup>pro</sup> tag.</small>
 </div>
 
@@ -515,11 +515,11 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                 </tr>
                 <tr>
                     <td class="col-opt">Site URL</td>
-                    <td> For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.  If you're not sure about this value then leave it the same as the new settings URL.</td>
+                    <td> For details see WordPress <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">Site URL</a> &amp; <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory" target="_blank">Alternate Directory</a>.  If you're not sure about this value then leave it the same as the new setup URL.</td>
                 </tr>
                 <tr>
                     <td class="col-opt">Scan Tables</td>
-                    <td>Select the tables to be updated. This process will update all of the 'Old Settings' with the 'New Settings'. Hold down the 'ctrl key' to select/deselect multiple.</td>
+                    <td>Select the tables to be updated. This process will update all of the 'Old Settings' with the new 'Setup' settings. Hold down the 'ctrl key' to select/deselect multiple.</td>
                 </tr>
                 <tr>
                     <td class="col-opt">Activate Plugins</td>
@@ -628,7 +628,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
             <div style="padding: 0px 10px 10px 10px;">
                 <b>Common Quick Fix Issues:</b>
                 <ul>
-                    <li>Use an <a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>approved hosting provider</a></li>
+                    <li>Use a <a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>Duplicator approved hosting provider</a></li>
                     <li>Validate directory and file permissions (see below)</li>
                     <li>Validate web server configuration file (see below)</li>
                     <li>Clear your browsers cache</li>
@@ -662,7 +662,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
     </div>
 </section>
 
-<div style="text-align:center; margin-top: 28px;">For additional help please visit the <a href="https://snapcreek.com/support/docs/" target="_blank">online resources</a></div>
+<div style="text-align:center; margin-top: 28px;">For additional help please visit <a href="https://snapcreek.com/support/docs/" target="_blank">Duplicator Migration and Backup Online Help</a></div>
 
 
 </div>

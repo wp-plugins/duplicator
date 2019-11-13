@@ -124,6 +124,25 @@ BASIC PANEL -->
 </div>
 <br/><br/>
 
+<!-- =========================================
+BASIC: DB VALIDATION -->
+<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s2-dbtest-area-basic">
+	<a href="javascript:void(0)"><i class="fa fa-minus-square"></i>Validation</a>
+</div>
+
+<div id="s2-dbtest-area-basic" class="s2-dbtest-area hdr-sub1-area">
+	<div id="s2-dbrefresh-basic">
+		<a href="javascript:void(0)" onclick="DUPX.testDBConnect()"><i class="fa fa-sync"></i> Retry Test</a>
+	</div>
+	<div style="clear:both"></div>
+	<div id="s2-dbtest-hb-basic" class="s2-dbtest-hb">
+		<div class="message">
+			To continue click the 'Test Database' button <br/>
+			to	perform a database integrity check.
+		</div>
+	</div>
+</div>
+
 <?php if (! $is_dbtest_mode) : ?>
 	<!-- =========================================
 	OPTIONS -->
@@ -177,24 +196,7 @@ BASIC PANEL -->
 	<br/><br/>
 <?php endif; ?>
 
-<!-- =========================================
-BASIC: DB VALIDATION -->
-<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s2-dbtest-area-basic">
-	<a href="javascript:void(0)"><i class="fa fa-minus-square"></i>Validation</a>
-</div>
 
-<div id="s2-dbtest-area-basic" class="s2-dbtest-area hdr-sub1-area">
-	<div id="s2-dbrefresh-basic">
-		<a href="javascript:void(0)" onclick="DUPX.testDBConnect()"><i class="fa fa-sync"></i> Retry Test</a>
-	</div>
-	<div style="clear:both"></div>
-	<div id="s2-dbtest-hb-basic" class="s2-dbtest-hb">
-		<div class="message">
-			To continue click the 'Test Database' button <br/>
-			to	perform a database integrity check.
-		</div>
-	</div>
-</div>
 
 <br/><br/><br/>
 <br/><br/><br/>

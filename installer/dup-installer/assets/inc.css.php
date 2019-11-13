@@ -56,7 +56,7 @@
 	/* ============================
 	COMMON VIEWS
      ============================ */
-	div#content {border:1px solid #CDCDCD; width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:13px}
+	div#content {border:1px solid #CDCDCD; width:850px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:13px}
 	div#content-inner {padding:10px 25px; min-height:550px}
 	form.content-form {min-height:550px; position:relative; line-height:17px}
 	div.logfile-link {float:right; font-weight:normal; font-size:11px; font-style:italic}
@@ -92,9 +92,10 @@
 	div.hdr-main {font-size:22px; padding:0 0 5px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin:15px 0 20px 0;}
 	div.hdr-main span.step {color:#DB4B38}
 
+	div.sub-header {font-size:11px; font-style:italic; font-weight:normal; margin:5px 0 -1px 0}
 	div.hdr-sub1 {font-size:18px; margin-bottom:5px;border:1px solid #D3D3D3;padding:7px; background-color:#f9f9f9; font-weight:bold; border-radius:4px}
 	div.hdr-sub1 a {cursor:pointer; text-decoration: none !important}
-	div.hdr-sub1 i.fa {font-size:15px; display:inline-block; margin-right:5px; vertical-align:top}
+	div.hdr-sub1 i.fa {font-size:15px; display:inline-block; margin:2px 5px 0 0; vertical-align:top}
 	div.hdr-sub1-area {padding:5px}
 	div.hdr-sub2 {font-size:15px; padding:2px 2px 2px 0; font-weight:bold; margin-bottom:5px; border:none}
 	div.hdr-sub3 {font-size:15px; padding:2px 2px 2px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin-bottom:5px;}
