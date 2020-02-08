@@ -62,7 +62,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 <!-- =========================================
 VIEW: STEP 3- INPUT -->
-<form id='s3-input-form' method="post" class="content-form">
+<form id='s3-input-form' method="post" class="content-form" autocomplete="off">
 
 	<div class="logfile-link">
 		<?php DUPX_View_Funcs::installerLogLink(); ?>
@@ -371,7 +371,7 @@ VIEW: STEP 3- INPUT -->
 
 <!-- =========================================
 VIEW: STEP 3 - AJAX RESULT  -->
-<form id='s3-result-form' method="post" class="content-form" style="display:none">
+<form id='s3-result-form' method="post" class="content-form" style="display:none" autocomplete="off">
 
 	<div class="logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
 	<div class="hdr-main">

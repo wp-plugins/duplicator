@@ -3,13 +3,13 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.3.24
+  Version: 1.3.26
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
   License: GPLv2 or later
 
-  Copyright 2011-2017  SnapCreek LLC
+  Copyright 2011-2020  SnapCreek LLC
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -24,9 +24,6 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-  SOURCE CONTRIBUTORS:
-  David Coveney of Interconnect IT Ltd
-  https://github.com/interconnectit/Search-Replace-DB/
   ================================================================================ */
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 if ( !defined('DUPXABSPATH') ) {
@@ -36,6 +33,7 @@ if ( !defined('DUPXABSPATH') ) {
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
+require_once("helper.php");
 require_once("define.php");
 
 if (!function_exists('sanitize_textarea_field')) {
@@ -274,7 +272,8 @@ if (is_admin() == true)
 			   PRIMARY KEY  (id),
 			   KEY hash (hash))";
 
-            require_once(DUPLICATOR_WPROOTPATH . 'wp-admin/includes/upgrade.php');
+            $abs_path = duplicator_get_abs_path();
+            require_once($abs_path . '/wp-admin/includes/upgrade.php');
             @dbDelta($sql);
             
             DupLiteSnapLibIOU::chmod(DUPLICATOR_SSDIR_PATH, 'u+rwx,go+rx');
@@ -331,6 +330,7 @@ if (is_admin() == true)
     add_action('admin_enqueue_scripts', 'duplicator_admin_enqueue_scripts' );
     add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
     add_action('admin_notices',		array('DUP_UI_Notice', 'installAutoDeactivatePlugins'));
+    add_action('admin_notices',		array('DUP_UI_Notice', 'showFeedBackNotice'));
 	
 	//CTRL ACTIONS
     DUP_Web_Services::init();
@@ -339,6 +339,7 @@ if (is_admin() == true)
     add_action('wp_ajax_duplicator_package_build',				'duplicator_package_build');
     add_action('wp_ajax_duplicator_package_delete',				'duplicator_package_delete');
     add_action('wp_ajax_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
+    add_action('wp_ajax_duplicator_set_admin_notice_viewed',    'duplicator_set_admin_notice_viewed');
 
 	$GLOBALS['CTRLS_DUP_CTRL_UI']		= new DUP_CTRL_UI();
 	$GLOBALS['CTRLS_DUP_CTRL_Tools']	= new DUP_CTRL_Tools();
@@ -614,6 +615,29 @@ if (is_admin() == true)
                     }
                 }
             }
+        }
+    }
+
+    if (!function_exists('duplicator_set_admin_notice_viewed')) {
+        function duplicator_set_admin_notice_viewed() {
+            if ( empty( $_REQUEST['notice_id'] ) ) {
+                wp_die();
+            }
+    
+            $notices = get_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, true);
+            if ( empty( $notices ) ) {
+                $notices = array();
+            }
+    
+            $notices[ $_REQUEST['notice_id'] ] = 'true';
+            update_user_meta( get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, $notices);
+    
+            if ( ! wp_doing_ajax() ) {
+                wp_safe_redirect( admin_url() );
+                die;
+            }
+    
+            wp_die();
         }
     }
 }

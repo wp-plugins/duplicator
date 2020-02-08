@@ -67,7 +67,7 @@ if ($json_decode == NULL || $json_decode == FALSE) {
 
 <!-- =========================================
 VIEW: STEP 4- INPUT -->
-<form id='s4-input-form' method="post" class="content-form" style="line-height:20px">
+<form id='s4-input-form' method="post" class="content-form" style="line-height:20px" autocomplete="off">
 	<input type="hidden" name="url_new" id="url_new" value="<?php echo DUPX_U::esc_attr($url_new_rtrim); ?>" />
 	<div class="logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
 

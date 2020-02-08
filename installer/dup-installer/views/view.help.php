@@ -218,19 +218,19 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                         present will be removed.
                         <br/><br/>
 
-                        <b>Restore Original:</b> This option simply renames the htaccess.orig or web.config.orig	files to .htaccess or web.config. The *.orig files come from the original
+                        <b>Restore Original:</b> This option simply renames the .htaccess__[HASH] or web.config.orig	files to .htaccess or web.config. The *.orig files come from the original
                         web server where the package was built.	Please note this option will cause issues with the install process if the configuration files are not properly setup to
                         handle the new server environment.  This is an	advanced option and should only be used if you know how to properly configure your web servers configuration.
                         <br/><br/>
 
                         <b>Ignore All:</b> This option simply does nothing.  No files are backed up, nothing is renamed or created.  This advanced option assumes you already have your
-                        config files setup and know how they should behave in the new environment.  When the package is build it will always create a htaccess.orig or web.config.orig.
+                        config files setup and know how they should behave in the new environment.  When the package is build it will always create a .htaccess__[HASH] or web.config.orig.
                         Since these files are already in the archive file they will show up when the archive is extracted.
                         <br/><br/>
 
                         <b>Additional Notes:</b>
                         Inside the archive.zip will be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.  They are both
-                        renamed to htaccess.orig and web.config.orig.  When using either 'Create New' or 'Restore Original' any existing config files  will	be backed up with a .bak extension.
+                        renamed to .htaccess__[HASH] and web.config.orig.  When using either 'Create New' or 'Restore Original' any existing config files  will	be backed up with a .bak extension.
                         <i>None of these changes are made until Step 3 is completed, to avoid any issues the .htaccess might cause during the install</i>
                         <br/><br/>
                     </td>
@@ -642,7 +642,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                 <br/><br/>
 
                 <b>Web server configuration files:</b><br/>
-                For Apache web server the root .htaccess file was copied to htaccess.orig. A new stripped down .htaccess file was created to help simplify access issues.  For IIS web server the web.config file was copied to web.config.orig, however no new web.config file was created.  If you have not altered this file manually then resaving your permalinks and resaving your plugins should resolve most all changes that were made to the root web configuration file.   If your still experiencing issues then open the .orig file and do a compare to see what changes need to be made. <br/><br/><b>Plugin Notes:</b><br/> It's impossible to know how all 3rd party plugins function.  The Duplicator attempts to fix the new install URL for settings stored in the WordPress options table.   Please validate that all plugins retained there settings after installing.   If you experience issues try to bulk deactivate all plugins then bulk reactivate them on your new duplicated site. If you run into issues were a plugin does not retain its data then try to resave the plugins settings.
+                For Apache web server the root .htaccess file was copied to .htaccess__[HASH]. A new stripped down .htaccess file was created to help simplify access issues.  For IIS web server the web.config file was copied to web.config.orig, however no new web.config file was created.  If you have not altered this file manually then resaving your permalinks and resaving your plugins should resolve most all changes that were made to the root web configuration file.   If your still experiencing issues then open the .orig file and do a compare to see what changes need to be made. <br/><br/><b>Plugin Notes:</b><br/> It's impossible to know how all 3rd party plugins function.  The Duplicator attempts to fix the new install URL for settings stored in the WordPress options table.   Please validate that all plugins retained there settings after installing.   If you experience issues try to bulk deactivate all plugins then bulk reactivate them on your new duplicated site. If you run into issues were a plugin does not retain its data then try to resave the plugins settings.
                 <br/><br/>
 
                  <b>Cache Systems:</b><br/>

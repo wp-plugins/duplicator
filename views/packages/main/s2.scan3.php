@@ -4,7 +4,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	/* @var $Package DUP_Package */
 	function _duplicatorGetRootPath() {
 		$txt   = __('Root Path', 'duplicator');
-		$root  = rtrim(DUPLICATOR_WPROOTPATH, '//');
+		$root  = duplicator_get_abs_path();
 		$sroot = strlen($root) > 50 ? substr($root, 0, 50) . '...' : $root;
 		echo "<div title='{$root}' class='divider'><i class='fa fa-folder-open'></i> {$sroot}</div>";
 	}
@@ -616,7 +616,7 @@ DIALOG: Scan Results -->
 		<small><?php echo ($Package->Archive->FilterOn) ? __('Enabled', 'duplicator') : __('Disabled', 'duplicator') ;?></small>
 	</h2>
 	<div class="filter-area">
-		<b><i class="fa fa-folder-open"></i> <?php echo rtrim(DUPLICATOR_WPROOTPATH, "//");?></b>
+		<b><i class="fa fa-folder-open"></i> <?php echo duplicator_get_abs_path();?></b>
 
 		<script id="hb-filter-file-list" type="text/x-handlebars-template">
 			<div class="file-info">
@@ -711,7 +711,7 @@ jQuery(document).ready(function($)
 {
 
 	Handlebars.registerHelper('stripWPRoot', function(path) {
-		return  path.replace('<?php echo rtrim(DUPLICATOR_WPROOTPATH, "//") ?>', '');
+		return  path.replace('<?php echo duplicator_get_abs_path(); ?>');
 	});
 
 	//Uncheck file names if directory is checked

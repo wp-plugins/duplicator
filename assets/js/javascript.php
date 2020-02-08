@@ -323,5 +323,24 @@ jQuery(document).ready(function($)
 	//Prevent notice boxes from flashing as its re-positioned in DOM
 	$('div.dup-wpnotice-box').show(300);
 
-});	
+});
+
+jQuery(document).ready(function($) {
+    $('.duplicator-message .notice-dismiss, .duplicator-message .duplicator-notice-dismiss, .duplicator-message  .duplicator-notice-rate-now').on('click', function (event) {
+		if ('button button-primary duplicator-notice-rate-now' !== $(event.target).attr('class')) {
+			event.preventDefault();
+		}
+        $.post(ajaxurl, {
+            action: 'duplicator_set_admin_notice_viewed',
+            notice_id: $(this).closest('.duplicator-message-dismissed').data('notice_id')
+        });
+        var $wrapperElm = $(this).closest('.duplicator-message-dismissed');
+        $wrapperElm.fadeTo(100, 0, function () {
+            $wrapperElm.slideUp(100, function () {
+                $wrapperElm.remove();
+            });
+        });
+    });   
+});
+
 </script>

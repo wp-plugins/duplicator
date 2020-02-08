@@ -43,7 +43,7 @@ if ($_POST['secure-try'] && ! $pass_check) {
 
 <!-- =========================================
 VIEW: STEP 0 - PASSWORD -->
-<form method="post" id="i1-pass-form" class="content-form"  data-parsley-validate="">
+<form method="post" id="i1-pass-form" class="content-form"  data-parsley-validate="" autocomplete="off" >
     <input type="hidden" name="view" value="secure" />
     <input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('secure'); ?>">
     <input type="hidden" name="secure-try" value="1" />

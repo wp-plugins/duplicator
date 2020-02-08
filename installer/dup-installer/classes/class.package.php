@@ -38,7 +38,7 @@ final class DUPX_Package
     {
         static $path = null;
         if (is_null($path)) {
-            $path = $GLOBALS['DUPX_ROOT'].'/htaccess.orig';
+            $path = $GLOBALS['DUPX_ROOT'].'/.htaccess__'.$GLOBALS['DUPX_AC']->package_hash;
         }
         return $path;
     }

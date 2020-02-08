@@ -61,15 +61,15 @@ class DUP_Archive
 		$this->ExportOnlyDB	 = false;
 		$this->FilterInfo	 = new DUP_Archive_Filter_Info();
 
-		$rootPath = DUP_Util::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
+		$homePath = duplicator_get_home_path();
 
-		$this->wpCorePaths[] = DUP_Util::safePath("{$rootPath}/wp-admin");
+		$this->wpCorePaths[] = DUP_Util::safePath("{$homePath}/wp-admin");
 		$this->wpCorePaths[] = DUP_Util::safePath(WP_CONTENT_DIR."/uploads");
 		$this->wpCorePaths[] = DUP_Util::safePath(WP_CONTENT_DIR."/languages");
 		$this->wpCorePaths[] = DUP_Util::safePath(get_theme_root());
-		$this->wpCorePaths[] = DUP_Util::safePath("{$rootPath}/wp-includes");
+		$this->wpCorePaths[] = DUP_Util::safePath("{$homePath}/wp-includes");
 
-		$this->wpCoreExactPaths[]	 = DUP_Util::safePath("{$rootPath}");
+		$this->wpCoreExactPaths[]	 = DUP_Util::safePath("{$homePath}");
 		$this->wpCoreExactPaths[]	 = DUP_Util::safePath(WP_CONTENT_DIR);
 	}
 
@@ -165,8 +165,7 @@ class DUP_Archive
 	public function getScannerData()
 	{
 		$this->createFilterInfo();
-		$rootPath	 = DUP_Util::safePath(rtrim(DUPLICATOR_WPROOTPATH, '//'));
-		$rootPath	 = (trim($rootPath) == '') ? '/' : $rootPath;
+		$rootPath	 = duplicator_get_abs_path();
 
 		$this->RecursiveLinks = array();
 		//If the root directory is a filter then skip it all
@@ -302,7 +301,7 @@ class DUP_Archive
 
 		//FILTER: CORE ITMES
 		//Filters Duplicator free packages & All pro local directories
-		$wp_root						 = rtrim(DUPLICATOR_WPROOTPATH, '/');
+		$wp_root						 = duplicator_get_abs_path();
 		$upload_dir						 = wp_upload_dir();
 		$upload_dir						 = isset($upload_dir['basedir']) ? basename($upload_dir['basedir']) : 'uploads';
 		$wp_content						 = str_replace("\\", "/", WP_CONTENT_DIR);
@@ -310,6 +309,7 @@ class DUP_Archive
 		$this->FilterInfo->Dirs->Core	 = array(
 			//WP-ROOT
 			$wp_root.'/wp-snapshots',
+            $wp_root.'/.opcache',
 			//WP-CONTENT
 			$wp_content.'/backups-dup-pro',
 			$wp_content.'/ai1wm-backups',
@@ -371,9 +371,10 @@ class DUP_Archive
 		$this->FilterExtsAll	 = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);
 		$this->FilterFilesAll	 = array_merge($this->FilterInfo->Files->Instance, $this->FilterInfo->Files->Global);
 
-		$this->FilterFilesAll[]	 = DUPLICATOR_WPROOTPATH.'.htaccess';
-		$this->FilterFilesAll[]	 = DUPLICATOR_WPROOTPATH.'web.config';
-		$this->FilterFilesAll[]	 = DUPLICATOR_WPROOTPATH.'wp-config.php';
+		$abs_path = duplicator_get_abs_path();
+		$this->FilterFilesAll[]	 = $abs_path.'/.htaccess';
+		$this->FilterFilesAll[]	 = $abs_path.'/web.config';
+		$this->FilterFilesAll[]	 = $abs_path.'/wp-config.php';
 		$this->tmpFilterDirsAll	 = $this->FilterDirsAll;
 
 		//PHP 5 on windows decode patch
@@ -429,7 +430,7 @@ class DUP_Archive
             //Check for other WordPress installs
             if ($name === 'wp-admin') {
                 $parent_dir = realpath(dirname($this->Dirs[$key]));
-                if ($parent_dir != realpath(DUPLICATOR_WPROOTPATH)) {
+                if ($parent_dir != realpath(duplicator_get_abs_path())) {
                     if (file_exists("$parent_dir/wp-includes")) {
                         if (file_exists("$parent_dir/wp-config.php")) {
                             // Ensure we aren't adding any critical directories
@@ -649,7 +650,7 @@ class DUP_Archive
 			$this->FilterInfo->TreeSize[] = array(
 				'size' => DUP_Util::byteSize($sum, 0),
 				'dir' => $dir,
-				'sdir' => str_replace(DUPLICATOR_WPROOTPATH, '/', $dir),
+				'sdir' => str_replace(duplicator_get_abs_path(), '/', $dir),
 				'iscore' => $iscore,
 				'files' => $files
 			);
@@ -679,7 +680,7 @@ class DUP_Archive
 
 			$this->FilterInfo->TreeWarning[] = array(
 				'dir' => $dir,
-				'sdir' => str_replace(DUPLICATOR_WPROOTPATH, '/', $dir),
+				'sdir' => str_replace(duplicator_get_abs_path(), '/', $dir),
 				'iscore' => $iscore,
 				'count' => count($files),
 				'files' => $files);
@@ -713,7 +714,7 @@ class DUP_Archive
 
 				$this->FilterInfo->TreeWarning[] = array(
 					'dir' => $dir,
-					'sdir' => str_replace(DUPLICATOR_WPROOTPATH, '/', $dir),
+					'sdir' => str_replace(duplicator_get_abs_path(), '/', $dir),
 					'iscore' => $iscore,
 					'count' => 0);
 			}
@@ -729,10 +730,11 @@ class DUP_Archive
 	public function getWPConfigFilePath()
 	{
 		$wpconfig_filepath = '';
-		if (file_exists(DUPLICATOR_WPROOTPATH.'wp-config.php')) {
-			$wpconfig_filepath = DUPLICATOR_WPROOTPATH.'wp-config.php';
-		} elseif (@file_exists(dirname(DUPLICATOR_WPROOTPATH).'/wp-config.php') && !@file_exists(dirname(DUPLICATOR_WPROOTPATH).'/wp-settings.php')) {
-			$wpconfig_filepath = dirname(DUPLICATOR_WPROOTPATH).'/wp-config.php';
+		$abs_path = duplicator_get_abs_path();
+		if (file_exists($abs_path.'/wp-config.php')) {
+			$wpconfig_filepath = $abs_path.'/wp-config.php';
+		} elseif (@file_exists(dirname($abs_path).'/wp-config.php') && !@file_exists(dirname($abs_path).'/wp-settings.php')) {
+			$wpconfig_filepath = dirname($abs_path).'/wp-config.php';
 		}
 		return $wpconfig_filepath;
 	}
@@ -770,7 +772,7 @@ class DUP_Archive
 			$newWPContentDirPath = empty($basePath) ? 'wp-content/' : $basePath.'wp-content/';
 			$emptyDir			 = ltrim(str_replace($wpContentDirNormalizePath, $newWPContentDirPath, $dir), '/');
 		} else {
-			$emptyDir = ltrim(str_replace($compressDir, $basePath, $dir), '/');
+            $emptyDir = ltrim($basePath.preg_replace('/^'.preg_quote($compressDir, '/').'(.*)/m', '$1', $dir), '/');
 		}
 		return $emptyDir;
 	}
@@ -785,8 +787,8 @@ class DUP_Archive
 		if ($isOuterWPContentDir && 0 === strpos($file, $wpContentDirNormalizePath)) {
 			$newWPContentDirPath = empty($basePath) ? 'wp-content/' : $basePath.'wp-content/';
 			$localFileName		 = ltrim(str_replace($wpContentDirNormalizePath, $newWPContentDirPath, $file), '/');
-		} else {
-			$localFileName = ltrim(str_replace($compressDir, $basePath, $file), '/');
+		} else {            
+			$localFileName = ltrim($basePath.preg_replace('/^'.preg_quote($compressDir, '/').'(.*)/m', '$1', $file), '/');
 		}
 		return $localFileName;
 	}

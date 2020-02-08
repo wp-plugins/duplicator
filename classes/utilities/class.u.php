@@ -413,7 +413,7 @@ class DUP_Util
 	 */
 	public static function hasShellExec()
 	{
-		$cmds = array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded');
+		$cmds = array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded', 'exec');
 
 		//Function disabled at server level
 		if (array_intersect($cmds, array_map('trim', explode(',', @ini_get('disable_functions'))))) return false;
@@ -556,7 +556,7 @@ class DUP_Util
 	 */
 	public static function initSnapshotDirectory()
 	{
-		$path_wproot = DUP_Util::safePath(DUPLICATOR_WPROOTPATH);
+		$path_wproot = duplicator_get_abs_path();
 		$path_ssdir	 = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH);
 		$path_plugin = DUP_Util::safePath(DUPLICATOR_PLUGIN_PATH);
 

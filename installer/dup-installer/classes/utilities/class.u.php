@@ -1663,25 +1663,28 @@ class DUPX_U
 
 		return $wrapper . $path;
 	}
+    
+    /**
+     * Test if a given path is a stream URL
+     * 
+     * from wordpress function wp_is_stream
+     *
+     * @param string $path The resource path or URL.
+     * @return bool True if the path is a stream URL.
+     */
+    function wp_is_stream($path)
+    {
+        $scheme_separator = strpos($path, '://');
 
-	/**
-	 * Test if a given path is a stream URL
-	 *
-	 * @param string $path The resource path or URL.
-	 * @return bool True if the path is a stream URL.
-	 */
-	public static function wp_is_stream( $path ) {
-		if ( false === strpos( $path, '://' ) ) {
-			// $path isn't a stream
-			return false;
-		}
+        if (false === $scheme_separator) {
+            // $path isn't a stream
+            return false;
+        }
 
-		$wrappers    = stream_get_wrappers();
-		$wrappers    = array_map( 'preg_quote', $wrappers );
-		$wrappers_re = '(' . join( '|', $wrappers ) . ')';
+        $stream = substr($path, 0, $scheme_separator);
 
-		return preg_match( "!^$wrappers_re://!", $path ) === 1;
-	}
+        return in_array($stream, stream_get_wrappers(), true);
+    }
 
     /**
      * Check if string is base64 encoded

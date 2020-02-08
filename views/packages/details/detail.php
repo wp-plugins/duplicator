@@ -8,7 +8,7 @@ $ui_css_install = (isset($view_state['dup-package-dtl-install-panel']) && $view_
 
 $format = strtolower($package->Archive->Format);
 
-$base_url			= admin_url('admin.php');
+$base_url			= admin_url('admin-ajax.php');
 $link_sql			= add_query_arg(
 							array(
 								'action' => 'duplicator_download',
@@ -155,7 +155,7 @@ GENERAL -->
 				<table class="dup-sub-list">
 					<tr>
 						<td><?php esc_html_e('Archive', 'duplicator') ?>: </td>
-						<td><a href="<?php echo esc_url($link_archive); ?>" target="_blank"><?php echo esc_html($package->Archive->File); ?></a></td>
+						<td><a href="<?php echo esc_url($link_archive); ?>"><?php echo esc_html($package->Archive->File); ?></a></td>
 					</tr>
 					<tr>
 						<td><?php esc_html_e('Installer', 'duplicator') ?>: </td>

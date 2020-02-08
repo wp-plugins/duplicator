@@ -18,7 +18,7 @@ class DUPX_HTTP
 		$html = "<form id='".DUPX_U::esc_attr($id)."' method='post' action='".DUPX_U::esc_url($url)."'>\n";
 		foreach ($data as $name => $value)
 		{
-			$html .= "<input type='hidden' name='".DUPX_U::esc_attr($name)."' value='".DUPX_U::esc_attr($value)."' />\n";
+			$html .= "<input type='hidden' name='".DUPX_U::esc_attr($name)."' value='".DUPX_U::esc_attr($value)."' autocomplete=\"off\" />\n";
 		}
 		$html .= "</form>\n";
 		$html .= "<script>$(document).ready(function() { $('#{$id}').submit(); });</script>";

@@ -1,6 +1,6 @@
 === Duplicator - WordPress Migration Plugin ===
 Contributors: corylamleorg, bobriley
-Tags: migration, backup, restore, move, migrate, duplicate, transfer, clone, automate, copy site
+Tags: migration, backup, duplicate, move, migrate, restore, transfer, clone, automate, copy site, migrator
 Requires at least: 4.0
 Tested up to: 5.3
 Requires PHP: 5.2.17
@@ -19,7 +19,7 @@ For complete details visit [snapcreek.com](https://snapcreek.com/duplicator/?utm
 http://www.youtube.com/watch?v=oc73jtvHWYQ
 
 = Overview =
-Duplicator enables you to:
+Duplicator is the most powerful migrator available. It enables you to:
 
 * Move, migrate or clone a WordPress site between domains or hosts with **zero downtime**
 * Pull down a live site to localhost for development

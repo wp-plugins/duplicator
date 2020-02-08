@@ -95,7 +95,7 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 		<?php if (!$is_shellexec_on) : ?>
 			<p class="description" style="width:550px; margin:5px 0 0 20px">
 				<?php
-					_e("This server does not support the PHP shell_exec function which is required for mysqldump to run. ", 'duplicator');
+					_e("This server does not support the PHP shell_exec or exec function which is required for mysqldump to run. ", 'duplicator');
 					_e("Please contact the host or server administrator to enable this feature.", 'duplicator');
 				?>
 				<br/>

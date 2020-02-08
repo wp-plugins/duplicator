@@ -95,7 +95,7 @@ $zip_archive_enabled = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $archive_config  = DUPX_ArchiveConfig::getInstance();
 ?>
 
-<form id="s1-input-form" method="post" class="content-form">
+<form id="s1-input-form" method="post" class="content-form" autocomplete="off">
 <input type="hidden" name="view" value="step1" />
 <input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step1'); ?>"> 
 <input type="hidden" name="ctrl_action" value="ctrl-step1" />
@@ -713,7 +713,7 @@ OPTIONS
 <!-- =========================================
 VIEW: STEP 1 - DB QUICK TEST
 ========================================= -->
-<form id="s1-dbtest-form" method="post" target="_blank">
+<form id="s1-dbtest-form" method="post" target="_blank" autocomplete="off">
 	<input type="hidden" name="dbonlytest" value="1" />
 	<input type="hidden" name="view" value="step2" />
 	<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
@@ -727,7 +727,7 @@ VIEW: STEP 1 - DB QUICK TEST
 VIEW: STEP 1 - AJAX RESULT
 Auto Posts to view.step2.php
 ========================================= -->
-<form id='s1-result-form' method="post" class="content-form" style="display:none">
+<form id='s1-result-form' method="post" class="content-form" style="display:none" autocomplete="off">
 
     <div class="dupx-logfile-link"><?php DUPX_View_Funcs::installerLogLink(); ?></div>
     <div class="hdr-main">
@@ -1067,10 +1067,6 @@ DUPX.kickOffDupArchiveExtract = function ()
 	request.client_driven = isClientSideKickoff ? 1 : 0;
 	request.throttle_delay = DUPX.throttleDelay;
 	request.filtered_directories = ['dup-installer'];
-
-    if(!DUPX.areConfigFilesPreserved()) {
-        request.file_renames = {".htaccess":"htaccess.orig"};
-    }
 
 	var requestString = JSON.stringify(request);
 

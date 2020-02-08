@@ -420,7 +420,7 @@ jQuery(document).ready(function($)
 		html_msg += '<li><?php esc_html_e("- On some budget hosts scanning over 30k files can lead to timeout/gateway issues. Consider scanning only your main WordPress site and avoid trying to backup other external directories.", 'duplicator') ?></li>';
 		html_msg += '<li><?php esc_html_e("- Symbolic link recursion can cause timeouts.  Ask your server admin if any are present in the scan path.  If they are add the full path as a filter and try running the scan again.", 'duplicator') ?></li>';
 		html_msg += '</ul>';
-		$('#dup-msg-error-response-status').html('Scan Path Error [<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>]');
+		$('#dup-msg-error-response-status').html('Scan Path Error [<?php echo duplicator_get_abs_path(); ?>]');
 		$('#dup-msg-error-response-text').html(html_msg);
 		$('#dup-msg-error').show(200);
 	}

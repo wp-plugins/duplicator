@@ -44,7 +44,7 @@ class DUPX_ServerConfig
 		self::$timeStamp			= date("Y-m-d H:i:s");
 		self::$rootPath				= "{$GLOBALS['DUPX_ROOT']}";
 		self::$confFileApache		= "{$GLOBALS['DUPX_ROOT']}/.htaccess";
-		self::$confFileApacheOrig	= "{$GLOBALS['DUPX_ROOT']}/htaccess.orig";
+		self::$confFileApacheOrig	= "{$GLOBALS['DUPX_ROOT']}/.htaccess__".$GLOBALS['DUPX_AC']->package_hash;
 		self::$confFileIIS			= "{$GLOBALS['DUPX_ROOT']}/web.config";
 		self::$confFileIISOrig		= "{$GLOBALS['DUPX_ROOT']}/web.config.orig";
 		self::$confFileWordFence	= "{$GLOBALS['DUPX_ROOT']}/.user.ini";
@@ -96,7 +96,7 @@ class DUPX_ServerConfig
 	}
 
     /**
-     * Copies the code in htaccess.orig and web.config.orig
+     * Copies the code in .htaccess__[HASH] and web.config.orig
 	 * to .htaccess and web.config
      *
 	 * @return void
@@ -105,16 +105,16 @@ class DUPX_ServerConfig
 	{
 		//APACHE
 		if(rename(self::$confFileApacheOrig, self::$confFileApache)){
-			DUPX_Log::info("\n- PASS: The orginal htaccess.orig was renamed");
+			DUPX_Log::info("\n- PASS: The orginal .htaccess__[HASH] was renamed");
 		} else {
-			DUPX_Log::info("\n- WARN: The orginal htaccess.orig was NOT renamed");
+			DUPX_Log::info("\n- WARN: The orginal .htaccess__[HASH] was NOT renamed");
 		}
 
 		//IIS
 		if(rename(self::$confFileIISOrig, self::$confFileIIS)){
-			DUPX_Log::info("\n- PASS: The orginal htaccess.orig was renamed");
+			DUPX_Log::info("\n- PASS: The orginal .htaccess__[HASH] was renamed");
 		} else {
-			DUPX_Log::info("\n- WARN: The orginal htaccess.orig was NOT renamed");
+			DUPX_Log::info("\n- WARN: The orginal .htaccess__[HASH] was NOT renamed");
 		}
     }
 
@@ -162,7 +162,7 @@ class DUPX_ServerConfig
 		$newdata	 = parse_url(self::$newSiteURL);
 		$newpath	 = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
 		$update_msg  = "#This Apache config file was created by Duplicator Installer on {$timestamp}.\n";
-		$update_msg .= "#The original can be found in archived file with the name htaccess.orig\n";
+		$update_msg .= "#The original can be found in archived file with the name .htaccess__[HASH]\n";
 
         $tmp_htaccess = <<<HTACCESS
 {$update_msg}
@@ -346,7 +346,7 @@ HTACCESS;
     }
 
     /**
-     * Copies the code in htaccess.orig to .htaccess
+     * Copies the code in .htaccess__[HASH] to .htaccess
      *
      * @param $path					The root path to the location of the server config files
      * @param $new_htaccess_name	New name of htaccess (either .htaccess or a backup name)
@@ -357,7 +357,7 @@ HTACCESS;
     {
         $status = false;
 
-        if (!@rename($path.'/htaccess.orig', $path.'/'.$new_htaccess_name)) {
+        if (!@rename($path.'/.htaccess__'.$GLOBALS['DUPX_AC']->package_hash, $path.'/'.$new_htaccess_name)) {
             $status = true;
         }
 
@@ -382,7 +382,7 @@ HTACCESS;
         $newdata      = parse_url($post_url_new);
         $newpath      = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
         $update_msg   = "# This file was updated by Duplicator Pro on {$timestamp}.\n";
-        $update_msg   .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.orig for the .htaccess original file." : "";
+        $update_msg   .= (file_exists("{$path}/.htaccess")) ? "# See .htaccess__[HASH] for the .htaccess original file." : "";
         $update_msg   .= self::getOldHtaccessAddhandlerLine($path);
 
 

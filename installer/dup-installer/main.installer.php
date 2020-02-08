@@ -453,7 +453,7 @@ $(document).ready(function ()
 
 
 <?php if ($GLOBALS['DUPX_DEBUG']) :?>
-	<form id="form-debug" method="post" action="?debug=1">
+<form id="form-debug" method="post" action="?debug=1" autocomplete="off" >
 		<input id="debug-view" type="hidden" name="view" />
 		<br/><hr size="1" />
 		DEBUG MODE ON

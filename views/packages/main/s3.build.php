@@ -422,7 +422,14 @@ jQuery(document).ready(function ($)
 					console.log(xHr);
 					return false;
 				}
-				Duplicator.Pack.WireDownloadLinks(data);
+                
+                if ((data != null) && (typeof (data) != 'undefined') && data.status == 1) {
+                    Duplicator.Pack.WireDownloadLinks(data);
+                } else {
+                    var message = (typeof (data.error) != 'undefined' && data.error.length) ? data.error : 'Error processing package';
+                    Duplicator.Pack.DupArchiveProcessingFailed(message);
+                }
+                
 			},
 			error: function (xHr) {
 				$('#dup-progress-bar-area').hide();

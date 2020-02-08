@@ -130,4 +130,55 @@ class DUP_UI_Notice
             }
         }
     }
+
+    /**
+     * Shows feedback notices after certain no. of packages successfully created
+     */
+    public static function showFeedBackNotice() {
+        $notice_id = 'rate_us_feedback';
+
+		if (!current_user_can('manage_options')) {
+			return;
+		}
+
+        $notices = get_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, true);
+
+        $duplicator_pages = array(
+            'toplevel_page_duplicator',
+            'duplicator_page_duplicator-tools',
+            'duplicator_page_duplicator-settings',
+            'duplicator_page_duplicator-gopro',
+        );
+
+        if (!in_array(get_current_screen()->id, $duplicator_pages) || (isset($notices[$notice_id]) && 'true' === $notices[$notice_id])) {
+			return;
+		}
+
+		$packagesCount = $GLOBALS['wpdb']->get_var('SELECT count(id)    FROM '.DUP_Util::getTablePrefix().'duplicator_packages         WHERE status=100');
+
+		if ($packagesCount < DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE) {
+			return;
+		}
+
+		$dismiss_url = add_query_arg(array(
+			'action' => 'duplicator_set_admin_notice_viewed',
+			'notice_id' => esc_attr($notice_id),
+        ), admin_url('admin-post.php'));
+		?>
+		<div class="notice updated duplicator-message duplicator-message-dismissed" data-notice_id="<?php echo esc_attr( $notice_id); ?>">
+			<div class="duplicator-message-inner">
+				<div class="duplicator-message-icon">
+					<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo.png"); ?>" style="text-align:top; margin:0; height:60px; width:60px;" alt="Duplicator">
+				</div>
+				<div class="duplicator-message-content">
+					<p><strong><?php echo __( 'Congrats!', 'duplicator' ); ?></strong> <?php printf(esc_html__('You created over %d packages with Duplicator. Great job! If you can spare a minute, please help us by leaving a five star review on WordPress.org.', 'duplicator'), DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE); ?></p>
+					<p class="duplicator-message-actions">
+						<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5/#new-post" target="_blank" class="button button-primary duplicator-notice-rate-now"><?php esc_html_e("Sure! I'd love to help", 'duplicator' ); ?></a>
+						<a href="<?php echo esc_url_raw($dismiss_url); ?>" class="button duplicator-notice-dismiss"><?php esc_html_e('Hide Notification', 'duplicator'); ?></a>
+					</p>
+				</div>
+			</div>
+		</div>
+		<?php
+    }
 }

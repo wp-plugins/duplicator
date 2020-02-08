@@ -6,22 +6,23 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.io.php');
 
 $installer_files	= DUP_Server::getInstallerFiles();
 $package_name		= (isset($_GET['package'])) ?  esc_html($_GET['package']) : '';
+$abs_path			= duplicator_get_abs_path();
 
 // For auto detect archive file name logic
 if (empty($package_name)) {
-    $installer_file_path = DUPLICATOR_WPROOTPATH . 'installer.php';
+    $installer_file_path = $abs_path . '/' . 'installer.php';
     if (file_exists($installer_file_path)) {
         $installer_file_data = file_get_contents($installer_file_path);
         if (preg_match("/const ARCHIVE_FILENAME	 = '(.*?)';/", $installer_file_data, $match)) {
             $temp_archive_file = esc_html($match[1]);
-            $temp_archive_file_path = DUPLICATOR_WPROOTPATH . $temp_archive_file;
+            $temp_archive_file_path = $abs_path . '/' . $temp_archive_file;
             if (file_exists($temp_archive_file_path)) {
                 $package_name = $temp_archive_file;
             }
         }
     }
 }
-$package_path	= empty($package_name) ? '' : DUPLICATOR_WPROOTPATH.$package_name;
+$package_path	= empty($package_name) ? '' : $abs_path . '/' . $package_name;
 $txt_found		= __('File Found: Unable to remove', 'duplicator');
 $txt_removed	= __('Removed', 'duplicator');
 $nonce			= wp_create_nonce('duplicator_cleanup_page');

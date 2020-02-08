@@ -24,7 +24,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 	/** 
      * Calls the ScanValidator and returns a JSON result
 	 * 
-	 * @param string $_POST['scan-path']		The path to start scanning from, defaults to DUPLICATOR_WPROOTPATH
+	 * @param string $_POST['scan-path']		The path to start scanning from, defaults to duplicator_get_abs_path()
 	 * @param bool   $_POST['scan-recursive']	Recursivly search the path
 	 * 
 	 * @notes: Testing = /wp-admin/admin-ajax.php?action=DUP_CTRL_Tools_runScanValidator
@@ -43,7 +43,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 		try 
 		{
 			//CONTROLLER LOGIC
-			$path = isset($post['scan-path']) ? sanitize_text_field($post['scan-path']) : DUPLICATOR_WPROOTPATH;
+			$path = isset($post['scan-path']) ? sanitize_text_field($post['scan-path']) : duplicator_get_abs_path();
 			if (!is_dir($path)) {
 				throw new Exception("Invalid directory provided '{$path}'!");
 			}

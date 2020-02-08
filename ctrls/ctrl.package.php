@@ -1,7 +1,8 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
-if (! defined('DUPLICATOR_VERSION')) exit;
+if (!defined('DUPLICATOR_VERSION'))
+    exit;
 
 require_once(DUPLICATOR_PLUGIN_PATH.'/ctrls/ctrl.base.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/utilities/class.u.scancheck.php');
@@ -17,7 +18,8 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.arch
  *
  * @return void
  */
-function duplicator_package_scan_shutdown() {
+function duplicator_package_scan_shutdown()
+{
     $logMessage = DUP_Handler::getVarLog();
     if (!empty($logMessage)) {
         echo nl2br($logMessage);
@@ -74,35 +76,53 @@ function duplicator_package_build()
 
     header('Content-Type: application/json');
 
-    @set_time_limit(0);
-    $errLevel = error_reporting();
-    error_reporting(E_ERROR);
-    DUP_Util::initSnapshotDirectory();
+    $Package = null;
 
-    $Package = DUP_Package::getActive();
-    $Package->save('zip');
+    try {
+        @set_time_limit(0);
+        $errLevel = error_reporting();
+        error_reporting(E_ERROR);
+        DUP_Util::initSnapshotDirectory();
 
-    DUP_Settings::Set('active_package_id', $Package->ID);
-    DUP_Settings::Save();
+        $Package = DUP_Package::getActive();
+        $Package->save('zip');
 
-    if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$Package->ScanFile}")) {
-        die("The scan result file was not found.  Please run the scan step before building the package.");
+        DUP_Settings::Set('active_package_id', $Package->ID);
+        DUP_Settings::Save();
+
+        if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$Package->ScanFile}")) {
+            die("The scan result file was not found.  Please run the scan step before building the package.");
+        }
+
+        $Package->runZipBuild();
+
+        //JSON:Debug Response
+        //Pass = 1, Warn = 2, Fail = 3
+        $json                = array();
+        $json['status']      = 1;
+        $json['error']       = '';
+        $json['package']     = $Package;
+        $json['runtime']     = $Package->Runtime;
+        $json['exeSize']     = $Package->ExeSize;
+        $json['archiveSize'] = $Package->ZipSize;
+
+        //Simulate a Host Build Interrupt
+        //die(0);
     }
+    catch (Exception $e) {
+        $Package->setStatus(DUP_PackageStatus::ERROR);
 
-    $Package->runZipBuild();
-
-    //JSON:Debug Response
-    //Pass = 1, Warn = 2, Fail = 3
-    $json            = array();
-    $json['status']  = 1;
-    $json['package'] = $Package;
-    $json['runtime'] = $Package->Runtime;
-    $json['exeSize'] = $Package->ExeSize;
-    $json['archiveSize'] = $Package->ZipSize;
-    $json_response   = DupLiteSnapJsonU::wp_json_encode($json);
-
-    //Simulate a Host Build Interrupt
-	//die(0);
+        //JSON:Debug Response
+        //Pass = 1, Warn = 2, Fail = 3
+        $json                = array();
+        $json['status']      = 3;
+        $json['error']       = $e->getMessage();
+        $json['package']     = $Package;
+        $json['runtime']     = null;
+        $json['exeSize']     = null;
+        $json['archiveSize'] = null;
+    }
+    $json_response = DupLiteSnapJsonU::wp_json_encode($json);
 
     error_reporting($errLevel);
     die($json_response);
@@ -117,7 +137,7 @@ function duplicator_duparchive_package_build()
 {
     DUP_Handler::init_error_handler();
     DUP_Log::Info('[CTRL DUP ARCIVE] CALL TO '.__FUNCTION__);
-    
+
     check_ajax_referer('duplicator_duparchive_package_build', 'nonce');
     DUP_Util::hasCapability('export');
     header('Content-Type: application/json');
@@ -157,14 +177,14 @@ function duplicator_duparchive_package_build()
         die("There is no active package.");
     }
 
-    if($package->Status == DUP_PackageStatus::ERROR) {
+    if ($package->Status == DUP_PackageStatus::ERROR) {
         $package->setStatus(DUP_PackageStatus::ERROR);
         $hasCompleted = true;
     } else {
         try {
             $hasCompleted = $package->runDupArchiveBuild();
         }
-        catch(Exception $ex) {
+        catch (Exception $ex) {
             DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: caught exception');
             Dup_Log::Error('[CTRL DUP ARCIVE]  Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
             DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: after log');
@@ -173,7 +193,7 @@ function duplicator_duparchive_package_build()
         }
     }
 
-    $json = array();
+    $json             = array();
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
     if (!empty($json['failures'])) {
         DUP_Log::Info('[CTRL DUP ARCIVE] FAILURES', $json['failures']);
@@ -184,11 +204,11 @@ function duplicator_duparchive_package_build()
     if ($hasCompleted) {
         DUP_Log::Info('[CTRL DUP ARCIVE] COMPLETED PACKAGE STATUS: '.$package->Status);
 
-        if($package->Status == DUP_PackageStatus::ERROR) {
+        if ($package->Status == DUP_PackageStatus::ERROR) {
             DUP_Log::Info('[CTRL DUP ARCIVE] ERROR');
-            $error_message = __('Error building DupArchive package') . '<br/>';
+            $error_message = __('Error building DupArchive package').'<br/>';
 
-            foreach($json['failures'] as $failure) {
+            foreach ($json['failures'] as $failure) {
                 $error_message .= implode(',', $failure->description);
             }
 
@@ -198,7 +218,7 @@ function duplicator_duparchive_package_build()
             $json['status'] = 3;
         } else {
             Dup_Log::Info("sending back success status");
-            $json['status']  = 1;
+            $json['status'] = 1;
         }
 
         Dup_Log::Trace('#### json package');
@@ -230,27 +250,27 @@ function duplicator_package_delete()
 {
     DUP_Handler::init_error_handler();
     check_ajax_referer('duplicator_package_delete', 'nonce');
-    DUP_Util::hasCapability('export');    
+    DUP_Util::hasCapability('export');
 
-	function _unlinkFile($file) {
-		if (! file_exists($file)) {
-			return;
-		}
-		if (! @unlink($file)) {
-			@chmod($file, 0644);
-			@unlink($file);
-		}
-	}
-
+    function _unlinkFile($file)
+    {
+        if (!file_exists($file)) {
+            return;
+        }
+        if (!@unlink($file)) {
+            @chmod($file, 0644);
+            @unlink($file);
+        }
+    }
     try {
         global $wpdb;
-        $json     = array();
-        $post     = stripslashes_deep($_POST);
+        $json        = array();
+        $post        = stripslashes_deep($_POST);
         $tablePrefix = DUP_Util::getTablePrefix();
-        $tblName  = $tablePrefix.'duplicator_packages';
-        $postIDs  = isset($post['duplicator_delid']) ? sanitize_text_field($post['duplicator_delid']) : null;
-        $list     = explode(",", $postIDs);
-        $delCount = 0;
+        $tblName     = $tablePrefix.'duplicator_packages';
+        $postIDs     = isset($post['duplicator_delid']) ? sanitize_text_field($post['duplicator_delid']) : null;
+        $list        = explode(",", $postIDs);
+        $delCount    = 0;
 
         if ($postIDs != null) {
 
@@ -275,20 +295,20 @@ function duplicator_package_delete()
                             _unlinkFile($globSnapshotFile);
                         }
                         // _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log"));
-
                         //Unfinished Zip files
                         /*
-                        $tmpZip = DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_archive.zip.*";
-                        if ($tmpZip !== false) {
-                            array_map('unlink', glob($tmpZip));
-                        }
-                        */
+                          $tmpZip = DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_archive.zip.*";
+                          if ($tmpZip !== false) {
+                          array_map('unlink', glob($tmpZip));
+                          }
+                         */
                         $delCount++;
                     }
                 }
             }
         }
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
         $json['error'] = "{$e}";
         die(DupLiteSnapJsonU::wp_json_encode($json));
     }
@@ -314,7 +334,7 @@ function duplicator_active_package_info()
         DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
         if (!check_ajax_referer('duplicator_active_package_info', 'nonce', false)) {
-            throw new Exception(__('An unathorized security request was made to this page. Please try again!','duplicator'));
+            throw new Exception(__('An unathorized security request was made to this page. Please try again!', 'duplicator'));
         }
 
         global $wpdb;
@@ -323,26 +343,27 @@ function duplicator_active_package_info()
         $result = array(
             'active_package' => array(
                 'present' => false,
-                'status' => 0,
-                'size' => 0
+                'status'  => 0,
+                'size'    => 0
             ),
-            'html' => '',
-            'message' => ''
+            'html'           => '',
+            'message'        => ''
         );
 
         $result['active_package']['present'] = DUP_Package::is_active_package_present();
 
         if ($result['active_package']['present']) {
-            $id = DUP_Settings::Get('active_package_id');
+            $id      = DUP_Settings::Get('active_package_id');
             $package = DUP_Package::getByID($id);
             if (is_null($package)) {
-                throw new Exception(__('Active package object error','duplicator'));
+                throw new Exception(__('Active package object error', 'duplicator'));
             }
-            $result['active_package']['status'] = $package->Status;
-            $result['active_package']['size'] = $package->getArchiveSize();
+            $result['active_package']['status']      = $package->Status;
+            $result['active_package']['size']        = $package->getArchiveSize();
             $result['active_package']['size_format'] = DUP_Util::byteSize($package->getArchiveSize());
         }
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
         $error             = true;
         $result['message'] = $e->getMessage();
     }
@@ -393,21 +414,17 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
             $package = DUP_Package::getActive();
 
             //DIRS
-            $dir_filters = ($package->Archive->FilterOn)
-                                ? $package->Archive->FilterDirs.';'.sanitize_text_field($post['dir_paths'])
-                                : sanitize_text_field($post['dir_paths']);
+            $dir_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterDirs.';'.sanitize_text_field($post['dir_paths']) : sanitize_text_field($post['dir_paths']);
             $dir_filters = $package->Archive->parseDirectoryFilter($dir_filters);
             $changed     = $package->Archive->saveActiveItem($package, 'FilterDirs', $dir_filters);
 
             //FILES
-            $file_filters = ($package->Archive->FilterOn)
-                                ? $package->Archive->FilterFiles.';'.sanitize_text_field($post['file_paths'])
-                                : sanitize_text_field($post['file_paths']);
+            $file_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterFiles.';'.sanitize_text_field($post['file_paths']) : sanitize_text_field($post['file_paths']);
             $file_filters = $package->Archive->parseFileFilter($file_filters);
             $changed      = $package->Archive->saveActiveItem($package, 'FilterFiles', $file_filters);
 
             if (!$package->Archive->FilterOn && !empty($package->Archive->FilterExts)) {
-                $changed      = $package->Archive->saveActiveItem($package, 'FilterExts', '');
+                $changed = $package->Archive->saveActiveItem($package, 'FilterExts', '');
             }
 
             $changed = $package->Archive->saveActiveItem($package, 'FilterOn', 1);
@@ -422,7 +439,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
             //RETURN RESULT
             $test = ($changed) ? DUP_CTRL_Status::SUCCESS : DUP_CTRL_Status::FAILED;
             $result->process($payload, $test);
-        } catch (Exception $exc) {
+        }
+        catch (Exception $exc) {
             $result->processError($exc);
         }
     }
@@ -439,7 +457,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
     {
         DUP_Handler::init_error_handler();
 
-        check_ajax_referer('DUP_CTRL_Package_getPackageFile', 'nonce' );
+        check_ajax_referer('DUP_CTRL_Package_getPackageFile', 'nonce');
         DUP_Util::hasCapability('export');
         $params = $this->postParamMerge($post);
 
@@ -459,8 +477,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
             if ($isBinary) {
                 @session_write_close();
                 // @ob_flush();
-				//flush seems to cause issues on some PHP version where the download prompt
- 				//is no longer called but the contents of the installer are dumped to the browser.
+                //flush seems to cause issues on some PHP version where the download prompt
+                //is no longer called but the contents of the installer are dumped to the browser.
                 //@flush();
 
                 header("Pragma: public");
@@ -479,18 +497,18 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
                             $fileName = basename($filePath);
                         }
 
-						header("Content-Type: application/octet-stream");
-						header("Content-Disposition: attachment; filename=\"{$fileName}\";");
+                        header("Content-Type: application/octet-stream");
+                        header("Content-Disposition: attachment; filename=\"{$fileName}\";");
 
                         DUP_LOG::trace("streaming $filePath");
 
-						while(!feof($fp)) {
-							$buffer = fread($fp, 2048);
-							print $buffer;
-						}
+                        while (!feof($fp)) {
+                            $buffer = fread($fp, 2048);
+                            print $buffer;
+                        }
 
                         fclose($fp);
-						exit;
+                        exit;
                     } else {
                         header("Content-Type: text/plain");
                         header("Content-Disposition: attachment; filename=\"error.txt\";");
@@ -521,7 +539,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
                     echo esc_html($message);
                 }
             }
-        } catch (Exception $exc) {
+        }
+        catch (Exception $exc) {
             $result->processError($exc);
         }
     }
@@ -529,43 +548,40 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
     /**
      * Get active package status
      *
-	 * <code>
-	 * //JavaScript Ajax Request
-	 * Duplicator.Package.getActivePackageStatus()
-	 * </code>
+     * <code>
+     * //JavaScript Ajax Request
+     * Duplicator.Package.getActivePackageStatus()
+     * </code>
      */
-	public function getActivePackageStatus($post)
-	{
+    public function getActivePackageStatus($post)
+    {
         DUP_Handler::init_error_handler();
-        
+
         check_ajax_referer('DUP_CTRL_Package_getActivePackageStatus', 'nonce');
         DUP_Util::hasCapability('export');
 
-        $post = $this->postParamMerge($post);        
-		$result = new DUP_CTRL_Result($this);
+        $post   = $this->postParamMerge($post);
+        $result = new DUP_CTRL_Result($this);
 
-		try
-		{
-			//CONTROLLER LOGIC
-			$post  = stripslashes_deep($_POST);
+        try {
+            //CONTROLLER LOGIC
+            $post              = stripslashes_deep($_POST);
             $active_package_id = DUP_Settings::Get('active_package_id');
-            $package = DUP_Package::getByID($active_package_id);
-            $payload = array();
+            $package           = DUP_Package::getByID($active_package_id);
+            $payload           = array();
 
-            if($package != null) {
-                $test = DUP_CTRL_Status::SUCCESS;
-                $payload['status']  = $package->Status;
+            if ($package != null) {
+                $test              = DUP_CTRL_Status::SUCCESS;
+                $payload['status'] = $package->Status;
             } else {
                 $test = DUP_CTRL_Status::FAILED;
             }
 
-			//RETURN RESULT
-			return $result->process($payload, $test);
-		}
-		catch (Exception $exc)
-		{
-			$result->processError($exc);
-		}
+            //RETURN RESULT
+            return $result->process($payload, $test);
+        }
+        catch (Exception $exc) {
+            $result->processError($exc);
+        }
     }
-
 }

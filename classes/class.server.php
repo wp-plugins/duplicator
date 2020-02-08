@@ -72,8 +72,9 @@ class DUP_Server
 		$dup_tests['PHP']['ALL']	 = !in_array('Fail', $dup_tests['PHP']) ? 'Pass' : 'Fail';
 
 		//REQUIRED PATHS
-		$handle_test				 = @opendir(DUPLICATOR_WPROOTPATH);
-		$dup_tests['IO']['WPROOT']	 = is_writeable(DUPLICATOR_WPROOTPATH) && $handle_test ? 'Pass' : 'Warn';
+		$abs_path 					 = duplicator_get_abs_path();
+		$handle_test				 = @opendir($abs_path);
+		$dup_tests['IO']['WPROOT']	 = is_writeable($abs_path) && $handle_test ? 'Pass' : 'Warn';
 		@closedir($handle_test);
 
 		$dup_tests['IO']['SSDIR']	 = (file_exists(DUPLICATOR_SSDIR_PATH) && is_writeable(DUPLICATOR_SSDIR_PATH)) ? 'Pass' : 'Fail';
@@ -133,7 +134,7 @@ class DUP_Server
 
 		//Core Files
 		$files					 = array();
-		$files['wp-config.php']	 = file_exists(DUP_Util::safePath(DUPLICATOR_WPROOTPATH.'/wp-config.php'));
+		$files['wp-config.php']	 = file_exists(duplicator_get_abs_path().'/wp-config.php');
 
 		/** searching wp-config in working word press is not worthy
 		 * if this script is executing that means wp-config.php exists :)
@@ -202,15 +203,15 @@ class DUP_Server
 	public static function getInstallerFiles()
 	{
 		// alphanumeric 7 time, then -(dash), then 8 digits
-
+		$abs_path = duplicator_get_abs_path();
 		$retArr = array(
 			basename(DUPLICATOR_INSTALLER_DIRECTORY).' '.esc_html__('(directory)', 'duplicator') => DUPLICATOR_INSTALLER_DIRECTORY,
-			DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_PHP,
-			DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_BAK,
-			'dup-installer-bootlog__[HASH].txt' => DUPLICATOR_WPROOTPATH.'dup-installer-bootlog__'.DUPLICATOR_INSTALLER_HASH_PATTERN.'.txt',
+			DUPLICATOR_INSTALL_PHP => $abs_path . '/' .DUPLICATOR_INSTALL_PHP,
+			DUPLICATOR_INSTALL_BAK => $abs_path . '/' .DUPLICATOR_INSTALL_BAK,
+			'dup-installer-bootlog__[HASH].txt' => $abs_path.'/dup-installer-bootlog__'.DUPLICATOR_INSTALLER_HASH_PATTERN.'.txt',
 		);
 		if (DUPLICATOR_INSTALL_SITE_OVERWRITE_ON) {
-			$retArr['dup-wp-config-arc__[HASH].txt'] = DUPLICATOR_WPROOTPATH.'dup-wp-config-arc__'.DUPLICATOR_INSTALLER_HASH_PATTERN.'.txt';
+			$retArr['dup-wp-config-arc__[HASH].txt'] = $abs_path.'/dup-wp-config-arc__'.DUPLICATOR_INSTALLER_HASH_PATTERN.'.txt';
 		}
 		return $retArr;
 	}

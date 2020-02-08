@@ -1230,7 +1230,7 @@ class DUP_Package
         //START BUILD
         //PHPs serialze method will return the object, but the ID above is not passed
         //for one reason or another so passing the object back in seems to do the trick
-        $this->Database->build($this);
+        $this->Database->build($this, Dup_ErrorBehavior::ThrowException);
         $this->Database->validateTableWiseRowCounts();
         $this->Archive->build($this);
         $this->Installer->build($this);
@@ -1243,23 +1243,6 @@ class DUP_Package
         $dbSizeRead  = DUP_Util::byteSize($this->Database->Size);
         $zipSizeRead = DUP_Util::byteSize($this->Archive->Size);
         $exeSizeRead = DUP_Util::byteSize($this->Installer->Size);
-
-        /*
-        DUP_Log::Info("SQL File: {$dbSizeRead}");
-        DUP_Log::Info("Installer File: {$exeSizeRead}");
-        DUP_Log::Info("Archive File: {$zipSizeRead} ");
-
-        if (!($this->Archive->Size && $this->Database->Size && $this->Installer->Size)) {
-            DUP_Log::Error("A required file contains zero bytes.", "Archive Size: {$zipSizeRead} | SQL Size: {$dbSizeRead} | Installer Size: {$exeSizeRead}");
-        }
-
-        //Validate SQL files completed
-        $sql_tmp_path     = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP.'/'.$this->Database->File);
-        $sql_complete_txt = DUP_Util::tailFile($sql_tmp_path, 3);
-        if (!strstr($sql_complete_txt, 'DUPLICATOR_MYSQLDUMP_EOF')) {
-            DUP_Log::Error("ERROR: SQL file not complete.  The end of file marker was not found.  Please try to re-create the package.");
-        }*/
-        
 
         $timerEnd = DUP_Util::getMicrotime();
         $timerSum = DUP_Util::elapsedTime($timerEnd, $timerStart);
@@ -1359,7 +1342,7 @@ class DUP_Package
 
             $this->Notes                    = sanitize_textarea_field($post['package-notes']);
             //ARCHIVE
-            $this->Archive->PackDir         = rtrim(DUPLICATOR_WPROOTPATH, '/');
+            $this->Archive->PackDir         = duplicator_get_abs_path();
             $this->Archive->Format          = 'ZIP';
             $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
 			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;

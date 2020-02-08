@@ -189,7 +189,7 @@ ARCHIVE -->
 							?>
 						</label>
 						<div class='dup-quick-links'>
-							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')">[<?php esc_html_e("root path", 'duplicator') ?>]</a>
+							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo duplicator_get_abs_path(); ?>')">[<?php esc_html_e("root path", 'duplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo rtrim($upload_dir, '/'); ?>')">[<?php esc_html_e("wp-uploads", 'duplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo DUP_Util::safePath(WP_CONTENT_DIR); ?>/cache')">[<?php esc_html_e("cache", 'duplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php esc_html_e("(clear)", 'duplicator') ?></a>
@@ -211,7 +211,7 @@ ARCHIVE -->
 							?>
 						</label>
 						<div class='dup-quick-links'>
-							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeFilePath('<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>')"><?php esc_html_e("(file path)", 'duplicator') ?></a>
+							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeFilePath('<?php echo duplicator_get_abs_path(); ?>')"><?php esc_html_e("(file path)", 'duplicator') ?></a>
 							<a href="javascript:void(0)" onclick="jQuery('#filter-files').val('')"><?php esc_html_e("(clear)", 'duplicator') ?></a>
 						</div>
 						<textarea name="filter-files" id="filter-files" placeholder="/full_path/exclude_file_1.ext;/full_path/exclude_file2.ext"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterFiles)) ?></textarea>
