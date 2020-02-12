@@ -7,29 +7,34 @@ $ui_css_archive = (isset($view_state['dup-package-dtl-archive-panel']) && $view_
 $ui_css_install = (isset($view_state['dup-package-dtl-install-panel']) && $view_state['dup-package-dtl-install-panel']) ? 'display:block' : 'display:none';
 
 $format = strtolower($package->Archive->Format);
-
 $base_url			= admin_url('admin-ajax.php');
-$link_sql			= add_query_arg(
-							array(
-								'action' => 'duplicator_download',
-								'file' => "{$package->NameHash}_database.sql",
-							),
-							$base_url
-						);
-$link_archive 		= add_query_arg(
-							array(
-								'action' => 'duplicator_download',
-								'file' => "{$package->NameHash}_archive.{$format}",
-							),
-							$base_url
-						);
-$link_installer		= add_query_arg(
-							array(
-								'action' => 'duplicator_download',
-								'file' => $package->NameHash.'_installer.php',
-							),
-							$base_url
-						);
+$link_sql       = add_query_arg(
+    array(
+        'action' => 'duplicator_download',
+        'id'     => $package->ID,
+        'hash'   => $package->Hash,
+        'file' => 'sql'
+    ),
+    $base_url
+);
+$link_archive   = add_query_arg(
+    array(
+        'action' => 'duplicator_download',
+        'id'     => $package->ID,
+        'hash'   => $package->Hash,
+        'file' => 'archive'
+    ),
+    $base_url
+);
+$link_installer = add_query_arg(
+    array(
+        'action' => 'duplicator_download',
+        'id'     => $package->ID,
+        'hash'   => $package->Hash,
+        'file' => 'installer'
+    ),
+    $base_url
+);
 $link_log			= "{$package->StoreURL}{$package->NameHash}.log";
 $link_scan			= "{$package->StoreURL}{$package->NameHash}_scan.json";
 

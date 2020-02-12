@@ -43,8 +43,8 @@ class DUP_Web_Services
             /** Execute function * */
             $error  = false;
             $result = array(
-                'data' => array(),
-                'html' => '',
+                'data'    => array(),
+                'html'    => '',
                 'message' => ''
             );
 
@@ -54,8 +54,8 @@ class DUP_Web_Services
                 throw new Exception('Security issue');
             }
 
-            DUP_Package::by_status_callback(array(__CLASS__,'package_delete_callback'),array(
-                    array('op' => '<', 'status' => DUP_PackageStatus::COMPLETE)
+            DUP_Package::by_status_callback(array(__CLASS__, 'package_delete_callback'), array(
+                array('op' => '<', 'status' => DUP_PackageStatus::COMPLETE)
             ));
 
             /** reset active package id * */
@@ -66,7 +66,8 @@ class DUP_Web_Services
             DUP_Package::not_active_files_tmp_cleanup();
 
             //throw new Exception('force error test');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $error             = true;
             $result['message'] = $e->getMessage();
         }
@@ -82,11 +83,45 @@ class DUP_Web_Services
         }
     }
 
-    public static function duplicator_download() {
-        $file = sanitize_text_field($_GET['file']);
-        $filepath = DUPLICATOR_SSDIR_PATH.'/'.$file;
+    public static function duplicator_download()
+    {
+        $error = false;
+
+        if (!isset($_GET['id']) || !isset($_GET['hash']) || !isset($_GET['file'])) {
+            $error = true;
+        }
+
+        $packageId = (int) $_GET['id'];
+        $hash      = sanitize_text_field($_GET['hash']);
+        $file      = sanitize_text_field($_GET['file']);
+
+        if ($error || ($package = DUP_Package::getByID($packageId)) == false) {
+            $error = true;
+        }
+
+        if ($error || $hash !== $package->Hash) {
+            $error = true;
+        }
+
+        switch ($file) {
+            case 'sql':
+                $fileName = "{$package->NameHash}_database.sql";
+                break;
+            case 'archive':
+                $format   = strtolower($package->Archive->Format);
+                $fileName = "{$package->NameHash}_archive.{$format}";
+                break;
+            case 'installer':
+                $fileName = $package->NameHash.'_installer.php';
+                break;
+            default:
+                $error    = true;
+        }
+
+        $filepath = DUPLICATOR_SSDIR_PATH.'/'.$fileName;
+
         // Process download
-        if(file_exists($filepath)) {
+        if (!$error && file_exists($filepath)) {
             // Clean output buffer
             if (ob_get_level() !== 0 && @ob_end_clean() === FALSE) {
                 @ob_clean();
@@ -94,11 +129,11 @@ class DUP_Web_Services
 
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
+            header('Content-Disposition: attachment; filename="'.$fileName.'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Length: ' . filesize($filepath));
+            header('Content-Length: '.filesize($filepath));
             flush(); // Flush system output buffer
 
             try {
@@ -110,12 +145,15 @@ class DUP_Web_Services
                     echo $data;
                 }
                 @fclose($fp);
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 readfile($filepath);
             }
             exit;
         } else {
-            wp_die('Invalid installer file name!!');
+            // if the request is wrong wait to avoid brute force attack
+            sleep(2);
+            wp_die('Invalid request');
         }
     }
 }

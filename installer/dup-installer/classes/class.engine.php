@@ -13,6 +13,11 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 class DUPX_UpdateEngine
 {
+    const SERIALIZE_OPEN_STR_REGEX        = '/^(s:\d+:")/';
+    const SERIALIZE_CLOSE_STR_REGEX       = '/^";}*(?:"|a:|s:|S:|b:|d:|i:|o:|O:|C:|r:|R:|N;|$)/';
+    const SERIALIZE_CLOSE_STR             = '";';
+    const SERIALIZE_CLOSE_STR_LEN         = 2;
+    
     private static $report = null;
 
     /**
@@ -389,7 +394,7 @@ class DUPX_UpdateEngine
         $upd_sql    = array();
         $where_sql  = array();
         $upd        = false;
-        $serial_err = 0;
+        $serial_err = false;
         $is_unkeyed = !in_array(true, $rowsParams['columns']);
 
         $rowErrors = array();
@@ -403,15 +408,15 @@ class DUPX_UpdateEngine
             }
 
             $safe_column     = '`'.mysqli_real_escape_string($dbh, $column).'`';
-            $edited_data     = $data_to_fix     = $row[$column];
+            $edited_data     = $originalData     = $row[$column];
             $base64converted = false;
             $txt_found       = false;
 
             //Unkeyed table code
             //Added this here to add all columns to $where_sql
             //The if statement with $txt_found would skip additional columns -TG
-            if ($is_unkeyed && !empty($data_to_fix)) {
-                $where_sql[] = $safe_column.' = "'.mysqli_real_escape_string($dbh, $data_to_fix).'"';
+            if ($is_unkeyed && !empty($originalData)) {
+                $where_sql[] = $safe_column.' = "'.mysqli_real_escape_string($dbh, $originalData).'"';
             }
 
             //Only replacing string values
@@ -458,7 +463,7 @@ class DUPX_UpdateEngine
 
                 // 0 no limit
                 if ($maxSerializeLenCheck > 0 && self::is_serialized_string($edited_data) && strlen($edited_data) > $maxSerializeLenCheck) {
-                    $serial_err ++;
+                    $serial_err = true;
                     $trimLen            = DUPX_Log::isLevel(DUPX_Log::LV_HARD_DEBUG) ? 10000 : 200;
                     $rowErrors[$column] = 'ENGINE: serialize data too big to convert; data len:'.strlen($edited_data).' Max size:'.$maxSerializeLenCheck;
                     $rowErrors[$column] .= "\n\tDATA: ".mb_strimwidth($edited_data, 0, $trimLen, ' [...]');
@@ -480,32 +485,48 @@ class DUPX_UpdateEngine
                             $serial_check = self::fixSerialString($edited_data);
                             if ($serial_check['fixed']) {
                                 $edited_data = $serial_check['data'];
-                            } elseif ($serial_check['tried'] && !$serial_check['fixed']) {
-                                $serial_err ++;
-                                $trimLen            = DUPX_Log::isLevel(DUPX_Log::LV_HARD_DEBUG) ? 10000 : 200;
-                                $rowErrors[$column] = 'ENGINE: serialize data serial check error';
-                                $rowErrors[$column] .= "\n\tDATA: ".mb_strimwidth($edited_data, 0, $trimLen, ' [...]');
+                            } else {                           
+                                $trimLen = DUPX_Log::isLevel(DUPX_Log::LV_HARD_DEBUG) ? 10000 : 200;
+                                $message = 'ENGINE: serialize data serial check error'.
+                                    "\n\tDATA: ".mb_strimwidth($edited_data, 0, $trimLen, ' [...]');
+                                DUPX_Log::info($message);
+                                $serial_err         = true;
+                                $rowErrors[$column] = $message;
                             }
                         }
                     }
                 }
             }
+            
+            //Base 64 encode
+            if ($base64converted) {
+                $edited_data = base64_encode($edited_data);
+            }
 
             //Change was made
-            if ($serial_err > 0 || $edited_data != $data_to_fix) {
+            if ($serial_err == false && $edited_data != $originalData) {
                 $s3Funcs->report['updt_cells'] ++;
-                //Base 64 encode
-                if ($base64converted) {
-                    $edited_data = base64_encode($edited_data);
-                }
                 $upd_col[] = $safe_column;
                 $upd_sql[] = $safe_column.' = "'.mysqli_real_escape_string($dbh, $edited_data).'"';
                 $upd       = true;
             }
 
             if ($primary_key) {
-                $where_sql[] = $safe_column.' = "'.mysqli_real_escape_string($dbh, $data_to_fix).'"';
+                $where_sql[] = $safe_column.' = "'.mysqli_real_escape_string($dbh, $originalData).'"';
             }
+        }
+        
+        foreach ($rowErrors as $errCol => $msgCol) {
+            $longMsg                     = $msgCol."\n\tTABLE:".$rowsParams['table'].' COLUMN: '.$errCol.' WHERE: '.implode(' AND ', array_filter($where_sql));
+            $s3Funcs->report['errser'][] = $longMsg;
+
+            $nManager->addFinalReportNotice(array(
+                'shortMsg'    => 'DATA-REPLACE ERROR: Serialization',
+                'level'       => DUPX_NOTICE_ITEM::SOFT_WARNING,
+                'longMsg'     => $longMsg,
+                'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_PRE,
+                'sections'    => 'search_replace'
+            ));
         }
 
         //PERFORM ROW UPDATE
@@ -514,18 +535,6 @@ class DUPX_UpdateEngine
             $result = DUPX_DB::mysqli_query($dbh, $sql, __FILE__, __LINE__);
 
             if ($result) {
-                foreach ($rowErrors as $errCol => $msgCol) {
-                    $longMsg                     = $msgCol."\n\tTABLE:".$rowsParams['table'].' COLUMN: '.$errCol.' WHERE: '.implode(' AND ', array_filter($where_sql));
-                    $s3Funcs->report['errser'][] = $longMsg;
-
-                    $nManager->addFinalReportNotice(array(
-                        'shortMsg' => 'DATA-REPLACE ERROR: Serialization',
-                        'level' => DUPX_NOTICE_ITEM::SOFT_WARNING,
-                        'longMsg' => $longMsg,
-                        'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_PRE,
-                        'sections' => 'search_replace'
-                    ));
-                }
                 $s3Funcs->report['updt_rows'] ++;
                 $rowsParams['updated'] = true;
             } else {
@@ -826,21 +835,25 @@ class DUPX_UpdateEngine
      */
     public static function fixSerialString($data)
     {
-        $result = array('data' => $data, 'fixed' => false, 'tried' => false);
+        $result = array(
+            'data'  => null,
+            'fixed' => false,
+            'tried' => false
+        );
 
         // check if serialized string must be fixed
-        if (!self::unserializeTest($data)) {
-
+        if (self::unserializeTest($data)) {
+            $result['data']  = $data;
+            $result['fixed'] = true;
+        } else {
+            $result['tried']  = true;
             $serialized_fixed = self::recursiveFixSerialString($data);
-
             if (self::unserializeTest($serialized_fixed)) {
-
-                $result['data'] = $serialized_fixed;
-
+                $result['data']  = $serialized_fixed;
                 $result['fixed'] = true;
+            } else {
+                $result['fixed'] = false;
             }
-
-            $result['tried'] = true;
         }
 
         return $result;
@@ -861,8 +874,7 @@ class DUPX_UpdateEngine
             return $data;
         }
 
-        $result = '';
-
+        $result  = '';
         $matches = null;
 
         $openLevel     = 0;
@@ -877,21 +889,23 @@ class DUPX_UpdateEngine
             $addChar = true;
 
             if ($cChar == 's') {
-
                 // test if is a open string
-                if (preg_match('/^(s:\d+:")/', substr($data, $i), $matches)) {
+                if (preg_match(self::SERIALIZE_OPEN_STR_REGEX, substr($data, $i, 20), $matches)) {
+
+                    if ($openLevel > 1) {
+                        $openContentL2 .= $matches[0];
+                    }
 
                     $addChar = false;
 
-                    $openLevel ++;
+                    $openLevel++;
 
                     $i += strlen($matches[0]) - 1;
                 }
             } else if ($openLevel > 0 && $cChar == '"') {
 
                 // test if is a close string
-                if (preg_match('/^";(?:}|a:|s:|S:|b:|d:|i:|o:|O:|C:|r:|R:|N;)/', substr($data, $i))) {
-
+                if (preg_match(self::SERIALIZE_CLOSE_STR_REGEX, substr($data, $i, 7))) {
                     $addChar = false;
 
                     switch ($openLevel) {
@@ -917,20 +931,16 @@ class DUPX_UpdateEngine
                         default:
                             // level > 2
                             // keep writing at level 2; it will be corrected with recursion
+                            $openContentL2 .= self::SERIALIZE_CLOSE_STR;
                             break;
                     }
 
-                    $openLevel --;
-
-                    $closeString = '";';
-
-                    $i += strlen($closeString) - 1;
+                    $openLevel--;
+                    $i += self::SERIALIZE_CLOSE_STR_LEN - 1;
                 }
             }
 
-
             if ($addChar) {
-
                 switch ($openLevel) {
                     case 0:
                         // level 0
