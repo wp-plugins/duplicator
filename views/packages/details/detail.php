@@ -151,7 +151,7 @@ GENERAL -->
                         <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(1, <?php echo absint($package->ID); ?>);return false;"><i class="far fa-file-archive"></i> Archive - <?php echo esc_html($package->ZipSize); ?></button>
                         <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(2, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; SQL - <?php echo esc_html(DUP_Util::byteSize($package->Database->Size))  ?></button>
                         <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(3, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; <?php esc_html_e('Log', 'duplicator'); ?> </button>
-						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog('<?php echo esc_js($link_sql);?>','<?php echo esc_js($link_archive); ?>','<?php echo esc_js($link_installer); ?>','<?php echo esc_js($link_log);?>');" class="thickbox"><i class="fa fa-lock fa-xs"></i> &nbsp; <?php esc_html_e("Share", 'duplicator')?></button>
+						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog('<?php echo esc_js($link_sql);?>','<?php echo esc_js($link_archive); ?>','<?php echo esc_js($link_log);?>');" class="thickbox"><i class="fa fa-lock fa-xs"></i> &nbsp; <?php esc_html_e("Share", 'duplicator')?></button>
 					<?php else: ?>
                         <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(3, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; Log </button>
 					<?php endif; ?>
@@ -189,8 +189,16 @@ DIALOG: QUICK PATH -->
 
 	<div style="padding: 0px 15px 15px 15px;">
 		<a href="javascript:void(0)" style="display:inline-block; text-align:right" onclick="Duplicator.Pack.GetLinksText()">[Select All]</a> <br/>
-		<textarea id="dup-dlg-quick-path-data" style='border:1px solid silver; border-radius:3px; width:99%; height:225px; font-size:11px'></textarea><br/>
-		<i style='font-size:11px'><?php esc_html_e("The database SQL script is a quick link to your database backup script.  An exact copy is also stored in the package.", 'duplicator'); ?></i>
+		<textarea id="dup-dlg-quick-path-data" style='border:1px solid silver; border-radius:3px; width:99%; height:180px; font-size:11px'></textarea><br/>
+		<i style='font-size:11px'>
+			<?php
+				printf("%s <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q' target='_blank'>%s</a>",
+					esc_html__("An exact copy of the database SQL and installer file can both be found inside of the archive.zip/daf file.  "
+						. "Download and extract the archive file to get a copy of the installer which will be named 'installer-backup.php'. "
+						. "For details on how to extract a archive.daf file please see: ", 'duplicator'),
+					esc_html__("How do I work with DAF files and the DupArchive extraction tool?", 'duplicator'));
+			?>
+		</i>
 	</div>
 </div>
 
@@ -410,15 +418,15 @@ jQuery(document).ready(function($)
 	 *	@param db		The path to the sql file
 	 *	@param install	The path to the install file
 	 *	@param pack		The path to the package file */
-	Duplicator.Pack.ShowLinksDialog = function(db, install, pack, log)
+	Duplicator.Pack.ShowLinksDialog = function(db, pack, log)
 	{
 		var url = '#TB_inline?width=650&height=350&inlineId=dup-dlg-quick-path';
 		tb_show("<?php esc_html_e('Package File Links', 'duplicator') ?>", url);
 
-		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + install + "\n\n%s:\n" + pack + "\n\n%s:\n" + log;',
+
+		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + pack + "\n\n%s:\n" + log;',
 			esc_html__("DATABASE",  'duplicator'),
-			esc_html__("PACKAGE", 'duplicator'),
-			esc_html__("INSTALLER",   'duplicator'),
+			esc_html__("ARCHIVE", 'duplicator'),
 			esc_html__("LOG", 'duplicator'));
 		?>
 		$("#dup-dlg-quick-path-data").val(msg);

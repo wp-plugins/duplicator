@@ -61,7 +61,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	div.scan-item div.badge-warn {background:#636363;}
 	div.scan-item div.info {display:none; padding:10px; background:#fff}
 	div.scan-good {display:inline-block; color:green;font-weight:bold;}
-	div.scan-warn {display:inline-block; color:#630f0f;font-weight:bold;}
+	div.scan-warn {display:inline-block; color:#d61212;font-weight:bold;}
 	div.dup-more-details {float:right; font-size:14px}
 	div.dup-more-details a{color:black}
 	div.dup-more-details a:hover {color:#777; cursor:pointer}

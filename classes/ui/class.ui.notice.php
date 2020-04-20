@@ -18,10 +18,26 @@ if (! defined('DUPLICATOR_VERSION')) exit;
 
 class DUP_UI_Notice
 {
+
+    /**
+     * init notice actions
+     */
+    public static function init()
+    {
+        $methods = array(
+            'showReservedFilesNotice',
+            'installAutoDeactivatePlugins',
+            'showFeedBackNotice',
+        );
+        foreach ($methods as $method) {
+            add_action('admin_notices', array(__CLASS__, $method));
+        }
+    }
+
     /**
      * Shows a display message in the wp-admin if any reserved files are found
      *
-     * @return string   Html formated text notice warnings
+     * @return string   Html formatted text notice warnings
      */
     public static function showReservedFilesNotice()
     {
@@ -101,15 +117,16 @@ class DUP_UI_Notice
     public static function installAutoDeactivatePlugins() {
         $reactivatePluginsAfterInstallation = get_option('duplicator_reactivate_plugins_after_installation', false);
         if (is_array($reactivatePluginsAfterInstallation)) {
+            $installedPlugins = array_keys(get_plugins());
             $shouldBeActivated = array();
             foreach ($reactivatePluginsAfterInstallation as $pluginSlug => $pluginTitle) {
-                if (!is_plugin_active($pluginSlug)) {
+                if (in_array($pluginSlug, $installedPlugins) && !is_plugin_active($pluginSlug)) {
                     $shouldBeActivated[$pluginSlug] = $pluginTitle;
                 }
             }
             
             if (empty($shouldBeActivated)) {
-                delete_option('duplicator_reactivate_plugins_after_installation', false);
+                DUP_Util::resetReactivatePlugins();
             } else {
                 $activatePluginsAnchors = array();
                 foreach ($shouldBeActivated as $slug => $title) {
@@ -120,10 +137,11 @@ class DUP_UI_Notice
                                                     $title.'</a>';
                 }
 
-                echo "<div class='update-nag dpro-admin-notice'>
+                echo "<div class='update-nag duplicator-plugin-activation-admin-notice notice notice-warning is-dismissible'>
                         <p>".
-                            "<b>Warning!</b> Migration Almost Complete! <br/>".
-                            "Plugin(s) listed here was deactivated during installation, Please activate them: <br/>".
+                            "<b>".esc_html__("Warning!", "duplicator")."</b> ".esc_html__("Migration Almost Complete!",  "duplicator")." <br/>".
+                            esc_html__("Plugin(s) listed here have been deactivated during installation to help prevent issues. Please activate them to finish this migration: ", "duplicator").
+                            "<br/>".
                             implode(' ,', $activatePluginsAnchors).
                         "</p>".
                     "</div>";
@@ -160,10 +178,14 @@ class DUP_UI_Notice
 			return;
 		}
 
-		$dismiss_url = add_query_arg(array(
-			'action' => 'duplicator_set_admin_notice_viewed',
-			'notice_id' => esc_attr($notice_id),
-        ), admin_url('admin-post.php'));
+		$dismiss_url = wp_nonce_url(
+                            add_query_arg(array(
+                                'action' => 'duplicator_set_admin_notice_viewed',
+                                'notice_id' => esc_attr($notice_id),
+                            ), admin_url('admin-post.php')),
+                            'duplicator_set_admin_notice_viewed',
+                            'nonce'
+                        );
 		?>
 		<div class="notice updated duplicator-message duplicator-message-dismissed" data-notice_id="<?php echo esc_attr( $notice_id); ?>">
 			<div class="duplicator-message-inner">

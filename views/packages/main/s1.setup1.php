@@ -156,10 +156,10 @@ SYSTEM REQUIREMENTS -->
             <div class='dup-sys-req'>
                 <div class='dup-sys-title'>
                     <a><?php esc_html_e('Required Paths', 'duplicator'); ?></a>
-                    <div>
+                       <div>
                         <?php
-                        if ($dup_tests['IO']['ALL']) {
-                            echo ($dup_tests['IO']['WPROOT'] == 'Warn') ? 'Warn' : 'Pass';
+                        if (!in_array('Fail', $dup_tests['IO'])) {
+                            echo in_array('Warn', $dup_tests['IO']) ? 'Warn' : 'Pass';
                         } else {
                             echo 'Fail';
                         }

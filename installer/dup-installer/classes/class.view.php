@@ -18,7 +18,7 @@ class DUPX_View_Funcs
 
     public static function installerLogLink()
     {
-        $log_url = $GLOBALS['DUPX_ROOT_URL'].'/'.$GLOBALS["LOG_FILE_NAME"].'?now='.DUPX_U::esc_attr($GLOBALS['NOW_TIME']);
+        $log_url = $GLOBALS['DUPX_INIT_URL'].'/'.$GLOBALS["LOG_FILE_NAME"].'?now='.DUPX_U::esc_attr($GLOBALS['NOW_TIME']);
         DUPX_U_Html::getLightBoxIframe('dup-installer-log.txt', 'installer-log.txt', $log_url, true, true);
     }
 
@@ -46,9 +46,7 @@ class DUPX_View_Funcs
         }
 
         return "?view=help".
-            "&archive={$GLOBALS['FW_ENCODED_PACKAGE_PATH']}".
-            "&bootloader={$GLOBALS['BOOTLOADER_NAME']}&".
-            "basic".
+            "&basic".
             '&open_section='.$helpOpenSection;
     }
 

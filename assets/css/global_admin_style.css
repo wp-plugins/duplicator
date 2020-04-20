@@ -36,3 +36,7 @@
 	font-size: 14px;
 	line-height: 175%;
 }
+
+.duplicator-plugin-activation-admin-notice {
+	display: block;
+}

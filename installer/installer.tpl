@@ -93,6 +93,7 @@ class DUPX_Bootstrap
 	const ARCHIVE_SIZE		 = '@@ARCHIVE_SIZE@@';
 	const INSTALLER_DIR_NAME = 'dup-installer';
 	const PACKAGE_HASH		 = '@@PACKAGE_HASH@@';
+    const SECONDARY_PACKAGE_HASH = '@@SECONDARY_PACKAGE_HASH@@';
 	const VERSION			 = '@@VERSION@@';
 
 	public $hasZipArchive     = false;
@@ -116,7 +117,7 @@ class DUPX_Bootstrap
         
 		//ARCHIVE_SIZE will be blank with a root filter so we can estimate
 		//the default size of the package around 17.5MB (18088000)
-		$archiveActualSize		        = @filesize(self::ARCHIVE_FILENAME);
+		$archiveActualSize		        = @file_exists(self::ARCHIVE_FILENAME) ? @filesize(self::ARCHIVE_FILENAME) : false;
 		$archiveActualSize				= ($archiveActualSize !== false) ? $archiveActualSize : 0;
 		$this->hasZipArchive			= class_exists('ZipArchive');
 		$this->hasShellExecUnzip		= $this->getUnzipFilePath() != null ? true : false;
@@ -152,6 +153,25 @@ class DUPX_Bootstrap
 		$archive_filename	 = self::ARCHIVE_FILENAME;
 
 		$error					= null;
+
+		$is_installer_file_valid = true;
+		if (preg_match('/_([a-z0-9]{7})[a-z0-9]{13}_[0-9]{6}([0-9]{8})_archive.(?:zip|daf)$/', $archive_filename, $matches)) {
+			$expected_package_hash = $matches[1].'-'.$matches[2]; 
+			if (self::PACKAGE_HASH != $expected_package_hash) {
+				$is_installer_file_valid = false;
+				self::log("[ERROR] Installer and archive mismatch detected.");
+			}
+		} else {
+			self::log("[ERROR] Invalid archive file name.");
+			$is_installer_file_valid = false;
+		}
+
+		if (false  === $is_installer_file_valid) {
+			$error = "Installer and archive mismatch detected.
+					Ensure uncorrupted installer and matching archive are present.";
+			return $error;
+		}
+
 		$extract_installer		= true;
 		$installer_directory	= dirname(__FILE__).'/'.self::INSTALLER_DIR_NAME;
 		$extract_success		= false;
@@ -176,18 +196,6 @@ class DUPX_Bootstrap
 			//MISSING ARCHIVE FILE
 			if (! file_exists($archive_filepath)) {
 				self::log("[ERROR] Archive file not found!");
-				$archive_candidates = ($isZip) ? $this->getFilesWithExtension('zip') : $this->getFilesWithExtension('daf');
-				$candidate_count = count($archive_candidates);
-				$candidate_html  = "- No {$archive_extension} files found -";
-
-				if ($candidate_count >= 1) {
-					$candidate_html = "<ol>";
-					foreach($archive_candidates as $archive_candidate) {
-						$candidate_html .=  '<li class="diff-list"> '.$this->compareStrings($archive_filename, $archive_candidate).'</li>';
-					}
-				   $candidate_html .=  "</ol>";
-				}
-
 				$error  = "<style>.diff-list font { font-weight: bold; }</style>"
                     . "<b>Archive not found!</b> The <i>'Required File'</i> below should be present in the <i>'Extraction Path'</i>.  "
 					. "The archive file name must be the <u>exact</u> name of the archive file placed in the extraction path character for character.<br/><br/>  "
@@ -195,9 +203,7 @@ class DUPX_Bootstrap
 					. "sure both files are from the same package line in the packages view.  If the archive is not finished downloading please wait for it to complete.<br/><br/>"
 					. "If this message continues even with a valid archive file, consider clearing your browsers cache and refreshing, trying another browser or change the browsers "
 					. "URL from http to https or vice versa.<br/><br/>  "
-					. "<b>Required File:</b>  <span class='file-info'>{$archive_filename}</span> <br/>"
-					. "<b>Extraction Path:</b> <span class='file-info'>{$this->installerExtractPath}/</span><br/><br/>"
-					. "Potential archives found at extraction path: <br/>{$candidate_html}<br/><br/>";
+					. "<b>Extraction Path:</b> <span class='file-info'>{$this->installerExtractPath}/</span><br/><br/>";
 
 				return $error;
 			}
@@ -533,7 +539,9 @@ class DUPX_Bootstrap
 	public function isHttps()
 	{
 		$retVal = true;
-
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $_SERVER ['HTTPS'] = 'on';
+        }
 		if (isset($_SERVER['HTTPS'])) {
 			$retVal = ($_SERVER['HTTPS'] !== 'off');
 		} else {
@@ -649,15 +657,33 @@ class DUPX_Bootstrap
 	{
         static $logfile = null;
         if (is_null($logfile)) {
-            $logfile = dirname(__FILE__).'/dup-installer-bootlog__'.self::PACKAGE_HASH.'.txt';
+            $logfile = dirname(__FILE__).'/dup-installer-bootlog__'.self::SECONDARY_PACKAGE_HASH.'.txt';
         }
         if ($deleteOld && file_exists($logfile)) {
             @unlink($logfile);
         }
         $timestamp = date('M j H:i:s');
-		return @file_put_contents($logfile, '['.$timestamp.'] '.$s."\n", FILE_APPEND);
+		return @file_put_contents($logfile, '['.$timestamp.'] '.self::postprocessLog($s)."\n", FILE_APPEND);
 	}
-
+    
+    protected static function postprocessLog($str) {
+        return str_replace(array(
+            self::getArchiveFileHash(),
+            self::PACKAGE_HASH, 
+            self::SECONDARY_PACKAGE_HASH
+            ), '[HASH]' , $str);
+    }
+    
+    
+    public static function getArchiveFileHash()
+    {
+        static $fileHash = null;
+        if (is_null($fileHash)) {
+            $fileHash = preg_replace('/^.+_([a-z0-9]+)_[0-9]{14}_archive\.(?:daf|zip)$/', '$1', self::ARCHIVE_FILENAME);
+        }
+        return $fileHash;
+    }
+    
 	/**
      * Extracts only the 'dup-installer' files using ZipArchive
      *
@@ -672,7 +698,7 @@ class DUPX_Bootstrap
 		$subFolderArchiveList   = array();
 
 		if (($zipOpenRes = $zipArchive->open($archive_filepath)) === true) {
-			self::log("Successfully opened $archive_filepath");
+            self::log("Successfully opened archive file.");
 			$destination = dirname(__FILE__);
 			$folder_prefix = self::INSTALLER_DIR_NAME.'/';
 			self::log("Extracting all files from archive within ".self::INSTALLER_DIR_NAME);
@@ -1041,7 +1067,7 @@ class DUPX_Bootstrap
 
 		if ($unzip_filepath != null) {
 			$unzip_command	 = "$unzip_filepath -q $archive_filepath ".self::INSTALLER_DIR_NAME.'/* 2>&1';
-			self::log("Executing $unzip_command");
+            self::log("Executing unzip command");
 			$stderr	 = shell_exec($unzip_command);
 
             $lib_directory = dirname(__FILE__).'/'.self::INSTALLER_DIR_NAME.'/lib';
@@ -1052,7 +1078,7 @@ class DUPX_Bootstrap
             {
                 $local_lib_directory = dirname(__FILE__).'/snaplib';
                 $unzip_command	 = "$unzip_filepath -q $archive_filepath snaplib/* 2>&1";
-                self::log("Executing $unzip_command");
+                self::log("Executing unzip command");
                 $stderr	 .= shell_exec($unzip_command);
 				self::mkdir($lib_directory,'u+rwx');
                 rename($local_lib_directory, $snaplib_directory);
@@ -1083,7 +1109,6 @@ class DUPX_Bootstrap
 			$archive_filepath = str_replace("\\", '/', dirname(__FILE__) . '/' . $archive_filename);
 		}
 
-		self::log("Using archive $archive_filepath");
 		return $archive_filepath;
 	}
 
@@ -1590,6 +1615,7 @@ if ($boot_error == null) {
 	$step1_csrf_token = DUPX_CSRF::generate('step1');
 	DUPX_CSRF::setKeyVal('archive', $boot->archive);
 	DUPX_CSRF::setKeyVal('bootloader', $boot->bootloader);
+    DUPX_CSRF::setKeyVal('secondaryHash', DUPX_Bootstrap::SECONDARY_PACKAGE_HASH);
 }
 ?>
 
@@ -1604,8 +1630,6 @@ if ($boot_error == null) {
 		$id = uniqid();
 		$html = "<form id='{$id}' method='post' action='{$boot->mainInstallerURL}' />\n";
 		$data = array(
-			'archive' => $boot->archive,
-			'bootloader' => $boot->bootloader,
 			'csrf_token' => $step1_csrf_token,
 		);
 		foreach ($data as $name => $value) {			

@@ -20,11 +20,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     //Package
 	$mysqldump_enabled	= isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
 	if (isset($_POST['package_mysqldump_path'])) {
-		$mysqldump_exe_file	= DUP_Util::safePath(sanitize_text_field(trim($_POST['package_mysqldump_path'])));
-		$mysqldump_exe_file	= DUP_DB::escSQL(strip_tags($mysqldump_exe_file), true);
-	}
+        $mysqldump_exe_file = DupLiteSnapLibUtil::sanitize_non_stamp_chars_newline_and_trim($_POST['package_mysqldump_path']);
+        $mysqldump_exe_file = preg_match('/^([A-Za-z]\:)?[\/\\\\]/', $mysqldump_exe_file) ? $mysqldump_exe_file : '';
+        $mysqldump_exe_file = preg_replace('/[\'";]/m', '', $mysqldump_exe_file);
+        $mysqldump_exe_file = DUP_Util::safePath($mysqldump_exe_file);
+        $mysqldump_exe_file = DUP_DB::escSQL(strip_tags($mysqldump_exe_file), true);
+    }
 
-	DUP_Settings::Set('last_updated', date('Y-m-d-H-i-s'));
+    DUP_Settings::Set('last_updated', date('Y-m-d-H-i-s'));
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
 	DUP_Settings::Set('archive_build_mode', sanitize_text_field($_POST['archive_build_mode']));
 	DUP_Settings::Set('package_mysqldump', $mysqldump_enabled ? "1" : "0");

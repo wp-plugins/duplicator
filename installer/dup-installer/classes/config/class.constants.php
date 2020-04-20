@@ -33,9 +33,12 @@ class DUPX_Constants
 		$config_file_name = basename($config_file_absolute_path, '.txt');
 		$archive_prefix_length = strlen('dup-archive__');
 		$GLOBALS['PACKAGE_HASH'] = substr($config_file_name, $archive_prefix_length); 
+        
+        $bootloader                 = DUPX_CSRF::getVal('bootloader');
+        $GLOBALS['BOOTLOADER_NAME'] = $bootloader ? $bootloader : 'installer.php';
+        $package                    = DUPX_CSRF::getVal('archive');
+        $GLOBALS['FW_PACKAGE_PATH'] = $package ? $package : null; // '%fwrite_package_name%';
 
-		$GLOBALS['BOOTLOADER_NAME'] = isset($_POST['bootloader'])  ? $_POST['bootloader'] : 'installer.php';
-        $GLOBALS['FW_PACKAGE_PATH'] = isset($_POST['archive'])     ? $_POST['archive']    : null; // '%fwrite_package_name%';
         $GLOBALS['FW_ENCODED_PACKAGE_PATH'] = urlencode($GLOBALS['FW_PACKAGE_PATH']);
         $GLOBALS['FW_PACKAGE_NAME'] = basename($GLOBALS['FW_PACKAGE_PATH']);
 
@@ -80,7 +83,7 @@ class DUPX_Constants
 		//GLOBALS
 		$GLOBALS["VIEW"]				= isset($_GET["view"]) ? $_GET["view"] : $_POST["view"];
 		$GLOBALS['INIT']                = ($GLOBALS['VIEW'] === 'secure');
- 		$GLOBALS["LOG_FILE_NAME"]		= "dup-installer-log__{$GLOBALS['PACKAGE_HASH']}.txt";
+ 		$GLOBALS["LOG_FILE_NAME"]		= 'dup-installer-log__'.DUPX_CSRF::getVal('secondaryHash').'.txt';
 		$GLOBALS['SEPERATOR1']			= str_repeat("********", 10);
 		$GLOBALS['LOGGING']				= isset($_POST['logging']) ? $_POST['logging'] : 1;
 		$GLOBALS['CURRENT_ROOT_PATH']	= str_replace('\\', '/', realpath(dirname(__FILE__) . "/../../../"));
@@ -90,7 +93,10 @@ class DUPX_Constants
 		$GLOBALS['CHOWN_ROOT_PATH']		= DupLiteSnapLibIOU::chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 'u+rwx');
 		$GLOBALS['CHOWN_LOG_PATH']		= DupLiteSnapLibIOU::chmod("{$GLOBALS['LOG_FILE_PATH']}", 'u+rw');
         $GLOBALS['CHOWN_NOTICES_PATH']	= DupLiteSnapLibIOU::chmod("{$GLOBALS['NOTICES_FILE_PATH']}", 'u+rw');
-		$GLOBALS['URL_SSL']				= (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $_SERVER ['HTTPS'] = 'on';
+        }
+        $GLOBALS['URL_SSL']				= (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;
 		$GLOBALS['URL_PATH']			= ($GLOBALS['URL_SSL']) ? "https://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}" : "http://{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}";
 		$GLOBALS['PHP_MEMORY_LIMIT']	= ini_get('memory_limit') === false ? 'n/a' : ini_get('memory_limit');
 		$GLOBALS['PHP_SUHOSIN_ON']		= extension_loaded('suhosin') ? 'enabled' : 'disabled';

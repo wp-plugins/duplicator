@@ -118,7 +118,7 @@ class DUPX_CSRF {
 		if (class_exists('DUPX_Bootstrap')) {
 			return DUPX_Bootstrap::PACKAGE_HASH;
 		} else {
-			return $GLOBALS['DUPX_AC']->package_hash;
+			return $GLOBALS['PACKAGE_HASH'];
 		}
 	}
 

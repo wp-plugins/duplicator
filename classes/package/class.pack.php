@@ -1649,6 +1649,18 @@ class DUP_Package
         $package_hash = $firstPart.'-'.$secondPart;
         return $package_hash;
     }
+    
+    public function getSecondaryPackageHash() {
+        $newHash = $this->makeHash();
+        $hashParts = explode('_', $newHash);
+        $firstPart = substr($hashParts[0], 0, 7);
+        
+        $hashParts = explode('_', $this->Hash);
+        $secondPart = substr($hashParts[1], -8);
+        
+        $package_hash = $firstPart.'-'.$secondPart;
+        return $package_hash;
+    }
 
     /**
      *  Provides the full sql file path in archive

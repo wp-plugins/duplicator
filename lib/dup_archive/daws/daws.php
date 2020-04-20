@@ -49,21 +49,13 @@ class DAWS
         DupArchiveEngine::init(new DAWS_Logger());
     }
 
-    public function processRequest()
+    public function processRequest($params)
     {
         try {
 			DupLiteSnapLibLogger::log('process request');
             $retVal = new StdClass();
 
             $retVal->pass = false;
-
-            if (isset($_REQUEST['action'])) {
-                $params = $_REQUEST;
-                DupLiteSnapLibLogger::log('b');
-            } else {
-                $json = file_get_contents('php://input');
-                $params = json_decode($json, true);
-            }
 
             DupLiteSnapLibLogger::logObject('params', $params);
             DupLiteSnapLibLogger::logObject('keys', array_keys($params));
@@ -300,7 +292,3 @@ function terminate_missing_variables($errno, $errstr, $errfile, $errline)
      */
     throw new Exception("ERROR:{$errfile}:{$errline} | ".$errstr , $errno);
 }
-
-$daws = new DAWS();
-
-$daws->processRequest();

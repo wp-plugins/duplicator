@@ -44,6 +44,9 @@ if (!class_exists('DupLiteSnapLibURLU', false)) {
         public static function getCurrentUrl($queryString = true)
         {
             $protocol = 'http';
+            if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+                $_SERVER ['HTTPS'] = 'on';
+            }
             if ($_SERVER['SERVER_PORT'] == 443 || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')) {
                 $protocol     .= 's';
                 $protocolPort = $_SERVER['SERVER_PORT'];
@@ -52,7 +55,7 @@ if (!class_exists('DupLiteSnapLibURLU', false)) {
             }
             $host    = $_SERVER['HTTP_HOST'];
             $port    = $_SERVER['SERVER_PORT'];
-            $request = $_SERVER['PHP_SELF'];
+            $request = $_SERVER['SCRIPT_NAME'];
 
             $query = ($queryString === TRUE) ? $_SERVER['QUERY_STRING'] : "";
             $url   = $protocol.'://'.$host.($port == $protocolPort ? '' : ':'.$port).$request.(empty($query) ? '' : '?'.$query);

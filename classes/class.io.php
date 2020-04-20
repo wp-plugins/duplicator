@@ -74,8 +74,7 @@ class DUP_IO
         //Create directory
         if (file_exists($dest_dir) == false)
         {
-            if (self::createDir($dest_dir, 0755, true) === false)
-            {
+            if (wp_mkdir_p($dest_dir) === false) {
                 return false;
             }
         }

@@ -60,15 +60,26 @@ class DUP_Server
 		//PHP SUPPORT
 		$safe_ini						 = strtolower(ini_get('safe_mode'));
 		$dup_tests['PHP']['SAFE_MODE']	 = $safe_ini != 'on' || $safe_ini != 'yes' || $safe_ini != 'true' || ini_get("safe_mode") != 1 ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['PHP']['SAFE_MODE'], 'SAFE_MODE is on.');
+
 		$dup_tests['PHP']['VERSION']	 = DUP_Util::$on_php_529_plus ? 'Pass' : 'Fail';
+		$phpversion = phpversion();
+		self::logRequirementFail($dup_tests['PHP']['VERSION'], 'PHP version('.$phpversion.') is lower than 5.2.9');
 
 		if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive) {
 			$dup_tests['PHP']['ZIP'] = class_exists('ZipArchive') ? 'Pass' : 'Fail';
+			self::logRequirementFail($dup_tests['PHP']['ZIP'], 'ZipArchive class doesn\'t exist.');
 		}
 
 		$dup_tests['PHP']['FUNC_1']	 = function_exists("file_get_contents") ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['PHP']['FUNC_1'], 'file_get_contents function doesn\'t exist.');
+
 		$dup_tests['PHP']['FUNC_2']	 = function_exists("file_put_contents") ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['PHP']['FUNC_2'], 'file_put_contents function doesn\'t exist.');
+
 		$dup_tests['PHP']['FUNC_3']	 = function_exists("mb_strlen") ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['PHP']['FUNC_3'], 'mb_strlen function doesn\'t exist.');
+
 		$dup_tests['PHP']['ALL']	 = !in_array('Fail', $dup_tests['PHP']) ? 'Pass' : 'Fail';
 
 		//REQUIRED PATHS
@@ -76,24 +87,62 @@ class DUP_Server
 		$handle_test				 = @opendir($abs_path);
 		$dup_tests['IO']['WPROOT']	 = is_writeable($abs_path) && $handle_test ? 'Pass' : 'Warn';
 		@closedir($handle_test);
+		self::logRequirementFail($dup_tests['IO']['WPROOT'], $abs_path.' (abs path) can\'t be opened.');
 
 		$dup_tests['IO']['SSDIR']	 = (file_exists(DUPLICATOR_SSDIR_PATH) && is_writeable(DUPLICATOR_SSDIR_PATH)) ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['IO']['SSDIR'], DUPLICATOR_SSDIR_PATH.' (DUPLICATOR_SSDIR_PATH) can\'t be writeable.');
+
 		$dup_tests['IO']['SSTMP']	 = is_writeable(DUPLICATOR_SSDIR_PATH_TMP) ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['IO']['SSTMP'], DUPLICATOR_SSDIR_PATH_TMP.' (DUPLICATOR_SSDIR_PATH_TMP) can\'t be writeable.');
+
 		$dup_tests['IO']['ALL']		 = !in_array('Fail', $dup_tests['IO']) ? 'Pass' : 'Fail';
 
 		//SERVER SUPPORT
 		$dup_tests['SRV']['MYSQLi']		 = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
-		$dup_tests['SRV']['MYSQL_VER']	 = version_compare(DUP_DB::getVersion(), '5.0', '>=') ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['SRV']['MYSQLi'], 'mysqli_connect function doesn\'t exist.');
+
+		$db_version = DUP_DB::getVersion();
+		$dup_tests['SRV']['MYSQL_VER']	 = version_compare($db_version, '5.0', '>=') ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['SRV']['MYSQL_VER'], 'MySQL version '.$db_version.' is lower than 5.0.');
+
 		$dup_tests['SRV']['ALL']		 = !in_array('Fail', $dup_tests['SRV']) ? 'Pass' : 'Fail';
 
 		//RESERVED FILES
 		$dup_tests['RES']['INSTALL'] = !(self::hasInstallerFiles()) ? 'Pass' : 'Fail';
+		self::logRequirementFail($dup_tests['RES']['INSTALL'], 'Installer file(s) are exist on the server.');
 		$dup_tests['Success']		 = $dup_tests['PHP']['ALL'] == 'Pass' && $dup_tests['IO']['ALL'] == 'Pass' && $dup_tests['SRV']['ALL'] == 'Pass' && $dup_tests['RES']['INSTALL'] == 'Pass';
 
 		$dup_tests['Warning'] = $dup_tests['IO']['WPROOT'] == 'Warn';
 
 		return $dup_tests;
 	}
+
+	/**
+     * Logs requirement fail status informative message
+     *
+     * @param string $testStatus Either it is Pass or Fail
+     * @param string $errorMessage Error message which should be logged
+     * @return void
+     */
+    private static function logRequirementFail($testStatus, $errorMessage) {
+        if (empty($testStatus)) {
+			throw new Exception('Exception: Empty $testStatus [File: '.__FILE__.', Ln: '.__LINE__);
+        }
+
+        if (empty($errorMessage)) {
+			throw new Exception('Exception: Empty $errorMessage [File: '.__FILE__.', Ln: '.__LINE__);
+        }
+
+        $validTestStatuses = array('Pass', 'Fail');
+
+        if (!in_array($testStatus, $validTestStatuses)) {
+            throw new Exception('Exception: Invalid $testStatus value: '.$testStatus.' [File: '.__FILE__.', Ln: '.__LINE__);
+        }
+
+        if ('Fail' == $testStatus) {
+			DUP_LOG::trace($errorMessage);
+        }
+    }
 
 	/**
 	 * Gets the system checks which are not required
@@ -113,13 +162,26 @@ class DUP_Server
 				break;
 			}
 		}
+		self::logCheckFalse($php_test0, 'Any out of server software ('.implode(', ', $GLOBALS['DUPLICATOR_SERVER_LIST']).') doesn\'t exist.');
 
 		$php_test1	 = ini_get("open_basedir");
 		$php_test1	 = empty($php_test1) ? true : false;
-		$php_test2	 = ini_get("max_execution_time");
-		$php_test2	 = ($php_test2 > DUPLICATOR_SCAN_TIMEOUT) || (strcmp($php_test2, 'Off') == 0 || $php_test2 == 0) ? true : false;
+		self::logCheckFalse($php_test1, 'open_basedir is enabled.');
+
+		$max_execution_time = ini_get("max_execution_time");
+		$php_test2	 = ($max_execution_time > DUPLICATOR_SCAN_TIMEOUT) || (strcmp($max_execution_time, 'Off') == 0 || $max_execution_time == 0) ? true : false;
+		if  (strcmp($max_execution_time, 'Off') == 0) {
+            $max_execution_time_error_message = '$max_execution_time should not be'.$max_execution_time;
+        } else {
+            $max_execution_time_error_message = '$max_execution_time ('.$max_execution_time.') should not  be lower than the DUPLICATOR_PRO_SCAN_TIMEOUT'.DUPLICATOR_PRO_SCAN_TIMEOUT;
+        }
+        self::logCheckFalse($php_test2, $max_execution_time_error_message);
+
 		$php_test3	 = function_exists('mysqli_connect');
+		self::logCheckFalse($php_test3, 'mysqli_connect function doesn\'t exist.');
+
 		$php_test4	 = DUP_Util::$on_php_53_plus ? true : false;
+		self::logCheckFalse($php_test4, 'PHP Version is lower than 5.3.');
 
 		$checks['SRV']['PHP']['websrv']		 = $php_test0;
 		$checks['SRV']['PHP']['openbase']	 = $php_test1;
@@ -131,10 +193,13 @@ class DUP_Server
 		//WORDPRESS SETTINGS
 		global $wp_version;
 		$wp_test1 = version_compare($wp_version, DUPLICATOR_SCAN_MIN_WP) >= 0 ? true : false;
+		self::logCheckFalse($wp_test1, 'WP version ('.$wp_version.') is lower than the DUPLICATOR_SCAN_MIN_WP ('.DUPLICATOR_SCAN_MIN_WP.').');
 
 		//Core Files
-		$files					 = array();
-		$files['wp-config.php']	 = file_exists(duplicator_get_abs_path().'/wp-config.php');
+		$files						= array();
+		$proper_wp_config_file_path	= duplicator_get_abs_path().'/wp-config.php';
+		$files['wp-config.php']	 = file_exists($proper_wp_config_file_path);
+		self::logCheckFalse($files['wp-config.php'], 'The wp-config.php file doesn\'t exist on the '.$proper_wp_config_file_path);
 
 		/** searching wp-config in working word press is not worthy
 		 * if this script is executing that means wp-config.php exists :)
@@ -160,6 +225,7 @@ class DUP_Server
 		  $wp_test3 = ($cach_filtered || $dirEmpty || $dirSize < DUPLICATOR_SCAN_CACHESIZE ) ? true : false;
 		 */
 		$wp_test3 = is_multisite();
+		self::logCheckFalse($wp_test3, 'WP is multi-site setup.');
 
 		$checks['SRV']['WP']['version']	 = $wp_test1;
 		$checks['SRV']['WP']['core']	 = $wp_test2;
@@ -167,6 +233,27 @@ class DUP_Server
 		$checks['SRV']['WP']['ALL']		 = $wp_test1 && $wp_test2 && !$wp_test3 ? 'Good' : 'Warn';
 
 		return $checks;
+	}
+
+	/**
+     * Logs checks false informative message
+     *
+     * @param boolean $check Either it is true or false
+     * @param string $errorMessage Error message which should be logged when check is false
+     * @return void
+     */
+    private static function logCheckFalse($check, $errorMessage) {
+        if (!is_bool($check)) {
+            throw new Exception('Exception: Not boolean $check [File: '.__FILE__.', Ln: '.__LINE__);
+        }
+
+        if (empty($errorMessage)) {
+            throw new Exception('Exception: Empty $errorMessage [File: '.__FILE__.', Ln: '.__LINE__);
+        }
+
+        if (false === $check) {
+            DUP_LOG::trace($errorMessage);
+        }
 	}
 
 	/**

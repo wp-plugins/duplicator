@@ -20,7 +20,7 @@ class DUPX_InstallerState
 	private static $instance = null;
 
     public static function init($clearState) {
-        self::$state_filepath = dirname(__FILE__).'/../installer-state.txt';
+        self::$state_filepath = dirname(__FILE__).'/../dup-installer-state_'.$GLOBALS['PACKAGE_HASH'].'.txt';
 
         if($clearState) {
             DupLiteSnapLibIOU::rm(self::$state_filepath);

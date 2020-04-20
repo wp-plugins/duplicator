@@ -13,8 +13,10 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 //Enum used to define the various test statues 
 final class DUPX_CTRL_Status
 {
+
     const FAILED  = 0;
     const SUCCESS = 1;
+
 }
 
 /**
@@ -22,6 +24,7 @@ final class DUPX_CTRL_Status
  */
 class DUPX_CTRL_Report
 {
+
     //Properties
     public $runTime;
     public $outputType = 'JSON';
@@ -34,6 +37,7 @@ class DUPX_CTRL_Report
  */
 class DUPX_CTRL_Out
 {
+
     public $report  = null;
     public $payload = null;
     private $timeStart;
@@ -70,5 +74,14 @@ class DUPX_CTRL_Out
 
 class DUPX_CTRL
 {
+
     const NAME_MAX_SERIALIZE_STRLEN_IN_M = 'mstrlim';
+
+    public static function renderPostProcessings($string)
+    {
+        return str_replace(array(
+            DUPX_Package::getArchiveFileHash(),
+            DUPX_Package::getPackageHash())
+            , '[HASH]', $string);
+    }
 }

@@ -176,6 +176,30 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
         {
             return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/u', '', $string);
         }
+        
+        /**
+         * remove all non stamp chars from string and newline
+         * trim string 
+         * 
+         * @param string $string
+         * @return string
+         */
+        public static function sanitize_non_stamp_chars_and_newline($string)
+        {            
+            return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\r\n]/u', '', $string);
+        }
+        
+        /**
+         * remove all non stamp chars from string and newline
+         * trim string 
+         * 
+         * @param string $string
+         * @return string
+         */
+        public static function sanitize_non_stamp_chars_newline_and_trim($string)
+        {            
+            return trim(self::sanitize_non_stamp_chars_and_newline($string));
+        }  
 
         /**
          * Determines whether a PHP ini value is changeable at runtime.

@@ -125,7 +125,7 @@ DUPX_Log::info($log, DUPX_Log::LV_DEBUG);
 $log = "\n--------------------------------------\n";
 $log .= "ARCHIVE SETUP\n";
 $log .= "--------------------------------------\n";
-$log .= str_pad('NAME', $labelPadSize, '_', STR_PAD_RIGHT).': '.DUPX_Log::varToString($GLOBALS['FW_PACKAGE_NAME'])."\n";
+$log .= str_pad('NAME', $labelPadSize, '_', STR_PAD_RIGHT).': '.DUPX_Log::varToString($GLOBALS['FW_PACKAGE_PATH'])."\n";
 if (file_exists($GLOBALS['FW_PACKAGE_PATH'])) {
 	$log .= str_pad('SIZE', $labelPadSize, '_', STR_PAD_RIGHT).': '.DUPX_U::readableByteSize(@filesize($GLOBALS['FW_PACKAGE_PATH']));
 }
@@ -157,7 +157,7 @@ switch ($post_archive_engine) {
 			DUPX_Log::info("\nShell Exec Current does not support orginal file timestamp please use ZipArchive");
 		}
 
-		DUPX_Log::info(">>> Starting Shell-Exec Unzip:\nCommand: {$command}");
+		DUPX_Log::info(">>> Starting Shell-Exec Unzip:\nCommand: {$command}", DUPX_Log::LV_DEBUG);
 		$stderr = shell_exec($command);
 		if ($stderr != '') {
 			$zip_err_msg = ERR_SHELLEXEC_ZIPOPEN.": $stderr";
@@ -277,9 +277,12 @@ switch ($post_archive_engine) {
             if (!empty($dupInstallerFolder)) {
                 DUPX_U::moveUpfromSubFolder($target.'/'.$dupInstallerFolder , true);
             }
-            
-			$log = print_r($zip, true);
 
+			//Uncomment if needed
+			//if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) {
+			//	$log = print_r($zip, true);
+			//}
+            
 			//FILE-TIMESTAMP
 			if ($_POST['zip_filetime'] == 'original') {
 				$log .= "File timestamp set to Original\n";

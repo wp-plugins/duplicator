@@ -80,7 +80,7 @@ class DUPX_U_Html
             } else {
                 $fileName = parse_url($url, PHP_URL_HOST);
             }
-            $afterContent .= '<a target="_blank" class="button download-button" title="Download" download="'.DUPX_U::esc_attr($fileName).'" href="'.DUPX_U::esc_attr($url).'" onclick="function () { event.preventDefault(); return false;}" ><i class="fa fa-2x fa-download"></i></a>';
+            $afterContent .= '<a target="_blank" class="button download-button" title="Download" download="'.DUPX_U::esc_attr($fileName).'" href="'.DUPX_U::esc_attr($url).'"><i class="fa fa-2x fa-download"></i></a>';
         }
         $afterContent .= '</div>';
 

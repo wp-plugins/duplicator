@@ -94,9 +94,10 @@ class DUP_Installer
 			$mini_expander_string = '';
 		}
 
-		$search_array	 = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
+		$search_array	 = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@SECONDARY_PACKAGE_HASH@@' , '@@DUPARCHIVE_MINI_EXPANDER@@');
 		$package_hash	 = $this->Package->getPackageHash();
-		$replace_array	 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, $mini_expander_string);
+        $secondary_package_hash = $this->Package->getSecondaryPackageHash();
+		$replace_array	 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, $secondary_package_hash, $mini_expander_string);
 		$installer_contents = str_replace($search_array, $replace_array, $installer_contents);
 
 		if (@file_put_contents($installer_filepath, $installer_contents) === false) {

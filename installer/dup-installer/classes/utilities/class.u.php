@@ -658,6 +658,10 @@ class DUPX_U
      */
     public static function is_ssl()
     {
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $_SERVER ['HTTPS'] = 'on';
+        }
+        
         if ( isset($_SERVER['HTTPS']) ) {
             if ( 'on' == strtolower($_SERVER['HTTPS']) )
                 return true;

@@ -33,8 +33,10 @@ class DUPX_HTTP
 	public static function get_request_uri($show_query = true)
 	{
 		$isSecure = false;
-
-		if((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['SERVER_PORT'] == 443))
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $_SERVER ['HTTPS'] = 'on';
+        }
+        if((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['SERVER_PORT'] == 443))
 		{
 			$isSecure = true;
 		}

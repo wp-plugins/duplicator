@@ -332,7 +332,8 @@ jQuery(document).ready(function($) {
 		}
         $.post(ajaxurl, {
             action: 'duplicator_set_admin_notice_viewed',
-            notice_id: $(this).closest('.duplicator-message-dismissed').data('notice_id')
+            notice_id: $(this).closest('.duplicator-message-dismissed').data('notice_id'),
+			nonce: '<?php echo wp_create_nonce('duplicator_set_admin_notice_viewed'); ?>'
         });
         var $wrapperElm = $(this).closest('.duplicator-message-dismissed');
         $wrapperElm.fadeTo(100, 0, function () {

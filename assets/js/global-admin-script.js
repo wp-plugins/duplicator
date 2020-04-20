@@ -1,16 +1,9 @@
 jQuery(document).ready(function($) {
-    $('div.notice.duplicator-message-dismissed, .duplicator-message .notice-dismiss').on('click', function (event) {
+    $('.duplicator-plugin-activation-admin-notice .notice-dismiss').on('click', function (event) {
         event.preventDefault();
         $.post(ajaxurl, {
-            action: 'duplicator_set_admin_notice_viewed',
-            notice_id: $(this).closest('.duplicator-message-dismissed').data('notice_id')
+            action: 'duplicator_dismiss_plugin_activation_admin_notice',
+            nonce: dup_global_script_data.dismiss_plugin_activation_admin_notice_nonce
         });
-        var $wrapperElm = $(this).closest('.duplicator-message-dismissed');
-        $wrapperElm.fadeTo(100, 0, function () {
-            $wrapperElm.slideUp(100, function () {
-                $wrapperElm.remove();
-            });
-        });
-    });   
+    });
 });
-

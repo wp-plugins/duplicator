@@ -1,7 +1,7 @@
 <?php
 /*
  * Duplicator Website Installer
- * Copyright (C) 2018, Snap Creek LLC
+ * Copyright (C) 2020, Snap Creek LLC
  * website: snapcreek.com
  *
  * Duplicator (Pro) Plugin is distributed under the GNU General Public License, Version 3,
@@ -32,10 +32,26 @@ define('ERR_CONFIG_FOUND', 'A wp-config.php already exists in this location.  Th
 
 ob_start();
 try {
-    $GLOBALS['DUPX_ROOT']     = str_replace("\\", '/', (realpath(dirname(__FILE__).'/..')));
-    $GLOBALS['DUPX_ROOT_URL'] = 'http'.(!empty($_SERVER['HTTPS']) ? 's' : '').'://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF']);
-    $GLOBALS['DUPX_INIT']     = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
+    // for ngrok url and Local by Flywheel Live URL
+    if (isset($_SERVER['HTTP_X_ORIGINAL_HOST'])) {
+        $host = $_SERVER['HTTP_X_ORIGINAL_HOST'];
+    } else {
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']; //WAS SERVER_NAME and caused problems on some boxes
+    }
+    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+        $_SERVER ['HTTPS'] = 'on';
+    }
+    $serverDomain  = 'http'.((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 's' : '').'://'.$host;
+    $serverUrlSelf = preg_match('/^[\\\\\/]?$/', dirname($_SERVER['SCRIPT_NAME'])) ? '' : dirname($_SERVER['SCRIPT_NAME']);
+
+    $GLOBALS['DUPX_INIT']     = str_replace('\\', '/', dirname(__FILE__));
+    $GLOBALS['DUPX_INIT_URL'] = $serverDomain.$serverUrlSelf;
+    $GLOBALS['DUPX_ROOT']     = preg_match('/^[\\\\\/]?$/', dirname($GLOBALS['DUPX_INIT'])) ? '/' : dirname($GLOBALS['DUPX_INIT']);
+    $GLOBALS['DUPX_ROOT_URL'] = $serverDomain.(preg_match('/^[\\\\\/]?$/', dirname($serverUrlSelf)) ? '' : dirname($serverUrlSelf));
+
     require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.boot.php');
+    require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
+    
     /**
      * init constants and include
      */
@@ -59,18 +75,9 @@ try {
     // DUPX_log::error thotw an exception
     DUPX_Log::setThrowExceptionOnError(true);
 
-    require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
-
     // ?view=help
     if (!empty($_GET['view']) && 'help' == $_GET['view']) {
-        if (!isset($_GET['archive'])) {
-            // RSR TODO: Fail gracefully
-            DUPX_Log::error("Archive parameter not specified");
-        }
-        if (!isset($_GET['bootloader'])) {
-            // RSR TODO: Fail gracefully
-            DUPX_Log::error("Bootloader parameter not specified");
-        }
+
     } else if (isset($_GET['is_daws']) && 1 == $_GET['is_daws']) { // For daws action
         $post_ctrl_csrf_token = isset($_GET['daws_csrf_token']) ? DUPX_U::sanitize_text_field($_GET['daws_csrf_token']) : '';
         if (DUPX_CSRF::check($post_ctrl_csrf_token, 'daws')) {
@@ -102,7 +109,20 @@ try {
                 );
                 echo DupLiteSnapJsonU::wp_json_encode($resp);
             } else {
+
                 require_once($GLOBALS['DUPX_INIT'].'/lib/dup_archive/daws/daws.php');
+                
+                if (isset($_REQUEST['action'])) {
+                    $params = $_REQUEST;
+                    DupLiteSnapLibLogger::log('b');
+                } else {
+                    $json   = file_get_contents('php://input');
+                    $params = json_decode($json, true);
+                }
+                
+                $params['archive_filepath'] = $GLOBALS['FW_PACKAGE_PATH'];
+                $daws = new DAWS();
+                $daws->processRequest($params);
             }
             die('');
         } else {
