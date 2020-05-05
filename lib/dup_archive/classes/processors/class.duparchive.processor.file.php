@@ -27,8 +27,7 @@ class DupArchiveFileProcessor
 
         // end profile ok
 
-        if($sourceHandle === false)
-        {
+        if(!is_resource($sourceHandle)) {
             $createState->archiveOffset     = DupLiteSnapLibIOU::ftell($archiveHandle);
             $createState->currentFileIndex++;
             $createState->currentFileOffset = 0;

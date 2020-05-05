@@ -328,7 +328,7 @@ final class DUPX_S3_Funcs
             "********************************************************************************\n".
             "OPTIONS:\n";
 
-        $skipOpts = array('tables', 'plugins', 'dbpass', 'json', 'search', 'replace', 'mu_search', 'mu_replace', 'wp_password');
+        $skipOpts = array('tables', 'plugins', 'dbpass', 'json', 'search', 'replace', 'mu_search', 'mu_replace', 'wp_password', 'dbhost', 'dbuser', 'dbname', 'wp_username');
         foreach ($this->post as $key => $val) {
             if (in_array($key, $skipOpts)) {
                 continue;

@@ -323,6 +323,7 @@ class DUP_Archive
 			$wp_content.'/updraft',
 			$wp_content.'/wishlist-backup',
 			$wp_content.'/wfcache',
+			$wp_content.'/bps-backup', // BulletProof Security backup folder
 			$wp_content.'/cache',
 			//WP-CONTENT-UPLOADS
 			$wp_content_upload.'/aiowps_backups',
@@ -418,7 +419,7 @@ class DUP_Archive
 
             if (!$skip_archive_scan) {
                 //Locate invalid directories and warn
-                $invalid_test = strlen($val) > PHP_MAXPATHLEN || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name) || trim($name) == '' || (strrpos($name, '.') == strlen($name) - 1 && substr($name, -1)
+                $invalid_test = (defined('PHP_MAXPATHLEN') && (strlen($val) > PHP_MAXPATHLEN)) || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name) || trim($name) == '' || (strrpos($name, '.') == strlen($name) - 1 && substr($name, -1)
                     == '.') || preg_match('/[^\x20-\x7f]/', $name);
 
                 if ($invalid_test) {
@@ -495,7 +496,7 @@ class DUP_Archive
             $this->Size += $fileSize;
 
             if (!$skip_archive_scan) {
-                $invalid_test = strlen($filePath) > PHP_MAXPATHLEN || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName) || trim($fileName) == "" || preg_match('/[^\x20-\x7f]/', $fileName);
+                $invalid_test = (defined('PHP_MAXPATHLEN') && (strlen($filePath) > PHP_MAXPATHLEN)) || preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $fileName) || trim($fileName) == "" || preg_match('/[^\x20-\x7f]/', $fileName);
 
                 if ($invalid_test) {
                     $utf8_key_list[]                    = $key;

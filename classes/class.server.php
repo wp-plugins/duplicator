@@ -133,7 +133,7 @@ class DUP_Server
 			throw new Exception('Exception: Empty $errorMessage [File: '.__FILE__.', Ln: '.__LINE__);
         }
 
-        $validTestStatuses = array('Pass', 'Fail');
+        $validTestStatuses = array('Pass', 'Fail', 'Warn');
 
         if (!in_array($testStatus, $validTestStatuses)) {
             throw new Exception('Exception: Invalid $testStatus value: '.$testStatus.' [File: '.__FILE__.', Ln: '.__LINE__);
@@ -291,10 +291,14 @@ class DUP_Server
 	{
 		// alphanumeric 7 time, then -(dash), then 8 digits
 		$abs_path = duplicator_get_abs_path();
+		$four_digit_glob_pattern = '[0-9][0-9][0-9][0-9]';
 		$retArr = array(
 			basename(DUPLICATOR_INSTALLER_DIRECTORY).' '.esc_html__('(directory)', 'duplicator') => DUPLICATOR_INSTALLER_DIRECTORY,
 			DUPLICATOR_INSTALL_PHP => $abs_path . '/' .DUPLICATOR_INSTALL_PHP,
+            '[HASH]'.'_'.DUPLICATOR_INSTALL_PHP => $abs_path.'/*_*' . $four_digit_glob_pattern . '_'.DUPLICATOR_INSTALL_PHP,            
 			DUPLICATOR_INSTALL_BAK => $abs_path . '/' .DUPLICATOR_INSTALL_BAK,
+            '[HASH]'.'_'.DUPLICATOR_INSTALL_BAK => $abs_path.'/*_*' . $four_digit_glob_pattern . '_'.DUPLICATOR_INSTALL_BAK,
+            '[HASH]_archive.zip|daf' => $abs_path.'/*_*' . $four_digit_glob_pattern . '_archive.[zd][ia][pf]',
 			'dup-installer-bootlog__[HASH].txt' => $abs_path.'/dup-installer-bootlog__'.DUPLICATOR_INSTALLER_HASH_PATTERN.'.txt',
 		);
 		if (DUPLICATOR_INSTALL_SITE_OVERWRITE_ON) {

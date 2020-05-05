@@ -10,8 +10,8 @@ class DUP_Web_Services
     public static function init()
     {
         add_action('wp_ajax_duplicator_reset_all_settings', array(__CLASS__, 'ajax_reset_all'));
-        add_action('wp_ajax_duplicator_set_admin_notice_viewed',    array(__CLASS__, 'set_admin_notice_viewed'));
-        add_action('wp_ajax_duplicator_dismiss_plugin_activation_admin_notice', array(__CLASS__, 'dismiss_plugin_activation_admin_notice'));
+        add_action('wp_ajax_duplicator_set_admin_notice_viewed', array(__CLASS__, 'set_admin_notice_viewed'));
+        add_action('wp_ajax_duplicator_admin_notice_to_dismiss', array(__CLASS__, 'admin_notice_to_dismiss'));
         add_action('wp_ajax_duplicator_download', array(__CLASS__, 'duplicator_download'));
         add_action('wp_ajax_nopriv_duplicator_download', array(__CLASS__, 'duplicator_download'));
     }
@@ -89,13 +89,13 @@ class DUP_Web_Services
     {
         $error = false;
 
-        if (!isset($_GET['id']) || !isset($_GET['hash']) || !isset($_GET['file'])) {
+        $packageId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $hash      = filter_input(INPUT_GET, 'hash', FILTER_SANITIZE_STRING);
+        $file      = filter_input(INPUT_GET, 'file', FILTER_SANITIZE_STRING);
+
+        if ($packageId === false || $hash === false || $file === false) {
             $error = true;
         }
-
-        $packageId = (int) $_GET['id'];
-        $hash      = sanitize_text_field($_GET['hash']);
-        $file      = sanitize_text_field($_GET['file']);
 
         if ($error || ($package = DUP_Package::getByID($packageId)) == false) {
             $error = true;
@@ -120,46 +120,50 @@ class DUP_Web_Services
                 $error    = true;
         }
 
-        $filepath = DUPLICATOR_SSDIR_PATH.'/'.$fileName;
+        if(!$error)
+        {
+            $filepath = DUPLICATOR_SSDIR_PATH.'/'.$fileName;
 
-        // Process download
-        if (!$error && file_exists($filepath)) {
-            // Clean output buffer
-            if (ob_get_level() !== 0 && @ob_end_clean() === FALSE) {
-                @ob_clean();
-            }
-
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.$fileName.'"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: '.filesize($filepath));
-            flush(); // Flush system output buffer
-
-            try {
-                $fp = @fopen($filepath, 'r');
-                if (false === $fp) {
-                    throw new Exception('Fail to open the file '.$filepath);
+            // Process download
+            if (file_exists($filepath)) {
+                // Clean output buffer
+                if (ob_get_level() !== 0 && @ob_end_clean() === FALSE) {
+                    @ob_clean();
                 }
-                while (!feof($fp) && ($data = fread($fp, DUPLICATOR_BUFFER_READ_WRITE_SIZE)) !== FALSE) {
-                    echo $data;
+
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename="'.$fileName.'"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: '.filesize($filepath));
+                flush(); // Flush system output buffer
+
+                try {
+                    $fp = @fopen($filepath, 'r');
+                    if (false === $fp) {
+                        throw new Exception('Fail to open the file '.$filepath);
+                    }
+                    while (!feof($fp) && ($data = fread($fp, DUPLICATOR_BUFFER_READ_WRITE_SIZE)) !== FALSE) {
+                        echo $data;
+                    }
+                    @fclose($fp);
                 }
-                @fclose($fp);
+                catch (Exception $e) {
+                    readfile($filepath);
+                }
+                exit;
+            } else {
+                // if the request is wrong wait to avoid brute force attack
+                sleep(2);
+                wp_die('Invalid request');
             }
-            catch (Exception $e) {
-                readfile($filepath);
-            }
-            exit;
-        } else {
-            // if the request is wrong wait to avoid brute force attack
-            sleep(2);
-            wp_die('Invalid request');
         }
     }
 
-    public static function set_admin_notice_viewed() {
+    public static function set_admin_notice_viewed()
+    {
         DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
         if (!wp_verify_nonce($_REQUEST['nonce'], 'duplicator_set_admin_notice_viewed')) {
@@ -182,16 +186,31 @@ class DUP_Web_Services
         wp_die();
     }
 
-    public static function dismiss_plugin_activation_admin_notice() {
-        DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
+    public static function admin_notice_to_dismiss()
+    {
+        try {
+            DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
-        if (!wp_verify_nonce($_POST['nonce'], 'duplicator_dismiss_plugin_activation_admin_notice')) {
-            DUP_Log::trace('Security issue');
-            throw new Exception('Security issue');
+            $nonce = filter_input(INPUT_POST, 'nonce', FILTER_SANITIZE_STRING);
+            if (!wp_verify_nonce($nonce, 'duplicator_admin_notice_to_dismiss')) {
+                DUP_Log::trace('Security issue');
+                throw new Exception('Security issue');
+            }
+
+            $noticeToDismiss = filter_input(INPUT_POST, 'notice', FILTER_SANITIZE_STRING);
+            switch ($noticeToDismiss) {
+                case DUP_UI_Notice::OPTION_KEY_INSTALLER_HASH_NOTICE:
+                case DUP_UI_Notice::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL_DISMISS:
+                    delete_option($noticeToDismiss);
+                    break;
+                default:
+                    throw new Exception('Notice invalid');
+            }
+        }
+        catch (Exception $e) {
+            wp_send_json_error($e->getMessage());
         }
 
-        DUP_Util::resetReactivatePlugins();
-
-        wp_die();
+        wp_send_json_success();
     }
 }

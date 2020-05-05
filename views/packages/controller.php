@@ -14,11 +14,6 @@ $current_view =  (isset($_REQUEST['action']) && $_REQUEST['action'] == 'detail')
 
 $get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
 ?>
-
-<script>
-
-</script>
-
 <script>
     jQuery(document).ready(function($) {
 

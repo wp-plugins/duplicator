@@ -155,7 +155,7 @@ class DUPX_Bootstrap
 		$error					= null;
 
 		$is_installer_file_valid = true;
-		if (preg_match('/_([a-z0-9]{7})[a-z0-9]{13}_[0-9]{6}([0-9]{8})_archive.(?:zip|daf)$/', $archive_filename, $matches)) {
+		if (preg_match('/_([a-z0-9]{7})[a-z0-9]+_[0-9]{6}([0-9]{8})_archive.(?:zip|daf)$/', $archive_filename, $matches)) {
 			$expected_package_hash = $matches[1].'-'.$matches[2]; 
 			if (self::PACKAGE_HASH != $expected_package_hash) {
 				$is_installer_file_valid = false;

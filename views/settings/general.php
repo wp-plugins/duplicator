@@ -72,6 +72,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
     form#dup-settings-form input[type=text] {width: 400px; }
     div.dup-feature-found {padding:3px; border:1px solid silver; background: #f7fcfe; border-radius: 3px; width:400px; font-size: 12px}
     div.dup-feature-notfound {padding:5px; border:1px solid silver; background: #fcf3ef; border-radius: 3px; width:500px; font-size: 13px; line-height: 18px}
+    table.nested-table-data td {padding:5px 5px 5px 0}
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url('admin.php?page=duplicator-settings&tab=general'); ?>" method="post">
@@ -111,6 +112,23 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
             <td>
                 <?php esc_html_e("Full Path", 'duplicator'); ?>:
                 <?php echo DUP_Util::safePath(DUPLICATOR_SSDIR_PATH); ?><br/><br/>
+                
+<!--                <table class="nested-table-data">
+                   <tr>
+                       <td><label><input type="radio" name="storage" checked="checked" /><?php esc_html_e('Legacy Path:', 'duplicator'); ?></label></td>
+                       <td><i>/public_html/mysite/wp-snapshots</i></td>
+                   </tr>
+                   <tr>
+                       <td><label><input type="radio" name="storage" /><?php esc_html_e('Contents Path:', 'duplicator'); ?></label></td>
+                       <td><i>/public_html/mysite/wp-contents/backups-duplicator-lite</i></td>
+                   </tr>
+               </table>
+
+                <p class="description" style="max-width:800px">
+                   <?php esc_html_e("The storage location is where all the package files are stored.  If your host has troubles writting content to the root directory then use the Contents Path.", 'duplicator'); ?>
+               </p>
+               <br/><br/>-->
+
                 <input type="checkbox" name="storage_htaccess_off" id="storage_htaccess_off" <?php echo ($storage_htaccess_off) ? 'checked="checked"' : ''; ?> />
                 <label for="storage_htaccess_off"><?php esc_html_e("Disable .htaccess File In Storage Directory", 'duplicator') ?> </label>
                 <p class="description">

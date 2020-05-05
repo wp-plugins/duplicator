@@ -11,6 +11,8 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/class.password.php');
 
 class DUP_Installer
 {
+    const DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH = 'installer.php';
+    
 	//PUBLIC
 	public $File;
 	public $Size			 = 0;
@@ -302,7 +304,7 @@ class DUP_Installer
 
 	private function add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath)
 	{
-		$installer_backup_filename = 'installer-backup.php';
+		$installer_backup_filename = $this->Package->NameHash.'_installer-backup.php';
 		
 
 		DUP_Log::Info('Adding enhanced installer files to archive using DupArchive');
@@ -407,7 +409,7 @@ class DUP_Installer
 	private function add_installer_files_using_zip_archive(&$zip_archive, $installer_filepath, $archive_config_filepath, $is_compressed)
 	{
 		$success = false;
-		$installer_backup_filename = 'installer-backup.php';
+		$installer_backup_filename = $this->Package->NameHash.'_installer-backup.php';
 
 		DUP_Log::Info('Adding enhanced installer files to archive using ZipArchive');
 

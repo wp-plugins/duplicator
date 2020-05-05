@@ -295,9 +295,11 @@ if (!empty($unespectOutput)) {
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.css.php');
-		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.js.php');
+    ?>
+    <script src="<?php echo $GLOBALS['DUPX_INIT_URL'];?>/assets/inc.libs.js?v=<?php echo $GLOBALS['DUPX_AC']->version_dup; ?>"></script>
+    <?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.js.php');
-	?>
+    ?>
 </head>
 <body id="body-<?php echo $GLOBALS["VIEW"]; ?>" >
 

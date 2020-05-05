@@ -377,6 +377,22 @@ class DUP_Package
 
         return $validator;
     }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getInstDownloadName()
+    {
+        switch (DUP_Settings::Get('installer_name_mode')) {
+            case DUP_Settings::INSTALLER_NAME_MODE_SIMPLE:
+                return DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH;
+
+            case DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH:
+            default:
+                return basename($this->getLocalPackageFile(DUP_PackageFileType::Installer));
+        }
+    }
 
     /**
      *

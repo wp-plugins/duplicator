@@ -542,7 +542,8 @@ class DUP_Database
              * 2 - Exception
              */
             DUP_Log::Info('MYSQL DUMP ERROR '.print_r($mysqlResult, true));
-            DUP_Log::error(__('Shell mysql dump error', 'duplicator'), __('change Mysql dump engine in PHP mode', 'duplicator'), Dup_ErrorBehavior::ThrowException);
+            DUP_Log::error(__('Shell mysql dump error. Change Mysql dump engine in PHP mode', 'duplicator'),
+				implode("\n",DupLiteSnapLibIOU::getLastLinesOfFile($this->dbStorePath,DUPLICATOR_DB_MYSQLDUMP_ERROR_CONTAINING_LINE_COUNT)), Dup_ErrorBehavior::ThrowException);
             return false;
         }
 

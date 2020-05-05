@@ -98,13 +98,14 @@ function duplicator_package_build()
 
         //JSON:Debug Response
         //Pass = 1, Warn = 2, Fail = 3
-        $json                = array();
-        $json['status']      = 1;
-        $json['error']       = '';
-        $json['package']     = $Package;
-        $json['runtime']     = $Package->Runtime;
-        $json['exeSize']     = $Package->ExeSize;
-        $json['archiveSize'] = $Package->ZipSize;
+        $json                     = array();
+        $json['status']           = 1;
+        $json['error']            = '';
+        $json['package']          = $Package;
+        $json['instDownloadName'] = $Package->getInstDownloadName();
+        $json['runtime']          = $Package->Runtime;
+        $json['exeSize']          = $Package->ExeSize;
+        $json['archiveSize']      = $Package->ZipSize;
 
         //Simulate a Host Build Interrupt
         //die(0);
@@ -114,13 +115,14 @@ function duplicator_package_build()
 
         //JSON:Debug Response
         //Pass = 1, Warn = 2, Fail = 3
-        $json                = array();
-        $json['status']      = 3;
-        $json['error']       = $e->getMessage();
-        $json['package']     = $Package;
-        $json['runtime']     = null;
-        $json['exeSize']     = null;
-        $json['archiveSize'] = null;
+        $json                     = array();
+        $json['status']           = 3;
+        $json['error']            = $e->getMessage();
+        $json['package']          = $Package;
+        $json['instDownloadName'] = null;
+        $json['runtime']          = null;
+        $json['exeSize']          = null;
+        $json['archiveSize']      = null;
     }
     $json_response = DupLiteSnapJsonU::wp_json_encode($json);
 
@@ -222,10 +224,11 @@ function duplicator_duparchive_package_build()
         }
 
         Dup_Log::Trace('#### json package');
-        $json['package']     = $package;
-        $json['runtime']     = $package->Runtime;
-        $json['exeSize']     = $package->ExeSize;
-        $json['archiveSize'] = $package->ZipSize;
+        $json['package']          = $package;
+        $json['instDownloadName'] = $package->getInstDownloadName();
+        $json['runtime']          = $package->Runtime;
+        $json['exeSize']          = $package->ExeSize;
+        $json['archiveSize']      = $package->ZipSize;
         DUP_Log::Trace('[CTRL DUP ARCIVE] JSON PACKAGE');
     } else {
         DUP_Log::Info('[CTRL DUP ARCIVE] sending back continue status PACKAGE STATUS: '.$package->Status);
@@ -490,9 +493,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
                 if ($filePath != null) {
                     $fp = fopen($filePath, 'rb');
                     if ($fp !== false) {
-
                         if ($which == DUP_PackageFileType::Installer) {
-                            $fileName = 'installer.php';
+                            $fileName = $package->getInstDownloadName();
                         } else {
                             $fileName = basename($filePath);
                         }

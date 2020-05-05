@@ -37,7 +37,7 @@ $rand_txt[0] = $atext0;
     div.dup-msg-success-links {margin:20px 5px 5px 5px; font-size: 13px;}
     div#dup-progress-area div.done-title {font-size:18px; font-weight:bold; margin:0px 0px 10px 0px}
     div#dup-progress-area div.dup-panel-title {background-color: #dfdfdf;}
-    div.hdr-pack-complete {font-size:18px; color:green; font-weight: bold}
+	div.hdr-pack-complete {font-size:18px; color:green; font-weight: bold}
 
     div#dup-create-area-nolink, div#dup-create-area-link {float:right; font-weight: bold; margin: 0; padding: 0}
     div#dup-create-area-link {display:none; margin-left: -5px}
@@ -150,12 +150,22 @@ TOOL BAR: STEPS -->
 					<a href="javascript:void(0)" id="dup-link-download-both" title="<?php esc_attr_e("Click to download both files", 'duplicator') ?>">
 						 <?php esc_html_e("One-Click Download",   'duplicator') ?>
 					</a>
-					<sup><i class="fas fa-question-circle fa-sm" style='font-size:11px'
+					<sup>
+						<i class="fas fa-question-circle fa-sm" style='font-size:11px'
 							data-tooltip-title="<?php esc_attr_e("One Click:", 'duplicator'); ?>"
 							data-tooltip="<?php esc_attr_e('Clicking this link will open both the installer and archive download prompts at the same time. '
 								.'On some browsers you may have to disable pop-up warnings on this domain for this to work correctly.', 'duplicator'); ?>">
-						</i></sup>
+						</i>
+					</sup>
 				</div>
+                <div style="margin-top:20px; font-size:11px">
+                    <span id="dup-click-to-copy-installer-name" class="link-style no-decoration" data-dup-copy-text="<?php echo esc_attr(DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH); ?>">
+                        <?php
+                        esc_html_e("[Copy Installer Name to Clipboard]", 'duplicator');
+                        ?>
+                        <i class="far fa-copy"></i>
+                    </span>
+                </div>
 			</fieldset>
 
 			<div class="dup-howto-exe">
@@ -513,7 +523,7 @@ jQuery(document).ready(function ($)
 								alert(errorMessage);
 							}
 
-						   Duplicator.Pack.WireDownloadLinks(data);
+						    Duplicator.Pack.WireDownloadLinks(data);
 
 						} else {
 							// data.Status == 4
@@ -633,6 +643,8 @@ jQuery(document).ready(function ($)
 			}, 700);
 			return false;
 		});
+		
+		$('#dup-click-to-copy-installer-name').data('dup-copy-text', data.instDownloadName);
 	};
 
 	Duplicator.Pack.HandleDupArchiveInterruption = function (errorText)

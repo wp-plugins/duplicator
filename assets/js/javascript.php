@@ -211,7 +211,85 @@ Duplicator.UI.enable = function(item)
 //Init
 jQuery(document).ready(function($) 
 {
-	
+
+    Duplicator.UI.loadQtip = function()
+    {
+        //Look for tooltip data
+        $('[data-tooltip!=""]').qtip({
+            content: {
+                attr: 'data-tooltip',
+                title:  function() { 
+                    if ($(this)[0].hasAttribute("data-tooltip-title")) {
+                        return  $(this).data('tooltip-title');
+                    } else {
+                        return false;
+                    }
+                }
+            },
+            style: {
+                classes: 'qtip-light qtip-rounded qtip-shadow',
+                width: 500
+            },
+            position: {
+                my: 'top left',
+                at: 'bottom center'
+            }
+        });
+    }
+
+    Duplicator.UI.loadSimpeQtip = function()
+    {
+        //Look for tooltip data
+        $('[data-simpletip!=""]').qtip({
+            content: {
+                attr: 'data-simpletip'
+            },
+            style: {
+                classes: 'qtip-light qtip-rounded qtip-shadow'
+            },
+            position: {
+                my: 'top left',
+                at: 'bottom center'
+            }
+        });
+    }  
+
+    Duplicator.UI.Copytext = function () {
+        $('[data-dup-copy-text]').each(function () {
+            $(this).click(function () {
+                var elem = $(this);
+                var message = '';
+                var textToCopy = elem.data('dup-copy-text');
+                var tmpArea = jQuery("<textarea></textarea>").css({
+                    position: 'absolute',
+                    top: '-10000px'
+                }).text(textToCopy).appendTo( "body" );
+                tmpArea.select();
+                try {
+                    var successful = document.execCommand('copy');
+                    message = successful ? '<?php echo esc_html_e('Copied: ', 'duplicator'); ?>' + textToCopy : '<?php echo esc_html_e('unable to copy'); ?>';
+                } catch (err) {
+                    message = '<?php echo esc_html_e('unable to copy', 'duplicator'); ?>';
+                }
+                elem.qtip('option', 'content.text', message).qtip('show');
+                setTimeout(function(){ 
+                    elem.qtip('option', 'content.text', '<?php esc_html_e('Copy to Clipboard!', 'duplicator'); ?>');
+                }, 2000);
+            }).qtip({
+                content: {
+                    text: '<?php esc_html_e('Copy to Clipboard!', 'duplicator'); ?>'
+                },
+                style: {
+                    classes: 'qtip-light qtip-rounded qtip-shadow'
+                },
+                position: {
+                    my: 'top left',
+                    at: 'bottom center'
+                }
+            });
+        });
+    };
+
 	//INIT: Tabs
 	$("div[data-dup-tabs='true']").each(function () {
 
@@ -253,30 +331,10 @@ jQuery(document).ready(function($)
 			: $arrow.html('<i class="fa fa-caret-down"></i>');
 	});
 
-
-	Duplicator.UI.loadQtip = function()
-	{
-		//Look for tooltip data
-		$('i[data-tooltip!=""]').qtip({
-			content: {
-				attr: 'data-tooltip',
-				title: {
-					text: function() { return  $(this).attr('data-tooltip-title'); }
-				}
-			},
-			style: {
-				classes: 'qtip-light qtip-rounded qtip-shadow',
-				width: 500
-			},
-			 position: {
-				my: 'top left',
-				at: 'bottom center'
-			}
-		});
-	}
-
-	Duplicator.UI.loadQtip();
-
+    
+    Duplicator.UI.loadQtip();
+    Duplicator.UI.loadSimpeQtip();
+    Duplicator.UI.Copytext();
 
 	//HANDLEBARS HELPERS
 	if  (typeof(Handlebars) != "undefined"){

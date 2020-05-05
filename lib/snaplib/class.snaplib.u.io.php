@@ -140,7 +140,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
                 }
             }
 
-            if ($file_handle === false) {
+            if (!is_resource($file_handle)) {
                 if ($throwOnError) {
                     throw new Exception("Error opening $filepath");
                 } else {
@@ -294,7 +294,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
                     throw new Exception("Trying to fseek($offset, $whence) and came back false");
                 }
                 //This check is not strict, but in most cases 32 Bit PHP will be the issue
-                else if (abs($offset) > self::FileSizeLimit32BitPHP || $filesize > self::FileSizeLimit32BitPHP || ($offset < 0 && ($whence == SEEK_SET || $whence == SEEK_END))) {
+                else if (abs($offset) > self::FileSizeLimit32BitPHP || $filesize > self::FileSizeLimit32BitPHP || ($offset <= 0 && ($whence == SEEK_SET || $whence == SEEK_END))) {
                     throw new DupLiteSnapLib_32BitSizeLimitException("Trying to seek on a file beyond the capability of 32 bit PHP. offset=$offset filesize=$filesize");
                 } else {
                     throw new Exception("Error seeking to file offset $offset. Retval = $ret_val");
@@ -534,6 +534,46 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             } else {
                 return true;
             }
+        }
+
+        /**
+         * @param string $path Path to the file
+         * @param int $n Number of lines to get
+         * @return bool|array Last $n lines of file
+         */
+        public static function getLastLinesOfFile($path, $n)
+        {
+            if (!is_readable($path)) {
+                return false;
+            }
+
+            if (($handle = self::fopen($path, 'r', false)) === false) {
+                return false;
+            }
+
+            $result = array();
+            $pos = -1;
+            $currentLine = '';
+            $counter = 0;
+
+            while ($counter < $n && -1 !== fseek($handle, $pos, SEEK_END)) {
+                $char = fgetc($handle);
+                if (PHP_EOL == $char) {
+                    $trimmedValue = trim($currentLine);
+                    
+                    if (!empty($trimmedValue)) {
+                        $result[] = $currentLine;
+                        $counter++;
+                    }
+                    $currentLine = '';
+                } else {
+                    $currentLine = $char . $currentLine;
+                }
+                $pos--;
+            }
+            self::fclose($handle, false);
+
+            return array_reverse($result);
         }
     }
 }
