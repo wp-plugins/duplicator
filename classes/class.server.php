@@ -173,7 +173,7 @@ class DUP_Server
 		if  (strcmp($max_execution_time, 'Off') == 0) {
             $max_execution_time_error_message = '$max_execution_time should not be'.$max_execution_time;
         } else {
-            $max_execution_time_error_message = '$max_execution_time ('.$max_execution_time.') should not  be lower than the DUPLICATOR_PRO_SCAN_TIMEOUT'.DUPLICATOR_PRO_SCAN_TIMEOUT;
+            $max_execution_time_error_message = '$max_execution_time ('.$max_execution_time.') should not  be lower than the DUPLICATOR_SCAN_TIMEOUT'.DUPLICATOR_SCAN_TIMEOUT;
         }
         self::logCheckFalse($php_test2, $max_execution_time_error_message);
 

@@ -121,6 +121,27 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
             return $grouped;
         }
 
+
+        /**
+        * Implemented array_key_first
+        *
+        * @link https://www.php.net/manual/en/function.array-key-first.php
+        * @param array $arr
+        * @return int|string|null
+        */
+       public static function arrayKeyFirst($arr)
+       {
+           if (!function_exists('array_key_first')) {
+               foreach ($arr as $key => $unused) {
+                   return $key;
+               }
+               return null;
+           } else {
+               return array_key_first($arr);
+           }
+       }
+        
+
         /**
          * Converts human readable types (10GB) to bytes
          *

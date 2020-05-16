@@ -66,7 +66,7 @@ class DUP_UI_Screen
         if (isset($_wp_admin_css_colors[$colorScheme])) {
             return $_wp_admin_css_colors[$colorScheme];
         } else {
-            return $_wp_admin_css_colors[array_key_first($_wp_admin_css_colors)];
+             return $_wp_admin_css_colors[DupLiteSnapLibUtil::arrayKeyFirst($_wp_admin_css_colors)];
         }
     }
 
