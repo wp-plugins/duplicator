@@ -4,25 +4,24 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 global $wp_version;
 global $wpdb;
 
-$action_updated = null;
+$action_updated  = null;
 $action_response = __("General Settings Saved", 'duplicator');
 
 //SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
 
-	//Nonce Check
-	if (!isset($_POST['dup_settings_save_nonce_field']) || !wp_verify_nonce($_POST['dup_settings_save_nonce_field'], 'dup_settings_save')) {
-		die('Invalid token permissions to perform this request.');
-	}
+    //Nonce Check
+    if (!isset($_POST['dup_settings_save_nonce_field']) || !wp_verify_nonce($_POST['dup_settings_save_nonce_field'], 'dup_settings_save')) {
+        die('Invalid token permissions to perform this request.');
+    }
 
-	DUP_Settings::Set('uninstall_settings', isset($_POST['uninstall_settings']) ? "1" : "0");
-	DUP_Settings::Set('uninstall_files', isset($_POST['uninstall_files']) ? "1" : "0");
-	DUP_Settings::Set('uninstall_tables', isset($_POST['uninstall_tables']) ? "1" : "0");
-	DUP_Settings::Set('storage_htaccess_off', isset($_POST['storage_htaccess_off']) ? "1" : "0");
+    DUP_Settings::Set('uninstall_settings', isset($_POST['uninstall_settings']) ? "1" : "0");
+    DUP_Settings::Set('uninstall_files', isset($_POST['uninstall_files']) ? "1" : "0");
+    DUP_Settings::Set('uninstall_tables', isset($_POST['uninstall_tables']) ? "1" : "0");
 
-	DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
-	DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
-    
+    DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
+    DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
+
     $skip_archive_scan = filter_input(INPUT_POST, 'skip_archive_scan', FILTER_VALIDATE_BOOLEAN);
     DUP_Settings::Set('skip_archive_scan', $skip_archive_scan);
 
@@ -32,7 +31,32 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     $unhook_third_party_css = filter_input(INPUT_POST, 'unhook_third_party_css', FILTER_VALIDATE_BOOLEAN);
     DUP_Settings::Set('unhook_third_party_css', $unhook_third_party_css);
 
-    if(isset($_REQUEST['trace_log_enabled'])) {
+    switch (filter_input(INPUT_POST, 'storage_position', FILTER_DEFAULT)) {
+        case DUP_Settings::STORAGE_POSITION_LECAGY:
+            $setPostion = DUP_Settings::STORAGE_POSITION_LECAGY;
+            break;
+        case DUP_Settings::STORAGE_POSITION_WP_CONTENT:
+        default:
+            $setPostion = DUP_Settings::STORAGE_POSITION_WP_CONTENT;
+            break;
+    }
+
+    if (DUP_Settings::setStoragePosition($setPostion) != true) {
+        $targetFolder = ($setPostion === DUP_Settings::STORAGE_POSITION_WP_CONTENT) ? DUP_Settings::getSsdirPathWpCont() : DUP_Settings::getSsdirPathLegacy();
+        ?>
+        <div id="message" class="notice notice-error is-dismissible">
+            <p>
+                <b><?php esc_html_e('Storage folder move problem'); ?></b>
+            </p>
+            <p>
+                <?php echo sprintf(__('Duplicator can\'t change the storage folder to <i>%s</i>', 'duplicator'), esc_html($targetFolder)); ?><br>
+                <?php echo sprintf(__('Check the parent folder permissions. ( <i>%s</i> )', 'duplicator'), esc_html(dirname($targetFolder))); ?>
+            </p>
+        </div>
+        <?php
+    }
+
+    if (isset($_REQUEST['trace_log_enabled'])) {
 
         dup_log::trace("#### trace log enabled");
         // Trace on
@@ -42,7 +66,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
         }
 
         DUP_Settings::Set('trace_log_enabled', 1);
-
     } else {
         dup_log::trace("#### trace log disabled");
 
@@ -51,19 +74,18 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     }
 
     DUP_Settings::Save();
-	$action_updated = true;
-	DUP_Util::initSnapshotDirectory();
+    $action_updated = true;
+    DUP_Util::initSnapshotDirectory();
 }
 
-$trace_log_enabled    = DUP_Settings::Get('trace_log_enabled');
-$uninstall_settings   = DUP_Settings::Get('uninstall_settings');
-$uninstall_files      = DUP_Settings::Get('uninstall_files');
-$uninstall_tables     = DUP_Settings::Get('uninstall_tables');
-$storage_htaccess_off = DUP_Settings::Get('storage_htaccess_off');
-$wpfront_integrate    = DUP_Settings::Get('wpfront_integrate');
-$wpfront_ready        = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
-$package_debug        = DUP_Settings::Get('package_debug');
-$skip_archive_scan    = DUP_Settings::Get('skip_archive_scan');
+$trace_log_enabled      = DUP_Settings::Get('trace_log_enabled');
+$uninstall_settings     = DUP_Settings::Get('uninstall_settings');
+$uninstall_files        = DUP_Settings::Get('uninstall_files');
+$uninstall_tables       = DUP_Settings::Get('uninstall_tables');
+$wpfront_integrate      = DUP_Settings::Get('wpfront_integrate');
+$wpfront_ready          = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
+$package_debug          = DUP_Settings::Get('package_debug');
+$skip_archive_scan      = DUP_Settings::Get('skip_archive_scan');
 $unhook_third_party_js  = DUP_Settings::Get('unhook_third_party_js');
 $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
 ?>
@@ -92,71 +114,21 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Version", 'duplicator'); ?></label></th>
             <td>
-				<?php echo DUPLICATOR_VERSION ?> &nbsp;
-				<i><small>(<?php echo DUPLICATOR_VERSION_BUILD ?>)</small></i>
-			</td>
+                <?php echo DUPLICATOR_VERSION ?> &nbsp;
+                <i><small>(<?php echo DUPLICATOR_VERSION_BUILD ?>)</small></i>
+            </td>
         </tr>
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Uninstall", 'duplicator'); ?></label></th>
             <td>
-                <input type="checkbox" name="uninstall_settings" id="uninstall_settings" <?php echo ($uninstall_settings) ? 'checked="checked"' : ''; ?> />
-                <label for="uninstall_settings"><?php esc_html_e("Delete Plugin Settings", 'duplicator') ?> </label><br/>
-
-                <input type="checkbox" name="uninstall_files" id="uninstall_files" <?php echo ($uninstall_files) ? 'checked="checked"' : ''; ?> />
-                <label for="uninstall_files"><?php esc_html_e("Delete Entire Storage Directory", 'duplicator') ?></label><br/>
-
-            </td>
-        </tr>
-        <tr valign="top">
-            <th scope="row"><label><?php esc_html_e("Storage", 'duplicator'); ?></label></th>
-            <td>
-                <?php esc_html_e("Full Path", 'duplicator'); ?>:
-                <?php echo DUP_Util::safePath(DUPLICATOR_SSDIR_PATH); ?><br/><br/>
-                
-<!--                <table class="nested-table-data">
-                   <tr>
-                       <td><label><input type="radio" name="storage" checked="checked" /><?php esc_html_e('Legacy Path:', 'duplicator'); ?></label></td>
-                       <td><i>/public_html/mysite/wp-snapshots</i></td>
-                   </tr>
-                   <tr>
-                       <td><label><input type="radio" name="storage" /><?php esc_html_e('Contents Path:', 'duplicator'); ?></label></td>
-                       <td><i>/public_html/mysite/wp-contents/backups-duplicator-lite</i></td>
-                   </tr>
-               </table>
-
-                <p class="description" style="max-width:800px">
-                   <?php esc_html_e("The storage location is where all the package files are stored.  If your host has troubles writting content to the root directory then use the Contents Path.", 'duplicator'); ?>
-               </p>
-               <br/><br/>-->
-
-                <input type="checkbox" name="storage_htaccess_off" id="storage_htaccess_off" <?php echo ($storage_htaccess_off) ? 'checked="checked"' : ''; ?> />
-                <label for="storage_htaccess_off"><?php esc_html_e("Disable .htaccess File In Storage Directory", 'duplicator') ?> </label>
-                <p class="description">
-                    <?php esc_html_e("Disable if issues occur when downloading installer/archive files.", 'duplicator'); ?>
+                <p>
+                    <input type="checkbox" name="uninstall_settings" id="uninstall_settings" <?php echo ($uninstall_settings) ? 'checked="checked"' : ''; ?> />
+                    <label for="uninstall_settings"><?php esc_html_e("Delete Plugin Settings", 'duplicator') ?> </label>
                 </p>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><label><?php esc_html_e("Custom Roles", 'duplicator'); ?></label></th>
-            <td>
-                <input type="checkbox" name="wpfront_integrate" id="wpfront_integrate" <?php echo ($wpfront_integrate) ? 'checked="checked"' : ''; ?> <?php echo $wpfront_ready ? '' : 'disabled'; ?> />
-                <label for="wpfront_integrate"><?php esc_html_e("Enable User Role Editor Plugin Integration", 'duplicator'); ?></label>
-					<p class="description" style="max-width: 800px">
-						<?php printf('%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
-									 . ' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s '
-									 . ' <a href="https://wpfront.com/integrations/duplicator-integration/?ref=3" target="_blank">%s</a>. %s'
-									 . ' <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=user_role_plugin&utm_campaign=duplicator_pro" target="_blank">%s</a>.',
-								esc_html__('To enable custom roles with Duplicator please install the ', 'duplicator'),
-								esc_html__('User Role Editor Free', 'duplicator'),
-								esc_html__('OR', 'duplicator'),
-								esc_html__('User Role Editor Professional', 'duplicator'),
-								esc_html__('plugins.  Please note the User Role Editor Plugin is a separate plugin and does not unlock any Duplicator features.  For more information on User Role Editor plugin please see', 'duplicator'),
-								esc_html__('the documentation', 'duplicator'),
-								esc_html__('If you are interested in downloading Duplicator Pro then please use', 'duplicator'),
-								esc_html__('this link', 'duplicator')
-						);
-						?>
-					</p>
+                <p>
+                    <input type="checkbox" name="uninstall_files" id="uninstall_files" <?php echo ($uninstall_files) ? 'checked="checked"' : ''; ?> />
+                    <label for="uninstall_files"><?php esc_html_e("Delete Entire Storage Directory", 'duplicator') ?></label><br/>
+                </p>
             </td>
         </tr>
     </table>
@@ -179,13 +151,17 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 <label for="trace_log_enabled"><?php esc_html_e("Enabled", 'duplicator') ?> </label><br/>
                 <p class="description">
                     <?php
-                        esc_html_e('Turns on detailed operation logging. Logging will occur in both PHP error and local trace logs.');
-                        echo ('<br/>');
-                        esc_html_e('WARNING: Only turn on this setting when asked to by support as tracing will impact performance.', 'duplicator');
+                    esc_html_e('Turns on detailed operation logging. Logging will occur in both PHP error and local trace logs.');
+                    echo ('<br/>');
+                    esc_html_e('WARNING: Only turn on this setting when asked to by support as tracing will impact performance.', 'duplicator');
                     ?>
                 </p><br/>
-                <button class="button" <?php if(!DUP_Log::TraceFileExists()) { echo 'disabled'; } ?> onclick="Duplicator.Pack.DownloadTraceLog(); return false">
-                    <i class="fa fa-download"></i> <?php echo esc_html__('Download Trace Log', 'duplicator') . ' (' . DUP_LOG::GetTraceStatus() . ')'; ?>
+                <button class="button" <?php
+                if (!DUP_Log::TraceFileExists()) {
+                    echo 'disabled';
+                }
+                ?> onclick="Duplicator.Pack.DownloadTraceLog(); return false">
+                    <i class="fa fa-download"></i> <?php echo esc_html__('Download Trace Log', 'duplicator').' ('.DUP_LOG::GetTraceStatus().')'; ?>
                 </button>
             </td>
         </tr>
@@ -203,22 +179,26 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                     <i class="fas fa-redo fa-sm"></i> <?php esc_html_e('Reset Packages', 'duplicator'); ?>
                 </button>
                 <p class="description">
-                    <?php esc_html_e("This process will reset all packages by deleting those without a completed status, reset the active package id and perform a "
-						. "cleanup of the build tmp file.", 'duplicator'); ?>
+                    <?php
+                    esc_html_e("This process will reset all packages by deleting those without a completed status, reset the active package id and perform a "
+                        ."cleanup of the build tmp file.", 'duplicator');
+                    ?>
                     <i class="fas fa-question-circle fa-sm"
-                        data-tooltip-title="<?php esc_attr_e("Reset Settings", 'duplicator'); ?>"
-                        data-tooltip="<?php esc_attr_e('This action should only be used if the packages screen is having issues or a build is stuck.', 'duplicator'); ?>"></i>
+                       data-tooltip-title="<?php esc_attr_e("Reset Settings", 'duplicator'); ?>"
+                       data-tooltip="<?php esc_attr_e('This action should only be used if the packages screen is having issues or a build is stuck.', 'duplicator'); ?>"></i>
                 </p>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e('Archive scan', 'duplicator'); ?></label></th>
             <td>
-                <input type="checkbox" name="skip_archive_scan" id="_skip_archive_scan" <?php checked( $skip_archive_scan , true ); ?> value="1" />
+                <input type="checkbox" name="skip_archive_scan" id="_skip_archive_scan" <?php checked($skip_archive_scan, true); ?> value="1" />
                 <label for="_skip_archive_scan"><?php esc_html_e("Skip", 'duplicator') ?> </label><br/>
                 <p class="description">
-                    <?php esc_html_e('If enabled all files check on scan will be skipped before package creation.  '
-                        . 'In some cases, this option can be beneficial if the scan process is having issues running or returning errors.', 'duplicator'); ?>
+                    <?php
+                    esc_html_e('If enabled all files check on scan will be skipped before package creation.  '
+                        .'In some cases, this option can be beneficial if the scan process is having issues running or returning errors.', 'duplicator');
+                    ?>
                 </p>
             </td>
         </tr>
@@ -254,12 +234,36 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 </p>
             </td>
         </tr>
+        <tr>
+            <th scope="row"><label><?php esc_html_e("Custom Roles", 'duplicator'); ?></label></th>
+            <td>
+                <input type="checkbox" name="wpfront_integrate" id="wpfront_integrate" <?php echo ($wpfront_integrate) ? 'checked="checked"' : ''; ?> <?php echo $wpfront_ready ? '' : 'disabled'; ?> />
+                <label for="wpfront_integrate"><?php esc_html_e("Enable User Role Editor Plugin Integration", 'duplicator'); ?></label>
+                <p class="description" style="max-width: 800px">
+                    <?php
+                    printf('%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
+                        .' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s '
+                        .' <a href="https://wpfront.com/integrations/duplicator-integration/?ref=3" target="_blank">%s</a>. %s'
+                        .' <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=user_role_plugin&utm_campaign=duplicator_pro" target="_blank">%s</a>.',
+                        esc_html__('To enable custom roles with Duplicator please install the ', 'duplicator'),
+                        esc_html__('User Role Editor Free', 'duplicator'),
+                        esc_html__('OR', 'duplicator'),
+                        esc_html__('User Role Editor Professional', 'duplicator'),
+                        esc_html__('plugins.  Please note the User Role Editor Plugin is a separate plugin and does not unlock any Duplicator features.  For more information on User Role Editor plugin please see', 'duplicator'),
+                        esc_html__('the documentation', 'duplicator'),
+                        esc_html__('If you are interested in downloading Duplicator Pro then please use', 'duplicator'),
+                        esc_html__('this link', 'duplicator')
+                    );
+                    ?>
+                </p>
+            </td>
+        </tr>        
     </table>
 
     <p class="submit" style="margin: 20px 0px 0xp 5px;">
-		<br/>
-		<input type="submit" name="submit" id="submit" class="button-primary" value="<?php esc_attr_e("Save General Settings", 'duplicator') ?>" style="display: inline-block;" />
-	</p>
+        <br/>
+        <input type="submit" name="submit" id="submit" class="button-primary" value="<?php esc_attr_e("Save General Settings", 'duplicator') ?>" style="display: inline-block;" />
+    </p>
 
 </form>
 
@@ -271,19 +275,19 @@ $reset_confirm->title          = __('Reset Packages ?', 'duplicator');
 $reset_confirm->message        = __('This will clear and reset all of the current temporary packages.  Would you like to continue?', 'duplicator');
 $reset_confirm->progressText   = __('Resetting settings, Please Wait...', 'duplicator');
 $reset_confirm->jscallback     = 'Duplicator.Pack.ResetAll()';
-$reset_confirm->progressOn = false;
+$reset_confirm->progressOn     = false;
 $reset_confirm->okText         = __('Yes', 'duplicator');
 $reset_confirm->cancelText     = __('No', 'duplicator');
 $reset_confirm->closeOnConfirm = true;
 $reset_confirm->initConfirm();
 
-$msg_ajax_error               = new DUP_UI_Messages(__('AJAX ERROR!', 'duplicator').'<br>'.__('Ajax request error', 'duplicator'), DUP_UI_Messages::ERROR);
-$msg_ajax_error->hide_on_init = true;
+$msg_ajax_error                 = new DUP_UI_Messages(__('AJAX ERROR!', 'duplicator').'<br>'.__('Ajax request error', 'duplicator'), DUP_UI_Messages::ERROR);
+$msg_ajax_error->hide_on_init   = true;
 $msg_ajax_error->is_dismissible = true;
 $msg_ajax_error->initMessage();
 
-$msg_response_error                   = new DUP_UI_Messages(__('RESPONSE ERROR!', 'duplicator'), DUP_UI_Messages::ERROR);
-$msg_response_error->hide_on_init     = true;
+$msg_response_error                 = new DUP_UI_Messages(__('RESPONSE ERROR!', 'duplicator'), DUP_UI_Messages::ERROR);
+$msg_response_error->hide_on_init   = true;
 $msg_response_error->is_dismissible = true;
 $msg_response_error->initMessage();
 
@@ -293,65 +297,65 @@ $msg_response_success->is_dismissible = true;
 $msg_response_success->initMessage();
 ?>
 <script>
-jQuery(document).ready(function($)
-{
-    var msgDebug = <?php echo DUP_Util::isWpDebug() ? 'true' : 'false'; ?>;
-
-    // which: 0=installer, 1=archive, 2=sql file, 3=log
-    Duplicator.Pack.DownloadTraceLog = function ()
+    jQuery(document).ready(function ($)
     {
-        var actionLocation = ajaxurl + '?action=DUP_CTRL_Tools_getTraceLog&nonce=' + '<?php echo wp_create_nonce('DUP_CTRL_Tools_getTraceLog'); ?>';
-        location.href = actionLocation;
-    };
+        var msgDebug = <?php echo DUP_Util::isWpDebug() ? 'true' : 'false'; ?>;
 
-    Duplicator.Pack.ConfirmResetAll = function ()
-    {
-		<?php $reset_confirm->showConfirm(); ?>
-    };
+        // which: 0=installer, 1=archive, 2=sql file, 3=log
+        Duplicator.Pack.DownloadTraceLog = function ()
+        {
+            var actionLocation = ajaxurl + '?action=DUP_CTRL_Tools_getTraceLog&nonce=' + '<?php echo wp_create_nonce('DUP_CTRL_Tools_getTraceLog'); ?>';
+            location.href = actionLocation;
+        };
 
-    Duplicator.Pack.ResetAll = function ()
-    {
-        $.ajax({
-            type: "POST",
-            url: ajaxurl,
-            dataType: "json",
-            data: {
-                action: 'duplicator_reset_all_settings',
-                nonce: '<?php echo wp_create_nonce('duplicator_reset_all_settings'); ?>'
-            },
-            success: function (result) {
-                if (msgDebug) {
-                    console.log(result);
-                }
+        Duplicator.Pack.ConfirmResetAll = function ()
+        {
+<?php $reset_confirm->showConfirm(); ?>
+        };
 
-                if (result.success) {
-                    var message = '<?php _e('Packages successfully reset', 'duplicator'); ?>';
+        Duplicator.Pack.ResetAll = function ()
+        {
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                dataType: "json",
+                data: {
+                    action: 'duplicator_reset_all_settings',
+                    nonce: '<?php echo wp_create_nonce('duplicator_reset_all_settings'); ?>'
+                },
+                success: function (result) {
                     if (msgDebug) {
-						console.log(result.data.message);
-						console.log(result.data.html);
+                        console.log(result);
                     }
-				<?php
-				$msg_response_success->updateMessage('message');
-				$msg_response_success->showMessage();
-				?>
-                } else {
-                    var message = '<?php _e('RESPONSE ERROR!', 'duplicator'); ?>'+ '<br><br>' + result.data.message;
+
+                    if (result.success) {
+                        var message = '<?php _e('Packages successfully reset', 'duplicator'); ?>';
+                        if (msgDebug) {
+                            console.log(result.data.message);
+                            console.log(result.data.html);
+                        }
+<?php
+$msg_response_success->updateMessage('message');
+$msg_response_success->showMessage();
+?>
+                    } else {
+                        var message = '<?php _e('RESPONSE ERROR!', 'duplicator'); ?>' + '<br><br>' + result.data.message;
+                        if (msgDebug) {
+                            message += '<br><br>' + result.data.html;
+                        }
+<?php
+$msg_response_error->updateMessage('message');
+$msg_response_error->showMessage();
+?>
+                    }
+                },
+                error: function (result) {
                     if (msgDebug) {
-                        message += '<br><br>' + result.data.html;
+                        console.log(result);
                     }
-				<?php
-				$msg_response_error->updateMessage('message');
-				$msg_response_error->showMessage();
-				?>
+<?php $msg_ajax_error->showMessage(); ?>
                 }
-            },
-            error: function (result) {
-                if (msgDebug) {
-                    console.log(result);
-                }
-                <?php $msg_ajax_error->showMessage(); ?>
-            }
-        });
-    };
-});
+            });
+        };
+    });
 </script>

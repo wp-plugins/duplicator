@@ -49,7 +49,7 @@ class DUP_Log
             throw new Exception("A name value is required to open a file log.");
         }
         self::Close();
-        if ((self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log", "a+")) === false) {
+        if ((self::$logFileHandle = @fopen(DUP_Settings::getSsdirPath()."/{$nameHash}.log", "a+")) === false) {
             self::$logFileHandle = null;
             return false;
         } else {
@@ -213,7 +213,7 @@ class DUP_Log
 	{
 		$default_key		 = self::getDefaultKey();
 		$backup_log_filename = "dup_$default_key.log1";
-		$backup_path		 = DUPLICATOR_SSDIR_PATH."/".$backup_log_filename;
+		$backup_path		 = DUP_Settings::getSsdirPath()."/".$backup_log_filename;
 		return $backup_path;
 	}
 
@@ -226,7 +226,7 @@ class DUP_Log
 	{
 		$default_key	 = self::getDefaultKey();
 		$log_filename	 = "dup_$default_key.log";
-		$file_path		 = DUPLICATOR_SSDIR_PATH."/".$log_filename;
+		$file_path		 = DUP_Settings::getSsdirPath()."/".$log_filename;
 		return $file_path;
 	}
 

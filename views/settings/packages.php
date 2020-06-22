@@ -278,7 +278,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
         </tr>
     </table><br/>
 
-    <h3 class="title"><?php esc_html_e("Installer", 'duplicator') ?> </h3>
+    <h3 class="title" id="duplicator-installer-settings"><?php esc_html_e("Installer", 'duplicator') ?> </h3>
     <hr size="1" />
     <table class="form-table">
         <tr>

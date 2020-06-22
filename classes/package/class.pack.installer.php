@@ -2,7 +2,6 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
 /* @var $global DUP_Global_Entity */
-if (!defined('DUPLICATOR_VERSION')) exit;
 
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/class.archive.config.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/utilities/class.u.zip.php');
@@ -11,8 +10,9 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/class.password.php');
 
 class DUP_Installer
 {
-    const DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH = 'installer.php';
-    
+
+	const DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH = 'installer.php';
+
 	//PUBLIC
 	public $File;
 	public $Size			 = 0;
@@ -52,7 +52,7 @@ class DUP_Installer
 		if ($success) {
 			$package->BuildProgress->installer_built = true;
 		} else {
-			$error_message = 'Error adding installer';
+			$error_message	 = 'Error adding installer';
 			$package->BuildProgress->set_failed($error_message);
 			$package->Status = DUP_PackageStatus::ERROR;
 			$package->Update();
@@ -76,9 +76,9 @@ class DUP_Installer
 
 	private function create_enhanced_installer()
 	{
-		$success = true;
-		$archive_filepath		 = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
-		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php");
+		$success				 = true;
+		$archive_filepath		 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->Archive->File}";
+		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_installer.php");
 		$template_filepath		 = DUPLICATOR_PLUGIN_PATH.'/installer/installer.tpl';
 		$mini_expander_filepath	 = DUPLICATOR_PLUGIN_PATH.'/lib/dup_archive/classes/class.duparchive.mini.expander.php';
 
@@ -96,11 +96,11 @@ class DUP_Installer
 			$mini_expander_string = '';
 		}
 
-		$search_array	 = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@SECONDARY_PACKAGE_HASH@@' , '@@DUPARCHIVE_MINI_EXPANDER@@');
-		$package_hash	 = $this->Package->getPackageHash();
-        $secondary_package_hash = $this->Package->getSecondaryPackageHash();
-		$replace_array	 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, $secondary_package_hash, $mini_expander_string);
-		$installer_contents = str_replace($search_array, $replace_array, $installer_contents);
+		$search_array			 = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@PACKAGE_HASH@@', '@@SECONDARY_PACKAGE_HASH@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
+		$package_hash			 = $this->Package->getPackageHash();
+		$secondary_package_hash	 = $this->Package->getSecondaryPackageHash();
+		$replace_array			 = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $package_hash, $secondary_package_hash, $mini_expander_string);
+		$installer_contents		 = str_replace($search_array, $replace_array, $installer_contents);
 
 		if (@file_put_contents($installer_filepath, $installer_contents) === false) {
 			DUP_Log::error(esc_html__('Error writing installer contents', 'duplicator'), esc_html__("Couldn't write to $installer_filepath", 'duplicator'));
@@ -108,7 +108,7 @@ class DUP_Installer
 		}
 
 		if ($success) {
-			$storePath	 = "{$this->Package->StorePath}/{$this->File}";
+			$storePath	 = DUP_Settings::getSsdirTmpPath()."/{$this->File}";
 			$this->Size	 = @filesize($storePath);
 		}
 
@@ -122,14 +122,14 @@ class DUP_Installer
 		global $wpdb;
 
 		$success				 = true;
-		$archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.txt";
+		$archive_config_filepath = DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_archive.txt";
 		$ac						 = new DUP_Archive_Config();
 		$extension				 = strtolower($this->Package->Archive->Format);
 
 		$hasher		 = new DUP_PasswordHash(8, FALSE);
 		$pass_hash	 = $hasher->HashPassword($this->Package->Installer->OptsSecurePass);
 
-        $this->Package->Database->getScannerData();
+		$this->Package->Database->getScannerData();
 
 		//READ-ONLY: COMPARE VALUES
 		$ac->created	 = $this->Package->Created;
@@ -142,22 +142,22 @@ class DUP_Installer
 
 		//READ-ONLY: GENERAL
 		// $ac->installer_base_name  = $global->installer_base_name;
-		$ac->installer_base_name    = 'installer.php';
-        $ac->package_name           = "{$this->Package->NameHash}_archive.{$extension}";
-        $ac->package_hash           = $this->Package->getPackageHash();
-        $ac->package_notes          = $this->Package->Notes;
-        $ac->url_old                = get_option('siteurl');
-        $ac->opts_delete            = DupLiteSnapJsonU::wp_json_encode_pprint($GLOBALS['DUPLICATOR_OPTS_DELETE']);
-		$ac->blogname               = esc_html(get_option('blogname'));
-		
-		$abs_path					= duplicator_get_abs_path();
-        $ac->wproot                 = $abs_path;
-        $ac->relative_content_dir   = str_replace($abs_path, '', WP_CONTENT_DIR);
-        $ac->exportOnlyDB           = $this->Package->Archive->ExportOnlyDB;
-        $ac->installSiteOverwriteOn = DUPLICATOR_INSTALL_SITE_OVERWRITE_ON;
-        $ac->wplogin_url            = wp_login_url();
+		$ac->installer_base_name = 'installer.php';
+		$ac->package_name		 = "{$this->Package->NameHash}_archive.{$extension}";
+		$ac->package_hash		 = $this->Package->getPackageHash();
+		$ac->package_notes		 = $this->Package->Notes;
+		$ac->url_old			 = get_option('siteurl');
+		$ac->opts_delete		 = DupLiteSnapJsonU::wp_json_encode_pprint($GLOBALS['DUPLICATOR_OPTS_DELETE']);
+		$ac->blogname			 = esc_html(get_option('blogname'));
 
-        //PRE-FILLED: GENERAL
+		$abs_path					 = duplicator_get_abs_path();
+		$ac->wproot					 = $abs_path;
+		$ac->relative_content_dir	 = str_replace($abs_path, '', WP_CONTENT_DIR);
+		$ac->exportOnlyDB			 = $this->Package->Archive->ExportOnlyDB;
+		$ac->installSiteOverwriteOn	 = DUPLICATOR_INSTALL_SITE_OVERWRITE_ON;
+		$ac->wplogin_url			 = wp_login_url();
+
+		//PRE-FILLED: GENERAL
 		$ac->secure_on		 = $this->Package->Installer->OptsSecureOn;
 		$ac->secure_pass	 = $pass_hash;
 		$ac->skipscan		 = false;
@@ -168,11 +168,11 @@ class DUP_Installer
 		$ac->wp_tableprefix	 = $wpdb->base_prefix;
 
 		$ac->mu_mode						 = DUP_MU::getMode();
-		$ac->is_outer_root_wp_config_file	 = (!file_exists($abs_path . '/wp-config.php')) ? true : false;
+		$ac->is_outer_root_wp_config_file	 = (!file_exists($abs_path.'/wp-config.php')) ? true : false;
 		$ac->is_outer_root_wp_content_dir	 = $this->Package->Archive->isOuterWPContentDir();
 
-        $json = DupLiteSnapJsonU::wp_json_encode_pprint($ac);
-        DUP_Log::TraceObject('json', $json);
+		$json = DupLiteSnapJsonU::wp_json_encode_pprint($ac);
+		DUP_Log::TraceObject('json', $json);
 
 		if (file_put_contents($archive_config_filepath, $json) === false) {
 			DUP_Log::error("Error writing archive config", "Couldn't write archive config at $archive_config_filepath", Dup_ErrorBehavior::LogOnly);
@@ -188,11 +188,11 @@ class DUP_Installer
 	private function add_extra_files($package)
 	{
 		$success				 = false;
-		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_installer.php");
-		$scan_filepath			 = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_scan.json";
-		$sql_filepath			 = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Database->File}");
-		$archive_filepath		 = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
-		$archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.txt";
+		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_installer.php");
+		$scan_filepath			 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_scan.json";
+		$sql_filepath			 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->Database->File}";
+		$archive_filepath		 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->Archive->File}";
+		$archive_config_filepath = DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_archive.txt";
 
 		DUP_Log::Info("add_extra_files1");
 
@@ -251,7 +251,7 @@ class DUP_Installer
 		try {
 			DUP_Log::Info("add_extra_files_using_da1");
 			$htaccess_filepath	 = $this->getHtaccessFilePath();
-			$webconf_filepath	 = duplicator_get_abs_path() . '/web.config';
+			$webconf_filepath	 = duplicator_get_abs_path().'/web.config';
 
 			$logger = new DUP_DupArchive_Logger();
 
@@ -266,7 +266,8 @@ class DUP_Installer
 				try {
 					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $htaccess_filepath, $htaccess_ark_file_path);
 					$this->numFilesAdded++;
-				} catch (Exception $ex) {
+				}
+				catch (Exception $ex) {
 					// Non critical so bury exception
 				}
 			}
@@ -275,19 +276,20 @@ class DUP_Installer
 				try {
 					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $webconf_filepath, DUPLICATOR_WEBCONFIG_ORIG_FILENAME);
 					$this->numFilesAdded++;
-				} catch (Exception $ex) {
+				}
+				catch (Exception $ex) {
 					// Non critical so bury exception
 				}
 			}
 
 			if (file_exists($wpconfig_filepath)) {
-				$conf_ark_file_path = $this->getWPConfArkFilePath();
+				$conf_ark_file_path		 = $this->getWPConfArkFilePath();
 				$temp_conf_ark_file_path = $this->getTempWPConfArkFilePath();
 				if (copy($wpconfig_filepath, $temp_conf_ark_file_path)) {
-                    $this->cleanTempWPConfArkFilePath($temp_conf_ark_file_path);					
+					$this->cleanTempWPConfArkFilePath($temp_conf_ark_file_path);
 					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $temp_conf_ark_file_path, $conf_ark_file_path);
-                } else {
-                    DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, $conf_ark_file_path);
+				} else {
+					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, $conf_ark_file_path);
 				}
 				$this->numFilesAdded++;
 			}
@@ -295,7 +297,8 @@ class DUP_Installer
 			$this->add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath);
 
 			$success = true;
-		} catch (Exception $ex) {
+		}
+		catch (Exception $ex) {
 			DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage(), Dup_ErrorBehavior::ThrowException);
 		}
 
@@ -351,8 +354,8 @@ class DUP_Installer
 
 	private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath, $wpconfig_filepath)
 	{
-		$htaccess_filepath = $this->getHtaccessFilePath();
-		$webconfig_filepath	 = duplicator_get_abs_path() . '/web.config';
+		$htaccess_filepath	 = $this->getHtaccessFilePath();
+		$webconfig_filepath	 = duplicator_get_abs_path().'/web.config';
 
 		$success	 = false;
 		$zipArchive	 = new ZipArchive();
@@ -370,14 +373,14 @@ class DUP_Installer
 			}
 
 			if (!empty($wpconfig_filepath)) {
-				$conf_ark_file_path = $this->getWPConfArkFilePath();
+				$conf_ark_file_path		 = $this->getWPConfArkFilePath();
 				$temp_conf_ark_file_path = $this->getTempWPConfArkFilePath();
-                if (copy($wpconfig_filepath, $temp_conf_ark_file_path)) {
-                    $this->cleanTempWPConfArkFilePath($temp_conf_ark_file_path);					
+				if (copy($wpconfig_filepath, $temp_conf_ark_file_path)) {
+					$this->cleanTempWPConfArkFilePath($temp_conf_ark_file_path);
 					DUP_Zip_U::addFileToZipArchive($zipArchive, $temp_conf_ark_file_path, $conf_ark_file_path, true);
-                } else {
-                    DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, $conf_ark_file_path, true);
-                }
+				} else {
+					DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, $conf_ark_file_path, true);
+				}
 			}
 
 			$embedded_scan_file_path = $this->getEmbeddedScanFilePath();
@@ -422,11 +425,10 @@ class DUP_Installer
 
 				if (DUP_Zip_U::addFileToZipArchive($zip_archive, $archive_config_filepath, $archive_config_local_name, true)) {
 
-					$snaplib_directory = DUPLICATOR_PLUGIN_PATH.'lib/snaplib';
-					$config_directory = DUPLICATOR_PLUGIN_PATH . 'lib/config';
+					$snaplib_directory	 = DUPLICATOR_PLUGIN_PATH.'lib/snaplib';
+					$config_directory	 = DUPLICATOR_PLUGIN_PATH.'lib/config';
 
-					if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $snaplib_directory, true, 'dup-installer/lib/', $is_compressed)
-						&& 
+					if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $snaplib_directory, true, 'dup-installer/lib/', $is_compressed) &&
 						DUP_Zip_U::addDirWithZipArchive($zip_archive, $config_directory, true, 'dup-installer/lib/', $is_compressed)
 					) {
 						$success = true;
@@ -447,25 +449,26 @@ class DUP_Installer
 	}
 
 	/**
-     * Get .htaccess file path
-     * 
-     * @return string
-     */
-    private function getHtaccessFilePath() {
-        return duplicator_get_abs_path().'/.htaccess';
-    }
+	 * Get .htaccess file path
+	 * 
+	 * @return string
+	 */
+	private function getHtaccessFilePath()
+	{
+		return duplicator_get_abs_path().'/.htaccess';
+	}
 
-    /**
-     * Get .htaccss in archive file
-     * 
-     * @return string
-     */
-    private function getHtaccessArkFilePath()
-    {
-        $packageHash         = $this->Package->getPackageHash();
-        $htaccessArkFilePath = '.htaccess__'.$packageHash;
-        return $htaccessArkFilePath;
-    }
+	/**
+	 * Get .htaccss in archive file
+	 * 
+	 * @return string
+	 */
+	private function getHtaccessArkFilePath()
+	{
+		$packageHash		 = $this->Package->getPackageHash();
+		$htaccessArkFilePath = '.htaccess__'.$packageHash;
+		return $htaccessArkFilePath;
+	}
 
 	/**
 	 * Get wp-config.php file path along with name in archive file
@@ -482,30 +485,32 @@ class DUP_Installer
 	}
 
 	/**
-     * Get temp wp-config.php file path along with name in temp folder
-     */
-    private function getTempWPConfArkFilePath() {
-        $temp_conf_ark_file_path = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP).'/'.$this->Package->NameHash.'_wp-config.txt';
-        return $temp_conf_ark_file_path;
-    }
+	 * Get temp wp-config.php file path along with name in temp folder
+	 */
+	private function getTempWPConfArkFilePath()
+	{
+		$temp_conf_ark_file_path = DUP_Settings::getSsdirTmpPath().'/'.$this->Package->NameHash.'_wp-config.txt';
+		return $temp_conf_ark_file_path;
+	}
 
-    /**
-     * Clear out sensitive database connection information
-     *
-     * @param $temp_conf_ark_file_path Temp config file path
-     */
-    private static function cleanTempWPConfArkFilePath($temp_conf_ark_file_path) {
+	/**
+	 * Clear out sensitive database connection information
+	 *
+	 * @param $temp_conf_ark_file_path Temp config file path
+	 */
+	private static function cleanTempWPConfArkFilePath($temp_conf_ark_file_path)
+	{
 		if (function_exists('token_get_all')) {
-			require_once(DUPLICATOR_PLUGIN_PATH . 'lib/config/class.wp.config.tranformer.php');
+			require_once(DUPLICATOR_PLUGIN_PATH.'lib/config/class.wp.config.tranformer.php');
 			$transformer = new WPConfigTransformer($temp_conf_ark_file_path);
-			$constants = array('DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST');
+			$constants	 = array('DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST');
 			foreach ($constants as $constant) {
 				if ($transformer->exists('constant', $constant)) {
 					$transformer->update('constant', $constant, '');
 				}
 			}
 		}
-    }
+	}
 
 	/**
 	 * Get scan.json file path along with name in archive file

@@ -12,30 +12,24 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 $current_view =  (isset($_REQUEST['action']) && $_REQUEST['action'] == 'detail') ? 'detail' : 'main';
 
-$get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
+$download_installer_nonce = wp_create_nonce('duplicator_download_installer');
 ?>
 <script>
     jQuery(document).ready(function($) {
 
-        // which: 0=installer, 1=archive, 2=sql file, 3=log
-        Duplicator.Pack.DownloadPackageFile = function (which, packageID)
-		{
-            var actionLocation = ajaxurl + '?action=DUP_CTRL_Package_getPackageFile&which=' + which + '&package_id=' + packageID + '&nonce=' + '<?php echo esc_js($get_package_file_nonce); ?>';
-            if(which == 3) {
-                var win = window.open(actionLocation, '_blank');
-                win.focus();
-            }
-            else {
-                location.href = actionLocation;
-            }
+        Duplicator.Pack.DownloadInstaller = function (json)
+        {
+            var actionLocation = ajaxurl + '?action=duplicator_download_installer&id=' + json.id + '&hash='+ json.hash +'&nonce=' + '<?php echo $download_installer_nonce; ?>';
+            location.href      = actionLocation;
+            return false;
         };
 
-        Duplicator.Pack.DownloadFile = function(file, url)
+        Duplicator.Pack.DownloadFile = function(json)
         {
             var link = document.createElement('a');        
             link.target = "_blank";
-            link.download = file;
-            link.href= url;
+            link.download = json.filename;
+            link.href= json.url;
             document.body.appendChild(link);
             
             // click event fire

@@ -1,11 +1,12 @@
 <?php
+//Prevent directly browsing to the file
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-//Prevent directly browsing to the file
+
 if (function_exists('plugin_dir_url')) 
 {		
-    define('DUPLICATOR_VERSION',        '1.3.34');
-	define('DUPLICATOR_VERSION_BUILD',  '2020-05-16_10:30');
+    define('DUPLICATOR_VERSION',        '1.3.36');
+	define('DUPLICATOR_VERSION_BUILD',  '2020-06-15_07:00');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	
@@ -23,11 +24,6 @@ if (function_exists('plugin_dir_url'))
 	}
 
 	define('DUPLICATOR_PLUGIN_PATH',				str_replace("\\", "/", plugin_dir_path(__FILE__)));
-	define('DUPLICATOR_SSDIR_NAME',					'wp-snapshots');
-	define('DUPLICATOR_SSDIR_PATH',					duplicator_get_abs_path() . '/' . DUPLICATOR_SSDIR_NAME);
-	define('DUPLICATOR_SSDIR_PATH_TMP',				DUPLICATOR_SSDIR_PATH . '/tmp');
-	define("DUPLICATOR_SSDIR_PATH_INSTALLER",		DUPLICATOR_SSDIR_PATH . '/installer');
-	define('DUPLICATOR_SSDIR_URL',					DUPLICATOR_SITE_URL . "/" . DUPLICATOR_SSDIR_NAME);
 	define('DUPLICATOR_ZIPPED_LOG_FILENAME',		'duplicator_lite_log.zip');
 	define('DUPLICATOR_INSTALL_PHP',				'installer.php');
 	define('DUPLICATOR_INSTALL_BAK',				'installer-backup.php');

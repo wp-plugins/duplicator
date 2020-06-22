@@ -39,7 +39,7 @@ class DUP_Shell_U
             $ret = true;
         }
 
-        $ret = apply_filters('duplicator_pro_is_popen_enabled', $ret);
+        $ret = apply_filters('duplicator_is_popen_enabled', $ret);
         return $ret;
     }
 }

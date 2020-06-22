@@ -16,23 +16,11 @@ span.btn-separator {content: ''; display: inline-block; background: silver; marg
 a.grey-icon i.fa {color:#777}
 i.grey-icon {color:#777}
 
-.no-display {
-    display: none !important;
-}
-
-.link-style { 
-    color: #0074ab;
-    cursor: pointer; 
-    text-decoration: underline;
-}
-
-.link-style:hover {
-    color: #00a0d2;
-}
-
-.no-decoration {
-    text-decoration: none;
-}
+.no-display {display: none !important;}
+.link-style {color: #0074ab; cursor: pointer; text-decoration: underline;}
+.link-style:hover {color: #00a0d2;}
+.no-decoration {text-decoration: none;}
+p.description {padding-top:3px}
 
 /*TABS*/
 ul.category-tabs li {cursor: pointer}
@@ -237,4 +225,9 @@ div.dup-screen-hlp-info {line-height:26px; padding:10px 0 10px 0}
 
 #dup-lite-inst-mode-details p {
     margin: 1em 0;
+}
+
+.storage_pos_fixed_label {
+    display: inline-block;
+    width: 90px;
 }

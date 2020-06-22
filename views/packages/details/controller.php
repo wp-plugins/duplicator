@@ -9,7 +9,7 @@ $package_id  = isset($_REQUEST["id"])  ? sanitize_text_field($_REQUEST["id"]) : 
 
 $package			= DUP_Package::getByID($package_id);
 $err_found		    = ($package == null || $package->Status < 100);
-$link_log			= "{$package->StoreURL}{$package->NameHash}.log";
+$link_log			= DUP_Settings::getSsdirUrl()."/{$package->NameHash}.log";
 $err_link_log		= "<a target='_blank' href='".esc_url($link_log)."' >" . esc_html__('package log', 'duplicator') . '</a>';
 $err_link_faq		= '<a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=pkg_details_faq">' . esc_html__('FAQ', 'duplicator') . '</a>';
 $err_link_ticket	= '<a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=pkg_details_resources#faq-resource">' . esc_html__('resources page', 'duplicator') . '</a>';

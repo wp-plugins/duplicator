@@ -90,6 +90,15 @@ if (!class_exists('DupLiteSnapJsonU', false)) {
         }
 
         /**
+         * @param mixed $val object to be encoded
+         * @return string escaped json string
+         */
+        public static function json_encode_esc_attr($val)
+        {
+            return esc_attr(json_encode($val));
+        }
+
+        /**
          * wp_json_encode with pretty print if define exists
          *
          * @param mixed $data    Variable (usually an array or object) to encode as JSON.

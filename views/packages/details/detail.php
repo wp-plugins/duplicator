@@ -6,37 +6,21 @@ $ui_css_storage = (isset($view_state['dup-package-dtl-storage-panel']) && $view_
 $ui_css_archive = (isset($view_state['dup-package-dtl-archive-panel']) && $view_state['dup-package-dtl-archive-panel']) ? 'display:block' : 'display:none';
 $ui_css_install = (isset($view_state['dup-package-dtl-install-panel']) && $view_state['dup-package-dtl-install-panel']) ? 'display:block' : 'display:none';
 
-$format = strtolower($package->Archive->Format);
-$base_url			= admin_url('admin-ajax.php');
-$link_sql       = add_query_arg(
-    array(
-        'action' => 'duplicator_download',
-        'id'     => $package->ID,
-        'hash'   => $package->Hash,
-        'file' => 'sql'
-    ),
-    $base_url
-);
-$link_archive   = add_query_arg(
-    array(
-        'action' => 'duplicator_download',
-        'id'     => $package->ID,
-        'hash'   => $package->Hash,
-        'file' => 'archive'
-    ),
-    $base_url
-);
-$link_installer = add_query_arg(
-    array(
-        'action' => 'duplicator_download',
-        'id'     => $package->ID,
-        'hash'   => $package->Hash,
-        'file' => 'installer'
-    ),
-    $base_url
-);
-$link_log			= "{$package->StoreURL}{$package->NameHash}.log";
-$link_scan			= "{$package->StoreURL}{$package->NameHash}_scan.json";
+$sqlDownloadInfo           = $package->getPackageFileDownloadInfo(DUP_PackageFileType::SQL);
+$archiveDownloadInfo       = $package->getPackageFileDownloadInfo(DUP_PackageFileType::Archive);
+$logDownloadInfo           = $package->getPackageFileDownloadInfo(DUP_PackageFileType::Log);
+$scanDownloadInfo          = $package->getPackageFileDownloadInfo(DUP_PackageFileType::Scan);
+$installerDownloadInfo     = $package->getInstallerDownloadInfo();
+$sqlDownloadInfoJson       = DupLiteSnapJsonU::json_encode_esc_attr($sqlDownloadInfo);
+$archiveDownloadInfoJson   = DupLiteSnapJsonU::json_encode_esc_attr($archiveDownloadInfo);
+$logDownloadInfoJson       = DupLiteSnapJsonU::json_encode_esc_attr($logDownloadInfo);
+$scanDownloadInfoJson      = DupLiteSnapJsonU::json_encode_esc_attr($scanDownloadInfo);
+$installerDownloadInfoJson = DupLiteSnapJsonU::json_encode_esc_attr($installerDownloadInfo);
+$showLinksDialogJson       = DupLiteSnapJsonU::json_encode_esc_attr(array(
+    "sql"     => $sqlDownloadInfo["url"],
+    "archive" => $archiveDownloadInfo["url"],
+    "log"     => $logDownloadInfo["url"],
+));
 
 $debug_on	     = DUP_Settings::Get('package_debug');
 $mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath();
@@ -147,28 +131,28 @@ GENERAL -->
 				<div id="dup-downloads-area">
 					<?php if  (!$err_found) :?>
 
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-bolt fa-sm"></i> Installer</button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(1, <?php echo absint($package->ID); ?>);return false;"><i class="far fa-file-archive"></i> Archive - <?php echo esc_html($package->ZipSize); ?></button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(2, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; SQL - <?php echo esc_html(DUP_Util::byteSize($package->Database->Size))  ?></button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(3, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; <?php esc_html_e('Log', 'duplicator'); ?> </button>
-						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog('<?php echo esc_js($link_sql);?>','<?php echo esc_js($link_archive); ?>','<?php echo esc_js($link_log);?>');" class="thickbox"><i class="fa fa-lock fa-xs"></i> &nbsp; <?php esc_html_e("Share", 'duplicator')?></button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadInstaller(<?php echo $installerDownloadInfoJson; ?>);return false;"><i class="fa fa-bolt fa-sm"></i> Installer</button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $archiveDownloadInfoJson; ?>);return false;"><i class="far fa-file-archive"></i> Archive - <?php echo esc_html($package->ZipSize); ?></button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $sqlDownloadInfoJson; ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; SQL - <?php echo esc_html(DUP_Util::byteSize($package->Database->Size))  ?></button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $logDownloadInfoJson; ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; <?php esc_html_e('Log', 'duplicator'); ?> </button>
+						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo $showLinksDialogJson;?>);" class="thickbox"><i class="fa fa-lock fa-xs"></i> &nbsp; <?php esc_html_e("Share", 'duplicator')?></button>
 					<?php else: ?>
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(3, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; Log </button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $logDownloadInfoJson; ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; Log </button>
 					<?php endif; ?>
 				</div>
 				<?php if (!$err_found) :?>
 				<table class="dup-sub-list">
 					<tr>
 						<td><?php esc_html_e('Archive', 'duplicator') ?>: </td>
-						<td><a href="<?php echo esc_url($link_archive); ?>"><?php echo esc_html($package->Archive->File); ?></a></td>
+						<td><a href="<?php echo esc_url($archiveDownloadInfo["url"]); ?>"><?php echo esc_html($package->Archive->File); ?></a></td>
 					</tr>
 					<tr>
 						<td><?php esc_html_e('Installer', 'duplicator') ?>: </td>
-						<td><a href="#" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo absint($package->ID); ?>);return false;" ><?php echo esc_html($package->Installer->File) ?></a></td>
+						<td><a href="#" onclick="Duplicator.Pack.DownloadInstaller(<?php echo $installerDownloadInfoJson; ?>);return false;" ><?php echo esc_html($package->Installer->File) ?></a></td>
 					</tr>
 					<tr>
 						<td><?php esc_html_e('Database', 'duplicator') ?>: </td>
-						<td><a href="<?php echo esc_url($link_sql); ?>" target="_blank"><?php echo esc_html($package->Database->File); ?></a></td>
+						<td><a href="<?php echo $sqlDownloadInfo["url"]; ?>" target="_blank"><?php echo esc_html($package->Database->File); ?></a></td>
 					</tr>
 				</table>
 				<?php endif; ?>
@@ -222,7 +206,7 @@ STORAGE -->
 				<tr class="package-row">
 					<td><i class="fa fa-server"></i>&nbsp;<?php esc_html_e('Default', 'duplicator');?></td>
 					<td><?php esc_html_e("Local", 'duplicator'); ?></td>
-					<td><?php echo esc_html(DUPLICATOR_SSDIR_PATH); ?></td>
+					<td><?php echo esc_html(DUP_Settings::getSsdirPath()); ?></td>
 				</tr>
 				<tr>
 					<td colspan="4">
@@ -418,13 +402,13 @@ jQuery(document).ready(function($)
 	 *	@param db		The path to the sql file
 	 *	@param install	The path to the install file
 	 *	@param pack		The path to the package file */
-	Duplicator.Pack.ShowLinksDialog = function(db, pack, log)
+	Duplicator.Pack.ShowLinksDialog = function(json)
 	{
 		var url = '#TB_inline?width=650&height=350&inlineId=dup-dlg-quick-path';
 		tb_show("<?php esc_html_e('Package File Links', 'duplicator') ?>", url);
 
 
-		var msg = <?php printf('"%s:\n" + db + "\n\n%s:\n" + pack + "\n\n%s:\n" + log;',
+		var msg = <?php printf('"%s:\n" + json.sql + "\n\n%s:\n" + json.archive + "\n\n%s:\n" + json.log;',
 			esc_html__("DATABASE",  'duplicator'),
 			esc_html__("ARCHIVE", 'duplicator'),
 			esc_html__("LOG", 'duplicator'));

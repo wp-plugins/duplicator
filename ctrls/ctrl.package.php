@@ -90,7 +90,7 @@ function duplicator_package_build()
         DUP_Settings::Set('active_package_id', $Package->ID);
         DUP_Settings::Save();
 
-        if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$Package->ScanFile}")) {
+        if (!is_readable(DUP_Settings::getSsdirTmpPath()."/{$Package->ScanFile}")) {
             die("The scan result file was not found.  Please run the scan step before building the package.");
         }
 
@@ -169,7 +169,7 @@ function duplicator_duparchive_package_build()
         // DUP_Log::TraceObject("getting active package by id {$active_package_id}", $package);
     }
 
-    if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$package->ScanFile}")) {
+    if (!is_readable(DUP_Settings::getSsdirTmpPath()."/{$package->ScanFile}")) {
         DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: The scan result file was not found.  Please run the scan step before building the package.');
         die("The scan result file was not found.  Please run the scan step before building the package.");
     }
@@ -287,20 +287,20 @@ function duplicator_package_delete()
                     $delResult = $wpdb->query($wpdb->prepare("DELETE FROM `{$tblName}` WHERE id = %d", $id));
                     if ($delResult != 0) {
                         //TMP FILES
-                        $globTmpFiles = glob(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}*"));
+                        $globTmpFiles = glob(DUP_Settings::getSsdirTmpPath()."/{$nameHash}*");
                         foreach ($globTmpFiles as $globTmpFile) {
                             _unlinkFile($globTmpFile);
                         }
 
                         //WP-SNAPSHOT FILES
-                        $globSnapshotFiles = glob(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}*"));
+                        $globSnapshotFiles = glob(DUP_Settings::getSsdirPath()."/{$nameHash}*");
                         foreach ($globSnapshotFiles as $globSnapshotFile) {
                             _unlinkFile($globSnapshotFile);
                         }
-                        // _unlinkFile(DUP_Util::safePath(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log"));
+                        // _unlinkFile(DUP_Settings::getSsdirPath()."/{$nameHash}.log");
                         //Unfinished Zip files
                         /*
-                          $tmpZip = DUPLICATOR_SSDIR_PATH_TMP."/{$nameHash}_archive.zip.*";
+                          $tmpZip = DUP_Settings::getSsdirTmpPath()."/{$nameHash}_archive.zip.*";
                           if ($tmpZip !== false) {
                           array_map('unlink', glob($tmpZip));
                           }
@@ -442,105 +442,6 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
             //RETURN RESULT
             $test = ($changed) ? DUP_CTRL_Status::SUCCESS : DUP_CTRL_Status::FAILED;
             $result->process($payload, $test);
-        }
-        catch (Exception $exc) {
-            $result->processError($exc);
-        }
-    }
-
-    /**
-     * Download the requested package file
-     *
-     * @param string $_POST['which']
-     * @param string $_POST['package_id']
-     *
-     * @return downloadable file
-     */
-    function getPackageFile($post)
-    {
-        DUP_Handler::init_error_handler();
-
-        check_ajax_referer('DUP_CTRL_Package_getPackageFile', 'nonce');
-        DUP_Util::hasCapability('export');
-        $params = $this->postParamMerge($post);
-
-        $params = $this->getParamMerge($params);
-        $result = new DUP_CTRL_Result($this);
-
-        try {
-            //CONTROLLER LOGIC
-            $request   = stripslashes_deep($_REQUEST);
-            $which     = (int) $request['which'];
-            $packageId = (int) $request['package_id'];
-            $package   = DUP_Package::getByID($packageId);
-            $isBinary  = ($which != DUP_PackageFileType::Log);
-            $filePath  = $package->getLocalPackageFile($which);
-
-            //OUTPUT: Installer, Archive, SQL File
-            if ($isBinary) {
-                @session_write_close();
-                // @ob_flush();
-                //flush seems to cause issues on some PHP version where the download prompt
-                //is no longer called but the contents of the installer are dumped to the browser.
-                //@flush();
-
-                header("Pragma: public");
-                header("Expires: 0");
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                header("Cache-Control: private", false);
-                header("Content-Transfer-Encoding: binary");
-
-                if ($filePath != null) {
-                    $fp = fopen($filePath, 'rb');
-                    if ($fp !== false) {
-                        if ($which == DUP_PackageFileType::Installer) {
-                            $fileName = $package->getInstDownloadName();
-                        } else {
-                            $fileName = basename($filePath);
-                        }
-
-                        header("Content-Type: application/octet-stream");
-                        header("Content-Disposition: attachment; filename=\"{$fileName}\";");
-
-                        DUP_LOG::trace("streaming $filePath");
-
-                        while (!feof($fp)) {
-                            $buffer = fread($fp, 2048);
-                            print $buffer;
-                        }
-
-                        fclose($fp);
-                        exit;
-                    } else {
-                        header("Content-Type: text/plain");
-                        header("Content-Disposition: attachment; filename=\"error.txt\";");
-                        $message = "Couldn't open $filePath.";
-                        DUP_Log::Trace($message);
-                        echo esc_html($message);
-                    }
-                } else {
-                    $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
-
-                    header("Content-Type: text/plain");
-                    header("Content-Disposition: attachment; filename=\"error.txt\";");
-
-                    // Report that we couldn't find the file
-                    DUP_Log::Trace($message);
-                    echo esc_html($message);
-                }
-
-                //OUTPUT: Log File
-            } else {
-                if ($filePath != null) {
-                    header("Content-Type: text/plain");
-                    $text = file_get_contents($filePath);
-
-                    die($text);
-                } else {
-                    $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
-                    echo esc_html($message);
-                }
-            }
         }
         catch (Exception $exc) {
             $result->processError($exc);

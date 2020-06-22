@@ -19,8 +19,9 @@ if (!defined('DUPLICATOR_VERSION'))
 class DUP_UI_Notice
 {
 
-    const OPTION_KEY_INSTALLER_HASH_NOTICE                  = 'duplicator_lite_inst_hash_notice';
-    const OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL_DISMISS = 'duplicator_reactivate_plugins_after_installation';
+    const OPTION_KEY_INSTALLER_HASH_NOTICE          = 'duplicator_lite_inst_hash_notice';
+    const OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL = 'duplicator_reactivate_plugins_after_installation';
+    const OPTION_KEY_NEW_STORAGE_POSITION           = 'duplicator_new_storage_position';
 
     /**
      * init notice actions
@@ -31,7 +32,10 @@ class DUP_UI_Notice
             'showReservedFilesNotice',
             'installAutoDeactivatePlugins',
             'showFeedBackNotice',
-            'newInstallerHashOption'
+            //Disalbe in 1.3.38
+            'newInstallerHashOption',
+            //Enable in 1.3.38
+            //'newStoragePositionOption'
         );
         foreach ($methods as $method) {
             add_action('admin_notices', array(__CLASS__, $method));
@@ -49,11 +53,13 @@ class DUP_UI_Notice
             return;
         }
 
-        $action        = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
-        $installerMode = filter_input(INPUT_POST, 'installer_name_mode', FILTER_SANITIZE_STRING);
-        if ($screen->id == 'duplicator_page_duplicator-settings' && $action == 'save' && $installerMode == DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH) {
-            delete_option(self::OPTION_KEY_INSTALLER_HASH_NOTICE);
-            return;
+        if ($screen->id == 'duplicator_page_duplicator-settings') {
+            $action        = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
+            $installerMode = filter_input(INPUT_POST, 'installer_name_mode', FILTER_SANITIZE_STRING);
+            if ($action == 'save' && $installerMode == DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH) {
+                delete_option(self::OPTION_KEY_INSTALLER_HASH_NOTICE);
+                return;
+            }
         }
 
         if (DUP_Settings::get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH) {
@@ -67,7 +73,48 @@ class DUP_UI_Notice
                 <?php esc_html_e('After this option is enabled, a security hash will be added to the name of the installer when it\'s downloaded.', 'duplicator'); ?>
             </p>
             <p>
-                <?php echo sprintf(__('To enable this option or to get more information, open the <a href="%s">Package Settings</a> and visit the Installer section.', 'duplicator'), 'admin.php?page=duplicator-settings&tab=package#installer-name-mode-option'); ?>
+                <?php echo sprintf(__('To enable this option or to get more information, open the <a href="%s">Package Settings</a> and visit the Installer section.', 'duplicator'), 'admin.php?page=duplicator-settings&tab=package#duplicator-installer-settings'); ?>
+            </p>
+        </div>
+        <?php
+    }
+
+    public static function newStoragePositionOption()
+    {
+        if (get_option(self::OPTION_KEY_NEW_STORAGE_POSITION) != true) {
+            return;
+        }
+
+        $screen = get_current_screen();
+        if (!in_array($screen->parent_base, array('plugins', 'duplicator'))) {
+            return;
+        }
+
+        if ($screen->id == 'duplicator_page_duplicator-settings') {
+            $action         = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
+            $storagePostion = filter_input(INPUT_POST, 'storage_position', FILTER_SANITIZE_STRING);
+            if ($action == 'save' && $storagePostion == DUP_Settings::STORAGE_POSITION_WP_CONTENT) {
+                delete_option(self::OPTION_KEY_INSTALLER_HASH_NOTICE);
+                return;
+            }
+        }
+
+        if (DUP_Settings::get('storage_position') == DUP_Settings::STORAGE_POSITION_WP_CONTENT) {
+            delete_option(self::OPTION_KEY_NEW_STORAGE_POSITION);
+            return;
+        }
+        ?>
+        <div class="notice notice-success duplicator-admin-notice is-dismissible" data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_NEW_STORAGE_POSITION); ?>" > 
+            <p>
+                <?php esc_html_e('Duplicator can now have a new storage location inside the wp-content folder.', 'duplicator'); ?><br>
+                <?php
+                echo sprintf(__('If this option is enabled all packages will be moved from <i>%s</i> to <i>%s</i>', 'duplicator'),
+                    esc_html(DUP_Settings::getSsdirPathLegacy()),
+                    esc_html(DUP_Settings::getSsdirPathWpCont()));
+                ?>
+            </p>
+            <p>
+                <?php echo sprintf(__('To enable this option or to get more information, open the <a href="%s">General Settings</a>', 'duplicator'), 'admin.php?page=duplicator-settings'); ?>
             </p>
         </div>
         <?php
@@ -153,7 +200,7 @@ class DUP_UI_Notice
      */
     public static function installAutoDeactivatePlugins()
     {
-        $reactivatePluginsAfterInstallation = get_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL_DISMISS, false);
+        $reactivatePluginsAfterInstallation = get_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL, false);
         if (is_array($reactivatePluginsAfterInstallation)) {
             $installedPlugins  = array_keys(get_plugins());
             $shouldBeActivated = array();
@@ -164,7 +211,7 @@ class DUP_UI_Notice
             }
 
             if (empty($shouldBeActivated)) {
-                delete_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL_DISMISS);
+                delete_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL);
             } else {
                 $activatePluginsAnchors = array();
                 foreach ($shouldBeActivated as $slug => $title) {
@@ -176,7 +223,7 @@ class DUP_UI_Notice
                 }
                 ?>
                 <div class="update-nag duplicator-plugin-activation-admin-notice notice notice-warning duplicator-admin-notice is-dismissible"
-                     data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL_DISMISS); ?>" >
+                     data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL); ?>" >
                     <p>
                         <?php
                         echo "<b>".esc_html__("Warning!", "duplicator")."</b> ".esc_html__("Migration Almost Complete!", "duplicator")." <br/>";

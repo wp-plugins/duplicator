@@ -8,6 +8,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 }
 require_once 'helper.php';
 require_once 'define.php';
+require_once 'lib/snaplib/snaplib.all.php';
 require_once 'classes/class.settings.php';
 require_once 'classes/utilities/class.u.php';
 require_once 'classes/class.plugin.upgrade.php';
@@ -17,18 +18,16 @@ DUP_Settings::init();
 
 $table_name = $wpdb->prefix."duplicator_packages";
 $wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
-
 $wpdb->query("DELETE FROM ".$wpdb->usermeta." WHERE meta_key='".DUPLICATOR_ADMIN_NOTICES_USER_META_KEY."'");
 
 delete_option(DUP_LITE_Plugin_Upgrade::DUP_VERSION_OPT_KEY);
 delete_option('duplicator_usage_id');
 
-//Remove entire wp-snapshots directory
+//Remove entire storage directory
 if (DUP_Settings::Get('uninstall_files')) {
-
-    $ssdir           = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH);
-    $ssdir_tmp       = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP);
-    $ssdir_installer = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH.'/installer');
+    $ssdir           = DUP_Settings::getSsdirPath();
+    $ssdir_tmp       = DUP_Settings::getSsdirTmpPath();
+    $ssdir_installer = DUP_Settings::getSsdirInstallerPath();
 
     //Sanity check for strange setup
     $check = glob("{$ssdir}/wp-config.php");
@@ -88,11 +87,9 @@ if (DUP_Settings::Get('uninstall_files')) {
                         @unlink("{$file}");
                 }
 
-                if (strstr($ssdir, 'wp-snapshots')) {
-                    @rmdir($ssdir_installer);
-                    @rmdir($ssdir_tmp);
-                    @rmdir($ssdir);
-                }
+                @rmdir($ssdir_installer);
+                @rmdir($ssdir_tmp);
+                @rmdir($ssdir);
             }
         }
     }
@@ -105,4 +102,3 @@ if (DUP_Settings::Get('uninstall_settings')) {
     delete_option('duplicator_package_active');
     delete_option("duplicator_exe_safe_mode");
 }
-?>

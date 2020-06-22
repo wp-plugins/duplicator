@@ -7,7 +7,7 @@ function _duplicatorSortFiles($a,$b) {
 	return filemtime($b) - filemtime($a);
 }
 
-$logs = glob(DUPLICATOR_SSDIR_PATH . '/*.log') ;
+$logs = glob(DUP_Settings::getSsdirPath() . '/*.log') ;
 if ($logs != false && count($logs))  {
 	usort($logs, '_duplicatorSortFiles');
 	@chmod(DUP_Util::safePath($logs[0]), 0644);
@@ -31,8 +31,8 @@ if (!isset($logname) || !$logname) {
 	$logname  = (count($logs) > 0) ? basename($logs[0]) : "";
 }
 
-$logurl	 = get_site_url(null, '', is_ssl() ? 'https' : 'http') . '/' . DUPLICATOR_SSDIR_NAME . '/' . $logname;
-$logfound = (strlen($logname) > 0) ? true :false;
+$logurl   = DUP_Settings::getSsdirUrl().'/'.$logname;
+$logfound = (strlen($logname) > 0) ? true : false;
 ?>
 
 <style>

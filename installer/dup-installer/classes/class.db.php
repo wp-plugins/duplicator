@@ -14,44 +14,98 @@ class DUPX_DB
 {
 
     /**
-     * MySQL connection wrapper with support for port
+     * Modified version of https://developer.wordpress.org/reference/classes/wpdb/db_connect/
      *
-     * @param string    $host       The server host name
-     * @param string    $username   The server DB user name
-     * @param string    $password   The server DB password
-     * @param string    $dbname     The server DB name
-     *
-     * @return database connection handle
+     * @param string $host The server host name
+     * @param string $username The server DB user name
+     * @param string $password The server DB password
+     * @param string $dbname The server DB name
+     * @return mysqli Database connection handle
      */
-    public static function connect($host, $username, $password, $dbname = '')
+    public static function connect($host, $username, $password, $dbname = null)
     {
         $dbh = null;
         try {
-            //sock connections
-            if ('sock' === substr($host, -4)) {
-                $url_parts = parse_url($host);
-                $dbh       = @mysqli_connect('localhost', $username, $password, $dbname, null, $url_parts['path']);
-            } else {
-                if (strpos($host, ':') !== false) {
-                    $port = parse_url($host, PHP_URL_PORT);
-                    $host = parse_url($host, PHP_URL_HOST);
-                }
+            $port    = null;
+            $socket  = null;
+            $is_ipv6 = false;
 
-                if (isset($port)) {
-                    $dbh = @mysqli_connect($host, $username, $password, $dbname, $port);
-                } else {
-                    $dbh = @mysqli_connect($host, $username, $password, $dbname);
-                }
+            $host_data = self::parseDBHost($host);
+            if ($host_data) {
+                list($host, $port, $socket, $is_ipv6) = $host_data;
             }
+
+            /*
+             * If using the `mysqlnd` library, the IPv6 address needs to be
+             * enclosed in square brackets, whereas it doesn't while using the
+             * `libmysqlclient` library.
+             * @see https://bugs.php.net/bug.php?id=67563
+             */
+            if ($is_ipv6 && extension_loaded('mysqlnd')) {
+                $host = "[$host]";
+            }
+
+            $dbh = @mysqli_connect($host, $username, $password, $dbname, $port, $socket);
+
             if (!$dbh) {
                 DUPX_Log::info('DATABASE CONNECTION ERROR: '.mysqli_connect_error().'[ERRNO:'.mysqli_connect_errno().']');
-            } else if (method_exists($dbh, 'options')) {
-                $dbh->options(MYSQLI_OPT_LOCAL_INFILE, false);
+            } else {
+                if (method_exists($dbh, 'options')) {
+                    $dbh->options(MYSQLI_OPT_LOCAL_INFILE, false);
+                }
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DUPX_Log::info('DATABASE CONNECTION EXCEPTION ERROR: '.$e->getMessage());
         }
         return $dbh;
+    }
+
+    /**
+     * Modified version of https://developer.wordpress.org/reference/classes/wpdb/parse_db_host/
+     *
+     * @param string $host The DB_HOST setting to parse
+     * @return array|bool Array containing the host, the port, the socket and whether it is an IPv6 address, in that order. If $host couldn't be parsed, returns false
+     */
+    public static function parseDBHost($host)
+    {
+        $port    = null;
+        $socket  = null;
+        $is_ipv6 = false;
+
+        // First peel off the socket parameter from the right, if it exists.
+        $socket_pos = strpos($host, ':/');
+        if (false !== $socket_pos) {
+            $socket = substr($host, $socket_pos + 1);
+            $host   = substr($host, 0, $socket_pos);
+        }
+
+        // We need to check for an IPv6 address first.
+        // An IPv6 address will always contain at least two colons.
+        if (substr_count($host, ':') > 1) {
+            $pattern = '#^(?:\[)?(?P<host>[0-9a-fA-F:]+)(?:\]:(?P<port>[\d]+))?#';
+            $is_ipv6 = true;
+        } else {
+            // We seem to be dealing with an IPv4 address.
+            $pattern = '#^(?P<host>[^:/]*)(?::(?P<port>[\d]+))?#';
+        }
+
+        $matches = array();
+        $result  = preg_match($pattern, $host, $matches);
+
+        if (1 !== $result) {
+            // Couldn't parse the address, bail.
+            return false;
+        }
+
+        $host = '';
+        foreach (array('host', 'port') as $component) {
+            if (!empty($matches[$component])) {
+                $$component = $matches[$component];
+            }
+        }
+
+        return array($host, $port, $socket, $is_ipv6);
     }
 
     /**

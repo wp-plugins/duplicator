@@ -13,7 +13,7 @@ if (isset($_SERVER['HTTP_X_ORIGINAL_HOST'])) {
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
     $_SERVER ['HTTPS'] = 'on';
 }
-$serverDomain  = 'http'.((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 's' : '').'://'.$host;
+$serverDomain  = 'http'.((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on') ? 's' : '').'://'.$host;
 $serverUrlSelf = preg_match('/^[\\\\\/]?$/', dirname($_SERVER['SCRIPT_NAME'])) ? '' : dirname($_SERVER['SCRIPT_NAME']);
 
 define('DUPX_INIT', str_replace('\\', '/', dirname(__FILE__)));

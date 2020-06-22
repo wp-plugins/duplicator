@@ -3,7 +3,7 @@
   Plugin Name: Duplicator
   Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
-  Version: 1.3.34
+  Version: 1.3.36
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/
   Text Domain: duplicator
@@ -100,7 +100,7 @@ if (is_admin() == true)
 	{
         if (DUPLICATOR_VERSION != get_option(DUP_LITE_Plugin_Upgrade::DUP_VERSION_OPT_KEY)) {
             DUP_LITE_Plugin_Upgrade::onActivationAction();
-            // $snapShotDirPerm = substr(sprintf("%o", fileperms(DUPLICATOR_SSDIR_PATH)),-4);
+            // $snapShotDirPerm = substr(sprintf("%o", fileperms(DUP_Settings::getSsdirPath())),-4);
         }
 		load_plugin_textdomain( 'duplicator' );
     }

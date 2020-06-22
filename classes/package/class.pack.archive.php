@@ -113,7 +113,7 @@ class DUP_Archive
 		if ($this->Package->BuildProgress === null) {
 			// Zip path
 			DUP_LOG::Trace("Completed Zip");
-			$storePath	 = "{$this->Package->StorePath}/{$this->File}";
+			$storePath	 = DUP_Settings::getSsdirTmpPath()."/{$this->File}";
 			$this->Size	 = @filesize($storePath);
 			$this->Package->setStatus(DUP_PackageStatus::ARCDONE);
 		} else if ($completed) {
@@ -123,7 +123,7 @@ class DUP_Archive
 				DUP_LOG::Trace("Error building DupArchive");
 				$this->Package->setStatus(DUP_PackageStatus::ERROR);
 			} else {
-				$filepath	 = DUP_Util::safePath("{$this->Package->StorePath}/{$this->File}");
+				$filepath	 = DUP_Settings::getSsdirTmpPath()."/{$this->File}";
 				$this->Size	 = @filesize($filepath);
 				$this->Package->setStatus(DUP_PackageStatus::ARCDONE);
 				DUP_LOG::Trace("Done building archive");
@@ -308,7 +308,8 @@ class DUP_Archive
 		$wp_content_upload				 = "{$wp_content}/{$upload_dir}";
 		$this->FilterInfo->Dirs->Core	 = array(
 			//WP-ROOT
-			$wp_root.'/wp-snapshots',
+			DUP_Settings::getSsdirPathLegacy(),
+            DUP_Settings::getSsdirPathWpCont(),
             $wp_root.'/.opcache',
 			//WP-CONTENT
 			$wp_content.'/backups-dup-pro',
@@ -761,6 +762,11 @@ class DUP_Archive
 		}
 		return $this->wpContentDirNormalizePath;
 	}
+
+	public function getUrl()
+    {
+        return DUP_Settings::getSsdirUrl()."/".$this->File;
+    }
 
 	public function getLocalDirPath($dir, $basePath = '')
 	{

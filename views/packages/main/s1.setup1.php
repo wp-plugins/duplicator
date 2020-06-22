@@ -170,8 +170,8 @@ SYSTEM REQUIREMENTS -->
                     <?php
                     $abs_path = duplicator_get_abs_path();
 
-                    printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSDIR'], DUPLICATOR_SSDIR_PATH);
-                    printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSTMP'], DUPLICATOR_SSDIR_PATH_TMP);
+                    printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSDIR'], DUP_Settings::getSsdirPath());
+                    printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['SSTMP'], DUP_Settings::getSsdirTmpPath());
                     printf("<b>%s</b> &nbsp; [%s] <br/>", $dup_tests['IO']['WPROOT'], $abs_path);
                     ?>
                     <div style="font-size:11px; padding-top: 3px">
@@ -208,6 +208,16 @@ SYSTEM REQUIREMENTS -->
                         esc_html_e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed.", 'duplicator');
                         echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . esc_html__('more info', 'duplicator') . "]</a></i>";
                         ?>										
+                    </small>
+                    <hr>
+                    <table class="dup-sys-info-results">
+                        <tr>
+                            <td><a href="https://www.php.net/manual/en/mysqli.real-escape-string.php" target="_blank">mysqli_real_escape_string</a></td>
+                            <td><?php echo esc_html($dup_tests['SRV']['MYSQL_ESC']); ?></td>
+                        </tr>
+                    </table>
+                    <small>
+                        <?php esc_html_e("The function mysqli_real_escape_string is not working properly. Please consult host support and ask them to switch to a different PHP version or configuration."); ?>
                     </small>
                 </div>
             </div>

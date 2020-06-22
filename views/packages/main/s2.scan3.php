@@ -504,15 +504,15 @@ DATABASE -->
 		<div style="padding: 7px; background-color:#F3B2B7; font-weight: bold ">
 		<?php
 			printf(__('The build can\'t continue because the total size of files and the database exceeds the %s limit that can be processed when creating a DupArchive package. ', 'duplicator'), $duparchive_max_limit);
-            printf(__('<a href="javascript:void(0)" onclick="jQuery(\'#data-ll-status-recommendations\').toggle()">Click for recommendations.</a>', 'duplicator'));
 		?>
+			<a href="javascript:void(0)" onclick="jQuery('#data-ll-status-recommendations').slideToggle('slow');"><?php esc_html_e('Click for recommendations.', 'duplicator'); ?></a>
 		</div>
 		<div class="info" id="data-ll-status-recommendations">
 		<?php
 			echo '<b>';
 			$lnk = '<a href="admin.php?page=duplicator-settings&tab=package" target="_blank">' . esc_html__('Archive Engine', 'duplicator') . '</a>';
-			printf(__("The {$lnk} is set to create packages in the 'DupArchive' format.  This custom format is used to overcome budget host constraints."
-					. " With DupArchive, Duplicator is restricted to processing sites up to %s.  To process larger sites, consider these recommendations. ", 'duplicator'), $duparchive_max_limit, $duparchive_max_limit);
+			printf(esc_html__("The %s is set to create packages in the 'DupArchive' format.  This custom format is used to overcome budget host constraints."
+					. " With DupArchive, Duplicator is restricted to processing sites up to %s.  To process larger sites, consider these recommendations. ", 'duplicator'), $lnk, $duparchive_max_limit, $duparchive_max_limit);
 			echo '</b>';
 			echo '<br/><hr size="1" />';
 
@@ -708,7 +708,7 @@ jQuery(document).ready(function($)
 {
 
 	Handlebars.registerHelper('stripWPRoot', function(path) {
-		return  path.replace('<?php echo duplicator_get_abs_path(); ?>');
+		return  path.replace('<?php echo duplicator_get_abs_path(); ?>', '');
 	});
 
 	//Uncheck file names if directory is checked

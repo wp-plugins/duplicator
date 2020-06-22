@@ -64,7 +64,7 @@ if ($section == "info" || $section == '') {
 					if (!empty($glob_files)) {
 						foreach ($glob_files as $glob_file) {
 							$installer_log_file_path = $glob_file;
-							DUP_IO::copyFile($installer_log_file_path, DUPLICATOR_SSDIR_PATH_INSTALLER);
+							DUP_IO::copyFile($installer_log_file_path, DUP_Settings::getSsdirInstallerPath());
 						}
 					}
 

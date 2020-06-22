@@ -54,15 +54,128 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             if (copy($source, $dest) === false) {
                 throw new Exception("Error copying {$source} to {$dest}");
             }
+
+            return true;
+        }
+
+        /**
+         * 
+         * @param string $source
+         * @param string $dest
+         * @return boolean false if fail
+         */
+        public static function rcopy($source, $dest)
+        {
+            if (!is_readable($source)) {
+                return false;
+            }
+
+            if (is_dir($source)) {
+                if (!file_exists($dest)) {
+                    if (!self::mkdir($dest)) {
+                        return false;
+                    }
+                }
+
+                if (($handle = opendir($source)) != false) {
+                    return false;
+                }
+
+                while ($file = readdir($handle)) {
+                    if ($file == "." && $file == "..") {
+                        continue;
+                    }
+
+                    if (is_dir($source.'/'.$file)) {
+                        if (!self::rcopy($source.'/'.$file, $dest.'/'.$file)) {
+                            return false;
+                        }
+                    } else {
+                        if (!self::copy($source.'/'.$file, $dest.'/'.$file)) {
+                            return false;
+                        }
+                    }
+                }
+                closedir($handle);
+                return true;
+            } else {
+                return self::copy($source, $dest);
+            }
+        }
+
+        public static function untrailingslashit($path)
+        {
+            return rtrim($path, '/\\');
+        }
+
+        public static function trailingslashit($path)
+        {
+            return self::untrailingslashit($path).'/';
         }
 
         public static function safePath($path, $real = false)
         {
             if ($real) {
-                $path = realpath($path);
+                $res = realpath($path);
+            } else {
+                $res = $path;
+            }
+            return self::normalize_path($path);
+        }
+
+        public static function safePathUntrailingslashit($path, $real = false)
+        {
+            if ($real) {
+                $res = realpath($path);
+            } else {
+                $res = $path;
+            }
+            return rtrim(self::normalize_path($res), '/');
+        }
+
+        public static function safePathTrailingslashit($path, $real = false)
+        {
+            return self::safePathUntrailingslashit($path, $real).'/';
+        }
+
+        /**
+         * 
+         * @param string $sourceFolder
+         * @param string $destFolder
+         * @param bool $skipIfExists
+         * @return boolean
+         */
+        public static function moveContentDirToTarget($sourceFolder, $destFolder, $skipIfExists = false)
+        {
+            if (!is_dir($sourceFolder) || !is_readable($sourceFolder)) {
+                return false;
             }
 
-            return str_replace("\\", "/", $path);
+            if (!is_dir($destFolder) || !is_writable($destFolder)) {
+                return false;
+            }
+
+            $sourceIterator = new DirectoryIterator($sourceFolder);
+            foreach ($sourceIterator as $fileinfo) {
+                if ($fileinfo->isDot()) {
+                    continue;
+                }
+                $destPath = $destFolder.'/'.$fileinfo->getBasename();
+
+                if (file_exists($destPath)) {
+                    if ($skipIfExists) {
+                        continue;
+                    } else {
+                        return false;
+                    }
+                }
+
+                if (self::rename($fileinfo->getPathname(), $destPath) == false) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public static function massMove($fileSystemObjects, $destination, $exclusions = null, $exceptionOnError = true)
@@ -122,6 +235,8 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             if (!@rename($oldname, $newname)) {
                 throw new Exception("Couldn't rename {$oldname} to {$newname}");
             }
+
+            return true;
         }
 
         public static function fopen($filepath, $mode, $throwOnError = true)
@@ -171,7 +286,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         {
             if (file_exists($dirname)) {
                 self::chmod($dirname, 'u+rwx');
-                if (@rmdir($dirname) === false) {
+                if (self::rrmdir($dirname) === false) {
                     throw new Exception("Couldn't remove {$dirname}");
                 }
             } else if ($mustExist) {
@@ -290,6 +405,12 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
                 $filepath = stream_get_meta_data($handle);
                 $filepath = $filepath["uri"];
                 $filesize = self::filesize($filepath);
+                // For future debug
+                /*
+                  error_log('$offset: '.$offset);
+                  error_log('$filesize: '.$filesize);
+                  error_log($whence. ' == '. SEEK_SET);
+                 */
                 if ($ret_val === false) {
                     throw new Exception("Trying to fseek($offset, $whence) and came back false");
                 }
@@ -315,7 +436,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
 
         /**
          * exetute a file put contents after some checks. throw exception if fail.
-         *
+         * 
          * @param string $filename
          * @param mixed $data
          * @return boolean
@@ -482,7 +603,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         /**
          * this function creates a folder if it does not exist and performs a chmod.
          * it is different from the normal mkdir function to which an umask is applied to the input permissions.
-         * 
+         *
          * this function handles the variable MODE in a way similar to the chmod of lunux
          * So the MODE variable can be
          * 1) an octal number (0755)
@@ -492,7 +613,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
          * @param string $path
          * @param int|string $mode
          * @param bool $recursive
-         * @param resource $context // not used fo windows bug
+         * @param resource $context // not used for windows bug
          * @return boolean bool TRUE on success or FALSE on failure.
          *
          * @todo check recursive true and multiple chmod
@@ -500,7 +621,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         public static function mkdir($path, $mode = 0777, $recursive = false, $context = null)
         {
             if (strlen($path) > DupLiteSnapLibOSU::maxPathLen()) {
-                throw new Exception('Skipping a file that exceeds allowed max path length ['.DupLiteSnapLibOSU::maxPathLen().']. File: '.$filepath);
+                throw new Exception('Skipping a file that exceeds allowed max path length ['.DupLiteSnapLibOSU::maxPathLen().']. File: '.$path);
             }
 
             if (!file_exists($path)) {
@@ -529,11 +650,210 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
          */
         public static function dirWriteCheckOrMkdir($path, $mode = 'u+rwx', $recursive = false, $context = null)
         {
-            if (!is_writable($path) || !is_executable($path)) {
+            if (!file_exists($path)) {
                 return self::mkdir($path, $mode, $recursive, $context);
+            } else if (!is_writable($path) || !is_executable($path)) {
+                return self::chmod($path, $mode);
             } else {
                 return true;
             }
+        }
+
+        /**
+         * from wordpress function wp_is_stream 
+         *
+         * @param string $path The resource path or URL.
+         * @return bool True if the path is a stream URL.
+         */
+        public static function is_stream($path)
+        {
+            $scheme_separator = strpos($path, '://');
+
+            if (false === $scheme_separator) {
+                // $path isn't a stream
+                return false;
+            }
+
+            $stream = substr($path, 0, $scheme_separator);
+
+            return in_array($stream, stream_get_wrappers(), true);
+        }
+
+        /**
+         * From Wordpress function: wp_mkdir_p
+         * 
+         * Recursive directory creation based on full path.
+         *
+         * Will attempt to set permissions on folders.
+         *
+         * @param string $target Full path to attempt to create.
+         * @return bool Whether the path was created. True if path already exists.
+         */
+        public static function mkdir_p($target)
+        {
+            $wrapper = null;
+
+            // Strip the protocol.
+            if (self::is_stream($target)) {
+                list( $wrapper, $target ) = explode('://', $target, 2);
+            }
+
+            // From php.net/mkdir user contributed notes.
+            $target = str_replace('//', '/', $target);
+
+            // Put the wrapper back on the target.
+            if ($wrapper !== null) {
+                $target = $wrapper.'://'.$target;
+            }
+
+            /*
+             * Safe mode fails with a trailing slash under certain PHP versions.
+             * Use rtrim() instead of untrailingslashit to avoid formatting.php dependency.
+             */
+            $target = rtrim($target, '/');
+            if (empty($target)) {
+                $target = '/';
+            }
+
+            if (file_exists($target)) {
+                return @is_dir($target);
+            }
+
+            // We need to find the permissions of the parent folder that exists and inherit that.
+            $target_parent = dirname($target);
+            while ('.' != $target_parent && !is_dir($target_parent) && dirname($target_parent) !== $target_parent) {
+                $target_parent = dirname($target_parent);
+            }
+
+            // Get the permission bits.
+            if ($stat = @stat($target_parent)) {
+                $dir_perms = $stat['mode'] & 0007777;
+            } else {
+                $dir_perms = 0777;
+            }
+
+            if (@mkdir($target, $dir_perms, true)) {
+
+                /*
+                 * If a umask is set that modifies $dir_perms, we'll have to re-set
+                 * the $dir_perms correctly with chmod()
+                 */
+                if ($dir_perms != ( $dir_perms & ~umask() )) {
+                    $folder_parts = explode('/', substr($target, strlen($target_parent) + 1));
+                    for ($i = 1, $c = count($folder_parts); $i <= $c; $i++) {
+                        @chmod($target_parent.'/'.implode('/', array_slice($folder_parts, 0, $i)), $dir_perms);
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
+         * 
+         * @param string|bool $path     // return false if path isn't a sub path of main path or return the relative path
+         */
+        public static function getRelativePath($path, $mainPath)
+        {
+            $safePath     = self::safePathUntrailingslashit($path);
+            $safeMainPath = self::safePathUntrailingslashit($mainPath);
+
+            if (empty($mainPath)) {
+                return ltrim($safePath, '/');
+            } else if (strpos($safePath, $safeMainPath) === 0) {
+                return ltrim(substr($safePath, strlen($safeMainPath)), '/');
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * from wp_normalize_path
+         *
+         * @param string $path Path to normalize.
+         * @return string Normalized path.
+         */
+        public static function normalize_path($path)
+        {
+            $wrapper = '';
+            if (self::is_stream($path)) {
+                list( $wrapper, $path ) = explode('://', $path, 2);
+                $wrapper .= '://';
+            }
+
+            // Standardise all paths to use /
+            $path = str_replace('\\', '/', $path);
+
+            // Replace multiple slashes down to a singular, allowing for network shares having two slashes.
+            $path = preg_replace('|(?<=.)/+|', '/', $path);
+            if (strpos($path, '//') === 0) {
+                $path = substr($path, 1);
+            }
+
+            // Windows paths should uppercase the drive letter
+            if (':' === substr($path, 1, 1)) {
+                $path = ucfirst($path);
+            }
+
+            return $wrapper.$path;
+        }
+
+        /**
+         * Get common parent path from given paths
+         * 
+         * @param array $paths - array of paths
+         * @return common parent path
+         */
+        public static function getCommonPath($paths = array())
+        {
+            if (empty($paths)) {
+                return '';
+            } if (!is_array($paths)) {
+                $paths = array($paths);
+            } else {
+                $paths = array_values($paths);
+            }
+
+            $pathAssoc    = array();
+            $numPaths     = count($paths);
+            $minPathCouts = PHP_INT_MAX;
+
+            for ($i = 0; $i < $numPaths; $i++) {
+                $pathAssoc[$i] = explode('/', self::safePathUntrailingslashit($paths[$i]));
+                $pathCount     = count($pathAssoc[$i]);
+                if ($minPathCouts > $pathCount) {
+                    $minPathCouts = $pathCount;
+                }
+            }
+
+            for ($partIndex = 0; $partIndex < $minPathCouts; $partIndex++) {
+                $currentPart = $pathAssoc[0][$partIndex];
+                for ($currentPath = 1; $currentPath < $numPaths; $currentPath++) {
+                    if ($pathAssoc[$currentPath][$partIndex] != $currentPart) {
+                        break 2;
+                    }
+                }
+            }
+
+            $resultParts = array_slice($pathAssoc[0], 0, $partIndex);
+
+            return implode('/', $resultParts);
+        }
+
+        /**
+         * remove root path transforming the current path into a relative path
+         * 
+         * ex. /aaa/bbb  become aaa/bbb
+         * ex. C:\aaa\bbb become aaa\bbb
+         * 
+         * @param string $path
+         * @return string
+         */
+        public static function removeRootPath($path)
+        {
+            return preg_replace('/^(?:[A-Za-z]:)?[\/](.*)/', '$1', $path);
         }
 
         /**
@@ -551,23 +871,23 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
                 return false;
             }
 
-            $result = array();
-            $pos = -1;
+            $result      = array();
+            $pos         = -1;
             $currentLine = '';
-            $counter = 0;
+            $counter     = 0;
 
             while ($counter < $n && -1 !== fseek($handle, $pos, SEEK_END)) {
                 $char = fgetc($handle);
                 if (PHP_EOL == $char) {
                     $trimmedValue = trim($currentLine);
-                    
+
                     if (!empty($trimmedValue)) {
                         $result[] = $currentLine;
                         $counter++;
                     }
                     $currentLine = '';
                 } else {
-                    $currentLine = $char . $currentLine;
+                    $currentLine = $char.$currentLine;
                 }
                 $pos--;
             }

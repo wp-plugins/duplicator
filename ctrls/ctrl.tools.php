@@ -77,7 +77,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 
         $file_path   = DUP_Log::GetTraceFilepath();
         $backup_path = DUP_Log::GetBackupTraceFilepath();
-        $zip_path    = DUPLICATOR_SSDIR_PATH."/".DUPLICATOR_ZIPPED_LOG_FILENAME;
+        $zip_path    = DUP_Settings::getSsdirPath()."/".DUPLICATOR_ZIPPED_LOG_FILENAME;
         $zipped      = DUP_Zip_U::zipFile($file_path, $zip_path, true, null, true);
 
         if ($zipped && file_exists($backup_path)) {

@@ -73,7 +73,6 @@ class DUPX_Constants
 
 		//CONSTANTS
 		define("DUPLICATOR_INIT", 1);
-		define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots-dup-pro');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 
 		//SHARED POST PARMS
 		$_GET['debug'] = isset($_GET['debug']) ? true : false;

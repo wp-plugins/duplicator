@@ -96,7 +96,7 @@ Duplicator.OpenLogWindow = function(target)
 	if (target != null) {
 		window.open('?page=duplicator-tools&tab=diagnostics&section=log', 'log-win');
 	} else {
-		window.open('<?php echo esc_js(DUPLICATOR_SSDIR_URL); ?>' + '/' + log)
+		window.open('<?php echo esc_js(DUP_Settings::getSsdirUrl()); ?>' + '/' + log)
 	}
 };
 

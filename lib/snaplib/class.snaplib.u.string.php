@@ -46,6 +46,24 @@ if (!class_exists('DupLiteSnapLibStringU', false)) {
         }
 
         /**
+         * Returns true if the $haystack string end with the $needle
+         *
+         * @param string  $haystack     The full string to search in
+         * @param string  $needle       The string to for
+         *
+         * @return bool Returns true if the $haystack string starts with the $needle
+         */
+        public static function endsWith($haystack, $needle)
+        {
+            $length = strlen($needle);
+            if ($length == 0) {
+                return true;
+            }
+
+            return (substr($haystack, -$length) === $needle);
+        }
+
+        /**
          * Returns true if the $needle is found in the $haystack
          *
          * @param string  $haystack     The full string to search in
@@ -57,6 +75,45 @@ if (!class_exists('DupLiteSnapLibStringU', false)) {
         {
             $pos = strpos($haystack, $needle);
             return ($pos !== false);
+        }
+
+        /**
+         * 
+         * @param string $glue
+         * @param array $pieces
+         * @param string $format
+         * @return string
+         */
+        public static function implodeKeyVals($glue, $pieces, $format = '%s="%s"')
+        {
+            $strList = array();
+            foreach ($pieces as $key => $value) {
+                if (is_scalar($value)) {
+                    $strList[] = sprintf($format, $key, $value);
+                } else {
+                    $strList[] = sprintf($format, $key, print_r($value, true));
+                }
+            }
+            return implode($glue, $strList);
+        }
+
+        /**
+         * Replace last occurrence
+         *
+         * @param  String  $search         The value being searched for
+         * @param  String  $replace        The replacement value that replaces found search values
+         * @param  String  $str        The string or array being searched and replaced on, otherwise known as the haystack
+         * @param  Boolean $caseSensitive Whether the replacement should be case sensitive or not
+         *
+         * @return String
+         */
+        public static function strLastReplace($search, $replace, $str, $caseSensitive = true)
+        {
+            $pos = $caseSensitive ? strrpos($str, $search) : strripos($str, $search);
+            if (false !== $pos) {
+                $str = substr_replace($str, $replace, $pos, strlen($search));
+            }
+            return $str;
         }
     }
 }

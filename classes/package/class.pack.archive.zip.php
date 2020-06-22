@@ -32,8 +32,8 @@ class DUP_Zip extends DUP_Archive
             $package_zip_flush = DUP_Settings::Get('package_zip_flush');
 
             self::$compressDir  = rtrim(wp_normalize_path(DUP_Util::safePath($archive->PackDir)), '/');
-            self::$sqlPath      = DUP_Util::safePath("{$archive->Package->StorePath}/{$archive->Package->Database->File}");
-            self::$zipPath      = DUP_Util::safePath("{$archive->Package->StorePath}/{$archive->File}");
+            self::$sqlPath      = DUP_Settings::getSsdirTmpPath()."/{$archive->Package->Database->File}";
+            self::$zipPath      = DUP_Settings::getSsdirTmpPath()."/{$archive->File}";
             self::$zipArchive   = new ZipArchive();
             self::$networkFlush = empty($package_zip_flush) ? false : $package_zip_flush;
 
@@ -46,7 +46,7 @@ class DUP_Zip extends DUP_Archive
             $lastDirSuccess   = self::$compressDir;
 
             //LOAD SCAN REPORT
-            $json             = file_get_contents(DUPLICATOR_SSDIR_PATH_TMP."/{$archive->Package->NameHash}_scan.json");
+            $json             = file_get_contents(DUP_Settings::getSsdirTmpPath()."/{$archive->Package->NameHash}_scan.json");
             self::$scanReport = json_decode($json);
 
             DUP_Log::Info("\n********************************************************************************");

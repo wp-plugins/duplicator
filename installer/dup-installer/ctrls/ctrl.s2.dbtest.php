@@ -148,36 +148,46 @@ class DUPX_DBTest
 		$this->basicCleanup();
 	}
 
-	/**
-	 * Verify Host Connection
-	 *
-	 * @return null
-	 */
-	private function r10All(&$test)
-	{
-		try {
+    /**
+     * Verify Host Connection
+     *
+     * @return null
+     */
+    private function r10All(&$test)
+    {
+        try {
 
-			if ($this->isFailedState($test)) {
-				return;
-			}
+            if ($this->isFailedState($test)) {
+                return;
+            }
 
-			$this->dbh = DUPX_DB::connect($this->in->dbhost, $this->in->dbuser, $this->in->dbpass, null, $this->in->dbport);
-			if ($this->dbh) {
-				$test['pass']	 = 1;
-				$test['info']	 = "The user <b>[".htmlentities($this->in->dbuser)."]</b> successfully connected to the database server on host <b>[".htmlentities($this->in->dbhost)."]</b>.";
-			} else {
-				$msg = "Unable to connect the user <b>[".htmlentities($this->in->dbuser)."]</b> to the host <b>[".htmlentities($this->in->dbhost)."]</b>";
-				$test['pass']	 = 0;
-				$test['info']	 = (mysqli_connect_error())
-								? "{$msg}. The server error response was: <i>" . htmlentities(mysqli_connect_error()) . '</i>'
-								: "{$msg}. Please contact your hosting provider or server administrator.";
-			}
+            //Host check
+            $parsed_host_info = DUPX_DB::parseDBHost($this->in->dbhost);
+            $parsed_host      = $parsed_host_info[0];
+            $isInvalidHost    = $parsed_host == 'http' || $parsed_host == "https";
 
-		} catch (Exception $ex) {
-			$test['pass']	 = 0;
-			$test['info']	 = "Unable to connect the user <b>[".htmlentities($this->in->dbuser)."]</b> to the host <b>[".htmlentities($this->in->dbhost)."]</b>.<br/>" . $this->formatError($ex);
-		}
-	}
+            if ($isInvalidHost) {
+                $fixed_host = DupLiteSnapLibIOU::untrailingslashit(str_replace($parsed_host."://","",$this->in->dbhost));
+                $test['pass'] = 0;
+                $test['info'] = "<b>[".htmlentities($this->in->dbhost)."]</b> is not a valid input. Try using <b>[$fixed_host]</b> instead.";
+                return;
+            }
+
+            $this->dbh = DUPX_DB::connect($this->in->dbhost, $this->in->dbuser, $this->in->dbpass, null);
+            if ($this->dbh) {
+                $test['pass'] = 1;
+                $test['info'] = "The user <b>[".htmlentities($this->in->dbuser)."]</b> successfully connected to the database server on host <b>[".htmlentities($this->in->dbhost)."]</b>.";
+            } else {
+                $msg          = "Unable to connect the user <b>[".htmlentities($this->in->dbuser)."]</b> to the host <b>[".htmlentities($this->in->dbhost)."]</b>";
+                $test['pass'] = 0;
+                $test['info'] = (mysqli_connect_error()) ? "{$msg}. The server error response was: <i>".htmlentities(mysqli_connect_error()).'</i>' : "{$msg}. Please contact your hosting provider or server administrator.";
+            }
+        }
+        catch (Exception $ex) {
+            $test['pass'] = 0;
+            $test['info'] = "Unable to connect the user <b>[".htmlentities($this->in->dbuser)."]</b> to the host <b>[".htmlentities($this->in->dbhost)."]</b>.<br/>".$this->formatError($ex);
+        }
+    }
 
 	/**
 	 * Check Server Version

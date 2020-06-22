@@ -150,18 +150,26 @@ class DUP_DB extends wpdb
                 '/usr/mysql/bin/mysqldump',
                 '/usr/bin/mysqldump',
                 '/opt/local/lib/mysql6/bin/mysqldump',
-                '/opt/local/lib/mysql5/bin/mysqldump'
+				'/opt/local/lib/mysql5/bin/mysqldump',
+				'/usr/bin/mysqldump',
             );
         }
 
+		$exec_available = function_exists('exec');
         foreach ($paths as $path) {
-            $out = array();
-            $rc  = -1;
-            $cmd = $path.' --version';
-            @exec($cmd, $out, $rc);
-            if ($rc === 0) {
-                return $path;
-            }
+			if (@file_exists($path)) {
+				if (DUP_Util::isExecutable($path)) {
+					return $path;
+				}
+			} elseif ($exec_available) {
+				$out = array();
+				$rc  = -1;
+				$cmd = $path . ' --help';
+				@exec($cmd, $out, $rc);
+				if ($rc === 0) {
+					return $path;
+				}
+			}
         }
 
         return false;
@@ -220,4 +228,27 @@ class DUP_DB extends wpdb
 			return @esc_sql($sql);
 		}
 	}
+    
+     /**
+     * this function escape sql string without add and remove remove_placeholder_escape
+     * don't work on array
+     *
+     * @global type $wpdb
+     * @param mixed $sql
+     * @return string
+     */
+    public static function escValueToQueryString($value)
+    {
+        global $wpdb;
+
+        if (is_null($value)) {
+            return 'NULL';
+        }
+
+        if ($wpdb->use_mysqli) {
+            return '"'.mysqli_real_escape_string($wpdb->dbh, $value).'"';
+        } else {
+            return '"'.mysql_real_escape_string($value, $wpdb->dbh).'"';
+        }
+    }
 }

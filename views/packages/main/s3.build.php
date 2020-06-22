@@ -253,7 +253,7 @@ TOOL BAR: STEPS -->
 					<div style="color:#777; padding: 15px 5px 5px 5px">
 						<b> <?php esc_html_e('Notice', 'duplicator'); ?></b><br/>
 						<?php
-						printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s', esc_html__('Build Folder:'), DUPLICATOR_SSDIR_PATH_TMP,
+						printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s', esc_html__('Build Folder:'), DUP_Settings::getSsdirTmpPath(),
 							__("On some servers the build will continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see "
 								."if the archive file is growing in size or check the main packages screen to see if the package completed. If it is not then your server "
 								."has strict timeout constraints.", 'duplicator')
@@ -618,8 +618,14 @@ jQuery(document).ready(function ($)
 	Duplicator.Pack.WireDownloadLinks = function(data)
 	{
 		var pack = data.package;
-		var archive_name = pack.Archive.File;
-		var archive_url = "<?php echo DUPLICATOR_SSDIR_URL; ?>" + "/" + archive_name;
+		var archive_json = {
+		    filename: pack.Archive.File,
+            url: "<?php echo DUP_Settings::getSsdirUrl(); ?>" + "/" + pack.Archive.File
+        };
+		var installer_json = {
+		    id: pack.ID,
+            hash: pack.Hash
+        };
 
 		$('#dup-progress-bar-area').hide();
 		$('#dup-progress-area, #dup-msg-success').show(300);
@@ -630,9 +636,13 @@ jQuery(document).ready(function ($)
         $('#dup-create-new').removeClass('disabled');
         
 		//Wire Up Downloads
-		$('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});
+		$('#dup-btn-installer').click(function() {
+		    Duplicator.Pack.DownloadInstaller(installer_json);
+		    return false;
+		});
+
 		$('#dup-btn-archive').click(function() {
-			Duplicator.Pack.DownloadFile(archive_name, archive_url);
+			Duplicator.Pack.DownloadFile(archive_json);
 			return false;
 		});
 

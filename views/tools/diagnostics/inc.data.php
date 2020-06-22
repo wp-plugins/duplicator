@@ -45,7 +45,7 @@ OPTIONS DATA -->
 							<?php esc_html_e("Clear Build Cache", 'duplicator'); ?>
 						</button>
 					</td>
-					<td><?php esc_html_e("Removes all build data from:", 'duplicator'); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
+					<td><?php esc_html_e("Removes all build data from:", 'duplicator'); ?> [<?php echo DUP_Settings::getSsdirTmpPath() ?>].</td>
 				</tr>
 			</table>
 		</div>
