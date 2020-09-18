@@ -305,7 +305,7 @@ Auto Posts to view.step3.php  -->
 					$("#ajax-exe-safe-mode").val($("#exe-safe-mode").val());
 					$("#ajax-json").val(escape(JSON.stringify(data)));
 
-					<?php if (! $GLOBALS['DUPX_DEBUG']) : ?>
+					<?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 						setTimeout(function () {$formResult.submit();}, 1000);
 					<?php endif; ?>
 					$('#progress-area').fadeOut(700);

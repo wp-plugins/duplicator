@@ -271,13 +271,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	================================== -->
 	<div class="hdr-sub4 s2-notices-hdr" data-type="toggle" data-target="#s2-notices-all">
 		<i class="fa fa-caret-right"></i> Notices <small class='db-check'>(optional)</small>
-		<div class="{{noticeStyle payload.noticesPass}}">{{noticeText payload.noticesPass}}</div>
+		<div class="{{optionalNoticeStyle payload.noticesPass}}">{{noticeText payload.noticesPass}}</div>
 	</div>
 	<div class="s2-reqs" id="s2-notices-all">
 
 		<!-- ==================================
 		NOTICE 10: TABLE CASE CHECK-->
-		<div class="status {{noticeStyle payload.notices.10.pass}}">{{noticeText payload.notices.10.pass}}</div>
+		<div class="status {{optionalNoticeStyle payload.notices.10.pass}}">{{noticeText payload.notices.10.pass}}</div>
 		<div class="title" data-type="toggle" data-target="#s2-notice10" style="border-top:none"><i class="fa fa-caret-right"></i> {{payload.notices.10.title}}</div>
 		<div class="info" id="s2-notice10">
 			<div class="sub-title">STATUS</div>
@@ -356,6 +356,19 @@ Handlebars.registerHelper('noticeStyle',function(req)  {
 			return "";
 	}
 });
+Handlebars.registerHelper('optionalNoticeStyle',function(req)  { 
+	switch (req) {
+		case 0:
+			return "status-badge-warn"
+			break;
+		case 1:
+			return "status-badge-pass"
+			break;
+		case -1:
+		default:
+			return "";
+	}
+});
 Handlebars.registerHelper('noticeText', function(warn) { if  (warn == -1) {return ""}; return (warn) ? "Good" : "Warn";});
 Handlebars.registerHelper('getInfo',	function(pass, info) {
 	return (pass && pass != -1)
@@ -420,7 +433,7 @@ DUPX.testDBConnect = function ()
 				msg		+= "<small>If the error persists contact your host for database connection requirements.</small><br/> ";
 				msg		+= "<small>Status details: " + textStatus + "</small>";
 				$dbResult.html("<div class='message dupx-fail'>" + msg + "</div>");
-				<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
+				<?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 					var jsonStr = JSON.stringify(data, null, 2);
 					$('#debug-dbtest-json').val(jsonStr);
 				<?php endif; ?>
@@ -434,7 +447,7 @@ DUPX.testDBConnect = function ()
 			msg		+= "<small>If the error persists contact your host for database connection requirements.</small><br/> ";
 			msg		+= "<small>Status details: " + data.statusText + "</small>";
 			$dbResult.html("<div class='message dupx-fail'>" + msg + "</div>");
-			<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
+			<?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 				var jsonStr = JSON.stringify(data, null, 2);
 				$('#debug-dbtest-json').val(jsonStr);
 			<?php endif; ?>
@@ -510,7 +523,7 @@ DUPX.intTestDBResults = function(data, result)
 	$('div#s2-db-basic select#dbaction').on('change', {'mode': mode}, DUPX.resetDBTest);
 	$('table#s2-cpnl-db-opts :input').on('keyup', {'mode': mode}, DUPX.resetDBTest);
 
-	<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
+	<?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 		var jsonStr = JSON.stringify(data, null, 2);
 		$('#debug-dbtest-json').val(jsonStr);
 	<?php endif; ?>
@@ -527,4 +540,3 @@ DUPX.resetDBTest = function(e)
 	$divTestArea.html("<div class='sub-message'>To continue click the 'Test Database'<br/>button to retest the database setup.</div>");
 }
 </script>
-

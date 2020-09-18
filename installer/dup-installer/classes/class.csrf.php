@@ -78,7 +78,7 @@ class DUPX_CSRF {
 		if (isset($CSRFVars[$keyName]) && $CSRFVars[$keyName] == $token) { // token OK
 			return true;
 		}
-		return FALSE;
+		return false;
 	}
 	
 	/** Generate token

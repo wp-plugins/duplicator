@@ -44,8 +44,8 @@ try {
     $serverDomain  = 'http'.((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on') ? 's' : '').'://'.$host;
     $serverUrlSelf = preg_match('/^[\\\\\/]?$/', dirname($_SERVER['SCRIPT_NAME'])) ? '' : dirname($_SERVER['SCRIPT_NAME']);
 
-    $GLOBALS['DUPX_INIT']     = str_replace('\\', '/', dirname(__FILE__));
     $GLOBALS['DUPX_INIT_URL'] = $serverDomain.$serverUrlSelf;
+    $GLOBALS['DUPX_INIT']     = str_replace('\\', '/', dirname(__FILE__));
     $GLOBALS['DUPX_ROOT']     = preg_match('/^[\\\\\/]?$/', dirname($GLOBALS['DUPX_INIT'])) ? '/' : dirname($GLOBALS['DUPX_INIT']);
     $GLOBALS['DUPX_ROOT_URL'] = $serverDomain.(preg_match('/^[\\\\\/]?$/', dirname($serverUrlSelf)) ? '' : dirname($serverUrlSelf));
 
@@ -56,7 +56,9 @@ try {
      * init constants and include
      */
     DUPX_Boot::init();
-    DUPX_Boot::initArchiveAndLog();
+    DUPX_Log::setThrowExceptionOnError(true);
+
+    // DUPX_Boot::initArchiveAndLog();
 
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
@@ -200,9 +202,9 @@ try {
         );
 
         if (in_array($post_view, $csrf_views)) {
-            if (isset($_POST['csrf_token']) && !DUPX_CSRF::check($_POST['csrf_token'], $post_view)) {
-                DUPX_Log::error("An invalid request was made to '{$post_view}'.  In order to protect this request from unauthorized access please "
-                . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
+            if (!isset($_POST['csrf_token']) || !DUPX_CSRF::check($_POST['csrf_token'], $post_view)) {
+               require_once($GLOBALS['DUPX_INIT']."/views/view.security.error.php");
+               die();
             }
         }
     }
@@ -225,8 +227,8 @@ try {
         $post_ctrl_csrf_token = isset($_POST['ctrl_csrf_token']) ? $_POST['ctrl_csrf_token'] : '';
         $post_ctrl_action = DUPX_U::sanitize_text_field($_POST['ctrl_action']);
         if (!DUPX_CSRF::check($post_ctrl_csrf_token, $post_ctrl_action)) {
-            DUPX_Log::error("An invalid request was made to '{$post_ctrl_action}'.  In order to protect this request from unauthorized access please "
-                . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
+            require_once($GLOBALS['DUPX_INIT']."/views/view.security.error.php");
+            die();
         }
         //PASSWORD CHECK
         if ($GLOBALS['DUPX_AC']->secure_on) {
@@ -424,7 +426,7 @@ FORM DATA: User-Interface views -->
 			$ini_path 		= php_ini_loaded_file();
 			$ini_max_time 	= ini_get('max_execution_time');
 			$ini_memory 	= ini_get('memory_limit');
-			$ini_error_path = ini_get('error_log');
+			$ini_error_path = DUPX_CTRL::renderPostProcessings(ini_get('error_log'));
 		?>
          <div class="hdr">SERVER DETAILS</div>
 		<label>Web Server:</label>  			<?php echo DUPX_U::esc_html($_SERVER['SERVER_SOFTWARE']); ?><br/>
@@ -474,7 +476,7 @@ $(document).ready(function ()
 </script>
 
 
-<?php if ($GLOBALS['DUPX_DEBUG']) :?>
+<?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) :?>
 <form id="form-debug" method="post" action="?debug=1" autocomplete="off" >
 		<input id="debug-view" type="hidden" name="view" />
 		<br/><hr size="1" />

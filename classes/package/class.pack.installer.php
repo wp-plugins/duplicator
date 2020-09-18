@@ -502,7 +502,7 @@ class DUP_Installer
 	{
 		if (function_exists('token_get_all')) {
 			require_once(DUPLICATOR_PLUGIN_PATH.'lib/config/class.wp.config.tranformer.php');
-			$transformer = new WPConfigTransformer($temp_conf_ark_file_path);
+			$transformer = new DupLiteWPConfigTransformer($temp_conf_ark_file_path);
 			$constants	 = array('DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST');
 			foreach ($constants as $constant) {
 				if ($transformer->exists('constant', $constant)) {

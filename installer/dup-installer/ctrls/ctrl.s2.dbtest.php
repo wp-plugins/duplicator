@@ -494,7 +494,7 @@ class DUPX_DBTest
 								 . "</small>";
 			} else {
 				$test['pass'] = 1;
-				$test['info'] = "The installer have not detected GTID mode.";
+				$test['info'] = "The installer has not detected GTID mode.";
 			}
 		} catch (Exception $ex) {			
 			//Return '1' to allow user to continue

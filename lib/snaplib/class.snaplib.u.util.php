@@ -275,5 +275,25 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
         {
             return min((int) $max, max((int) $min, (int) $val));
         }
+
+        /**
+         * Gets a specific external variable by name and optionally filters it
+         * @param int $type <p>One of <b><code>INPUT_GET</code></b>, <b><code>INPUT_POST</code></b>, <b><code>INPUT_COOKIE</code></b>, <b><code>INPUT_SERVER</code></b>, or <b><code>INPUT_ENV</code></b>.</p>
+         * @param string $variable_name <p>Name of a variable to get.</p>
+         * @param int $filter <p>The ID of the filter to apply. The Types of filters manual page lists the available filters.</p> <p>If omitted, <b><code>FILTER_DEFAULT</code></b> will be used, which is equivalent to <b><code>FILTER_UNSAFE_RAW</code></b>. This will result in no filtering taking place by default.</p>
+         * @param mixed $options <p>Associative array of options or bitwise disjunction of flags. If filter accepts options, flags can be provided in "flags" field of array.</p>
+         * @return mixed <p>Value of the requested variable on success, <b><code>FALSE</code></b> if the filter fails, or <b><code>NULL</code></b> if the <code>variable_name</code> variable is not set. If the flag <b><code>FILTER_NULL_ON_FAILURE</code></b> is used, it returns <b><code>FALSE</code></b> if the variable is not set and <b><code>NULL</code></b> if the filter fails.</p>
+         * @link http://php.net/manual/en/function.filter-input.php
+         * @see filter_var(), filter_input_array(), filter_var_array()
+         * @since PHP 5 >= 5.2.0, PHP 7
+         */
+        public static function filterInputRequest($variable_name, $filter = FILTER_DEFAULT, $options = NULL)
+        {
+            if (isset($_GET[$variable_name]) && !isset($_POST[$variable_name])) {
+                return filter_input(INPUT_GET, $variable_name, $filter, $options);
+            }
+
+            return filter_input(INPUT_POST, $variable_name, $filter, $options);
+        }
     }
 }

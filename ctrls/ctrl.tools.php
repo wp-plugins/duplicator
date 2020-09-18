@@ -20,52 +20,56 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 		add_action('wp_ajax_DUP_CTRL_Tools_runScanValidator', array($this, 'runScanValidator'));
         add_action('wp_ajax_DUP_CTRL_Tools_getTraceLog', array($this, 'getTraceLog'));
 	}
-	
-	/** 
+
+    /**
      * Calls the ScanValidator and returns a JSON result
-	 * 
-	 * @param string $_POST['scan-path']		The path to start scanning from, defaults to duplicator_get_abs_path()
-	 * @param bool   $_POST['scan-recursive']	Recursivly search the path
-	 * 
-	 * @notes: Testing = /wp-admin/admin-ajax.php?action=DUP_CTRL_Tools_runScanValidator
+     *
+     * @notes: Testing = /wp-admin/admin-ajax.php?action=DUP_CTRL_Tools_runScanValidator
      */
-	public function runScanValidator($post)
-	{
+    public function runScanValidator()
+    {
         DUP_Handler::init_error_handler();
-        
         check_ajax_referer('DUP_CTRL_Tools_runScanValidator', 'nonce');
-        DUP_Util::hasCapability('export');
 
         @set_time_limit(0);
-        $post = $this->postParamMerge($post);
-        $result = new DUP_CTRL_Result($this);
-		 
-		try 
-		{
-			//CONTROLLER LOGIC
-			$path = isset($post['scan-path']) ? sanitize_text_field($post['scan-path']) : duplicator_get_abs_path();
-			if (!is_dir($path)) {
-				throw new Exception("Invalid directory provided '{$path}'!");
-			}
-            $scanner = new DUP_ScanCheck();
-            if (isset($post['scan-recursive'])) {
-                $scan_recursive_val = sanitize_text_field($post['scan-recursive']);
-                $scan_recursive = ($scan_recursive_val != 'false');
-            }
-            
-			$scanner->recursion = $scan_recursive ? true : false;
-			$payload = $scanner->run($path);
 
-			//RETURN RESULT
-			$test = ($payload->fileCount > 0)
-					? DUP_CTRL_Status::SUCCESS
-					: DUP_CTRL_Status::FAILED;
-			$result->process($payload, $test);
-		} 
-		catch (Exception $exc) 
-		{
-			$result->processError($exc);
-		}
+        $isValid   = true;
+        $inputData = filter_input_array(INPUT_POST, array(
+            'recursive_scan' => array(
+                'filter'  => FILTER_VALIDATE_BOOLEAN,
+                'flags'   => FILTER_NULL_ON_FAILURE
+            )
+        ));
+
+        if (is_null($inputData['recursive_scan'])) {
+            $isValid = false;
+        }
+
+        $result = new DUP_CTRL_Result($this);
+        try {
+            DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
+
+            if (!$isValid) {
+                throw new Exception(__('Invalid Request.', 'duplicator'));
+            }
+            //CONTROLLER LOGIC
+            $path = duplicator_get_abs_path();
+            if (!is_dir($path)) {
+                throw new Exception("Invalid directory provided '{$path}'!");
+            }
+
+            $scanner            = new DUP_ScanCheck();
+            $scanner->recursion = $inputData['recursive_scan'];
+            $payload            = $scanner->run($path);
+
+            //RETURN RESULT
+            $test = ($payload->fileCount > 0)
+                ? DUP_CTRL_Status::SUCCESS
+                : DUP_CTRL_Status::FAILED;
+            $result->process($payload, $test);
+        } catch (Exception $exc) {
+            $result->processError($exc);
+        }
     }
 
     public function getTraceLog()

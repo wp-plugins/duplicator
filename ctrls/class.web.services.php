@@ -49,12 +49,6 @@ class DUP_Web_Services
                 'message' => ''
             );
 
-            $nonce = sanitize_text_field($_POST['nonce']);
-            if (!wp_verify_nonce($nonce, 'duplicator_reset_all_settings')) {
-                DUP_Log::trace('Security issue');
-                throw new Exception('Security issue');
-            }
-
             DUP_Package::by_status_callback(array(__CLASS__, 'package_delete_callback'), array(
                 array('op' => '<', 'status' => DUP_PackageStatus::COMPLETE)
             ));
@@ -174,26 +168,37 @@ class DUP_Web_Services
 
     public static function set_admin_notice_viewed()
     {
-        DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
+        DUP_Handler::init_error_handler();
 
-        if (!wp_verify_nonce($_REQUEST['nonce'], 'duplicator_set_admin_notice_viewed')) {
-            DUP_Log::trace('Security issue');
-            throw new Exception('Security issue');
+        try{
+            DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
+
+            if (!wp_verify_nonce($_REQUEST['nonce'], 'duplicator_set_admin_notice_viewed')) {
+                DUP_Log::trace(__('Security issue', 'duplicator'));
+                throw new Exception('Security issue');
+            }
+
+            $notice_id = DupLiteSnapLibUtil::filterInputRequest('notice_id', FILTER_SANITIZE_STRING);
+
+            if (empty($notice_id)) {
+                throw new Exception(__('Invalid Request', 'duplicator'));
+            }
+
+            $notices = get_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, true);
+            if (empty($notices)) {
+                $notices = array();
+            }
+
+            if (!isset($notices[$notice_id])) {
+                throw new Exception(__("Notice with that ID doesn't exist.", 'duplicator'));
+            }
+
+            $notices[$notice_id] = 'true';
+            update_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, $notices);
         }
-
-        if (empty($_REQUEST['notice_id'])) {
-            wp_die();
+        catch (Exception $ex) {
+            wp_die($ex->getMessage());
         }
-
-        $notices = get_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, true);
-        if (empty($notices)) {
-            $notices = array();
-        }
-
-        $notices[$_REQUEST['notice_id']] = 'true';
-        update_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, $notices);
-
-        wp_die();
     }
 
     public static function admin_notice_to_dismiss()

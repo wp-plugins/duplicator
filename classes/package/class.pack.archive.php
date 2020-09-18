@@ -209,23 +209,24 @@ class DUP_Archive
 		return update_option(DUP_Package::OPT_ACTIVE, $package);
 	}
 
-	/**
-	 *  Properly creates the directory filter list that is used for filtering directories
-	 *
-	 *  @param string $dirs A semi-colon list of dir paths
-	 *  /path1_/path/;/path1_/path2/;
-	 *
-	 *  @returns string A cleaned up list of directory filters
-	 */
+    /**
+     *  Properly creates the directory filter list that is used for filtering directories
+     *
+     * @param string $dirs A semi-colon list of dir paths
+     *  /path1_/path/;/path1_/path2/;
+     *
+     * @returns string A cleaned up list of directory filters
+     * @return string
+     */
 	public function parseDirectoryFilter($dirs = "")
 	{
-		$dirs		 = str_replace(array("\n", "\t", "\r"), '', $dirs);
 		$filters	 = "";
 		$dir_array	 = array_unique(explode(";", $dirs));
 		$clean_array = array();
 		foreach ($dir_array as $val) {
-			if (strlen($val) >= 2) {
-				$clean_array[] = DUP_Util::safePath(trim(rtrim($val, "/\\")));
+		    $val = DupLiteSnapLibIOU::safePathUntrailingslashit(DupLiteSnapLibUtil::sanitize_non_stamp_chars_newline_and_trim($val));
+			if (strlen($val) >= 2 && is_dir($val)) {
+				$clean_array[] = $val;
 			}
 		}
 
@@ -237,23 +238,24 @@ class DUP_Archive
 		return $filters;
 	}
 
-	/**
-	 *  Properly creates the file filter list that is used for filtering files
-	 *
-	 *  @param string $dirs A semi-colon list of dir paths
-	 *  /path1_/path/file1.ext;/path1_/path2/file2.ext;
-	 *
-	 *  @returns string A cleaned up list of file filters
-	 */
+    /**
+     *  Properly creates the file filter list that is used for filtering files
+     *
+     * @param string $files A semi-colon list of file paths
+     *  /path1_/path/file1.ext;/path1_/path2/file2.ext;
+     *
+     * @returns string A cleaned up list of file filters
+     * @return string
+     */
 	public function parseFileFilter($files = "")
 	{
-		$files		 = str_replace(array("\n", "\t", "\r"), '', $files);
 		$filters	 = "";
 		$file_array	 = array_unique(explode(";", $files));
 		$clean_array = array();
 		foreach ($file_array as $val) {
-			if (strlen($val) >= 2) {
-				$clean_array[] = DUP_Util::safePath(trim(rtrim($val, "/\\")));
+            $val = DupLiteSnapLibIOU::safePathUntrailingslashit(DupLiteSnapLibUtil::sanitize_non_stamp_chars_newline_and_trim($val));
+            if (strlen($val) >= 2 && file_exists($val)) {
+				$clean_array[] = $val;
 			}
 		}
 

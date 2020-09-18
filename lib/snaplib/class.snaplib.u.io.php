@@ -859,9 +859,11 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         /**
          * @param string $path Path to the file
          * @param int $n Number of lines to get
+         * @param int $charLimit Number of chars to include in each line
          * @return bool|array Last $n lines of file
+         * @throws Exception
          */
-        public static function getLastLinesOfFile($path, $n)
+        public static function getLastLinesOfFile($path, $n, $charLimit = null)
         {
             if (!is_readable($path)) {
                 return false;
@@ -880,6 +882,14 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
                 $char = fgetc($handle);
                 if (PHP_EOL == $char) {
                     $trimmedValue = trim($currentLine);
+                    if (is_null($charLimit)) {
+                        $currentLine = substr($currentLine, 0);
+                    } else {
+                        $currentLine = substr($currentLine, 0, (int) $charLimit);
+                        if (strlen($currentLine) == $charLimit) {
+                            $currentLine .= '...';
+                        }
+                    }
 
                     if (!empty($trimmedValue)) {
                         $result[] = $currentLine;

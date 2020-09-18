@@ -140,7 +140,7 @@
 
 	$(document).ready(function()
     {
-		<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
+		<?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 			$("div.dupx-debug input[type=hidden], div.dupx-debug textarea").each(function() {
 				var label = '<label>' + $(this).attr('name') + ':</label>';
 				$(this).before(label);

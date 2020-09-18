@@ -297,7 +297,7 @@ VIEW: STEP 3- INPUT -->
 			$wpconfig_ark_path	= ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) ? "{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt" : "{$root_path}/wp-config.php";
 
             if (file_exists($wpconfig_ark_path)) {
-				$config_transformer = new WPConfigTransformer($wpconfig_ark_path);
+				$config_transformer = new DupLiteWPConfigTransformer($wpconfig_ark_path);
             } else {
                 $config_transformer = null;
             }
@@ -511,7 +511,7 @@ DUPX.runUpdate = function()
 				$("#ajax-url_new").val($("#url_new").val());
 				$("#ajax-exe-safe-mode").val($("#exe-safe-mode").val());
 				$("#ajax-json").val(escape(JSON.stringify(data)));
-				<?php if (! $GLOBALS['DUPX_DEBUG']) : ?>
+				<?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 					setTimeout(function(){$('#s3-result-form').submit();}, 1000);
 				<?php endif; ?>
 				$('#progress-area').fadeOut(1800);

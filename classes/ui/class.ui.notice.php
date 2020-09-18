@@ -32,9 +32,7 @@ class DUP_UI_Notice
             'showReservedFilesNotice',
             'installAutoDeactivatePlugins',
             'showFeedBackNotice',
-            //Disalbe in 1.3.38
-            'newInstallerHashOption',
-            //Enable in 1.3.38
+            //Enable in 1.3.40 maybe
             //'newStoragePositionOption'
         );
         foreach ($methods as $method) {
@@ -42,42 +40,6 @@ class DUP_UI_Notice
         }
     }
 
-    public static function newInstallerHashOption()
-    {
-        if (get_option(self::OPTION_KEY_INSTALLER_HASH_NOTICE) != true) {
-            return;
-        }
-
-        $screen = get_current_screen();
-        if (!in_array($screen->parent_base, array('plugins', 'duplicator'))) {
-            return;
-        }
-
-        if ($screen->id == 'duplicator_page_duplicator-settings') {
-            $action        = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
-            $installerMode = filter_input(INPUT_POST, 'installer_name_mode', FILTER_SANITIZE_STRING);
-            if ($action == 'save' && $installerMode == DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH) {
-                delete_option(self::OPTION_KEY_INSTALLER_HASH_NOTICE);
-                return;
-            }
-        }
-
-        if (DUP_Settings::get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH) {
-            delete_option(self::OPTION_KEY_INSTALLER_HASH_NOTICE);
-            return;
-        }
-        ?>
-        <div class="dup-notice-success notice notice-success duplicator-admin-notice is-dismissible" data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_INSTALLER_HASH_NOTICE); ?>" > 
-            <p>
-                <?php esc_html_e('Duplicator now includes a new option that helps secure the installer.php file.', 'duplicator'); ?><br>
-                <?php esc_html_e('After this option is enabled, a security hash will be added to the name of the installer when it\'s downloaded.', 'duplicator'); ?>
-            </p>
-            <p>
-                <?php echo sprintf(__('To enable this option or to get more information, open the <a href="%s">Package Settings</a> and visit the Installer section.', 'duplicator'), 'admin.php?page=duplicator-settings&tab=package#duplicator-installer-settings'); ?>
-            </p>
-        </div>
-        <?php
-    }
 
     public static function newStoragePositionOption()
     {
@@ -249,6 +211,9 @@ class DUP_UI_Notice
         }
 
         $notices = get_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, true);
+        if (empty($notices)) {
+            $notices = array();
+        }
 
         $duplicator_pages = array(
             'toplevel_page_duplicator',
@@ -267,6 +232,8 @@ class DUP_UI_Notice
             return;
         }
 
+        $notices[$notice_id] = 'false';
+        update_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, $notices);
         $dismiss_url = wp_nonce_url(
             add_query_arg(array(
             'action'    => 'duplicator_set_admin_notice_viewed',

@@ -1,16 +1,16 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-if (!class_exists('WPConfigTransformer')) {
+if (!class_exists('DupLiteWPConfigTransformer')) {
     require_once(dirname(__FILE__).'/class.wp.config.tranformer.php');
 }
 
-if (!class_exists('WPConfigTransformerSrc')):
+if (!class_exists('DupLiteWPConfigTransformerSrc')):
 
     /**
      * Transforms a wp-config.php file.
      */
-    class WPConfigTransformerSrc extends WPConfigTransformer
+    class DupLiteWPConfigTransformerSrc extends DupLiteWPConfigTransformer
     {
 
         /**

@@ -26,8 +26,8 @@ if($is_standard_mode) {
 	$outerWPConfigPath	= dirname($GLOBALS['DUPX_ROOT'])."/wp-config.php";
 	require_once($GLOBALS['DUPX_INIT'].'/lib/config/class.wp.config.tranformer.php');
 	$config_transformer = file_exists($wpConfigPath) 
-							? new WPConfigTransformer($wpConfigPath)
-							: new WPConfigTransformer($outerWPConfigPath);
+							? new DupLiteWPConfigTransformer($wpConfigPath)
+							: new DupLiteWPConfigTransformer($outerWPConfigPath);
 
 	function dupxGetDbConstVal($constName) {
 		if ($GLOBALS['config_transformer']->exists('constant', $constName)) {

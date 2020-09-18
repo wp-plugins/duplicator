@@ -93,7 +93,7 @@ class DUP_JSON
 	{
 		$result = json_decode($json, $assoc);
 
-		if ($result) {
+		if ($result !== null) {
 			return $result;
 		}
 

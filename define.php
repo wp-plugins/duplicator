@@ -5,8 +5,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 if (function_exists('plugin_dir_url')) 
 {		
-    define('DUPLICATOR_VERSION',        '1.3.36');
-	define('DUPLICATOR_VERSION_BUILD',  '2020-06-15_07:00');
+    define('DUPLICATOR_VERSION',        '1.3.38');
+	define('DUPLICATOR_VERSION_BUILD',  '2020-09-16_09:00');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	
@@ -35,7 +35,8 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_DB_MAX_TIME',     5000);
 	define('DUPLICATOR_DB_EOF_MARKER',   'DUPLICATOR_MYSQLDUMP_EOF');
 	define("DUPLICATOR_DB_MYSQLDUMP_ERROR_CONTAINING_LINE_COUNT", 10);
-	//SCANNER CONSTRAINTS 
+	define("DUPLICATOR_DB_MYSQLDUMP_ERROR_CHARS_IN_LINE_COUNT", 1000);
+	//SCANNER CONSTRAINTS
 	define('DUPLICATOR_SCAN_SIZE_DEFAULT',	157286400);	//150MB
 	define('DUPLICATOR_SCAN_WARNFILESIZE',	3145728);	//3MB
 	define('DUPLICATOR_SCAN_CACHESIZE',		1048576);	//1MB

@@ -26,5 +26,5 @@ if (file_exists(DUPX_ROOT.'/installer.php')) {
     die;
 }
 
-echo "Please browse to the 'installer.php' from your web browser to proceed with your install!";
+echo "Please browse to the 'installer.php' or [hash]_installer.php from your web browser to proceed with the install process!";
 die;

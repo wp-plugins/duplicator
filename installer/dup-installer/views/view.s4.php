@@ -10,7 +10,7 @@ $admin_base		= basename($GLOBALS['DUPX_AC']->wplogin_url);
 $admin_redirect ="{$url_new_rtrim}/wp-admin/admin.php?page=duplicator-tools&tab=diagnostics";
 
 $safe_mode		= DUPX_U::sanitize_text_field($_POST['exe_safe_mode']);
-$admin_redirect = "{$admin_redirect}&in={$GLOBALS['BOOTLOADER_NAME']}&sm={$safe_mode}" ;
+$admin_redirect = "{$admin_redirect}&sm={$safe_mode}" ;
 $admin_redirect = urlencode($admin_redirect);
 $admin_url_qry  = (strpos($admin_base, '?') === false) ? '?' : '&';
 $admin_login	= "{$url_new_rtrim}/{$admin_base}{$admin_url_qry}redirect_to={$admin_redirect}";

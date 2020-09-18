@@ -10,16 +10,70 @@
  */
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
+/**
+ * This class manages all the initialization of the installer by performing security tests, log initialization and global variables.
+ * 
+ */
 class DUPX_Boot
 {
+
+    const ARCHIVE_PREFIX      = 'dup-archive__';
+    const ARCHIVE_EXTENSION   = '.txt';
+    const MINIMUM_PHP_VERSION = '5.2.17';
+
+    /**
+     * this variable becomes false after the installer is initialized by skipping the shutdown function defined in the boot class
+     * 
+     * @var bool  
+     */
+    private static $shutdownFunctionEnabled = true;
 
     /**
      * inizialize all
      */
     public static function init()
     {
-        self::phpIni();
+        self::phpVersionCheck();
+
+        $GLOBALS['DUPX_ENFORCE_PHP_INI'] = false;
+
+        // INIT ERROR LOG FILE (called before evrithing)
+        if (function_exists('register_shutdown_function')) {
+            register_shutdown_function(array(__CLASS__, 'bootShutdown'));
+        }
+        if (self::initPhpErrorLog(false) === false) {
+            // Enable this only for debugging. Generate a log too alarmist.            
+            error_log('DUPLICATOR CAN\'T CHANGE THE PATH OF PHP ERROR LOG FILE', E_USER_NOTICE);
+        }
+
+        // includes main files
         self::includes();
+        // set log post-proccessor
+        DUPX_Log::setPostProcessCallback(array('DUPX_CTRL', 'renderPostProcessings'));
+        // set time for logging time
+        DUPX_Log::resetTime();
+        // set all PHP.INI settings
+        self::phpIni();
+        self::initParamsBase();
+
+        /*
+         * INIZIALIZE
+         */
+        // init global values
+        DUPX_Constants::init();
+
+        // init ERR defines
+        DUPX_Constants::initErrDefines();
+        // init error handler after constant
+        DUPX_Handler::initErrorHandler();
+
+        self::initArchive();
+
+        $pathInfo = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+        DUPX_Log::info("\n\n"
+            ."==============================================\n"
+            ."= BOOT INIT OK [".$pathInfo."]\n"
+            ."==============================================\n", DUPX_Log::LV_DETAILED);
     }
 
     /**
@@ -29,10 +83,6 @@ class DUPX_Boot
      */
     public static function phpIni()
     {
-        if (!isset($GLOBALS['DUPX_INIT'])) {
-            throw new Exception('GLOBALS DUPX_INIT not defined.');
-        }
-
         /** Absolute path to the Installer directory. - necessary for php protection */
         if (!defined('KB_IN_BYTES')) {
             define('KB_IN_BYTES', 1024);
@@ -50,12 +100,10 @@ class DUPX_Boot
         date_default_timezone_set('UTC'); // Some machines don’t have this set so just do it here.
         @ignore_user_abort(true);
 
-        require_once($GLOBALS['DUPX_INIT'].'/lib/snaplib/snaplib.all.php');
-
         @set_time_limit(3600);
 
-        $ini_get_default_charset = ini_get("default_charset");
-        if (empty($ini_get_default_charset) && DupLiteSnapLibUtil::wp_is_ini_value_changeable('default_charset')) {
+        $defaultCharset = ini_get("default_charset");
+        if (empty($defaultCharset) && DupLiteSnapLibUtil::wp_is_ini_value_changeable('default_charset')) {
             @ini_set("default_charset", 'utf-8');
         }
         if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('memory_limit')) {
@@ -67,6 +115,23 @@ class DUPX_Boot
         if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('pcre.backtrack_limit')) {
             @ini_set('pcre.backtrack_limit', PHP_INT_MAX);
         }
+
+        //PHP INI SETUP: all time in seconds
+        if (!isset($GLOBALS['DUPX_ENFORCE_PHP_INI']) || !$GLOBALS['DUPX_ENFORCE_PHP_INI']) {
+            if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('mysql.connect_timeout')) {
+                @ini_set('mysql.connect_timeout', '5000');
+            }
+            if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('max_execution_time')) {
+                @ini_set("max_execution_time", '5000');
+            }
+            if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('max_input_time')) {
+                @ini_set("max_input_time", '5000');
+            }
+            if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('default_socket_timeout')) {
+                @ini_set('default_socket_timeout', '5000');
+            }
+            @set_time_limit(0);
+        }
     }
 
     /**
@@ -76,29 +141,162 @@ class DUPX_Boot
      */
     public static function includes()
     {
-        if (!isset($GLOBALS['DUPX_INIT'])) {
-            throw new Exception('GLOBALS DUPX_INIT not defined.');
-        }
-
-        $GLOBALS['DUPX_ENFORCE_PHP_INI'] = false;
-        $GLOBALS['DUPX_DEBUG']           = (isset($_GET['debug']) && $_GET['debug'] == 1) ? true : false;
-
+        require_once($GLOBALS['DUPX_INIT'].'/lib/snaplib/snaplib.all.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.exceptions.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.notices.manager.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.html.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
         require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.base.php');
-
-        DUPX_U::init();
-        DUPX_Constants::init();
+        require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
+        require_once($GLOBALS['DUPX_INIT'].'/classes/class.logging.php');
     }
 
-    public static function initArchiveAndLog()
+    /**
+     * init archive config
+     * 
+     * @throws Exception
+     */
+    public static function initArchive()
     {
-        require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
         $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
-        require_once($GLOBALS['DUPX_INIT'].'/classes/class.logging.php');
-        DUPX_Log::setPostProcessCallabck(array('DUPX_CTRL', 'renderPostProcessings'));
+        if (empty($GLOBALS['DUPX_AC'])) {
+            throw new Exception("Can't initialize config globals");
+        }
+    }
+
+    /**
+     * This function moves the error_log.php into the dup-installer directory.
+     * It is called before including any other file so it uses only native PHP functions.
+     * 
+     * !!! Don't use any Duplicator function within this function. !!!
+     * 
+     * @param bool $reset
+     * @return boolean
+     */
+    public static function initPhpErrorLog($reset = false)
+    {
+        if (!function_exists('ini_set')) {
+            return false;
+        }
+
+        $logFile = $GLOBALS['DUPX_INIT'].'/php_error__'.self::getPackageHash().'.log';
+
+        if (file_exists($logFile) && !is_writable($logFile)) {
+            if (!is_writable($logFile)) {
+                return false;
+            } else if ($reset && function_exists('unlink')) {
+                @unlink($logFile);
+            }
+        }
+
+        if (function_exists('error_reporting')) {
+            error_reporting(E_ALL | E_STRICT);  // E_STRICT for PHP 5.3
+        }
+
+        @ini_set("log_errors", 1);
+        if (@ini_set("error_log", $logFile) === false) {
+            return false;
+        }
+
+        if (!file_exists($logFile)) {
+            error_log("PHP ERROR LOG INIT");
+        }
+
+        return true;
+    }
+
+    /**
+     * It is called before including any other file so it uses only native PHP functions.
+     * 
+     * !!! Don't use any Duplicator function within this function. !!!
+     * 
+     * @staticvar bool|string $packageHash
+     * @return bool|string      // package hash or false if fail
+     */
+    public static function getPackageHash()
+    {
+        static $packageHash = null;
+        if (is_null($packageHash)) {
+            $searchStr    = $GLOBALS['DUPX_INIT'].'/'.self::ARCHIVE_PREFIX.'*'.self::ARCHIVE_EXTENSION;
+            $config_files = glob($searchStr);
+            if (empty($config_files)) {
+                $packageHash = false;
+            } else {
+                $config_file_absolute_path = array_pop($config_files);
+                $config_file_name          = basename($config_file_absolute_path, self::ARCHIVE_EXTENSION);
+                $packageHash               = substr($config_file_name, strlen(self::ARCHIVE_PREFIX));
+            }
+        }
+        return $packageHash;
+    }
+
+    /**
+     *  This function init all params before read from request
+     * 
+     */
+    protected static function initParamsBase()
+    {
+        DUPX_Log::setLogLevel();
+        $GLOBALS['DUPX_DEBUG'] = isset($_POST['logging']) ? $_POST['logging'] : DUPX_Log::LV_DEFAULT;
+    }
+
+    /**
+     * this function disables the shutdown function defined in the boot class
+     */
+    public static function disableBootShutdownFunction()
+    {
+        self::$shutdownFunctionEnabled = false;
+    }
+
+    /**
+     * This function sets the shutdown function before the installer is initialized.
+     * Prevents blank pages.
+     * 
+     * After the plugin is initialized it will be set as a shudwon ​​function DUPX_Handler::shutdown
+     * 
+     * !!! Don't use any Duplicator function within this function. !!!
+     * 
+     */
+    public static function bootShutdown()
+    {
+        if (!self::$shutdownFunctionEnabled) {
+            return;
+        }
+
+        if (($error = error_get_last())) {
+            ?>
+            <h1>BOOT SHUTDOWN FATAL ERROR</H1>
+            <pre><?php
+                echo 'Error: '.htmlspecialchars($error['message'])."\n\n\n".
+                'Type: '.htmlspecialchars($error['type'])."\n".
+                'File: '.htmlspecialchars($error['file'])."\n".
+                'Line: '.htmlspecialchars($error['line'])."\n";
+                ?>
+            </pre>
+            <?php
+        }
+    }
+
+    /**
+     * this function is called before anything else. do not use duplicator functions because nothing is included at this level.
+     * 
+     * @return boolean
+     */
+    public static function phpVersionCheck()
+    {
+        if (version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=')) {
+            return true;
+        }
+        $match = null;
+        if (preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match)) {
+            $phpVersion = $match[0];
+        } else {
+            $phpVersion = PHP_VERSION;
+        }
+        // no html
+        echo 'This server is running PHP: '.$phpVersion.'. A minimum of PHP '.self::MINIMUM_PHP_VERSION.' is required to run the installer.'
+        .' Contact your hosting provider or server administrator and let them know you would like to upgrade your PHP version.';
+        die();
     }
 }

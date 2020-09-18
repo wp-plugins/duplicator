@@ -99,7 +99,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/onedrive-48px.png" style='height:16px; width:16px'  />
-				<?php esc_html_e('Microsoft One Drive Storage', 'duplicator') ?>
+				<?php esc_html_e('Microsoft OneDrive Storage', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -112,16 +112,15 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-        <tr>
-            <td class="feature-column"><?php _e('Overwrite Live Site', 'duplicator') ?><sup>
+		<tr>
+                <td class="feature-column"><?php esc_html_e('Overwrite Live Site', 'duplicator') ?><sup>
 					<i class="fa fa-question-circle dup-gopro-help"
-						data-tooltip-title="<?php _e("Overwrite Existing Site", 'duplicator'); ?>"
-                        data-tooltip="<?php _e('Overwrite a live site. Makes installing super-fast!', 'duplicator'); ?>"/></i></sup>
+						data-tooltip-title="<?php esc_attr_e("Overwrite Live Site", 'duplicator'); ?>"
+                        data-tooltip="<?php esc_attr_e('Overwrite a live site. Makes installing super-fast!', 'duplicator'); ?>"/></i></sup>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-		<tr>
             <td class="feature-column"><?php esc_html_e('Large Site Support', 'duplicator') ?><sup>
 					<i class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php esc_attr_e("Large Site Support", 'duplicator'); ?>"
@@ -130,8 +129,27 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
+                <td class="feature-column"><?php esc_html_e('Streamlined Installer', 'duplicator') ?><sup>
+					<i class="fa fa-question-circle dup-gopro-help"
+						data-tooltip-title="<?php esc_attr_e("Streamlined Installer", 'duplicator'); ?>"
+                        data-tooltip="<?php esc_attr_e('Installer now has two modes: Basic and Advanced. Advanced is like an enhanced Duplicator Lite installer, while Basic is streamlined and only two steps!', 'duplicator'); ?>"/></i></sup>
+			</td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
 		<tr>
-			<td class="feature-column"><?php esc_html_e('Multiple Archive Engines', 'duplicator') ?></td>
+                    <td class="feature-column"><?php esc_html_e('Recovery Points', 'duplicator') ?><sup>
+                        					<i class="fa fa-question-circle dup-gopro-help"
+						data-tooltip-title="<?php esc_attr_e("Recovery Points", 'duplicator'); ?>"
+                        data-tooltip="<?php esc_attr_e('Recovery Points provide great protection against mistakes and bad updates. Simply mark a package as the "Recovery Point", and if anything goes wrong just browse to the Recovery URL for fast site restoration.', 'duplicator'); ?>"/></i></sup>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+                <tr>
+			<td class="feature-column"><?php esc_html_e('Managed Hosting Support', 'duplicator') ?><sup>
+                        					<i class="fa fa-question-circle dup-gopro-help"
+						data-tooltip-title="<?php esc_attr_e("Managed Hosting Support", 'duplicator'); ?>"
+                        data-tooltip="<?php esc_attr_e('In addition to the many standard hosts we\'ve always supported, Duplicator Pro now supports WordPress.com, WPEngine, GoDaddy Managed, Liquid Web Managed and more!', 'duplicator'); ?>"/></i></sup>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>

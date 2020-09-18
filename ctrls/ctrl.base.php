@@ -36,18 +36,6 @@ class DUP_CTRL_Base
 		$this->returnType = $type;
 	}
 
-	public function postParamMerge($post)
-	{
-		$post = is_array($post) ? $post : array();
-		return array_merge($_POST, $post);
-	}
-
-	//Merges $_GET params with custom parameters.
-	public function getParamMerge($params)
-	{
-		$params = is_array($params) ? $params : array();
-		return array_merge($_GET, $params);
-	}
 }
 
 /**

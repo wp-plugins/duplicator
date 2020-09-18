@@ -761,10 +761,9 @@ Auto Posts to view.step2.php
         <div style="padding: 0px 10px 10px 0px;">
             <div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the <?php DUPX_View_Funcs::installerLogLink(); ?> file for more details.</div>
             <div style="text-align:center; margin:10px auto 0px auto">
-                <!-- <input type="button" class="default-btn" onclick="DUPX.hideErrorResult()" value="&laquo; Try Again" /> -->
 				<br/>
-				<a href="../<?php echo $GLOBALS['BOOTLOADER_NAME'];?>" class="default-btn">&laquo; Try Again</a>
-				<br/><br/>
+                <input type="button" class="default-btn" onclick="DUPX.hideErrorResult()" value="&laquo; Try Again" />
+                <br/><br/>
                 <i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket' target='_blank'>snapcreek.com</a></i>
             </div>
         </div>
@@ -997,7 +996,7 @@ DUPX.pingDAWS = function ()
 						$("#ajax-config-mode").val($("#config_mode").val());
 						$("#ajax-json").val(escape(dataJSON));
 
-						<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
+						<?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 						setTimeout(function () {
 							$('#s1-result-form').submit();
 						}, 500);
@@ -1215,7 +1214,7 @@ DUPX.runStandardExtraction = function ()
 				$("#ajax-config-mode").val($("#config_mode").val());
 				$("#ajax-json").val(escape(dataJSON));
 
-				<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
+				<?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 					setTimeout(function () {$('#s1-result-form').submit();}, 500);
 				<?php endif; ?>
 				$('#progress-area').fadeOut(1000);

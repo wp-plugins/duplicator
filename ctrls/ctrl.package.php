@@ -72,13 +72,14 @@ function duplicator_package_build()
     DUP_Handler::init_error_handler();
 
     check_ajax_referer('duplicator_package_build', 'nonce');
-    DUP_Util::hasCapability('export');
 
     header('Content-Type: application/json');
 
     $Package = null;
 
     try {
+        DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
+
         @set_time_limit(0);
         $errLevel = error_reporting();
         error_reporting(E_ERROR);
@@ -198,7 +199,7 @@ function duplicator_duparchive_package_build()
     $json             = array();
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
     if (!empty($json['failures'])) {
-        DUP_Log::Info('[CTRL DUP ARCIVE] FAILURES', $json['failures']);
+        DUP_Log::Info('[CTRL DUP ARCIVE] FAILURES '. print_r($json['failures'], true));
     }
 
     //JSON:Debug Response
@@ -253,73 +254,46 @@ function duplicator_package_delete()
 {
     DUP_Handler::init_error_handler();
     check_ajax_referer('duplicator_package_delete', 'nonce');
-    DUP_Util::hasCapability('export');
 
-    function _unlinkFile($file)
-    {
-        if (!file_exists($file)) {
-            return;
-        }
-        if (!@unlink($file)) {
-            @chmod($file, 0644);
-            @unlink($file);
-        }
-    }
+    $json        = array(
+        'success' => false,
+        'message' => ''
+    );
+    $package_ids = filter_input(INPUT_POST, 'package_ids', FILTER_VALIDATE_INT, array(
+        'flags'   => FILTER_REQUIRE_ARRAY,
+        'options' => array(
+            'default' => false
+        )
+    ));
+    $delCount    = 0;
+
     try {
-        global $wpdb;
-        $json        = array();
-        $post        = stripslashes_deep($_POST);
-        $tablePrefix = DUP_Util::getTablePrefix();
-        $tblName     = $tablePrefix.'duplicator_packages';
-        $postIDs     = isset($post['duplicator_delid']) ? sanitize_text_field($post['duplicator_delid']) : null;
-        $list        = explode(",", $postIDs);
-        $delCount    = 0;
+        DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
-        if ($postIDs != null) {
-
-            foreach ($list as $id) {
-
-                $getResult = $wpdb->get_results($wpdb->prepare("SELECT name, hash FROM `{$tblName}` WHERE id = %d", $id), ARRAY_A);
-
-                if ($getResult) {
-                    $row       = $getResult[0];
-                    $nameHash  = "{$row['name']}_{$row['hash']}";
-                    $delResult = $wpdb->query($wpdb->prepare("DELETE FROM `{$tblName}` WHERE id = %d", $id));
-                    if ($delResult != 0) {
-                        //TMP FILES
-                        $globTmpFiles = glob(DUP_Settings::getSsdirTmpPath()."/{$nameHash}*");
-                        foreach ($globTmpFiles as $globTmpFile) {
-                            _unlinkFile($globTmpFile);
-                        }
-
-                        //WP-SNAPSHOT FILES
-                        $globSnapshotFiles = glob(DUP_Settings::getSsdirPath()."/{$nameHash}*");
-                        foreach ($globSnapshotFiles as $globSnapshotFile) {
-                            _unlinkFile($globSnapshotFile);
-                        }
-                        // _unlinkFile(DUP_Settings::getSsdirPath()."/{$nameHash}.log");
-                        //Unfinished Zip files
-                        /*
-                          $tmpZip = DUP_Settings::getSsdirTmpPath()."/{$nameHash}_archive.zip.*";
-                          if ($tmpZip !== false) {
-                          array_map('unlink', glob($tmpZip));
-                          }
-                         */
-                        $delCount++;
-                    }
-                }
-            }
+        if ($package_ids === false || in_array(false, $package_ids)) {
+            throw new Exception('Invalid Request.', 'duplicator');
         }
+
+        foreach ($package_ids as $id) {
+            $package = DUP_Package::getByID($id);
+
+            if ($package === null) {
+                throw new Exception('Invalid Request.', 'duplicator');
+            }
+
+            $package->delete();
+            $delCount++;
+        }
+
+        $json['success'] = true;
+        $json['ids']     = $package_ids;
+        $json['removed'] = $delCount;
     }
-    catch (Exception $e) {
-        $json['error'] = "{$e}";
-        die(DupLiteSnapJsonU::wp_json_encode($json));
+    catch (Exception $ex) {
+        $json['message'] = $ex->getMessage();
     }
 
-    $json['ids']     = "{$postIDs}";
-    $json['removed'] = $delCount;
-    echo DupLiteSnapJsonU::wp_json_encode($json);
-    die();
+    die(DupLiteSnapJsonU::wp_json_encode($json));
 }
 
 /**
@@ -337,7 +311,7 @@ function duplicator_active_package_info()
         DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
         if (!check_ajax_referer('duplicator_active_package_info', 'nonce', false)) {
-            throw new Exception(__('An unathorized security request was made to this page. Please try again!', 'duplicator'));
+            throw new Exception(__('An unauthorized security request was made to this page. Please try again!', 'duplicator'));
         }
 
         global $wpdb;
@@ -403,26 +377,44 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
      *
      * @return string	Returns all of the active directory filters as a ";" separated string
      */
-    public function addQuickFilters($post)
+    public function addQuickFilters()
     {
         DUP_Handler::init_error_handler();
-
         check_ajax_referer('DUP_CTRL_Package_addQuickFilters', 'nonce');
-        DUP_Util::hasCapability('export');
-        $post   = $this->postParamMerge($post);
+
         $result = new DUP_CTRL_Result($this);
 
+        $inputData = filter_input_array(INPUT_POST, array(
+                'dir_paths' => array(
+                    'filter'  => FILTER_DEFAULT,
+                    'flags'   => FILTER_REQUIRE_SCALAR,
+                    'options' => array(
+                        'default' => ''
+                    )
+                ),
+                'file_paths' => array(
+                    'filter'  => FILTER_DEFAULT,
+                    'flags'   => FILTER_REQUIRE_SCALAR,
+                    'options' => array(
+                        'default' => ''
+                    )
+                ),
+            )
+        );
+
         try {
+            DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
+
             //CONTROLLER LOGIC
             $package = DUP_Package::getActive();
 
             //DIRS
-            $dir_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterDirs.';'.sanitize_text_field($post['dir_paths']) : sanitize_text_field($post['dir_paths']);
+            $dir_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterDirs.';'.$inputData['dir_paths'] : $inputData['dir_paths'];
             $dir_filters = $package->Archive->parseDirectoryFilter($dir_filters);
             $changed     = $package->Archive->saveActiveItem($package, 'FilterDirs', $dir_filters);
 
             //FILES
-            $file_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterFiles.';'.sanitize_text_field($post['file_paths']) : sanitize_text_field($post['file_paths']);
+            $file_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterFiles.';'.$inputData['file_paths'] : $inputData['file_paths'];
             $file_filters = $package->Archive->parseFileFilter($file_filters);
             $changed      = $package->Archive->saveActiveItem($package, 'FilterFiles', $file_filters);
 
@@ -434,9 +426,9 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 
             //Result
             $package              = DUP_Package::getActive();
-            $payload['dirs-in']   = esc_html(sanitize_text_field($post['dir_paths']));
+            $payload['dirs-in']   = esc_html(sanitize_text_field($inputData['dir_paths']));
             $payload['dir-out']   = esc_html($package->Archive->FilterDirs);
-            $payload['files-in']  = esc_html(sanitize_text_field($post['file_paths']));
+            $payload['files-in']  = esc_html(sanitize_text_field($inputData['file_paths']));
             $payload['files-out'] = esc_html($package->Archive->FilterFiles);
 
             //RETURN RESULT
@@ -456,19 +448,16 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
      * Duplicator.Package.getActivePackageStatus()
      * </code>
      */
-    public function getActivePackageStatus($post)
+    public function getActivePackageStatus()
     {
         DUP_Handler::init_error_handler();
-
         check_ajax_referer('DUP_CTRL_Package_getActivePackageStatus', 'nonce');
-        DUP_Util::hasCapability('export');
 
-        $post   = $this->postParamMerge($post);
         $result = new DUP_CTRL_Result($this);
 
         try {
+            DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
             //CONTROLLER LOGIC
-            $post              = stripslashes_deep($_POST);
             $active_package_id = DUP_Settings::Get('active_package_id');
             $package           = DUP_Package::getByID($active_package_id);
             $payload           = array();

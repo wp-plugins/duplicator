@@ -277,7 +277,7 @@ class DUPX_UpdateEngine
     {
         $s3Funcs = DUPX_S3_Funcs::getInstance();
 
-        // init table params if isn't inizialized
+        // init table params if isn't initialized
         if (!self::initTableParams($table)) {
             return false;
         }
@@ -297,7 +297,7 @@ class DUPX_UpdateEngine
     {
         $s3Funcs = DUPX_S3_Funcs::getInstance();
 
-        // init table params if isn't inizialized
+        // init table params if isn't initialized
         if (!self::initTableParams($table)) {
             return false;
         }

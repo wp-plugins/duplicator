@@ -359,44 +359,79 @@ if (!function_exists('duplicator_submit_uninstall_reason_action')) {
     function duplicator_submit_uninstall_reason_action()
     {
         DUP_Handler::init_error_handler();
-        
-        if (!wp_verify_nonce($_REQUEST['duplicator_ajax_nonce'], 'duplicator_ajax_nonce')) {
-            wp_die('Security issue');
+
+        $isValid   = true;
+        $inputData = filter_input_array(INPUT_POST, array(
+            'reason_id' => array(
+                'filter'  => FILTER_SANITIZE_STRING,
+                'flags'   => FILTER_REQUIRE_SCALAR,
+                'options' => array(
+                    'default' => false
+                )
+            ),
+            'plugin' => array(
+                'filter'  => FILTER_SANITIZE_STRING,
+                'flags'   => FILTER_REQUIRE_SCALAR,
+                'options' => array(
+                    'default' => false
+                )
+            ),
+            'reason_info' => array(
+                'filter'  => FILTER_SANITIZE_STRING,
+                'flags'   => FILTER_REQUIRE_SCALAR,
+                'options' => array(
+                    'default' => ''
+                )
+            )
+        ));
+
+        $reason_id = $inputData['reason_id'];
+        $basename  = $inputData['plugin'];
+
+        if (!$reason_id || !$basename) {
+            $isValid = false;
         }
 
-        $reason_id = isset($_REQUEST['reason_id']) ? stripcslashes(esc_html($_REQUEST['reason_id'])) : '';
-        $basename  = isset($_REQUEST['plugin']) ? stripcslashes(esc_html($_REQUEST['plugin'])) : '';
+        try {
+            if (!wp_verify_nonce($_POST['duplicator_ajax_nonce'], 'duplicator_ajax_nonce')) {
+                throw new Exception(__('Security issue', 'duplicator'));
+            }
 
-        if (empty($reason_id) || empty($basename)) {
-            exit;
-        }
+            DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
-        $reason_info = isset($_REQUEST['reason_info']) ? stripcslashes(esc_html($_REQUEST['reason_info'])) : '';
-        if (!empty($reason_info)) {
-            $reason_info = substr($reason_info, 0, 255);
-        }
+            if (!$isValid) {
+                throw new Exception(__('Invalid Request.', 'duplicator'));
+            }
 
-        $options = array(
-            'product' => $basename,
-            'reason_id' => $reason_id,
-            'reason_info' => $reason_info,
-        );
+            $reason_info = isset($_REQUEST['reason_info']) ? stripcslashes(esc_html($_REQUEST['reason_info'])) : '';
+            if (!empty($reason_info)) {
+                $reason_info = substr($reason_info, 0, 255);
+            }
 
-        /* send data */
-        $raw_response = wp_remote_post('https://snapcreekanalytics.com/wp-content/plugins/duplicator-statistics-plugin/deactivation-feedback/',
-            array(
-            'method' => 'POST',
-            'body' => $options,
-            'timeout' => 15,
-            // 'sslverify' => FALSE
-            ));
+            $options = array(
+                'product' => $basename,
+                'reason_id' => $reason_id,
+                'reason_info' => $reason_info,
+            );
 
-        if (!is_wp_error($raw_response) && 200 == wp_remote_retrieve_response_code($raw_response)) {
-            echo 'done';
-        } else {
-            $error_msg = $raw_response->get_error_code().': '.$raw_response->get_error_message();
-            error_log($error_msg);
-            echo $error_msg;
+            /* send data */
+            $raw_response = wp_remote_post('https://snapcreekanalytics.com/wp-content/plugins/duplicator-statistics-plugin/deactivation-feedback/',
+                array(
+                    'method' => 'POST',
+                    'body' => $options,
+                    'timeout' => 15,
+                    // 'sslverify' => FALSE
+                ));
+
+            if (!is_wp_error($raw_response) && 200 == wp_remote_retrieve_response_code($raw_response)) {
+                echo 'done';
+            } else {
+                $error_msg = $raw_response->get_error_code().': '.$raw_response->get_error_message();
+                error_log($error_msg);
+                throw new Exception($error_msg);
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
         }
         exit;
     }

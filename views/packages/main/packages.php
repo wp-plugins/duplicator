@@ -392,8 +392,7 @@ DIALOG: HELP DIALOG -->
                     arr[count++] = this.id;
                 }
             });
-            var list = arr.join(',');
-            return list;
+            return arr;
         }
 
         /*	Provides the correct confirmation items when deleting packages */
@@ -422,8 +421,13 @@ DIALOG: HELP DIALOG -->
             $.ajax({
                 type: "POST",
                 url: ajaxurl,
-                data: {action: 'duplicator_package_delete', duplicator_delid: list, nonce: '<?php echo esc_js(wp_create_nonce('duplicator_package_delete')); ?>'},
+                data: {
+                    action: 'duplicator_package_delete',
+                    package_ids: list,
+                    nonce: '<?php echo esc_js(wp_create_nonce('duplicator_package_delete')); ?>'
+                },
                 complete: function (data) {
+                    console.log(data);
                     Duplicator.ReloadWindow(data);
                 }
             });

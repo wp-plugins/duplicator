@@ -107,7 +107,6 @@ class DUP_DatabaseInfo
 
 class DUP_Database
 {
-
     //PUBLIC
     public $Type = 'MySQL';
     public $Size;
@@ -379,6 +378,7 @@ class DUP_Database
         $cmd .= ' --skip-comments';
         $cmd .= ' --skip-set-charset';
         $cmd .= ' --allow-keywords';
+        $cmd .= ' --no-tablespaces';
 
         //Compatibility mode
         if ($mysqlcompat_on) {
@@ -542,8 +542,8 @@ class DUP_Database
              * 2 - Exception
              */
             DUP_Log::Info('MYSQL DUMP ERROR '.print_r($mysqlResult, true));
-            DUP_Log::error(__('Shell mysql dump error. Change Mysql dump engine in PHP mode', 'duplicator'),
-                implode("\n", DupLiteSnapLibIOU::getLastLinesOfFile($this->tempDbPath, DUPLICATOR_DB_MYSQLDUMP_ERROR_CONTAINING_LINE_COUNT)), Dup_ErrorBehavior::ThrowException);
+            DUP_Log::error(__('Shell mysql dump error. Change Mysql dump engine in PHP mode', 'duplicator'), implode("\n", DupLiteSnapLibIOU::getLastLinesOfFile($this->tempDbPath,
+                DUPLICATOR_DB_MYSQLDUMP_ERROR_CONTAINING_LINE_COUNT, DUPLICATOR_DB_MYSQLDUMP_ERROR_CHARS_IN_LINE_COUNT)), Dup_ErrorBehavior::ThrowException);
             return false;
         }
 

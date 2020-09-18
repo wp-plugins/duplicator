@@ -533,7 +533,7 @@
     .ui-widget {font-size:13px}
 
 
-	<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
+	<?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)): ?>
 		.dupx-debug {display:block; margin:0 0 25px 0; font-size:11px; background-color:#f5dbda; padding:8px; border:1px solid silver; border-radius:4px}
 		.dupx-debug label {font-weight:bold; display:block; margin:4px 0 1px 0}
 		.dupx-debug textarea {width:95%; height:100px; font-size:11px}

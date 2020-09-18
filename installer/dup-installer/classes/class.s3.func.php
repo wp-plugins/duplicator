@@ -223,7 +223,7 @@ final class DUPX_S3_Funcs
     }
 
     /**
-     * get vaule post if  thepost isn't inizialized inizialize it
+     * get vaule post if  thepost isn't initialized inizialize it
      * 
      * @param string $key
      * @return mixed
@@ -254,7 +254,7 @@ final class DUPX_S3_Funcs
             return;
         }
 
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
         if (!in_array($table, $this->post['tables'])) {
             $this->post['tables'][] = $table;
@@ -267,7 +267,7 @@ final class DUPX_S3_Funcs
     private function dbConnection()
     {
         if (is_null($this->dbh)) {
-            // make sure post data is inizialized
+            // make sure post data is initialized
             $this->getPost();
 
             //MYSQL CONNECTION
@@ -291,7 +291,7 @@ final class DUPX_S3_Funcs
 
     public function getDbConnection()
     {
-        // make sure dbConnection is inizialized
+        // make sure dbConnection is initialized
         $this->dbConnection();
         return $this->dbh;
     }
@@ -309,7 +309,7 @@ final class DUPX_S3_Funcs
 
     public function initLog()
     {
-        // make sure dbConnection is inizialized
+        // make sure dbConnection is initialized
         $this->dbConnection();
 
         $charsetServer = @mysqli_character_set_name($this->dbh);
@@ -368,7 +368,7 @@ final class DUPX_S3_Funcs
      *
      * @staticvar type $configTransformer
      * 
-     * @return WPConfigTransformer
+     * @return DupLiteWPConfigTransformer
      */
     public function getWpConfigTransformer()
     {
@@ -386,7 +386,7 @@ final class DUPX_S3_Funcs
                     DUPX_Log::error($err_log);
                 }
             }
-            $configTransformer = new WPConfigTransformer(DUPX_Package::getWpconfigArkPath());
+            $configTransformer = new DupLiteWPConfigTransformer(DUPX_Package::getWpconfigArkPath());
         }
 
         return $configTransformer;
@@ -463,7 +463,7 @@ final class DUPX_S3_Funcs
     {
         $s_r_manager = DUPX_S_R_MANAGER::getInstance();
 
-        // make sure dbConnection is inizialized
+        // make sure dbConnection is initialized
         $this->dbConnection();
 
         // DIRS PATHS
@@ -521,7 +521,7 @@ final class DUPX_S3_Funcs
     {
         self::logSectionHeader('RUN SEARCH AND REPLACE', __FUNCTION__, __LINE__);
 
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
 
         DUPX_UpdateEngine::load($this->post['tables']);
@@ -532,7 +532,7 @@ final class DUPX_S3_Funcs
     public function removeMaincenanceMode()
     {
         self::logSectionHeader('REMOVE MAINTENANCE MODE', __FUNCTION__, __LINE__);
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
 
 
@@ -546,7 +546,7 @@ final class DUPX_S3_Funcs
     public function removeLicenseKey()
     {
         self::logSectionHeader('REMOVE LICENSE KEY', __FUNCTION__, __LINE__);
-        // make sure dbConnection is inizialized
+        // make sure dbConnection is initialized
         $this->dbConnection();
 
         if (isset($GLOBALS['DUPX_AC']->brand) && isset($GLOBALS['DUPX_AC']->brand->enabled) && $GLOBALS['DUPX_AC']->brand->enabled) {
@@ -564,7 +564,7 @@ final class DUPX_S3_Funcs
     public function createNewAdminUser()
     {
         self::logSectionHeader('CREATE NEW ADMIN USER', __FUNCTION__, __LINE__);
-        // make sure dbConnection is inizialized
+        // make sure dbConnection is initialized
         $this->dbConnection();
 
         $nManager = DUPX_NOTICE_MANAGER::getInstance();
@@ -666,7 +666,7 @@ final class DUPX_S3_Funcs
     {
         self::logSectionHeader('CONFIGURATION FILE UPDATES', __FUNCTION__, __LINE__);
         DUPX_Log::incIndent();
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
         $strReplaced = 0;
 
@@ -984,7 +984,7 @@ LONGMSG;
     public function generalUpdateAndCleanup()
     {
         self::logSectionHeader('GENERAL UPDATES & CLEANUP', __FUNCTION__, __LINE__);
-        // make sure dbConnection is inizialized
+        // make sure dbConnection is initialized
         $this->dbConnection();
         $this->deactivateIncompatiblePlugins();
         $blog_name   = mysqli_real_escape_string($this->dbh, $this->post['blogname']);
@@ -1017,7 +1017,7 @@ LONGMSG;
      */
     private function deactivateIncompatiblePlugins() {
         self::logSectionHeader("DEACTIVATE PLUGINS CHECK", __FUNCTION__, __LINE__);
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
         $nManager = DUPX_NOTICE_MANAGER::getInstance();
         $plugin_list = array();
@@ -1113,7 +1113,7 @@ LONGMSG;
     public function noticeTest()
     {
         self::logSectionHeader('NOTICES TEST', __FUNCTION__, __LINE__);
-        // make sure dbConnection is inizialized
+        // make sure dbConnection is initialized
         $this->dbConnection();
 
         $nManager = DUPX_NOTICE_MANAGER::getInstance();
@@ -1201,7 +1201,7 @@ LONGMSG;
     public function cleanupTmpFiles()
     {
         self::logSectionHeader('CLEANUP TMP FILES', __FUNCTION__, __LINE__);
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
 
         //Cleanup any tmp files a developer may have forgotten about
@@ -1286,7 +1286,7 @@ LONGMSG;
 
     private function obscureWpConfig($src)
     {
-        $transformer = new WPConfigTransformerSrc($src);
+        $transformer = new DupLiteWPConfigTransformerSrc($src);
         $obsKeys     = array(
             'DB_NAME',
             'DB_USER',
@@ -1312,7 +1312,7 @@ LONGMSG;
 
     public function complete()
     {
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
         $this->closeDbConnection();
 
@@ -1329,7 +1329,7 @@ LONGMSG;
 
     public function error($message)
     {
-        // make sure post data is inizialized
+        // make sure post data is initialized
         $this->getPost();
 
         $this->closeDbConnection();

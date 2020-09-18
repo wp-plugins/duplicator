@@ -37,49 +37,98 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 	 * $ui_css_archive   = ($view_state == 1)   ? 'display:block' : 'display:none';
 	 * </code>
      */
-	public function SaveViewState($post) 
-	{
+    public function SaveViewState()
+    {
         DUP_Handler::init_error_handler();
-		check_ajax_referer('DUP_CTRL_UI_SaveViewState', 'nonce');
-		DUP_Util::hasCapability('export');
+        check_ajax_referer('DUP_CTRL_UI_SaveViewState', 'nonce');
+        DUP_Util::hasCapability('export');
 
-		$post = $this->postParamMerge($post);
-		$result = new DUP_CTRL_Result($this);
-	
-		try 
-		{
-			//CONTROLLER LOGIC
-			$post  = stripslashes_deep($_POST);
+        $payload = array(
+            'success' => false,
+            'message' => '',
+            'key'     => '',
+            'value'   => ''
+        );
+        $isValid = true;
 
-			if (!empty($post['states'])) {
-				$view_state = DUP_UI_ViewState::getArray();
-				foreach ($post['states'] as $state) {
-					$key   = sanitize_text_field($state['key']);
-					$value = sanitize_text_field($state['value']);
-					$view_state[$key] = $value;
-				}
-				$success = DUP_UI_ViewState::setArray($view_state);
-			} else {
-				$key   = sanitize_text_field($post['key']);
-				$value = sanitize_text_field($post['value']);
-				$success = DUP_UI_ViewState::save($key, $value);
-			}		
+        $inputData = filter_input_array(INPUT_POST, array(
+            'states' => array(
+                'filter'  => FILTER_SANITIZE_STRING,
+                'flags'   => FILTER_FORCE_ARRAY,
+                'options' => array(
+                    'default' => array()
+                )
+            ),
+            'key'    => array(
+                'filter'  => FILTER_SANITIZE_STRING,
+                'options' => array(
+                    'default' => false
+                )
+            ),
+            'value'  => array(
+                'filter'  => FILTER_SANITIZE_STRING,
+                'options' => array(
+                    'default' => false
+                )
+            )
+        ));
 
-			$payload = array();
-			$payload['key']    = esc_html($key);
-			$payload['value']  = esc_html($value);
-			$payload['update-success'] = $success;
-			
-			//RETURN RESULT
-			$test = ($success) 
-					? DUP_CTRL_Status::SUCCESS
-					: DUP_CTRL_Status::FAILED;
-			return $result->process($payload, $test);
-		} 
-		catch (Exception $exc) 
-		{
-			$result->processError($exc);
-		}
+        foreach ($inputData['states'] as $index => $state) {
+            $filteredState = filter_var_array($state, array(
+                'key'   => array(
+                    'filter'  => FILTER_SANITIZE_STRING,
+                    'options' => array(
+                        'default' => false
+                    )
+                ),
+                'value' => array(
+                    'filter'  => FILTER_SANITIZE_STRING,
+                    'options' => array(
+                        'default' => false
+                    )
+                )
+            ));
+
+            if ($filteredState['key'] === false && $filteredState['value']) {
+                $isValid = false;
+                break;
+            }
+            $inputData['states'][$index] = $filteredState;
+        }
+        if ($inputData['key'] === false || $inputData['value'] === false) {
+            $isValid = false;
+        }
+
+        $result = new DUP_CTRL_Result($this);
+        try {
+            if (!$isValid) {
+                throw new Exception(__('Invalid Request.', 'duplicator'));
+            }
+
+            if (!empty($inputData['states'])) {
+                $view_state = DUP_UI_ViewState::getArray();
+                $last_key   = '';
+                foreach ($inputData['states'] as $state) {
+                    $view_state[$state['key']] = $state['value'];
+                    $last_key                  = $state['key'];
+                }
+                $payload['success'] = DUP_UI_ViewState::setArray($view_state);
+                $payload['key']     = esc_html($last_key);
+                $payload['value']   = esc_html($view_state[$last_key]);
+            } else {
+                $payload['success'] = DUP_UI_ViewState::save($inputData['key'], $inputData['value']);
+                $payload['key']     = esc_html($inputData['key']);
+                $payload['value']   = esc_html($inputData['value']);
+            }
+
+            //RETURN RESULT
+            $test = ($payload['success'])
+                ? DUP_CTRL_Status::SUCCESS
+                : DUP_CTRL_Status::FAILED;
+            return $result->process($payload, $test);
+        } catch (Exception $exc) {
+            $result->processError($exc);
+        }
     }
 	
 	/** 
