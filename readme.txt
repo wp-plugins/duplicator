@@ -38,8 +38,12 @@ Duplicator lets you make your own preconfigured sites to eliminate rework.  Inst
 = Duplicator Pro =
 Duplicator Pro takes Duplicator to the next level with features you'll really appreciate, such as:
 
+* Drag and Drop site overwrites - just drag an archive to the destination site to install!
 * Scheduled backups
 * Cloud Storage to Dropbox, Google Drive, Microsoft OneDrive, Amazon S3 and FTP/SFTP
+* A special 2-step streamlined installer mode for mega-fast installs
+* Recovery Points added for very fast emergency site restores
+* Support for Managed hosts such as WordPress.com, WPEngine, GoDaddy Managed, and more
 * Multi-threaded to support larger web sites &amp; databases
 * Migrate an entire multisite WordPress network in one shot
 * Install a multisite subsite as a new standalone website
