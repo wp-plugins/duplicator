@@ -38,7 +38,7 @@ Duplicator lets you make your own preconfigured sites to eliminate rework.  Inst
 = Duplicator Pro =
 Duplicator Pro takes Duplicator to the next level with features you'll really appreciate, such as:
 
-* Drag and Drop site overwrites - just drag an archive to the destination site to install!
+* Drag and Drop installs - just drag an archive to the destination site!
 * Scheduled backups
 * Cloud Storage to Dropbox, Google Drive, Microsoft OneDrive, Amazon S3 and FTP/SFTP
 * A special 2-step streamlined installer mode for mega-fast installs
