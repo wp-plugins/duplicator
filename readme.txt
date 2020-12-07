@@ -2,7 +2,7 @@
 Contributors: corylamleorg, bobriley
 Tags: migration, backup, duplicate, move, migrate, restore, transfer, clone, automate, copy site, migrator
 Requires at least: 4.0
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.2.17
 Stable tag: 1.3.40
 License: GPLv2
