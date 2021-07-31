@@ -337,6 +337,7 @@
         text-align: right; 
         margin:5px 0
     }
+    div.s2-db-basic-title {margin:4px; padding:2px 0 2px 0; font-weight:bold; border-bottom:1px solid silver}
     input.overwrite-btn {
         cursor:pointer; color:#fff; font-size:13px; border-radius:5px;	padding:5px 20px 4px 20px;
         background-color:#989898; border:1px solid #777;

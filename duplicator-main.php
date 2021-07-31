@@ -258,8 +258,6 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
             add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
             add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
 
-            add_action('wp_enqueue_scripts', 'duplicator_global_scripts');
-
             //Apply Styles
             add_action('admin_print_styles-' . $page_packages, 'duplicator_styles');
             add_action('admin_print_styles-' . $page_settings, 'duplicator_styles');

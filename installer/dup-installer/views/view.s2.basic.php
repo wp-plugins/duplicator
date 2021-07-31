@@ -55,6 +55,9 @@ BASIC PANEL -->
     <a href="javascript:void(0)"><i class="fa fa-minus-square"></i>Setup</a>
 </div>
 <div id="s2-db-basic">
+    <div class="s2-db-basic-title">
+        Database Connection
+    </div>
     <?php if ($is_overwrite_mode) : ?>
         <div id="s2-db-basic-overwrite" class="gray-panel" >
             <b style='color:maroon'>Ready to connect to existing sites database? </b><br/>
@@ -81,7 +84,9 @@ BASIC PANEL -->
                     <?php if ($is_standard_mode) : ?>
                         <option value="create">Create New Database</option>
                     <?php endif; ?>
-                    <option value="empty" selected>Connect and Remove All Data</option>
+                    <option value="empty" selected>Remove All Data</option>
+                    <option value="null" disabled="disabled">Backup and Rename Existing Tables (Pro Only)</option>
+                    <option value="null" disabled="disabled">Manual SQL Execution (Pro Only)</option>
                 </select>
             </td>
         </tr>

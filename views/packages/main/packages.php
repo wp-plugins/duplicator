@@ -8,6 +8,7 @@ DUP_Package::purge_incomplete_package();
 $totalElements          = DUP_Package::count_by_status();
 $completeCount          = DUP_Package::count_by_status(array(array('op' => '>=', 'status' => DUP_PackageStatus::COMPLETE))); // total packages completed
 $active_package_present = DUP_Package::is_active_package_present();
+$is_mu                  = is_multisite();
 
 $package_running      = false;
 global $packageTablerowCount;
@@ -35,6 +36,8 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
     input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
     button.dup-button-selected {border:1px solid #000 !important; background-color:#dfdfdf !important;}
     div.dup-quick-start {font-style:italic; font-size: 13px; line-height: 18px; margin-top: 15px}
+    div.dup-no-mu {font-size:13px; margin-top:25px; color:maroon; line-height:18px}
+    a.dup-btn-disabled {color:#999 !important; border: 1px solid #999 !important}
 
     /* Table package details */
     table.dup-pack-table {word-break:break-all;}
@@ -70,7 +73,6 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
     .dup-pack-info.is-running .get-btns button {display: none;}
     div.sc-footer-left {color:maroon; font-size:11px; font-style: italic; float:left}
     div.sc-footer-right {font-style: italic; float:right; font-size:12px}
-
 </style>
 
 <form id="form-duplicator" method="post">
@@ -86,13 +88,15 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                 </select>
                 <input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php esc_html_e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.ConfirmDelete()">
                 <span class="btn-separator"></span>
-                <a href="javascript:void(0)" class="button"  title="<?php esc_attr_e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()">
-                    <i class="fa fa-question-circle"></i>
-                </a>
+                <a href="javascript:void(0)" class="button"  title="<?php esc_attr_e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()"><i class="fa fa-question-circle"></i></a>
                 <a href="admin.php?page=duplicator-settings&tab=package" class="button" title="<?php esc_attr_e("Settings", 'duplicator') ?>"><i class="fas fa-cog"></i></a>
+                <a href="admin.php?page=duplicator-tools&tab=templates" class="button dup-btn-disabled" title="<?php esc_html_e("Templates", 'duplicator'); ?>"><i class="far fa-clone"></i></a>
+                <span class="btn-separator"></span>
+                <a href="admin.php?page=duplicator-tools&tab=import" class="button dup-btn-disabled" title="<?php esc_html_e("Import", 'duplicator'); ?>"><i class="fas fa-arrow-alt-circle-down"></i></a>
+                <a href="admin.php?page=duplicator-tools&tab=recovery" class="button dup-btn-disabled" title="<?php esc_html_e("Recovery", 'duplicator'); ?>"><i class="fas fa-undo-alt"></i></a>
             </td>
             <td>						
-                <a  href="javascript:void(0)" class="button disabled"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e("Packages", 'duplicator'); ?></a>
+                <a href="javascript:void(0)" class="button disabled"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e("Packages", 'duplicator'); ?></a>
                 <?php
                 $package_url       = admin_url('admin.php?page=duplicator&tab=new1');
                 $package_nonce_url = wp_nonce_url($package_url, 'new1-package');
@@ -120,12 +124,22 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                             <i class="fa fa-archive fa-sm"></i> 
                             <?php esc_html_e("No Packages Found.", 'duplicator'); ?><br/>
                             <?php esc_html_e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
-                            <div class="dup-quick-start">
+                            <div class="dup-quick-start" <?php echo ($is_mu) ? 'style="display:none"' : ''; ?>>
                                 <?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
                                 <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty&utm_campaign=quick_start" target="_blank">
                                     <?php esc_html_e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
                                 </a>
                             </div>
+                            <?php if ($is_mu) {
+                                    echo '<div class="dup-no-mu">';
+                                    echo '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;';
+                                    esc_html_e('Duplicator Lite does not officially support WordPress multisite.', 'duplicator');
+                                    echo "<br/>";
+                                    esc_html_e('We strongly recommend upgrading to ', 'duplicator');
+                                    echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
+                                    echo '</div>';
+                                } 
+                            ?>
                             <div style="height:75px">&nbsp;</div>
                         </div>
                     </td>
@@ -276,6 +290,13 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                             <?php
                             if ( DUP_Settings::Get('trace_log_enabled')) {
                                 esc_html_e("Trace Logging Enabled.  Please disable when trace capture is complete.", 'duplicator');
+                                echo '<br/>';
+                            }
+                            if ($is_mu) {
+                                esc_html_e('Duplicator Lite does not officially support WordPress multisite.', 'duplicator');
+                                echo '<br/>';
+                                esc_html_e('We strongly recommend using', 'duplicator');
+                                echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
                             }
                             ?>
                         </div>
@@ -345,8 +366,8 @@ DIALOG: HELP DIALOG -->
 <div id="dup-help-dlg-info" style="display:none">
     <b><?php esc_html_e("Common Questions:", 'duplicator') ?></b><hr size='1'/>
     <i class="far fa-file-alt fa-sm"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_pack_help&utm_campaign=duplicator_free#quick-010-q" target="_blank"><?php esc_html_e("How do I create a package", 'duplicator') ?></a> <br/>
-    <i class="far fa-file-alt fa-sm"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank"><?php esc_html_e('How do I install a package?', 'duplicator'); ?></a>	 <br/>
-    <i class="far fa-file-code"></i> <a href="https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free" target="_blank"><?php esc_html_e("Frequently Asked Questions!", 'duplicator') ?></a>
+    <i class="far fa-file-alt fa-sm"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#install_site" target="_blank"><?php esc_html_e('How do I install a package?', 'duplicator'); ?></a>	 <br/>
+    <i class="far fa-file-code"></i> <a hreff="https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free" target="_blank"><?php esc_html_e("Frequently Asked Questions!", 'duplicator') ?></a>
     <br/><br/>
 
     <b><?php esc_html_e("Other Resources:", 'duplicator') ?></b><hr size='1'/>

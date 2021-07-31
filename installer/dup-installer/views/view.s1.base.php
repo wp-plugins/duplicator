@@ -110,7 +110,7 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
     SETUP TYPE: @todo implement
     ==================================== -->
     <div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s1-area-setup-type" style="display:none">
-        <a id="s1-area-setup-type-link"><i class="fa fa-plus-square"></i>Setup</a>
+        <a id="s1-area-setup-type-link"><i class="fa fa-plus-square"></i>Overview</a>
     </div>
     <div id="s1-area-setup-type" style="display:none">
 
@@ -161,7 +161,7 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
     ARCHIVE
     ==================================== -->
     <div class="hdr-sub1 toggle-hdr" data-status="<?php echo strtolower($arcCheck); ?>" data-type="toggle auto" data-target="#s1-area-archive-file">
-        <a id="s1-area-archive-file-link"><i class="fa fa-plus-square"></i>Setup</a>
+        <a id="s1-area-archive-file-link"><i class="fa fa-plus-square"></i>Overview</a>
         <?php
         $badge                  = DUPX_View_Funcs::getBadgeClassFromCheckStatus($arcCheck);
         ?>

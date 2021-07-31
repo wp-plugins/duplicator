@@ -20,9 +20,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 		?>
         <div class="sc-note">
             <?php esc_html_e(' Drag and Drop import functionality works with packages created by Duplicator Pro.  In the near future, the Duplicator Pro importer '
-                . 'will be enhanced to allow the importing of Duplicator Lite packages.  For instructions on how to perform a classic install of Duplicator Lite '
+                . 'will be enhanced to allow the importing of Duplicator Lite packages.  For instructions on how to perform a classic or overwrite install with Duplicator Lite '
                 . 'packages visit the ', 'duplicator'); ?>
-            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank"><?php esc_html_e('Quick Start Guide', 'duplicator'); ?></a>.
+            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help&utm_campaign=duplicator_free#install_site" target="_blank"><?php esc_html_e('Quick Start Guide', 'duplicator'); ?></a>.
         </div>
 	</div>
 	<p style="text-align:center">

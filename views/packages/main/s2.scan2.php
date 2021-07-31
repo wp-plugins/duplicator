@@ -186,12 +186,12 @@ WP SETTINGS -->
 		//MU SITE
 		if (is_multisite()) {
 			echo '<hr size="1" /><span><div class="scan-warn"><i class="fa fa-exclamation-triangle fa-sm"></i></div></span>&nbsp;<b>' . esc_html__('Multisite: Unsupported', 'duplicator') . "</b> <br/>";
-			esc_html_e('Duplicator does not support WordPress multisite migrations.  We recommend using Duplicator Pro which currently supports full multisite migrations and subsite to '
-				. 'standalone site migrations.', 'duplicator');
+			esc_html_e('Duplicator does not support WordPress multisite migrations.  We strongly recommend using Duplicator Pro which currently supports full multisite migrations and various other '
+				. 'subsite scenarios.', 'duplicator');
 			echo '<br/><br/>';
 
-			esc_html_e('While it is not recommended you can still continue with the build of this package.  Please note that at install time additional manual custom configurations will '
-				. 'need to be made to finalize this multisite migration.', 'duplicator');
+			esc_html_e('While it is not recommended you can still continue with the build of this package.  At install time additional manual custom configurations will '
+				. 'need to be made to finalize this multisite migration.  Please note that any support requests for mulitsite with Duplicator Lite will not be supported.', 'duplicator');
 			echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('upgrade to pro', 'duplicator') . "]</a></i>";
 		} else {
 			echo '<hr size="1" /><span><div class="scan-good"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . esc_html__('Multisite: N/A', 'duplicator') . "</b> <br/>";
