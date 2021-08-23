@@ -244,7 +244,7 @@ ARCHIVE -->
 						if ($retry_state == '2') {
 							echo '<i style="color:maroon">';
 							_e("This option has automatically been checked because you have opted for a <i class='fa fa-random'></i> Two-Part Install Process.  Please complete the package build and continue with the ", 'duplicator');
-								printf('%s <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>.',
+								printf('%s <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink1&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>.',
 								'',
 								esc_html__('Quick Start Two-Part Install Instructions', 'duplicator'));
 							echo '</i><br/><br/>';

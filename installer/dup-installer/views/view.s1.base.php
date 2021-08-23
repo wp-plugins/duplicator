@@ -244,7 +244,163 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
             </div>
             <!--div id="tabs-2"><p>Content Here</p></div-->
         </div>
-    </div><br/><br/>
+    </div><br/>
+
+
+    <!-- ====================================
+    OPTIONS
+    ==================================== -->
+    <div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s1-area-adv-opts">
+        <a href="javascript:void(0)"><i class="fa fa-plus-square"></i>Options</a>
+    </div>
+    <div id="s1-area-adv-opts" class="hdr-sub1-area" style="display:none">
+        <div class="help-target">
+            <?php DUPX_View_Funcs::helpIconLink('step1'); ?>
+        </div>
+        <div class="hdr-sub3">General</div>
+        <table class="dupx-opts dupx-advopts">
+            <tr>
+                <td>Extraction:</td>
+                <td>
+                    <?php
+                    $options    = array();
+                    $extra_attr = ($arcCheck == 'Warn' && $is_wpconfarc_present) ? ' selected="selected"' : '';
+                    $options[]  = '<option '.($is_wpconfarc_present ? '' : 'disabled').$extra_attr.' value="manual">Manual Archive Extraction '.($is_wpconfarc_present ? '' : '*').'</option>';
+                    if ($archive_config->isZipArchive()) {
+                        //ZIP-ARCHIVE
+                        $extra_attr = ('Pass' == $arcCheck && $zip_archive_enabled && !$shell_exec_zip_enabled) ? ' selected="selected"' : '';
+                        $extra_attr .= ('Pass' != $arcCheck || !$zip_archive_enabled) ? ' disabled="disabled"' : '';
+                        $options[]  = '<option value="ziparchive"'.$extra_attr.'>PHP ZipArchive</option>';
+
+                        //SHELL-EXEC UNZIP
+                        $extra_attr = ('Pass' != $arcCheck || !$shell_exec_zip_enabled) ? ' disabled="disabled"' : '';
+                        $extra_attr .= ('Pass' == $arcCheck && $shell_exec_zip_enabled) ? ' selected="selected"' : '';
+                        $options[]  = '<option value="shellexec_unzip"'.$extra_attr.'>Shell Exec Unzip</option>';
+                    } else { // DUPARCHIVE
+                        $extra_attr = ('Pass' == $arcCheck) ? ' selected="selected"' : 'disabled="disabled"';
+                        $options[]  = '<option value="duparchive"'.$extra_attr.'>DupArchive</option>';
+                    }
+                    $num_selections = count($options);
+                    ?>
+                    <select id="archive_engine" name="archive_engine" size="<?php echo DUPX_U::esc_attr($num_selections); ?>">
+                        <?php echo implode('', $options); ?>
+                    </select><br/>
+                    <?php if (!$is_wpconfarc_present): ?>
+                        <span class="sub-notes">
+                            *Option enabled when archive has been pre-extracted
+                            <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">[more info]</a>
+                        </span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;padding-top: 10px;" >Archive Action:</td>
+                <td id="archive_action_wrapper">
+                    <select id="archive_action_input" name="<?php echo DUP_LITE_Extraction::INPUT_NAME_ARCHIVE_ACTION; ?>" class="input-item" >
+                        <option value="<?php echo DUP_LITE_Extraction::ACTION_DO_NOTHING; ?>" selected="selected">
+                            Extract files over current files
+                        </option>
+                        <option value="<?php echo DUP_LITE_Extraction::ACTION_REMOVE_WP_FILES; ?>">
+                            Remove WP core and content and extract
+                        </option>
+                        <option value="<?php echo DUP_LITE_Extraction::ACTION_REMOVE_ALL_FILES; ?>">
+                            Remove all files and extract
+                        </option>
+                    </select>
+                    <div class="sub-note" style="margin-top:5px; max-width:90%; font-size:10px">
+                        <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_DO_NOTHING; ?>">
+                            Note: <b>Files are extracted over existing files.</b> After install, the destination folder will contain a combination of the old site files and
+                            the files extracted from the archive.  This option is the most conservative option for those who want to make sure they do not want to lose data.
+                        </div>
+                        <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_REMOVE_ALL_FILES; ?> no-display">
+                            Note: Before extracting the package files, <b>all files and folders in the installation folder will be removed</b> except for folders that contain
+                            WordPress installations or Duplicator backup folders. This option is recommended for those who want to delete all files related to old installations
+                            or external applications.
+                        </div>
+                        <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_REMOVE_WP_FILES; ?> no-display">
+                            Note: Before extracting the package files, <b>all current WordPress core and content files and folders will be removed</b> (wp-include, wp-content ... )
+                            This option is for those who want to avoid having old site media mixed with new but have other files/folders in the home path that they don't want to
+                            delete.
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table><br/><br/>
+
+        <div class="hdr-sub3">Advanced</div>
+        <table class="dupx-opts dupx-advopts">
+            <tr>
+                <td>Permissions:</td>
+                <td>
+                    <input type="checkbox" name="set_file_perms" id="set_file_perms" value="1" onclick="jQuery('#file_perms_value').prop('disabled', !jQuery(this).is(':checked'));"/>
+                    <label for="set_file_perms">All Files</label><input name="file_perms_value" id="file_perms_value" style="width:45px; margin-left:7px;" value="644" disabled> &nbsp;
+                    <input type="checkbox" name="set_dir_perms" id="set_dir_perms" value="1" onclick="jQuery('#dir_perms_value').prop('disabled', !jQuery(this).is(':checked'));"/>
+                    <label for="set_dir_perms">All Directories</label><input name="dir_perms_value" id="dir_perms_value" style="width:45px; margin-left:7px;" value="755" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>Safe Mode:</td>
+                <td>
+                    <select name="exe_safe_mode" id="exe_safe_mode" onchange="DUPX.onSafeModeSwitch();" style="width:250px;">
+                        <option value="0">Off</option>
+                        <option value="1">Basic</option>
+                        <option value="2">Advanced</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Config Files:</td>
+                <td>
+                    <select name="config_mode" id="config_mode"  style="width:250px;">
+                        <option value="NEW">Create New (recommended)</option>
+                        <optgroup label="Advanced">
+                            <option value="RESTORE">Restore Original</option>
+                            <option value="IGNORE">Ignore All</option>
+                        </optgroup>
+                    </select> <br/>
+                    <span class="sub-notes" style="font-weight: normal">
+                        Controls how .htaccess, .user.ini and web.config are used.<br/>
+                        These options are not applied until step 3 is ran.
+                        <?php DUPX_View_Funcs::helpLink('step1', '[more info]'); ?>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>File Times:</td>
+                <td>
+                    <input type="radio" name="zip_filetime" id="zip_filetime_now" value="current" checked="checked" />
+                    <label class="radio" for="zip_filetime_now" title='Set the files current date time to now'>Current</label> &nbsp;
+                    <input type="radio" name="zip_filetime" id="zip_filetime_orginal" value="original" />
+                    <label class="radio" for="zip_filetime_orginal" title="Keep the files date time the same">Original</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Logging:</td>
+                <td>
+                    <input type="radio" name="logging" id="logging-light" value="<?php echo DUPX_Log::LV_DEFAULT; ?>" checked="true"> <label for="logging-light" class="radio">Light</label> &nbsp;
+                    <input type="radio" name="logging" id="logging-detailed" value="<?php echo DUPX_Log::LV_DETAILED; ?>"> <label for="logging-detailed" class="radio">Detailed</label> &nbsp;
+                    <input type="radio" name="logging" id="logging-debug" value="<?php echo DUPX_Log::LV_DEBUG; ?>"> <label for="logging-debug" class="radio">Debug</label> &nbsp;
+                    <input type="radio" name="logging" id="logging-h-debug" value="<?php echo DUPX_Log::LV_HARD_DEBUG; ?>"> <label for="logging-h-debug" class="radio">Hard debug</label>
+                </td>
+            </tr>
+            <?php if (!$archive_config->isZipArchive()): ?>
+                <tr>
+                    <td>Client-Kickoff:</td>
+                    <td>
+                        <input type="checkbox" name="clientside_kickoff" id="clientside_kickoff" value="1" checked/>
+                        <label for="clientside_kickoff" style="font-weight: normal">Browser drives the archive engine.</label>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            <tr>
+                <td>Testing:</td>
+                <td>
+                    <a href="javascript:void(0)" target="db-test" onclick="DUPX.openDBValidationWindow(); return false;">[Quick Database Connection Test]</a>
+                </td>
+            </tr>
+        </table>
+    </div><br/>
+
 
     <!-- ====================================
     VALIDATION
@@ -594,161 +750,6 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
 
     </div>
     <br/><br/>
-
-
-    <!-- ====================================
-    OPTIONS
-    ==================================== -->
-    <div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s1-area-adv-opts">
-        <a href="javascript:void(0)"><i class="fa fa-plus-square"></i>Options</a>
-    </div>
-    <div id="s1-area-adv-opts" class="hdr-sub1-area" style="display:none">
-        <div class="help-target">
-            <?php DUPX_View_Funcs::helpIconLink('step1'); ?>
-        </div>
-        <div class="hdr-sub3">General</div>
-        <table class="dupx-opts dupx-advopts">
-            <tr>
-                <td>Extraction:</td>
-                <td>
-                    <?php
-                    $options    = array();
-                    $extra_attr = ($arcCheck == 'Warn' && $is_wpconfarc_present) ? ' selected="selected"' : '';
-                    $options[]  = '<option '.($is_wpconfarc_present ? '' : 'disabled').$extra_attr.' value="manual">Manual Archive Extraction '.($is_wpconfarc_present ? '' : '*').'</option>';
-                    if ($archive_config->isZipArchive()) {
-                        //ZIP-ARCHIVE
-                        $extra_attr = ('Pass' == $arcCheck && $zip_archive_enabled && !$shell_exec_zip_enabled) ? ' selected="selected"' : '';
-                        $extra_attr .= ('Pass' != $arcCheck || !$zip_archive_enabled) ? ' disabled="disabled"' : '';
-                        $options[]  = '<option value="ziparchive"'.$extra_attr.'>PHP ZipArchive</option>';
-
-                        //SHELL-EXEC UNZIP
-                        $extra_attr = ('Pass' != $arcCheck || !$shell_exec_zip_enabled) ? ' disabled="disabled"' : '';
-                        $extra_attr .= ('Pass' == $arcCheck && $shell_exec_zip_enabled) ? ' selected="selected"' : '';
-                        $options[]  = '<option value="shellexec_unzip"'.$extra_attr.'>Shell Exec Unzip</option>';
-                    } else { // DUPARCHIVE
-                        $extra_attr = ('Pass' == $arcCheck) ? ' selected="selected"' : 'disabled="disabled"';
-                        $options[]  = '<option value="duparchive"'.$extra_attr.'>DupArchive</option>';
-                    }
-                    $num_selections = count($options);
-                    ?>
-                    <select id="archive_engine" name="archive_engine" size="<?php echo DUPX_U::esc_attr($num_selections); ?>">
-                        <?php echo implode('', $options); ?>
-                    </select><br/>
-                    <?php if (!$is_wpconfarc_present): ?>
-                        <span class="sub-notes">
-                            *Option enabled when archive has been pre-extracted
-                            <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">[more info]</a>
-                        </span>
-                    <?php endif; ?>
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align: top;padding-top: 10px;" >Archive Action:</td>
-                <td id="archive_action_wrapper">
-                    <select id="archive_action_input" name="<?php echo DUP_LITE_Extraction::INPUT_NAME_ARCHIVE_ACTION; ?>" class="input-item" >
-                        <option value="<?php echo DUP_LITE_Extraction::ACTION_DO_NOTHING; ?>" selected="selected">
-                            Extract files over current files
-                        </option>
-                        <option value="<?php echo DUP_LITE_Extraction::ACTION_REMOVE_WP_FILES; ?>">
-                            Remove WP core and content and extract
-                        </option>
-                        <option value="<?php echo DUP_LITE_Extraction::ACTION_REMOVE_ALL_FILES; ?>">
-                            Remove all files and extract
-                        </option>
-                    </select>
-                    <div class="sub-note" style="margin-top:5px; max-width:90%; font-size:10px">
-                        <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_DO_NOTHING; ?>">
-                            Note: <b>Files are extracted over existing files.</b> After install, the destination folder will contain a combination of the old site files and 
-                            the files extracted from the archive.  This option is the most conservative option for those who want to make sure they do not want to lose data.
-                        </div>
-                        <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_REMOVE_ALL_FILES; ?> no-display">
-                            Note: Before extracting the package files, <b>all files and folders in the installation folder will be removed</b> except for folders that contain 
-                            WordPress installations or Duplicator backup folders. This option is recommended for those who want to delete all files related to old installations
-                            or external applications.
-                        </div>
-                        <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_REMOVE_WP_FILES; ?> no-display">
-                            Note: Before extracting the package files, <b>all current WordPress core and content files and folders will be removed</b> (wp-include, wp-content ... )
-                            This option is for those who want to avoid having old site media mixed with new but have other files/folders in the home path that they don't want to
-                            delete.
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table><br/><br/>
-
-        <div class="hdr-sub3">Advanced</div>
-        <table class="dupx-opts dupx-advopts">
-            <tr>
-                <td>Permissions:</td>
-                <td>
-                    <input type="checkbox" name="set_file_perms" id="set_file_perms" value="1" onclick="jQuery('#file_perms_value').prop('disabled', !jQuery(this).is(':checked'));"/>
-                    <label for="set_file_perms">All Files</label><input name="file_perms_value" id="file_perms_value" style="width:45px; margin-left:7px;" value="644" disabled> &nbsp;
-                    <input type="checkbox" name="set_dir_perms" id="set_dir_perms" value="1" onclick="jQuery('#dir_perms_value').prop('disabled', !jQuery(this).is(':checked'));"/>
-                    <label for="set_dir_perms">All Directories</label><input name="dir_perms_value" id="dir_perms_value" style="width:45px; margin-left:7px;" value="755" disabled>
-                </td>
-            </tr>
-            <tr>
-                <td>Safe Mode:</td>
-                <td>
-                    <select name="exe_safe_mode" id="exe_safe_mode" onchange="DUPX.onSafeModeSwitch();" style="width:250px;">
-                        <option value="0">Off</option>
-                        <option value="1">Basic</option>
-                        <option value="2">Advanced</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Config Files:</td>
-                <td>
-                    <select name="config_mode" id="config_mode"  style="width:250px;">
-                        <option value="NEW">Create New (recommended)</option>
-                        <optgroup label="Advanced">
-                            <option value="RESTORE">Restore Original</option>
-                            <option value="IGNORE">Ignore All</option>
-                        </optgroup>
-                    </select> <br/>
-                    <span class="sub-notes" style="font-weight: normal">
-                        Controls how .htaccess, .user.ini and web.config are used.<br/>
-                        These options are not applied until step 3 is ran.
-                        <?php DUPX_View_Funcs::helpLink('step1', '[more info]'); ?>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td>File Times:</td>
-                <td>
-                    <input type="radio" name="zip_filetime" id="zip_filetime_now" value="current" checked="checked" />
-                    <label class="radio" for="zip_filetime_now" title='Set the files current date time to now'>Current</label> &nbsp;
-                    <input type="radio" name="zip_filetime" id="zip_filetime_orginal" value="original" />
-                    <label class="radio" for="zip_filetime_orginal" title="Keep the files date time the same">Original</label>
-                </td>
-            </tr>
-            <tr>
-                <td>Logging:</td>
-                <td>
-                    <input type="radio" name="logging" id="logging-light" value="<?php echo DUPX_Log::LV_DEFAULT; ?>" checked="true"> <label for="logging-light" class="radio">Light</label> &nbsp;
-                    <input type="radio" name="logging" id="logging-detailed" value="<?php echo DUPX_Log::LV_DETAILED; ?>"> <label for="logging-detailed" class="radio">Detailed</label> &nbsp;
-                    <input type="radio" name="logging" id="logging-debug" value="<?php echo DUPX_Log::LV_DEBUG; ?>"> <label for="logging-debug" class="radio">Debug</label> &nbsp;
-                    <input type="radio" name="logging" id="logging-h-debug" value="<?php echo DUPX_Log::LV_HARD_DEBUG; ?>"> <label for="logging-h-debug" class="radio">Hard debug</label>
-                </td>
-            </tr>
-            <?php if (!$archive_config->isZipArchive()): ?>
-                <tr>
-                    <td>Client-Kickoff:</td>
-                    <td>
-                        <input type="checkbox" name="clientside_kickoff" id="clientside_kickoff" value="1" checked/>
-                        <label for="clientside_kickoff" style="font-weight: normal">Browser drives the archive engine.</label>
-                    </td>
-                </tr>
-            <?php endif; ?>
-            <tr>
-                <td>Testing:</td>
-                <td>
-                    <a href="javascript:void(0)" target="db-test" onclick="DUPX.openDBValidationWindow(); return false;">[Quick Database Connection Test]</a>
-                </td>
-            </tr>
-        </table>
-    </div><br/>
 
 
     <?php if ($req_success && $arcCheck != 'Fail') : ?>

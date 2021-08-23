@@ -19,10 +19,9 @@ if ('d' == $current_tab) {
     <?php duplicator_header(__("Tools", 'duplicator')) ?>
 
     <h2 class="nav-tab-wrapper">  
-        <a href="?page=duplicator-tools&tab=diagnostics" class="nav-tab <?php echo ($current_tab == 'diagnostics') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('Diagnostics', 'duplicator'); ?></a>
+        <a href="?page=duplicator-tools&tab=diagnostics" class="nav-tab <?php echo ($current_tab == 'diagnostics') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('General', 'duplicator'); ?></a>
 		<a href="?page=duplicator-tools&tab=templates" class="nav-tab <?php echo ($current_tab == 'templates') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('Templates', 'duplicator'); ?></a>
         <a href="?page=duplicator-tools&tab=recovery" class="nav-tab <?php echo ($current_tab == 'recovery') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('Recovery', 'duplicator'); ?></a>
-        <a href="?page=duplicator-tools&tab=import" class="nav-tab <?php echo ($current_tab == 'import') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('Import', 'duplicator'); ?></a>
     </h2>
 
     <?php
@@ -32,8 +31,6 @@ if ('d' == $current_tab) {
             case 'templates': include(DUPLICATOR_PLUGIN_PATH."views/tools/templates.php");
 				break;
 			case 'recovery': include(DUPLICATOR_PLUGIN_PATH."views/tools/recovery.php");
-				break;
-			case 'import': include(DUPLICATOR_PLUGIN_PATH."views/tools/import.php");
 				break;
 		}
 	?>

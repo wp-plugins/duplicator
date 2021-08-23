@@ -53,7 +53,7 @@ ARCHIVE -->
 if ($Package->Archive->ExportOnlyDB) { ?>
 <div class="scan-item ">
 	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Database only', 'duplicator');?></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Database Only', 'duplicator');?></div>
 		<div id="only-db-scan-status"><div class="badge badge-warn"><?php esc_html_e("Notice", 'duplicator'); ?></div></div>
 	</div>
     <div class="info">

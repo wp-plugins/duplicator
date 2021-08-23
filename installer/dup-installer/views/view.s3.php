@@ -120,7 +120,7 @@ VIEW: STEP 3- INPUT -->
             </tr>
         </table>
     </div>
-    <br/><br/>
+    <br/>
 
     <!-- =========================
     SEARCH AND REPLACE -->
@@ -136,7 +136,7 @@ VIEW: STEP 3- INPUT -->
 		This option is available only in
 		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=free_inst_replaceopts">Duplicator Pro</a>
     </div>
-    <br/><br/>
+    <br/>
     
 	<!-- ==========================
     OPTIONS -->

@@ -113,7 +113,7 @@ class DUP_Package_Screen extends DUP_UI_Screen
 				. "will be a something like public_html -or- www.  If your're not sure contact your hosting provider. </li>"
 				. "</ol>"
 				. "For complete instructions see:<br/>
-					<a href='https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=package_built_install_help&amp;utm_campaign=duplicator_free#quick-040-q' target='_blank'>
+					<a href='https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=package_built_install_help4&amp;utm_campaign=duplicator_free#quick-040-q' target='_blank'>
 					How do I install this Package?</a><br/><br/>",'duplicator');
 	}
 

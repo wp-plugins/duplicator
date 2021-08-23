@@ -43,28 +43,13 @@ class Requirements
         $result           = true;
         self::$pluginFile = $pluginFile;
 
-        if ($result === true && is_multisite()) {
-            /* Deactivation of the plugin disabled in favor of a notification for the next version
-             * Uncomment this to enable the logic. 
-             * 
-              add_action('admin_init', array(__CLASS__, 'addMultisiteNotice'));
-              self::$deactivationMessage = __('Can\'t enable Duplicator LITE in a multisite installation', 'duplicator');
-              $result                    = false;
-             */
-
-            // TEMP WARNING NOTICE, remove this when the deactiovation logic is enable
-            add_action('admin_init', array(__CLASS__, 'addTempWarningMultisiteNotice'));
-        }
-
-
         if ($result === true && self::isPluginActive(self::DUP_PRO_PLUGIN_KEY)) {
-            /* Deactivation of the plugin disabled in favor of a notification for the next version
-             * Uncomment this to enable the logic. */
-              add_action('admin_init', array(__CLASS__, 'addProEnableNotice'));
-              self::$deactivationMessage = __('The "Duplicator Lite" and "Duplicator Pro" plugins cannot both be active at the same time.', 'duplicator') . '<br/>'
-                  . __('Please deactivate one of them, then reactivate either Lite or Pro from the ', 'duplicator')
-                  ."<a href='plugins.php'>" . __('plugins page', 'duplicator') . ".</a>";
-              $result = false;
+            add_action('admin_init', array(__CLASS__, 'addProEnableNotice'));
+            $pluginUrl = (is_multisite() ? network_admin_url('plugins.php') : admin_url('plugins.php'));
+            self::$deactivationMessage = __('Can\'t enable Duplicator LITE if the PRO version is enabled.', 'duplicator') . '<br/>'
+                . __('Please deactivate Duplicator PRO, then reactivate LITE version from the ', 'duplicator')
+                . "<a href='" . $pluginUrl . "'>" . __('plugins page', 'duplicator') . ".</a>";
+            $result = false;
         }
 
         if ($result === false) {
@@ -116,13 +101,6 @@ class Requirements
         }
     }
 
-    public static function addTempWarningMultisiteNotice()
-    {
-        if (current_user_can('activate_plugins') && !is_plugin_active_for_network(plugin_basename(self::$pluginFile))  && false === get_option(\DUP_UI_Notice::OPTION_KEY_IS_MU_NOTICE_DISMISSED, false)) {
-            add_action('admin_notices', array(__CLASS__, 'tempWarningMultisiteNotice'));
-        }
-    }
-
     /**
      * deactivate current plugin on activation
      */
@@ -137,55 +115,19 @@ class Requirements
      */
     public static function proEnabledNotice()
     {
+        $pluginUrl = (is_multisite() ? network_admin_url('plugins.php') : admin_url('plugins.php'));
         ?>
         <div class="error notice">
             <p>
-                <?php
-                    echo '<span class="dashicons dashicons-warning"></span>&nbsp;';
-                    echo '<b>' . __('Duplicator Notice:', 'duplicator') . '</b>&nbsp; ';
-                    echo __('The "Duplicator Lite" and "Duplicator Pro" plugins cannot both be active at the same time.  ', 'duplicator');
-                    echo '</br>';
-                    echo __('To use "Duplicator Lite" please deactivate "Duplicator Pro" from the ', 'duplicator');
-                    echo "<a href='plugins.php'>" . __('plugins page', 'duplicator') . ".</a>";
-                ?>
-            </p>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display admin notice if duplicator pro is enabled
-     */
-    public static function multisiteNotice()
-    {
-        ?>
-        <div class="error notice">
-            <p>
-                <?php
-                echo 'DUPLICATOR LITE: ' . __('Duplicator LITE can\'t work on multisite installation.', 'duplicator');
-                ?>
+                <span class="dashicons dashicons-warning"></span>
+                <b><?php _e('Duplicator Notice:', 'duplicator'); ?></b>
+                <?php _e('The "Duplicator Lite" and "Duplicator Pro" plugins cannot both be active at the same time.  ', 'duplicator'); ?>
             </p>
             <p>
-                <?php
-                echo __('The PRO version also works in multi-site installations.', 'duplicator');
-                ?>
-            </p>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display admin notice if duplicator pro is enabled
-     */
-    public static function tempWarningMultisiteNotice()
-    {
-        ?>
-        <div class="notice notice-warning duplicator-admin-notice is-dismissible" data-to-dismiss="<?php echo \DUP_UI_Notice::OPTION_KEY_IS_MU_NOTICE_DISMISSED;?>">
-            <p>
-                <?php
-                echo '<i class="fas fa-exclamation-circle"></i> ' . __('NOTICE: Duplicator Lite cannot be activated individually in the sub-sites of a multisite installation but must be activated only on the network. '
-                    . 'Please deactivate Duplicator Lite at this site and activate it on the network.', 'duplicator');
-                ?>
+                <?php _e('To use "Duplicator LITE" please deactivate "Duplicator PRO" from the ', 'duplicator-pro'); ?>
+                <a href="<?php echo esc_url($pluginUrl); ?>">
+                    <?php _e('plugins page', 'duplicator'); ?>.
+                </a>
             </p>
         </div>
         <?php

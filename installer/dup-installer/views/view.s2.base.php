@@ -65,9 +65,6 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<textarea name="dbtest-response" id="debug-dbtest-json"></textarea>
 	</div>
 
-	<!-- DATABASE CHECKS -->
-	<?php require_once('view.s2.dbtest.php');	?>
-
 	<!-- BASIC TAB -->
 	<div id="s2-basic-pane">
 		<?php require_once('view.s2.basic.php'); ?>
@@ -77,6 +74,9 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 	<div id="s2-cpnl-pane" style="display: none">
 		<?php require_once('view.s2.cpnl.lite.php'); ?>
 	</div>
+
+    	<!-- VALIDATION -->
+	<?php require_once('view.s2.dbtest.php');	?>
 </form>
 
 

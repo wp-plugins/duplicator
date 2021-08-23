@@ -270,15 +270,11 @@ class DUP_Server
 	 */
 	private static function logCheckFalse($check, $errorMessage)
 	{
-		if (!is_bool($check)) {
-			throw new Exception('Exception: Not boolean $check [File: '.__FILE__.', Ln: '.__LINE__);
-		}
-
 		if (empty($errorMessage)) {
-			throw new Exception('Exception: Empty $errorMessage [File: '.__FILE__.', Ln: '.__LINE__);
+			throw new Exception('Exception: Empty $errorMessage variable [File: '.__FILE__.', Ln: '.__LINE__);
 		}
 
-		if (false === $check) {
+		if (filter_var($check, FILTER_VALIDATE_BOOLEAN) === false) {
 			DUP_LOG::trace($errorMessage);
 		}
 	}

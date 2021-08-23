@@ -161,7 +161,7 @@ $storageAlert          = new DUP_UI_Dialog();
 $storageAlert->title   = __('Advanced Storage', 'duplicator');
 $storageAlert->height  = 525;
 $storageAlert->width   = 400;
-$storageAlert->okText  = esc_html__('Close', 'duplicator');
+//$storageAlert->okText  = esc_html__('Close', 'duplicator');
 $storageAlert->message = dup_lite_storage_advanced_pro_content();
 $storageAlert->initAlert();
 ?>

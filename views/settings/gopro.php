@@ -4,56 +4,68 @@ DUP_Util::hasCapability('export');
 
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
+
+if(mt_rand(0, 1) == 0) {
+    $test_text = esc_html__('Check It Out!', 'duplicator');
+    $test_url  = "https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro_checkitout&utm_campaign=duplicator_pro";
+} else {
+    $test_text = esc_html__('Learn More', 'duplicator');
+    $test_url  = "https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro_learnmore&utm_campaign=duplicator_pro";
+}
+
 ?>
 <style>
     /*================================================
     PAGE-SUPPORT:*/
 	div.dup-pro-area {
 		padding:10px 70px; max-width:750px; width:90%; margin:auto; text-align:center;
-		background:#fff; border-radius:20px;
-		box-shadow:inset 0px 0px 67px 20px rgba(241,241,241,1);
+		background:#fff; border-radius:20px; box-shadow:inset 0px 0px 67px 20px rgba(241,241,241,1);
 	}
+    div.dup-pro-area-no-table {	padding:10px; max-width:850px; margin:40px auto; text-align:center;}
 	i.dup-gopro-help {color:#777 !important; margin-left:5px; font-size:14px; }
-	td.group-header {background-color:#D5D5D5; color: #000; font-size: 20px; padding:7px !important; font-weight: bold; text-align: left}
+	td.group-header {background-color:#D5D5D5; color: #000; font-size: 20px; padding:7px !important; font-weight: bold; text-align: left; display:none}
     div.dup-compare-area {width:400px;  float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow:0 8px 6px -6px #ccc;}
 	div.feature {background:#fff; padding:15px; margin:2px; text-align:center; min-height:20px}
 	div.feature a {font-size:18px; font-weight:bold;}
 	div.dup-compare-area div.feature div.info {display:none; padding:7px 7px 5px 7px; font-style:italic; color:#555; font-size:14px}
 	div.dup-gopro-header {text-align:center; margin:5px 0 15px 0; font-size:18px; line-height:30px}
 	div.dup-gopro-header b {font-size:35px}
-	button.dup-check-it-btn {box-shadow:5px 5px 5px 0px #999 !important; font-size:20px !important; height:45px !important;   padding:7px 30px 7px 30px !important;   color:white!important;  background-color: #3e8f3e!important; font-weight: bold!important;
-    color: white;
-    font-weight: bold;}
-
 	#comparison-table { margin-top:25px; border-spacing:0px;  width:100%}
 	#comparison-table th { color:#E21906;}
 	#comparison-table td, #comparison-table th { font-size:1.2rem; padding:11px; }
 	#comparison-table .feature-column { text-align:left; width:46%}
 	#comparison-table .check-column { text-align:center; width:27% }
 	#comparison-table tr:nth-child(2n+2) { background-color:#f6f6f6; }
-	.button.button-large.dup-check-it-btn { line-height: 28px; }
-
 </style>
 
-<div class="dup-pro-area">
+<div class="dup-pro-area-no-table">
 	<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-dpro-300x50.png"); ?>"  />
 	<div style="font-size:18px; font-style:italic; color:gray; border-bottom: 1px solid silver; padding-bottom:10px; margin-bottom: -30px">
-		<?php esc_html_e('The simplicity of Duplicator', 'duplicator') ?>
-		<?php esc_html_e('with power for everyone.', 'duplicator') ?>
+		<?php esc_html_e('The simplicity of Duplicator with power for everyone.', 'duplicator') ?>
 	</div>
 
-	<table id="comparison-table">
+    <div style="margin:60px 0 100px 0">
+        <div class="txt-call-action-title">
+            <?php esc_html_e('Take Duplicator to the next level with features you’ll really appreciate!', 'duplicator') ?><br/>
+            <?php esc_html_e("Check out what you're missing with Duplicator Pro...", 'duplicator') ?>
+            
+        </div>
+        <br/><br/>
+        <a href="<?php echo  $test_url ?>" class="dup-btn-call-action" target="_blank"><?php echo  $test_text ?></a>
+    </div>
+
+
+	<table id="comparison-table" style="display:none">
 		<tr>
 			<th class="feature-column"></th>
 			<th class="check-column"><?php esc_html_e('Free', 'duplicator') ?></th>
 			<th class="check-column"><?php esc_html_e('Professional', 'duplicator') ?></th>
 		</tr>
-        
 		<!-- =====================
 		CORE FEATURES-->
-<!--        <tr>
+        <tr>
             <td colspan="3" class="group-header"><?php esc_html_e('Core Features', 'duplicator') ?></td>
-        </tr>-->
+        </tr>
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Backup Files & Database', 'duplicator') ?></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -100,12 +112,11 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             <td class="check-column"></td>
             <td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-
 		<!-- =====================
 		CLOUD STORAGE-->
-<!--        <tr>
+        <tr>
             <td colspan="3" class="group-header"><?php esc_html_e('Cloud Storage', 'duplicator') ?></td>
-        </tr>        -->
+        </tr>      
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/amazon-64.png") ?>" style='height:16px; width:16px'  />
@@ -154,12 +165,11 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-
 		<!-- =====================
 		ENHANCED OPTIONS -->
-<!--        <tr>
+        <tr>
             <td colspan="3" class="group-header"><?php esc_html_e('Enhanced Options', 'duplicator') ?></td>
-        </tr>-->
+        </tr>
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
@@ -243,15 +253,14 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-
 		<!-- =====================
 		POWER TOOLS  -->
-<!--        <tr>
+        <tr>
             <td colspan="3" class="group-header">
                 <?php esc_html_e('Power Tools', 'duplicator');  ?>
                 <span style="font-weight:normal; font-size:11px"><?php esc_html_e('Freelancer+', 'duplicator');  ?></span>
             </td>
-        </tr>-->
+        </tr>
    		<tr>
 			<td class="feature-column"><?php esc_html_e('Hourly Schedules', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -305,15 +314,13 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-
-
 		<!-- =====================
 		MULTI-SITE -->
-<!--        <tr>
+        <tr>
             <td colspan="3" class="group-header">
                 <?php esc_html_e('MultiSite', 'duplicator');  ?>
             </td>
-        </tr>-->
+        </tr>
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Multisite Network Migration', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -334,13 +341,5 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
 	</table>
-
-	<br style="clear:both" />
-	<p style="text-align:center">
-		<button onclick="window.open('https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro&utm_campaign=duplicator_pro');" class="button button-large dup-check-it-btn" >
-			<?php esc_html_e('Check It Out!', 'duplicator') ?>
-		</button>
-	</p>
-	<br/><br/>
 </div>
-<br/><br/>
+

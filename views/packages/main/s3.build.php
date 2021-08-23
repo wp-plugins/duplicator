@@ -58,6 +58,7 @@ $rand_txt[0] = $atext0;
     div.dup-howto-exe {font-size:14px; font-weight: bold; margin:45px 0 20px 0; line-height:20px;color:#000; padding-top:10px; border-top:1px solid #eee}
     div.dup-howto-exe-title {font-size:16px; margin:0 0 8px 0; color:#000}
     div.dup-howto-exe small {font-weight: normal; display: block; margin-top: -2px; font-style: italic; font-size:11px; color:#777 }
+    div.dup-howto-exe a {margin-top: 8px; display: inline-block}
 
     /*HOST TIMEOUT */
     div#dup-msg-error {color:maroon; padding:5px;}
@@ -176,24 +177,26 @@ TOOL BAR: STEPS -->
                     esc_html_e('Notice: Duplicator Lite does not officially support WordPress multisite.', 'duplicator');
                     echo "<br/>";
                     esc_html_e('We strongly recommend upgrading to ', 'duplicator');
-                    echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
+                    echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn6&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
                     echo '</div>';
                 }
             ?>
 
-			<div class="dup-howto-exe">
-                <div class="dup-howto-exe-title"><?php esc_html_e('How do I install this Package?', 'duplicator'); ?></div>
-				<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank"><?php esc_html_e('Classic Install Method', 'duplicator'); ?></a><br/>
-                <small><?php esc_html_e("Migrate an existing WordPress site.", 'duplicator');?></small>
+			<div class="dup-howto-exe">               
+                <div class="dup-howto-exe-title"><?php esc_html_e('How Do I Install This Package?', 'duplicator'); ?></div>
+				<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1&utm_campaign=duplicator_free#quick-040-q" target="_blank"><?php esc_html_e('Classic Install Method', 'duplicator'); ?></a><br/>
+                <small><?php esc_html_e("Install to an empty directory on this or a different server.", 'duplicator');?></small>
 
                 &nbsp; &nbsp; 
-                <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help&utm_campaign=duplicator_free#quick-043-q" target="_blank"><?php esc_html_e('Overwrite Install Method', 'duplicator'); ?></a>
+                <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2&utm_campaign=duplicator_free#quick-043-q" target="_blank">
+                    <?php esc_html_e('Overwrite Install Method', 'duplicator'); ?>
+                </a>
                 <sup class="dup-new"><?php esc_html_e('new', 'duplicator'); ?></sup>
                 <br/>
                 
-                <small><?php esc_html_e("Quickly overwrite an existing WordPress site.", 'duplicator');?></small>
-                <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help&utm_campaign=duplicator_free#install_site" target="_blank"><?php esc_html_e('View All Methods', 'duplicator'); ?></a><br/>
-                <small><?php esc_html_e("Shows all install types.", 'duplicator');?></small>
+                <small><?php esc_html_e("Quickly overwrite an existing WordPress site.", 'duplicator');?></small>                
+                <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3&utm_campaign=duplicator_free#install_site" target="_blank"><?php esc_html_e('View All Methods', 'duplicator'); ?></a><br/>
+                <small><?php esc_html_e("Learn about all install types.", 'duplicator');?></small>
 			</div>
 
 			<p class="get-pro">
@@ -306,7 +309,7 @@ TOOL BAR: STEPS -->
 						<li>
 							<?php esc_html_e('Complete the package build and follow the ', 'duplicator'); ?>
 							<?php
-							printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>".',
+							printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink2&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>".',
 								'', esc_html__('Quick Start Two-Part Install Instructions', 'duplicator'));
 							?>
 						</li>
