@@ -59,7 +59,6 @@ try {
     DUPX_Log::setThrowExceptionOnError(true);
 
     // DUPX_Boot::initArchiveAndLog();
-
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
     require_once($GLOBALS['DUPX_INIT'].'/classes/class.db.php');
@@ -79,7 +78,7 @@ try {
 
     // ?view=help
     if (!empty($_GET['view']) && 'help' == $_GET['view']) {
-
+        $GLOBALS['VIEW'] = 'help';
     } else if (isset($_GET['is_daws']) && 1 == $_GET['is_daws']) { // For daws action
         $post_ctrl_csrf_token = isset($_GET['daws_csrf_token']) ? DUPX_U::sanitize_text_field($_GET['daws_csrf_token']) : '';
         if (DUPX_CSRF::check($post_ctrl_csrf_token, 'daws')) {
@@ -159,13 +158,8 @@ try {
     }
 
     //Password Check
-    $_POST['secure-pass'] = isset($_POST['secure-pass']) ? $_POST['secure-pass'] : '';
-    if ($GLOBALS['DUPX_AC']->secure_on && $GLOBALS['VIEW'] != 'help') {
-        $pass_hasher = new DUPX_PasswordHash(8, FALSE);
-        $pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['DUPX_AC']->secure_pass);
-        if (! $pass_check) {
-            $GLOBALS['VIEW'] = 'secure';
-        }
+    if ($GLOBALS['VIEW'] !== 'help' && !DUPX_Security::getInstance()->securityCheck()) {
+        $GLOBALS['VIEW'] = 'secure';
     }
 
     // Constants which are dependent on the $GLOBALS['DUPX_AC']
@@ -231,12 +225,8 @@ try {
             die();
         }
         //PASSWORD CHECK
-        if ($GLOBALS['DUPX_AC']->secure_on) {
-            $pass_hasher = new DUPX_PasswordHash(8, FALSE);
-            $pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['DUPX_AC']->secure_pass);
-            if (! $pass_check) {
-                DUPX_Log::error("Unauthorized Access:  Please provide a password!");
-            }
+        if (!DUPX_Security::getInstance()->securityCheck()) {
+            DUPX_Log::error("Unauthorized Access:  Please provide a password!");
         }
 
         // the controllers must die in case of error
@@ -265,6 +255,8 @@ try {
     }
 } catch (Exception $e) {
     $exceptionError = $e;
+} catch (Error $e) {
+    $exceptionError = $e;
 }
 
 /**
@@ -276,6 +268,15 @@ if (!empty($unespectOutput)) {
     DUPX_Log::info('ERROR: Unespect output '.DUPX_Log::varToString($unespectOutput));
     $exceptionError = new Exception('Unespected output '.DUPX_Log::varToString($unespectOutput));
 }
+
+if ($exceptionError != false) {
+    $GLOBALS["VIEW"] = 'exception';
+    echo '<pre>'.$exceptionError->getMessage()."\n";
+    echo "\tFILE:".$exceptionError->getFile().'['.$exceptionError->getLIne().']'."\n";
+    echo "\tTRACE:\n".$exceptionError->getTraceAsString()."</pre>";
+    die;
+}
+
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -288,7 +289,7 @@ if (!empty($unespectOutput)) {
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/lite01_favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/lite01_favicon-16x16.png">
     <link rel="manifest" href="favicon/site.webmanifest">
-    <link rel="mask-icon" href="favicon/lite01_safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="mask-icon" href="favicon/lite01_safari-pinned-tab.svg">
     <link rel="shortcut icon" href="favicon/lite01_favicon.ico">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="favicon/browserconfig.xml">
@@ -399,10 +400,7 @@ FORM DATA: User-Interface views -->
 
         /** flush view output **/
         ob_end_flush();
-        
-    }
-
-    if ($exceptionError !== false) {
+    } else {
         DUPX_Log::info("--------------------------------------");
         DUPX_Log::info('EXCEPTION: '.$exceptionError->getMessage());
         DUPX_Log::info('TRACE:');

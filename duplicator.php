@@ -5,7 +5,7 @@
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
   Version: 1.4.3
   Requires at least: 4.0
-  Tested up to: 5.7.2
+  Tested up to: 5.8
   Requires PHP: 5.3.8
   Author: Snap Creek
   Author URI: http://www.snapcreek.com/duplicator/

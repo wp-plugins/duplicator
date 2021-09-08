@@ -55,6 +55,7 @@ class DUPX_Boot
         // set all PHP.INI settings
         self::phpIni();
         self::initParamsBase();
+        DUPX_Security::getInstance();
 
         /*
          * INIZIALIZE
@@ -153,6 +154,7 @@ class DUPX_Boot
         require_once($GLOBALS['DUPX_INIT'].'/classes/class.package.php');
         require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.base.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
+        require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.security.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/class.logging.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/host/class.custom.host.manager.php');
     }

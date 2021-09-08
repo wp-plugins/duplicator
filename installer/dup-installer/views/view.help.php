@@ -28,13 +28,31 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
     <div class="content" >
         <a name="help-s1-init"></a>
         <div id="dup-help-installer" class="help-page">
-            The installer security screen will allow for basic password protection on the installer. The password is set at package creation time.  The password
-            input on this screen must be entered before proceeding with an install.   This setting is optional and can be turned on/off via the package creation screens.
+            The installer allows for two basic types of security: password and filename-based.<br/><br/>
+
+            <b>Password Security</b><br/>
+            The installer can provide basic password protection, with the password being set at package creation time.  The password input on this screen
+            must be entered before proceeding with an install.   This setting is optional and can be turned on/off via the package creation screens.
+            <br/>
+            <small>
+            Note: If you do not recall the password then login to the site where the package was created and click the details of the package to view the
+            original password. To validate the password just typed you can toggle the view by clicking on the lock icon.   For detail on how to override
+            this setting visit the online FAQ for
+            <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-030-q" target="_blankopen_section">more details</a>.
+            </small>
             <br/><br/>
 
-            If you do not recall the password then login to the site where the package was created and click the details of the package to view the original password.
-            To validate the password just typed you can toggle the view by clicking on the lock icon.	For detail on how to override this setting visit the online FAQ for
-            <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-030-q" target="_blankopen_section">more details</a>.
+            <b>Filename Security</b><br/>
+            When you attempt an <i class="maroon">"Overwrite Install"</i> using the "installer.php" filename on a public server (non localhost) and have
+            not set a password, the installer will prompt for the filename of the associated archive.zip/daf file.  This is to prevent an outside entity
+            from executing the installer.  To complete the install, simply copy the filename of the archive and paste (or type) it into the
+            archive filename box.<br/>
+
+            <small>
+            Note: Using a hashed installer name (Settings ❯ Packages), renaming the installer to something unique (e.g. installer_932fe.php), setting
+            a password or installing from localhost will cause the archive filename to no longer be required.
+            </small>
+            <br/><br/>
 
             <table class="help-opt">
                 <tr>
@@ -543,7 +561,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                 </tr>
                 <tr>
                     <td class="col-opt">Post GUID</td>
-                    <td>If your moving a site keep this value checked. For more details see the <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.</td>
+                    <td>If your moving a site keep this value checked. For more details see the <a href="https://wordpress.org/support/article/changing-the-site-url/#important-guid-note" target="_blank">notes on GUIDS</a>.	Changing values in the posts table GUID column can change RSS readers to evaluate that the posts are new and may show them in feeds again.</td>
                 </tr>
                 <tr>
                     <td class="col-opt">Cross search <sup>pro</sup></td>
