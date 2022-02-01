@@ -54,7 +54,7 @@ class DUPX_DBInstall
         $this->root_path            = $GLOBALS['DUPX_ROOT'];
         $this->sql_file_path        = "{$GLOBALS['DUPX_INIT']}/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql";
         $this->sql_result_file_path = "{$GLOBALS['DUPX_INIT']}/{$GLOBALS['SQL_FILE_NAME']}";
-		$this->dbFileSize			= @filesize($this->sql_file_path);
+        $this->dbFileSize			= @filesize($this->sql_file_path);
 
         //ESTABLISH CONNECTION
         $this->dbh = DUPX_DB::connect($post['dbhost'], $post['dbuser'], $post['dbpass']);
@@ -64,9 +64,17 @@ class DUPX_DBInstall
                 or DUPX_Log::error(sprintf(ERR_DBCREATE, $post['dbname']));
         }
 
-        @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
-        @mysqli_query($this->dbh, "SET GLOBAL max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
-        @mysqli_query($this->dbh, "SET max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
+        //PHP 8.1 throws exceptions vs pre 8.1 which silently fails
+        try {
+            @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
+            $qryResult = @mysqli_query($this->dbh, "SET GLOBAL max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
+			if ($qryResult === false) {
+				@mysqli_query($this->dbh, "SET max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
+			}
+        }
+        catch (Exception $ex) {
+             DUPX_Log::info("SQL ERROR:" . $ex->getMessage() . "\n" . $ex->getTraceAsString());
+        }
 
         $this->profile_start    = isset($post['profile_start']) ? DUPX_U::sanitize_text_field($post['profile_start']) : DUPX_U::getMicrotime();
         $this->start_microtime  = isset($post['start_microtime']) ? DUPX_U::sanitize_text_field($post['start_microtime']) : $start_microtime;
@@ -94,8 +102,18 @@ class DUPX_DBInstall
     public function prepareDB()
     {
         //RUN DATABASE SCRIPT
-        @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
-        @mysqli_query($this->dbh, "SET max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
+        //PHP 8.1 throws exceptions vs pre-8.1 which silently fails
+        try {
+            @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
+            $qryResult = @mysqli_query($this->dbh, "SET GLOBAL max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
+            if ($qryResult === false) {
+                @mysqli_query($this->dbh, "SET max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
+            }
+        }
+        catch (Exception $ex) {
+             DUPX_Log::info("SQL ERROR:" . $ex->getMessage() . "\n" . $ex->getTraceAsString());
+        }
+
         DUPX_DB::setCharset($this->dbh, $this->post['dbcharset'], $this->post['dbcollate']);
 
         //Will set mode to null only for this db handle session
@@ -115,7 +133,6 @@ class DUPX_DBInstall
                 }
                 break;
         }
-
 
         //Set defaults incase the variable could not be read
         $this->drop_tbl_log   = 0;
@@ -179,6 +196,7 @@ class DUPX_DBInstall
                 }
                 break;
         }
+
     }
 
     public function getRowCountMisMatchTables()
@@ -237,12 +255,13 @@ class DUPX_DBInstall
 
         @mysqli_autocommit($this->dbh, false);
 
-        $query = null;
+        $query = '';
         $delimiter = ';';
+
         while (($line = fgets($handle)) !== false) {
             if ('DELIMITER ;' == trim($query)) {
                 $delimiter = ';';
-                $query = null;
+                $query = '';
                 continue;
             }
             $query .= $line;
@@ -277,7 +296,7 @@ class DUPX_DBInstall
                         }
 
                         DUPX_Log::info("Skipping delimiter query");
-                        $query = null;
+                        $query = '';
                         continue;
                     }
 
@@ -340,7 +359,7 @@ class DUPX_DBInstall
                         $this->dbquery_rows++;
                     }
                 }
-                $query = null;
+                $query = '';
                 $counter++;
             }
         }

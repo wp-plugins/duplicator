@@ -94,10 +94,24 @@ class DUP_Package_Screen extends DUP_UI_Screen
 
 	public function get_step2_help()
 	{
-		return __("<b>Packages » 2 Scan</b> <br/>"
-				. "The plugin will scan your system files and database to let you know if there are any concerns or issues that may be present.  All items in green mean the checks "
-				. "looked good.  All items in red indicate a warning.  Warnings will not prevent the build from running, however if you do run into issues with the build then investigating "
-				. "the warnings should be considered.  Click on each section for more details about each scan check. <br/><br/>",'duplicator');
+        $status1   = sprintf('%1$s Good %2$s',   '<span class="badge badge-pass">', '</span>');
+        $status2   = sprintf('%1$s Notice %2$s', '<span class="badge badge-warn">', '</span>');
+
+        //TITLE
+        $msg   = sprintf('%1$s Packages » 2 Scan %2$s', '<b>', '</b><br/>');
+        
+        //MESSAGE
+        $msg  .= sprintf(
+				  'In Step-2 of the build process Duplicator scans your WordPress site files and database for any possible issues.  Each section is expandable '
+                . 'and will show more details regarding the parameters of that section. The following indicators will be present for each section: %3$s'
+                . '%1$s Indicates that no issues were detected.  It is best to try and get all the values to display this status if possible, but not required. %3$s'
+                . '%2$s Indicates a possible issue.  A notice will not prevent the build from running however, if you do have issues then the section should be observed. %4$s',
+                $status1,
+                $status2,
+                '<br/>',
+                '<br/><br/>'
+        );
+        return $msg;
 	}
 
 	public function get_step3_help()

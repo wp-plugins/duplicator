@@ -4,7 +4,7 @@
  * Copyright (C) 2020, Snap Creek LLC
  * website: snapcreek.com
  *
- * Duplicator (Pro) Plugin is distributed under the GNU General Public License, Version 3,
+ * Duplicator Plugin is distributed under the GNU General Public License, Version 3,
  * June 2007. Copyright (C) 2007 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
  *
@@ -285,12 +285,12 @@ if ($exceptionError != false) {
 	<title>Duplicator</title>
     <link rel='stylesheet' href='assets/font-awesome/css/all.min.css' type='text/css' media='all' />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/lite01_apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/lite01_favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/lite01_favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="favicon/site.webmanifest">
-    <link rel="mask-icon" href="favicon/lite01_safari-pinned-tab.svg">
-    <link rel="shortcut icon" href="favicon/lite01_favicon.ico">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
@@ -316,7 +316,7 @@ if ($exceptionError != false) {
 		</td>
 		<td class="wiz-dupx-version">
             <?php  if ($GLOBALS["VIEW"] !== 'help') { ?>
-			<a href="javascript:void(0)" onclick="DUPX.openServerDetails()">version:<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_dup); ?></a>&nbsp;
+			<a href="javascript:void(0)" onclick="DUPX.openServerDetails()">version:&nbsp;<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_dup); ?></a>&nbsp;
 			<?php DUPX_View_Funcs::helpLockLink(); ?>
 			<div style="padding: 6px 0">
                 <?php DUPX_View_Funcs::helpLink($GLOBALS["VIEW"]); ?>
@@ -329,15 +329,15 @@ if ($exceptionError != false) {
 <div class="dupx-modes">
 	<?php
 		$php_enforced_txt = ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? '<i style="color:red"><br/>*PHP ini enforced*</i>' : '';
-		$db_only_txt = ($GLOBALS['DUPX_AC']->exportOnlyDB) ? ' - Database Only' : '';
+		$db_only_txt = ($GLOBALS['DUPX_AC']->exportOnlyDB) ? ' - Database Only]' : ']';
 		$db_only_txt = $db_only_txt . $php_enforced_txt;
 
 		if ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) {
 			echo  ($GLOBALS['DUPX_STATE']->mode === DUPX_InstallerMode::OverwriteInstall)
-				? "<span class='dupx-overwrite'>Mode: Overwrite Install (Beta) {$db_only_txt}</span>"
-				: "Mode: Standard Install {$db_only_txt}";
+				? "<span class='dupx-overwrite'>[Overwrite Install{$db_only_txt}</span>"
+				: "[Standard Install{$db_only_txt}";
 		} else {
-			echo "Mode: Standard Install {$db_only_txt}";
+			echo "[Standard Install{$db_only_txt}";
 		}
 	?>
 </div>

@@ -194,43 +194,58 @@ STORAGE -->
 	<div class="dup-box-arrow"></div>
 </div>
 <div class="dup-box-panel" id="dup-package-dtl-storage-panel" style="<?php echo esc_attr($ui_css_storage); ?>">
-	<table class="widefat package-tbl">
-		<thead>
-			<tr>
-				<th style='width:150px'><?php esc_html_e('Name', 'duplicator') ?></th>
-				<th style='width:100px'><?php esc_html_e('Type', 'duplicator') ?></th>
-				<th style="white-space: nowrap"><?php esc_html_e('Location', 'duplicator') ?></th>
-			</tr>
-		</thead>
-			<tbody>
-				<tr class="package-row">
-					<td><i class="fa fa-server"></i>&nbsp;<?php esc_html_e('Default', 'duplicator');?></td>
-					<td><?php esc_html_e("Local", 'duplicator'); ?></td>
-					<td><?php echo esc_html(DUP_Settings::getSsdirPath()); ?></td>
-				</tr>
-				<tr>
-					<td colspan="4">
-						<div class="dup-store-pro">
-							<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/amazon-64.png"); ?>" />
-							<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/dropbox-64.png"); ?>" />
-							<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/google_drive_64px.png"); ?>" />
-							<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/onedrive-48px.png"); ?>" />
-							<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/ftp-64.png"); ?>" />
-							<?php echo sprintf(esc_html__('%1$s, %2$s, %3$s, %4$s, %5$s and other storage options available in', 'duplicator'), 'Amazon', 'Dropbox', 'Google Drive', 'OneDrive', 'FTP/SFTP'); ?>
-                            <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage_detail&utm_campaign=duplicator_pro" target="_blank"><?php esc_html_e('Duplicator Pro', 'duplicator');?></a>
-							 <i class="far fa-lightbulb"
-								data-tooltip-title="<?php esc_attr_e('Additional Storage:', 'duplicator'); ?>"
-								data-tooltip="<?php esc_attr_e('Duplicator Pro allows you to create a package and then store it at a custom location on this server or to a cloud '
-										. 'based location such as Google Drive, Amazon, Dropbox or FTP.', 'duplicator'); ?>">
-							 </i>
-                        </div>
-					</td>
-				</tr>
-			</tbody>
-	</table>
-</div>
-</div>
 
+    <table class="widefat package-tbl" style="margin-bottom:15px" >
+        <thead>
+            <tr>
+                <th style='width:200px'><?php esc_html_e("Name", 'duplicator'); ?></th>
+                <th style='width:100px'><?php esc_html_e("Type", 'duplicator'); ?></th>
+                <th style="white-space:nowrap"><?php esc_html_e("Location", 'duplicator'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="dup-store-path">
+                <td>
+                    <?php  esc_html_e('Default', 'duplicator');?>
+                    <i>
+                        <?php
+                            if ($storage_position === DUP_Settings::STORAGE_POSITION_LECAGY) {
+                                esc_html_e("(Legacy Path)", 'duplicator');
+                            } else {
+                                esc_html_e("(Contents Path)", 'duplicator');
+                            }
+                        ?>
+                    </i>
+                </td>
+                <td><i class="fas fa-server fa-fw"></i> <?php esc_html_e("Local", 'duplicator'); ?></td>
+                <td><?php echo DUP_Settings::getSsdirPath(); ?></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="dup-store-promo-area">
+                    <div class="dup-store-pro">
+                        <span class="dup-pro-text">
+                            <?php echo sprintf(__('Back up this site to %1$s, %2$s, %3$s, %4$s, %5$s and other locations with ', 'duplicator'),
+                                '<i class="fab fa-aws  fa-fw"></i>&nbsp;' .'Amazon',
+                                '<i class="fab fa-dropbox fa-fw"></i>&nbsp;' . 'Dropbox',
+                                '<i class="fab fa-google-drive  fa-fw"></i>&nbsp;' . 'Google Drive',
+                                '<i class="fas fa-cloud  fa-fw"></i>&nbsp;' . 'OneDrive',
+                                '<i class="fas fa-network-wired fa-fw"></i>&nbsp;' . 'FTP/SFTP');
+                            ?>
+                            <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage_detail_bw&utm_campaign=duplicator_pro" target="_blank"><?php esc_html_e('Duplicator Pro', 'duplicator');?></a>
+                            <i class="fas fa-question-circle"
+                                data-tooltip-title="<?php esc_attr_e("Additional Storage:", 'duplicator'); ?>"
+                                data-tooltip="<?php esc_attr_e('Duplicator Pro allows you to create a package and store it at a custom location on this server or to a remote '
+                                        . 'cloud location such as Google Drive, Amazon, Dropbox and many more.', 'duplicator'); ?>">
+                             </i>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+	</div>
+</div>
 
 <!-- ===============================
 ARCHIVE -->

@@ -70,17 +70,17 @@ class DUPX_DBTest
 		//REQUIRMENTS
 		//Pass States: skipped = -1		failed = 0		passed = 1   warned = 2
 		$this->reqs[5]	 = array('title' => "Create Database User", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->reqs[10]	 = array('title' => "Verify Host Connection", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->reqs[20]	 = array('title' => "Check Server Version", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->reqs[30]	 = array('title' => "Create New Database Tests", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->reqs[40]	 = array('title' => "Confirm Database Visibility", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[10]	 = array('title' => "Host Connection", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[20]	 = array('title' => "Database Version", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[30]	 = array('title' => "Database Create New Tests", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[40]	 = array('title' => "Privileges: User Visibility", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[50]	 = array('title' => "Manual Table Check", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->reqs[60]	 = array('title' => "Test User Table Privileges", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[60]	 = array('title' => "Privileges: User Resources", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[70]	 = array('title' => "Check Collation Capability", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->reqs[80]	 = array('title' => "Check GTID mode", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->reqs[80]	 = array('title' => "Database GTID mode", 'info' => "{$default_msg}", 'pass' => -1);
 		//NOTICES
 		$this->notices[10]	 = array('title' => "Table Case Sensitivity", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->notices[20]	 = array('title' => "Source Site Triggers", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->notices[20]	 = array('title' => "Source Database Triggers", 'info' => "{$default_msg}", 'pass' => -1);
        }
 
 	public function run()
@@ -224,7 +224,7 @@ class DUPX_DBTest
 
 	/**
 	 * Create New Database Basic Test
-	 * Use selects: 'Create New Database' for basic
+	 * Use selects: 'Create New Database for basic
 	 *
 	 * @return null
 	 */
@@ -354,7 +354,7 @@ class DUPX_DBTest
 
 			if ($this->tblPerms['all']) {
 				$test['pass']	 = 1;
-				$test['info']	 = "The user <b>[".htmlentities($this->in->dbuser)."]</b> the correct privileges on the database <b>[".htmlentities($this->in->dbname)."]</b>";
+				$test['info']	 = "The user <b>[".htmlentities($this->in->dbuser)."]</b> has the correct privileges on the database <b>[".htmlentities($this->in->dbname)."]</b>";
 			} else {
 				$list		 = array();
 				$test['pass']	 = 0;

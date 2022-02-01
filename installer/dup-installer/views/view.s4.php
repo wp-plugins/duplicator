@@ -58,9 +58,9 @@ if ($json_decode == NULL || $json_decode == FALSE) {
     {
 		if ($('input#auto-delete').is(':checked')) {
 			var action = encodeURIComponent('&action=installer');
-			window.open('<?php echo $admin_login; ?>' + action, '_blank');
+			window.open(<?php echo str_replace('\\/', '/', json_encode($admin_login)); ?> + action, '_blank');
 		} else {
-			window.open('<?php echo $admin_login; ?>', '_blank');
+			window.open(<?php echo str_replace('\\/', '/', json_encode($admin_login)); ?>, '_blank');
 		}
 	};
 </script>
@@ -86,29 +86,31 @@ VIEW: STEP 4- INPUT -->
 	<table class="s4-final-step">
 		<tr style="vertical-align: top">
 			<td style="padding-top:10px">
-				<button type="button" class="s4-final-btns" onclick="DUPX.getAdminLogin()"><i class="fab fa-wordpress"></i> Admin Login</button>
+				<button type="button" class="s4-final-btns" onclick="DUPX.getAdminLogin()">
+                    <i class="fab fa-wordpress fa-lg"></i> &nbsp; Admin Login
+                </button>
 			</td>
 			<td>
 				Login to the WordPress Admin to finalize this install.<br/>
 				<input type="checkbox" name="auto-delete" id="auto-delete" checked="true"/>
 				<label for="auto-delete">Auto delete installer files after login <small>(recommended)</small></label>
-				<br/><br/>
-								
-				<!-- WARN: SAFE MODE MESSAGES -->
-				<div class="s4-warn" style="display:<?php echo ($safe_mode > 0 ? 'block' : 'none')?>">
-					<b>Safe Mode</b><br/>
-					Safe mode has <u>deactivated</u> all plugins. Please be sure to enable your plugins after logging in. <i>If you notice that problems arise when activating
-					the plugins then active them one-by-one to isolate the plugin that	could be causing the issue.</i>
-				</div>
 			</td>
 		</tr>
 	</table>
-	<div style="border: 1px solid #cdcdcd;border-radius: 5px;padding: 15px;color:maroon;font-size:12px;font-style:italic;">
+
+    <!-- WARN: SAFE MODE MESSAGES -->
+    <div class="s4-final-steps" style="display:<?php echo ($safe_mode > 0 ? 'block' : 'none')?>">
+        <b><i class="fa fa-exclamation-triangle"></i> SAFE MODE:</b>
+        Safe mode has <u>deactivated</u> all plugins except for Duplicator. Please be sure to enable your plugins after logging in.  If you notice that problems
+        arise when activating more than one plugin at a time, then it is recommended to active them one-by-one to isolate the plugin that could be causing the issue.
+    </div>
+
+    <!-- WARN: FINAL STEPS -->
+	<div class="s4-final-steps">
 		<b><i class="fa fa-exclamation-triangle"></i> IMPORTANT FINAL STEPS:</b> Login into the WordPress Admin to remove all <?php 
-        DUPX_View_Funcs::helpLink('step4', 'installation files'); ?> and finalize the install process.  This install is <u>NOT</u> complete until all installer files have been completely removed.
-		Leaving any of the installer files on this server can lead to security issues.
-	</div>
-	<br/><br/><br/>
+        DUPX_View_Funcs::helpLink('step4', 'installation files'); ?> and finalize the install process.  This install is <u>NOT</u> complete until all installer
+        files have been completely removed.  Leaving any of the installer files on this server can lead to security issues.
+	</div><br/>
 
     <?php
     $nManager = DUPX_NOTICE_MANAGER::getInstance();

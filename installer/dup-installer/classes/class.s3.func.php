@@ -13,7 +13,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
  * Step 3 functions
- * Singlethon
+ * Singleton
  */
 final class DUPX_S3_Funcs
 {
@@ -223,7 +223,7 @@ final class DUPX_S3_Funcs
     }
 
     /**
-     * get vaule post if  thepost isn't initialized inizialize it
+     * get value post if  the post isn't initialized initialize it
      * 
      * @param string $key
      * @return mixed
@@ -1042,16 +1042,15 @@ LONGMSG;
                 $reactivate_plugins_after_installation_str)."','duplicator_reactivate_plugins_after_installation')");
         }
         
-        // Start
-        // Force Duplicator active so we the security cleanup will be available
+        // Force Duplicator active so the security cleanup will be available
         if (!in_array('duplicator/duplicator.php', $plugin_list)) {
             $plugin_list[] = 'duplicator/duplicator.php';
         }
         $serial_plugin_list = @serialize($plugin_list);
-        // End
         
         mysqli_query($this->dbh,
-            "UPDATE `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` SET option_value = '".mysqli_real_escape_string($this->dbh, $serial_plugin_list)."'  WHERE option_name = 'active_plugins' ");
+            "UPDATE `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` "
+            . "SET option_value = '".mysqli_real_escape_string($this->dbh, $serial_plugin_list)."'  WHERE option_name = 'active_plugins' ");
     }
 
     /**
@@ -1094,7 +1093,7 @@ LONGMSG;
             'reactivate' => true
         );
 
-        DUPX_Log::info('Deactivated plugins list here: '.DUPX_Log::varToString(array_keys($excludePlugins)));
+        DUPX_Log::info('Auto Deactivated plugins list here: '.DUPX_Log::varToString(array_keys($excludePlugins)));
         return $excludePlugins;
     }
 

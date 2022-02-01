@@ -6,7 +6,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 		$txt   = __('Root Path', 'duplicator');
 		$root  = duplicator_get_abs_path();
 		$sroot = strlen($root) > 50 ? substr($root, 0, 50) . '...' : $root;
-		echo "<div title='{$root}' class='divider'><i class='fa fa-folder-open'></i> {$sroot}</div>";
+		echo "<div title=".str_replace('\\/', '/', json_encode($root))." class='divider'><i class='fa fa-folder-open'></i> {$sroot}</div>";
 	}
 
 $archive_type_label		=  DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? "ZipArchive" : "DupArchive";
@@ -57,7 +57,8 @@ if ($Package->Archive->ExportOnlyDB) { ?>
 		<div id="only-db-scan-status"><div class="badge badge-warn"><?php esc_html_e("Notice", 'duplicator'); ?></div></div>
 	</div>
     <div class="info">
-        <?php esc_html_e("Only the database and a copy of the installer.php will be included in the archive.zip file.", 'duplicator'); ?>
+        <?php esc_html_e("Only the database and a copy of the installer will be included in the archive file.  This notice simply indicates that the package "
+            . "will not be capable of restoring a full WordPress site, but only the database.  If this is the desired intention then this notice can be ignored.", 'duplicator'); ?>
     </div>
 </div>
 <?php
@@ -314,7 +315,7 @@ FILE NAME CHECKS -->
 </div>
 <!-- ======================
 UNREADABLE FILES -->
-<div id="scan-unreadable-items" class="scan-item scan-item-last">
+<div id="scan-unreadable-items" class="scan-item">
     <div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
         <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Read Checks');?></div>
         <div id="data-arc-status-unreadablefiles"></div>
@@ -359,7 +360,7 @@ UNREADABLE FILES -->
 
 <!-- ======================
 Restore only package -->
-<div id="migratepackage-block"  class="scan-item scan-item-last">
+<div id="migratepackage-block"  class="scan-item">
 	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
 		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Migration Status', 'duplicator');?></div>
         <div id="data-arc-status-migratepackage"></div>
@@ -410,7 +411,7 @@ DATABASE -->
 		</div>
 	</div>
 
-	<div class="scan-item scan-item-last">
+	<div class="scan-item">
 		<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
 			<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Overview', 'duplicator');?></div>
 			<div id="data-db-status-size"></div>
@@ -457,7 +458,7 @@ DATABASE -->
     <?php
     $triggers = $GLOBALS['wpdb']->get_col("SHOW TRIGGERS", 1);
     if (count($triggers)) { ?>
-        <div class="scan-item scan-item-last">
+        <div class="scan-item">
             <div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
                 <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Triggers', 'duplicator');?></div>
                 <div id="data-arc-status-triggers"></div>
@@ -484,7 +485,7 @@ DATABASE -->
     $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
     $functions  = $GLOBALS['wpdb']->get_col("SHOW FUNCTION STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
     if (count($procedures) || count($functions)) { ?>
-    <div id="showcreateprocfunc-block"  class="scan-item scan-item-last">
+    <div id="showcreateprocfunc-block"  class="scan-item">
         <div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
             <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Object Access', 'duplicator');?></div>
             <div id="data-arc-status-showcreateprocfunc"></div>
@@ -527,7 +528,7 @@ DATABASE -->
 		</div>
 	</div>
 
-	<div class="data-ll-section scan-item scan-item-last" style="display: none">
+	<div class="data-ll-section scan-item" style="display: none">
 		<div style="padding: 7px; background-color:#F3B2B7; font-weight: bold ">
 		<?php
 			printf(__('The build can\'t continue because the total size of files and the database exceeds the %s limit that can be processed when creating a DupArchive package. ', 'duplicator'), $duparchive_max_limit);
@@ -735,7 +736,7 @@ jQuery(document).ready(function($)
 {
 
 	Handlebars.registerHelper('stripWPRoot', function(path) {
-		return  path.replace('<?php echo duplicator_get_abs_path(); ?>', '');
+		return path.replace(<?php echo str_replace('\\/', '/', json_encode(duplicator_get_abs_path())); ?>, '');
 	});
 
 	//Uncheck file names if directory is checked

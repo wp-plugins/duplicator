@@ -150,7 +150,9 @@ function dup_lite_storage_advanced_pro_content()
         </i>
     </div>
     <p style="text-align: center">
-        <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_settings_storage_popup&utm_campaign=duplicator_pro" target="_blank" class="button button-primary button-large dup-check-it-btn" >
+        <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_settings_storage_popup_green&utm_campaign=duplicator_pro"
+           target="_blank"
+           class="dup-btn-call-action" style="font-size:15px; padding:8px 10px; width: 120px">
             <?php esc_html_e('Learn More', 'duplicator'); ?>
         </a>
     </p>
@@ -159,9 +161,9 @@ function dup_lite_storage_advanced_pro_content()
 }
 $storageAlert          = new DUP_UI_Dialog();
 $storageAlert->title   = __('Advanced Storage', 'duplicator');
-$storageAlert->height  = 525;
+$storageAlert->height  = 500;
 $storageAlert->width   = 400;
-//$storageAlert->okText  = esc_html__('Close', 'duplicator');
+$storageAlert->okText  = '';
 $storageAlert->message = dup_lite_storage_advanced_pro_content();
 $storageAlert->initAlert();
 ?>

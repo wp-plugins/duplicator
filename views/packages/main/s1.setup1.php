@@ -59,19 +59,17 @@ TOOL BAR: STEPS -->
         <td style="white-space: nowrap">
             <div id="dup-wiz">
                 <div id="dup-wiz-steps">
-                    <div class="active-step"><a>1-<?php esc_html_e('Setup', 'duplicator'); ?></a></div>
-                    <div><a>2-<?php esc_html_e('Scan', 'duplicator'); ?> </a></div>
-                    <div><a>3-<?php esc_html_e('Build', 'duplicator'); ?> </a></div>
+                    <div class="active-step"><a>1 <?php esc_html_e('Setup', 'duplicator'); ?></a></div>
+                    <div><a>2 <?php esc_html_e('Scan', 'duplicator'); ?> </a></div>
+                    <div><a>3 <?php esc_html_e('Build', 'duplicator'); ?> </a></div>
                 </div>
-                <div id="dup-wiz-title">
-                    <?php esc_html_e('Step 1: Package Setup', 'duplicator'); ?>
-                </div> 
-            </div>	
+            </div>
+            <div id="dup-wiz-title" class="dup-guide-txt-color">
+                <i class="fab fa-wordpress"></i>
+                <?php esc_html_e('Step 1: Choose the WordPress contents to backup.', 'duplicator'); ?>
+            </div>
         </td>
-        <td>
-            <a href="?page=duplicator" class="button"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e("Packages", 'duplicator'); ?></a>
-            <a href="javascript:void(0)" class="button disabled"> <?php esc_html_e("Create New", 'duplicator'); ?></a>
-        </td>
+        <td>&nbsp;</td>
     </tr>
 </table>	
 <hr class="dup-toolbar-line">

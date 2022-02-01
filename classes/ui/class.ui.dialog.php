@@ -132,6 +132,10 @@ class DUP_UI_Dialog
         }
         $onClickClose .= 'tb_remove();';
 
+        if (strlen($this->okText) == 0) {
+            $hideButton = "style='display:none'";
+        }
+
         $html = '
 		<div id="'.esc_attr($this->id).'" style="display:none">
 			<div class="dup-dlg-alert-txt">
@@ -139,7 +143,7 @@ class DUP_UI_Dialog
 				<br/><br/>
 			</div>
 			<div class="dup-dlg-alert-btns">
-				<input type="button" class="button button-large" value="'.esc_attr($this->okText).'" onclick="'.$onClickClose.'" />
+				<input type="button" class="button button-large" value="'.esc_attr($this->okText).'" onclick="'.$onClickClose.'" '. $hideButton . '/>
 			</div>
 		</div>';
 

@@ -144,11 +144,13 @@ class DUP_Installer
 		$ac->version_db	 = $this->Package->VersionDB;
 		$ac->version_php = $this->Package->VersionPHP;
 		$ac->version_os	 = $this->Package->VersionOS;
+		$ac->dup_type 	 = 'lite';
 		$ac->dbInfo		 = $this->Package->Database->info;
 
 		//READ-ONLY: GENERAL
 		// $ac->installer_base_name  = $global->installer_base_name;
 		$ac->installer_base_name = 'installer.php';
+		$ac->installer_backup_name = $this->Package->NameHash.'_installer-backup.php';
 		$ac->package_name		 = "{$this->Package->NameHash}_archive.{$extension}";
 		$ac->package_hash		 = $this->Package->getPackageHash();
 		$ac->package_notes		 = $this->Package->Notes;

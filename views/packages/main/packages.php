@@ -26,14 +26,14 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
 
 <style>
     div#dup-list-alert-nodata {padding:70px 20px;text-align:center; font-size:20px; line-height:26px}
-    div.dup-notice-msg {border:1px solid silver; padding: 10px; border-radius: 5px; width: 550px; 
+    div.dup-notice-msg {border:1px solid silver; padding: 10px; border-radius:3px; width: 550px;
                         margin:40px auto 0px auto; font-size:12px; text-align: left; word-break:normal;
                         background: #fefcea; 
                         background: -moz-linear-gradient(top,  #fefcea 0%, #efe5a2 100%);
                         background: -ms-linear-gradient(top,  #fefcea 0%,#efe5a2 100%);
                         background: linear-gradient(to bottom,  #fefcea 0%,#efe5a2 100%);
     }
-    input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
+    input#dup-bulk-action-all {margin:0 2px 0 0;padding:0 2px 0 0 }
     button.dup-button-selected {border:1px solid #000 !important; background-color:#dfdfdf !important;}
     div.dup-quick-start {font-style:italic; font-size: 13px; line-height: 18px; margin-top: 15px}
     div.dup-no-mu {font-size:13px; margin-top:25px; color:maroon; line-height:18px}
@@ -46,18 +46,18 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
     table.dup-pack-table td.pack-size {min-width: 65px; }
 
     table.dup-pack-table input[name="delete_confirm"] {margin-left:15px}
-    table.dup-pack-table td.fail {border-left: 4px solid #d54e21;}
+    table.dup-pack-table td.fail {border-left: 4px solid maroon;}
     table.dup-pack-table td.pass {border-left: 4px solid #2ea2cc;}
 
-    .dup-pack-info {height: 45px;}
+    .dup-pack-info {height:50px;}
     .dup-pack-info td {vertical-align: middle; }
     tr.dup-pack-info td {white-space:nowrap; padding:2px 30px 2px 7px;}
     tr.dup-pack-info td.get-btns {text-align:right; padding:3px 5px 6px 0px !important;}
     tr.dup-pack-info td.get-btns button {box-shadow:none}
     textarea.dup-pack-debug {width:98%; height:300px; font-size:11px; display:none}
-    td.error-msg a {color:maroon}
-    td.error-msg a i {color:maroon}
-    td.error-msg span {display:inline-block; padding:7px 18px 0px 0px; color:maroon}
+    td.error-msg a {color:maroon; text-decoration: underline}
+    td.error-msg a:hover {color:maroon; text-decoration:none}
+    td.error-msg {padding:7px 18px 0px 0px; color:maroon; text-align: center !important;}
     div#dup-help-dlg i {display: inline-block; width: 15px; padding:2px;line-height:28px; font-size:14px;}
     tr.dup-pack-info sup  {font-style:italic;font-size:10px; cursor: pointer; vertical-align: baseline; position: relative; top: -0.8em;}
     tr#pack-processing {display: none}
@@ -89,14 +89,13 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                 <input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php esc_html_e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.ConfirmDelete()">
                 <span class="btn-separator"></span>
                 <a href="javascript:void(0)" class="button"  title="<?php esc_attr_e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()"><i class="fa fa-question-circle"></i></a>
-                <a href="admin.php?page=duplicator-settings&tab=package" class="button" title="<?php esc_attr_e("Settings", 'duplicator') ?>"><i class="fas fa-cog"></i></a>
-                <a href="admin.php?page=duplicator-settings&tab=import" class="button dup-btn-disabled" title="<?php esc_html_e("Import", 'duplicator'); ?>"><i class="fas fa-arrow-alt-circle-down"></i></a>
-                <span class="btn-separator"></span>
+                <a href="admin.php?page=duplicator-settings&tab=package" class="button" title="<?php esc_attr_e("Settings", 'duplicator') ?>"><i class="fas fa-sliders-h"></i></a>
                 <a href="admin.php?page=duplicator-tools&tab=templates" class="button dup-btn-disabled" title="<?php esc_html_e("Templates", 'duplicator'); ?>"><i class="far fa-clone"></i></a>
+                <span class="btn-separator"></span>
+                <a href="admin.php?page=duplicator-settings&tab=import" class="button dup-btn-disabled" title="<?php esc_html_e("Import", 'duplicator'); ?>"><i class="fas fa-arrow-alt-circle-down"></i></a>
                 <a href="admin.php?page=duplicator-tools&tab=recovery" class="button dup-btn-disabled" title="<?php esc_html_e("Recovery", 'duplicator'); ?>"><i class="fas fa-undo-alt"></i></a>
             </td>
             <td>						
-                <a href="javascript:void(0)" class="button disabled"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e("Packages", 'duplicator'); ?></a>
                 <?php
                 $package_url       = admin_url('admin.php?page=duplicator&tab=new1');
                 $package_nonce_url = wp_nonce_url($package_url, 'new1-package');
@@ -152,10 +151,12 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
         <table class="widefat dup-pack-table">
             <thead>
                 <tr>
-                    <th style="width: 30px;" ><input type="checkbox" id="dup-bulk-action-all"  title="<?php esc_attr_e("Select all packages", 'duplicator') ?>" style="margin-left:15px" onclick="Duplicator.Pack.SetDeleteAll()" /></th>
+                    <th style="width: 30px;">
+                        <input type="checkbox" id="dup-bulk-action-all"  title="<?php esc_attr_e("Select all packages", 'duplicator') ?>" style="margin-left:12px" onclick="Duplicator.Pack.SetDeleteAll()" />
+                    </th>
                     <th style="width: 100px;" ><?php esc_html_e("Created", 'duplicator') ?></th>
                     <th style="width: 70px;"><?php esc_html_e("Size", 'duplicator') ?></th>
-                    <th><?php esc_html_e("Name", 'duplicator') ?></th>
+                    <th style="min-width: 70px;"><?php esc_html_e("Name", 'duplicator') ?></th>
                     <th class="inst-name">
                         <?php esc_html_e("Installer Name", 'duplicator'); ?>
                         <i class="fas fa-question-circle fa-sm" 
@@ -206,7 +207,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                 if ($Package->Status >= 100 || $is_running_package) :
                     ?>
                     <tr class="dup-pack-info <?php echo esc_attr($css_alt); ?> <?php echo $is_running_package ? 'is-running' : ''; ?>">
-                        <td class="pass"><input name="delete_confirm" type="checkbox" id="<?php echo absint($Package->ID); ?>" /></td>
+                        <td><input name="delete_confirm" type="checkbox" id="<?php echo absint($Package->ID); ?>" /></td>
                         <td>
                             <?php
                             echo DUP_Package::getCreatedDateFormat($Package->Created, DUP_Settings::get_create_date_format());
@@ -261,18 +262,14 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                     $error_url = "?page=duplicator&action=detail&tab=detail&id={$Package->ID}";
                     ?>
                     <tr class="dup-pack-info  <?php echo esc_attr($css_alt); ?>">
-                        <td class="fail"><input name="delete_confirm" type="checkbox" id="<?php echo absint($Package->ID); ?>" /></td>
+                        <td><input name="delete_confirm" type="checkbox" id="<?php echo absint($Package->ID); ?>" /></td>
                         <td><?php echo DUP_Package::getCreatedDateFormat($Package->Created, DUP_Settings::get_create_date_format()); ?></td>
                         <td class="pack-size"><?php echo DUP_Util::byteSize($pack_archive_size); ?></td>
                         <td class='pack-name'><?php echo esc_html($pack_name); ?></td>
+                        <td>&nbsp;</td>
                         <td class="get-btns error-msg" colspan="3">
-                            <span>
-                                <i class="fa fa-exclamation-triangle fa-sm"></i>
-                                <a href="<?php echo esc_url($error_url); ?>"><?php esc_html_e("Error Processing", 'duplicator') ?></a>
-                            </span>
-                            <a class="button no-select" title="<?php esc_attr_e("Package Details", 'duplicator') ?>" href="<?php echo esc_url($error_url); ?>">
-                                <i class="fa fa-archive fa-sm"></i>
-                            </a>
+                            <i class="fa fa-exclamation-triangle fa-sm"></i>
+                            <a href="<?php echo esc_url($error_url); ?>"><?php esc_html_e("Error Processing", 'duplicator') ?></a>
                         </td>
                     </tr>
                 <?php endif; ?>

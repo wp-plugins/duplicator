@@ -104,7 +104,7 @@ jQuery(document).ready(function($)
 	}
 
     Duplicator.Tools.readLogfile = function() {
-        $.get('<?php echo esc_url($logurl); ?>', function(data) {
+        $.get(<?php echo str_replace('\\/', '/', json_encode($logurl)); ?>, function(data) {
             $('#dup-log-content').text(data);
         }, 'text');
     };

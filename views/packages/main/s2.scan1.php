@@ -38,7 +38,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	form#form-duplicator {text-align:center; max-width:750px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
 	div.dup-progress-title {font-size:22px; padding:5px 0 20px 0; font-weight:bold}
 	div#dup-msg-success {padding:0 5px 5px 5px; text-align:left}
-	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 15px 0; background:#fff; border-radius:5px; border:1px solid #ddd; box-shadow:0 8px 6px -6px #999; }
+	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 15px 0; background:#fff; border-radius:3px; border:1px solid #ddd; box-shadow:0 8px 6px -6px #999; }
 	div#dup-msg-success div.details-title {font-size:20px; border-bottom:1px solid #dfdfdf; padding:5px; margin:0 0 10px 0; font-weight:bold}
 	div#dup-msg-success-subtitle {color:#999; margin:0; font-size:11px}
 	div.dup-scan-filter-status {display:inline; font-size:11px; margin-right:10px; color:#630f0f;}
@@ -50,9 +50,10 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	/*SCAN ITEMS: Sections */
 	div.scan-header { font-size:16px; padding:7px 5px 7px 7px; font-weight:bold; background-color:#E0E0E0; border-bottom:0px solid #C0C0C0 }
 	div.scan-header-details {float:right; margin-top:-5px}
-	div.scan-item {border:1px solid #E0E0E0; border-bottom:none;}
-	div.scan-item-first { border-top-right-radius:4px; border-top-left-radius:4px}
-	div.scan-item-last {border-bottom:1px solid #E0E0E0}
+	div.scan-item {border:1px solid #E0E0E0; border-top:none;}
+	div.scan-item-first {
+        border-top:1px solid #E0E0E0
+    }
 	div.scan-item div.title {background-color:#F1F1F1; width:100%; padding:8px 0 8px 0; cursor:pointer; height:20px;}
 	div.scan-item div.title:hover {background-color:#ECECEC;}
 	div.scan-item div.text {font-weight:bold; font-size:14px; float:left;  position:relative; left:10px}
@@ -66,6 +67,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	div.dup-more-details a{color:black}
 	div.dup-more-details a:hover {color:#777; cursor:pointer}
 	div.dup-more-details:hover {color:#777; cursor:pointer}
+
+    div.help-tab-content span.badge-pass{display:inline-block; border-radius:4px; color:#fff; min-width:40px; text-align:center;padding:0 3px 1px 3px; background: #197b19; margin-top:4px}
+    div.help-tab-content span.badge-warn{display:inline-block; border-radius:4px; color:#fff; min-width:40px; text-align:center;padding:0 3px 1px 3px; background: #636363; margin-top:4px}
 
 	/*FILES */
 	div#data-arc-size1 {display:inline-block; font-size:11px; margin-right:1px;}
@@ -172,19 +176,17 @@ TOOL BAR:STEPS -->
 		<td style="white-space:nowrap">
 			<div id="dup-wiz">
 				<div id="dup-wiz-steps">
-					<div class="completed-step"><a>1-<?php esc_html_e('Setup', 'duplicator'); ?></a></div>
-					<div class="active-step"><a>2-<?php esc_html_e('Scan', 'duplicator'); ?> </a></div>
-					<div><a>3-<?php esc_html_e('Build', 'duplicator'); ?> </a></div>
+					<div class="completed-step"><a>1 <?php esc_html_e('Setup', 'duplicator'); ?></a></div>
+					<div class="active-step"><a>2 <?php esc_html_e('Scan', 'duplicator'); ?> </a></div>
+					<div><a>3 <?php esc_html_e('Build', 'duplicator'); ?> </a></div>
 				</div>
-				<div id="dup-wiz-title">
-					<?php esc_html_e('Step 2: System Scan', 'duplicator'); ?>
-				</div> 
+                <div id="dup-wiz-title" class="dup-guide-txt-color">
+                    <i class="fab fa-wordpress"></i>
+                    <?php esc_html_e('Step 2: Scan site for configuration &amp; system notices.', 'duplicator'); ?>
+                </div>
 			</div>	
 		</td>
-		<td>
-			<a href="?page=duplicator" class="button"><i class="fa fa-archive fa-sm"></i> <?php esc_html_e('Packages', 'duplicator'); ?></a>
-			<a href="javascript:void(0)" class="button disabled"> <?php esc_html_e("Create New", 'duplicator'); ?></a>
-		</td>
+        <td>&nbsp;</td>
 	</tr>
 </table>		
 <hr class="dup-toolbar-line">
@@ -220,7 +222,7 @@ TOOL BAR:STEPS -->
 		<div style="text-align:center">
 			<div class="dup-hdr-success"><i class="far fa-check-square fa-lg"></i> <?php esc_html_e('Scan Complete', 'duplicator'); ?></div>
 			<div id="dup-msg-success-subtitle">
-				<?php esc_html_e('Process Time:', 'duplicator'); ?> <span id="data-rpt-scantime"></span>
+				<?php esc_html_e('Scan Time:', 'duplicator'); ?> <span id="data-rpt-scantime"></span>
 			</div>
 		</div>
 
@@ -420,7 +422,7 @@ jQuery(document).ready(function($)
 		html_msg += '<li><?php esc_html_e("- On some budget hosts scanning over 30k files can lead to timeout/gateway issues. Consider scanning only your main WordPress site and avoid trying to backup other external directories.", 'duplicator') ?></li>';
 		html_msg += '<li><?php esc_html_e("- Symbolic link recursion can cause timeouts.  Ask your server admin if any are present in the scan path.  If they are add the full path as a filter and try running the scan again.", 'duplicator') ?></li>';
 		html_msg += '</ul>';
-		$('#dup-msg-error-response-status').html('Scan Path Error [<?php echo duplicator_get_abs_path(); ?>]');
+		$('#dup-msg-error-response-status').html('Scan Path Error [<?php echo esc_js(duplicator_get_abs_path()); ?>]');
 		$('#dup-msg-error-response-text').html(html_msg);
 		$('#dup-msg-error').show(200);
 	}

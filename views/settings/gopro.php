@@ -7,10 +7,11 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 if(mt_rand(0, 1) == 0) {
     $test_text = esc_html__('Check It Out!', 'duplicator');
-    $test_url  = "https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro_checkitout&utm_campaign=duplicator_pro";
+    $test_url  = "https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro_checkitout1&utm_campaign=duplicator_pro";
 } else {
-    $test_text = esc_html__('Learn More', 'duplicator');
-    $test_url  = "https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro_learnmore&utm_campaign=duplicator_pro";
+    /*Updated from 'Learn More' to 'Check It Out' on 1.4.4 release */
+    $test_text = esc_html__('Check It Out!', 'duplicator');
+    $test_url  = "https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_go_pro_checkitout2&utm_campaign=duplicator_pro";
 }
 
 ?>

@@ -561,6 +561,6 @@ DUPX.resetDBTest = function(e)
 
 	$btnTestDB.removeAttr('disabled').removeClass('disabled');
 	$btnNext.addClass('disabled').attr('disabled', 'true');
-	$divTestArea.html("<div class='sub-message'>To continue click the 'Test Database'<br/>button to retest the database setup.</div>");
+	$divTestArea.html("<div class='sub-message'>To continue click the 'Test Database' button to retest the database setup.</div>");
 }
 </script>

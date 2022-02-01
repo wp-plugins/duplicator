@@ -233,37 +233,46 @@ VIEW: STEP 3- INPUT -->
 				</tr>
 			</table><br/>
 
-			<table>
+			<table style="width:100%">
 				<tr>
-					<td style="padding-right:10px">
+					<td style="padding-right:10px;width:50%">
 						<b>Scan Tables:</b>
 						<div class="s3-allnonelinks">
 							<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',true);">[All]</a>
 							<a href="javascript:void(0)" onclick="$('#tables option').prop('selected',false);">[None]</a>
 						</div><br style="clear:both" />
-						<select id="tables" name="tables[]" multiple="multiple" style="width:315px;" size="10">
+						<select id="tables" name="tables[]" multiple="multiple" style="width:100%;" size="10">
 							<?php
 							foreach( $all_tables as $table ) {
 								echo '<option selected="selected" value="' . DUPX_U::esc_attr( $table ) . '">' . DUPX_U::esc_html($table) . '</option>';
 							}
 							?>
 						</select>
-
 					</td>
-					<td valign="top">
+					<td style="width:50%">
 						<b>Activate Plugins:</b>
 						<?php echo ($_POST['exe_safe_mode'] > 0) ? '<small class="s3-warn">Safe Mode Enabled</small>' : '' ; ?>
 						<div class="s3-allnonelinks" style="<?php echo ($_POST['exe_safe_mode']>0)? 'display:none':''; ?>">
 							<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
 							<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',false);">[None]</a>
 						</div><br style="clear:both" />
-						<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px;" <?php echo ($_POST['exe_safe_mode'] > 0) ? 'disabled="true"' : ''; ?> size="10">
+						<select id="plugins" name="plugins[]" multiple="multiple" style="width:100%;"  size="10">
 							<?php
 							$selected_string = 'selected="selected"';
-							foreach ($active_plugins as $plugin) {
-								$label = dirname($plugin) == '.' ? $plugin : dirname($plugin);
-                                echo "<option {$selected_string} value='" . DUPX_U::esc_attr( $plugin ) . "'>" . DUPX_U::esc_html($label) . '</option>';
-							}
+                            if ($_POST['exe_safe_mode'] > 0) {
+                                foreach ($active_plugins as $plugin) {
+                                    if (strpos($plugin, '/duplicator.php') !== false) {
+                                        $label = dirname($plugin) == '.' ? $plugin : dirname($plugin);
+                                        echo "<option {$selected_string} value='" . DUPX_U::esc_attr( $plugin ) . "'>" . DUPX_U::esc_html($label) . '</option>';
+                                        break;
+                                    }
+                                }
+                            } else {
+                                foreach ($active_plugins as $plugin) {
+                                    $label = dirname($plugin) == '.' ? $plugin : dirname($plugin);
+                                    echo "<option {$selected_string} value='" . DUPX_U::esc_attr( $plugin ) . "'>" . DUPX_U::esc_html($label) . '</option>';
+                                }
+                            }
 							?>
 						</select>
 					</td>
@@ -516,7 +525,7 @@ DUPX.runUpdate = function()
 				<?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 					setTimeout(function(){$('#s3-result-form').submit();}, 1000);
 				<?php endif; ?>
-				$('#progress-area').fadeOut(1800);
+				//$('#progress-area').fadeOut(1500);
 			} else {
 				DUPX.hideProgressBar();
 			}

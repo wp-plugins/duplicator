@@ -320,7 +320,7 @@ Auto Posts to view.step3.php  -->
 					<?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 						setTimeout(function () {$formResult.submit();}, 1000);
 					<?php endif; ?>
-					$('#progress-area').fadeOut(700);
+					//$('#progress-area').fadeOut(1500);
 				} else {
 					if (data.error_message) {
 						$('#ajaxerr-data').html(data.error_message);

@@ -146,23 +146,24 @@ if ($_POST['dbaction'] != 'manual') {
         $dbinstall->prepareDB();
     }
 }
+
 if($not_yet_logged) {
 
-	//Fatal Memory errors from file_get_contents is not catchable.
-	//Try to warn ahead of time with a check on buffer in memory difference
-	$current_php_mem = DUPX_U::returnBytes($GLOBALS['PHP_MEMORY_LIMIT']);
-	$current_php_mem = is_numeric($current_php_mem) ? $current_php_mem : null;
+    //Fatal Memory errors from file_get_contents is not catchable.
+    //Try to warn ahead of time with a check on buffer in memory difference
+    $current_php_mem = DUPX_U::returnBytes($GLOBALS['PHP_MEMORY_LIMIT']);
+    $current_php_mem = is_numeric($current_php_mem) ? $current_php_mem : null;
 
-	if ($current_php_mem != null && $dbinstall->dbFileSize > $current_php_mem) {
-		$readable_size = DUPX_U::readableByteSize($dbinstall->dbFileSize);
-		$msg   = "\nWARNING: The database script is '".DUPX_U::sanitize_text_field($readable_size)."' in size.  The PHP memory allocation is set\n";
-		$msg  .= "at '".DUPX_U::sanitize_text_field($GLOBALS['PHP_MEMORY_LIMIT'])."'.  There is a high possibility that the installer script will fail with\n";
-		$msg  .= "a memory allocation error when trying to load the database.sql file.  It is\n";
-		$msg  .= "recommended to increase the 'memory_limit' setting in the php.ini config file.\n";
-		$msg  .= "see: ".DUPX_U::esc_url($faq_url.'#faq-trouble-056-q')." \n";
-		DUPX_Log::info($msg);
-		unset($msg);
-	}
+    if ($current_php_mem != null && $dbinstall->dbFileSize > $current_php_mem) {
+        $readable_size = DUPX_U::readableByteSize($dbinstall->dbFileSize);
+        $msg   = "\nWARNING: The database script is '".DUPX_U::sanitize_text_field($readable_size)."' in size.  The PHP memory allocation is set\n";
+        $msg  .= "at '".DUPX_U::sanitize_text_field($GLOBALS['PHP_MEMORY_LIMIT'])."'.  There is a high possibility that the installer script will fail with\n";
+        $msg  .= "a memory allocation error when trying to load the database.sql file.  It is\n";
+        $msg  .= "recommended to increase the 'memory_limit' setting in the php.ini config file.\n";
+        $msg  .= "see: ".DUPX_U::esc_url($faq_url.'#faq-trouble-056-q')." \n";
+        DUPX_Log::info($msg);
+        unset($msg);
+    }
 
     DUPX_Log::info("--------------------------------------");
     DUPX_Log::info("DATABASE RESULTS");
@@ -170,17 +171,17 @@ if($not_yet_logged) {
 }
 
 if ($_POST['dbaction'] == 'manual') {
-	DUPX_Log::info("\n** SQL EXECUTION IS IN MANUAL MODE **");
-	DUPX_Log::info("- No SQL script has been executed -");
-	$JSON['pass'] = 1;
+    DUPX_Log::info("\n** SQL EXECUTION IS IN MANUAL MODE **");
+    DUPX_Log::info("- No SQL script has been executed -");
+    $JSON['pass'] = 1;
 } elseif(!isset($_POST['continue_chunking'])) {
     $dbinstall->writeInDB();
     $rowCountMisMatchTables = $dbinstall->getRowCountMisMatchTables();
     $JSON['pass'] = 1;
     if (!empty($rowCountMisMatchTables)) {
-		$errMsg = 'ERROR: Database Table row count verification was failed for table(s): '.implode(', ', $rowCountMisMatchTables);
-		DUPX_Log::info($errMsg);		
-	}
+        $errMsg = 'ERROR: Database Table row count verification was failed for table(s): '.implode(', ', $rowCountMisMatchTables);
+        DUPX_Log::info($errMsg);
+    }
 }
 
 $dbinstall->profile_end = DUPX_U::getMicrotime();

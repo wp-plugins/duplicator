@@ -2,7 +2,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <!-- ================================================================
-SERVER  -->
+SETUP  -->
 <div class="details-title">
 	<i class="fa fa-hdd-o"></i> <i class="far fa-hdd fa-sm"></i> <?php esc_html_e("Setup", 'duplicator');	?>
 	<div class="dup-more-details">
@@ -12,8 +12,8 @@ SERVER  -->
 </div>
 
 <!-- ============
-PHP SETTINGS -->
-<div class="scan-item">
+SYSTEM AND WORDPRESS -->
+<div class="scan-item scan-item-first">
 
     <?php
     
@@ -116,7 +116,7 @@ PHP SETTINGS -->
 
 <!-- ============
 WP SETTINGS -->
-<div class="scan-item scan-item-last">
+<div class="scan-item">
 
 
 	<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">

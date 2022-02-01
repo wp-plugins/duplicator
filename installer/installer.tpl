@@ -193,17 +193,20 @@ class DUPX_Bootstrap
 		//MANUAL EXTRACTION NOT FOUND
 		if (! $manual_extract_found) {
 
-			//MISSING ARCHIVE FILE
+			//MISSING ARCHIVE FILE  
 			if (! file_exists($archive_filepath)) {
 				self::log("[ERROR] Archive file not found!");
-				$error  = "<style>.diff-list font { font-weight: bold; }</style>"
-                    . "<b>Archive not found!</b> The <i>'Required File'</i> below should be present in the <i>'Extraction Path'</i>.  "
-					. "The archive file name must be the <u>exact</u> name of the archive file placed in the extraction path character for character.<br/><br/>  "
-					. "If the file does not have the correct name then rename it to the <i>'Required File'</i> below.   When downloading the package files make "
-					. "sure both files are from the same package line in the packages view.  If the archive is not finished downloading please wait for it to complete.<br/><br/>"
-					. "If this message continues even with a valid archive file, consider clearing your browsers cache and refreshing, trying another browser or change the browsers "
-					. "URL from http to https or vice versa.<br/><br/>  "
-					. "<b>Extraction Path:</b> <span class='file-info'>{$this->installerExtractPath}/</span><br/><br/>";
+                $error = "<style>.diff-list font { font-weight: bold; }</style>"
+                    . "<b>Archive not found!</b> The required archive file must be present in the <i>'Extraction Path'</i> below.  When the archive file name was created "
+                    . "it was given a secure hashed file name.  This file name must be the <i>exact same</i> name as when it was created character for character.  "
+                    . "Each archive file has a unique installer associated with it and must be used together.  See the list below for more options:<br/>"
+                    . "<ul>"
+                    . "<li>If the archive is not finished downloading please wait for it to complete.</li>"
+                    . "<li>Rename the file to it original hash name.  See WordPress-Admin ❯ Packages ❯  Details. </li>"
+                    . "<li>When downloading, both files both should be from the same package line. </li>"
+                    . "<li>Also see: <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-050-q' target='_blank'>How to fix various errors that show up before step-1 of the installer?</a></li>"
+                    . "</ul><br/>"
+                    ."<b>Extraction Path:</b> <span class='file-info'>{$this->installerExtractPath}/</span><br/>";
 
 				return $error;
 			}
@@ -214,7 +217,7 @@ class DUPX_Bootstrap
 			if (!empty($archive_size) && !self::checkInputVaslidInt($archive_size)) {
 				$no_of_bits = PHP_INT_SIZE * 8;
                 $error  = 'Current is a '.$no_of_bits.'-bit SO. This archive is too large for '.$no_of_bits.'-bit PHP.'.'<br>';
-                $this->log('[ERROR] '.$error);
+                self::log('[ERROR] '.$error);
                 $error  .= 'Possibibles solutions:<br>';
                 $error  .= '- Use the file filters to get your package lower to support this server or try the package on a Linux server.'.'<br>';
                 $error  .= '- Perform a <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q">Manual Extract Install</a>'.'<br>';
@@ -237,8 +240,8 @@ class DUPX_Bootstrap
 
 			//SIZE CHECK ERROR
 			if (($this->archiveRatio < 90) && ($this->archiveActualSize > 0) && ($this->archiveExpectedSize > 0)) {
-				$this->log("ERROR: The expected archive size should be around [{$archiveExpectedEasy}].  The actual size is currently [{$archiveActualEasy}].");
-				$this->log("ERROR: The archive file may not have fully been downloaded to the server");
+				self::log("ERROR: The expected archive size should be around [{$archiveExpectedEasy}].  The actual size is currently [{$archiveActualEasy}].");
+				self::log("ERROR: The archive file may not have fully been downloaded to the server");
 				$percent = round($this->archiveRatio);
 
 				$autochecked = isset($_POST['auto-fresh']) ? "checked='true'" : '';
@@ -1702,7 +1705,7 @@ try {
 	<body>
 		<?php
 		$id = uniqid();
-		$html = "<form id='{$id}' method='post' action='{$boot->mainInstallerURL}' />\n";
+		$html = "<form id='{$id}' method='post' action=".str_replace('\\/', '/', json_encode($boot->mainInstallerURL))." />\n";
 		$data = array(
 			'csrf_token' => $step1_csrf_token,
 		);
@@ -1719,7 +1722,7 @@ try {
 		<style>
 			body {font-family:Verdana,Arial,sans-serif; line-height:18px; font-size: 12px}
 			h2 {font-size:20px; margin:5px 0 5px 0; border-bottom:1px solid #dfdfdf; padding:3px}
-			div#content {border:1px solid #CDCDCD; width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:13px}
+			div#content {border:1px solid #CDCDCD; width:750px; min-height:550px; margin:auto; margin-top:18px; border-radius:3px; box-shadow:0 8px 6px -6px #333; font-size:13px}
 			div#content-inner {padding:10px 30px; min-height:550px}
 
 			/* Header */
