@@ -211,7 +211,7 @@ final class DUPX_S3_Funcs
         // OTHER
         $this->post['exe_safe_mode'] = filter_input(INPUT_POST, 'exe_safe_mode', FILTER_VALIDATE_BOOLEAN, array('options' => array('default' => false)));
         $this->post['config_mode']   = DUPX_U::isset_sanitize($_POST, 'config_mode', array('default' => 'NEW'));
-        $this->post['plugins']       = filter_input(INPUT_POST, 'plugins', FILTER_SANITIZE_STRING,
+        $this->post['plugins']       = filter_input(INPUT_POST, 'plugins', FILTER_UNSAFE_RAW,
             array(
             'options' => array(
                 'default' => array()
@@ -984,7 +984,7 @@ LONGMSG;
         mysqli_query($this->dbh,
             "UPDATE `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` SET option_value = '".mysqli_real_escape_string($this->dbh, $this->post['siteurl'])."'  WHERE option_name = 'siteurl' ");
         mysqli_query($this->dbh,
-            "INSERT INTO `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` (option_value, option_name) VALUES('".mysqli_real_escape_string($this->dbh,
+            "REPLACE INTO `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` (option_value, option_name) VALUES('".mysqli_real_escape_string($this->dbh,
                 $this->post['exe_safe_mode'])."','duplicator_exe_safe_mode')");
         //Reset the postguid data
         if ($this->post['postguid']) {

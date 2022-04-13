@@ -7,17 +7,18 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     form#dup-form-opts label {line-height:22px}
     form#dup-form-opts input[type=checkbox] {margin-top:3px}
     form#dup-form-opts textarea, input[type="text"] {width:100%}
-    form#dup-form-opts textarea#filter-dirs {height:95px;}
-    form#dup-form-opts textarea#filter-exts {height:27px}
+
     textarea#package-notes {height:75px;}
 	div.dup-notes-add {float:right; margin:-4px 2px 4px 0;}
     div#dup-notes-area {display:none}
 	input#package-name {padding:4px; height: 2em;  font-size: 1.2em;  line-height: 100%; width: 100%;   margin: 0 0 3px;}
 	tr.dup-store-path td {padding:14px}
     label.lbl-larger {font-size:1.2em}
+    form#dup-form-opts ul li.tabs {font-size:16px}
+    div.tab-hdr-title {font-size: 16px; font-weight: bold; padding: 1px; margin:2px 0 5px 0; border-bottom:1px solid #dcdcde }
 
-    /*ARCHIVE SECTION*/
-    form#dup-form-opts div.tabs-panel{max-height:800px; padding:10px; min-height:280px}
+    /*TAB-1: ARCHIVE SECTION*/
+    form#dup-form-opts div.tabs-panel{max-height:800px; padding:15px 20px 20px 20px; min-height:280px}
     form#dup-form-opts ul li.tabs{font-weight:bold}
 	sup.archive-ext {font-style:italic;font-size:10px; cursor: pointer; vertical-align: baseline; position: relative; top: -0.8em; font-weight: normal}
     ul.category-tabs li {padding:4px 15px 4px 15px}
@@ -25,25 +26,33 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     span#dup-archive-filter-file {color:#A62426; display:none}
     span#dup-archive-filter-db {color:#A62426; display:none}
 	span#dup-archive-db-only {color:#A62426; display:none}
-    div#dup-file-filter-items, div#dup-db-filter-items {padding:5px 0;}
+    div#dup-file-filter-items {padding:5px 0 0;}
+    div#dup-db-filter-items {padding:0; margin-top:-15px}
 	div#dup-db-filter-items {font-stretch:ultra-condensed; font-family:Calibri; }
-	form#dup-form-opts textarea#filter-files {height:85px}
+    form#dup-form-opts textarea#filter-dirs {height:125px; background:#fafafa; padding:5px 10px 5px 10px;}
+    form#dup-form-opts textarea#filter-exts {height:30px; background:#fafafa; padding:3px 10px 1px 10px;}
+	form#dup-form-opts textarea#filter-files {height:125px; background:#fafafa; padding:5px 10px 5px 10px;}
     div.dup-quick-links {font-size:11px; float:right; display:inline-block; margin-top:2px; font-style:italic}
-    div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0 0 10px; color:#777}
+    div.dup-tabs-opts-help {font-style:italic; font-size:11px; margin:10px 0 0 2px; color:#777;}
     
-    /* Tab: Database */
-    table#dup-dbtables td {padding:1px 7px 1px 4px}
+    /* TAB-2: DATABASE */
+    table#dup-dbtables td {padding:0 20px 5px 10px;}
+    label.core-table,
+    label.non-core-table {padding:2px 0 2px 0; font-size:14px; display: inline-block}
 	label.core-table {color:#9A1E26;font-style:italic;font-weight:bold}
 	i.core-table-info {color:#9A1E26;font-style:italic;}
 	label.non-core-table {color:#000}
 	label.non-core-table:hover, label.core-table:hover {text-decoration:line-through}
-	table.dbmysql-compatibility td{padding:2px 20px 2px 2px}
+	table.dbmysql-compatibility {margin-top:-10px}
+    table.dbmysql-compatibility td{padding:0 20px 0 2px}
 	div.dup-store-pro {font-size:12px; font-style:italic;}
 	div.dup-store-pro img {height:14px; width:14px; vertical-align:text-top}
 	div.dup-store-pro a {text-decoration:underline}
 	span.dup-pro-text {font-style:italic; font-size:12px; color:#555; font-style:italic }
 	div#dup-exportdb-items-checked, div#dup-exportdb-items-off {min-height:275px; display:none}
 	div#dup-exportdb-items-checked {padding: 5px; max-width:700px}
+    div.dup-tbl-scroll {white-space:nowrap; height:350px; overflow-y: scroll; border:1px solid silver; padding:5px 10px; border-radius: 2px;
+     background:#fafafa; margin:3px 0 0 0; width:98%}
 
     /*INSTALLER SECTION*/
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}
@@ -93,7 +102,8 @@ $storage_position   = DUP_Settings::Get('storage_position');
 STORAGE -->
 <div class="dup-box">
 	<div class="dup-box-title">
-		<i class="fas fa-database fa-sm"></i>&nbsp;<?php  esc_html_e("Storage", 'duplicator'); ?> 
+		<i class="fas fa-server fa-fw fa-sm"></i>
+        <?php  esc_html_e("Storage", 'duplicator'); ?>
 		<div class="dup-box-arrow"></div>
 	</div>			
 	<div class="dup-box-panel" id="dup-pack-storage-panel" style="<?php echo esc_html($ui_css_storage); ?>">
@@ -132,7 +142,10 @@ STORAGE -->
                             ?>
                         </i>
                     </td>
-                    <td><i class="fas fa-server fa-fw"></i> <?php esc_html_e("Local", 'duplicator'); ?></td>
+                    <td>
+                        <i class="far fa-hdd fa-fw"></i>
+                        <?php esc_html_e("Local", 'duplicator'); ?>
+                    </td>
                     <td><?php echo DUP_Settings::getSsdirPath(); ?></td>
                 </tr>
                 <tr>
@@ -172,9 +185,15 @@ ARCHIVE -->
 				echo "&nbsp;<sup class='archive-ext'>{$archive_build_mode}</sup>";
 			?> &nbsp;
         <span style="font-size:13px">
-            <span id="dup-archive-filter-file" title="<?php esc_attr_e('File filter enabled', 'duplicator') ?>"><i class="far fa-copy fa-sm"></i> <i class="fa fa-filter fa-sm"></i> &nbsp;&nbsp;</span> 
-            <span id="dup-archive-filter-db" title="<?php esc_attr_e('Database filter enabled', 'duplicator') ?>"><i class="fa fa-table fa-sm"></i> <i class="fa fa-filter fa-sm"></i></span>
-			<span id="dup-archive-db-only" title="<?php esc_attr_e('Archive Only the Database', 'duplicator') ?>"> <?php esc_html_e('Database Only', 'duplicator') ?> </span>
+            <span id="dup-archive-filter-file" title="<?php esc_attr_e('File filter enabled', 'duplicator') ?>">
+                <i class="far fa-copy fa-sm"></i> <i class="fa fa-filter fa-sm"></i> &nbsp;&nbsp;
+            </span>
+            <span id="dup-archive-filter-db" title="<?php esc_attr_e('Database filter enabled', 'duplicator') ?>">
+                <i class="fa fa-table fa-sm"></i> <i class="fa fa-filter fa-sm"></i>
+            </span>
+			<span id="dup-archive-db-only" title="<?php esc_attr_e('Archive Only the Database', 'duplicator') ?>">
+                <i class="fas fa-database fa-sm"></i> <?php esc_html_e('Database Only', 'duplicator') ?>
+            </span>
         </span>
         <div class="dup-box-arrow"></div>
     </div>		
@@ -190,6 +209,10 @@ ARCHIVE -->
 
             <!-- TAB1:PACKAGE -->
             <div>
+                <div class="tab-hdr-title">
+                    <?php esc_html_e('Filters', 'duplicator') ?>
+                </div>
+
                 <!-- FILTERS -->
                 <?php
 					$uploads = wp_upload_dir();
@@ -213,7 +236,7 @@ ARCHIVE -->
 					<div id="dup-file-filter-items">
 						<label for="filter-dirs" title="<?php esc_attr_e("Separate all filters by semicolon", 'duplicator'); ?>">
 							<?php
-								_e("Directories:", 'duplicator');
+								_e("Folders:", 'duplicator');
 								echo sprintf("<sup title='%s'>({$filter_dir_count})</sup>", esc_html__("Number of directories filtered", 'duplicator'));
 							?>
 						</label>
@@ -223,15 +246,19 @@ ARCHIVE -->
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludePath('<?php echo esc_js(DUP_Util::safePath(WP_CONTENT_DIR)); ?>/cache')">[<?php esc_html_e("cache", 'duplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="jQuery('#filter-dirs').val('')"><?php esc_html_e("(clear)", 'duplicator') ?></a>
 						</div>
-						<textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterDirs)) ?></textarea><br/>
+						<textarea name="filter-dirs" id="filter-dirs" placeholder="/full_path/exclude_path1;/full_path/exclude_path2;"><?php echo str_replace(";", ";\n", esc_textarea($Package->Archive->FilterDirs)) ?></textarea>
+                        <br/><br/>
 
-						<label class="no-select" title="<?php esc_attr_e("Separate all filters by semicolon", 'duplicator'); ?>"><?php esc_html_e("File extensions", 'duplicator') ?>:</label>
+						<label class="no-select" title="<?php esc_attr_e("Separate all filters by semicolon", 'duplicator'); ?>">
+                            <?php esc_html_e("File extensions", 'duplicator') ?>:
+                        </label>
 						<div class='dup-quick-links'>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('avi;mov;mp4;mpeg;mpg;swf;wmv;aac;m3u;mp3;mpa;wav;wma')">[<?php esc_html_e("media", 'duplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="Duplicator.Pack.AddExcludeExts('zip;rar;tar;gz;bz2;7z')">[<?php esc_html_e("archive", 'duplicator') ?>]</a>
 							<a href="javascript:void(0)" onclick="jQuery('#filter-exts').val('')"><?php esc_html_e("(clear)", 'duplicator') ?></a>
 						</div>
-						<textarea name="filter-exts" id="filter-exts" placeholder="ext1;ext2;ext3;"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
+						<textarea name="filter-exts" id="filter-exts" placeholder="<?php esc_attr_e("example:", 'duplicator'); ?> mov;zip;mp4"><?php echo esc_textarea($Package->Archive->FilterExts); ?></textarea>
+                        <br/><br/>
 
 						<label class="no-select" title="<?php esc_attr_e("Separate all filters by semicolon", 'duplicator'); ?>">
 							<?php
@@ -282,18 +309,16 @@ ARCHIVE -->
             </div>
 
             <!-- TAB2: DATABASE -->
-            <div>					
+            <div>
+                <div class="tab-hdr-title">
+                    <?php esc_html_e('Filters', 'duplicator') ?>
+                </div>
+
 				<table>
-					<tr>
-						<td colspan="2" style="padding:0 0 10px 0">
-							<?php esc_html_e("Build Mode", 'duplicator') ?>:&nbsp; 
-							<a href="?page=duplicator-settings&amp;tab=package" target="settings"><?php echo esc_html($dbbuild_mode); ?></a>
-						</td>
-					</tr>
 					<tr>
 						<td><input type="checkbox" id="dbfilter-on" name="dbfilter-on" onclick="Duplicator.Pack.ToggleDBFilters()" <?php echo ($Package->Database->FilterOn) ? "checked='checked'" :""; ?> /></td>
 						<td>
-							<label for="dbfilter-on"><?php esc_html_e("Enable Table Filters", 'duplicator') ?> &nbsp;</label>
+							<label for="dbfilter-on"><?php esc_html_e("Enable Table Filters", 'duplicator') ?>&nbsp;</label>
 							<i class="fas fa-question-circle fa-sm"
 							   data-tooltip-title="<?php esc_attr_e("Enable Table Filters:", 'duplicator'); ?>"
 							   data-tooltip="<?php esc_attr_e('Checked tables will not be added to the database script.  Excluding certain tables can possibly cause your site or plugins to not work correctly after install!', 'duplicator'); ?>">
@@ -302,9 +327,11 @@ ARCHIVE -->
 					</tr>
 				</table>
                 <div id="dup-db-filter-items">
-                    <a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');">[ <?php esc_html_e('Include All', 'duplicator'); ?> ]</a> &nbsp; 
-                    <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');">[ <?php esc_html_e('Exclude All', 'duplicator'); ?> ]</a>
-                    <div style="white-space:nowrap">
+                    <div style="float:right; padding-right:10px;">
+                        <a href="javascript:void(0)" id="dball" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', true).trigger('click');"><?php esc_html_e('Include All', 'duplicator'); ?></a> &nbsp;
+                        <a href="javascript:void(0)" id="dbnone" onclick="jQuery('#dup-dbtables .checkbox').prop('checked', false).trigger('click');"><?php esc_html_e('Exclude All', 'duplicator'); ?></a>
+                    </div>
+                    <div class="dup-tbl-scroll">
 					<?php
 						$tables = $wpdb->get_results("SHOW FULL TABLES FROM `" . DB_NAME . "` WHERE Table_Type = 'BASE TABLE' ", ARRAY_N);
 						$num_rows = count($tables);
@@ -352,51 +379,64 @@ ARCHIVE -->
 						_e("<i class='core-table-info'> Use caution when excluding tables! It is highly recommended to not exclude WordPress core tables*, unless you know the impact.</i>", 'duplicator');
 					?>
 				</div>
+                <br/>
 
-				<br/>
-				<?php esc_html_e("Compatibility Mode", 'duplicator') ?> &nbsp;
-				<i class="fas fa-question-circle fa-sm" 
-				   data-tooltip-title="<?php esc_attr_e("Compatibility Mode:", 'duplicator'); ?>" 
-				   data-tooltip="<?php esc_attr_e('This is an advanced database backwards compatibility feature that should ONLY be used if having problems installing packages.'
-						   . ' If the database server version is lower than the version where the package was built then these options may help generate a script that is more compliant'
-						   . ' with the older database server. It is recommended to try each option separately starting with mysql40.', 'duplicator'); ?>">
-				</i> &nbsp;
-				<small style="font-style:italic">
-					<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php esc_html_e('details', 'duplicator'); ?>]</a>
-				</small>
-				<br/>
-				
-				<?php if ($dbbuild_mode == 'mysqldump') :?>
-					<?php
-						$modes = explode(',', $Package->Database->Compatible);
-						$is_mysql40		= in_array('mysql40',	$modes);
-						$is_no_table	= in_array('no_table_options',  $modes);
-						$is_no_key		= in_array('no_key_options',	$modes);
-						$is_no_field	= in_array('no_field_options',	$modes);
-					?>
-					<table class="dbmysql-compatibility">
-						<tr>
-							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-mysql40" value="mysql40" <?php echo $is_mysql40 ? 'checked="true"' :''; ?> > 
-								<label for="dbcompat-mysql40"><?php esc_html_e("mysql40", 'duplicator') ?></label> 
-							</td>
-							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_table_options" value="no_table_options" <?php echo $is_no_table ? 'checked="true"' :''; ?>> 
-								<label for="dbcompat-no_table_options"><?php esc_html_e("no_table_options", 'duplicator') ?></label>
-							</td>
-							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_key_options" value="no_key_options" <?php echo $is_no_key ? 'checked="true"' :''; ?>> 
-								<label for="dbcompat-no_key_options"><?php esc_html_e("no_key_options", 'duplicator') ?></label>
-							</td>
-							<td>
-								<input type="checkbox" name="dbcompat[]" id="dbcompat-no_field_options" value="no_field_options" <?php echo $is_no_field ? 'checked="true"' :''; ?>> 
-								<label for="dbcompat-no_field_options"><?php esc_html_e("no_field_options", 'duplicator') ?></label>
-							</td>
-						</tr>					
-					</table>
-				<?php else :?>
-					<i><?php esc_html_e("This option is only available with mysqldump mode.", 'duplicator'); ?></i>
-				<?php endif; ?>
+                <div class="tab-hdr-title">
+                    <?php esc_html_e('Configuration', 'duplicator') ?>
+                </div>
+
+                <div class="db-configuration" style="line-height: 30px">
+
+                    <?php esc_html_e("SQL Mode", 'duplicator') ?>:&nbsp;
+                    <a href="?page=duplicator-settings&amp;tab=package" target="settings"><?php echo esc_html($dbbuild_mode); ?></a>
+
+                    <br/>
+                    <?php esc_html_e("Compatibility Mode", 'duplicator') ?>:&nbsp;
+                    <i class="fas fa-question-circle fa-sm"
+                       data-tooltip-title="<?php esc_attr_e("Compatibility Mode:", 'duplicator'); ?>"
+                       data-tooltip="<?php esc_attr_e('This is an advanced database backwards compatibility feature that should ONLY be used if having problems installing packages.'
+                               . ' If the database server version is lower than the version where the package was built then these options may help generate a script that is more compliant'
+                               . ' with the older database server. It is recommended to try each option separately starting with mysql40.', 'duplicator'); ?>">
+                    </i>&nbsp;
+                    <small style="font-style:italic">
+                        <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_compatible" target="_blank">[<?php esc_html_e('details', 'duplicator'); ?>]</a>
+                    </small>
+
+                    <?php if ($dbbuild_mode == 'mysqldump') :?>
+                        <?php
+                            $modes = explode(',', $Package->Database->Compatible);
+                            $is_mysql40		= in_array('mysql40',	$modes);
+                            $is_no_table	= in_array('no_table_options',  $modes);
+                            $is_no_key		= in_array('no_key_options',	$modes);
+                            $is_no_field	= in_array('no_field_options',	$modes);
+                        ?>
+                        <table class="dbmysql-compatibility">
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="dbcompat[]" id="dbcompat-mysql40" value="mysql40" <?php echo $is_mysql40 ? 'checked="true"' :''; ?> >
+                                    <label for="dbcompat-mysql40"><?php esc_html_e("mysql40", 'duplicator') ?></label>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="dbcompat[]" id="dbcompat-no_table_options" value="no_table_options" <?php echo $is_no_table ? 'checked="true"' :''; ?>>
+                                    <label for="dbcompat-no_table_options"><?php esc_html_e("no_table_options", 'duplicator') ?></label>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="dbcompat[]" id="dbcompat-no_key_options" value="no_key_options" <?php echo $is_no_key ? 'checked="true"' :''; ?>>
+                                    <label for="dbcompat-no_key_options"><?php esc_html_e("no_key_options", 'duplicator') ?></label>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="dbcompat[]" id="dbcompat-no_field_options" value="no_field_options" <?php echo $is_no_field ? 'checked="true"' :''; ?>>
+                                    <label for="dbcompat-no_field_options"><?php esc_html_e("no_field_options", 'duplicator') ?></label>
+                                </td>
+                            </tr>
+                        </table>
+                    <?php else :?>
+                        <i><?php esc_html_e("This option is only available with mysqldump mode.", 'duplicator'); ?></i>
+                    <?php endif; ?>
+
+               </div>
+
+
 
             </div>
         </div>		
@@ -601,9 +641,11 @@ jQuery(document).ready(function ($)
 			$filterItems.removeAttr('disabled').css({color:'#000'});
 			$('#dup-dbtables input').removeAttr('readonly').css({color:'#000'});
 			$('#dup-archive-filter-db').show();
+            $('div.dup-tbl-scroll label').css({color:'#000'});
 		} else {
 			$filterItems.attr('disabled', 'disabled').css({color:'#999'});
 			$('#dup-dbtables input').attr('readonly', 'readonly').css({color:'#999'});
+            $('div.dup-tbl-scroll label').css({color:'#999'});
 			$('#dup-archive-filter-db').hide();
 		}
 	};

@@ -193,7 +193,7 @@ SERVER SETTINGS -->
 		</tr>
 		<tr>
 			<td><?php esc_html_e("Charset", 'duplicator'); ?></td>
-			<td><?php echo DB_CHARSET ?></td>
+			<td><?php echo defined('DB_CHARSET') ? DB_CHARSET : 'DB_CHARSET not set' ; ?></td>
 		</tr>
 		<tr>
 			<td><a href="http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_wait_timeout" target="_blank"><?php esc_html_e("Wait Timeout", 'duplicator'); ?></a></td>

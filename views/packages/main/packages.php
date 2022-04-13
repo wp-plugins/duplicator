@@ -120,10 +120,10 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                     <td>
                         <div id='dup-list-alert-nodata'>
                             <i class="fa fa-archive fa-sm"></i> 
-                            <?php esc_html_e("No Packages Found.", 'duplicator'); ?><br/>
-                            <?php esc_html_e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
+                            <?php esc_html_e("No Packages Found", 'duplicator'); ?><br/>
+                            <i><?php esc_html_e("Click 'Create New' To Build Package", 'duplicator'); ?></i><br/>
                             <div class="dup-quick-start" <?php echo ($is_mu) ? 'style="display:none"' : ''; ?>>
-                                <?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
+                                <b><?php esc_html_e("New to Duplicator?", 'duplicator'); ?></b><br/>
                                 <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty1&utm_campaign=quick_start" target="_blank">
                                     <?php esc_html_e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
                                 </a>
@@ -173,8 +173,8 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                 <td colspan="6">
                     <div id='dup-list-alert-nodata'>
                         <i class="fa fa-archive fa-sm"></i>
-                        <?php esc_html_e("No Packages Found.", 'duplicator'); ?><br/>
-                        <?php esc_html_e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
+                        <?php esc_html_e("No Packages Found", 'duplicator'); ?><br/>
+                        <i><?php esc_html_e("Click 'Create New' To Build Package", 'duplicator'); ?></i><br/>
                         <div class="dup-quick-start">
                             <?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
                             <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty2&utm_campaign=quick_start" target="_blank">
@@ -367,10 +367,14 @@ DIALOG: HELP DIALOG -->
     <br/><br/>
 
     <b><?php esc_html_e("Other Resources:", 'duplicator') ?></b><hr size='1'/>
-    <i class="fas fa-question-circle fa-sm"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_ticket&utm_campaign=duplicator_free" target="_blank"><?php esc_html_e("Need help with the plugin?", 'duplicator') ?></a> <br/>
-    <i class="fa fa-lightbulb"></i> <a href="https://snapcreek.com/ticket/index.php?a=add&category=69" target="_blank"><?php esc_html_e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
+    <i class="fas fa-question-circle fa-sm fa-fw"></i>
+    <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_ticket&utm_campaign=duplicator_free" target="_blank"><?php esc_html_e("Need help with the plugin?", 'duplicator') ?></a> <br/>
+
+    <i class="fa fa-lightbulb fa-fw"></i>
+    <a href="https://snapcreek.com/ticket/index.php?a=add&category=69" target="_blank"><?php esc_html_e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
     <?php if ($completeCount >= 3) : ?>
-        <i class="fa fa-star"></i> <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php esc_html_e("Help review the plugin!", 'duplicator') ?></a>
+        <i class="fa fa-star fa-fw"></i>
+        <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php esc_html_e("Help review the plugin!", 'duplicator') ?></a>
     <?php endif; ?>
 </div>
 

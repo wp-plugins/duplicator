@@ -1,8 +1,6 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-//require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.php');
-//require_once (DUPLICATOR_PLUGIN_PATH.'classes/utilities/class.u.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.archive.duparchive.state.expand.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.archive.duparchive.state.create.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/class.duparchive.loggerbase.php');
@@ -37,10 +35,8 @@ class DUP_DupArchive
         DUP_LOG::trace("start");
         try {
             DUP_Log::Open($package->NameHash);
-            DUP_Log::trace("c2");
 
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
-                DUP_LOG::trace("c3");
                 $error_msg = __('Package build appears stuck so marking package as failed. Is the Max Worker Time set too high?.', 'duplicator');
                 DUP_Log::error(esc_html__('Build Failure', 'duplicator'), esc_html($error_msg), Dup_ErrorBehavior::LogOnly);
                 //$buildProgress->failed = true;
@@ -49,7 +45,6 @@ class DUP_DupArchive
                 ;
                 return true;
             } else {
-                DUP_LOG::trace("c4");
                 // If all goes well retries will be reset to 0 at the end of this function.
                 $buildProgress->retries++;
                 $package->update();
@@ -57,29 +52,21 @@ class DUP_DupArchive
 
             $done = false;
 
-            DUP_LOG::trace("c5");
             DupArchiveEngine::init(new DUP_DupArchive_Logger(), null, $archive);
-
-            DUP_LOG::trace("c6");
             DUP_Package::safeTmpCleanup(true);
 
             $compressDir  = rtrim(DUP_Util::safePath($archive->PackDir), '/');
             $sqlPath      = DUP_Settings::getSsdirTmpPath()."/{$package->Database->File}";
             $archivePath  = DUP_Settings::getSsdirTmpPath()."/{$archive->File}";
             $scanFilepath = DUP_Settings::getSsdirTmpPath()."/{$package->NameHash}_scan.json";
-
-            DUP_LOG::trace("c7");
             $skipArchiveFinalization = false;
             $json                    = '';
 
-            DUP_LOG::trace("c8");
             if (file_exists($scanFilepath)) {
 
-                DUP_LOG::trace("c9");
                 $json = file_get_contents($scanFilepath);
 
                 if (empty($json)) {
-                    DUP_LOG::trace("c10");
                     $errorText = __("Scan file $scanFilepath is empty!", 'duplicator');
                     $fixText   = __("Click on \"Resolve This\" button to fix the JSON settings.", 'duplicator');
 
@@ -92,7 +79,6 @@ class DUP_DupArchive
                     return true;
                 }
             } else {
-                DUP_LOG::trace("c11");
                 DUP_Log::trace("**** scan file $scanFilepath doesn't exist!!");
                 $errorMessage = sprintf(__("ERROR: Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scanFilepath);
 
@@ -104,7 +90,6 @@ class DUP_DupArchive
                 return true;
             }
 
-            DUP_LOG::trace("c12");
             Dup_Log::TraceObject("buildprogress object", $buildProgress, false);
 
             $scanReport = json_decode($json);
@@ -118,7 +103,6 @@ class DUP_DupArchive
                 $filterDirsFormat  = rtrim(str_replace(';', "\n\t", $filterDirs));
                 $filterFilesFormat = rtrim(str_replace(';', "\n\t", $filterFiles));
 
-                DUP_LOG::trace("c13");
                 DUP_Log::info("\n********************************************************************************");
                 DUP_Log::info("ARCHIVE Type=DUP Mode=DupArchive");
                 DUP_Log::info("********************************************************************************");
@@ -128,7 +112,6 @@ class DUP_DupArchive
                 DUP_Log::Info("DIRS:\n\t{$filterDirsFormat}");
                 DUP_Log::Info("FILES:\n\t{$filterFilesFormat}");
                 DUP_Log::info("EXTS:  {$filterExts}");
-
                 DUP_Log::info("----------------------------------------");
                 DUP_Log::info("COMPRESSING");
                 DUP_Log::info("SIZE:\t".$scanReport->ARC->Size);
@@ -138,7 +121,6 @@ class DUP_DupArchive
                     $error_message = 'Invalid Scan Report Detected';
 
                     DUP_Log::error($error_message, 'Invalid Scan Report Detected', Dup_ErrorBehavior::LogOnly);
-                    //$buildProgress->failed = true;
                     $buildProgress->set_failed($error_message);
                     $package->setStatus(DUP_PackageStatus::ERROR);
                     return true;
@@ -153,33 +135,27 @@ class DUP_DupArchive
                     $error_message = 'Error adding database.sql to archive';
 
                     DUP_Log::error($error_message, $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
-                    //$buildProgress->failed = true;
                     $buildProgress->set_failed($error_message);
                     $package->setStatus(DUP_PackageStatus::ERROR);
                     return true;
                 }
 
                 $buildProgress->archive_started = true;
-
                 $buildProgress->retries = 0;
 
                 $createState                    = DUP_DupArchive_Create_State::createNew($archivePath, $compressDir, self::WorkerTimeInSec, true, true);
                 $createState->throttleDelayInUs = 0;
 
                 $createState->save();
-
                 $package->Update();
             }
 
             try {
-
-                DUP_LOG::trace("c14");
                 $createState = DUP_DupArchive_Create_State::get_instance();
 
                 if ($buildProgress->retries > 1) {
                     // Indicates it had problems before so move into robustness mode
                     $createState->isRobust = true;
-
                     $createState->save();
                 }
 
@@ -192,16 +168,12 @@ class DUP_DupArchive
                     $buildProgress->set_build_failures($createState->failures);
 
                     if ($createState->isCriticalFailurePresent()) {
-
                         throw new Exception($createState->getFailureSummary());
                     }
 
                     $totalFileCount = count($scanReport->ARC->Files);
-
                     $package->Status = DupLiteSnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, $createState->currentFileIndex);
-
                     $buildProgress->retries = 0;
-
                     $createState->save();
 
                     DUP_LOG::TraceObject("Stored Create State", $createState);
@@ -215,7 +187,6 @@ class DUP_DupArchive
                 }
             }
             catch (Exception $ex) {
-                DUP_LOG::trace("c15");
                 $message = __('Problem adding items to archive.', 'duplicator').' '.$ex->getMessage();
 
                 DUP_Log::error(__('Problems adding items to archive.', 'duplicator'), $message, Dup_ErrorBehavior::LogOnly);
@@ -226,14 +197,10 @@ class DUP_DupArchive
                 return true;
             }
 
-            DUP_LOG::trace("c16");
-
             //-- Final Wrapup of the Archive
             if ((!$skipArchiveFinalization) && ($createState->working == false)) {
 
                 DUP_LOG::Trace("Create state is not working and not skip archive finalization");
-
-                DUP_LOG::trace("c17");
 
                 if (!$buildProgress->installer_built) {
 
@@ -246,10 +213,6 @@ class DUP_DupArchive
                         $package->update();
                         return;
                     }
-
-
-
-                    //rsr todo need this somewhere		$package->buildCleanup();
 
                     DUP_Log::Trace("Installer has been built so running expand now");
 
@@ -274,25 +237,19 @@ class DUP_DupArchive
                     DUP_LOG::traceObject("EXPAND STATE AFTER SAVE", $expandState);
                 } else {
 
-                    DUP_LOG::trace("c18");
                     try {
 
                         $expandState = DUP_DupArchive_Expand_State::getInstance();
 
                         if ($buildProgress->retries > 1) {
-
                             // Indicates it had problems before so move into robustness mode
                             $expandState->isRobust = true;
-
                             $expandState->save();
                         }
 
                         DUP_Log::traceObject('Resumed validation expand state', $expandState);
-
                         DupArchiveEngine::expandArchive($expandState);
-
                         $buildProgress->set_validation_failures($expandState->failures);
-
                         $totalFileCount = count($scanReport->ARC->Files);
                         $archiveSize    = @filesize($expandState->archivePath);
 
@@ -303,30 +260,21 @@ class DUP_DupArchive
                     }
                     catch (Exception $ex) {
                         DUP_Log::Trace('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
-                        //$buildProgress->failed = true;
                         $buildProgress->set_failed('Error validating archive');
                         $package->setStatus(DUP_PackageStatus::ERROR);
                         return true;
                     }
 
                     if ($expandState->isCriticalFailurePresent()) {
-                        DUP_LOG::trace("c20");
                         // Fail immediately if critical failure present - even if havent completed processing the entire archive.
-
                         $error_message = __('Critical failure present in validation', 'duplicator');
-
                         DUP_Log::error($error_message, $expandState->getFailureSummary(), Dup_ErrorBehavior::LogOnly);
-
-                        //$buildProgress->failed = true;
                         $buildProgress->set_failed($error_message);
                         return true;
                     } else if (!$expandState->working) {
-                        DUP_LOG::trace("c21");
 
                         $buildProgress->archive_built = true;
                         $buildProgress->retries       = 0;
-
-                        // rsr todo is this required?
                         $package->update();
 
                         $timerAllEnd = DUP_Util::getMicrotime();
@@ -342,15 +290,10 @@ class DUP_DupArchive
                         DUP_Log::info("VALIDATION WARNINGS: ".$expandState->getFailureSummary(false, true));
 
                         $archive->file_count = $expandState->fileWriteCount + $expandState->directoryWriteCount;
-
                         $package->update();
-
-                        DUP_LOG::trace("c22");
                         $done = true;
                     } else {
-                        DUP_LOG::trace("c23");
                         $expandState->save();
-                        DUP_LOG::trace("c24");
                     }
                 }
             }

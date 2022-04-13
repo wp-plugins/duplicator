@@ -87,7 +87,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
     <hr size="1" />
     <table class="form-table">
         <tr>
-            <th scope="row"><label><?php esc_html_e("SQL Script", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php esc_html_e("SQL Mode", 'duplicator'); ?></label></th>
             <td>
                 <div class="engine-radio <?php echo ($is_shellexec_on) ? '' : 'engine-radio-disabled'; ?>">
                     <input type="radio" name="package_dbmode" value="mysql" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />

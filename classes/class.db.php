@@ -16,6 +16,8 @@ if (!defined('DUPLICATOR_VERSION')) exit;
 
 class DUP_DB extends wpdb
 {
+    const MAX_TABLE_COUNT_IN_PACKET    = 100;
+    
 	public static $remove_placeholder_escape_exists = null;
 
 	public static function init()
@@ -176,36 +178,41 @@ class DUP_DB extends wpdb
     }
 
     /**
-     * Returns all collation types that are assigned to the tables in
-	 * the current database.  Each element in the array is unique
-	 *
-	 * @param array $excludeTables A list of tables to exclude from the search
-	 *
-     * @return array	Returns an array with all the collation types being used
+     * Returns all collation types that are assigned to the tables and columns table in
+     * the current database.  Each element in the array is unique
+     *
+     * @param array &$tablesToInclude A list of tables to include in the search.
+     *        Parameter does not change in the function, is passed by reference only to avoid copying.
+     *
+     * @return array    Returns an array with all the collation types being used
      */
-	public static function getTableCollationList($excludeTables)
-	{
-		global $wpdb;
-		$collations = array();
+    public static function getTableCollationList(&$tablesToInclude)
+    {
+        global $wpdb;
+        static $collations = null;
+        if (is_null($collations)) {
+            $collations = array();
+            //use half the number of tables since we are using them twice
+            foreach (array_chunk($tablesToInclude, self::MAX_TABLE_COUNT_IN_PACKET) as $tablesChunk) {
+                $sqlTables = implode(",", array_map(array(__CLASS__, 'escValueToQueryString'), $tablesChunk));
 
-		try {
-			$query = $wpdb->get_results("SHOW TABLE STATUS FROM `{$wpdb->dbname}`");
+                //UNION is by default DISTINCT
+                $query = "SELECT `COLLATION_NAME` FROM `information_schema`.`columns` WHERE `COLLATION_NAME` IS NOT NULL AND `table_schema` = '{$wpdb->dbname}' "
+                    . "AND `table_name` in (" . $sqlTables . ")"
+                    . "UNION SELECT `TABLE_COLLATION` FROM `information_schema`.`tables` WHERE `TABLE_COLLATION` IS NOT NULL AND `table_schema` = '{$wpdb->dbname}' "
+                    . "AND `table_name` in (" . $sqlTables . ")";
 
-			foreach($query  as $key => $row) {
-				if (! in_array($row->Name, $excludeTables)) {
-					if (! empty($row->Collation))
-						$collations[] = $row->Collation;
-				}
-			}
-			
-			$collations = array_unique($collations, SORT_STRING);
-			$collations = array_values($collations);
-			return $collations;
-			
-		} catch (Exception $ex) {
-			return $collations;
-		}
-	}
+                if (!$wpdb->query($query)) {
+                    DUP_Log::Info("GET TABLE COLLATION ERROR: " . $wpdb->last_error);
+                    continue;
+                }
+
+                $collations = array_unique(array_merge($collations, $wpdb->get_col()));
+            }
+            sort($collations);
+        }
+        return $collations;
+    }
 
 	/**
 	 * Returns an escaped SQL string
@@ -231,7 +238,7 @@ class DUP_DB extends wpdb
     
      /**
      * this function escape sql string without add and remove remove_placeholder_escape
-     * don't work on array
+     * doesn't work on array
      *
      * @global type $wpdb
      * @param mixed $sql

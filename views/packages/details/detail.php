@@ -6,18 +6,13 @@ $ui_css_storage = (isset($view_state['dup-package-dtl-storage-panel']) && $view_
 $ui_css_archive = (isset($view_state['dup-package-dtl-archive-panel']) && $view_state['dup-package-dtl-archive-panel']) ? 'display:block' : 'display:none';
 $ui_css_install = (isset($view_state['dup-package-dtl-install-panel']) && $view_state['dup-package-dtl-install-panel']) ? 'display:block' : 'display:none';
 
-$sqlDownloadInfo           = $package->getPackageFileDownloadInfo(DUP_PackageFileType::SQL);
 $archiveDownloadInfo       = $package->getPackageFileDownloadInfo(DUP_PackageFileType::Archive);
 $logDownloadInfo           = $package->getPackageFileDownloadInfo(DUP_PackageFileType::Log);
-$scanDownloadInfo          = $package->getPackageFileDownloadInfo(DUP_PackageFileType::Scan);
 $installerDownloadInfo     = $package->getInstallerDownloadInfo();
-$sqlDownloadInfoJson       = DupLiteSnapJsonU::json_encode_esc_attr($sqlDownloadInfo);
 $archiveDownloadInfoJson   = DupLiteSnapJsonU::json_encode_esc_attr($archiveDownloadInfo);
 $logDownloadInfoJson       = DupLiteSnapJsonU::json_encode_esc_attr($logDownloadInfo);
-$scanDownloadInfoJson      = DupLiteSnapJsonU::json_encode_esc_attr($scanDownloadInfo);
 $installerDownloadInfoJson = DupLiteSnapJsonU::json_encode_esc_attr($installerDownloadInfo);
 $showLinksDialogJson       = DupLiteSnapJsonU::json_encode_esc_attr(array(
-    "sql"     => $sqlDownloadInfo["url"],
     "archive" => $archiveDownloadInfo["url"],
     "log"     => $logDownloadInfo["url"],
 ));
@@ -41,12 +36,10 @@ $dup_install_secure_pass = isset($package->Installer->OptsSecurePass) ? DUP_Util
 	table.dup-dtl-data-tbl tr:first-child td {margin:0; padding-top:0 !important;}
 	table.dup-dtl-data-tbl td {padding:0 5px 0 0; padding-top:10px !important;}
 	table.dup-dtl-data-tbl td:first-child {font-weight: bold; width:130px}
-	table.dup-sub-list td:first-child {white-space: nowrap; vertical-align: middle; width: 70px !important;}
-	table.dup-sub-list td {white-space: nowrap; vertical-align:top; padding:0 !important; font-size:12px}
-	div.dup-box-panel-hdr {font-size:14px; display:block; border-bottom: 1px dotted #efefef; margin:5px 0 5px 0; font-weight: bold; padding: 0 0 5px 0}
-	tr.sub-item td:first-child {padding:0 0 0 40px}
-	tr.sub-item td {font-size: 12px}
-	tr.sub-item-disabled td {color:gray}
+	table.dup-sub-list td:first-child {white-space: nowrap; vertical-align: middle; width:100px !important;}
+	table.dup-sub-list td {white-space: nowrap; vertical-align:top; padding:2px !important;}
+	div.dup-box-panel-hdr {font-size:14px; display:block; border-bottom: 1px solid #efefef; margin:5px 0 5px 0; font-weight: bold; padding: 0 0 5px 0}
+    td.sub-notes {font-weight: normal !important; font-style: italic; color:#999; padding-top:10px;}
 
 	/*STORAGE*/
 	div.dup-store-pro {font-size:12px; font-style:italic;}
@@ -54,7 +47,10 @@ $dup_install_secure_pass = isset($package->Installer->OptsSecurePass) ? DUP_Util
 	div.dup-store-pro a {text-decoration: underline}
 
 	/*GENERAL*/
-	div#dup-name-info, div#dup-version-info {display: none; font-size:11px; line-height:20px; margin:4px 0 0 0}
+	div#dup-name-info, div#dup-version-info {display: none; line-height:20px; margin:4px 0 0 0}
+    table.dup-sub-info td {padding: 1px !important}
+    table.dup-sub-info td:first-child {font-weight: bold; width:100px; padding-left:10px}
+
 	div#dup-downloads-area {padding: 5px 0 5px 0; }
 	div#dup-downloads-msg {margin-bottom:-5px; font-style: italic}
 	div.sub-section {padding:7px 0 0 0}
@@ -90,9 +86,20 @@ GENERAL -->
 			<td>
 				<a href="javascript:void(0);" onclick="jQuery('#dup-name-info').toggle()"><?php echo esc_js($package->Name); ?></a>
 				<div id="dup-name-info">
-					<b><?php esc_html_e('ID', 'duplicator') ?>:</b> <?php echo absint($package->ID); ?><br/>
-					<b><?php esc_html_e('Hash', 'duplicator') ?>:</b> <?php echo esc_html($package->Hash); ?><br/>
-					<b><?php esc_html_e('Full Name', 'duplicator') ?>:</b> <?php echo esc_html($package->NameHash); ?><br/>
+                    <table class="dup-sub-info">
+                        <tr>
+                            <td><?php esc_html_e('ID', 'duplicator') ?>:</td>
+                            <td><?php echo absint($package->ID); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php esc_html_e('Hash', 'duplicator') ?>:</td>
+                            <td><?php echo esc_html($package->Hash); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php esc_html_e('Full Name', 'duplicator') ?>:</td>
+                            <td><?php echo esc_html($package->NameHash); ?></td>
+                        </tr>                        
+                    </table>
 				</div>
 			</td>
 		</tr>
@@ -101,15 +108,31 @@ GENERAL -->
 			<td><?php echo strlen($package->Notes) ? $package->Notes : esc_html__('- no notes -', 'duplicator') ?></td>
 		</tr>
 		<tr>
+			<td><?php esc_html_e('Created', 'duplicator') ?>:</td>
+			<td><?php echo $package->Created; ?></td>
+		</tr>
+		<tr>
 			<td><?php esc_html_e('Versions', 'duplicator') ?>:</td>
 			<td>
 				<a href="javascript:void(0);" onclick="jQuery('#dup-version-info').toggle()"><?php echo esc_html($package->Version); ?></a>
 				<div id="dup-version-info">
-					<b><?php esc_html_e('WordPress', 'duplicator') ?>:</b> <?php echo strlen($package->VersionWP) ? esc_html($package->VersionWP) : esc_html__('- unknown -', 'duplicator') ?><br/>
-					<b><?php esc_html_e('PHP', 'duplicator') ?>:</b> <?php echo strlen($package->VersionPHP) ? esc_html($package->VersionPHP) : esc_html__('- unknown -', 'duplicator') ?><br/>
-                    <b><?php esc_html_e('Mysql', 'duplicator') ?>:</b>
-                    <?php echo strlen($package->VersionDB) ? esc_html($package->VersionDB) : esc_html__('- unknown -', 'duplicator') ?> |
-                    <?php echo strlen($package->Database->Comments) ? esc_html($package->Database->Comments) : esc_html__('- unknown -', 'duplicator') ?><br/>
+                    <table class="dup-sub-info">
+                        <tr>
+                            <td><?php esc_html_e('WordPress', 'duplicator') ?>:</td>
+                            <td><?php echo strlen($package->VersionWP) ? esc_html($package->VersionWP) : esc_html__('- unknown -', 'duplicator') ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php esc_html_e('PHP', 'duplicator') ?>: </td>
+                            <td><?php echo strlen($package->VersionPHP) ? esc_html($package->VersionPHP) : esc_html__('- unknown -', 'duplicator') ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php esc_html_e('Mysql', 'duplicator') ?>:</td>
+                            <td>
+                                <?php echo strlen($package->VersionDB) ? esc_html($package->VersionDB) : esc_html__('- unknown -', 'duplicator') ?> |
+                                <?php echo strlen($package->Database->Comments) ? esc_html($package->Database->Comments) : esc_html__('- unknown -', 'duplicator') ?>
+                            </td>
+                        </tr>
+                    </table>
 				</div>
 			</td>
 		</tr>
@@ -130,14 +153,12 @@ GENERAL -->
 			<td>
 				<div id="dup-downloads-area">
 					<?php if  (!$err_found) :?>
-
-                        <button class="button" onclick="Duplicator.Pack.DownloadInstaller(<?php echo $installerDownloadInfoJson; ?>);return false;"><i class="fa fa-bolt fa-sm"></i> Installer</button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $archiveDownloadInfoJson; ?>);return false;"><i class="far fa-file-archive"></i> Archive - <?php echo esc_html($package->ZipSize); ?></button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $sqlDownloadInfoJson; ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; SQL - <?php echo esc_html(DUP_Util::byteSize($package->Database->Size))  ?></button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $logDownloadInfoJson; ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; <?php esc_html_e('Log', 'duplicator'); ?> </button>
-						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo $showLinksDialogJson;?>);" class="thickbox"><i class="fa fa-lock fa-xs"></i> &nbsp; <?php esc_html_e("Share", 'duplicator')?></button>
+                    <button class="button" onclick="Duplicator.Pack.DownloadInstaller(<?php echo $installerDownloadInfoJson; ?>);return false;"><i class="fa fa-bolt fa-sm"></i>&nbsp; Installer</button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $archiveDownloadInfoJson; ?>);return false;"><i class="far fa-file-archive"></i>&nbsp; Archive - <?php echo esc_html($package->ZipSize); ?></button>
+                        <!--button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $logDownloadInfoJson; ?>);return false;"><i class="fas fa-file-contract fa-sm"></i>&nbsp; <?php esc_html_e('Log', 'duplicator'); ?> </button-->
+						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo $showLinksDialogJson;?>);" class="thickbox"><i class="fas fa-share-alt"></i>&nbsp; <?php esc_html_e("Share File Links", 'duplicator')?></button>
 					<?php else: ?>
-                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $logDownloadInfoJson; ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; Log </button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadFile(<?php echo $logDownloadInfoJson; ?>);return false;"><i class="fas fa-file-contract fa-sm"></i>&nbsp; Log </button>
 					<?php endif; ?>
 				</div>
 				<?php if (!$err_found) :?>
@@ -150,10 +171,15 @@ GENERAL -->
 						<td><?php esc_html_e('Installer', 'duplicator') ?>: </td>
 						<td><a href="#" onclick="Duplicator.Pack.DownloadInstaller(<?php echo $installerDownloadInfoJson; ?>);return false;" ><?php echo esc_html($package->Installer->File) ?></a></td>
 					</tr>
-					<tr>
-						<td><?php esc_html_e('Database', 'duplicator') ?>: </td>
-						<td><a href="<?php echo $sqlDownloadInfo["url"]; ?>" target="_blank"><?php echo esc_html($package->Database->File); ?></a></td>
-					</tr>
+                    <tr>
+                        <td><?php esc_html_e("Build Log", 'duplicator') ?>: </td>
+                        <td><a href="<?php echo $logDownloadInfo["url"] ?>" target="file_results"><?php echo $logDownloadInfo["filename"]; ?></a></td>
+                    </tr>
+                    <tr>
+                        <td class="sub-notes">
+                            <i class="fas fa-download"></i> <?php _e("Click links to download", 'duplicator-pro') ?>
+                        </td>
+                    </tr>
 				</table>
 				<?php endif; ?>
 			</td>
@@ -166,21 +192,21 @@ GENERAL -->
 DIALOG: QUICK PATH -->
 <?php add_thickbox(); ?>
 <div id="dup-dlg-quick-path" title="<?php esc_attr_e('Download Links', 'duplicator'); ?>" style="display:none">
-	<p>
+	<p style="color:maroon">
 		<i class="fa fa-lock fa-xs"></i>
-		<?php esc_html_e("The following links contain sensitive data.  Please share with caution!", 'duplicator');	?>
+		<?php esc_html_e("The following links contain sensitive data. Share with caution!", 'duplicator');	?>
 	</p>
 
-	<div style="padding: 0px 15px 15px 15px;">
+	<div style="padding: 0px 5px 5px 5px;">
 		<a href="javascript:void(0)" style="display:inline-block; text-align:right" onclick="Duplicator.Pack.GetLinksText()">[Select All]</a> <br/>
-		<textarea id="dup-dlg-quick-path-data" style='border:1px solid silver; border-radius:3px; width:99%; height:180px; font-size:11px'></textarea><br/>
+		<textarea id="dup-dlg-quick-path-data" style='border:1px solid silver; border-radius:2px; width:100%; height:175px; font-size:11px'></textarea><br/>
 		<i style='font-size:11px'>
 			<?php
 				printf("%s <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q' target='_blank'>%s</a>",
-					esc_html__("An exact copy of the database SQL and installer file can both be found inside of the archive.zip/daf file.  "
+					esc_html__("A copy of the database.sql and installer.php files can both be found inside of the archive.zip/daf file.  "
 						. "Download and extract the archive file to get a copy of the installer which will be named 'installer-backup.php'. "
 						. "For details on how to extract a archive.daf file please see: ", 'duplicator'),
-					esc_html__("How do I work with DAF files and the DupArchive extraction tool?", 'duplicator'));
+					esc_html__("How to work with DAF files and the DupArchive extraction tool?", 'duplicator'));
 			?>
 		</i>
 	</div>
@@ -190,7 +216,8 @@ DIALOG: QUICK PATH -->
 STORAGE -->
 <div class="dup-box">
 <div class="dup-box-title">
-	<i class="fas fa-database fa-sm"></i> <?php esc_html_e('Storage', 'duplicator') ?>
+    <i class="fas fa-server fa-sm"></i>
+    <?php esc_html_e('Storage', 'duplicator') ?>
 	<div class="dup-box-arrow"></div>
 </div>
 <div class="dup-box-panel" id="dup-package-dtl-storage-panel" style="<?php echo esc_attr($ui_css_storage); ?>">
@@ -217,7 +244,10 @@ STORAGE -->
                         ?>
                     </i>
                 </td>
-                <td><i class="fas fa-server fa-fw"></i> <?php esc_html_e("Local", 'duplicator'); ?></td>
+                <td>
+                    <i class="far fa-hdd fa-fw"></i>
+                    <?php esc_html_e("Local", 'duplicator'); ?>
+                </td>
                 <td><?php echo DUP_Settings::getSsdirPath(); ?></td>
             </tr>
             <tr>
@@ -249,9 +279,6 @@ STORAGE -->
 
 <!-- ===============================
 ARCHIVE -->
-<?php
-	$css_db_filter_on   = $package->Database->FilterOn == 1 ? '' : 'sub-item-disabled';
-?>
 <div class="dup-box">
 <div class="dup-box-title">
 	<i class="far fa-file-archive"></i> <?php esc_html_e('Archive', 'duplicator') ?>
@@ -260,6 +287,10 @@ ARCHIVE -->
 <div class="dup-box-panel" id="dup-package-dtl-archive-panel" style="<?php echo esc_attr($ui_css_archive); ?>">
 
 	<!-- FILES -->
+    <div class="dup-box-panel-hdr">
+        <i class="fas fa-folder-open fa-sm"></i>
+        <?php esc_html_e('FILES', 'duplicator'); ?>
+    </div>
 	<table class='dup-dtl-data-tbl'>
 		<tr>
 			<td><?php esc_html_e('Build Mode', 'duplicator') ?>: </td>
@@ -311,14 +342,21 @@ ARCHIVE -->
 	</table><br/>
 
 	<!-- DATABASE -->
-	<div class="dup-box-panel-hdr"><i class="fa fa-table fa-sm"></i> <?php esc_html_e('DATABASE', 'duplicator'); ?></div>
+	<div class="dup-box-panel-hdr">
+        <i class="fas fa-database fa-sm"></i>
+        <?php esc_html_e('DATABASE', 'duplicator'); ?>
+    </div>
 	<table class='dup-dtl-data-tbl'>
+		<tr>
+			<td><?php esc_html_e('Name', 'duplicator') ?>: </td>
+			<td><?php echo esc_html($package->Database->info->name); ?></td>
+		</tr>
 		<tr>
 			<td><?php esc_html_e('Type', 'duplicator') ?>: </td>
 			<td><?php echo esc_html($package->Database->Type); ?></td>
 		</tr>
 		<tr>
-			<td><?php esc_html_e('Build Mode', 'duplicator') ?>: </td>
+			<td><?php esc_html_e('SQL Mode', 'duplicator') ?>: </td>
 			<td>
 				<a href="?page=duplicator-settings&tab=package" target="_blank"><?php echo esc_html($dbbuild_mode); ?></a>
 				<?php if ($mysqlcompat_on) : ?>
@@ -334,9 +372,10 @@ ARCHIVE -->
 			<td><?php esc_html_e('Filters', 'duplicator') ?>: </td>
 			<td><?php echo $package->Database->FilterOn == 1 ? 'On' : 'Off'; ?></td>
 		</tr>
-		<tr class="sub-item <?php echo esc_attr($css_db_filter_on); ?>">
-			<td><?php esc_html_e('Tables', 'duplicator') ?>: </td>
+		<tr class="sub-section">
+			<td>&nbsp;</td>
 			<td>
+                <b><?php esc_html_e('Tables', 'duplicator') ?>:</b><br/>
 				<?php
 					echo isset($package->Database->FilterTables) && strlen($package->Database->FilterTables)
 						? str_replace(',', "<br>\n", $package->Database->FilterTables)
@@ -419,15 +458,17 @@ jQuery(document).ready(function($)
 	 *	@param pack		The path to the package file */
 	Duplicator.Pack.ShowLinksDialog = function(json)
 	{
-		var url = '#TB_inline?width=650&height=350&inlineId=dup-dlg-quick-path';
+		var url = '#TB_inline?width=650&height=325&inlineId=dup-dlg-quick-path';
 		tb_show("<?php esc_html_e('Package File Links', 'duplicator') ?>", url);
 
-
-		var msg = <?php printf('"%s:\n" + json.sql + "\n\n%s:\n" + json.archive + "\n\n%s:\n" + json.log;',
-			esc_html__("DATABASE",  'duplicator'),
-			esc_html__("ARCHIVE", 'duplicator'),
-			esc_html__("LOG", 'duplicator'));
-		?>
+        var msg = <?php printf(
+            '"%s" + "\n\n%s:\n" + json.archive + "\n\n%s:\n" + json.log + "\n\n%s";',
+            '=========== SENSITIVE INFORMATION START ===========',
+            esc_html__("ARCHIVE", 'duplicator'),
+            esc_html__("LOG", 'duplicator'),
+            '=========== SENSITIVE INFORMATION END ==========='
+            );
+        ?>
 		$("#dup-dlg-quick-path-data").val(msg);
 		return false;
 	}

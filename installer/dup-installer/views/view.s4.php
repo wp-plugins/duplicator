@@ -114,7 +114,7 @@ VIEW: STEP 4- INPUT -->
 
     <?php
     $nManager = DUPX_NOTICE_MANAGER::getInstance();
-    if ($json_decode->step1->query_errs > 0) {
+    if ($json_decode && $json_decode->step1->query_errs > 0) {
         $linkAttr = './'.DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);
         $longMsg  = <<<LONGMSG
         Queries that error during the deploy step are logged to the <a href="{$linkAttr}" target="dup-installer">install-log.txt</a> file and
@@ -146,7 +146,7 @@ LONGMSG;
         ));
     }
 
-    if ($json_decode->step3->errsql_sum > 0) {
+    if ($json_decode && $json_decode->step3->errsql_sum > 0) {
         $longMsg = <<<LONGMSG
             Update errors that show here are queries that could not be performed because the database server being used has issues running it.  Please validate the query, if
 			it looks to be of concern please try to run the query manually.  In many cases if your site performs well without any issues you can ignore the error.
@@ -162,7 +162,7 @@ LONGMSG;
         ));
     }
 
-    if ($json_decode->step3->errkey_sum > 0) {
+    if ($json_decode && $json_decode->step3->errkey_sum > 0) {
         $longMsg = <<<LONGMSG
             Notices should be ignored unless issues are found after you have tested an installed site. This notice indicates that a primary key is required to run the
             update engine. Below is a list of tables and the rows that were not updated.  On some databases you can remove these notices by checking the box 'Enable Full Search'
@@ -186,7 +186,7 @@ LONGMSG;
         ));
     }
 
-    if ($json_decode->step3->errser_sum > 0) {
+    if ($json_decode && $json_decode->step3->errser_sum > 0) {
         $longMsg = <<<LONGMSG
             Notices should be ignored unless issues are found after you have tested an installed site.  The SQL below will show data that may have not been
             updated during the serialization process.  Best practices for serialization notices is to just re-save the plugin/post/page in question.
@@ -326,9 +326,14 @@ LONGMSG;
 			</li>
             <?php
             $wpconfigNotice = $nManager->getFinalReporNoticeById('wp-config-changes');
-            $htaccessNorice = $nManager->getFinalReporNoticeById('htaccess-changes');
+            $htaccessNotice = $nManager->getFinalReporNoticeById('htaccess-changes');
+            if ($wpconfigNotice) {
+                print("<li>Please validate ".$wpconfigNotice->longMsg."</li>");
+            }
+            if ($htaccessNotice) {
+                print("<li>Please validate ".$htaccessNotice->longMsg."</li>");
+            }
             ?>
-			<li>Please validate <?php echo $wpconfigNotice->longMsg; ?> and <?php echo $htaccessNorice->longMsg; ?></li>
 			<li>For additional help and questions visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a></li>
 		</ul>
 	</div>

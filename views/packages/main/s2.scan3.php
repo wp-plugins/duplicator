@@ -24,7 +24,7 @@ ARCHIVE -->
 </div>
 
 <div class="scan-header scan-item-first">
-	<i class="far fa-copy fa-sm"></i>
+	<i class="fas fa-folder-open"></i>
 	<?php esc_html_e("Files", 'duplicator'); ?>
 	
 	<div class="scan-header-details">
@@ -390,7 +390,7 @@ Restore only package -->
 DATABASE -->
 <div id="dup-scan-db">
 	<div class="scan-header">
-		<i class="fa fa-table fa-sm"></i>
+		<i class="fas fa-database fa-sm"></i>
 		<?php esc_html_e("Database", 'duplicator');	?>
 		<div class="scan-header-details">
 			<div class="dup-scan-filter-status">
@@ -616,7 +616,7 @@ DIALOG: Scan Results -->
 	<br/><br/>
 
 	<!-- DATABASE -->
-	<h2><i class="fa fa-table fa-sm"></i> <?php esc_html_e('Database', 'duplicator');?></h2>
+	<h2><i class="fas fa-database fa-sm"></i> <?php esc_html_e('Database', 'duplicator');?></h2>
 	<table id="db-area">
 		<tr><td><b><?php esc_html_e('Name:', 'duplicator');?></b></td><td><?php echo DB_NAME; ?> </td></tr>
 		<tr><td><b><?php esc_html_e('Host:', 'duplicator');?></b></td><td><?php echo DB_HOST; ?> </td></tr>

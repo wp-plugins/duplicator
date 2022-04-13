@@ -363,21 +363,21 @@ if (!function_exists('duplicator_submit_uninstall_reason_action')) {
         $isValid   = true;
         $inputData = filter_input_array(INPUT_POST, array(
             'reason_id' => array(
-                'filter'  => FILTER_SANITIZE_STRING,
+                'filter'  => FILTER_UNSAFE_RAW,
                 'flags'   => FILTER_REQUIRE_SCALAR,
                 'options' => array(
                     'default' => false
                 )
             ),
             'plugin' => array(
-                'filter'  => FILTER_SANITIZE_STRING,
+                'filter'  => FILTER_UNSAFE_RAW,
                 'flags'   => FILTER_REQUIRE_SCALAR,
                 'options' => array(
                     'default' => false
                 )
             ),
             'reason_info' => array(
-                'filter'  => FILTER_SANITIZE_STRING,
+                'filter'  => FILTER_UNSAFE_RAW,
                 'flags'   => FILTER_REQUIRE_SCALAR,
                 'options' => array(
                     'default' => ''

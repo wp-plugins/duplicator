@@ -53,20 +53,20 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 
         $inputData = filter_input_array(INPUT_POST, array(
             'states' => array(
-                'filter'  => FILTER_SANITIZE_STRING,
+                'filter'  => FILTER_UNSAFE_RAW,
                 'flags'   => FILTER_FORCE_ARRAY,
                 'options' => array(
                     'default' => array()
                 )
             ),
             'key'    => array(
-                'filter'  => FILTER_SANITIZE_STRING,
+                'filter'  => FILTER_UNSAFE_RAW,
                 'options' => array(
                     'default' => false
                 )
             ),
             'value'  => array(
-                'filter'  => FILTER_SANITIZE_STRING,
+                'filter'  => FILTER_UNSAFE_RAW,
                 'options' => array(
                     'default' => false
                 )
@@ -77,13 +77,13 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
             foreach ($inputData['states'] as $index => $state) {
                 $filteredState = filter_var_array($state, array(
                     'key'   => array(
-                        'filter'  => FILTER_SANITIZE_STRING,
+                        'filter'  => FILTER_UNSAFE_RAW,
                         'options' => array(
                             'default' => false
                         )
                     ),
                     'value' => array(
-                        'filter'  => FILTER_SANITIZE_STRING,
+                        'filter'  => FILTER_UNSAFE_RAW,
                         'options' => array(
                             'default' => false
                         )

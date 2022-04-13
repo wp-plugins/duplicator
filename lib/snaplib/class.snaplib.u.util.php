@@ -175,7 +175,7 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
          */
         public static function sanitize($input)
         {
-            return filter_var($input, FILTER_SANITIZE_STRING);
+            return filter_var($input, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         }
 
         /**

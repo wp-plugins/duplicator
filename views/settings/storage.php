@@ -13,9 +13,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     $action_response = esc_html__("Storage Settings Saved", 'duplicator');
 
     //SAVE RESULTS
-    if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) === 'save') {
+    if (filter_input(INPUT_POST, 'action', FILTER_UNSAFE_RAW) === 'save') {
         //Nonce Check
-        if (!wp_verify_nonce(filter_input(INPUT_POST, 'dup_storage_settings_save_nonce_field', FILTER_SANITIZE_STRING), 'dup_settings_save')) {
+        if (!wp_verify_nonce(filter_input(INPUT_POST, 'dup_storage_settings_save_nonce_field', FILTER_UNSAFE_RAW), 'dup_settings_save')) {
             die('Invalid token permissions to perform this request.');
         }
 
@@ -91,8 +91,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
                             . "the 'Contents Path'.  Upon clicking the save button all files are moved to the new location and the previous path is removed.", 'duplicator');
                         ?><br/>
 
-
-                        <i class="fas fa-database fa-sm"></i>&nbsp; <span id="duplicator_advanced_storage_text" class="link-style">[<?php esc_html_e("More Advanced Storage Options...", 'duplicator'); ?>]</span>
+                        <i class="fas fa-server fa-sm"></i>&nbsp;
+                        <span id="duplicator_advanced_storage_text" class="link-style">[<?php esc_html_e("More Advanced Storage Options...", 'duplicator'); ?>]</span>
                     </p>
                 </td>
             </tr>
@@ -129,19 +129,19 @@ function dup_lite_storage_advanced_pro_content()
     <div style="text-align: center">
         <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-dpro-300x50.png"); ?>" style="height:50px; width:250px" /><br/>
         <?php 
-                esc_html_e('Store &amp; Automate to Multiple Endpoints', 'duplicator');
+                esc_html_e('Store to Multiple Endpoints', 'duplicator');
                 echo '<br/>';
                 esc_html_e('with Duplicator Pro', 'duplicator');
         ?>
   
-        <div style="text-align: left; margin:auto; width:175px">
+        <div style="text-align: left; margin:auto; width:200px">
             <ul>
-                <li><i class="fab fa-amazon"></i> <?php esc_html_e('Amazon S3', 'duplicator'); ?></li>
-                <li><i class="fab fa-dropbox"></i> <?php esc_html_e(' Dropbox', 'duplicator'); ?></li>
-                <li><i class="fab fa-google-drive"></i> <?php esc_html_e('Google Drive', 'duplicator'); ?></li>
-                <li><i class="fa fa-cloud fa-sm"></i> <?php esc_html_e('One Drive', 'duplicator'); ?></li>
-                <li><i class="fa fa-upload"></i> <?php esc_html_e('FTP &amp; SFTP', 'duplicator'); ?></li>
-                <li><i class="far fa-folder-open"></i> <?php esc_html_e('Custom Directory', 'duplicator'); ?></li>
+                <li><i class="fab fa-amazon"></i>&nbsp;<?php esc_html_e('Amazon S3', 'duplicator'); ?></li>
+                <li><i class="fab fa-dropbox"></i>&nbsp;<?php esc_html_e(' Dropbox', 'duplicator'); ?></li>
+                <li><i class="fab fa-google-drive"></i>&nbsp;<?php esc_html_e('Google Drive', 'duplicator'); ?></li>
+                <li><i class="fa fa-cloud fa-sm"></i>&nbsp;<?php esc_html_e('One Drive', 'duplicator'); ?></li>
+                <li><i class="fas fa-network-wired"></i>&nbsp;<?php esc_html_e('FTP &amp; SFTP', 'duplicator'); ?></li>
+                <li><i class="fas fa-hdd"></i>&nbsp;<?php esc_html_e('Custom Directory', 'duplicator'); ?></li>
             </ul>
         </div>
         <i>

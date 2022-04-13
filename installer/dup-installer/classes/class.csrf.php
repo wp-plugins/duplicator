@@ -31,8 +31,8 @@ class DUPX_CSRF
     /**
      * Set new CSRF
      *
-     * @param string $key CSRF Key
-     * @param string $val CSRF Val
+     * @param string $key CSRF key
+     * @param string $val CSRF val
      *
      * @return Void
      */
@@ -110,7 +110,7 @@ class DUPX_CSRF
      */
     protected static function token()
     {
-        mt_srand((double) microtime() * 10000);
+        mt_srand((int)((double) microtime() * 10000));
         $charid = strtoupper(md5(uniqid(rand(), true)));
         return substr($charid, 0, 8) . substr($charid, 8, 4) . substr($charid, 12, 4) . substr($charid, 16, 4) . substr($charid, 20, 12);
     }

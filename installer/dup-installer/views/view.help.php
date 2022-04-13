@@ -4,7 +4,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     //indicate if this help lives in lite or pro
 	//$pro_version = true;
 
-$open_section = filter_input(INPUT_GET, 'open_section', FILTER_SANITIZE_STRING, array('options' => array('default' => '')));
+$open_section = filter_input(INPUT_GET, 'open_section', FILTER_UNSAFE_RAW, array('options' => array('default' => '')));
 
 ?>
 <div class="hdr-main">

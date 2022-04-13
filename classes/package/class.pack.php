@@ -1702,22 +1702,33 @@ class DUP_Package
         $files   = DUP_Util::listFiles(DUP_Settings::getSsdirTmpPath());
         $newPath = DUP_Settings::getSsdirPath();
 
-        if (function_exists('rename')) {
-            foreach ($files as $file) {
-                $name = basename($file);
-                if (strstr($name, $this->NameHash)) {
-                    rename($file, "{$newPath}/{$name}");
+        $filesToStore = array(
+            $this->Installer->File,
+            $this->Archive->File,
+        );
+
+        foreach ($files as $file) {
+
+            $fileName = basename($file);
+            if (!strstr($fileName, $this->NameHash)) {
+                continue;
+            }
+
+            if (in_array($fileName, $filesToStore)) {
+                if (function_exists('rename')) {
+                    rename($file, "{$newPath}/{$fileName}");
+                } elseif (function_exists('copy')) {
+                    copy($file, "{$newPath}/{$fileName}");
+                } else {
+                    throw new Exception('PHP copy and rename functions not found!  Contact hosting provider!');
                 }
             }
-        } else {
-            foreach ($files as $file) {
-                $name = basename($file);
-                if (strstr($name, $this->NameHash)) {
-                    copy($file, "{$newPath}/{$name}");
-                    @unlink($file);
-                }
+
+            if (file_exists($file)) {
+                unlink($file);
             }
         }
+
     }
 
 

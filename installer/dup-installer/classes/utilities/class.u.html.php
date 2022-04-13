@@ -320,7 +320,7 @@ class DUPX_U_Html
      */
     public static function getMoreContent($htmlContent, $classes = array(), $step = 200, $id = '', $echo = true)
     {
-        $inputCls    = filter_var($classes, FILTER_SANITIZE_STRING, FILTER_FORCE_ARRAY);
+        $inputCls    = filter_var($classes, FILTER_UNSAFE_RAW, FILTER_FORCE_ARRAY);
         $mainClasses = array_merge(array('more-content'), $inputCls);
         $atStep      = max(100, $step);
         $idAttr      = empty($id) ? '' : 'id="'.$id.'" ';

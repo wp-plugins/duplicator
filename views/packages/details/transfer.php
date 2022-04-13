@@ -21,8 +21,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 				<li><i class="fab fa-dropbox"></i> <?php esc_html_e('Dropbox', 'duplicator'); ?></li>
 				<li><i class="fab fa-google-drive"></i> <?php esc_html_e('Google Drive', 'duplicator'); ?></li>
 				<li><i class="fa fa-cloud fa-sm"></i> <?php esc_html_e('One Drive', 'duplicator'); ?></li>
-				<li><i class="fa fa-upload"></i> <?php esc_html_e('FTP &amp; SFTP', 'duplicator'); ?></li>
-				<li><i class="far fa-folder-open"></i> <?php esc_html_e('Custom Directory', 'duplicator'); ?></li>
+				<li><i class="fas fa-network-wired"></i> <?php esc_html_e('FTP &amp; SFTP', 'duplicator'); ?></li>
+				<li><i class="fas fa-hdd"></i> <?php esc_html_e('Custom Directory', 'duplicator'); ?></li>
 			</ul>
 		</div>
 		<?php

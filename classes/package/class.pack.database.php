@@ -277,6 +277,7 @@ class DUP_Database
         $tblSizeFound       = 0;
 
         //Grab Table Stats
+        $filteredTables = array();
         foreach ($tables as $table) {
             $tblBaseCount++;
             $name = $table["Name"];
@@ -295,6 +296,7 @@ class DUP_Database
             $info['TableList'][$name]['Rows']  = number_format($rows);
             $info['TableList'][$name]['Size']  = DUP_Util::byteSize($size);
             $info['TableList'][$name]['USize'] = $size;
+            $filteredTables[] = $name;
             $tblCount++;
 
             //Table Uppercase
@@ -318,8 +320,7 @@ class DUP_Database
                 }
             }
         }
-
-        $this->setInfoObj();
+        $this->setInfoObj($filteredTables);
         $this->info->addTriggers();
 
         $info['Status']['DB_Case'] = preg_match('/[A-Z]/', $wpdb->dbname) ? 'Warn' : 'Good';
@@ -346,18 +347,23 @@ class DUP_Database
         return $info;
     }
 
-    public function setInfoObj()
+    /**
+     * @param array &$filteredTables Filtered names of tables to include in collation search.
+     *        Parameter does not change in the function, is passed by reference only to avoid copying.
+     *
+     * @return void
+     */
+    public function setInfoObj(&$filteredTables)
     {
         global $wpdb;
-        $filterTables = isset($this->FilterTables) ? explode(',', $this->FilterTables) : array();
-
+ 
         $this->info->buildMode          = DUP_DB::getBuildMode();
         $this->info->version            = DUP_DB::getVersion();
         $this->info->versionComment     = DUP_DB::getVariable('version_comment');
         $this->info->varLowerCaseTables = DUP_DB::getVariable('lower_case_table_names');
         $this->info->name               = $wpdb->dbname;
         $this->info->isNameUpperCase    = preg_match('/[A-Z]/', $wpdb->dbname) ? 1 : 0;
-        $this->info->collationList      = DUP_DB::getTableCollationList($filterTables);
+        $this->info->collationList      = DUP_DB::getTableCollationList($filteredTables);
     }
 
     /**
@@ -568,7 +574,7 @@ class DUP_Database
              * 2 - Exception
              */
             DUP_Log::Info('MYSQL DUMP ERROR '.print_r($mysqlResult, true));
-            DUP_Log::error(__('Shell mysql dump error. Change SQL Script to the "PHP Code" in the Duplicator > Settings > Packages.', 'duplicator'), implode("\n", DupLiteSnapLibIOU::getLastLinesOfFile($this->tempDbPath,
+            DUP_Log::error(__('Shell mysql dump error. Change SQL Mode to the "PHP Code" in the Duplicator > Settings > Packages.', 'duplicator'), implode("\n", DupLiteSnapLibIOU::getLastLinesOfFile($this->tempDbPath,
                 DUPLICATOR_DB_MYSQLDUMP_ERROR_CONTAINING_LINE_COUNT, DUPLICATOR_DB_MYSQLDUMP_ERROR_CHARS_IN_LINE_COUNT)), Dup_ErrorBehavior::ThrowException);
             return false;
         }

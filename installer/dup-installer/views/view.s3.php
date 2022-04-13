@@ -416,7 +416,10 @@ VIEW: STEP 3 - AJAX RESULT  -->
 	<div id="ajaxerr-area" style="display:none">
 		<p>Please try again an issue has occurred.</p>
 		<div style="padding: 0px 10px 10px 10px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the update setup step.  Please see the <?php DUPX_View_Funcs::installerLogLink(); ?> file for more details.</div>
+			<div id="ajaxerr-data">
+                <b>Overview:</b><br/>
+                An issue has occurred in step 3.  Please see the <?php DUPX_View_Funcs::installerLogLink(); ?> file for more details.
+            </div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" onclick='DUPX.hideErrorResult2()' value="&laquo; Try Again"  class="default-btn" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com' target='_blank'>snapcreek.com</a></i>
@@ -518,17 +521,28 @@ DUPX.runUpdate = function()
 				DUPX.hideProgressBar();
                 return false;
             }
-			if (typeof(data) != 'undefined' && data.step3.pass == 1) {
-				$("#ajax-url_new").val($("#url_new").val());
-				$("#ajax-exe-safe-mode").val($("#exe-safe-mode").val());
-				$("#ajax-json").val(escape(JSON.stringify(data)));
-				<?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
-					setTimeout(function(){$('#s3-result-form').submit();}, 1000);
-				<?php endif; ?>
-				//$('#progress-area').fadeOut(1500);
-			} else {
-				DUPX.hideProgressBar();
-			}
+
+            try {
+                if (typeof(data) != 'undefined' && data.step3.pass == 1) {
+                    $("#ajax-url_new").val($("#url_new").val());
+                    $("#ajax-exe-safe-mode").val($("#exe-safe-mode").val());
+                    $("#ajax-json").val(escape(JSON.stringify(data)));
+                    <?php if (!DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
+                        setTimeout(function(){$('#s3-result-form').submit();}, 1000);
+                    <?php endif; ?>
+                } else {
+                    if (typeof(data) != 'undefined' && data.step3.pass == -1) {
+                        console.log(data);
+                        let details = (data.step3.error_message.length > 0) ? data.step3.error_message : "No details found.";
+                        $('#ajaxerr-data').append(`<br/><br/><b>Details:</b><br/> ${details}`);
+                    }
+                    DUPX.hideProgressBar();
+                }
+            } catch(err) {
+                console.log(err);
+                DUPX.hideProgressBar();
+            }
+
 		},
 		error: function(xhr) {
 			var status  = "<b>Server Code:</b> "	+ xhr.status		+ "<br/>";
