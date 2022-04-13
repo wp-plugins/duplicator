@@ -68,6 +68,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	div#dup-pass-toggle {position: relative; margin:8px 0 0 0; width:243px}
 	input#secure-pass {border-radius:4px 0 0 4px; width:217px; height: 23px; min-height: auto; margin:0; padding: 0 4px;}
 	button.pass-toggle {height: 23px; width: 27px; position:absolute; top:0px; right:0px; border:1px solid silver; border-radius:0 4px 4px 0; cursor:pointer}
+    div.dup-install-prefill-tab-pnl.tabs-panel {overflow:visible;}
 	
 	/*TABS*/
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
