@@ -4,7 +4,7 @@ Tags: migration, backup, duplicate, move, migrate, restore, transfer, clone, aut
 Requires at least: 4.0
 Tested up to: 5.9
 Requires PHP: 5.3.8
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: GPLv2
 
 WordPress migration and backups are much easier with Duplicator! Clone, backup, move and transfer an entire site from one location to another.
@@ -49,6 +49,7 @@ Duplicator Pro takes Duplicator to the next level with features you'll really ap
 * Install a multisite subsite as a new standalone website
 * Database and user creation *in the installer* with cPanel API
 * Connect to cPanel directly from installer
+* Custom plugin hooks for developers
 * Email notifications
 * Professional support
 * ... and much more!
@@ -62,7 +63,6 @@ The underlying logic to backup WordPress, move WordPress and transfer WordPress 
 This plugin does require some technical knowledge.  If you plan to migrate WordPress or backup WordPress please use it at your own risk and don't forget to back up your files and databases beforehand. If you need to move or backup WordPress and would like additional help please visit the Duplicator [resources section](https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wp_org&utm_content=free_disclaimer&utm_campaign=duplicator_free#faq-resource-030-q) .
 
 = Active Contributors =
-<li>[Prashant Baldha](https://profiles.wordpress.org/pmbaldha/) (Development)</li>
 <li>[Andrea Leoni](https://profiles.wordpress.org/andreamk/) (Development)</li>
 <li>[Paal Joachim Romdahl](http://www.easywebdesigntutorials.com) (Training)</li>
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>

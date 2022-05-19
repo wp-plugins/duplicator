@@ -701,7 +701,7 @@ VALIDATION
         <div class="info" id="s1-notice45">
             <?php
             $cssStyle   = $notice['45'] == 'Good' ? 'color:green' : 'color:red';
-            echo "<b style='{$cssStyle}'>You are migrating site from the PHP {$packagePHP} to the PHP {$currentPHP}</b>.<br/>"
+            echo "<b style='{$cssStyle}'>You are migrating site from PHP {$packagePHP} to PHP {$currentPHP}</b>.<br/>"
             ."If this servers PHP version is different from the PHP version of where the package was created it might cause problems with various parts of your website
                     and/or plugins and themes.   It is highly recommended to try and use the same version of PHP if you are able to do so.  This is simply a warning
                     and in the event no problems arise then you can igonre this message.<br/>";
