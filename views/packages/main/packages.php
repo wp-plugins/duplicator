@@ -121,11 +121,11 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                         <div id='dup-list-alert-nodata'>
                             <i class="fa fa-archive fa-sm"></i> 
                             <?php esc_html_e("No Packages Found", 'duplicator'); ?><br/>
-                            <i><?php esc_html_e("Click 'Create New' To Build Package", 'duplicator'); ?></i><br/>
+                            <i><?php esc_html_e("Click 'Create New' to Archive Site", 'duplicator'); ?></i><br/>
                             <div class="dup-quick-start" <?php echo ($is_mu) ? 'style="display:none"' : ''; ?>>
                                 <b><?php esc_html_e("New to Duplicator?", 'duplicator'); ?></b><br/>
                                 <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty1&utm_campaign=quick_start" target="_blank">
-                                    <?php esc_html_e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
+                                    <?php esc_html_e("Visit the 'Quick Start' guide!", 'duplicator'); ?>
                                 </a>
                             </div>
                             <?php if ($is_mu) {
@@ -174,11 +174,11 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                     <div id='dup-list-alert-nodata'>
                         <i class="fa fa-archive fa-sm"></i>
                         <?php esc_html_e("No Packages Found", 'duplicator'); ?><br/>
-                        <i><?php esc_html_e("Click 'Create New' To Build Package", 'duplicator'); ?></i><br/>
+                        <i><?php esc_html_e("Click 'Create New' to Archive Site", 'duplicator'); ?></i><br/>
                         <div class="dup-quick-start">
                             <?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
                             <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty2&utm_campaign=quick_start" target="_blank">
-                                <?php esc_html_e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
+                                <?php esc_html_e("Visit the 'Quick Start' guide!", 'duplicator'); ?>
                             </a>
                         </div>
                         <div style="height:75px">&nbsp;</div>

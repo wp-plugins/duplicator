@@ -358,33 +358,7 @@ UNREADABLE FILES -->
 
 <?php } ?>
 
-<!-- ======================
-Restore only package -->
-<div id="migratepackage-block"  class="scan-item">
-	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Migration Status', 'duplicator');?></div>
-        <div id="data-arc-status-migratepackage"></div>
-	</div>
-    <div class="info">
-        <script id="hb-migrate-package-result" type="text/x-handlebars-template">
-            <div class="container">
-                <div class="data">					
-                    {{#if ARC.Status.CanbeMigratePackage}}
-                        <?php esc_html_e("The package created here can be migrated to the new server.", 'duplicator'); ?>
-                    {{else}}
-                        <span style="color: red;">
-                            <?php
-                            esc_html_e("The package that created here can't be migrated to the new server.
-                                The Package created here can be restored on the same server.", 'duplicator');
-                            ?>
-                        </span>
-                    {{/if}}			
-                </div>
-            </div>
-        </script>
-        <div id="migrate-package-result"></div>
-    </div>
-</div>
+
 
 <!-- ============
 DATABASE -->

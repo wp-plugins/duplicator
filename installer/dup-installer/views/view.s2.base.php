@@ -286,7 +286,7 @@ Auto Posts to view.step3.php  -->
 					}
 					else if(xhr.status == 0) {
 						status += "<b>Recommendation</b><br/>";
-						status += "This may be a server timeout and performing a 'Manual Extract' install can avoid timeouts. See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?reload=1#faq-installer-015-q'>this section</a> of the FAQ for a description of how to do that.<br/><br/>"
+						status += "This may be a server timeout and performing a 'Manual Extract' install can avoid timeouts. See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?reload=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=server_timeout_man_extract2#faq-installer-015-q'>this section</a> of the FAQ for a description of how to do that.<br/><br/>"
 					} else {
 						status += "<b>Additional Troubleshooting Tips:</b><br/> ";
 						status += "&raquo; <a target='_blank' href='https://snapcreek.com/duplicator/docs/'>Help Resources</a><br/>";
@@ -343,7 +343,7 @@ Auto Posts to view.step3.php  -->
 				}
 				else if(xhr.status == 0) {
 					status += "<b>Recommendation</b><br/>";
-					status += "This may be a server timeout and performing a 'Manual Extract' install can avoid timeouts. See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?reload=1#faq-installer-015-q'>this section</a> of the FAQ for a description of how to do that.<br/><br/>"
+					status += "This may be a server timeout and performing a 'Manual Extract' install can avoid timeouts. See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?reload=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=server_timeout_man_extract3#faq-installer-015-q'>this section</a> of the FAQ for a description of how to do that.<br/><br/>"
 				} else {
 					status += "<b>Additional Troubleshooting Tips:</b><br/> ";
 					status += "&raquo; <a target='_blank' href='https://snapcreek.com/duplicator/docs/'>Help Resources</a><br/>";

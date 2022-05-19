@@ -24,7 +24,7 @@ p.description {padding-top:3px}
 .dup-guide-txt-color {color:#b0b0b0;}
 
 /*TABS*/
-ul.category-tabs li {cursor:pointer}
+ul.category-tabs li {cursor:pointer;user-select: none;}
 
 /*BOXES:Expandable sections */
 div.dup-box {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}

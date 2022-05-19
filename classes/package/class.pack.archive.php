@@ -64,13 +64,14 @@ class DUP_Archive
 		$homePath = duplicator_get_home_path();
 
 		$this->wpCorePaths[] = DUP_Util::safePath("{$homePath}/wp-admin");
-		$this->wpCorePaths[] = DUP_Util::safePath(WP_CONTENT_DIR."/uploads");
 		$this->wpCorePaths[] = DUP_Util::safePath(WP_CONTENT_DIR."/languages");
-		$this->wpCorePaths[] = DUP_Util::safePath(get_theme_root());
 		$this->wpCorePaths[] = DUP_Util::safePath("{$homePath}/wp-includes");
 
-		$this->wpCoreExactPaths[]	 = DUP_Util::safePath("{$homePath}");
-		$this->wpCoreExactPaths[]	 = DUP_Util::safePath(WP_CONTENT_DIR);
+		$this->wpCoreExactPaths[] = DUP_Util::safePath("{$homePath}");
+		$this->wpCoreExactPaths[] = DUP_Util::safePath(WP_CONTENT_DIR);
+		$this->wpCoreExactPaths[] = DUP_Util::safePath(WP_CONTENT_DIR."/uploads");
+		$this->wpCoreExactPaths[] = DUP_Util::safePath(WP_CONTENT_DIR."/plugins");
+		$this->wpCoreExactPaths[] = DUP_Util::safePath(get_theme_root());
 	}
 
 	/**

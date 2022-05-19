@@ -17,6 +17,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     form#dup-form-opts ul li.tabs {font-size:16px}
     div.tab-hdr-title {font-size: 16px; font-weight: bold; padding: 1px; margin:2px 0 5px 0; border-bottom:1px solid #dcdcde }
 
+    /*EXPANDER TITLE BOXES */
+    div.dup-box-title div.dup-title-txt {float:left}
+    div.dup-box-title 
+    div.dup-title-icons { margin-top:-5px; font-weight:normal; font-size:13px; display:flex; flex-wrap:wrap; align-items:flex-start; flex-direction: row;}
+    div.dup-box-title div.dup-title-icons > span {border-left:1px solid silver; padding:2px 14px 5px 14px; user-select:none}
+    span#dup-installer-secure-lock, span#dup-installer-secure-unlock  {border:none; padding:0 12px 5px 2px;}
+
     /*TAB-1: ARCHIVE SECTION*/
     form#dup-form-opts div.tabs-panel{max-height:800px; padding:15px 20px 20px 20px; min-height:280px}
     form#dup-form-opts ul li.tabs{font-weight:bold}
@@ -25,7 +32,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     select#archive-format {min-width:100px; margin:1px 0 4px 0}
     span#dup-archive-filter-file {color:#A62426; display:none}
     span#dup-archive-filter-db {color:#A62426; display:none}
-	span#dup-archive-db-only {color:#A62426; display:none}
+	span#dup-archive-db-only {color:#A62426; display:none; font-weight: normal}
     div#dup-file-filter-items {padding:5px 0 0;}
     div#dup-db-filter-items {padding:0; margin-top:-15px}
 	div#dup-db-filter-items {font-stretch:ultra-condensed; font-family:Calibri; }
@@ -180,22 +187,27 @@ STORAGE -->
 ARCHIVE -->
 <div class="dup-box">
     <div class="dup-box-title">
+        <div class="dup-title-txt">
         <i class="far fa-file-archive"></i>
 			<?php
 				_e('Archive', 'duplicator');
 				echo "&nbsp;<sup class='archive-ext'>{$archive_build_mode}</sup>";
-			?> &nbsp;
-        <span style="font-size:13px">
+			?> &nbsp; &nbsp;
+        </div>
+        <div class="dup-title-icons" >
             <span id="dup-archive-filter-file" title="<?php esc_attr_e('File filter enabled', 'duplicator') ?>">
-                <i class="far fa-copy fa-sm"></i> <i class="fa fa-filter fa-sm"></i> &nbsp;&nbsp;
+                <i class="far fa-copy fa-fw"></i>
+                <sup><i class="fa fa-filter fa-sm"></i></sup>
             </span>
             <span id="dup-archive-filter-db" title="<?php esc_attr_e('Database filter enabled', 'duplicator') ?>">
-                <i class="fa fa-table fa-sm"></i> <i class="fa fa-filter fa-sm"></i>
+                <i class="fa fa-table fa-fw"></i>
+                <sup><i class="fa fa-filter fa-sm"></i></sup>
             </span>
-			<span id="dup-archive-db-only" title="<?php esc_attr_e('Archive Only the Database', 'duplicator') ?>">
-                <i class="fas fa-database fa-sm"></i> <?php esc_html_e('Database Only', 'duplicator') ?>
+            <span id="dup-archive-db-only" title="<?php esc_attr_e('Archive Only the Database', 'duplicator') ?>">
+                <i class="fas fa-database fa-fw"></i> <?php esc_html_e('Database Only', 'duplicator') ?>
+                <sup>&nbsp;</sup>
             </span>
-        </span>
+        </div>
         <div class="dup-box-arrow"></div>
     </div>		
     <div class="dup-box-panel" id="dup-pack-archive-panel" style="<?php echo esc_html($ui_css_archive); ?>">
@@ -434,11 +446,7 @@ ARCHIVE -->
                     <?php else :?>
                         <i><?php esc_html_e("This option is only available with mysqldump mode.", 'duplicator'); ?></i>
                     <?php endif; ?>
-
                </div>
-
-
-
             </div>
         </div>		
     </div>
@@ -448,9 +456,18 @@ ARCHIVE -->
 INSTALLER -->
 <div class="dup-box">
 <div class="dup-box-title">
-	<i class="fa fa-bolt fa-sm"></i> <?php esc_html_e('Installer', 'duplicator') ?> &nbsp;
-	<span id="dup-installer-secure-lock" title="<?php esc_attr_e('Installer password protection is on', 'duplicator') ?>"><i class="fa fa-lock fa-xs"></i> </span>
-	<span id="dup-installer-secure-unlock" title="<?php esc_attr_e('Installer password protection is off', 'duplicator') ?>"><i class="fa fa-unlock-alt fa-xs"></i> </span>
+    <div class="dup-title-txt">
+        <i class="fa fa-bolt fa-sm"></i> <?php esc_html_e('Installer', 'duplicator') ?>&nbsp;
+    </div>
+     <div class="dup-title-icons">
+        <span id="dup-installer-secure-lock" title="<?php esc_attr_e('Installer password protection is on', 'duplicator') ?>">
+            <i class="fas fa-lock fa-sm"></i>
+        </span>
+        <span id="dup-installer-secure-unlock" title="<?php esc_attr_e('Installer password protection is off', 'duplicator') ?>">
+            <i class="fas fa-unlock-alt fa-sm"></i>
+        </span>
+    </div>
+
 	<div class="dup-box-arrow"></div>
 </div>			
 

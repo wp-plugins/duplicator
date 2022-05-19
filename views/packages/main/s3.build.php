@@ -70,12 +70,13 @@ $rand_txt[0] = $atext0;
     div.dup-howto-exe {font-size:14px; font-weight:bold; margin:25px 0 40px 0;line-height:20px; color:#000; padding-top:10px;}
     div.dup-howto-exe-title {font-size:18px; margin:0 0 8px 0; color:#000}
     div.dup-howto-exe-title a {text-decoration:none; outline:none; box-shadow:none}
-    div.dup-howto-exe small {font-weight:normal; display:block; margin-top:-2px; font-style:italic; font-size:11px; color:#444 }
+    div.dup-howto-exe small {font-weight:normal; display:block; margin-top:-2px; font-style:italic; font-size:12px; color:#444 }
     div.dup-howto-exe a {margin-top:8px; display:inline-block}
-    div.dup-howto-exe-info {display:none; border:1px dotted #b5b5b5; padding:10px 20px 20px 20px; margin:auto; width:500px; background-color:#F0F0F1; border-radius:4px;}
+    div.dup-howto-exe-info {display:none; border:1px dotted #b5b5b5; padding:20px; margin:auto; width:500px; background-color:#F0F0F1; border-radius:4px;}
     div.dup-howto-exe-info a i {display:inline-block; margin:0 2px 0 2px}
     div.dup-howto-exe-area {display: flex; justify-content: center;}
     div.dup-howto-exe-txt {text-align: left; font-size:16px}
+    div.dup-howto-exe-txt sup.modes {font-weight: normal; color:#999; font-style: italic;}
     span#dup-installer-name {display:inline-block; color:silver; font-style: italic;}
     span#dup-installer-name a {text-decoration: none}
     span#dup-installer-name-help-icon {display:none}
@@ -229,40 +230,47 @@ TOOL BAR:STEPS -->
                 <div class="dup-howto-exe-info">
                     <div class="dup-howto-exe-area">
                         <div class="dup-howto-exe-txt">
-                            <b style="font-size:18px"><?php esc_html_e("Featured Install Modes", 'duplicator');?></b>
+                            <b style="font-size:18px"><?php esc_html_e("Install Options", 'duplicator');?></b>
                             <br/>
 
                             <!-- CLASSIC -->
                             <i class="far fa-save fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_collapse&utm_campaign=duplicator_free#quick-040-q" target="_blank">
-                                <?php esc_html_e('Classic Install Feature', 'duplicator'); ?>
-                                <sup><i class="fas fa-external-link-alt fa-xs"></i></sup>
-                            </a><br/>
+                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording&utm_campaign=duplicator_free#quick-040-q" target="_blank">
+                                <?php esc_html_e('Install to Empty Server Directory ', 'duplicator'); ?>
+                            </a>
+                            <sup class="modes">
+                                <i class="fas fa-external-link-alt fa-xs"></i>
+                            </sup>
+                            <br/>
 
                             <small>
                                 <?php
-                                    echo _e('Install to an empty server directory like a new WordPress install does.', 'duplicator');
+                                    _e('<b>Classic Mode:</b> Install to an empty server directory like a new WordPress install does.', 'duplicator');
                                 ?>
                             </small>
 
                             <!-- OVERWRITE -->
                             <i class="far fa-window-close fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_collapse&utm_campaign=duplicator_free#quick-043-q" target="_blank">
-                                <?php esc_html_e('Overwrite Install Feature', 'duplicator'); ?>
-                                <sup><i class="fas fa-external-link-alt fa-xs"></i></sup>
+                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording&utm_campaign=duplicator_free#quick-043-q" target="_blank">
+                                <?php esc_html_e('Overwrite Existing Site', 'duplicator'); ?>
                             </a>
+                            <sup class="modes">
+                                <i class="fas fa-external-link-alt fa-xs"></i>
+                            </sup>
                             <br/>
-                            <small><?php esc_html_e("Quickly overwrite an existing WordPress site in a few clicks.", 'duplicator');?></small>
+                            <small><?php  _e("<b>Overwrite Mode:</b> Quickly overwrite an existing WordPress site in a few clicks.", 'duplicator');?></small>
 
 
                             <!-- IMPORT -->
                             <i class="fas fa-arrow-alt-circle-down fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_collapse&utm_campaign=duplicator_free#quick-045-q" target="_blank">
-                                <?php esc_html_e('Import Install Feature', 'duplicator'); ?>
-                                <sup><i class="fas fa-external-link-alt fa-xs"></i></sup>
+                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording&utm_campaign=duplicator_free#quick-045-q" target="_blank">
+                                <?php esc_html_e('Import Into &amp; Overwrite Existing Site', 'duplicator'); ?>
                             </a>
-                            <sup class="dup-new"><?php esc_html_e('Pro *', 'duplicator'); ?></sup><br/>
-                            <small><?php esc_html_e("Easily drag-n-drop the archive file to its destination (requires Pro*)", 'duplicator');?></small>
+                            <sup class="modes">
+                                <i class="fas fa-external-link-alt fa-xs"></i>
+                            </sup>
+                            <br/>
+                            <small><?php  _e("<b>Import Mode:</b> Easily drag-n-drop the archive file to its destination (requires Pro*)", 'duplicator');?></small>
 
                         </div>
                     </div>

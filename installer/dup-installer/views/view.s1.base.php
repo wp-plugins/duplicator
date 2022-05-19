@@ -276,7 +276,7 @@ OPTIONS
                         <?php if (!$is_wpconfarc_present): ?>
                             <span class="sub-notes">
                                 *Option enabled when archive has been pre-extracted
-                                <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">[more info]</a>
+                                <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=pre_extracted#faq-installer-015-q" target="_blank">[more info]</a>
                             </span>
                         <?php endif; ?>
                     </td>
@@ -542,9 +542,16 @@ VALIDATION
             </p>
             <ul>
                 <li>
-                    <b>Managed system: </b> <?php echo is_string($managed_host)
-                        ? '<span class="maroon">It appears the installer is being executed on "' . $mh_manager->getHosting($managed_host)->getLabel() . '".  Managed hosting is not presently supported in Duplicator Lite.</span>'
-                        : "<span class='green'>No restrictions have been found for this host.</span>" ?>
+                    <b>Managed system: </b>
+                        <?php
+                        if (is_string($managed_host)) {
+                            $hostLabel = $mh_manager->getHosting($managed_host)->getLabel();
+                            echo "<span class='maroon'>It appears the installer is being executed on \"{$hostLabel}\".  Managed hosting is not "
+                            . "presently supported in Duplicator Lite. Please upgrade to Duplicator Pro to use this hosting platform.</span>";
+                        } else {
+                            echo  "<span class='green'>No restrictions have been found for this host.</span>";
+                        }
+                        ?>
                 </li>
                 <li>
                     <b>Configuration file: </b><?php echo $mh_manager->wpConfigIsNotWriteable()
@@ -647,7 +654,7 @@ VALIDATION
 
                 <small>Note: This test looks for a file named <i>dup-wp-config-arc__[HASH].txt</i> in the dup-installer directory.  If the file exists then this notice is shown.
                     The <i>dup-wp-config-arc__[HASH].txt</i> file is created with every archive and removed once the install is complete.  For more details on this process see the
-                    <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">manual extraction FAQ</a>.</small>
+                    <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=config_arc_exists#faq-installer-015-q" target="_blank">manual extraction FAQ</a>.</small>
             </div>
         <?php endif; ?>
 
@@ -1391,7 +1398,7 @@ Auto Posts to view.step2.php
                         break;
                     case 'extract':
                         status += "<b>Recommendation:</b><br/>";
-                        status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q'>this FAQ item</a> for possible resolutions.<br/><br/>";
+                        status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=extract_recommendation#faq-installer-015-q'>this FAQ item</a> for possible resolutions.<br/><br/>";
                         break;
                     case 'ping':
                         status += "<b>Recommendation:</b><br/>";
@@ -1412,7 +1419,7 @@ Auto Posts to view.step2.php
         } else if ((xhr.status == 0) || (xhr.status == 200)) {
             status += "<b>Recommendation:</b><br/>";
             status += "Possible server timeout! Performing a 'Manual Extraction' can avoid timeouts.";
-            status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q'>this FAQ item</a> for a complete overview.<br/><br/>"
+            status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=server_timeout_man_extract#faq-installer-015-q'>this FAQ item</a> for a complete overview.<br/><br/>"
         } else {
             status += "<b>Additional Resources:</b><br/> ";
             status += "&raquo; <a target='_blank' href='https://snapcreek.com/duplicator/docs/'>Help Resources</a><br/>";
