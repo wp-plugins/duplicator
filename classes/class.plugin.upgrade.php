@@ -35,12 +35,23 @@ class DUP_LITE_Plugin_Upgrade
     {
         self::updateDatabase();
 
-        //Do not update to new wp-content storage till after 1.3.35
+        //PRE 1.3.35
+        //Do not update to new wp-content storage till after
         if (version_compare($oldVersion, '1.3.35', '<')) {
             DUP_Settings::Set('storage_position', DUP_Settings::STORAGE_POSITION_LECAGY);
             DUP_Settings::Save();
         }
 
+        //PRE 1.4.7
+        //Remove the core dup-install file that might exist in local storage directory
+        if (version_compare($oldVersion, '1.4.7', '<')) {
+            $ssdir           = DUP_Settings::getSsdirPath();
+            $dupInstallFile  = "{$ssdir}/dup-installer/main.installer.php";
+            if (file_exists($dupInstallFile) ) {
+                @unlink("{$dupInstallFile}");
+            }
+        }
+        
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
     }

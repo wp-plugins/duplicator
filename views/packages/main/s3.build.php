@@ -77,6 +77,7 @@ $rand_txt[0] = $atext0;
     div.dup-howto-exe-area {display: flex; justify-content: center;}
     div.dup-howto-exe-txt {text-align: left; font-size:16px}
     div.dup-howto-exe-txt sup.modes {font-weight: normal; color:#999; font-style: italic;}
+    div.dup-howto-exe-txt small {padding:4px 0 4px 0}
     span#dup-installer-name {display:inline-block; color:silver; font-style: italic;}
     span#dup-installer-name a {text-decoration: none}
     span#dup-installer-name-help-icon {display:none}
@@ -230,13 +231,11 @@ TOOL BAR:STEPS -->
                 <div class="dup-howto-exe-info">
                     <div class="dup-howto-exe-area">
                         <div class="dup-howto-exe-txt">
-                            <b style="font-size:18px"><?php esc_html_e("Install Options", 'duplicator');?></b>
-                            <br/>
-
+               
                             <!-- CLASSIC -->
                             <i class="far fa-save fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording&utm_campaign=duplicator_free#quick-040-q" target="_blank">
-                                <?php esc_html_e('Install to Empty Server Directory ', 'duplicator'); ?>
+                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording2&utm_campaign=duplicator_free#quick-040-q" target="_blank">
+                                <?php esc_html_e('Install to Empty Directory ', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
                                 <i class="fas fa-external-link-alt fa-xs"></i>
@@ -245,32 +244,34 @@ TOOL BAR:STEPS -->
 
                             <small>
                                 <?php
-                                    _e('<b>Classic Mode:</b> Install to an empty server directory like a new WordPress install does.', 'duplicator');
+                                    _e('Install to an empty directory like a new WordPress install does.', 'duplicator');
                                 ?>
-                            </small>
+                            </small><br/>
 
                             <!-- OVERWRITE -->
                             <i class="far fa-window-close fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording&utm_campaign=duplicator_free#quick-043-q" target="_blank">
-                                <?php esc_html_e('Overwrite Existing Site', 'duplicator'); ?>
+                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording2&utm_campaign=duplicator_free#quick-043-q" target="_blank">
+                                <?php esc_html_e('Overwrite Site', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
                                 <i class="fas fa-external-link-alt fa-xs"></i>
                             </sup>
                             <br/>
-                            <small><?php  _e("<b>Overwrite Mode:</b> Quickly overwrite an existing WordPress site in a few clicks.", 'duplicator');?></small>
+
+                            <small><?php  _e("Quickly overwrite an existing WordPress site in a few clicks.", 'duplicator');?></small>
+                            <br/>
 
 
                             <!-- IMPORT -->
                             <i class="fas fa-arrow-alt-circle-down fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording&utm_campaign=duplicator_free#quick-045-q" target="_blank">
-                                <?php esc_html_e('Import Into &amp; Overwrite Existing Site', 'duplicator'); ?>
+                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording2&utm_campaign=duplicator_free#quick-045-q" target="_blank">
+                                <?php esc_html_e('Import Archive and Overwrite Site', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
                                 <i class="fas fa-external-link-alt fa-xs"></i>
                             </sup>
                             <br/>
-                            <small><?php  _e("<b>Import Mode:</b> Easily drag-n-drop the archive file to its destination (requires Pro*)", 'duplicator');?></small>
+                            <small><?php  _e("Drag-n-drop or use a URL for super-fast installs (requires Pro*)", 'duplicator');?></small>
 
                         </div>
                     </div>

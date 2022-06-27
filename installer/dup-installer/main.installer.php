@@ -127,8 +127,9 @@ try {
             }
             die('');
         } else {
-            DUPX_Log::error("An invalid request was made to 'daws'.  In order to protect this request from unauthorized access please "
-            . "<a href='../{$GLOBALS['BOOTLOADER_NAME']}'>restart this install process</a>.");
+            DUPX_Log::setThrowExceptionOnError(false);
+            DUPX_Log::error("An invalid request was made to the 'DAWS' process.<br/>To protect this request from unauthorized access please "
+            . "restart this install process again by browsing to the installer file!<br/><br/>");
         }        
     } else {
         if (!isset($_POST['archive'])) {
@@ -429,7 +430,6 @@ FORM DATA: User-Interface views -->
          <div class="hdr">SERVER DETAILS</div>
 		<label>Web Server:</label>  			<?php echo DUPX_U::esc_html($_SERVER['SERVER_SOFTWARE']); ?><br/>
         <label>PHP Version:</label>  			<?php echo DUPX_U::esc_html(DUPX_Server::$php_version); ?><br/>
-		<label>PHP INI Path:</label> 			<?php echo empty($ini_path ) ? 'Unable to detect loaded php.ini file' : $ini_path; ?>	<br/>
 		<?php
 		$php_sapi_name = php_sapi_name();
 		?>
@@ -437,7 +437,7 @@ FORM DATA: User-Interface views -->
 		<label>PHP ZIP Archive:</label> 		<?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
 		<label>PHP max_execution_time:</label>  <?php echo $ini_max_time === false ? 'unable to find' : DUPX_U::esc_html($ini_max_time); ?><br/>
 		<label>PHP memory_limit:</label>  		<?php echo empty($ini_memory)      ? 'unable to find' : DUPX_U::esc_html($ini_memory); ?><br/>
-		<label>Error Log Path:</label>  		<?php echo empty($ini_error_path)      ? 'unable to find' : DUPX_U::esc_html($ini_error_path); ?><br/>
+		<label>Error Log Path:</label>  		<?php echo empty($ini_error_path)  ? 'unable to find' : '[installer_path]/dup-installer/php_error__[HASH].LOG'; ?><br/>
 
         <br/>
         <div class="hdr">PACKAGE BUILD DETAILS</div>

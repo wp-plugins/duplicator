@@ -20,7 +20,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     /*EXPANDER TITLE BOXES */
     div.dup-box-title div.dup-title-txt {float:left}
     div.dup-box-title 
-    div.dup-title-icons { margin-top:-5px; font-weight:normal; font-size:13px; display:flex; flex-wrap:wrap; align-items:flex-start; flex-direction: row;}
+    div.dup-title-icons { margin-top:-5px; font-weight:normal; font-size:13px; float:left}
     div.dup-box-title div.dup-title-icons > span {border-left:1px solid silver; padding:2px 14px 5px 14px; user-select:none}
     span#dup-installer-secure-lock, span#dup-installer-secure-unlock  {border:none; padding:0 12px 5px 2px;}
 
