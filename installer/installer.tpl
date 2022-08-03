@@ -16,6 +16,15 @@ if (!defined('DUPLICATOR_PHP_MAX_MEMORY')) { define('DUPLICATOR_PHP_MAX_MEMORY',
 date_default_timezone_set('UTC'); // Some machines don’t have this set so just do it here.
 @ignore_user_abort(true);
 
+$disabled_dirs = array(
+	'backups-dup-lite',
+	'wp-snapshots'
+);
+
+if (in_array(basename(dirname(__FILE__)), $disabled_dirs)) {
+	die;
+}
+
 if (!function_exists('wp_is_ini_value_changeable')) {
     /**
     * Determines whether a PHP ini value is changeable at runtime.

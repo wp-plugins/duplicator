@@ -34,9 +34,10 @@ delete_option('duplicator_usage_id');
 
 //Remove entire storage directory
 if (DUP_Settings::Get('uninstall_files')) {
-    $ssdir           = DUP_Settings::getSsdirPath();
-    $ssdir_tmp       = DUP_Settings::getSsdirTmpPath();
-    $ssdir_installer = DUP_Settings::getSsdirInstallerPath();
+    $ssdir              = DUP_Settings::getSsdirPath();
+    $ssdir_tmp          = DUP_Settings::getSsdirTmpPath();
+    $ssdir_installer    = DUP_Settings::getSsdirInstallerPath();
+    $ssdir_dupInstaller = "{$ssdir}/dup-installer/";
 
     //Sanity check for strange setup
     $check = glob("{$ssdir}/wp-config.php");
@@ -80,6 +81,10 @@ if (DUP_Settings::Get('uninstall_files')) {
             if (strstr($file, '.log1'))
                 @unlink("{$file}");
         }
+        foreach (glob("{$ssdir}/*.txt") as $file) {
+            if (strstr($file, '.txt'))
+                @unlink("{$file}");
+        }
 
         //Check for core files and only continue removing data if the snapshots directory
         //has not been edited by 3rd party sources, this helps to keep the system stable
@@ -103,6 +108,14 @@ if (DUP_Settings::Get('uninstall_files')) {
 
                 @rmdir($ssdir_installer);
                 @rmdir($ssdir_tmp);
+
+                //Edge Case:  dup-installer directory
+                if (file_exists($ssdir_dupInstaller)) {
+                    error_log("Duplicator Removing: {$ssdir_dupInstaller}");
+                    DupLiteSnapLibIOU::emptyDir($ssdir_dupInstaller);
+                    @rmdir($ssdir_dupInstaller);
+                }
+                
                 @rmdir($ssdir);
             }
         }

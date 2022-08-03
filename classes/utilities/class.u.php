@@ -605,19 +605,16 @@ class DUP_Util
             @fclose($ssfile);
         }
 
-        //SSDIR: Create .htaccess
+        //SSDIR: Create .htaccess file
         $storage_htaccess_off = DUP_Settings::Get('storage_htaccess_off');
         $fileName             = $path_ssdir.'/.htaccess';
         if ($storage_htaccess_off) {
             @unlink($fileName);
         } else if (!file_exists($fileName)) {
-            $htfile   = @fopen($fileName, 'w');
-            $htoutput = "Options -Indexes";
-            @fwrite($htfile, $htoutput);
-            @fclose($htfile);
+            self::setupBackupDirHtaccess();
         }
 
-        //SSDIR: Robots.txt file
+        //SSDIR: Create Robots.txt file
         $fileName = $path_ssdir.'/robots.txt';
         if (!file_exists($fileName)) {
             $robotfile = @fopen($fileName, 'w');
@@ -629,6 +626,26 @@ class DUP_Util
         }
 
         return true;
+    }
+
+    /**
+     * Attempts to create a secure .htaccess file in the download directory
+     *
+     * @return null
+     */
+    public static function setupBackupDirHtaccess()
+    {
+        try {
+            $backupDirPath  = DUP_Settings::getSsdirPath();
+            $fileName       = "{$backupDirPath}/.htaccess";
+            $htfile         = @fopen($fileName, 'w');
+            $htoutput       = "Options -Indexes \n";
+            $htoutput       .= "<Files *.php>\n deny from all\n</Files>";
+            @fwrite($htfile, $htoutput);
+            @fclose($htfile);
+        } catch (Exception $ex) {
+             DUP_Log::Info("Duplicator Error: Unable to properly configure .htaccess for servers storage directory {$fileName}" . $ex);
+        }
     }
 
     /**
@@ -857,4 +874,22 @@ class DUP_Util
     {
         return function_exists($function_name) && !in_array($function_name, self::getIniDisableFuncs());
     }
+
+    /**
+	* Is the web server IIS
+	*
+	* @return bool		Returns true if web server is IIS
+	*/
+    public static function isIISRunning()
+	{
+        if (isset($_SERVER["SERVER_SOFTWARE"])) {
+            $sSoftware = strtolower($_SERVER["SERVER_SOFTWARE"]);
+            if ( strpos($sSoftware, "microsoft-iis") !== false ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+	}
 }

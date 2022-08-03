@@ -42,18 +42,27 @@ class DUP_LITE_Plugin_Upgrade
             DUP_Settings::Save();
         }
 
+        //Run and secure updates
+        self::secureLocalStorageDirectory($oldVersion);
+        
+        //WordPress Options Hooks
+        update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
+    }
+
+    protected static function secureLocalStorageDirectory($oldVersion) {
+
         //PRE 1.4.7
         //Remove the core dup-install file that might exist in local storage directory
-        if (version_compare($oldVersion, '1.4.7', '<')) {
+        if (version_compare($oldVersion, '1.4.7', '<=')) {
             $ssdir           = DUP_Settings::getSsdirPath();
             $dupInstallFile  = "{$ssdir}/dup-installer/main.installer.php";
             if (file_exists($dupInstallFile) ) {
                 @unlink("{$dupInstallFile}");
             }
         }
-        
-        //WordPress Options Hooks
-        update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
+
+        //Always apply the htaccess to backup dir
+        DUP_Util::setupBackupDirHtaccess();
     }
 
     protected static function updateDatabase()

@@ -28,6 +28,15 @@ if ( !defined('DUPXABSPATH') ) {
     define('DUPXABSPATH', dirname(__FILE__));
 }
 
+$disabled_dirs = array(
+	'backups-dup-lite',
+	'wp-snapshots'
+);
+
+if (in_array(basename(dirname(dirname(__FILE__))), $disabled_dirs)) {
+	die;
+}
+
 define('ERR_CONFIG_FOUND', 'A wp-config.php already exists in this location.  This error prevents users from accidentally overwriting a WordPress site or trying to install on top of an existing one.  Extracting an archive on an existing site will overwrite existing files and intermix files causing site incompatibility issues.<br/><br/>  It is highly recommended to place the installer and archive in an empty directory. If you have already manually extracted the archive file that is associated with this installer then choose option #1 below; other-wise consider the other options: <ol><li>Click &gt; Try Again &gt; Options &gt; choose "Manual Archive Extraction".</li><li>Empty the directory except for the archive.zip/daf and installer.php and try again.</li><li>Advanced users only can remove the existing wp-config.php file and try again.</li></ol>');
 
 ob_start();
