@@ -189,9 +189,10 @@ TOOL BAR:STEPS -->
 					</sup>
 				</div>
                 <div style="margin-top:20px; font-size:11px">
-                    <span id="dup-click-to-copy-installer-name"
-                          class="link-style no-decoration"
-                          data-dup-copy-text="<?php echo esc_attr(DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH); ?>">
+                    <span 
+						id="dup-click-to-copy-installer-name"
+						class="link-style no-decoration"
+						data-dup-copy-text="<?php echo DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH . DUP_Installer::INSTALLER_SERVER_EXTENSION; ?>">
                         <?php esc_html_e("[Copy Installer Name to Clipboard]", 'duplicator'); ?>
                         <i class="far fa-copy"></i>
                     </span><br/>

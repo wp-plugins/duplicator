@@ -169,14 +169,18 @@ GENERAL -->
 					</tr>
 					<tr>
 						<td><?php esc_html_e('Installer', 'duplicator') ?>: </td>
-						<td><a href="#" onclick="Duplicator.Pack.DownloadInstaller(<?php echo $installerDownloadInfoJson; ?>);return false;" ><?php echo esc_html($package->Installer->File) ?></a></td>
+						<td>
+                            <a href="#" onclick="Duplicator.Pack.DownloadInstaller(<?php echo $installerDownloadInfoJson; ?>);return false;" >
+                                <?php echo esc_html(rtrim($package->Installer->File, '.bak')) ?>
+                            </a>
+                        </td>
 					</tr>
                     <tr>
                         <td><?php esc_html_e("Build Log", 'duplicator') ?>: </td>
                         <td><a href="<?php echo $logDownloadInfo["url"] ?>" target="file_results"><?php echo $logDownloadInfo["filename"]; ?></a></td>
                     </tr>
                     <tr>
-                        <td class="sub-notes">
+                        <td class="sub-notes" colspan="2">
                             <i class="fas fa-download"></i> <?php _e("Click links to download", 'duplicator-pro') ?>
                         </td>
                     </tr>

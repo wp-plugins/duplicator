@@ -388,12 +388,15 @@ class DUP_Package
     {
         switch (DUP_Settings::Get('installer_name_mode')) {
             case DUP_Settings::INSTALLER_NAME_MODE_SIMPLE:
-                return DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH;
-
+                $name = DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH . DUP_Installer::INSTALLER_SERVER_EXTENSION;
+                break;
             case DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH:
             default:
-                return basename($this->getLocalPackageFile(DUP_PackageFileType::Installer));
+                $name = basename($this->getLocalPackageFile(DUP_PackageFileType::Installer));
+                break;
         }
+        $info = pathinfo($name);
+        return $info['filename'];
     }
 
     /**
@@ -420,7 +423,10 @@ class DUP_Package
 
 		$this->Archive->Format	= strtoupper($extension);
 		$this->Archive->File	= "{$this->NameHash}_archive.{$extension}";
-		$this->Installer->File	= apply_filters('duplicator_installer_file_path', "{$this->NameHash}_installer.php");
+		$this->Installer->File	= apply_filters(
+            'duplicator_installer_file_path', 
+            "{$this->NameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION
+        );
 		$this->Database->File	= "{$this->NameHash}_database.sql";
 		$this->WPUser          = isset($current_user->user_login) ? $current_user->user_login : 'unknown';
 
@@ -494,14 +500,14 @@ class DUP_Package
                 //Perms
                 @chmod($tmpPath."/{$archiveFile}", 0644);
                 @chmod($tmpPath."/{$nameHash}_database.sql", 0644);
-                @chmod($tmpPath."/{$nameHash}_installer.php", 0644);
+                @chmod($tmpPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION, 0644);
                 @chmod($tmpPath."/{$nameHash}_scan.json", 0644);
                 @chmod($tmpPath."/{$wpConfigFile}", 0644);
                 @chmod($tmpPath."/{$nameHash}.log", 0644);
 
                 @chmod($ssdPath."/{$archiveFile}", 0644);
                 @chmod($ssdPath."/{$nameHash}_database.sql", 0644);
-                @chmod($ssdPath."/{$nameHash}_installer.php", 0644);
+                @chmod($ssdPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION, 0644);
                 @chmod($ssdPath."/{$nameHash}_scan.json", 0644);
                 // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
                 @chmod($ssdPath."/{$wpConfigFile}", 0644);
@@ -509,14 +515,14 @@ class DUP_Package
                 //Remove
                 @unlink($tmpPath."/{$archiveFile}");
                 @unlink($tmpPath."/{$nameHash}_database.sql");
-                @unlink($tmpPath."/{$nameHash}_installer.php");
+                @unlink($tmpPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION);
                 @unlink($tmpPath."/{$nameHash}_scan.json");
                 @unlink($tmpPath."/{$wpConfigFile}");
                 @unlink($tmpPath."/{$nameHash}.log");
 
                 @unlink($ssdPath."/{$archiveFile}");
                 @unlink($ssdPath."/{$nameHash}_database.sql");
-                @unlink($ssdPath."/{$nameHash}_installer.php");
+                @unlink($ssdPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION);
                 @unlink($ssdPath."/{$nameHash}_scan.json");
                 // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
                 @unlink($ssdPath."/{$wpConfigFile}");
@@ -1052,7 +1058,7 @@ class DUP_Package
 
     public function getInstallerFilename()
     {
-        return "{$this->NameHash}_installer.php";
+        return "{$this->NameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION;
     }
 
     public function getDatabaseFilename()

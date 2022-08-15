@@ -1,8 +1,10 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.io.php');
+
 /**
- * Recursivly scans a directory and finds all sym-links and unreadable files
+ * Utility class used for helper type functions
  *
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2
@@ -11,10 +13,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * @subpackage classes/utilities
  * @copyright (c) 2017, Snapcreek LLC
  *
- * @todo Refactor out IO methods into class.io.php file
  */
 class DUP_Util
 {
+        
+    const SECURE_ISSUE_DIE    = 'die';
+    const SECURE_ISSUE_THROW  = 'throw';
+    const SECURE_ISSUE_RETURN = 'return';
 
     /**
      * Is PHP 5.2.9 or better running
@@ -48,10 +53,10 @@ class DUP_Util
      */
     public static function init()
     {
-        self::$on_php_529_plus = version_compare(PHP_VERSION, '5.2.9') >= 0;
-        self::$on_php_53_plus  = version_compare(PHP_VERSION, '5.3.0') >= 0;
-        self::$on_php_54_plus  = version_compare(PHP_VERSION, '5.4.0') >= 0;
-        self::$PHP7_plus       = version_compare(PHP_VERSION, '7.0.0', '>=');
+        self::$on_php_529_plus  = version_compare(PHP_VERSION, '5.2.9') >= 0;
+        self::$on_php_53_plus   = version_compare(PHP_VERSION, '5.3.0') >= 0;
+        self::$on_php_54_plus   = version_compare(PHP_VERSION, '5.4.0') >= 0;
+        self::$PHP7_plus        = version_compare(PHP_VERSION, '7.0.0', '>=');
     }
 
     public static function getArchitectureString()
@@ -474,9 +479,6 @@ class DUP_Util
     {
         return base64_encode($string);
     }
-    const SECURE_ISSUE_DIE    = 'die';
-    const SECURE_ISSUE_THROW  = 'throw';
-    const SECURE_ISSUE_RETURN = 'return';
 
     /**
      * Does the current user have the capability
@@ -560,22 +562,23 @@ class DUP_Util
      */
     public static function initSnapshotDirectory()
     {
-        $error = false;
-
+        $error       = false;
         $path_wproot = duplicator_get_abs_path();
-        $path_ssdir  = DUP_Settings::getSsdirPath();
+        $backupsDir  = DUP_Settings::getSsdirPath();
         $path_plugin = DUP_Util::safePath(DUPLICATOR_PLUGIN_PATH);
 
-        if (!file_exists($path_ssdir)) {
+        //--------------------------------
+        //DIRCTORY CREATION
+        //Seupt the main directory and tmp build dir
+        if (!file_exists($backupsDir)) {
             $old_root_perm = @fileperms($path_wproot);
 
-            //--------------------------------
             //CHMOD DIRECTORY ACCESS
             //wordpress root directory
             DupLiteSnapLibIOU::chmod($path_wproot, 'u+rwx');
 
             //snapshot directory
-            if (DupLiteSnapLibIOU::dirWriteCheckOrMkdir($path_ssdir, 'u+rwx,go+rx') == false) {
+            if (DupLiteSnapLibIOU::dirWriteCheckOrMkdir($backupsDir, 'u+rwx,go+rx') == false) {
                 $error = true;
             }
 
@@ -587,43 +590,16 @@ class DUP_Util
             }
         }
 
-        DupLiteSnapLibIOU::chmod($path_ssdir, 'u+rwx,go+rx');
-
+        DupLiteSnapLibIOU::chmod($backupsDir, 'u+rwx,go+rx');
         DupLiteSnapLibIOU::dirWriteCheckOrMkdir(DUP_Settings::getSsdirTmpPath(), 'u+rwx');
 
-        //plugins dir/files
-        DupLiteSnapLibIOU::dirWriteCheckOrMkdir($path_plugin.'files', 'u+rwx');
-
         //--------------------------------
-        //FILE CREATION
-        //SSDIR: Create Index File
-        $fileName = $path_ssdir.'/index.php';
-        if (!file_exists($fileName)) {
-            $ssfile = @fopen($fileName, 'w');
-            @fwrite($ssfile,
-                    '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
-            @fclose($ssfile);
-        }
-
-        //SSDIR: Create .htaccess file
-        $storage_htaccess_off = DUP_Settings::Get('storage_htaccess_off');
-        $fileName             = $path_ssdir.'/.htaccess';
-        if ($storage_htaccess_off) {
-            @unlink($fileName);
-        } else if (!file_exists($fileName)) {
-            self::setupBackupDirHtaccess();
-        }
-
-        //SSDIR: Create Robots.txt file
-        $fileName = $path_ssdir.'/robots.txt';
-        if (!file_exists($fileName)) {
-            $robotfile = @fopen($fileName, 'w');
-            @fwrite($robotfile,
-                    "User-agent: * \n"
-                    ."Disallow: /".DUP_Settings::SSDIR_NAME_LEGACY."/\n"
-                    ."Disallow: /".DUP_Settings::SSDIR_NAME_NEW."/");
-            @fclose($robotfile);
-        }
+        //FILE CREATION & HARDEN PROCESS
+        //index.php, .htaccess, robots.txt
+        self::setupBackupDirIndexFile($backupsDir);
+        self::setupBackupDirRobotsFile($backupsDir);
+        self::setupBackupDirHtaccess($backupsDir);
+        self::performHardenProcesses($backupsDir);
 
         return true;
     }
@@ -633,19 +609,104 @@ class DUP_Util
      *
      * @return null
      */
-    public static function setupBackupDirHtaccess()
+    public static function setupBackupDirHtaccess($backupsDir)
     {
         try {
-            $backupDirPath  = DUP_Settings::getSsdirPath();
-            $fileName       = "{$backupDirPath}/.htaccess";
-            $htfile         = @fopen($fileName, 'w');
-            $htoutput       = "Options -Indexes \n";
-            $htoutput       .= "<Files *.php>\n deny from all\n</Files>";
-            @fwrite($htfile, $htoutput);
-            @fclose($htfile);
+            $storageHtaccessOff = DUP_Settings::Get('storage_htaccess_off');
+            $fileName           = "{$backupsDir}/.htaccess";
+
+            if ($storageHtaccessOff) {
+                @unlink($fileName);
+            } else if (!file_exists($fileName) || @filesize($fileName) == 0) {
+                $htfile         = @fopen($fileName, 'w');
+                $htoutput       = "Options -Indexes \n";
+                $htoutput       .= "<Files *.php>\n deny from all\n</Files>";
+                if ($htfile !== false) {
+                    @fwrite($htfile, $htoutput);
+                    @fclose($htfile);
+                }
+            } 
         } catch (Exception $ex) {
              DUP_Log::Info("Duplicator Error: Unable to properly configure .htaccess for servers storage directory {$fileName}" . $ex);
         }
+    }
+
+    /**
+     * Attempts to create an index.php file in the backups directory
+     *
+     * @return null
+     */
+    public static function setupBackupDirIndexFile($backupsDir)
+    {
+        try {
+            $fileName  = "{$backupsDir}/index.php";
+            if (!file_exists($fileName)) {
+                $ssfile = @fopen($fileName, 'w');
+                if ($ssfile !== false) {
+                    @fwrite($ssfile,
+                           '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; '
+                          . 'header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
+                    @fclose($ssfile);
+                }
+            }
+        } catch (Exception $ex) {
+             DUP_Log::Info("Duplicator Error: Unable to properly configure index.php for servers storage directory {$fileName}" . $ex);
+        }
+    }
+
+    /**
+    * Attempts to create a robots.txt file in the backups directory
+    * to prevent search engines
+    *
+    * @return null
+    */
+    public static function setupBackupDirRobotsFile($backupsDir)
+    {
+        try {
+            $fileName  = "{$backupsDir}/robots.txt";
+            if (!file_exists($fileName)) {
+                $robotfile = @fopen($fileName, 'w');
+                if ($robotfile !== false) {
+                    @fwrite($robotfile,
+                            "User-agent: * \n"
+                            ."Disallow: /".DUP_Settings::SSDIR_NAME_LEGACY."/\n"
+                            ."Disallow: /".DUP_Settings::SSDIR_NAME_NEW."/");
+                    @fclose($robotfile);
+                }
+            }
+        } catch (Exception $ex) {
+             DUP_Log::Info("Duplicator Error: Unable to properly configure tobots.txt for servers storage directory {$fileName}" . $ex);
+        }
+    }
+
+    /**
+    * Run various secure processes to harden the backups dir
+    *
+    * @return null
+    */
+    public static function performHardenProcesses($backupsDir)
+    {
+        //Edge Case: Remove any dup-installer/main.installer.php
+        $dupInstallFile  = "{$backupsDir}/dup-installer/main.installer.php";
+        if (file_exists($dupInstallFile) ) {
+            DupLiteSnapLibIOU::chmod($dupInstallFile, "a+w");
+            DUP_IO::deleteFile("{$dupInstallFile}");
+        }
+
+        //Rename installer php files to .bak
+        DupLiteSnapLibIOU::regexGlobCallback(
+            $backupsDir,
+            function ($path) {
+                $parts = pathinfo($path);
+                $newPath = $parts['dirname'] . '/' . $parts['filename'] . DUP_Installer::INSTALLER_SERVER_EXTENSION;
+                DupLiteSnapLibIOU::rename($path, $newPath);
+            },
+            array(
+                'regexFile'     => '/^.+_installer.*\.php$/',
+                'regexFolder'   => false,
+                'recursive'     => true,
+            )
+        );
     }
 
     /**

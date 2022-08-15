@@ -286,16 +286,19 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
             <td id="installer-name-mode-option" >
                 <b><?php esc_html_e("Default 'Save as' name:", 'duplicator'); ?></b> <br/>
                 <label>
-                    <i class='fas fa-lock lock-info'></i><input type="radio" name="installer_name_mode"
-                                                                value="<?php echo DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH; ?>"
-                                                                <?php checked($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH); ?> />
+                    <i class='fas fa-lock lock-info'></i>
+                    <input type="radio" name="installer_name_mode"
+                        value="<?php echo DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH; ?>"
+                        <?php checked($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH); ?> />
                     [name]_[hash]_[date]_installer.php <i>(<?php esc_html_e("recommended", 'duplicator'); ?>)</i>
                 </label><br>
                 <label>
-                    <i class='fas fa-lock-open lock-info'></i><input type="radio" name="installer_name_mode"
-                                                                     value="<?php echo DUP_Settings::INSTALLER_NAME_MODE_SIMPLE; ?>"
-                                                                     <?php checked($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_SIMPLE); ?> />
-                                                                     <?php echo DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH; ?>
+                    <i class='fas fa-lock-open lock-info'></i>
+                    <input type="radio" name="installer_name_mode"
+                        value="<?php echo DUP_Settings::INSTALLER_NAME_MODE_SIMPLE; ?>"
+                        <?php checked($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_SIMPLE); ?> 
+                    >
+                    <?php echo DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH . DUP_Installer::INSTALLER_SERVER_EXTENSION; ?>
                 </label>
                 <p class="description">
                     <?php esc_html_e("To understand the importance and usage of the installer name, please", 'duplicator') ?>

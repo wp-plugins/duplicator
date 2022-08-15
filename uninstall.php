@@ -21,6 +21,7 @@ require_once 'lib/snaplib/snaplib.all.php';
 require_once 'classes/class.settings.php';
 require_once 'classes/utilities/class.u.php';
 require_once 'classes/class.plugin.upgrade.php';
+require_once 'classes/package/class.pack.installer.php';
 
 global $wpdb;
 DUP_Settings::init();
@@ -48,8 +49,8 @@ if (DUP_Settings::Get('uninstall_files')) {
             if (strstr($file, '_database.sql'))
                 @unlink("{$file}");
         }
-        foreach (glob("{$ssdir}/*_installer.php") as $file) {
-            if (strstr($file, '_installer.php'))
+        foreach (glob("{$ssdir}/*_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION) as $file) {
+            if (strstr($file, '_installer' . DUP_Installer::INSTALLER_SERVER_EXTENSION))
                 @unlink("{$file}");
         }
         foreach (glob("{$ssdir}/*_archive.zip*") as $file) {

@@ -2,69 +2,69 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
-
- * Upgrade logic of plugin resides here
-
+ * Upgrade/Install logic of plugin resides here
+ *
  */
 class DUP_LITE_Plugin_Upgrade
 {
 
     const DUP_VERSION_OPT_KEY = 'duplicator_version_plugin';
 
+    /**
+     * Called as part of WordPress register_activation_hook
+     *
+     * @return void
+     */
     public static function onActivationAction()
     {
+        //NEW VS UPDATE
         if (($oldDupVersion = get_option(self::DUP_VERSION_OPT_KEY, false)) === false) {
             self::newInstallation();
         } else {
             self::updateInstallation($oldDupVersion);
         }
 
-        //Setup All Directories
+        //Initilize Backup Directories
+        self::updateDatabase();
         DUP_Util::initSnapshotDirectory();
     }
 
+     /**
+     * Runs only on new installs
+     *
+     * @return void
+     */
     protected static function newInstallation()
     {
-        self::updateDatabase();
-
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
     }
 
+    /**
+     * Run only on update installs
+     *
+     * @param string $oldVersion  The last/previous installed version
+     *
+     * @return void
+     */
     protected static function updateInstallation($oldVersion)
     {
-        self::updateDatabase();
-
         //PRE 1.3.35
         //Do not update to new wp-content storage till after
         if (version_compare($oldVersion, '1.3.35', '<')) {
             DUP_Settings::Set('storage_position', DUP_Settings::STORAGE_POSITION_LECAGY);
             DUP_Settings::Save();
         }
-
-        //Run and secure updates
-        self::secureLocalStorageDirectory($oldVersion);
         
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
     }
 
-    protected static function secureLocalStorageDirectory($oldVersion) {
-
-        //PRE 1.4.7
-        //Remove the core dup-install file that might exist in local storage directory
-        if (version_compare($oldVersion, '1.4.7', '<=')) {
-            $ssdir           = DUP_Settings::getSsdirPath();
-            $dupInstallFile  = "{$ssdir}/dup-installer/main.installer.php";
-            if (file_exists($dupInstallFile) ) {
-                @unlink("{$dupInstallFile}");
-            }
-        }
-
-        //Always apply the htaccess to backup dir
-        DUP_Util::setupBackupDirHtaccess();
-    }
-
+    /**
+     * Runs for both new and update installs and creates the database tables
+     *
+     * @return void
+     */
     protected static function updateDatabase()
     {
         global $wpdb;

@@ -367,7 +367,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         /**
          * 
          * @param resource $handle
-         * @param srtring $string
+         * @param string $string
          * @return int
          * @throws Exception
          */

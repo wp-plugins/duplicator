@@ -10,8 +10,8 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/class.password.php');
 
 class DUP_Installer
 {
-
-	const DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH = 'installer.php';
+	const INSTALLER_SERVER_EXTENSION = '.php.bak';
+	const DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH = 'installer';
 
 	//PUBLIC
 	public $File;
@@ -84,7 +84,10 @@ class DUP_Installer
 	{
 		$success				 = true;
 		$archive_filepath		 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->Archive->File}";
-		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_installer.php");
+		$installer_filepath		 = apply_filters(
+			'duplicator_installer_file_path', 
+			DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_installer" . self::INSTALLER_SERVER_EXTENSION
+		);
 		$template_filepath		 = DUPLICATOR_PLUGIN_PATH.'/installer/installer.tpl';
 		$mini_expander_filepath	 = DUPLICATOR_PLUGIN_PATH.'/lib/dup_archive/classes/class.duparchive.mini.expander.php';
 
@@ -149,7 +152,7 @@ class DUP_Installer
 
 		//READ-ONLY: GENERAL
 		// $ac->installer_base_name  = $global->installer_base_name;
-		$ac->installer_base_name = 'installer.php';
+		$ac->installer_base_name = 'installer' . self::INSTALLER_SERVER_EXTENSION;
 		$ac->installer_backup_name = $this->Package->NameHash.'_installer-backup.php';
 		$ac->package_name		 = "{$this->Package->NameHash}_archive.{$extension}";
 		$ac->package_hash		 = $this->Package->getPackageHash();
@@ -199,7 +202,10 @@ class DUP_Installer
 	private function add_extra_files($package)
 	{
 		$success				 = false;
-		$installer_filepath		 = apply_filters('duplicator_installer_file_path', DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_installer.php");
+		$installer_filepath		 = apply_filters(
+			'duplicator_installer_file_path', 
+			DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_installer" . self::INSTALLER_SERVER_EXTENSION
+		);
 		$scan_filepath			 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->NameHash}_scan.json";
 		$sql_filepath			 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->Database->File}";
 		$archive_filepath		 = DUP_Settings::getSsdirTmpPath()."/{$this->Package->Archive->File}";

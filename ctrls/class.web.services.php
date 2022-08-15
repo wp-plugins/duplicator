@@ -122,12 +122,18 @@ class DUP_Web_Services
                 throw new Exception(__("Invalid request."));
             }
 
-            $fileName = $package->getInstDownloadName();
-            $filepath = DUP_Settings::getSsdirPath().'/'.$package->Installer->File;
+            $fileName     = $package->getInstDownloadName();
+            $realFileName = $package->Installer->File;
+            $backupDir    = DUP_Settings::getSsdirPath();
+            
+            if(DUP_STR::endsWith($realFileName, '.php')) {
+                $realFileName = basename($realFileName, '.php').DUP_Installer::INSTALLER_SERVER_EXTENSION;
+            }
+            $filepath = "{$backupDir}/{$realFileName}";
 
             // Process download
             if (!file_exists($filepath)) {
-                throw new Exception(__("Invalid request."));
+                throw new Exception(__("INVALID REQUEST: File not found, please check the backup folder for file."));
             }
 
             // Clean output buffer

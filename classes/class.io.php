@@ -21,7 +21,7 @@ class DUP_IO
 	{
 		if (file_exists($file)) {
 			if (@unlink($file) === false) {
-				DUP_Log::Info("Could not delete file: {$file}");
+				DUP_Log::Info("Duplicator could not delete file: '{$file}'");
 				return false;
 			}
 		}
@@ -89,4 +89,33 @@ class DUP_IO
 
         return copy($source_file, $dest_filepath);
     }
+
+    /**
+     * Prepends data to an existing file
+     *
+     * @param string $file      The full file path to the file
+     * @param string $content	The content to prepend to the file
+     *
+     * @return TRUE on success or if file does not exist. FALSE on failure
+     */
+    public static function fwritePrepend($file, $prepend)
+	{
+		if (!file_exists($file) || !is_writable($file)) {
+            return false;
+        }
+
+        $handle     = fopen($file, "r+");
+        $len        = strlen($prepend);
+        $final_len  = filesize($file) + $len;
+        $cache_old  = fread($handle, $len);
+        rewind($handle);
+        $i = 1;
+        while (ftell($handle) < $final_len) {
+          fwrite($handle, $prepend);
+          $prepend = $cache_old;
+          $cache_old = fread($handle, $len);
+          fseek($handle, $i * $len);
+          $i++;
+        }
+	}
 }
