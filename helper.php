@@ -1,4 +1,5 @@
 <?php
+
 defined('ABSPATH') || exit;
 
 if (!function_exists('duplicator_cloned_get_home_path')) {
@@ -16,7 +17,7 @@ if (!function_exists('duplicator_cloned_get_home_path')) {
         // below two lines
         // extra added by snapcreek
         // when home is www. path and siteurl is non-www , the duplicator_get_home_psth() was  returning empty value
-        $home = str_ireplace('://www.', '://', $home);
+        $home    = str_ireplace('://www.', '://', $home);
         $siteurl = str_ireplace('://www.', '://', $siteurl);
 
         if (!empty($home) && 0 !== strcasecmp($home, $siteurl)  && $home !== $siteurl) {
@@ -32,11 +33,12 @@ if (!function_exists('duplicator_cloned_get_home_path')) {
 }
 
 if (!function_exists('duplicator_get_home_path')) {
-    function duplicator_get_home_path() {
+    function duplicator_get_home_path()
+    {
         static $homePath = null;
         if (is_null($homePath)) {
             if (!function_exists('get_home_path')) {
-                require_once(ABSPATH.'wp-admin/includes/file.php');
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
             }
             $homePath = wp_normalize_path(duplicator_cloned_get_home_path());
             if ($homePath == '//' || $homePath == '') {
@@ -50,7 +52,8 @@ if (!function_exists('duplicator_get_home_path')) {
 }
 
 if (!function_exists('duplicator_get_abs_path')) {
-    function duplicator_get_abs_path() {
+    function duplicator_get_abs_path()
+    {
         static $absPath = null;
         if (is_null($absPath)) {
             $absPath = wp_normalize_path(ABSPATH);
@@ -128,7 +131,7 @@ if (!function_exists('_sanitize_text_fields')) {
         $found = false;
         while (preg_match('/%[a-f0-9]{2}/i', $filtered, $match)) {
             $filtered = str_replace($match[0], '', $filtered);
-            $found = true;
+            $found    = true;
         }
 
         if ($found) {
@@ -157,22 +160,23 @@ if (!function_exists('wp_normalize_path')) {
      * @param string $path Path to normalize.
      * @return string Normalized path.
      */
-    function wp_normalize_path( $path ) {
+    function wp_normalize_path($path)
+    {
         $wrapper = '';
-        if ( wp_is_stream( $path ) ) {
-            list( $wrapper, $path ) = explode( '://', $path, 2 );
-            $wrapper .= '://';
+        if (wp_is_stream($path)) {
+            list( $wrapper, $path ) = explode('://', $path, 2);
+            $wrapper               .= '://';
         }
 
         // Standardise all paths to use /
-        $path = str_replace( '\\', '/', $path );
+        $path = str_replace('\\', '/', $path);
 
         // Replace multiple slashes down to a singular, allowing for network shares having two slashes.
-        $path = preg_replace( '|(?<=.)/+|', '/', $path );
+        $path = preg_replace('|(?<=.)/+|', '/', $path);
 
         // Windows paths should uppercase the drive letter
-        if ( ':' === substr( $path, 1, 1 ) ) {
-            $path = ucfirst( $path );
+        if (':' === substr($path, 1, 1)) {
+            $path = ucfirst($path);
         }
 
         return $wrapper . $path;

@@ -1,4 +1,5 @@
 <?php
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Utility class for zipping up content
@@ -8,11 +9,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  *
  * @subpackage classes/utilities
  * @copyright (c) 2017, Snapcreek LLC
- * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
+ * @license https://opensource.org/licenses/GPL-3.0 GNU Public License
  */
 
 // Exit if accessed directly
-if (! defined('DUPLICATOR_VERSION')) exit;
+if (! defined('DUPLICATOR_VERSION')) {
+    exit;
+}
 
 class DUP_Zip_U
 {
@@ -25,72 +28,79 @@ class DUP_Zip_U
      *
      * @return bool Returns true if the directory was added to the object
      */
-    public static function addDirWithZipArchive(&$zipArchive, $directoryPath, $retainDirectory, $localPrefix, $isCompressed)
+    public static function addDirWithZipArchive($zipArchive, $directoryPath, $retainDirectory, $localPrefix, $isCompressed)
     {
-        $success = TRUE;
-        $directoryPath = rtrim($directoryPath, '/\\').'/';
-		if (!$fp = @opendir($directoryPath)) {
-			return FALSE;
-		}
-		while (FALSE !== ($file = readdir($fp))) {
-			if ($file === '.' || $file === '..')    continue;
-            $objectPath = $directoryPath . $file;
-            // Not used DUP_U::safePath(), because I would like to decrease max_nest_level
-            // Otherwise we will get the error:
-            // PHP Fatal error:  Uncaught Error: Maximum function nesting level of '512' reached, aborting! in ...
-            // $objectPath = DUP_U::safePath($objectPath);
-            $objectPath = str_replace("\\", '/', $objectPath);
-            $localName = ltrim(str_replace($directoryPath, '', $objectPath), '/');
-            if ($retainDirectory) {
-                $localName = basename($directoryPath)."/$localName";
-            }
-            $localName = $localPrefix . $localName;
+        $directoryPath = rtrim(str_replace("\\", '/', $directoryPath), '/') . '/';
+        if (!is_dir($directoryPath) || !is_readable($directoryPath)) {
+            $success = false;
+        } elseif (!$fp = @opendir($directoryPath)) {
+            $success = false;
+        } else {
+            $success = true;
+            while (false !== ($file    = readdir($fp))) {
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
+                $objectPath = $directoryPath . $file;
+                // Not used SnapIO::safePath(), because I would like to decrease max_nest_level
+                // Otherwise we will get the error:
+                // PHP Fatal error:  Uncaught Error: Maximum function nesting level of '512' reached, aborting! in ...
+                // $objectPath = SnapIO::safePath($objectPath);
+                $localName = ltrim(str_replace($directoryPath, '', $objectPath), '/');
+                if ($retainDirectory) {
+                    $localName = basename($directoryPath) . "/$localName";
+                }
+                $localName = ltrim($localPrefix . $localName, '/');
+                if (is_readable($objectPath)) {
+                    if (is_dir($objectPath)) {
+                        $localPrefixArg = substr($localName, 0, strrpos($localName, '/')) . '/';
+                        $added          = self::addDirWithZipArchive($zipArchive, $objectPath, $retainDirectory, $localPrefixArg, $isCompressed);
+                    } else {
+                        $added = self::addFileToZipArchive($zipArchive, $objectPath, $localName, $isCompressed);
+                    }
+                } else {
+                    $added = false;
+                }
 
-			if (is_dir($objectPath)) {
-                $localPrefixArg = substr($localName, 0, strrpos($localName, '/')).'/';
-                $added = self::addDirWithZipArchive($zipArchive, $objectPath, $retainDirectory, $localPrefixArg, $isCompressed);
-			} else if (is_readable($objectPath)) {
-                $added = DUP_Zip_U::addFileToZipArchive($zipArchive, $objectPath, $localName, $isCompressed);                
-            } else {
-                $added = FALSE;
+                if (!$added) {
+                    DUP_Log::error("Couldn't add file $objectPath to archive", '', false);
+                    $success = false;
+                    break;
+                }
             }
+            @closedir($fp);
+        }
 
-            if (!$added) {
-                DUP_Log::error("Couldn't add file $objectPath to archive", '', false);
-                $success = FALSE;
-                break;
-            }
-		}
-		@closedir($fp);
-		return $success;
+        if ($success) {
+            return true;
+        } else {
+            DUP_Log::error("Couldn't add folder $directoryPath to archive", '', false);
+            return false;
+        }
     }
 
 
     public static function extractFiles($archiveFilepath, $relativeFilesToExtract, $destinationDirectory, $useShellUnZip)
     {
         // TODO: Unzip using either shell unzip or ziparchive
-        if($useShellUnZip) {
-            $shellExecPath = DUPX_Server::get_unzip_filepath();
+        if ($useShellUnZip) {
+            $shellExecPath  = DUPX_Server::get_unzip_filepath();
             $filenameString = implode(' ', $relativeFilesToExtract);
-            $command = "{$shellExecPath} -o -qq \"{$archiveFilepath}\" {$filenameString} -d {$destinationDirectory} 2>&1";
-            $stderr = shell_exec($command);
-
+            $command        = "{$shellExecPath} -o -qq \"{$archiveFilepath}\" {$filenameString} -d {$destinationDirectory} 2>&1";
+            $stderr         = shell_exec($command);
             if ($stderr != '') {
-                $errorMessage = DUP_U::__("Error extracting {$archiveFilepath}): {$stderr}");
-
+                $errorMessage = __("Error extracting {$archiveFilepath}): {$stderr}", 'duplicator');
                 throw new Exception($errorMessage);
             }
         } else {
             $zipArchive = new ZipArchive();
-            $result = $zipArchive->open($archiveFilepath);
-
-            if($result !== true) {
-                throw new Exception("Error opening {$archiveFilepath} when extracting. Error code: {$retVal}");
+            $result     = $zipArchive->open($archiveFilepath);
+            if ($result !== true) {
+                throw new Exception("Error opening {$archiveFilepath} when extracting.");
             }
 
             $result = $zipArchive->extractTo($destinationDirectory, $relativeFilesToExtract);
-
-            if($result === false) {
+            if ($result === false) {
                 throw new Exception("Error extracting {$archiveFilepath}.");
             }
         }
@@ -106,21 +116,19 @@ class DUP_Zip_U
      *
      * @return bool Returns true if the file was added to the zip file
      */
-	public static function zipFile($sourceFilePath, $zipFilePath, $deleteOld, $newName, $isCompressed)
+    public static function zipFile($sourceFilePath, $zipFilePath, $deleteOld, $newName, $isCompressed)
     {
         if ($deleteOld && file_exists($zipFilePath)) {
-            DUP_IO::deleteFile($zipFilePath);
+             SnapIO::unlink($zipFilePath);
         }
 
         if (file_exists($sourceFilePath)) {
             $zip_archive = new ZipArchive();
-
-            $is_zip_open = ($zip_archive->open($zipFilePath, ZIPARCHIVE::CREATE) === TRUE);
-
+            $is_zip_open = ($zip_archive->open($zipFilePath, ZIPARCHIVE::CREATE) === true);
             if ($is_zip_open === false) {
                 DUP_Log::error("Cannot create zip archive {$zipFilePath}");
             } else {
-                //ADD SQL
+            //ADD SQL
                 if ($newName == null) {
                     $source_filename = basename($sourceFilePath);
                     DUP_Log::Info("adding {$source_filename}");
@@ -130,13 +138,11 @@ class DUP_Zip_U
                 }
 
                 $in_zip = DUP_Zip_U::addFileToZipArchive($zip_archive, $sourceFilePath, $source_filename, $isCompressed);
-
                 if ($in_zip === false) {
                     DUP_Log::error("Unable to add {$sourceFilePath} to $zipFilePath");
                 }
 
                 $zip_archive->close();
-
                 return true;
             }
         } else {
@@ -146,9 +152,9 @@ class DUP_Zip_U
         return false;
     }
 
-    public static function addFileToZipArchive(&$zipArchive, $filepath, $localName, $isCompressed)
+    public static function addFileToZipArchive($zipArchive, $filepath, $localName, $isCompressed)
     {
-		$added = $zipArchive->addFile($filepath, $localName);
+        $added = $zipArchive->addFile($filepath, $localName);
         return $added;
     }
 }

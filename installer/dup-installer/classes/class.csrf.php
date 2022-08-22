@@ -2,25 +2,23 @@
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
+use Duplicator\Libs\Snap\SnapJson;
+
 
 class DUPX_CSRF
 {
-
     private static $packagHash = null;
     private static $mainFolder = null;
-
-	/**
+/**
      * Session var name prefix
      * @var string
      */
     public static $prefix = '_DUPX_CSRF';
-	
-	/**
+/**
      * Stores all CSRF values: Key as CSRF name and Val as CRF value
      * @var array
      */
     private static $CSRFVars = null;
-	
     public static function init($mainFolderm, $packageHash)
     {
         self::$mainFolder = $mainFolderm;
@@ -31,8 +29,8 @@ class DUPX_CSRF
     /**
      * Set new CSRF
      *
-     * @param string $key CSRF key
-     * @param string $val CSRF val
+     * @param string $key CSRF Key
+     * @param string $val CSRF Val
      *
      * @return Void
      */
@@ -70,7 +68,7 @@ class DUPX_CSRF
      */
     public static function generate($form = null)
     {
-        $keyName = self::getKeyName($form);
+        $keyName       = self::getKeyName($form);
         $existingToken = self::getVal($keyName);
         if (false !== $existingToken) {
             $token = $existingToken;
@@ -110,7 +108,8 @@ class DUPX_CSRF
      */
     protected static function token()
     {
-        mt_srand((int)((double) microtime() * 10000));
+        $microtime = (int) (microtime(true) * 10000);
+        mt_srand($microtime);
         $charid = strtoupper(md5(uniqid(rand(), true)));
         return substr($charid, 0, 8) . substr($charid, 8, 4) . substr($charid, 12, 4) . substr($charid, 16, 4) . substr($charid, 20, 12);
     }
@@ -199,7 +198,7 @@ class DUPX_CSRF
      */
     private static function saveCSRFVars($CSRFVars)
     {
-        $contents = DupLiteSnapJsonU::wp_json_encode($CSRFVars);
+        $contents = SnapJson::jsonEncode($CSRFVars);
         $filePath = self::getFilePath();
         file_put_contents($filePath, $contents);
     }

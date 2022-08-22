@@ -1,12 +1,18 @@
 <?php
+
+use Duplicator\Libs\Snap\SnapJson;
+use Duplicator\Libs\Snap\SnapUtil;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
-if (! defined('DUPLICATOR_VERSION')) exit;
+if (! defined('DUPLICATOR_VERSION')) {
+    exit;
+}
 
-require_once (DUPLICATOR_PLUGIN_PATH.'classes/utilities/class.u.php');
-require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.php');
-require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.installer.php');
-require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.database.php');
+require_once(DUPLICATOR_PLUGIN_PATH . 'classes/utilities/class.u.php');
+require_once(DUPLICATOR_PLUGIN_PATH . 'classes/package/class.pack.archive.php');
+require_once(DUPLICATOR_PLUGIN_PATH . 'classes/package/class.pack.installer.php');
+require_once(DUPLICATOR_PLUGIN_PATH . 'classes/package/class.pack.database.php');
 
 /**
  * Class used to keep track of the build progress
@@ -16,16 +22,16 @@ require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.database.php');
 class DUP_Build_Progress
 {
     public $thread_start_time;
-    public $initialized = false;
-    public $installer_built = false;
-    public $archive_started = false;
-    public $archive_has_database = false;
-    public $archive_built = false;
+    public $initialized           = false;
+    public $installer_built       = false;
+    public $archive_started       = false;
+    public $archive_has_database  = false;
+    public $archive_built         = false;
     public $database_script_built = false;
-    public $failed = false;
-    public $retries = 0;
-    public $build_failures = array();
-    public $validation_failures = array();
+    public $failed                = false;
+    public $retries               = 0;
+    public $build_failures        = array();
+    public $validation_failures   = array();
 
     /**
      *
@@ -67,35 +73,35 @@ class DUP_Build_Progress
     }
 
     public function set_validation_failures($failures)
-	{
-		$this->validation_failures = array();
-
-		foreach ($failures as $failure) {
-			$this->validation_failures[] = $failure;
-		}
-	}
-
-	public function set_build_failures($failures)
-	{
-		$this->build_failures = array();
-
-		foreach ($failures as $failure) {
-			$this->build_failures[] = $failure->description;
-		}
-	}
-
-	public function set_failed($failure_message = null)
     {
-        if($failure_message !== null) {
-            $failure = new StdClass();
-            $failure->type        = 0;
-            $failure->subject     = '';
-            $failure->description = $failure_message;
+        $this->validation_failures = array();
+
+        foreach ($failures as $failure) {
+            $this->validation_failures[] = $failure;
+        }
+    }
+
+    public function set_build_failures($failures)
+    {
+        $this->build_failures = array();
+
+        foreach ($failures as $failure) {
+            $this->build_failures[] = $failure->description;
+        }
+    }
+
+    public function set_failed($failure_message = null)
+    {
+        if ($failure_message !== null) {
+            $failure                = new StdClass();
+            $failure->type          = 0;
+            $failure->subject       = '';
+            $failure->description   = $failure_message;
             $failure->isCritical    = true;
             $this->build_failures[] = $failure;
         }
 
-        $this->failed = true;
+        $this->failed          = true;
         $this->package->Status = DUP_PackageStatus::ERROR;
     }
 }
@@ -111,15 +117,15 @@ final class DUP_PackageStatus
     {
     }
 
-	const ERROR = -1;
-	const CREATED  = 0;
-    const START    = 10;
-    const DBSTART  = 20;
-    const DBDONE   = 30;
-    const ARCSTART = 40;
+    const ERROR         = -1;
+    const CREATED       = 0;
+    const START         = 10;
+    const DBSTART       = 20;
+    const DBDONE        = 30;
+    const ARCSTART      = 40;
     const ARCVALIDATION = 60;
-    const ARCDONE = 65;
-    const COMPLETE = 100;
+    const ARCDONE       = 65;
+    const COMPLETE      = 100;
 }
 
 /**
@@ -142,10 +148,10 @@ final class DUP_PackageType
 abstract class DUP_PackageFileType
 {
     const Installer = 0;
-    const Archive = 1;
-    const SQL = 2;
-    const Log = 3;
-    const Scan = 4;
+    const Archive   = 1;
+    const SQL       = 2;
+    const Log       = 3;
+    const Scan      = 4;
 }
 
 /**
@@ -171,7 +177,7 @@ class DUP_Package
     public $Name;
     public $Hash;
     public $NameHash;
-	//Set to DUP_PackageType
+    //Set to DUP_PackageType
     public $Type;
     public $Notes;
     public $ScanFile;
@@ -181,28 +187,30 @@ class DUP_Package
     public $ZipSize;
     public $Status;
     public $WPUser;
-    //Objects
+    /** @var DUP_Archive */
     public $Archive;
+    /** @var DUP_Installer */
     public $Installer;
+    /** @var DUP_Database */
     public $Database;
-
-	public $BuildProgress;
+    /** @var DUP_Build_Progress */
+    public $BuildProgress;
 
     /**
      *  Manages the Package Process
      */
-    function __construct()
+    public function __construct()
     {
-        $this->ID      = null;
-        $this->Version = DUPLICATOR_VERSION;
-        $this->Type      = DUP_PackageType::MANUAL;
-        $this->Name      = self::getDefaultName();
-        $this->Notes     = null;
-        $this->Database  = new DUP_Database($this);
-        $this->Archive   = new DUP_Archive($this);
-        $this->Installer = new DUP_Installer($this);
-		$this->BuildProgress = new DUP_Build_Progress($this);
-		$this->Status = DUP_PackageStatus::CREATED;
+        $this->ID            = null;
+        $this->Version       = DUPLICATOR_VERSION;
+        $this->Type          = DUP_PackageType::MANUAL;
+        $this->Name          = self::getDefaultName();
+        $this->Notes         = null;
+        $this->Database      = new DUP_Database($this);
+        $this->Archive       = new DUP_Archive($this);
+        $this->Installer     = new DUP_Installer($this);
+        $this->BuildProgress = new DUP_Build_Progress($this);
+        $this->Status        = DUP_PackageStatus::CREATED;
     }
 
     /**
@@ -231,23 +239,23 @@ class DUP_Package
         $fileCount = count($this->Archive->Files);
         $fullCount = $dirCount + $fileCount;
 
-        $report['ARC']['Size']      = DUP_Util::byteSize($this->Archive->Size) or "unknown";
-        $report['ARC']['DirCount']  = number_format($dirCount);
-        $report['ARC']['FileCount'] = number_format($fileCount);
-        $report['ARC']['FullCount'] = number_format($fullCount);
-        $report['ARC']['WarnFileCount']       = count($this->Archive->FilterInfo->Files->Warning);
-        $report['ARC']['WarnDirCount']        = count($this->Archive->FilterInfo->Dirs->Warning);
-        $report['ARC']['UnreadableDirCount']  = count($this->Archive->FilterInfo->Dirs->Unreadable);
-        $report['ARC']['UnreadableFileCount'] = count($this->Archive->FilterInfo->Files->Unreadable);
-		$report['ARC']['FilterDirsAll'] = $this->Archive->FilterDirsAll;
-		$report['ARC']['FilterFilesAll'] = $this->Archive->FilterFilesAll;
-		$report['ARC']['FilterExtsAll'] = $this->Archive->FilterExtsAll;
-        $report['ARC']['FilterInfo'] = $this->Archive->FilterInfo;
-        $report['ARC']['RecursiveLinks'] = $this->Archive->RecursiveLinks;
-        $report['ARC']['UnreadableItems'] = array_merge($this->Archive->FilterInfo->Files->Unreadable,$this->Archive->FilterInfo->Dirs->Unreadable);
-        $report['ARC']['Status']['Size']  = ($this->Archive->Size > DUPLICATOR_SCAN_SIZE_DEFAULT) ? 'Warn' : 'Good';
-        $report['ARC']['Status']['Names'] = (count($this->Archive->FilterInfo->Files->Warning) + count($this->Archive->FilterInfo->Dirs->Warning)) ? 'Warn' : 'Good';
-        $report['ARC']['Status']['UnreadableItems'] = !empty($this->Archive->RecursiveLinks) || !empty($report['ARC']['UnreadableItems'])? 'Warn' : 'Good';
+        $report['ARC']['Size']                      = DUP_Util::byteSize($this->Archive->Size) or "unknown";
+        $report['ARC']['DirCount']                  = number_format($dirCount);
+        $report['ARC']['FileCount']                 = number_format($fileCount);
+        $report['ARC']['FullCount']                 = number_format($fullCount);
+        $report['ARC']['WarnFileCount']             = count($this->Archive->FilterInfo->Files->Warning);
+        $report['ARC']['WarnDirCount']              = count($this->Archive->FilterInfo->Dirs->Warning);
+        $report['ARC']['UnreadableDirCount']        = count($this->Archive->FilterInfo->Dirs->Unreadable);
+        $report['ARC']['UnreadableFileCount']       = count($this->Archive->FilterInfo->Files->Unreadable);
+        $report['ARC']['FilterDirsAll']             = $this->Archive->FilterDirsAll;
+        $report['ARC']['FilterFilesAll']            = $this->Archive->FilterFilesAll;
+        $report['ARC']['FilterExtsAll']             = $this->Archive->FilterExtsAll;
+        $report['ARC']['FilterInfo']                = $this->Archive->FilterInfo;
+        $report['ARC']['RecursiveLinks']            = $this->Archive->RecursiveLinks;
+        $report['ARC']['UnreadableItems']           = array_merge($this->Archive->FilterInfo->Files->Unreadable, $this->Archive->FilterInfo->Dirs->Unreadable);
+        $report['ARC']['Status']['Size']            = ($this->Archive->Size > DUPLICATOR_SCAN_SIZE_DEFAULT) ? 'Warn' : 'Good';
+        $report['ARC']['Status']['Names']           = (count($this->Archive->FilterInfo->Files->Warning) + count($this->Archive->FilterInfo->Dirs->Warning)) ? 'Warn' : 'Good';
+        $report['ARC']['Status']['UnreadableItems'] = !empty($this->Archive->RecursiveLinks) || !empty($report['ARC']['UnreadableItems']) ? 'Warn' : 'Good';
         /*
         $overwriteInstallerParams = apply_filters('duplicator_overwrite_params_data', array());
         $package_can_be_migrate = !(isset($overwriteInstallerParams['mode_chunking']['value'])
@@ -255,39 +263,39 @@ class DUP_Package
                                     && isset($overwriteInstallerParams['mode_chunking']['formStatus'])
                                     && $overwriteInstallerParams['mode_chunking']['formStatus'] == 'st_infoonly');
         */
-        $package_can_be_migrate = true;
-        $report['ARC']['Status']['MigratePackage'] = $package_can_be_migrate ? 'Good' : 'Warn';
+        $package_can_be_migrate                         = true;
+        $report['ARC']['Status']['MigratePackage']      = $package_can_be_migrate ? 'Good' : 'Warn';
         $report['ARC']['Status']['CanbeMigratePackage'] = $package_can_be_migrate;
 
         $privileges_to_show_create_proc_func = true;
-        $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '".$GLOBALS['wpdb']->dbname."'", 1);
+        $procedures                          = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '" . $GLOBALS['wpdb']->dbname . "'", 1);
         if (count($procedures)) {
-            $create = $GLOBALS['wpdb']->get_row("SHOW CREATE PROCEDURE `".$procedures[0]."`", ARRAY_N);
+            $create                              = $GLOBALS['wpdb']->get_row("SHOW CREATE PROCEDURE `" . $procedures[0] . "`", ARRAY_N);
             $privileges_to_show_create_proc_func = isset($create[2]);
         }
 
-        $functions = $GLOBALS['wpdb']->get_col("SHOW FUNCTION STATUS WHERE `Db` = '".$GLOBALS['wpdb']->dbname."'", 1);
+        $functions = $GLOBALS['wpdb']->get_col("SHOW FUNCTION STATUS WHERE `Db` = '" . $GLOBALS['wpdb']->dbname . "'", 1);
         if (count($functions)) {
-            $create = $GLOBALS['wpdb']->get_row("SHOW CREATE FUNCTION `".$functions[0]."`", ARRAY_N);
+            $create                              = $GLOBALS['wpdb']->get_row("SHOW CREATE FUNCTION `" . $functions[0] . "`", ARRAY_N);
             $privileges_to_show_create_proc_func = $privileges_to_show_create_proc_func && isset($create[2]);
         }
 
-        $privileges_to_show_create_proc_func = apply_filters('duplicator_privileges_to_show_create_proc_func', $privileges_to_show_create_proc_func);
+        $privileges_to_show_create_proc_func                 = apply_filters('duplicator_privileges_to_show_create_proc_func', $privileges_to_show_create_proc_func);
         $report['ARC']['Status']['showCreateProcFuncStatus'] = $privileges_to_show_create_proc_func ? 'Good' : 'Warn';
-        $report['ARC']['Status']['showCreateProcFunc'] = $privileges_to_show_create_proc_func;
+        $report['ARC']['Status']['showCreateProcFunc']       = $privileges_to_show_create_proc_func;
 
         //$report['ARC']['Status']['Big']   = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
-        $report['ARC']['Dirs']  = $this->Archive->Dirs;
-        $report['ARC']['Files'] = $this->Archive->Files;
-		$report['ARC']['Status']['AddonSites'] = count($this->Archive->FilterInfo->Dirs->AddonSites) ? 'Warn' : 'Good';
+        $report['ARC']['Dirs']                 = $this->Archive->Dirs;
+        $report['ARC']['Files']                = $this->Archive->Files;
+        $report['ARC']['Status']['AddonSites'] = count($this->Archive->FilterInfo->Dirs->AddonSites) ? 'Warn' : 'Good';
 
         //DATABASE
-        $db  = $this->Database->getScannerData();
+        $db           = $this->Database->getScannerData();
         $report['DB'] = $db;
 
         //Lite Limits
-        $rawTotalSize = $this->Archive->Size + $report['DB']['RawSize'];
-        $report['LL']['TotalSize'] = DUP_Util::byteSize($rawTotalSize);
+        $rawTotalSize                        = $this->Archive->Size + $report['DB']['RawSize'];
+        $report['LL']['TotalSize']           = DUP_Util::byteSize($rawTotalSize);
         $report['LL']['Status']['TotalSize'] = ($rawTotalSize > DUPLICATOR_MAX_DUPARCHIVE_SIZE) ? 'Fail' : 'Good';
 
         $warnings = array(
@@ -297,7 +305,7 @@ class DUP_Package
             $report['ARC']['Status']['Names'],
             $db['Status']['DB_Size'],
             $db['Status']['DB_Rows']
-		);
+        );
 
         //array_count_values will throw a warning message if it has null values,
         //so lets replace all nulls with empty string
@@ -311,9 +319,9 @@ class DUP_Package
         $report['RPT']['Warnings'] = is_null($warn_counts['Warn']) ? 0 : $warn_counts['Warn'];
         $report['RPT']['Success']  = is_null($warn_counts['Good']) ? 0 : $warn_counts['Good'];
         $report['RPT']['ScanTime'] = DUP_Util::elapsedTime(DUP_Util::getMicrotime(), $timerStart);
-        $fp                        = fopen(DUP_Settings::getSsdirTmpPath()."/{$this->ScanFile}", 'w');
+        $fp                        = fopen(DUP_Settings::getSsdirTmpPath() . "/{$this->ScanFile}", 'w');
 
-        fwrite($fp, DupLiteSnapJsonU::wp_json_encode_pprint($report));
+        fwrite($fp, SnapJson::jsonEncodePPrint($report));
         fclose($fp);
 
         return $report;
@@ -321,51 +329,61 @@ class DUP_Package
 
     /**
      * Validates the inputs from the UI for correct data input
-	 *
+     *
      * @return DUP_Validator
      */
     public function validateInputs()
     {
         $validator = new DUP_Validator();
 
-        $validator->filter_custom($this->Name , DUP_Validator::FILTER_VALIDATE_NOT_EMPTY ,
+        $validator->filter_custom(
+            $this->Name,
+            DUP_Validator::FILTER_VALIDATE_NOT_EMPTY,
             array(  'valkey' => 'Name' ,
                     'errmsg' => __('Package name can\'t be empty', 'duplicator'),
                 )
-            );
+        );
 
-        $validator->explode_filter_custom($this->Archive->FilterDirs, ';' , DUP_Validator::FILTER_VALIDATE_FOLDER ,
+        $validator->explode_filter_custom(
+            $this->Archive->FilterDirs,
+            ';',
+            DUP_Validator::FILTER_VALIDATE_FOLDER,
             array(  'valkey' => 'FilterDirs' ,
                     'errmsg' => __('Directories: <b>%1$s</b> isn\'t a valid path', 'duplicator'),
                 )
-            );
+        );
 
-        $validator->explode_filter_custom($this->Archive->FilterExts, ';' , DUP_Validator::FILTER_VALIDATE_FILE_EXT ,
+        $validator->explode_filter_custom(
+            $this->Archive->FilterExts,
+            ';',
+            DUP_Validator::FILTER_VALIDATE_FILE_EXT,
             array(  'valkey' => 'FilterExts' ,
                     'errmsg' => __('File extension: <b>%1$s</b> isn\'t a valid extension', 'duplicator'),
                 )
-            );
+        );
 
-        $validator->explode_filter_custom($this->Archive->FilterFiles, ';' , DUP_Validator::FILTER_VALIDATE_FILE ,
+        $validator->explode_filter_custom(
+            $this->Archive->FilterFiles,
+            ';',
+            DUP_Validator::FILTER_VALIDATE_FILE,
             array(  'valkey' => 'FilterFiles' ,
                     'errmsg' => __('Files: <b>%1$s</b> isn\'t a valid file name', 'duplicator'),
                 )
-            );
+        );
 
-		//FILTER_VALIDATE_DOMAIN throws notice message on PHP 5.6
-		if (defined('FILTER_VALIDATE_DOMAIN')) {
-			$validator->filter_var($this->Installer->OptsDBHost, FILTER_VALIDATE_DOMAIN ,  array(
-						'valkey' => 'OptsDBHost' ,
-						'errmsg' => __('MySQL Server Host: <b>%1$s</b> isn\'t a valid host', 'duplicator'),
-						'acc_vals' => array(
-							'' ,
-							'localhost'
-						)
-					)
-				);
-		}
+        //FILTER_VALIDATE_DOMAIN throws notice message on PHP 5.6
+        if (defined('FILTER_VALIDATE_DOMAIN')) {
+            $validator->filter_var($this->Installer->OptsDBHost, FILTER_VALIDATE_DOMAIN, array(
+                        'valkey' => 'OptsDBHost' ,
+                        'errmsg' => __('MySQL Server Host: <b>%1$s</b> isn\'t a valid host', 'duplicator'),
+                        'acc_vals' => array(
+                            '' ,
+                            'localhost'
+                        )
+                    ));
+        }
 
-        $validator->filter_var($this->Installer->OptsDBPort, FILTER_VALIDATE_INT , array(
+        $validator->filter_var($this->Installer->OptsDBPort, FILTER_VALIDATE_INT, array(
                     'valkey' => 'OptsDBPort' ,
                     'errmsg' => __('MySQL Server Port: <b>%1$s</b> isn\'t a valid port', 'duplicator'),
                     'acc_vals' => array(
@@ -374,19 +392,22 @@ class DUP_Package
                     'options' => array(
                        'min_range' => 0
                     )
-                )
-            );
+                ));
 
         return $validator;
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
-    public function getInstDownloadName()
+    public function getInstDownloadName($onlySecureName = false)
     {
-        switch (DUP_Settings::Get('installer_name_mode')) {
+        $mode = ($onlySecureName)
+            ? DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH
+            : DUP_Settings::Get('installer_name_mode');
+
+        switch ($mode) {
             case DUP_Settings::INSTALLER_NAME_MODE_SIMPLE:
                 $name = DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH . DUP_Installer::INSTALLER_SERVER_EXTENSION;
                 break;
@@ -403,7 +424,8 @@ class DUP_Package
      *
      * @return bool return true if package is a active_package_id and status is bewteen 0 and 100
      */
-    public function isRunning() {
+    public function isRunning()
+    {
         return DUP_Settings::Get('active_package_id') == $this->ID && $this->Status >= 0 && $this->Status < 100;
     }
 
@@ -412,67 +434,67 @@ class DUP_Package
         $this->Archive->FilterInfo->reset();
     }
 
-	/**
+    /**
      * Saves the active package to the package table
      *
      * @return void
      */
-	public function save($extension)
-	{
+    public function save($extension)
+    {
         global $wpdb;
 
-		$this->Archive->Format	= strtoupper($extension);
-		$this->Archive->File	= "{$this->NameHash}_archive.{$extension}";
-		$this->Installer->File	= apply_filters(
-            'duplicator_installer_file_path', 
+        $this->Archive->Format = strtoupper($extension);
+        $this->Archive->File   = "{$this->NameHash}_archive.{$extension}";
+        $this->Installer->File = apply_filters(
+            'duplicator_installer_file_path',
             "{$this->NameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION
         );
-		$this->Database->File	= "{$this->NameHash}_database.sql";
-		$this->WPUser          = isset($current_user->user_login) ? $current_user->user_login : 'unknown';
+        $this->Database->File  = "{$this->NameHash}_database.sql";
+        $current_user          = wp_get_current_user();
+        $this->WPUser          = isset($current_user->user_login) ? $current_user->user_login : 'unknown';
 
-		//START LOGGING
-		DUP_Log::Open($this->NameHash);
+        //START LOGGING
+        DUP_Log::Open($this->NameHash);
 
-        do_action('duplicator_lite_build_before_start' , $this);
+        do_action('duplicator_lite_build_before_start', $this);
 
-		$this->writeLogHeader();
+        $this->writeLogHeader();
 
-		//CREATE DB RECORD
+        //CREATE DB RECORD
         $this->cleanObjectBeforeSave();
-		$packageObj = serialize($this);
-		if (!$packageObj) {
-			DUP_Log::error("Unable to serialize package object while building record.");
-		}
+        $packageObj = serialize($this);
+        if (!$packageObj) {
+            DUP_Log::error("Unable to serialize package object while building record.");
+        }
 
-		$this->ID = $this->getHashKey($this->Hash);
+        $this->ID = $this->getHashKey($this->Hash);
 
-		if ($this->ID != 0) {
-			DUP_LOG::Trace("ID non zero so setting to start");
-			$this->setStatus(DUP_PackageStatus::START);
-		} else {
+        if ($this->ID != 0) {
+            DUP_LOG::Trace("ID non zero so setting to start");
+            $this->setStatus(DUP_PackageStatus::START);
+        } else {
             DUP_LOG::Trace("ID IS zero so creating another package");
             $tablePrefix = DUP_Util::getTablePrefix();
-			$results = $wpdb->insert($tablePrefix . "duplicator_packages", array(
-				'name' => $this->Name,
-				'hash' => $this->Hash,
-				'status' => DUP_PackageStatus::START,
-				'created' => current_time('mysql', get_option('gmt_offset', 1)),
-				'owner' => isset($current_user->user_login) ? $current_user->user_login : 'unknown',
-				'package' => $packageObj)
-			);
-			if ($results === false) {
-				$wpdb->print_error();
-				DUP_LOG::Trace("Problem inserting package: {$wpdb->last_error}");
+            $results     = $wpdb->insert($tablePrefix . "duplicator_packages", array(
+                'name' => $this->Name,
+                'hash' => $this->Hash,
+                'status' => DUP_PackageStatus::START,
+                'created' => current_time('mysql', get_option('gmt_offset', 1)),
+                'owner' => isset($current_user->user_login) ? $current_user->user_login : 'unknown',
+                'package' => $packageObj));
+            if ($results === false) {
+                $wpdb->print_error();
+                DUP_LOG::Trace("Problem inserting package: {$wpdb->last_error}");
 
-				DUP_Log::error("Duplicator is unable to insert a package record into the database table.", "'{$wpdb->last_error}'");
-			}
-			$this->ID = $wpdb->insert_id;
-		}
+                DUP_Log::error("Duplicator is unable to insert a package record into the database table.", "'{$wpdb->last_error}'");
+            }
+            $this->ID = $wpdb->insert_id;
+        }
 
-        do_action('duplicator_lite_build_start' , $this);
-	}
+        do_action('duplicator_lite_build_start', $this);
+    }
 
-	/**
+    /**
      * Delete all files associated with this package ID
      *
      * @return void
@@ -482,8 +504,8 @@ class DUP_Package
         global $wpdb;
 
         $tablePrefix = DUP_Util::getTablePrefix();
-        $tblName  = $tablePrefix.'duplicator_packages';
-        $getResult = $wpdb->get_results($wpdb->prepare("SELECT name, hash FROM `{$tblName}` WHERE id = %d", $this->ID), ARRAY_A);
+        $tblName     = $tablePrefix . 'duplicator_packages';
+        $getResult   = $wpdb->get_results($wpdb->prepare("SELECT name, hash FROM `{$tblName}` WHERE id = %d", $this->ID), ARRAY_A);
 
         if ($getResult) {
             $row       = $getResult[0];
@@ -494,39 +516,39 @@ class DUP_Package
                 $tmpPath = DUP_Settings::getSsdirTmpPath();
                 $ssdPath =  DUP_Settings::getSsdirPath();
 
-                $archiveFile = $this->getArchiveFilename();
+                $archiveFile  = $this->getArchiveFilename();
                 $wpConfigFile = "{$this->NameHash}_wp-config.txt";
 
                 //Perms
-                @chmod($tmpPath."/{$archiveFile}", 0644);
-                @chmod($tmpPath."/{$nameHash}_database.sql", 0644);
-                @chmod($tmpPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION, 0644);
-                @chmod($tmpPath."/{$nameHash}_scan.json", 0644);
-                @chmod($tmpPath."/{$wpConfigFile}", 0644);
-                @chmod($tmpPath."/{$nameHash}.log", 0644);
+                @chmod($tmpPath . "/{$archiveFile}", 0644);
+                @chmod($tmpPath . "/{$nameHash}_database.sql", 0644);
+                @chmod($tmpPath . "/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION, 0644);
+                @chmod($tmpPath . "/{$nameHash}_scan.json", 0644);
+                @chmod($tmpPath . "/{$wpConfigFile}", 0644);
+                @chmod($tmpPath . "/{$nameHash}.log", 0644);
 
-                @chmod($ssdPath."/{$archiveFile}", 0644);
-                @chmod($ssdPath."/{$nameHash}_database.sql", 0644);
-                @chmod($ssdPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION, 0644);
-                @chmod($ssdPath."/{$nameHash}_scan.json", 0644);
+                @chmod($ssdPath . "/{$archiveFile}", 0644);
+                @chmod($ssdPath . "/{$nameHash}_database.sql", 0644);
+                @chmod($ssdPath . "/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION, 0644);
+                @chmod($ssdPath . "/{$nameHash}_scan.json", 0644);
                 // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
-                @chmod($ssdPath."/{$wpConfigFile}", 0644);
-                @chmod($ssdPath."/{$nameHash}.log", 0644);
+                @chmod($ssdPath . "/{$wpConfigFile}", 0644);
+                @chmod($ssdPath . "/{$nameHash}.log", 0644);
                 //Remove
-                @unlink($tmpPath."/{$archiveFile}");
-                @unlink($tmpPath."/{$nameHash}_database.sql");
-                @unlink($tmpPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION);
-                @unlink($tmpPath."/{$nameHash}_scan.json");
-                @unlink($tmpPath."/{$wpConfigFile}");
-                @unlink($tmpPath."/{$nameHash}.log");
+                @unlink($tmpPath . "/{$archiveFile}");
+                @unlink($tmpPath . "/{$nameHash}_database.sql");
+                @unlink($tmpPath . "/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION);
+                @unlink($tmpPath . "/{$nameHash}_scan.json");
+                @unlink($tmpPath . "/{$wpConfigFile}");
+                @unlink($tmpPath . "/{$nameHash}.log");
 
-                @unlink($ssdPath."/{$archiveFile}");
-                @unlink($ssdPath."/{$nameHash}_database.sql");
-                @unlink($ssdPath."/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION);
-                @unlink($ssdPath."/{$nameHash}_scan.json");
+                @unlink($ssdPath . "/{$archiveFile}");
+                @unlink($ssdPath . "/{$nameHash}_database.sql");
+                @unlink($ssdPath . "/{$nameHash}_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION);
+                @unlink($ssdPath . "/{$nameHash}_scan.json");
                 // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
-                @unlink($ssdPath."/{$wpConfigFile}");
-                @unlink($ssdPath."/{$nameHash}.log");
+                @unlink($ssdPath . "/{$wpConfigFile}");
+                @unlink($ssdPath . "/{$nameHash}.log");
             }
         }
     }
@@ -535,9 +557,10 @@ class DUP_Package
      * Get package archive size.
      * If package isn't complete it get size from sum of temp files.
      *
-     * @return int size in byte 
+     * @return int size in byte
      */
-    public function getArchiveSize() {
+    public function getArchiveSize()
+    {
         $size = 0;
 
         if ($this->Status >= DUP_PackageStatus::COMPLETE) {
@@ -546,7 +569,7 @@ class DUP_Package
             $tmpSearch = glob(DUP_Settings::getSsdirTmpPath() . "/{$this->NameHash}_*");
             if (is_array($tmpSearch)) {
                 $result = array_map('filesize', $tmpSearch);
-                $size = array_sum($result);
+                $size   = array_sum($result);
             }
         }
 
@@ -593,10 +616,10 @@ class DUP_Package
             foreach ($conditions as $cond) {
                 $op          = (isset($cond['op']) && in_array($cond['op'], $accepted_op)) ? $cond['op'] : '=';
                 $status      = isset($cond['status']) ? (int) $cond['status'] : 0;
-                $str_conds[] = 'status '.$op.' '.$status;
+                $str_conds[] = 'status ' . $op . ' ' . $status;
             }
 
-            return ' WHERE '.implode($relation, $str_conds).' ';
+            return ' WHERE ' . implode($relation, $str_conds) . ' ';
         }
     }
 
@@ -621,18 +644,18 @@ class DUP_Package
      *                                  fullRow => row with package blob
      *                                  objs => array of DUP_Package objects
      *
-     * @return DUP_Package[]|array[]|int[]
+     * @return DUP_Package[]|object[]|int[]
      */
     public static function get_packages_by_status($conditions = array(), $limit = false, $offset = 0, $orderBy = '`id` ASC', $resultType = 'obj')
     {
         global $wpdb;
-        $table = $wpdb->base_prefix."duplicator_packages";
+        $table = $wpdb->base_prefix . "duplicator_packages";
         $where = self::statusContitionsToWhere($conditions);
 
         $packages   = array();
-        $offsetStr  = ' OFFSET '.(int) $offset;
-        $limitStr   = ' LIMIT '.($limit !== false ? max(0, $limit) : PHP_INT_MAX);
-        $orderByStr = empty($orderBy) ? '' : ' ORDER BY '.$orderBy.' ';
+        $offsetStr  = ' OFFSET ' . (int) $offset;
+        $limitStr   = ' LIMIT ' . ($limit !== false ? max(0, $limit) : PHP_INT_MAX);
+        $orderByStr = empty($orderBy) ? '' : ' ORDER BY ' . $orderBy . ' ';
         switch ($resultType) {
             case 'ids':
                 $cols = '`id`';
@@ -649,7 +672,7 @@ class DUP_Package
                 break;
         }
 
-        $rows = $wpdb->get_results('SELECT '.$cols.' FROM `'.$table.'` '.$where.$orderByStr.$limitStr.$offsetStr);
+        $rows = $wpdb->get_results('SELECT ' . $cols . ' FROM `' . $table . '` ' . $where . $orderByStr . $limitStr . $offsetStr);
         if ($rows != null) {
             switch ($resultType) {
                 case 'ids':
@@ -694,7 +717,7 @@ class DUP_Package
      * @param int $offset       // offset 0 is at begin
      * @param string $orderBy   // default `id` ASC if empty no order
      *
-     * @return array[]      // return row database without package blob
+     * @return object[]      // return row database without package blob
      */
     public static function get_row_by_status($conditions = array(), $limit = false, $offset = 0, $orderBy = '`id` ASC')
     {
@@ -740,10 +763,10 @@ class DUP_Package
     {
         global $wpdb;
 
-        $table = $wpdb->base_prefix."duplicator_packages";
+        $table = $wpdb->base_prefix . "duplicator_packages";
         $where = self::statusContitionsToWhere($conditions);
 
-        $count = $wpdb->get_var("SELECT count(id) FROM `{$table}` ".$where);
+        $count = $wpdb->get_var("SELECT count(id) FROM `{$table}` " . $where);
         return $count;
     }
 
@@ -776,15 +799,15 @@ class DUP_Package
         $numPackages = self::count_by_status($conditions);
         $maxLimit    = $offset + ($limit !== false ? max(0, $limit) : PHP_INT_MAX - $offset);
         $numPackages = min($maxLimit, $numPackages);
-        $orderByStr = empty($orderBy) ? '' : ' ORDER BY '.$orderBy.' ';
+        $orderByStr  = empty($orderBy) ? '' : ' ORDER BY ' . $orderBy . ' ';
 
         global $wpdb;
-        $table = $wpdb->base_prefix."duplicator_packages";
+        $table = $wpdb->base_prefix . "duplicator_packages";
         $where = self::statusContitionsToWhere($conditions);
-        $sql   = 'SELECT * FROM `'.$table.'` '.$where.$orderByStr.' LIMIT 1 OFFSET ';
+        $sql   = 'SELECT * FROM `' . $table . '` ' . $where . $orderByStr . ' LIMIT 1 OFFSET ';
 
-        for (; $offset < $numPackages; $offset ++) {
-            $rows = $wpdb->get_results($sql.$offset);
+        for (; $offset < $numPackages; $offset++) {
+            $rows = $wpdb->get_results($sql . $offset);
             if ($rows != null) {
                 $Package = @unserialize($rows[0]->package);
                 if ($Package) {
@@ -826,7 +849,7 @@ class DUP_Package
      *
      * @return void
      */
-	public function runDupArchiveBuildIntegrityCheck()
+    public function runDupArchiveBuildIntegrityCheck()
     {
         //INTEGRITY CHECKS
         //We should not rely on data set in the serlized object, we need to manually check each value
@@ -840,12 +863,19 @@ class DUP_Package
         $sql_temp_path = DUP_Settings::getSsdirTmpPath() . '/' . $this->Database->File;
         $sql_temp_size = @filesize($sql_temp_path);
         $sql_easy_size = DUP_Util::byteSize($sql_temp_size);
-        $sql_done_txt = DUP_Util::tailFile($sql_temp_path, 3);
-        DUP_Log::Trace('[DUP ARCHIVE] '.__FUNCTION__.' '.__LINE__);
+        $sql_done_txt  = DUP_Util::tailFile($sql_temp_path, 3);
+        DUP_Log::Trace('[DUP ARCHIVE] ' . __FUNCTION__ . ' ' . __LINE__);
 
-        // Note: Had to add extra size check of 800 since observed bad sql when filter was on 
-        if (!strstr($sql_done_txt, 'DUPLICATOR_MYSQLDUMP_EOF') || (!$this->Database->FilterOn && $sql_temp_size < 5120) || ($this->Database->FilterOn && $this->Database->info->tablesFinalCount > 0 && $sql_temp_size < 800)) {
-            DUP_Log::Trace('[DUP ARCHIVE] '.__FUNCTION__.' '.__LINE__);
+        // Note: Had to add extra size check of 800 since observed bad sql when filter was on
+        if (
+            !strstr($sql_done_txt, 'DUPLICATOR_MYSQLDUMP_EOF') ||
+            (
+                !$this->Database->FilterOn && $sql_temp_size < 5120) ||
+                ($this->Database->FilterOn && $this->Database->info->tablesFinalCount > 0 &&
+                $sql_temp_size < 800
+            )
+        ) {
+            DUP_Log::Trace('[DUP ARCHIVE] ' . __FUNCTION__ . ' ' . __LINE__);
 
             $error_text = "ERROR: SQL file not complete.  The file {$sql_temp_path} looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
             $this->BuildProgress->set_failed($error_text);
@@ -854,7 +884,7 @@ class DUP_Package
             return;
         }
 
-        DUP_Log::Trace('[DUP ARCHIVE] '.__FUNCTION__.' '.__LINE__);
+        DUP_Log::Trace('[DUP ARCHIVE] ' . __FUNCTION__ . ' ' . __LINE__);
         DUP_Log::Info("SQL FILE: {$sql_easy_size}");
 
         //------------------------
@@ -863,7 +893,7 @@ class DUP_Package
 
         $exe_temp_size = @filesize($exe_temp_path);
         $exe_easy_size = DUP_Util::byteSize($exe_temp_size);
-        $exe_done_txt = DUP_Util::tailFile($exe_temp_path, 10);
+        $exe_done_txt  = DUP_Util::tailFile($exe_temp_path, 10);
 
         if (!strstr($exe_done_txt, 'DUPLICATOR_INSTALLER_EOF') && !$this->BuildProgress->failed) {
             //$this->BuildProgress->failed = true;
@@ -894,7 +924,7 @@ class DUP_Package
             }
 
             $scan_filepath = DUP_Settings::getSsdirTmpPath() . "/{$this->NameHash}_scan.json";
-            $json = '';
+            $json          = '';
 
             DUP_LOG::Trace("***********Does $scan_filepath exist?");
             if (file_exists($scan_filepath)) {
@@ -913,14 +943,14 @@ class DUP_Package
 
             $scanReport = json_decode($json);
 
-			//RSR TODO: rework/simplify the validateion of duparchive
-            $dirCount = count($scanReport->ARC->Dirs);
-            $numInstallerDirs = $this->Installer->numDirsAdded;
-            $fileCount = count($scanReport->ARC->Files);
+            //RSR TODO: rework/simplify the validateion of duparchive
+            $dirCount          = count($scanReport->ARC->Dirs);
+            $numInstallerDirs  = $this->Installer->numDirsAdded;
+            $fileCount         = count($scanReport->ARC->Files);
             $numInstallerFiles = $this->Installer->numFilesAdded;
 
-            $expected_filecount = $dirCount + $numInstallerDirs + $fileCount + $numInstallerFiles + 1 -1;   // Adding database.sql but subtracting the root dir
-			//Dup_Log::trace("#### a:{$dirCount} b:{$numInstallerDirs} c:{$fileCount} d:{$numInstallerFiles} = {$expected_filecount}");
+            $expected_filecount = $dirCount + $numInstallerDirs + $fileCount + $numInstallerFiles + 1 - 1;   // Adding database.sql but subtracting the root dir
+            //Dup_Log::trace("#### a:{$dirCount} b:{$numInstallerDirs} c:{$fileCount} d:{$numInstallerFiles} = {$expected_filecount}");
 
             DUP_Log::info("ARCHIVE FILE: {$zip_easy_size} ");
             DUP_Log::info(sprintf(__('EXPECTED FILE/DIRECTORY COUNT: %1$s', 'duplicator'), number_format($expected_filecount)));
@@ -937,9 +967,15 @@ class DUP_Package
                 $straight_ratio = (float) $expected_filecount / (float) $this->Archive->file_count;
 
                 $warning_count = $scanReport->ARC->WarnFileCount + $scanReport->ARC->WarnDirCount + $scanReport->ARC->UnreadableFileCount + $scanReport->ARC->UnreadableDirCount;
-                DUP_LOG::trace("Warn/unread counts) warnfile:{$scanReport->ARC->WarnFileCount} warndir:{$scanReport->ARC->WarnDirCount} unreadfile:{$scanReport->ARC->UnreadableFileCount} unreaddir:{$scanReport->ARC->UnreadableDirCount}");
+                DUP_LOG::trace(
+                    "Warn/unread counts) warnfile:{$scanReport->ARC->WarnFileCount} warndir:{$scanReport->ARC->WarnDirCount}" .
+                    " unreadfile:{$scanReport->ARC->UnreadableFileCount} unreaddir:{$scanReport->ARC->UnreadableDirCount}"
+                );
                 $warning_ratio = ((float) ($expected_filecount + $warning_count)) / (float) $this->Archive->file_count;
-                DUP_LOG::trace("Straight ratio is $straight_ratio and warning ratio is $warning_ratio. # Expected=$expected_filecount # Warning=$warning_count and #Archive File {$this->Archive->file_count}");
+                DUP_LOG::trace(
+                    "Straight ratio is $straight_ratio and warning ratio is $warning_ratio. # Expected=$expected_filecount " .
+                    "# Warning=$warning_count and #Archive File {$this->Archive->file_count}"
+                );
 
                 // Allow the real file count to exceed the expected by 10% but only allow 1% the other way
                 if (($straight_ratio < 0.90) || ($straight_ratio > 1.01)) {
@@ -947,7 +983,7 @@ class DUP_Package
                     if (($warning_ratio < 0.90) || ($warning_ratio > 1.01)) {
                         $error_message = sprintf('ERROR: File count in archive vs expected suggests a bad archive (%1$d vs %2$d).', $this->Archive->file_count, $expected_filecount);
                         $this->BuildProgress->set_failed($error_message);
-                        $this->Status  = DUP_PackageStatus::ERROR;
+                        $this->Status = DUP_PackageStatus::ERROR;
                         $this->update();
 
                         DUP_Log::error($error_message, '');
@@ -960,28 +996,28 @@ class DUP_Package
         /* ------ ZIP CONSISTENCY CHECK ------ */
         if ($this->Archive->getBuildMode() == DUP_Archive_Build_Mode::ZipArchive) {
             DUP_LOG::trace("Running ZipArchive consistency check");
-            $zipPath = DUP_Settings::getSsdirTmpPath()."/{$this->Archive->File}";
-                        
+            $zipPath = DUP_Settings::getSsdirTmpPath() . "/{$this->Archive->File}";
+
             $zip = new ZipArchive();
 
             // ZipArchive::CHECKCONS will enforce additional consistency checks
             $res = $zip->open($zipPath, ZipArchive::CHECKCONS);
 
-            if ($res !== TRUE) {
+            if ($res !== true) {
                 $consistency_error = sprintf(__('ERROR: Cannot open created archive. Error code = %1$s', 'duplicator'), $res);
 
                 DUP_LOG::trace($consistency_error);
                 switch ($res) {
-                    case ZipArchive::ER_NOZIP :
+                    case ZipArchive::ER_NOZIP:
                         $consistency_error = __('ERROR: Archive is not valid zip archive.', 'duplicator');
                         break;
 
-                    case ZipArchive::ER_INCONS :
+                    case ZipArchive::ER_INCONS:
                         $consistency_error = __("ERROR: Archive doesn't pass consistency check.", 'duplicator');
                         break;
 
 
-                    case ZipArchive::ER_CRC :
+                    case ZipArchive::ER_CRC:
                         $consistency_error = __("ERROR: Archive checksum is bad.", 'duplicator');
                         break;
                 }
@@ -1008,10 +1044,10 @@ class DUP_Package
         if ($file_type == DUP_PackageFileType::Installer) {
             DUP_Log::Trace("Installer requested");
             $file_name = apply_filters('duplicator_installer_file_path', $this->getInstallerFilename());
-        } else if ($file_type == DUP_PackageFileType::Archive) {
+        } elseif ($file_type == DUP_PackageFileType::Archive) {
             DUP_Log::Trace("Archive requested");
             $file_name = $this->getArchiveFilename();
-        } else if ($file_type == DUP_PackageFileType::SQL) {
+        } elseif ($file_type == DUP_PackageFileType::SQL) {
             DUP_Log::Trace("SQL requested");
             $file_name = $this->getDatabaseFilename();
         } else {
@@ -1036,7 +1072,7 @@ class DUP_Package
 
     public function getScanUrl()
     {
-        return DUP_Settings::getSsdirUrl()."/".$this->getScanFilename();
+        return DUP_Settings::getSsdirUrl() . "/" . $this->getScanFilename();
     }
 
     public function getLogFilename()
@@ -1046,7 +1082,7 @@ class DUP_Package
 
     public function getLogUrl()
     {
-        return DUP_Settings::getSsdirUrl()."/".$this->getLogFilename();
+        return DUP_Settings::getSsdirUrl() . "/" . $this->getLogFilename();
     }
 
     public function getArchiveFilename()
@@ -1066,6 +1102,16 @@ class DUP_Package
         return $this->NameHash . '_database.sql';
     }
 
+    public function get_files_list_filename()
+    {
+        return $this->NameHash . DUP_Archive::FILES_LIST_FILE_NAME_SUFFIX;
+    }
+
+    public function get_dirs_list_filename()
+    {
+        return $this->NameHash . DUP_Archive::DIRS_LIST_FILE_NAME_SUFFIX;
+    }
+
     /**
      * @param int $type
      * @return array
@@ -1077,20 +1123,20 @@ class DUP_Package
             "url"      => ""
         );
 
-        switch ($type){
-            case DUP_PackageFileType::Archive;
+        switch ($type) {
+            case DUP_PackageFileType::Archive:
                 $result["filename"] = $this->Archive->File;
                 $result["url"]      = $this->Archive->getURL();
                 break;
-            case DUP_PackageFileType::SQL;
+            case DUP_PackageFileType::SQL:
                 $result["filename"] = $this->Database->File;
                 $result["url"]      = $this->Database->getURL();
                 break;
-            case DUP_PackageFileType::Log;
+            case DUP_PackageFileType::Log:
                 $result["filename"] = $this->getLogFilename();
                 $result["url"]      = $this->getLogUrl();
                 break;
-            case DUP_PackageFileType::Scan;
+            case DUP_PackageFileType::Scan:
                 $result["filename"] = $this->getScanFilename();
                 $result["url"]      = $this->getScanUrl();
                 break;
@@ -1113,39 +1159,39 @@ class DUP_Package
      * Removes all files except those of active packages
      */
     public static function not_active_files_tmp_cleanup()
-	{
-		//Check for the 'tmp' folder just for safe measures
-		if (! is_dir(DUP_Settings::getSsdirTmpPath()) && (strpos(DUP_Settings::getSsdirTmpPath(), 'tmp') !== false) ) {
-			return;
-		}
+    {
+        //Check for the 'tmp' folder just for safe measures
+        if (! is_dir(DUP_Settings::getSsdirTmpPath()) && (strpos(DUP_Settings::getSsdirTmpPath(), 'tmp') !== false)) {
+            return;
+        }
 
-        $globs = glob(DUP_Settings::getSsdirTmpPath().'/*.*');
-		if (! is_array($globs) || $globs === FALSE) {
-			return;
-		}
-        
+        $globs = glob(DUP_Settings::getSsdirTmpPath() . '/*.*');
+        if (! is_array($globs) || $globs === false) {
+            return;
+        }
+
         // RUNNING PACKAGES
-        $active_pack = self::get_row_by_status(array(
+        $active_pack  = self::get_row_by_status(array(
             'relation' => 'AND',
             array('op' => '>=' , 'status' => DUP_PackageStatus::CREATED ),
             array('op' => '<' , 'status' => DUP_PackageStatus::COMPLETE )
         ));
         $active_files = array();
-        foreach($active_pack as $row) {
-            $active_files[] = $row->name.'_'.$row->hash;
+        foreach ($active_pack as $row) {
+            $active_files[] = $row->name . '_' . $row->hash;
         }
 
         // ERRORS PACKAGES
-        $err_pack = self::get_row_by_status(array(
+        $err_pack        = self::get_row_by_status(array(
             array('op' => '<' , 'status' => DUP_PackageStatus::CREATED )
         ));
         $force_del_files = array();
-        foreach($err_pack as $row) {
-            $force_del_files[] =  $row->name.'_'.$row->hash;
+        foreach ($err_pack as $row) {
+            $force_del_files[] =  $row->name . '_' . $row->hash;
         }
 
         // Don't remove json file;
-        $extension_filter = array('json');
+        $extension_filter = array('json', 'txt');
 
         // Calculate delta time for old files
         $oldTimeToClean = time() - DUPLICATOR_TEMP_CLEANUP_SECONDS;
@@ -1158,7 +1204,7 @@ class DUP_Package
 
             $file_name = basename($glob_full_path);
             // skip all active packages
-            foreach ($active_files  as $c_nameHash) {
+            foreach ($active_files as $c_nameHash) {
                 if (strpos($file_name, $c_nameHash) === 0) {
                     continue 2;
                 }
@@ -1171,7 +1217,7 @@ class DUP_Package
             }
 
             // remove all error packages files
-            foreach ($force_del_files  as $c_nameHash) {
+            foreach ($force_del_files as $c_nameHash) {
                 if (strpos($file_name, $c_nameHash) === 0) {
                     @unlink($glob_full_path);
                     continue 2;
@@ -1188,7 +1234,7 @@ class DUP_Package
         }
     }
 
-	/**
+    /**
      * Cleans up the temp storage folder have a time interval
      *
      * @return void
@@ -1221,18 +1267,17 @@ class DUP_Package
         }
     }
 
-	/**
+    /**
      * Starts the package DupArchive progressive build process - always assumed to only run off active package, NOT one in the package table
      *
      * @return obj Returns a DUP_Package object
      */
-	public function runDupArchiveBuild()
+    public function runDupArchiveBuild()
     {
         $this->BuildProgress->start_timer();
         DUP_Log::Trace('Called');
 
         if ($this->BuildProgress->failed) {
-
             DUP_LOG::Trace("build progress failed so setting package to failed");
             $this->setStatus(DUP_PackageStatus::ERROR);
             $message = "Package creation failed.";
@@ -1243,7 +1288,7 @@ class DUP_Package
         if ($this->BuildProgress->initialized == false) {
             DUP_Log::Trace('[DUP ARCHIVE] INIZIALIZE');
             $this->BuildProgress->initialized = true;
-            $this->TimerStart = Dup_Util::getMicrotime();
+            $this->TimerStart                 = Dup_Util::getMicrotime();
             $this->update();
         }
 
@@ -1252,16 +1297,15 @@ class DUP_Package
             DUP_Log::Info('[DUP ARCHIVE] BUILDING DATABASE');
             $this->Database->build($this, Dup_ErrorBehavior::ThrowException);
             DUP_Log::Info('[DUP ARCHIVE] VALIDATING DATABASE');
-            $this->Database->validateTableWiseRowCounts();
             $this->BuildProgress->database_script_built = true;
             $this->update();
             DUP_Log::Info('[DUP ARCHIVE] DONE DATABASE');
-        } else if (!$this->BuildProgress->archive_built) {
+        } elseif (!$this->BuildProgress->archive_built) {
             DUP_Log::Info('[DUP ARCHIVE] BUILDING ARCHIVE');
             $this->Archive->build($this);
             $this->update();
             DUP_Log::Info('[DUP ARCHIVE] DONE ARCHIVE');
-        } else if (!$this->BuildProgress->installer_built) {
+        } elseif (!$this->BuildProgress->installer_built) {
             DUP_Log::Info('[DUP ARCHIVE] BUILDING INSTALLER');
             // Installer being built is stuffed into the archive build phase
         }
@@ -1270,19 +1314,19 @@ class DUP_Package
             DUP_Log::Info('[DUP ARCHIVE] HAS COMPLETED CLOSING');
 
             if (!$this->BuildProgress->failed) {
-				DUP_LOG::Info("[DUP ARCHIVE] DUP ARCHIVE INTEGRITY CHECK");
+                DUP_LOG::Info("[DUP ARCHIVE] DUP ARCHIVE INTEGRITY CHECK");
                 // Only makees sense to perform build integrity check on completed archives
                 $this->runDupArchiveBuildIntegrityCheck();
             } else {
-				DUP_LOG::trace("top of loop build progress failed");
-			}
+                DUP_LOG::trace("top of loop build progress failed");
+            }
 
-            $timerEnd = DUP_Util::getMicrotime();
-            $timerSum = DUP_Util::elapsedTime($timerEnd, $this->TimerStart);
+            $timerEnd      = DUP_Util::getMicrotime();
+            $timerSum      = DUP_Util::elapsedTime($timerEnd, $this->TimerStart);
             $this->Runtime = $timerSum;
 
             //FINAL REPORT
-            $info = "\n********************************************************************************\n";
+            $info  = "\n********************************************************************************\n";
             $info .= "RECORD ID:[{$this->ID}]\n";
             $info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
             $info .= "PEAK PHP MEMORY USED: " . DUP_Server::getPHPMemory(true) . "\n";
@@ -1294,10 +1338,10 @@ class DUP_Package
             if (!$this->BuildProgress->failed) {
                 DUP_Log::Trace('[DUP ARCHIVE] HAS COMPLETED DONE');
                 $this->setStatus(DUP_PackageStatus::COMPLETE);
-				DUP_LOG::Trace("Cleaning up duparchive temp files");
+                DUP_LOG::Trace("Cleaning up duparchive temp files");
                 //File Cleanup
                 $this->buildCleanup();
-                do_action('duplicator_lite_build_completed' , $this);
+                do_action('duplicator_lite_build_completed', $this);
             } else {
                 DUP_Log::Trace('[DUP ARCHIVE] HAS COMPLETED ERROR');
             }
@@ -1320,7 +1364,6 @@ class DUP_Package
         //PHPs serialze method will return the object, but the ID above is not passed
         //for one reason or another so passing the object back in seems to do the trick
         $this->Database->build($this, Dup_ErrorBehavior::ThrowException);
-        $this->Database->validateTableWiseRowCounts();
         $this->Archive->build($this);
         $this->Installer->build($this);
 
@@ -1344,13 +1387,13 @@ class DUP_Package
         $this->buildCleanup();
 
         //FINAL REPORT
-        $info = "\n********************************************************************************\n";
+        $info  = "\n********************************************************************************\n";
         $info .= "RECORD ID:[{$this->ID}]\n";
         $info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
-        $info .= "PEAK PHP MEMORY USED: ".DUP_Server::getPHPMemory(true)."\n";
-        $info .= "DONE PROCESSING => {$this->Name} ".@date(get_option('date_format')." ".get_option('time_format'))."\n";
+        $info .= "PEAK PHP MEMORY USED: " . DUP_Server::getPHPMemory(true) . "\n";
+        $info .= "DONE PROCESSING => {$this->Name} " . @date(get_option('date_format') . " " . get_option('time_format')) . "\n";
 
-        
+
         DUP_Log::Info($info);
         DUP_Log::Close();
 
@@ -1382,41 +1425,40 @@ class DUP_Package
 
             if (isset($post['filter-dirs'])) {
                 $post_filter_dirs = sanitize_text_field($post['filter-dirs']);
-                $filter_dirs  = $this->Archive->parseDirectoryFilter($post_filter_dirs);
+                $filter_dirs      = $this->Archive->parseDirectoryFilter($post_filter_dirs);
             } else {
-                $filter_dirs  = '';
-            }            
+                $filter_dirs = '';
+            }
 
             if (isset($post['filter-files'])) {
                 $post_filter_files = sanitize_text_field($post['filter-files']);
-                $filter_files = $this->Archive->parseFileFilter($post_filter_files);
+                $filter_files      = $this->Archive->parseFileFilter($post_filter_files);
             } else {
                 $filter_files = '';
             }
 
             if (isset($post['filter-exts'])) {
                 $post_filter_exts = sanitize_text_field($post['filter-exts']);
-                $filter_exts  = $this->Archive->parseExtensionFilter($post_filter_exts);
+                $filter_exts      = $this->Archive->parseExtensionFilter($post_filter_exts);
             } else {
-                $filter_exts  = '';
+                $filter_exts = '';
             }
 
-			$tablelist = '';
+            $tablelist = '';
             if (isset($post['dbtables'])) {
-                $tablelist   = implode(',', $post['dbtables']);
+                $tablelist = implode(',', $post['dbtables']);
             }
 
             if (isset($post['dbcompat'])) {
-                $post_dbcompat = sanitize_text_field($post['dbcompat']);
-                $compatlist = isset($post['dbcompat'])	 ? implode(',', $post_dbcompat) : '';
+                $compatlist = is_array($post['dbcompat']) ? implode(',', $post['dbcompat']) : sanitize_text_field($post['dbcompat']);
             } else {
                 $compatlist = '';
             }
 
-            $dbversion    = DUP_DB::getVersion();
-            $dbversion    = is_null($dbversion) ? '- unknown -'  : sanitize_text_field($dbversion);
-            $dbcomments   = sanitize_text_field(DUP_DB::getVariable('version_comment'));
-            $dbcomments   = is_null($dbcomments) ? '- unknown -' : sanitize_text_field($dbcomments);
+            $dbversion  = DUP_DB::getVersion();
+            $dbversion  = is_null($dbversion) ? '- unknown -'  : sanitize_text_field($dbversion);
+            $dbcomments = sanitize_text_field(DUP_DB::getVariable('version_comment'));
+            $dbcomments = is_null($dbcomments) ? '- unknown -' : sanitize_text_field($dbcomments);
 
             //PACKAGE
             $this->Created    = gmdate("Y-m-d H:i:s");
@@ -1429,36 +1471,35 @@ class DUP_Package
             $this->Hash       = $this->makeHash();
             $this->NameHash   = sanitize_text_field("{$this->Name}_{$this->Hash}");
 
-            $this->Notes                    = sanitize_textarea_field($post['package-notes']);
+            $this->Notes = sanitize_textarea_field($post['package-notes']);
             //ARCHIVE
-            $this->Archive->PackDir         = duplicator_get_abs_path();
-            $this->Archive->Format          = 'ZIP';
-            $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
-			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
-            $this->Archive->FilterDirs      = sanitize_textarea_field($filter_dirs);
-			$this->Archive->FilterFiles    = sanitize_textarea_field($filter_files);
-            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', $filter_exts);
+            $this->Archive->Format       = 'ZIP';
+            $this->Archive->FilterOn     = isset($post['filter-on']) ? 1 : 0;
+            $this->Archive->ExportOnlyDB = isset($post['export-onlydb']) ? 1 : 0;
+            $this->Archive->FilterDirs   = sanitize_textarea_field($filter_dirs);
+            $this->Archive->FilterFiles  = sanitize_textarea_field($filter_files);
+            $this->Archive->FilterExts   = str_replace(array('.', ' '), '', $filter_exts);
             //INSTALLER
-            $this->Installer->OptsDBHost		= sanitize_text_field($post['dbhost']);
-            $this->Installer->OptsDBPort		= sanitize_text_field($post['dbport']);
-            $this->Installer->OptsDBName		= sanitize_text_field($post['dbname']);
-            $this->Installer->OptsDBUser		= sanitize_text_field($post['dbuser']);
-            $this->Installer->OptsDBCharset		= sanitize_text_field($post['dbcharset']);
-            $this->Installer->OptsDBCollation   = sanitize_text_field($post['dbcollation']);
-            $this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
-            $post_secure_pass                   = sanitize_text_field($post['secure-pass']);
-			$this->Installer->OptsSecurePass	= DUP_Util::installerScramble($post_secure_pass);
+            $this->Installer->OptsDBHost      = sanitize_text_field($post['dbhost']);
+            $this->Installer->OptsDBPort      = sanitize_text_field($post['dbport']);
+            $this->Installer->OptsDBName      = sanitize_text_field($post['dbname']);
+            $this->Installer->OptsDBUser      = sanitize_text_field($post['dbuser']);
+            $this->Installer->OptsDBCharset   = sanitize_text_field($post['dbcharset']);
+            $this->Installer->OptsDBCollation = sanitize_text_field($post['dbcollation']);
+            $this->Installer->OptsSecureOn    = isset($post['secure-on']) ? 1 : 0;
+            $post_secure_pass                 = sanitize_text_field($post['secure-pass']);
+            $this->Installer->OptsSecurePass  = DUP_Util::installerScramble($post_secure_pass);
             //DATABASE
-            $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
-            $this->Database->FilterTables   = sanitize_text_field($tablelist);
-            $this->Database->Compatible     = $compatlist;
-            $this->Database->Comments       = sanitize_text_field($dbcomments);
+            $this->Database->FilterOn     = isset($post['dbfilter-on']) ? 1 : 0;
+            $this->Database->FilterTables = sanitize_text_field($tablelist);
+            $this->Database->Compatible   = $compatlist;
+            $this->Database->Comments     = sanitize_text_field($dbcomments);
 
             update_option(self::OPT_ACTIVE, $this);
         }
     }
 
-	/**
+    /**
      * Update the serialized package and status in the database
      *
      * @return void
@@ -1477,10 +1518,10 @@ class DUP_Package
 
         $wpdb->flush();
         $tablePrefix = DUP_Util::getTablePrefix();
-        $table = $tablePrefix."duplicator_packages";
-        $sql  = "UPDATE `{$table}` SET  status = {$this->Status},";
-        $sql .= "package = '" . esc_sql($packageObj) . "'";
-        $sql .= "WHERE ID = {$this->ID}";
+        $table       = $tablePrefix . "duplicator_packages";
+        $sql         = "UPDATE `{$table}` SET  status = {$this->Status},";
+        $sql        .= "package = '" . esc_sql($packageObj) . "'";
+        $sql        .= "WHERE ID = {$this->ID}";
 
         DUP_Log::Trace("UPDATE PACKAGE ID = {$this->ID} STATUS = {$this->Status}");
 
@@ -1528,15 +1569,15 @@ class DUP_Package
      *
      * @param string $hash An existing hash value
      *
-     * @return int 
+     * @return int
      */
     public function getHashKey($hash)
     {
         global $wpdb;
 
         $tablePrefix = DUP_Util::getTablePrefix();
-        $table = $tablePrefix."duplicator_packages";
-        $qry   = $wpdb->get_row("SELECT ID, hash FROM `{$table}` WHERE hash = '{$hash}'");
+        $table       = $tablePrefix . "duplicator_packages";
+        $qry         = $wpdb->get_row("SELECT ID, hash FROM `{$table}` WHERE hash = '{$hash}'");
         if (is_null($qry) || strlen($qry->hash) == 0) {
             return 0;
         } else {
@@ -1621,8 +1662,8 @@ class DUP_Package
         //Remove specail_chars from final result
         $special_chars = array(".", "-");
         $name          = ($preDate)
-							? date('Ymd') . '_' . sanitize_title(get_bloginfo('name', 'display'))
-							: sanitize_title(get_bloginfo('name', 'display')) . '_' . date('Ymd');
+                            ? date('Ymd') . '_' . sanitize_title(get_bloginfo('name', 'display'))
+                            : sanitize_title(get_bloginfo('name', 'display')) . '_' . date('Ymd');
         $name          = substr(sanitize_file_name($name), 0, 40);
         $name          = str_replace($special_chars, '', $name);
         return $name;
@@ -1637,16 +1678,15 @@ class DUP_Package
      */
     public static function tempFileCleanup($all = false)
     {
-        //Delete all files now
         if ($all) {
-            $dir = DUP_Settings::getSsdirTmpPath()."/*";
+             //Delete all files now
+            $dir = DUP_Settings::getSsdirTmpPath() . "/*";
             foreach (glob($dir) as $file) {
                 @unlink($file);
             }
-        }
-        //Remove scan files that are 24 hours old
-        else {
-            $dir = DUP_Settings::getSsdirTmpPath()."/*_scan.json";
+        } else {
+            //Remove scan files that are 24 hours old
+            $dir = DUP_Settings::getSsdirTmpPath() . "/*_scan.json";
             foreach (glob($dir) as $file) {
                 if (filemtime($file) <= time() - 86400) {
                     @unlink($file);
@@ -1669,33 +1709,45 @@ class DUP_Package
         $date = new DateTime($date);
         switch ($format) {
             //YEAR
-            case 1: return $date->format('Y-m-d H:i');
+            case 1:
+                return $date->format('Y-m-d H:i');
                 break;
-            case 2: return $date->format('Y-m-d H:i:s');
+            case 2:
+                return $date->format('Y-m-d H:i:s');
                 break;
-            case 3: return $date->format('y-m-d H:i');
+            case 3:
+                return $date->format('y-m-d H:i');
                 break;
-            case 4: return $date->format('y-m-d H:i:s');
+            case 4:
+                return $date->format('y-m-d H:i:s');
                 break;
             //MONTH
-            case 5: return $date->format('m-d-Y H:i');
+            case 5:
+                return $date->format('m-d-Y H:i');
                 break;
-            case 6: return $date->format('m-d-Y H:i:s');
+            case 6:
+                return $date->format('m-d-Y H:i:s');
                 break;
-            case 7: return $date->format('m-d-y H:i');
+            case 7:
+                return $date->format('m-d-y H:i');
                 break;
-            case 8: return $date->format('m-d-y H:i:s');
+            case 8:
+                return $date->format('m-d-y H:i:s');
                 break;
             //DAY
-            case 9: return $date->format('d-m-Y H:i');
+            case 9:
+                return $date->format('d-m-Y H:i');
                 break;
-            case 10: return $date->format('d-m-Y H:i:s');
+            case 10:
+                return $date->format('d-m-Y H:i:s');
                 break;
-            case 11: return $date->format('d-m-y H:i');
+            case 11:
+                return $date->format('d-m-y H:i');
                 break;
-            case 12: return $date->format('d-m-y H:i:s');
+            case 12:
+                return $date->format('d-m-y H:i:s');
                 break;
-            default :
+            default:
                 return $date->format('Y-m-d H:i');
         }
     }
@@ -1714,7 +1766,6 @@ class DUP_Package
         );
 
         foreach ($files as $file) {
-
             $fileName = basename($file);
             if (!strstr($fileName, $this->NameHash)) {
                 continue;
@@ -1734,7 +1785,6 @@ class DUP_Package
                 unlink($file);
             }
         }
-
     }
 
 
@@ -1744,23 +1794,25 @@ class DUP_Package
      *
      * @return string package hash
      */
-    public function getPackageHash() {
-        $hashParts = explode('_', $this->Hash);
-        $firstPart = substr($hashParts[0], 0, 7);
-        $secondPart = substr($hashParts[1], -8);
-        $package_hash = $firstPart.'-'.$secondPart;
+    public function getPackageHash()
+    {
+        $hashParts    = explode('_', $this->Hash);
+        $firstPart    = substr($hashParts[0], 0, 7);
+        $secondPart   = substr($hashParts[1], -8);
+        $package_hash = $firstPart . '-' . $secondPart;
         return $package_hash;
     }
-    
-    public function getSecondaryPackageHash() {
-        $newHash = $this->makeHash();
+
+    public function getSecondaryPackageHash()
+    {
+        $newHash   = $this->makeHash();
         $hashParts = explode('_', $newHash);
         $firstPart = substr($hashParts[0], 0, 7);
-        
-        $hashParts = explode('_', $this->Hash);
+
+        $hashParts  = explode('_', $this->Hash);
         $secondPart = substr($hashParts[1], -8);
-        
-        $package_hash = $firstPart.'-'.$secondPart;
+
+        $package_hash = $firstPart . '-' . $secondPart;
         return $package_hash;
     }
 
@@ -1771,35 +1823,36 @@ class DUP_Package
      */
     public function getSqlArkFilePath()
     {
-        $package_hash = $this->getPackageHash();
-        $sql_ark_file_Path = 'dup-installer/dup-database__'.$package_hash.'.sql';
+        $package_hash      = $this->getPackageHash();
+        $sql_ark_file_Path = 'dup-installer/dup-database__' . $package_hash . '.sql';
         return $sql_ark_file_Path;
     }
-	
-	private function writeLogHeader()
-	{
-        $php_max_time   = @ini_get("max_execution_time");
-        if (DupLiteSnapLibUtil::wp_is_ini_value_changeable('memory_limit'))
+
+    private function writeLogHeader()
+    {
+        $php_max_time = @ini_get("max_execution_time");
+        if (SnapUtil::isIniValChangeable('memory_limit')) {
             $php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
-        else
+        } else {
             $php_max_memory = @ini_get('memory_limit');
+        }
 
         $php_max_time   = ($php_max_time == 0) ? "(0) no time limit imposed" : "[{$php_max_time}] not allowed";
-        $php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" : DUPLICATOR_PHP_MAX_MEMORY." ({$php_max_memory} default)";
+        $php_max_memory = ($php_max_memory === false) ? "Unabled to set php memory_limit" : DUPLICATOR_PHP_MAX_MEMORY . " ({$php_max_memory} default)";
 
-		$info = "********************************************************************************\n";
-        $info .= "DUPLICATOR-LITE PACKAGE-LOG: ".@date(get_option('date_format')." ".get_option('time_format'))."\n";
+        $info  = "********************************************************************************\n";
+        $info .= "DUPLICATOR-LITE PACKAGE-LOG: " . @date(get_option('date_format') . " " . get_option('time_format')) . "\n";
         $info .= "NOTICE: Do NOT post to public sites or forums \n";
         $info .= "********************************************************************************\n";
-        $info .= "VERSION:\t".DUPLICATOR_VERSION."\n";
+        $info .= "VERSION:\t" . DUPLICATOR_VERSION . "\n";
         $info .= "WORDPRESS:\t{$GLOBALS['wp_version']}\n";
-        $info .= "PHP INFO:\t".phpversion().' | '.'SAPI: '.php_sapi_name()."\n";
+        $info .= "PHP INFO:\t" . phpversion() . ' | ' . 'SAPI: ' . php_sapi_name() . "\n";
         $info .= "SERVER:\t\t{$_SERVER['SERVER_SOFTWARE']} \n";
         $info .= "PHP TIME LIMIT: {$php_max_time} \n";
         $info .= "PHP MAX MEMORY: {$php_max_memory} \n";
-        $info .= "MEMORY STACK: ".DUP_Server::getPHPMemory();
+        $info .= "MEMORY STACK: " . DUP_Server::getPHPMemory();
         DUP_Log::Info($info);
 
         $info = null;
-	}
+    }
 }

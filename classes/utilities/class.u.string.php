@@ -1,4 +1,5 @@
 <?php
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Utility class working with strings
@@ -9,12 +10,11 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * @package DUP
  * @subpackage classes/utilities
  * @copyright (c) 2017, Snapcreek LLC
- * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
+ * @license https://opensource.org/licenses/GPL-3.0 GNU Public License
  *
  */
 class DUP_STR
 {
-
     /**
      * Append the value to the string if it doesn't already exist
      *
@@ -25,7 +25,7 @@ class DUP_STR
      */
     public static function appendOnce($string, $value)
     {
-        return $string.(substr($string, -1) == $value ? '' : $value);
+        return $string . (substr($string, -1) == $value ? '' : $value);
     }
 
     /**
@@ -93,7 +93,4 @@ class DUP_STR
         }
         return (substr($haystack, -$length) === $needle);
     }
-
-
 }
-

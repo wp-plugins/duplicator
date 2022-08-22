@@ -1,4 +1,5 @@
 <?php
+
 /**
  * interface for specific hostings class
  *
@@ -8,11 +9,11 @@
  * @link http://www.php-fig.org/psr/psr-2/
  *
  */
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 interface DUP_Host_interface
 {
-
     /**
      * return the current host itentifier
      *

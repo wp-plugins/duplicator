@@ -1,9 +1,11 @@
 <?php
+
+use Duplicator\Libs\Snap\SnapUtil;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 class DUP_Web_Services
 {
-
     /**
      * init ajax actions
      */
@@ -61,8 +63,7 @@ class DUP_Web_Services
             DUP_Package::not_active_files_tmp_cleanup();
 
             //throw new Exception('force error test');
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $error             = true;
             $result['message'] = $e->getMessage();
         }
@@ -125,9 +126,9 @@ class DUP_Web_Services
             $fileName     = $package->getInstDownloadName();
             $realFileName = $package->Installer->File;
             $backupDir    = DUP_Settings::getSsdirPath();
-            
-            if(DUP_STR::endsWith($realFileName, '.php')) {
-                $realFileName = basename($realFileName, '.php').DUP_Installer::INSTALLER_SERVER_EXTENSION;
+
+            if (DUP_STR::endsWith($realFileName, '.php')) {
+                $realFileName = basename($realFileName, '.php') . DUP_Installer::INSTALLER_SERVER_EXTENSION;
             }
             $filepath = "{$backupDir}/{$realFileName}";
 
@@ -137,35 +138,33 @@ class DUP_Web_Services
             }
 
             // Clean output buffer
-            if (ob_get_level() !== 0 && @ob_end_clean() === FALSE) {
+            if (ob_get_level() !== 0 && @ob_end_clean() === false) {
                 @ob_clean();
             }
 
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.$fileName.'"');
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Length: '.filesize($filepath));
+            header('Content-Length: ' . filesize($filepath));
             flush(); // Flush system output buffer
 
             try {
                 $fp = @fopen($filepath, 'r');
                 if (false === $fp) {
-                    throw new Exception('Fail to open the file '.$filepath);
+                    throw new Exception('Fail to open the file ' . $filepath);
                 }
-                while (!feof($fp) && ($data = fread($fp, DUPLICATOR_BUFFER_READ_WRITE_SIZE)) !== FALSE) {
+                while (!feof($fp) && ($data = fread($fp, DUPLICATOR_BUFFER_READ_WRITE_SIZE)) !== false) {
                     echo $data;
                 }
                 @fclose($fp);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 readfile($filepath);
             }
             exit;
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             //Prevent brute force
             sleep(2);
             wp_die($ex->getMessage());
@@ -176,7 +175,7 @@ class DUP_Web_Services
     {
         DUP_Handler::init_error_handler();
 
-        try{
+        try {
             DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
             if (!wp_verify_nonce($_REQUEST['nonce'], 'duplicator_set_admin_notice_viewed')) {
@@ -184,7 +183,7 @@ class DUP_Web_Services
                 throw new Exception('Security issue');
             }
 
-            $notice_id = DupLiteSnapLibUtil::filterInputRequest('notice_id', FILTER_UNSAFE_RAW);
+            $notice_id = SnapUtil::filterInputRequest('notice_id', FILTER_UNSAFE_RAW);
 
             if (empty($notice_id)) {
                 throw new Exception(__('Invalid Request', 'duplicator'));
@@ -201,8 +200,7 @@ class DUP_Web_Services
 
             $notices[$notice_id] = 'true';
             update_user_meta(get_current_user_id(), DUPLICATOR_ADMIN_NOTICES_USER_META_KEY, $notices);
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             wp_die($ex->getMessage());
         }
     }
@@ -224,15 +222,14 @@ class DUP_Web_Services
                 case DUP_UI_Notice::OPTION_KEY_NEW_NOTICE_TEMPLATE:
                     delete_option($noticeToDismiss);
                     break;
-                case DUP_UI_Notice::OPTION_KEY_IS_PRO_ENABLE_NOTICE_DISMISSED:
+                case DUP_UI_Notice::OPTION_KEY_IS_ENABLE_NOTICE_DISMISSED:
                 case DUP_UI_Notice::OPTION_KEY_IS_MU_NOTICE_DISMISSED:
                     update_option($noticeToDismiss, true);
                     break;
                 default:
                     throw new Exception('Notice invalid');
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             wp_send_json_error($e->getMessage());
         }
 

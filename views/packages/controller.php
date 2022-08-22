@@ -51,7 +51,7 @@ $download_installer_nonce = wp_create_nonce('duplicator_download_installer');
         };
 
 
-        /*	----------------------------------------
+        /*  ----------------------------------------
          * METHOD: Toggle links with sub-details */
         Duplicator.Pack.ToggleSystemDetails = function(event) {
             if ($(this).parents('div').children(event.data.selector).is(":hidden")) {
@@ -67,10 +67,14 @@ $download_installer_nonce = wp_create_nonce('duplicator_download_installer');
 </script>
 
 <div class="wrap">
-    <?php 
-		    switch ($current_view) {
-				case 'main': include(DUPLICATOR_PLUGIN_PATH.'views/packages/main/controller.php'); break;
-				case 'detail' : include(DUPLICATOR_PLUGIN_PATH.'views/packages/details/controller.php'); break;
+    <?php
+    switch ($current_view) {
+        case 'main':
+                    include(DUPLICATOR_PLUGIN_PATH . 'views/packages/main/controller.php');
+            break;
+        case 'detail':
+                    include(DUPLICATOR_PLUGIN_PATH . 'views/packages/details/controller.php');
+            break;
     }
     ?>
 </div>

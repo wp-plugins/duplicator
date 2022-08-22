@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class that collects the functions of initial checks on the requirements to run the plugin
  *
@@ -19,13 +20,13 @@ class Requirements
     const DUP_PRO_PLUGIN_KEY = 'duplicator-pro/duplicator-pro.php';
 
     /**
-     * 
+     *
      * @var string // current plugin file full path
      */
     protected static $pluginFile = '';
 
     /**
-     * 
+     *
      * @var string // message on deactivation
      */
     protected static $deactivationMessage = '';
@@ -34,7 +35,7 @@ class Requirements
      * This function checks the requirements to run Duplicator.
      * At this point WordPress is not yet completely initialized so functionality is limited.
      * It need to hook into "admin_init" to get the full functionality of WordPress.
-     * 
+     *
      * @param string $pluginFile    // main plugin file path
      * @return boolean              // true if plugin can be executed
      */
@@ -45,11 +46,11 @@ class Requirements
 
         if ($result === true && self::isPluginActive(self::DUP_PRO_PLUGIN_KEY)) {
             add_action('admin_init', array(__CLASS__, 'addProEnableNotice'));
-            $pluginUrl = (is_multisite() ? network_admin_url('plugins.php') : admin_url('plugins.php'));
+            $pluginUrl                 = (is_multisite() ? network_admin_url('plugins.php') : admin_url('plugins.php'));
             self::$deactivationMessage = __('Can\'t enable Duplicator LITE if the PRO version is enabled.', 'duplicator') . '<br/>'
                 . __('Please deactivate Duplicator PRO, then reactivate LITE version from the ', 'duplicator')
                 . "<a href='" . $pluginUrl . "'>" . __('plugins page', 'duplicator') . ".</a>";
-            $result = false;
+            $result                    = false;
         }
 
         if ($result === false) {
@@ -60,7 +61,7 @@ class Requirements
     }
 
     /**
-     * 
+     *
      * @param string $plugin
      * @return boolean // return true if plugin key is active and plugin file exists
      */
@@ -92,7 +93,7 @@ class Requirements
     }
 
     /**
-     * display admin notice 
+     * display admin notice
      */
     public static function addMultisiteNotice()
     {
@@ -124,7 +125,7 @@ class Requirements
                 <?php _e('The "Duplicator Lite" and "Duplicator Pro" plugins cannot both be active at the same time.  ', 'duplicator'); ?>
             </p>
             <p>
-                <?php _e('To use "Duplicator LITE" please deactivate "Duplicator PRO" from the ', 'duplicator-pro'); ?>
+                <?php _e('To use "Duplicator LITE" please deactivate "Duplicator PRO" from the ', 'duplicator'); ?>
                 <a href="<?php echo esc_url($pluginUrl); ?>">
                     <?php _e('plugins page', 'duplicator'); ?>.
                 </a>

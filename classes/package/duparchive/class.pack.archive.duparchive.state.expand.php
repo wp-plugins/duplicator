@@ -1,23 +1,17 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.expand.php');
+use Duplicator\Libs\DupArchive\States\DupArchiveExpandState;
+use Duplicator\Libs\Snap\SnapJson;
 
 class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 {
     public static function getInstance($reset = false)
-    {   
+    {
         $instance = new DUP_DupArchive_Expand_State();
-        
-        if ($reset) {            
+        if ($reset) {
             $instance->initMembers();
         } else {
-            $instance->loadMembers();            
+            $instance->loadMembers();
         }
 
         return $instance;
@@ -25,20 +19,19 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 
     private function loadMembers()
     {
+        /** @var object $data */
         $data = DUP_Settings::Get('duparchive_expand_state');
-
         DUP_LOG::traceObject("****RAW EXPAND STATE LOADED****", $data);
-
-        if($data->currentFileHeaderString != null) {
-            $this->currentFileHeader      = DUP_JSON::decode($data->currentFileHeaderString);
+        if ($data->currentFileHeaderString != null) {
+            $this->currentFileHeader = DUP_JSON::decode($data->currentFileHeaderString);
         } else {
-            $this->currentFileHeader      = null;
+            $this->currentFileHeader = null;
         }
 
-        if($data->archiveHeaderString != null) {
-            $this->archiveHeader      = DUP_JSON::decode($data->archiveHeaderString);
+        if ($data->archiveHeaderString != null) {
+            $this->archiveHeader = DUP_JSON::decode($data->archiveHeaderString);
         } else {
-            $this->archiveHeader      = null;
+            $this->archiveHeader = null;
         }
 
         if ($data->failuresString) {
@@ -48,64 +41,26 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         }
 
         DUP_Util::objectCopy($data, $this, array('archiveHeaderString', 'currentFileHeaderString', 'failuresString'));
-
-//
-//        $this->archiveOffset         = $data->archiveOffset;
-//        $this->archivePath           = $data->archivePath;
-//        $this->basePath              = $data->basePath;
-//        $this->currentFileOffset     = $data->currentFileOffset;
-//        $this->failures              = $data->failures;
-//        $this->isCompressed          = $data->isCompressed;
-//        $this->startTimestamp        = $data->startTimestamp;
-//        $this->timeSliceInSecs       = $data->timeSliceInSecs;
-//        $this->fileWriteCount        = $data->fileWriteCount;
-//        $this->directoryWriteCount   = $data->directoryWriteCount;
-//        $this->working               = $data->working;
-//        $this->directoryModeOverride = $data->directoryModeOverride;
-//        $this->fileModeOverride      = $data->fileModeOverride;
-//        $this->throttleDelayInUs     = $data->throttleDelayInUs;
-//        $this->validateOnly          = $data->validateOnly;
-//        $this->validationType        = $data->validationType;
     }
 
     public function save()
     {
         $data = new stdClass();
-
-        if($this->currentFileHeader != null) {
-            $data->currentFileHeaderString      = DupLiteSnapJsonU::wp_json_encode($this->currentFileHeader);
+        if ($this->currentFileHeader != null) {
+            $data->currentFileHeaderString = SnapJson::jsonEncode($this->currentFileHeader);
         } else {
-            $data->currentFileHeaderString      = null;
+            $data->currentFileHeaderString = null;
         }
 
-        if($this->archiveHeader != null) {
-            $data->archiveHeaderString      = DupLiteSnapJsonU::wp_json_encode($this->archiveHeader);
+        if ($this->archiveHeader != null) {
+            $data->archiveHeaderString = SnapJson::jsonEncode($this->archiveHeader);
         } else {
-            $data->archiveHeaderString      = null;
+            $data->archiveHeaderString = null;
         }
 
-        $data->failuresString = DupLiteSnapJsonU::wp_json_encode($this->failures);
-
+        $data->failuresString = SnapJson::jsonEncode($this->failures);
         // Object members auto skipped
         DUP_Util::objectCopy($this, $data);
-
-//        $data->archiveOffset         = $this->archiveOffset;
-//        $data->archivePath           = $this->archivePath;
-//        $data->basePath              = $this->basePath;
-//        $data->currentFileOffset     = $this->currentFileOffset;
-//        $data->failures              = $this->failures;
-//        $data->isCompressed          = $this->isCompressed;
-//        $data->startTimestamp        = $this->startTimestamp;
-//        $data->timeSliceInSecs       = $this->timeSliceInSecs;
-//        $data->fileWriteCount        = $this->fileWriteCount;
-//        $data->directoryWriteCount   = $this->directoryWriteCount;
-//        $data->working               = $this->working;
-//        $data->directoryModeOverride = $this->directoryModeOverride;
-//        $data->fileModeOverride      = $this->fileModeOverride;
-//        $data->throttleDelayInUs     = $this->throttleDelayInUs;
-//        $data->validateOnly          = $this->validateOnly;
-//        $data->validationType        = $this->validationType;
-
         DUP_LOG::traceObject("****SAVING EXPAND STATE****", $this);
         DUP_LOG::traceObject("****SERIALIZED STATE****", $data);
         DUP_Settings::Set('duparchive_expand_state', $data);
@@ -114,7 +69,7 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 
     private function initMembers()
     {
-        $this->currentFileHeader = null;
+        $this->currentFileHeader     = null;
         $this->archiveOffset         = 0;
         $this->archiveHeader         = null;
         $this->archivePath           = null;

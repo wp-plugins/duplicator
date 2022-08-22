@@ -34,15 +34,46 @@ class DUP_Patch
     {
         $backupDir = $this->DupLiteBackupDir;
 
-        foreach (glob("{$backupDir}/*_installer" . DUP_Installer::INSTALLER_SERVER_EXTENSION) as $file) {
-            if (strstr($file, '_installer' . DUP_Installer::INSTALLER_SERVER_EXTENSION)) {
+        foreach (glob("{$backupDir}/*_installer.php") as $file) {
+            if (strstr($file, '_installer.php')) {
                 $content  = "<?php \n";
                 $content .= "    /** PATCH_MARKER_START:V.0001 **/ \n";
                 $content .= "    //TODO ADD PHP CODE HERE";
                 $content .= "    /** PATCH_MARKER_END **/ \n";
                 $content .= "?>\n";
-                DUP_IO::fwritePrepend($file, $content);
+                $this->fwritePrepend($file, $content);
             }
         }
     }
+   
+    
+    /**
+    * Prepends data to an existing file
+    *
+    * @param string $file      The full file path to the file
+    * @param string $content	The content to prepend to the file
+    *
+    * @return TRUE on success or if file does not exist. FALSE on failure
+    */
+    private function fwritePrepend($file, $prepend)
+	{
+		if (!file_exists($file) || !is_writable($file)) {
+            return false;
+        }
+
+        $handle     = fopen($file, "r+");
+        $len        = strlen($prepend);
+        $final_len  = filesize($file) + $len;
+        $cache_old  = fread($handle, $len);
+        rewind($handle);
+        $i = 1;
+        while (ftell($handle) < $final_len) {
+          fwrite($handle, $prepend);
+          $prepend = $cache_old;
+          $cache_old = fread($handle, $len);
+          fseek($handle, $i * $len);
+          $i++;
+        }
+	}
+    
 }

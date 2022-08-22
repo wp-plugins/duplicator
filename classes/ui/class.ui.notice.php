@@ -1,4 +1,8 @@
 <?php
+
+use Duplicator\Core\MigrationMng;
+use Duplicator\Libs\Snap\SnapUtil;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Used to display notices in the WordPress Admin area
@@ -15,13 +19,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 class DUP_UI_Notice
 {
-
-    const OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL = 'duplicator_reactivate_plugins_after_installation';
+    const OPTION_KEY_MIGRATION_SUCCESS_NOTICE       = 'duplicator_migration_success';
+    const OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL = 'duplicator_activate_plugins_after_installation';
 
     //TEMPLATE VALUE: This is a just a simple example for setting up quick notices
-    const OPTION_KEY_NEW_NOTICE_TEMPLATE            = 'duplicator_new_template_notice';
-    const OPTION_KEY_IS_PRO_ENABLE_NOTICE_DISMISSED = 'duplicator_is_pro_enable_notice_dismissed';
-    const OPTION_KEY_IS_MU_NOTICE_DISMISSED         = 'duplicator_is_mu_notice_dismissed';
+    const OPTION_KEY_NEW_NOTICE_TEMPLATE        = 'duplicator_new_template_notice';
+    const OPTION_KEY_IS_ENABLE_NOTICE_DISMISSED = 'duplicator_is_enable_notice_dismissed';
+    const OPTION_KEY_IS_MU_NOTICE_DISMISSED     = 'duplicator_is_mu_notice_dismissed';
 
     const GEN_INFO_NOTICE    = 0;
     const GEN_SUCCESS_NOTICE = 1;
@@ -33,49 +37,83 @@ class DUP_UI_Notice
      */
     public static function init()
     {
-        $methods = array(
-            'showReservedFilesNotice',
-            'installAutoDeactivatePlugins',
-            'showFeedBackNotice',
-            'showNoExportCapabilityNotice',
-            //FUTURE NOTICE TEMPLATE
-            //'newNotice_TEMPLATE',
-        );
-        foreach ($methods as $method) {
-            add_action('admin_notices', array(__CLASS__, $method));
+        add_action('admin_init', array(__CLASS__, 'adminInit'));
+    }
+
+    public static function adminInit()
+    {
+        $notices = array();
+        if (is_multisite()) {
+            $noCapabilitiesNotice = is_super_admin() && !current_user_can('export');
+        } else {
+            $noCapabilitiesNotice = in_array('administrator', $GLOBALS['current_user']->roles) && !current_user_can('export');
+        }
+
+        if ($noCapabilitiesNotice) {
+            $notices[] = array(__CLASS__, 'showNoExportCapabilityNotice');
+        }
+
+        if (is_multisite()) {
+            $displayNotices = is_super_admin() && current_user_can('export');
+        } else {
+            $displayNotices = current_user_can('export');
+        }
+
+        if ($displayNotices) {
+            $notices[] = array(__CLASS__, 'clearInstallerFilesAction'); // BEFORE MIGRATION SUCCESS NOTICE
+            $notices[] = array(__CLASS__, 'migrationSuccessNotice');
+            $notices[] = array(__CLASS__, 'installAutoDeactivatePlugins');
+        }
+
+        $action = is_multisite() ? 'network_admin_notices' : 'admin_notices';
+        foreach ($notices as $notice) {
+            add_action($action, $notice);
         }
     }
 
-     /**
-      * NOTICE SAMPLE:  This method serves as a quick example for how to quickly setup a new notice
-      * Please do not edit this method, but simply use to copy a new setup.
+    /**
+     * Clear installer file action
+     *
+     * @return void
      */
-    public static function newNotice_TEMPLATE()
+    public static function clearInstallerFilesAction()
     {
-        if (get_option(self::OPTION_KEY_NEW_NOTICE_TEMPLATE) != true) {
+
+        if (!DUP_CTRL_Tools::isDiagnosticPage() || get_option(self::OPTION_KEY_MIGRATION_SUCCESS_NOTICE) == true) {
             return;
         }
 
-        $screen = get_current_screen();
-        if (!in_array($screen->parent_base, array('plugins', 'duplicator'))) {
+
+        if (SnapUtil::filterInputRequest('action', FILTER_DEFAULT) === 'installer') {
+            if (! wp_verify_nonce($_REQUEST['_wpnonce'], 'duplicator_cleanup_page')) {
+                echo '<p>' . __('Security issue', 'duplicator') . '</p>';
+                exit; // Get out of here bad nounce!
+            }
+
+            ?>
+            <div id="message" class="notice notice-success">
+                <?php require DUPLICATOR_LITE_PATH . '/views/parts/migration-clean-installation-files.php'; ?>
+            </div>
+            <?php
+        }
+    }
+
+    /**
+     * Shows a display message in the wp-admin if any reserved files are found
+     *
+     * @return void
+     */
+    public static function migrationSuccessNotice()
+    {
+        if (get_option(self::OPTION_KEY_MIGRATION_SUCCESS_NOTICE) != true) {
             return;
         }
 
-        ?>
-        <div class="notice notice-success duplicator-admin-notice is-dismissible" data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_NEW_NOTICE_TEMPLATE); ?>" >
-            <p>
-                <?php esc_html_e('NOTICE: This is a sample message notice demo.', 'duplicator'); ?><br>
-                <?php
-                echo sprintf(__('Example for passing dynamic data to notice message <i>%s</i> to <i>%s</i>', 'duplicator'),
-                    esc_html("test 1"),
-                    esc_html(time()));
-                ?>
-            </p>
-            <p>
-                <?php echo sprintf(__('More info here: Goto <a href="%s">General Settings</a>', 'duplicator'), 'admin.php?page=duplicator-settings'); ?>
-            </p>
-        </div>
-        <?php
+        if (DUP_CTRL_Tools::isDiagnosticPage()) {
+            require DUPLICATOR_LITE_PATH . '/views/parts/migration-message.php';
+        } else {
+            require DUPLICATOR_LITE_PATH . '/views/parts/migration-almost-complete.php';
+        }
     }
 
     /**
@@ -88,16 +126,18 @@ class DUP_UI_Notice
         //Show only on Duplicator pages and Dashboard when plugin is active
         $dup_active = is_plugin_active('duplicator/duplicator.php');
         $dup_perm   = current_user_can('manage_options');
-        if (!$dup_active || !$dup_perm)
+        if (!$dup_active || !$dup_perm) {
             return;
+        }
 
         $screen = get_current_screen();
-        if (!isset($screen))
+        if (!isset($screen)) {
             return;
+        }
 
         $is_installer_cleanup_req = ($screen->id == 'duplicator_page_duplicator-tools' && isset($_GET['action']) && $_GET['action'] == 'installer');
         if (DUP_Server::hasInstallerFiles() && !$is_installer_cleanup_req) {
-            DUP_Migration::renameInstallersPhpFiles();
+            MigrationMng::renameInstallersPhpFiles();
 
             $on_active_tab = isset($_GET['section']) ? $_GET['section'] : '';
             echo '<div class="dup-updated notice notice-success dup-global-error-reserved-files" id="message"><p>';
@@ -113,26 +153,24 @@ class DUP_UI_Notice
 
             //On Tools > Cleanup Page
             if ($screen->id == 'duplicator_page_duplicator-tools' && ($on_active_tab == "info" || $on_active_tab == '')) {
-
                 $title = __('This site has been successfully migrated!', 'duplicator');
                 $msg1  = __('Final step(s):', 'duplicator');
                 $msg2  = __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.  '
-                    .'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
+                    . 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
 
-                echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> ".esc_html($title)."</b> <br/> {$safe_html} <b>".esc_html($msg1)."</b> <br/>";
+                echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> " . esc_html($title) . "</b> <br/> {$safe_html} <b>" . esc_html($msg1) . "</b> <br/>";
                 printf("1. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", esc_html__('Remove Installation Files Now!', 'duplicator'));
                 printf("2. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", esc_html__('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
-                echo "<div class='pass-msg'>".esc_html($msg2)."</div>";
+                echo "<div class='pass-msg'>" . esc_html($msg2) . "</div>";
 
                 //All other Pages
             } else {
-
                 $title = __('Migration Almost Complete!', 'duplicator');
                 $msg   = __('Reserved Duplicator installation files have been detected in the root directory.  Please delete these installation files to '
-                    .'avoid security issues. <br/> Go to:Duplicator > Tools > Information >Stored Data and click the "Remove Installation Files" button', 'duplicator');
+                    . 'avoid security issues. <br/> Go to:Duplicator > Tools > Information >Stored Data and click the "Remove Installation Files" button', 'duplicator');
 
                 $nonce = wp_create_nonce('duplicator_cleanup_page');
-                $url   = self_admin_url('admin.php?page=duplicator-tools&tab=diagnostics&section=info&_wpnonce='.$nonce);
+                $url   = self_admin_url('admin.php?page=duplicator-tools&tab=diagnostics&section=info&_wpnonce=' . $nonce);
                 echo "<b>{$title}</b><br/> {$safe_html} {$msg}";
                 @printf("<br/><a href='{$url}'>%s</a>", __('Take me there now!', 'duplicator'));
             }
@@ -160,40 +198,56 @@ class DUP_UI_Notice
     public static function installAutoDeactivatePlugins()
     {
         $reactivatePluginsAfterInstallation = get_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL, false);
-        if (is_array($reactivatePluginsAfterInstallation)) {
-            $installedPlugins  = array_keys(get_plugins());
-            $shouldBeActivated = array();
-            foreach ($reactivatePluginsAfterInstallation as $pluginSlug => $pluginTitle) {
-                if (in_array($pluginSlug, $installedPlugins) && !is_plugin_active($pluginSlug)) {
-                    $shouldBeActivated[$pluginSlug] = $pluginTitle;
-                }
+
+        $pluginsToActive = get_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL, false);
+        if (!is_array($pluginsToActive) || empty($pluginsToActive)) {
+            return false;
+        }
+
+        $shouldBeActivated = array();
+        $allPlugins        = get_plugins();
+        foreach ($pluginsToActive as $index => $pluginSlug) {
+            if (!isset($allPlugins[$pluginSlug])) {
+                unset($pluginsToActive[$index]);
+                continue;
             }
 
-            if (empty($shouldBeActivated)) {
-                delete_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL);
+            $isActive = is_plugin_active($pluginSlug);
+
+            if (!$isActive && isset($allPlugins[$pluginSlug])) {
+                $shouldBeActivated[$pluginSlug] = $allPlugins[$pluginSlug]['Name'];
             } else {
-                $activatePluginsAnchors = array();
-                foreach ($shouldBeActivated as $slug => $title) {
-                    $activateURL              = wp_nonce_url(admin_url('plugins.php?action=activate&plugin='.$slug), 'activate-plugin_'.$slug);
-                    $anchorTitle              = sprintf(esc_html__('Activate %s', 'duplicator'), $title);
-                    $activatePluginsAnchors[] = '<a href="'.$activateURL.'" 
-                                                    title="'.esc_attr($anchorTitle).'">'.
-                        $title.'</a>';
-                }
-                ?>
-                <div class="update-nag duplicator-plugin-activation-admin-notice notice notice-warning duplicator-admin-notice is-dismissible"
-                     data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL); ?>" >
-                    <p>
-                        <?php
-                        echo "<b>".esc_html__("Warning!", "duplicator")."</b> ".esc_html__("Migration Almost Complete!", "duplicator")." <br/>";
-                        echo esc_html__("Plugin(s) listed here have been deactivated during installation to help prevent issues. Please activate them to finish this migration: ", "duplicator")."<br/>";
-                        echo implode(' ,', $activatePluginsAnchors);
-                        ?>
-                    </p>
-                </div>
-                <?php
+                unset($pluginsToActive[$index]);
             }
         }
+
+        if (empty($shouldBeActivated)) {
+            delete_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL);
+            return;
+        } else {
+            update_option(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL, $pluginsToActive);
+        }
+
+        $activatePluginsAnchors = array();
+        foreach ($shouldBeActivated as $slug => $title) {
+            $activateURL              = wp_nonce_url(admin_url('plugins.php?action=activate&plugin=' . $slug), 'activate-plugin_' . $slug);
+            $anchorTitle              = sprintf(esc_html__('Activate %s', 'duplicator'), $title);
+            $activatePluginsAnchors[] = '<a href="' . $activateURL . '" 
+                                            title="' . esc_attr($anchorTitle) . '">' .
+                $title . '</a>';
+        }
+        ?>
+        <div class="update-nag duplicator-plugin-activation-admin-notice notice notice-warning duplicator-admin-notice is-dismissible"
+                data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL); ?>" >
+            <p>
+                <?php
+                echo "<b>" . esc_html__("Warning!", "duplicator") . "</b> " . esc_html__("Migration Almost Complete!", "duplicator") . " <br/>";
+                echo esc_html__("Plugin(s) listed here have been deactivated during installation to help prevent issues. Please activate them to finish this migration: ", "duplicator") . "<br/>";
+                echo implode(' ,', $activatePluginsAnchors);
+                ?>
+            </p>
+        </div>
+        <?php
     }
 
     /**
@@ -224,8 +278,8 @@ class DUP_UI_Notice
         }
 
         // not using DUP_Util::getTablePrefix() in place of $tablePrefix because DUP_UI_Notice included initially (Duplicator\Lite\Requirement is depended on the DUP_UI_Notice)
-        $tablePrefix = (is_multisite() && is_plugin_active_for_network('duplicator/duplicator.php')) ? $GLOBALS['wpdb']->base_prefix : $GLOBALS['wpdb']->prefix;
-        $packagesCount = $GLOBALS['wpdb']->get_var('SELECT count(id) FROM '.$tablePrefix.'duplicator_packages WHERE status=100');
+        $tablePrefix   = (is_multisite() && is_plugin_active_for_network('duplicator/duplicator.php')) ? $GLOBALS['wpdb']->base_prefix : $GLOBALS['wpdb']->prefix;
+        $packagesCount = $GLOBALS['wpdb']->get_var('SELECT count(id) FROM ' . $tablePrefix . 'duplicator_packages WHERE status=100');
 
         if ($packagesCount < DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE) {
             return;
@@ -245,7 +299,7 @@ class DUP_UI_Notice
         <div class="notice updated duplicator-message duplicator-message-dismissed" data-notice_id="<?php echo esc_attr($notice_id); ?>">
             <div class="duplicator-message-inner">
                 <div class="duplicator-message-icon">
-                    <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo.png"); ?>" style="text-align:top; margin:0; height:60px; width:60px;" alt="Duplicator">
+                    <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL . "assets/img/logo.png"); ?>" style="text-align:top; margin:0; height:60px; width:60px;" alt="Duplicator">
                 </div>
                 <div class="duplicator-message-content">
                     <p><strong><?php echo __('Congrats!', 'duplicator'); ?></strong> <?php printf(esc_html__('You created over %d packages with Duplicator. Great job! If you can spare a minute, please help us by leaving a five star review on WordPress.org.', 'duplicator'), DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE); ?></p>
@@ -267,8 +321,8 @@ class DUP_UI_Notice
     public static function showNoExportCapabilityNotice()
     {
         if (is_admin() && in_array('administrator', $GLOBALS['current_user']->roles) && !current_user_can('export')) {
-            $errorMessage = __('<strong>Duplicator</strong><hr> Your logged-in user role does not have export capability so you don\'t have access to Duplicator functionality.', 'duplicator').
-                "<br>".
+            $errorMessage = __('<strong>Duplicator</strong><hr> Your logged-in user role does not have export capability so you don\'t have access to Duplicator functionality.', 'duplicator') .
+                "<br>" .
                 sprintf(__('<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>', 'duplicator'), 'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-040-q', __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator'));
             DUP_UI_Notice::displayGeneralAdminNotice($errorMessage, self::GEN_ERROR_NOTICE, true);
         }
@@ -279,7 +333,7 @@ class DUP_UI_Notice
      *
      * @param string $htmlMsg html code to be printed
      * @param integer $noticeType constant value of SELF::GEN_
-     * @param boolean $isDismissible whether the notice is dismissable or not. Default is true 
+     * @param boolean $isDismissible whether the notice is dismissable or not. Default is true
      * @param array|string $extraClasses add more classes to the notice div
      * @return void
      */

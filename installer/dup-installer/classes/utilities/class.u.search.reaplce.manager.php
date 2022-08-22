@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Search and reaplace manager
  *
@@ -8,7 +9,12 @@
  * @package SC\DUPX\U
  *
  */
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
+use Duplicator\Installer\Utils\Log\Log;
+use Duplicator\Libs\Snap\SnapIO;
+use Duplicator\Libs\Snap\SnapJson;
 
 /**
  * Search and replace manager
@@ -70,7 +76,6 @@ final class DUPX_S_R_MANAGER
 
     private function __construct()
     {
-
     }
 
     /**
@@ -90,7 +95,7 @@ final class DUPX_S_R_MANAGER
 
     /**
      *
-     * @param array $json
+     * @param array $data
      */
     public function setFromArrayData($data)
     {
@@ -113,16 +118,30 @@ final class DUPX_S_R_MANAGER
      */
     public function addItem($search, $replace, $type = DUPX_S_R_ITEM::TYPE_STRING, $prority = 10, $scope = true)
     {
-        if (strlen((string) $search) == 0) {
+        $search  = (string) $search;
+        $replace = (string) $replace;
+
+        if (strlen($search) == 0 || $search === $replace) {
             return false;
         }
 
         if (is_bool($scope)) {
             $scope = $scope ? self::GLOBAL_SCOPE_KEY : '';
         }
-        DUPX_Log::info(
-            'ADD SEARCH AND REPLACE ITEM'."\n".
-            'Search:"'.$search.'" Replace:"'.$replace.'" Type:"'.$type.'" Prority:"'.$prority.'" Scope:"'.$scope, 2);
+
+        if (is_array($scope)) {
+            $scopeStr = implode(',', $scope);
+            $scopeStr = (strlen($scopeStr) > 50 ? substr($scopeStr, 0, 50) . "..." : $scopeStr);
+        } else {
+            $scopeStr = 'ALL';
+        }
+
+        Log::info(
+            "SEARCH ITEM[T:" . str_pad($type, 5) . "|P:" . str_pad($prority, 2) . "]" .
+            " SEARCH: " . $search .
+            " REPLACE: " . $replace . " [SCOPE: " . $scopeStr . "]"
+        );
+
         $new_item = new DUPX_S_R_ITEM($search, $replace, $type, $prority, $scope);
 
         return $this->setNewItem($new_item);
@@ -200,34 +219,63 @@ final class DUPX_S_R_MANAGER
      */
     public function getSearchReplaceList($scope = null, $unique_search = true, $globalScope = true)
     {
-        DUPX_Log::info('-- SEARCH LIST -- SCOPE: '.DUPX_Log::varToString($scope), DUPX_Log::LV_DEBUG);
+        Log::info('-- SEARCH LIST -- SCOPE: ' . Log::v2str($scope), Log::LV_DEBUG);
 
         $items_list = $this->getSearchReplaceItems($scope, $globalScope);
-        DUPX_Log::info('-- SEARCH LIST ITEMS --'."\n".print_r($items_list, true), DUPX_Log::LV_HARD_DEBUG);
+        if (Log::isLevel(Log::LV_HARD_DEBUG)) {
+            Log::info('-- SEARCH LIST ITEMS --' . "\n" . print_r($items_list, true), Log::LV_HARD_DEBUG);
+        }
 
         if ($unique_search) {
             $items_list = self::uniqueSearchListItem($items_list);
-            DUPX_Log::info('-- UNIQUE LIST ITEMS --'."\n".print_r($items_list, true), DUPX_Log::LV_HARD_DEBUG);
+            if (Log::isLevel(Log::LV_HARD_DEBUG)) {
+                Log::info('-- UNIQUE LIST ITEMS --' . "\n" . print_r($items_list, true), Log::LV_HARD_DEBUG);
+            }
         }
+
+        Log::info('--- BASE STRINGS ---');
+        foreach ($items_list as $index => $item) {
+            Log::info(
+                'SEARCH[' . str_pad($item->type, 5, ' ', STR_PAD_RIGHT) . ']' . str_pad($index + 1, 3, ' ', STR_PAD_LEFT) . ":" .
+                str_pad(Log::v2str($item->search) . " ", 50, '=', STR_PAD_RIGHT) .
+                "=> " .
+                Log::v2str($item->replace)
+            );
+        }
+
         $result = array();
 
         foreach ($items_list as $item) {
             $result = array_merge($result, $item->getPairsSearchReplace());
         }
 
-        foreach ($result as $index => $c_sr) {
-            DUPX_Log::info(
-                'SEARCH'.str_pad($index + 1, 3, ' ', STR_PAD_LEFT).":".
-                str_pad(DUPX_Log::varToString($c_sr['search'])." ", 50, '=', STR_PAD_RIGHT).
-                "=> ".
-                DUPX_Log::varToString($c_sr['replace']));
+        // remove empty search strings
+        $result = array_filter($result, function ($val) {
+            if (!empty($val['search'])) {
+                return true;
+            } else {
+                Log::info('Empty search string remove, replace: ' . Log::v2str($val['replace']), Log::LV_DETAILED);
+                return false;
+            }
+        });
+
+        if (Log::isLevel(Log::LV_DEBUG)) {
+            Log::info('--- REXEXES ---');
+            foreach ($result as $index => $c_sr) {
+                Log::info(
+                    'SEARCH' . str_pad($index + 1, 3, ' ', STR_PAD_LEFT) . ":" .
+                    str_pad(Log::v2str($c_sr['search']) . " ", 50, '=', STR_PAD_RIGHT) .
+                    "=> " .
+                    Log::v2str($c_sr['replace'])
+                );
+            }
         }
 
         return $result;
     }
 
     /**
-     * remove duplicated search strings. 
+     * remove duplicated search strings.
      * Leave the object at lower priority
      *
      * @param DUPX_S_R_ITEM[] $list
@@ -252,16 +300,9 @@ final class DUPX_S_R_MANAGER
         return $result;
     }
 
-    //PHP 8 Requires method to be public
-    public function __wakeup()
-    {
-    }
-
     private function __clone()
     {
-
     }
-
 }
 
 /**
@@ -269,6 +310,14 @@ final class DUPX_S_R_MANAGER
  */
 class DUPX_S_R_ITEM
 {
+    const PATH_SEPARATOR_REGEX_NORMAL   = '[\/\\\\]';
+    const PATH_SEPARATOR_REGEX_JSON     = '(?:\\\\\/|\\\\\\\\)';
+    const PATH_END_REGEX_MATCH_NORMAL   = '([\/\\\\"\'\n\r]|$)';
+    const PATH_END_REGEX_MATCH_JSON     = '(\\\\\/|\\\\\\\\|["\'\n\r]|$)';
+    const URL_END_REGEX_MATCH_NORMAL    = '([\/?"\'\n\r]|$)';
+    const URL_END_REGEX_MATCH_JSON      = '(\\\\\/|[?"\'\n\r]|$)';
+    const URL_END_REGEX_MATCH_URLENCODE = '(%2F|%3F|["\'\n\r]|$)';
+
     private static $uniqueIdCount = 0;
 
     const TYPE_STRING               = 'str';
@@ -335,6 +384,9 @@ class DUPX_S_R_ITEM
                 $this->replace = rtrim($replace, '/');
                 break;
             case DUPX_S_R_ITEM::TYPE_PATH:
+                $this->search  = SnapIO::safePathUntrailingslashit($search);
+                $this->replace = SnapIO::safePathUntrailingslashit($replace);
+                break;
             case DUPX_S_R_ITEM::TYPE_STRING:
             default:
                 $this->search  = (string) $search;
@@ -343,17 +395,17 @@ class DUPX_S_R_ITEM
         }
         $this->type = $type;
         $this->id   = self::$uniqueIdCount;
-        self::$uniqueIdCount ++;
+        self::$uniqueIdCount++;
     }
 
     public function toArray()
     {
         return array(
-            'id' => $this->id,
+            'id'      => $this->id,
             'prority' => $this->prority,
-            'scope' => $this->scope,
-            'type' => $this->type,
-            'search' => $this->search,
+            'scope'   => $this->scope,
+            'type'    => $this->type,
+            'search'  => $this->search,
             'replace' => $this->replace
         );
     }
@@ -411,18 +463,24 @@ class DUPX_S_R_ITEM
     {
         $result = array();
         if ($search != $replace) {
-            $result[] = array('search' => $search, 'replace' => $replace);
+            $result[] = array(
+                'search'  => '/' . preg_quote($search, '/') . '/m',
+                'replace' => addcslashes($replace, '\\$')
+            );
         } else {
             return array();
         }
 
         // JSON ENCODE
         if ($json) {
-            $search_json  = str_replace('"', "", json_encode($search));
-            $replace_json = str_replace('"', "", json_encode($replace));
+            $search_json  = SnapJson::getJsonWithoutQuotes($search);
+            $replace_json = SnapJson::getJsonWithoutQuotes($replace);
 
             if ($search != $search_json && $search_json != $replace_json) {
-                $result[] = array('search' => $search_json, 'replace' => $replace_json);
+                $result[] = array(
+                    'search'  => '/' . preg_quote($search_json, '/') . '/m',
+                    'replace' => addcslashes($replace_json, '\\$')
+                );
             }
         }
 
@@ -432,7 +490,10 @@ class DUPX_S_R_ITEM
             $replace_urlencode = urlencode($replace);
 
             if ($search != $search_urlencode && $search_urlencode != $replace_urlencode) {
-                $result[] = array('search' => $search_urlencode, 'replace' => $replace_urlencode);
+                $result[] = array(
+                    'search'  => '/' . preg_quote($search_urlencode, '/') . '/m',
+                    'replace' => addcslashes($replace_urlencode, '\\$')
+                );
             }
         }
 
@@ -443,7 +504,7 @@ class DUPX_S_R_ITEM
      * Add replace strings to substitute old url to new url
      * 1) no protocol old url to no protocol new url (es. //www.hold.url  => //www.new.url)
      * 2) wrong protocol new url to right protocol new url (es. http://www.new.url => https://www.new.url)
-     * 
+     *
      * result
      * [
      *      ['search' => ...,'replace' => ...]
@@ -458,52 +519,87 @@ class DUPX_S_R_ITEM
      */
     public static function searchReplaceUrl($search_url, $replace_url, $force_new_protocol = true, $normalizeWww = false)
     {
+        $result = array();
+
         if (($parse_search_url = parse_url($search_url)) !== false && isset($parse_search_url['scheme'])) {
             $search_url_raw = substr($search_url, strlen($parse_search_url['scheme']) + 1);
         } else {
             $search_url_raw = $search_url;
         }
+        $search_url_raw = trim($search_url_raw, '/');
 
         if (($parse_replace_url = parse_url($replace_url)) !== false && isset($parse_replace_url['scheme'])) {
             $replace_url_raw = substr($replace_url, strlen($parse_replace_url['scheme']) + 1);
         } else {
             $replace_url_raw = $replace_url;
         }
-        //SEARCH WITH NO PROTOCOL: RAW "//"
-        $result = self::searchReplaceWithEncodings($search_url_raw, $replace_url_raw);
+        $replace_url_raw = trim($replace_url_raw, '/');
 
-        // NORMALIZE source www
-        if ($normalizeWww && self::domainCanNormalized($search_url_raw)) {
+        // (?<!https:|http:)\/\/(?:www\.|)aaaa\.it([?\/'"]|$)
+        if ($normalizeWww && self::domainCanNormalized($search_url)) {
             if (self::isWww($search_url_raw)) {
-                $fromDomain = '//'.substr($search_url_raw , strlen('//www.'));
+                $baseSearchUrl = substr($search_url_raw, strlen('www.'));
             } else {
-                $fromDomain = '//www.'.substr($search_url_raw , strlen('//'));
+                $baseSearchUrl = $search_url_raw;
             }
 
-            // prevent double subsition for subdiv problems.
-            if (strpos($replace_url_raw, $fromDomain) !== 0) {
-                $result = array_merge($result, self::searchReplaceWithEncodings($fromDomain, $replace_url_raw));
-            }
+            $regExSearchUrlNormal = '\/\/(?:www\.)?' . preg_quote($baseSearchUrl, '/');
+            $regExSearchUrlJson   = '\\\\\/\\\\\/(?:www\.)?' . preg_quote(SnapJson::getJsonWithoutQuotes($baseSearchUrl), '/');
+            $regExSearchUrlEncode = '%2F%2F(?:www\.)?' . preg_quote(urlencode($baseSearchUrl), '/');
+            //'/https?:\/\/(?:www\.|)aaaa\.it(?<end>[?\/\'"]|$)/m'
+            //$searchRawRegEx = '/(?<!https:|http:)\/\/(?:www\.|)'.preg_quote($baseSearchUrl, '/').'([?\/\'"]|$)/m';
+        } else {
+            $regExSearchUrlNormal = '\/\/' . preg_quote($search_url_raw, '/');
+            $regExSearchUrlJson   = '\\\\\/\\\\\/' . preg_quote(SnapJson::getJsonWithoutQuotes($search_url_raw), '/');
+            $regExSearchUrlEncode = '%2F%2F' . preg_quote(urlencode($search_url_raw), '/');
         }
 
         // NORMALIZE source protocol
         if ($force_new_protocol && $parse_replace_url !== false && isset($parse_replace_url['scheme'])) {
-            //FORCE NEW PROTOCOL [HTTP / HTTPS]
-            switch ($parse_replace_url['scheme']) {
-                case 'http':
-                    $replace_url_wrong_protocol = 'https:'.$replace_url_raw;
-                    break;
-                case 'https':
-                    $replace_url_wrong_protocol = 'http:'.$replace_url_raw;
-                    break;
-                default:
-                    $replace_url_wrong_protocol = '';
-                    break;
-            }
+            $result[] = array(
+                'search'  => '/(?<!https:|http:)' . $regExSearchUrlNormal . self::URL_END_REGEX_MATCH_NORMAL . '/m',
+                'replace' => addcslashes('//' . $replace_url_raw, '\\$') . '$1'
+            );
 
-            if (!empty($replace_url_wrong_protocol)) {
-                $result = array_merge($result, self::searchReplaceWithEncodings($replace_url_wrong_protocol, $replace_url));
-            }
+            $result[] = array(
+                'search'  => '/https?:' . $regExSearchUrlNormal . self::URL_END_REGEX_MATCH_NORMAL . '/m',
+                'replace' => addcslashes($replace_url, '\\$') . '$1'
+            );
+
+            $result[] = array(
+                'search'  => '/(?<!https:|http:)' . $regExSearchUrlJson . self::URL_END_REGEX_MATCH_JSON . '/m',
+                'replace' => addcslashes(SnapJson::getJsonWithoutQuotes('//' . $replace_url_raw), '\\$') . '$1'
+            );
+
+            $result[] = array(
+                'search'  => '/https?:' . $regExSearchUrlJson . self::URL_END_REGEX_MATCH_JSON . '/m',
+                'replace' => addcslashes(SnapJson::getJsonWithoutQuotes($replace_url), '\\$') . '$1'
+            );
+
+            $result[] = array(
+                'search'  => '/(?<!https%3A|http%3A)' . $regExSearchUrlEncode . self::URL_END_REGEX_MATCH_URLENCODE . '/m',
+                'replace' => addcslashes(urlencode('//' . $replace_url_raw), '\\$') . '$1'
+            );
+
+            $result[] = array(
+                'search'  => '/https?%3A' . $regExSearchUrlEncode . self::URL_END_REGEX_MATCH_URLENCODE . '/m',
+                'replace' => addcslashes(urlencode($replace_url), '\\$') . '$1'
+            );
+        } else {
+            $result[] = array(
+                'search'  => '/' . $regExSearchUrlNormal . self::URL_END_REGEX_MATCH_NORMAL . '/m',
+                'replace' => addcslashes('//' . $replace_url_raw, '\\$') . '$1'
+            );
+
+            $result[] = array(
+                'search'  => '/' . $regExSearchUrlJson . self::URL_END_REGEX_MATCH_JSON . '/m',
+                'replace' => addcslashes(SnapJson::getJsonWithoutQuotes('//' . $replace_url_raw), '\\$') . '$1'
+            );
+
+            $result[] = array(
+                'search'  => '/' . $regExSearchUrlEncode . self::URL_END_REGEX_MATCH_URLENCODE . '/m',
+                'replace' => addcslashes(urlencode('//' . $replace_url_raw), '\\$') . '$1'
+            );
         }
 
         return $result;
@@ -518,16 +614,29 @@ class DUPX_S_R_ITEM
      *
      * @param string $search_path
      * @param string $replace_path
-     * 
+     *
      * @return array
      */
     public static function searchReplacePath($search_path, $replace_path)
     {
-        $result = self::searchReplaceWithEncodings($search_path, $replace_path);
+        $result = array();
+        if ($search_path == $replace_path) {
+            return $result;
+        }
 
-        $search_path_unsetSafe  = rtrim(DUPX_U::unsetSafePath($search_path), '\\');
-        $replace_path_unsetSafe = rtrim($replace_path, '/');
-        $result                 = array_merge($result, self::searchReplaceWithEncodings($search_path_unsetSafe, $replace_path_unsetSafe));
+        $explodeSearch = explode('/', $search_path);
+
+        $normaSearchArray = array_map(function ($val) {
+            return preg_quote(SnapJson::getJsonWithoutQuotes($val), '/');
+        }, $explodeSearch);
+        $normalPathSearch = '/' . implode(self::PATH_SEPARATOR_REGEX_NORMAL, $normaSearchArray) . self::PATH_END_REGEX_MATCH_NORMAL . '/m';
+        $result[]         = array('search' => $normalPathSearch, 'replace' => addcslashes($replace_path, '\\$') . '$1');
+
+        $jsonSearchArray = array_map(function ($val) {
+            return preg_quote(SnapJson::getJsonWithoutQuotes($val), '/');
+        }, $explodeSearch);
+        $jsonPathSearch  = '/' . implode(self::PATH_SEPARATOR_REGEX_JSON, $jsonSearchArray) . self::PATH_END_REGEX_MATCH_JSON . '/m';
+        $result[]        = array('search' => $jsonPathSearch, 'replace' => addcslashes(SnapJson::getJsonWithoutQuotes($replace_path), '\\$') . '$1');
 
         return $result;
     }

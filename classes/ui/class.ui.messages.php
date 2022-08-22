@@ -1,6 +1,6 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Used to generate a thick box inline dialog such as an alert or confirm pop-up
  *
@@ -15,31 +15,28 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 class DUP_UI_Messages
 {
-    const UNIQUE_ID_PREFIX = 'dup_ui_msg_';
-    const NOTICE           = 'updated';
-    const WARNING          = 'update-nag';
-    const ERROR            = 'error';
-
+    const UNIQUE_ID_PREFIX    = 'dup_ui_msg_';
+    const NOTICE              = 'updated';
+    const WARNING             = 'update-nag';
+    const ERROR               = 'error';
     private static $unique_id = 0;
     private $id;
-    public $type              = self::NOTICE;
-    public $content           = '';
-    public $wrap_cont_tag     = 'p';
-    public $hide_on_init      = true;
-    public $is_dismissible    = false;
-    /**
+    public $type           = self::NOTICE;
+    public $content        = '';
+    public $wrap_cont_tag  = 'p';
+    public $hide_on_init   = true;
+    public $is_dismissible = false;
+/**
      *
      * @var int delay in milliseconds
      */
-    public $auto_hide_delay   = 0;
-    public $callback_on_show  = null;
-    public $callback_on_hide  = null;
-
+    public $auto_hide_delay  = 0;
+    public $callback_on_show = null;
+    public $callback_on_hide = null;
     public function __construct($content = '', $type = self::NOTICE)
     {
-        self::$unique_id ++;
-        $this->id = self::UNIQUE_ID_PREFIX.self::$unique_id;
-
+        self::$unique_id++;
+        $this->id      = self::UNIQUE_ID_PREFIX . self::$unique_id;
         $this->content = (string) $content;
         $this->type    = $type;
     }
@@ -48,8 +45,7 @@ class DUP_UI_Messages
     {
         if (is_string($classes)) {
             $classes = explode(' ', $classes);
-        } else if (is_array($classes)) {
-
+        } elseif (is_array($classes)) {
         } else {
             $classes = array();
         }
@@ -70,17 +66,16 @@ class DUP_UI_Messages
         }
 
         $this->wrap_tag = empty($this->wrap_tag) ? 'p' : $this->wrap_tag;
-        echo '<div id="'.$this->id.'" class="'.$this->get_notice_classes($classes).'">'.
-        '<'.$this->wrap_cont_tag.' class="msg-content">'.
-        $this->content.
-        '</'.$this->wrap_cont_tag.'>'.
+        echo '<div id="' . $this->id . '" class="' . $this->get_notice_classes($classes) . '">' .
+        '<' . $this->wrap_cont_tag . ' class="msg-content">' .
+        $this->content .
+        '</' . $this->wrap_cont_tag . '>' .
         '</div>';
     }
 
     public function updateMessage($jsVarName, $echo = true)
     {
-        $result = 'jQuery("#'.$this->id.' > .msg-content").html('.$jsVarName.');';
-        
+        $result = 'jQuery("#' . $this->id . ' > .msg-content").html(' . $jsVarName . ');';
         if ($echo) {
             echo $result;
         } else {
@@ -90,10 +85,10 @@ class DUP_UI_Messages
 
     public function showMessage($echo = true)
     {
-        $callStr = !empty($this->callback_on_show) ? $this->callback_on_show.';' : '';
-        $result  = 'jQuery("#'.$this->id.'").fadeIn( "slow", function() { $(this).removeClass("no_display");'.$callStr.' });';
+        $callStr = !empty($this->callback_on_show) ? $this->callback_on_show . ';' : '';
+        $result  = 'jQuery("#' . $this->id . '").fadeIn( "slow", function() { $(this).removeClass("no_display");' . $callStr . ' });';
         if ($this->auto_hide_delay > 0) {
-            $result .= 'setTimeout(function () { '.$this->hideMessage(false).' }, '.$this->auto_hide_delay.');';
+            $result .= 'setTimeout(function () { ' . $this->hideMessage(false) . ' }, ' . $this->auto_hide_delay . ');';
         }
 
         if ($echo) {
@@ -105,9 +100,8 @@ class DUP_UI_Messages
 
     public function hideMessage($echo = true)
     {
-        $callStr = !empty($this->callback_on_hide) ? $this->callback_on_hide.';' : '';
-        $result  = 'jQuery("#'.$this->id.'").fadeOut( "slow", function() { $(this).addClass("no_display");'.$callStr.' });';
-
+        $callStr = !empty($this->callback_on_hide) ? $this->callback_on_hide . ';' : '';
+        $result  = 'jQuery("#' . $this->id . '").fadeOut( "slow", function() { $(this).addClass("no_display");' . $callStr . ' });';
         if ($echo) {
             echo $result;
         } else {

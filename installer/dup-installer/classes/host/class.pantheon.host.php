@@ -1,4 +1,5 @@
 <?php
+
 /**
  * godaddy custom hosting class
  *
@@ -8,17 +9,19 @@
  * @link http://www.php-fig.org/psr/psr-2/
  *
  */
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
+use Duplicator\Installer\Core\Params\PrmMng;
 
 /**
  * class for GoDaddy managed hosting
- * 
+ *
  * @todo not yet implemneted
- * 
+ *
  */
 class DUPX_Pantheon_Host implements DUPX_Host_interface
 {
-
     /**
      * return the current host itentifier
      *
@@ -36,8 +39,8 @@ class DUPX_Pantheon_Host implements DUPX_Host_interface
     public function isHosting()
     {
         // check only mu plugin file exists
-        
-        $testFile = $GLOBALS['DUPX_ROOT'].'/wp-content/mu-plugins/pantheon.php';
+
+        $testFile = PrmMng::getInstance()->getValue(PrmMng::PARAM_PATH_MUPLUGINS_NEW) . '/pantheon.php';
         return file_exists($testFile);
     }
 
@@ -49,11 +52,10 @@ class DUPX_Pantheon_Host implements DUPX_Host_interface
      */
     public function init()
     {
-        
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getLabel()
@@ -66,6 +68,5 @@ class DUPX_Pantheon_Host implements DUPX_Host_interface
      */
     public function setCustomParams()
     {
-        
     }
 }

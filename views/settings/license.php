@@ -5,23 +5,23 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 <hr size="1" />
 <table class="form-table">
 <tr valign="top">
-	<th scope="row"><?php esc_html_e("Manage") ?></th>
-	<td><?php echo sprintf(esc_html__('%1$sManage Licenses%2$s'), '<a target="_blank" href="https://snapcreek.com/dashboard?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=settings_license_manage_licenses">', '</a>'); ?></td>
+    <th scope="row"><?php esc_html_e("Manage") ?></th>
+    <td><?php echo sprintf(esc_html__('%1$sManage Licenses%2$s'), '<a target="_blank" href="https://snapcreek.com/dashboard?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=settings_license_manage_licenses">', '</a>'); ?></td>
 </tr>
 <tr valign="top">
-	<th scope="row"><?php esc_html_e("Type") ?></th>
-	<td class="dpro-license-type">
-		<?php esc_html_e('Duplicator Free'); ?>
-		<div style="padding: 10px">
-			<i class="far fa-check-square"></i> <?php esc_html_e('Basic Features'); ?> <br/>
-			<i class="far fa-square"></i> <a target="_blank" href="https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=pro_features&utm_campaign=duplicator_pro"><?php esc_html_e('Pro Features'); ?></a><br>
-		</div>
-	</td>
+    <th scope="row"><?php esc_html_e("Type") ?></th>
+    <td class="dpro-license-type">
+        <?php esc_html_e('Duplicator Lite'); ?>
+        <div style="padding: 10px">
+            <i class="far fa-check-square"></i> <?php esc_html_e('Basic Features'); ?> <br/>
+            <i class="far fa-square"></i> <a target="_blank" href="https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=pro_features&utm_campaign=duplicator_pro"><?php esc_html_e('Pro Features'); ?></a><br>
+        </div>
+    </td>
 </tr>
 <tr valign="top">
-	<th scope="row"><label><?php esc_html_e("License Key"); ?></label></th>
-	<td>
-		<div class="description" style="max-width:700px">
+    <th scope="row"><label><?php esc_html_e("License Key"); ?></label></th>
+    <td>
+        <div class="description" style="max-width:700px">
 
             <b><?php esc_html_e("Duplicator Lite:", 'duplicator');  ?></b>
 
@@ -47,8 +47,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
                 </li>
 
             </ul>
-		</div>
-	</td>
+        </div>
+    </td>
 </tr>
 </table>
 

@@ -1,347 +1,335 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
-
-/**
- * Class for server type enum setup
- * .htaccess, web.config and .user.ini
- *
- */
-abstract class DUPX_ServerConfigTypes
-{
-
-    const Apache    = 0;
-    const IIS       = 1;
-    const WordFence = 2;
-
-}
 
 /**
  * Class used to update and edit web server configuration files
- * for .htaccess, web.config and .user.ini
+ * for .htaccess, web.config and user.ini
  *
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
+ * @package SC\DUPX\ServerConfig
+ *
  */
+
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
+use Duplicator\Installer\Utils\Log\Log;
+use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Libs\Snap\SnapIO;
+
 class DUPX_ServerConfig
 {
-
-    protected static $fileHash;
-    protected static $timeStamp;
-    protected static $confFileApache;
-    protected static $confFileApacheOrig;
-    protected static $confFileIIS;
-    protected static $confFileIISOrig;
-    protected static $confFileWordFence;
-    protected static $configMode;
-    protected static $newSiteURL;
-    protected static $rootPath;
+    const INSTALLER_HOST_ENTITY_PREFIX                 = 'installer_host_';
+    const CONFIG_ORIG_FILE_USERINI_ID                  = 'userini';
+    const CONFIG_ORIG_FILE_HTACCESS_ID                 = 'htaccess';
+    const CONFIG_ORIG_FILE_WPCONFIG_ID                 = 'wpconfig';
+    const CONFIG_ORIG_FILE_PHPINI_ID                   = 'phpini';
+    const CONFIG_ORIG_FILE_WEBCONFIG_ID                = 'webconfig';
+    const CONFIG_ORIG_FILE_USERINI_ID_OVERWRITE_SITE   = 'installer_host_userini';
+    const CONFIG_ORIG_FILE_HTACCESS_ID_OVERWRITE_SITE  = 'installer_host_htaccess';
+    const CONFIG_ORIG_FILE_WPCONFIG_ID_OVERWRITE_SITE  = 'installer_host_wpconfig';
+    const CONFIG_ORIG_FILE_PHPINI_ID_OVERWRITE_SITE    = 'installer_host_phpini';
+    const CONFIG_ORIG_FILE_WEBCONFIG_ID_OVERWRITE_SITE = 'installer_host_webconfig';
 
     /**
-     *  Setup this classes properties
+     * Common timestamp of all members of this class
+     *
+     * @staticvar type $time
+     * @return type
      */
-    public static function init()
+    public static function getFixedTimestamp()
     {
-        self::$fileHash           = date("ymdHis").'-'.uniqid();
-        self::$timeStamp          = date("Y-m-d H:i:s");
-        self::$rootPath           = "{$GLOBALS['DUPX_ROOT']}";
-        self::$confFileApache     = "{$GLOBALS['DUPX_ROOT']}/.htaccess";
-        self::$confFileApacheOrig = "{$GLOBALS['DUPX_ROOT']}/.htaccess__".$GLOBALS['DUPX_AC']->package_hash;
-        self::$confFileIIS        = "{$GLOBALS['DUPX_ROOT']}/web.config";
-        self::$confFileIISOrig    = "{$GLOBALS['DUPX_ROOT']}/web.config.orig";
-        self::$confFileWordFence  = "{$GLOBALS['DUPX_ROOT']}/.user.ini";
-        self::$configMode         = isset($_POST['config_mode']) ? DUPX_U::sanitize_text_field($_POST['config_mode']) : null;
-        self::$newSiteURL         = isset($_POST['url_new']) ? DUPX_U::sanitize_text_field($_POST['url_new']) : null;
+        static $time = null;
+
+        if (is_null($time)) {
+            $time = date("ymdHis");
+        }
+
+        return $time;
     }
 
     /**
-     * After the archive is extracted run setup checks
+     * Creates a copy of the original server config file and resets the original to blank
+     *
+     * @param string $rootPath The root path to the location of the server config files
      *
      * @return null
+     * @throws Exception
      */
-    public static function afterExtractionSetup()
+    public static function reset($rootPath)
     {
-        if (self::$configMode != 'IGNORE') {
-            //WORDFENCE: Only the WordFence file needs to be removed
-            //completly from setup to avoid any issues
-            self::removeFile(self::$confFileWordFence, DUPX_ServerConfigTypes::WordFence);
-        } else {
-            DUPX_Log::info("** CONFIG FILE SET TO IGNORE ALL CHANGES **");
-        }
-    }
+        $rootPath      = SnapIO::trailingslashit($rootPath);
+        $paramsManager = PrmMng::getInstance();
 
-    /**
-     * Before the archive is extracted run a series of back and remove checks
-     * This is for existing config files that may exist before the ones in the
-     * archive are extracted.
-     *
-     * @return void
-     */
-    public static function beforeExtractionSetup()
-    {
-        if (self::$configMode != 'IGNORE') {
-            //---------------------
-            //APACHE
-            if (self::createBackup(self::$confFileApache, DUPX_ServerConfigTypes::Apache)) {
-                self::removeFile(self::$confFileApache, DUPX_ServerConfigTypes::Apache);
-            }
+        Log::info("\n*** RESET CONFIG FILES IN CURRENT HOSTING >>> START");
 
-            //---------------------
-            //MICROSOFT IIS
-            if (self::createBackup(self::$confFileIIS, DUPX_ServerConfigTypes::IIS)) {
-                self::removeFile(self::$confFileIIS, DUPX_ServerConfigTypes::IIS);
-            }
-
-            //---------------------
-            //WORDFENCE
-            if (self::createBackup(self::$confFileWordFence, DUPX_ServerConfigTypes::WordFence)) {
-                self::removeFile(self::$confFileWordFence, DUPX_ServerConfigTypes::WordFence);
-            }
-        }
-    }
-
-    /**
-     * Copies the code in .htaccess__[HASH] and web.config.orig
-     * to .htaccess and web.config
-     *
-     * @return void
-     */
-    public static function renameOrigConfigs()
-    {
-        //APACHE
-        if (rename(self::$confFileApacheOrig, self::$confFileApache)) {
-            DUPX_Log::info("\n- PASS: The orginal .htaccess__[HASH] was renamed");
-        } else {
-            DUPX_Log::info("\n- WARN: The orginal .htaccess__[HASH] was NOT renamed");
-        }
-
-        //IIS
-        if (rename(self::$confFileIISOrig, self::$confFileIIS)) {
-            DUPX_Log::info("\n- PASS: The orginal .htaccess__[HASH] was renamed");
-        } else {
-            DUPX_Log::info("\n- WARN: The orginal .htaccess__[HASH] was NOT renamed");
-        }
-    }
-
-    /**
-     * Creates the new config file
-     *
-     * @return void
-     */
-    public static function createNewConfigs()
-    {
-        $config_made = false;
-
-        //APACHE
-        if (file_exists(self::$confFileApacheOrig)) {
-            self::createNewApacheConfig();
-            self::removeFile(self::$confFileApacheOrig, DUPX_ServerConfigTypes::Apache);
-            $config_made = true;
-        }
-
-        if (file_exists(self::$confFileIISOrig)) {
-            self::createNewIISConfig();
-            self::removeFile(self::$confFileIISOrig, DUPX_ServerConfigTypes::IIS);
-            $config_made = true;
-        }
-
-        //No config was made so try to guess which one
-        //95% of the time it will be Apache
-        if (!$config_made) {
-            if (DUPX_Server::isIISRunning()) {
-                self::createNewIISConfig();
-            } else {
-                self::createNewApacheConfig();
-            }
-        }
-    }
-
-    /**
-     * Sets up the web config file based on the inputs from the installer forms.
-     *
-     * @return void
-     */
-    private static function createNewApacheConfig()
-    {
-        $timestamp  = self::$timeStamp;
-        $newdata    = parse_url(self::$newSiteURL);
-        $newpath    = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
-        $update_msg = "#This Apache config file was created by Duplicator Installer on {$timestamp}.\n";
-        $update_msg .= "#The original can be found in archived file with the name .htaccess__[HASH]\n";
-
-        $tmp_htaccess = <<<HTACCESS
-{$update_msg}
-# BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase {$newpath}
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . {$newpath}index.php [L]
-</IfModule>
-# END WordPress
-HTACCESS;
-
-        if (@file_put_contents(self::$confFileApache, $tmp_htaccess) === FALSE) {
-            DUPX_Log::info("- WARN: Unable to create the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
-        } else {
-            DUPX_Log::info("- PASS: Successfully created a new .htaccess file.");
-            @chmod(self::$confFileApache, 0644);
-        }
-    }
-
-    /**
-     * Sets up the web config file based on the inputs from the installer forms.
-     *
-     * @return void
-     */
-    private static function createNewIISConfig()
-    {
-        $timestamp    = self::$timeStamp;
-        $xml_contents = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-        $xml_contents .= "<!-- This new IIS config file was created by Duplicator Installer on {$timestamp}.\n"
-            ."The original can be found in archived file with the name web.config.orig -->\n";
-        $xml_contents .= "<configuration></configuration>\n";
-        @file_put_contents(self::$confFileIIS, $xml_contents);
-    }
-
-    /**
-     * Creates a copy of any existing file and hashes it with a .bak extension
-     *
-     * @param string $file_path					The full path of the config file
-     * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
-     *
-     * @return bool		Returns true if the file was backed-up.
-     */
-    private static function createBackup($file_path, $type)
-    {
-        $status    = false;
-        $file_name = DupLiteSnapLibIOU::getFileName($file_path);
-        $hash      = self::$fileHash;
-        $source    = self::getTypeName($type);
-        if (is_file($file_path)) {
-            if (!self::backupExists($type)) {
-                $status = copy($file_path, "{$file_path}-{$hash}-duplicator.bak");
-                $status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}-duplicator.bak") : DUPX_Log::info("- WARN: {$source} '{$file_name}' unable to create backup copy, a possible permission error?");
-            }
-        } else {
-            DUPX_Log::info("- PASS: {$source} '{$file_name}' not found - no backup needed.");
-        }
-
-        return $status;
-    }
-
-    /**
-     * Removes the specified file
-     *
-     * @param string $file_path					The full path of the config file
-     * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
-     *
-     * @return bool		Returns true if the file was removed
-     */
-    private static function removeFile($file_path, $type)
-    {
-        $status = false;
-        if (is_file($file_path)) {
-            $source    = self::getTypeName($type);
-            $file_name = DupLiteSnapLibIOU::getFileName($file_path);
-            $status    = @unlink($file_path);
-            if ($status === FALSE) {
-                @chmod($file_path, 0777);
-                $status = @unlink($file_path);
-            }
-            $status ? DUPX_Log::info("- PASS: Existing {$source} '{$file_name}' was removed") : DUPX_Log::info("- WARN: Existing {$source} '{$file_path}' not removed, a possible permission error?");
-        }
-        return $status;
-    }
-
-    /**
-     * Check if a backup file already exists
-     *
-     * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
-     *
-     * @return bool		Returns true if the file was removed
-     */
-    private static function backupExists($type)
-    {
-        $pattern = 'unknown-duplicator-type-set';
-
-        switch ($type) {
-            case DUPX_ServerConfigTypes::Apache:
-                $pattern = '/.htaccess-.*-duplicator.bak/';
-                break;
-            case DUPX_ServerConfigTypes::IIS:
-                $pattern = '/web.config-.*-duplicator.bak/';
-                break;
-            case DUPX_ServerConfigTypes::WordFence:
-                $pattern = '/.user.ini-.*-duplicator.bak/';
-                break;
-        }
-
-        if (is_dir(self::$rootPath)) {
-            $dir = new DirectoryIterator(self::$rootPath);
-            foreach ($dir as $file) {
-                if ($file->isDot()) {
-                    continue;
+        switch ($paramsManager->getValue(PrmMng::PARAM_WP_CONFIG)) {
+            case 'modify':
+            case 'new':
+                if (self::runReset($rootPath . 'wp-config.php', self::CONFIG_ORIG_FILE_WPCONFIG_ID) === false) {
+                    $paramsManager->setValue(PrmMng::PARAM_WP_CONFIG, 'nothing');
                 }
-                if ($file->isFile()) {
-                    $name = $file->getFilename();
-                    if (strpos($name, '-duplicator.bak')) {
-                        if (preg_match($pattern, $name)) {
-                            return true;
+                break;
+            case 'nothing':
+                break;
+        }
+
+        switch ($paramsManager->getValue(PrmMng::PARAM_HTACCESS_CONFIG)) {
+            case 'new':
+            case 'original':
+                if (self::runReset($rootPath . '.htaccess', self::CONFIG_ORIG_FILE_HTACCESS_ID) === false) {
+                    $paramsManager->setValue(PrmMng::PARAM_HTACCESS_CONFIG, 'nothing');
+                }
+                break;
+            case 'nothing':
+                break;
+        }
+
+        switch ($paramsManager->getValue(PrmMng::PARAM_OTHER_CONFIG)) {
+            case 'new':
+            case 'original':
+                if (self::runReset($rootPath . 'web.config', self::CONFIG_ORIG_FILE_WEBCONFIG_ID) === false) {
+                    $paramsManager->setValue(PrmMng::PARAM_OTHER_CONFIG, 'nothing');
+                }
+                if (self::runReset($rootPath . '.user.ini', self::CONFIG_ORIG_FILE_USERINI_ID) === false) {
+                    $paramsManager->setValue(PrmMng::PARAM_OTHER_CONFIG, 'nothing');
+                }
+                if (self::runReset($rootPath . 'php.ini', self::CONFIG_ORIG_FILE_PHPINI_ID) === false) {
+                    $paramsManager->setValue(PrmMng::PARAM_OTHER_CONFIG, 'nothing');
+                }
+                break;
+            case 'nothing':
+                break;
+        }
+
+        $paramsManager->save();
+        Log::info("\n*** RESET CONFIG FILES IN CURRENT HOSTING >>> END");
+    }
+
+    public static function setFiles($rootPath)
+    {
+        $paramsManager = PrmMng::getInstance();
+        $origFiles     = DUPX_Orig_File_Manager::getInstance();
+        Log::info("SET CONFIG FILES");
+
+        $entryKey = self::CONFIG_ORIG_FILE_WPCONFIG_ID;
+        switch ($paramsManager->getValue(PrmMng::PARAM_WP_CONFIG)) {
+            case 'new':
+                if (SnapIO::copy(DUPX_Package::getWpconfigSamplePath(), DUPX_WPConfig::getWpConfigPath()) === false) {
+                    DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                        'shortMsg'    => 'Can\' reset wp-config to wp-config-sample',
+                        'level'       => DUPX_NOTICE_ITEM::CRITICAL,
+                        'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                        'longMsg'     => 'Target file entry ' . Log::v2str(DUPX_WPConfig::getWpConfigPath()),
+                        'sections'    => 'general'
+                    ));
+                } else {
+                    Log::info("Copy wp-config-sample.php to target:" . DUPX_WPConfig::getWpConfigPath());
+                }
+                break;
+            case 'modify':
+                if (SnapIO::copy($origFiles->getEntryStoredPath($entryKey), DUPX_WPConfig::getWpConfigPath()) === false) {
+                    DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                        'shortMsg'    => 'Can\' restore oirg file entry ' . $entryKey,
+                        'level'       => DUPX_NOTICE_ITEM::CRITICAL,
+                        'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                        'longMsg'     => 'Target file entry ' . Log::v2str(DUPX_WPConfig::getWpConfigPath()),
+                        'sections'    => 'general'
+                    ));
+                } else {
+                    Log::info("Retained original entry " . $entryKey . " target:" . DUPX_WPConfig::getWpConfigPath());
+                }
+                break;
+            case 'nothing':
+                break;
+        }
+
+        $entryKey = self::CONFIG_ORIG_FILE_HTACCESS_ID;
+        switch ($paramsManager->getValue(PrmMng::PARAM_HTACCESS_CONFIG)) {
+            case 'new':
+                $targetHtaccess = self::getHtaccessTargetPath();
+                if (SnapIO::touch($targetHtaccess) === false) {
+                    DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                        'shortMsg'    => 'Can\'t create new htaccess file',
+                        'level'       => DUPX_NOTICE_ITEM::CRITICAL,
+                        'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                        'longMsg'     => 'Target file entry ' . $targetHtaccess,
+                        'sections'    => 'general'
+                    ));
+                } else {
+                    Log::info("New htaccess file created:" . $targetHtaccess);
+                }
+                break;
+            case 'original':
+                if (($storedHtaccess = $origFiles->getEntryStoredPath($entryKey)) === false) {
+                    Log::info("Retained original entry. htaccess doesn\'t exist in original site");
+                    break;
+                }
+
+                $targetHtaccess = self::getHtaccessTargetPath();
+                if (SnapIO::copy($storedHtaccess, $targetHtaccess) === false) {
+                    DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                        'shortMsg'    => 'Can\' restore oirg file entry ' . $entryKey,
+                        'level'       => DUPX_NOTICE_ITEM::HARD_WARNING,
+                        'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                        'longMsg'     => 'Target file entry ' . Log::v2str($targetHtaccess),
+                        'sections'    => 'general'
+                    ));
+                } else {
+                    Log::info("Retained original entry " . $entryKey . " target:" . $targetHtaccess);
+                }
+                break;
+            case 'nothing':
+                break;
+        }
+
+        switch ($paramsManager->getValue(PrmMng::PARAM_OTHER_CONFIG)) {
+            case 'new':
+                if ($origFiles->getEntry(self::CONFIG_ORIG_FILE_WEBCONFIG_ID_OVERWRITE_SITE)) {
+                    //IIS: This is reset because on some instances of IIS having old values cause issues
+                    //Recommended fix for users who want it because errors are triggered is to have
+                    //them check the box for ignoring the web.config files on step 1 of installer
+                    $xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+                    $xml_contents .= "<!-- Reset by Duplicator Installer.  Original can be found in the original_files_ folder-->\n";
+                    $xml_contents .= "<configuration></configuration>\n";
+                    if (file_put_contents($rootPath . "/web.config", $xml_contents) === false) {
+                        Log::info('RESET: can\'t create a new empty web.config');
+                    }
+                }
+                break;
+            case 'original':
+                $entries = array(
+                    self::CONFIG_ORIG_FILE_USERINI_ID,
+                    self::CONFIG_ORIG_FILE_WEBCONFIG_ID,
+                    self::CONFIG_ORIG_FILE_PHPINI_ID
+                );
+                foreach ($entries as $entryKey) {
+                    if ($origFiles->getEntry($entryKey) !== false) {
+                        if (SnapIO::copy($origFiles->getEntryStoredPath($entryKey), $origFiles->getEntryTargetPath($entryKey, false)) === false) {
+                            DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                                'shortMsg'    => 'Notice: Cannot restore original file entry ' . $entryKey,
+                                'level'       => DUPX_NOTICE_ITEM::HARD_WARNING,
+                                'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                                'longMsg'     => 'Target file entry ' . Log::v2str($origFiles->getEntryTargetPath($entryKey, false)),
+                                'sections'    => 'general'
+                            ));
+                        } else {
+                            Log::info("Retained original entry " . $entryKey . " target:" . $origFiles->getEntryTargetPath($entryKey, false));
                         }
                     }
                 }
+                break;
+            case 'nothing':
+                break;
+        }
+
+        DUPX_NOTICE_MANAGER::getInstance()->saveNotices();
+    }
+
+    public static function getHtaccessTargetPath()
+    {
+        if (($targetEnty = DUPX_Orig_File_Manager::getInstance()->getEntryTargetPath(self::CONFIG_ORIG_FILE_HTACCESS_ID, false)) !== false) {
+            return $targetEnty;
+        } else {
+            return PrmMng::getInstance()->getValue(PrmMng::PARAM_PATH_NEW) . '/.htaccess';
+        }
+    }
+
+    /**
+     * Moves the configuration file to the dup_installer/original_files_[hash] folder
+     *
+     * @param string $filePath file path to store
+     * @param string if not false rename
+     * @return bool        Returns true if the file was backed-up and reset or there was no file to reset
+     * @throws Exception
+     */
+    private static function runReset($filePath, $storedName)
+    {
+        $fileName = basename($filePath);
+
+        try {
+            if (file_exists($filePath)) {
+                if (!SnapIO::chmod($filePath, 'u+rw') || !is_readable($filePath) || !is_writable($filePath)) {
+                    throw new Exception("RESET CONFIG FILES: permissions error on file config path " . $filePath);
+                }
+
+                $origFiles = DUPX_Orig_File_Manager::getInstance();
+                $filePath  = SnapIO::safePathUntrailingslashit($filePath);
+
+                Log::info("RESET CONFIG FILES: I'M GOING TO MOVE CONFIG FILE " . Log::v2str($fileName) . " IN ORIGINAL FOLDER");
+
+                if ($origFiles->addEntry(self::INSTALLER_HOST_ENTITY_PREFIX . $storedName, 
+                                         $filePath,
+                                         DUPX_Orig_File_Manager::MODE_MOVE,
+                                         self::INSTALLER_HOST_ENTITY_PREFIX . $storedName))
+                {
+                    Log::info("\tCONFIG FILE HAS BEEN RESET");
+                } else {
+                    throw new Exception("cannot store file " . Log::v2str($fileName) . " in orginal file folder");
+                }
+            } else {
+                Log::info("RESET CONFIG FILES: " . Log::v2str($fileName) . " does not exist, no need for reset", Log::LV_DETAILED);
             }
+        } catch (Exception $e) {
+            Log::logException($e, Log::LV_DEFAULT, 'RESET CONFIG FILES ERROR: ');
+            DUPX_NOTICE_MANAGER::getInstance()->addBothNextAndFinalReportNotice(array(
+                'shortMsg'    => 'Can\'t reset config file ' . Log::v2str($fileName) . ' so it will not be modified.',
+                'level'       => DUPX_NOTICE_ITEM::HARD_WARNING,
+                'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                'longMsg'     => 'Message: ' . $e->getMessage(),
+                'sections'    => 'general'
+            ));
+            return false;
+        } catch (Error $e) {
+            Log::logException($e, Log::LV_DEFAULT, 'RESET CONFIG FILES ERROR: ');
+            DUPX_NOTICE_MANAGER::getInstance()->addBothNextAndFinalReportNotice(array(
+                'shortMsg'    => 'Can\'t reset config file ' . Log::v2str($fileName) . ' so it will not be modified.',
+                'level'       => DUPX_NOTICE_ITEM::HARD_WARNING,
+                'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                'longMsg'     => 'Message: ' . $e->getMessage(),
+                'sections'    => 'general'
+            ));
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
-     * Gets the friendly type name
      *
-     * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
-     *
-     * @return string		The friendly enum name
+     * @return boolean|string false if loca config don't exists or path of store local config
      */
-    private static function getTypeName($type)
+    public static function getWpConfigLocalStoredPath()
     {
-        switch ($type) {
-            case DUPX_ServerConfigTypes::Apache:
-                return 'Apache';
-                break;
-            case DUPX_ServerConfigTypes::IIS:
-                return 'Microsoft IIS';
-                break;
-            case DUPX_ServerConfigTypes::WordFence:
-                return 'WordFence';
-                break;
-
-            default:
-                throw new Exception('The param $type must be of type DUPX_ServerConfigTypes');
-                break;
+        $origFiles = DUPX_Orig_File_Manager::getInstance();
+        $entry     = self::CONFIG_ORIG_FILE_WPCONFIG_ID_OVERWRITE_SITE;
+        if ($origFiles->getEntry($entry)) {
+            return $origFiles->getEntryStoredPath($entry);
+        } else {
+            return false;
         }
     }
 
     /**
-     * Get AddHadler line from existing WP .htaccess file
+     * Get AddHandler line from existing WP .htaccess file
      *
-     * @param $path string root path
      * @return string
+     * @throws Exception
      */
-    private static function getOldHtaccessAddhandlerLine($path)
+    private static function getOldHtaccessAddhandlerLine()
     {
-        $backupHtaccessPath = $path.'/.htaccess-'.$GLOBALS['DUPX_AC']->package_hash.'.orig';
-        if (file_exists($backupHtaccessPath)) {
+        $origFiles          = DUPX_Orig_File_Manager::getInstance();
+        $backupHtaccessPath = $origFiles->getEntryStoredPath(self::CONFIG_ORIG_FILE_HTACCESS_ID_OVERWRITE_SITE);
+        Log::info("Installer Host Htaccess path: " . $backupHtaccessPath, Log::LV_DEBUG);
+
+        if ($backupHtaccessPath !== false && file_exists($backupHtaccessPath)) {
             $htaccessContent = file_get_contents($backupHtaccessPath);
             if (!empty($htaccessContent)) {
                 // match and trim non commented line  "AddHandler application/x-httpd-XXXX .php" case insenstive
                 $re      = '/^[\s\t]*[^#]?[\s\t]*(AddHandler[\s\t]+.+\.php[ \t]?.*?)[\s\t]*$/mi';
                 $matches = array();
                 if (preg_match($re, $htaccessContent, $matches)) {
-                    return "\n".$matches[1];
+                    return "\n" . $matches[1];
                 }
             }
         }
@@ -349,49 +337,96 @@ HTACCESS;
     }
 
     /**
-     * Copies the code in .htaccess__[HASH] to .htaccess
-     *
-     * @param $path					The root path to the location of the server config files
-     * @param $new_htaccess_name	New name of htaccess (either .htaccess or a backup name)
-     *
-     * @return bool					Returns true if the .htaccess file was retained successfully
-     */
-    public static function renameHtaccess($path, $new_htaccess_name)
-    {
-        $status = false;
-
-        if (!@rename($path.'/.htaccess__'.$GLOBALS['DUPX_AC']->package_hash, $path.'/'.$new_htaccess_name)) {
-            $status = true;
-        }
-
-        return $status;
-    }
-
-    /**
      * Sets up the web config file based on the inputs from the installer forms.
      *
-     * @param int $mu_mode		Is this site a specific multi-site mode
-     * @param object $dbh		The database connection handle for this request
-     * @param string $path		The path to the config file
+     * @param int $mu_mode      Is this site a specific multi-site mode
+     * @param object $dbh       The database connection handle for this request
+     * @param string $path      The path to the config file
      *
      * @return null
      */
-    public static function setup($mu_mode, $mu_generation, $dbh, $path)
+    public static function setup($dbh, $path)
     {
-        DUPX_Log::info("\nWEB SERVER CONFIGURATION FILE UPDATED:");
+        Log::info("\nWEB SERVER CONFIGURATION FILE UPDATED:");
+
+        $paramsManager = PrmMng::getInstance();
+        $htAccessPath  = "{$path}/.htaccess";
+        $mu_generation = DUPX_ArchiveConfig::getInstance()->mu_generation;
+
+        // SKIP HTACCESS
+        $skipHtaccessConfigVals = array('nothing', 'original');
+        if (in_array($paramsManager->getValue(PrmMng::PARAM_HTACCESS_CONFIG), $skipHtaccessConfigVals)) {
+            if (!DUPX_InstallerState::isRestoreBackup()) {
+                // on restore packup mode no warning needed
+                $longMsg = 'Retaining the original .htaccess file from the old site or not creating a new one may cause issues with the initial setup '
+                    . 'of this site. If you encounter any issues, validate the contents of the .htaccess file or reinstall the site again using the '
+                    . 'Step 1 ❯ Options ❯ Advanced ❯ Configuration Files ❯ Apache .htaccess ❯ Create New option.  If your site works as expected this '
+                    . 'message can be ignored.';
+
+                DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                    'shortMsg'    => 'Notice: A new .htaccess file was not created',
+                    'level'       => DUPX_NOTICE_ITEM::NOTICE,
+                    'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                    'longMsg'     => $longMsg,
+                    'sections'    => 'general'
+                ));
+            }
+            return;
+        }
 
         $timestamp    = date("Y-m-d H:i:s");
-        $post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+        $post_url_new = $paramsManager->getValue(PrmMng::PARAM_URL_NEW);
         $newdata      = parse_url($post_url_new);
         $newpath      = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
-        $update_msg   = "# This file was updated by Duplicator Pro on {$timestamp}.\n";
-        $update_msg   .= (file_exists("{$path}/.htaccess")) ? "# See .htaccess__[HASH] for the .htaccess original file." : "";
-        $update_msg   .= self::getOldHtaccessAddhandlerLine($path);
+        $update_msg   = "# This file was updated by Duplicator on {$timestamp}.\n";
+        $update_msg  .= "# See the original_files_ folder for the original source_site_htaccess file.";
+        $update_msg  .= self::getOldHtaccessAddhandlerLine();
 
+        switch (DUPX_InstallerState::getInstType()) {
+            case DUPX_InstallerState::INSTALL_SINGLE_SITE:
+            case DUPX_InstallerState::INSTALL_RBACKUP_SINGLE_SITE:
+                $tmp_htaccess = self::htAcccessNoMultisite($update_msg, $newpath, $dbh);
+                Log::info("- Preparing .htaccess file with basic setup.");
+                break;
+            case DUPX_InstallerState::INSTALL_SINGLE_SITE_ON_SUBDOMAIN:
+            case DUPX_InstallerState::INSTALL_SINGLE_SITE_ON_SUBFOLDER:
+            case DUPX_InstallerState::INSTALL_NOT_SET:
+                throw new Exception('Cannot change setup with current installation type [' . DUPX_InstallerState::getInstType() . ']');
+            default:
+                throw new Exception('Unknown mode');
+        }
 
+        if (file_exists($htAccessPath) && SnapIO::chmod($htAccessPath, 'u+rw') === false) {
+            Log::info("WARNING: Unable to update htaccess file permessition.");
+            DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                'shortMsg'    => 'Notice: Unable to update new .htaccess file',
+                'level'       => DUPX_NOTICE_ITEM::CRITICAL,
+                'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                'longMsg'     => 'Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.',
+                'sections'    => 'general'
+            ));
+        } elseif (file_put_contents($htAccessPath, $tmp_htaccess) === false) {
+            Log::info("WARNING: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
+            DUPX_NOTICE_MANAGER::getInstance()->addFinalReportNotice(array(
+                'shortMsg'    => 'Noitice: Unable to update new .htaccess file',
+                'level'       => DUPX_NOTICE_ITEM::CRITICAL,
+                'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_DEFAULT,
+                'longMsg'     => 'Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.',
+                'sections'    => 'general'
+            ));
+        } else {
+            DUP_Extraction::setPermsFromParams($htAccessPath);
+            Log::info("HTACCESS FILE - Successfully updated the .htaccess file setting.");
+        }
+    }
+
+    private static function htAcccessNoMultisite($update_msg, $newpath, $dbh)
+    {
+        $result = '';
         // no multisite
         $empty_htaccess = false;
-        $query_result   = @mysqli_query($dbh, "SELECT option_value FROM `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` WHERE option_name = 'permalink_structure' ");
+        $optonsTable    = mysqli_real_escape_string($dbh, DUPX_DB_Functions::getOptionsTableName());
+        $query_result   = DUPX_DB::mysqli_query($dbh, "SELECT option_value FROM `" . $optonsTable . "` WHERE option_name = 'permalink_structure' ");
 
         if ($query_result) {
             $row = @mysqli_fetch_array($query_result);
@@ -401,11 +436,19 @@ HTACCESS;
             }
         }
 
-
         if ($empty_htaccess) {
-            $tmp_htaccess = '';
+            Log::info('NO PERMALINK STRUCTURE FOUND: set htaccess without directives');
+            $result = <<<EMPTYHTACCESS
+{$update_msg}
+# BEGIN WordPress
+# The directives (lines) between `BEGIN WordPress` and `END WordPress` are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+
+# END WordPress
+EMPTYHTACCESS;
         } else {
-            $tmp_htaccess = <<<HTACCESS
+            $result = <<<HTACCESS
 {$update_msg}
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
@@ -418,14 +461,8 @@ RewriteRule . {$newpath}index.php [L]
 </IfModule>
 # END WordPress
 HTACCESS;
-            DUPX_Log::info("- Preparing .htaccess file with basic setup.");
         }
 
-        if (@file_put_contents("{$path}/.htaccess", $tmp_htaccess) === FALSE) {
-            DUPX_Log::info("WARNING: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
-        } else {
-            DUPX_Log::info("- Successfully updated the .htaccess file setting.");
-        }
-        @chmod("{$path}/.htaccess", 0644);
+        return $result;
     }
 }

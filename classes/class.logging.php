@@ -1,7 +1,12 @@
 <?php
+
+use Duplicator\Libs\Snap\SnapUtil;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
-if (!defined('DUPLICATOR_VERSION')) exit;
+if (!defined('DUPLICATOR_VERSION')) {
+    exit;
+}
 
 /**
  * Helper Class for logging
@@ -9,9 +14,9 @@ if (!defined('DUPLICATOR_VERSION')) exit;
  */
 abstract class Dup_ErrorBehavior
 {
-	const LogOnly			 = 0;
-	const ThrowException	 = 1;
-	const Quit			 = 2;
+    const LogOnly        = 0;
+    const ThrowException = 1;
+    const Quit           = 2;
 }
 
 class DUP_Log
@@ -27,14 +32,14 @@ class DUP_Log
     private static $traceEnabled = false;
 
     public static $profileLogs = null;
-    
-	/**
-	 * Init this static object
-	 */
-	public static function Init()
-	{
-		self::$traceEnabled = (DUP_Settings::Get('trace_log_enabled') == 1);
-	}
+
+    /**
+     * Init this static object
+     */
+    public static function Init()
+    {
+        self::$traceEnabled = (DUP_Settings::Get('trace_log_enabled') == 1);
+    }
 
     /**
      * Open a log file connection for writing to the package log file
@@ -49,7 +54,7 @@ class DUP_Log
             throw new Exception("A name value is required to open a file log.");
         }
         self::Close();
-        if ((self::$logFileHandle = @fopen(DUP_Settings::getSsdirPath()."/{$nameHash}.log", "a+")) === false) {
+        if ((self::$logFileHandle = @fopen(DUP_Settings::getSsdirPath() . "/{$nameHash}.log", "a+")) === false) {
             self::$logFileHandle = null;
             return false;
         } else {
@@ -69,7 +74,7 @@ class DUP_Log
     public static function Close()
     {
         $result = true;
-        
+
         if (!is_null(self::$logFileHandle)) {
             $result              = @fclose(self::$logFileHandle);
             self::$logFileHandle = null;
@@ -81,13 +86,13 @@ class DUP_Log
 
     /**
      *  General information send to the package log if opened
-     *  @param string $msg	The message to log
+     *  @param string $msg  The message to log
      *
      *  REPLACE TO DEBUG: Memory consumption as script runs
-     * 	$results = DUP_Util::byteSize(memory_get_peak_usage(true)) . "\t" . $msg;
-     * 	@fwrite(self::$logFileHandle, "{$results} \n");
+     *  $results = DUP_Util::byteSize(memory_get_peak_usage(true)) . "\t" . $msg;
+     *  @fwrite(self::$logFileHandle, "{$results} \n");
      *
-     *  @param string $msg	The message to log
+     *  @param string $msg  The message to log
      *
      *  @return null
      */
@@ -97,160 +102,172 @@ class DUP_Log
             self::Trace($msg);
         }
         if (!is_null(self::$logFileHandle)) {
-            @fwrite(self::$logFileHandle, $msg."\n");
+            @fwrite(self::$logFileHandle, $msg . "\n");
         }
+    }
+
+    /**
+     *  General information send to the package log and trace log
+     *
+     *  @param string $msg  The message to log
+     *
+     *  @return null
+     */
+    public static function infoTrace($msg, $calling_function_override = null)
+    {
+        self::Info($msg);
+        self::Trace($msg, $calling_function_override);
     }
 
     public static function print_r_info($val, $name = '')
     {
-        $msg = empty($name) ? '' : 'VALUE '.$name.': ';
+        $msg  = empty($name) ? '' : 'VALUE ' . $name . ': ';
         $msg .= print_r($val, true);
         self::info($msg);
     }
 
-	/**
-	 * Does the trace file exists
-	 *
-	 * @return bool Returns true if an active trace file exists
-	 */
-	public static function TraceFileExists()
-	{
-		$file_path = self::getTraceFilepath();
-		return file_exists($file_path);
-	}
+    /**
+     * Does the trace file exists
+     *
+     * @return bool Returns true if an active trace file exists
+     */
+    public static function TraceFileExists()
+    {
+        $file_path = self::getTraceFilepath();
+        return file_exists($file_path);
+    }
 
-	/**
-	 * Gets the current file size of the active trace file
-	 *
-	 * @return string   Returns a human readable file size of the active trace file
-	 */
-	public static function getTraceStatus()
-	{
-		$file_path	 = DUP_Log::getTraceFilepath();
-		$backup_path = DUP_Log::getBackupTraceFilepath();
+    /**
+     * Gets the current file size of the active trace file
+     *
+     * @return string   Returns a human readable file size of the active trace file
+     */
+    public static function getTraceStatus()
+    {
+        $file_path   = DUP_Log::getTraceFilepath();
+        $backup_path = DUP_Log::getBackupTraceFilepath();
 
-		if (file_exists($file_path)) {
-
+        if (file_exists($file_path)) {
             $filesize = is_file($file_path) ? @filesize($file_path) : 0;
 
             //Its possible mulitple trace log files exist due to size
-			if (is_file($backup_path)) {
-				$filesize += @filesize($backup_path);
-			}
+            if (is_file($backup_path)) {
+                $filesize += @filesize($backup_path);
+            }
 
-			$message = sprintf('%1$s', DUP_Util::byteSize($filesize));
-		} else {
-			$message = esc_html__('No Log', 'duplicator');
-		}
+            $message = sprintf('%1$s', DUP_Util::byteSize($filesize));
+        } else {
+            $message = esc_html__('No Log', 'duplicator');
+        }
 
-		return $message;
-	}
+        return $message;
+    }
 
-	// RSR TODO: Swap trace logic out for real trace later
-	public static function Trace($message, $calling_function_override = null)
-	{
+    // RSR TODO: Swap trace logic out for real trace later
+    public static function Trace($message, $calling_function_override = null)
+    {
 
-		if (self::$traceEnabled) {
-			$unique_id = sprintf("%08x", abs(crc32($_SERVER['REMOTE_ADDR'].$_SERVER['REQUEST_TIME'].$_SERVER['REMOTE_PORT'])));
+        if (self::$traceEnabled) {
+            $unique_id = sprintf("%08x", abs(crc32($_SERVER['REMOTE_ADDR'] . $_SERVER['REQUEST_TIME'] . $_SERVER['REMOTE_PORT'])));
 
-			if ($calling_function_override == null) {
-				$calling_function = DupLiteSnapLibUtil::getCallingFunctionName();
-			} else {
-				$calling_function = $calling_function_override;
-			}
+            if ($calling_function_override == null) {
+                $calling_function = SnapUtil::getCallingFunctionName();
+            } else {
+                $calling_function = $calling_function_override;
+            }
 
-			if (is_object($message)) {
-				$ov		 = get_object_vars($message);
-				$message = print_r($ov, true);
-			} else if (is_array($message)) {
-				$message = print_r($message, true);
-			}
+            if (is_object($message)) {
+                $ov      = get_object_vars($message);
+                $message = print_r($ov, true);
+            } elseif (is_array($message)) {
+                $message = print_r($message, true);
+            }
 
-			$logging_message			 = "{$unique_id}|{$calling_function} | {$message}";
-			$ticks						 = time() + ((int) get_option('gmt_offset') * 3600);
-			$formatted_time				 = date('d-m-H:i:s', $ticks);
-			$formatted_logging_message	 = "{$formatted_time}|DUP|{$logging_message} \r\n";
+            $logging_message           = "{$unique_id}|{$calling_function} | {$message}";
+            $ticks                     = time() + ((int) get_option('gmt_offset') * 3600);
+            $formatted_time            = date('d-m-H:i:s', $ticks);
+            $formatted_logging_message = "{$formatted_time}|DUP|{$logging_message} \r\n";
 
-			// Always write to error log - if they don't want the info they can turn off WordPress error logging or tracing
-			self::ErrLog($logging_message);
+            // Always write to error log - if they don't want the info they can turn off WordPress error logging or tracing
+            self::ErrLog($logging_message);
 
-			// Everything goes to the plugin log, whether it's part of package generation or not.
-			self::WriteToTrace($formatted_logging_message);
-		}
-	}
+            // Everything goes to the plugin log, whether it's part of package generation or not.
+            self::WriteToTrace($formatted_logging_message);
+        }
+    }
 
     public static function print_r_trace($val, $name = '', $calling_function_override = null)
     {
-        $msg = empty($name) ? '' : 'VALUE '.$name.': ';
+        $msg  = empty($name) ? '' : 'VALUE ' . $name . ': ';
         $msg .= print_r($val, true);
         self::trace($msg, $calling_function_override);
     }
 
-	public static function errLog($message)
-	{
-		$message = 'DUP:'.$message;
-		error_log($message);
-	}
+    public static function errLog($message)
+    {
+        $message = 'DUP:' . $message;
+        error_log($message);
+    }
 
-	public static function TraceObject($msg, $o, $log_private_members = true)
-	{
-		if (self::$traceEnabled) {
-			if (!$log_private_members) {
-				$o = get_object_vars($o);
-			}
-			self::Trace($msg.':'.print_r($o, true));
-		}
-	}
+    public static function TraceObject($msg, $o, $log_private_members = true)
+    {
+        if (self::$traceEnabled) {
+            if (!$log_private_members) {
+                $o = get_object_vars($o);
+            }
+            self::Trace($msg . ':' . print_r($o, true));
+        }
+    }
 
-	public static function GetDefaultKey()
-	{
-		$auth_key	 = defined('AUTH_KEY') ? AUTH_KEY : 'atk';
-		$auth_key	 .= defined('DB_HOST') ? DB_HOST : 'dbh';
-		$auth_key	 .= defined('DB_NAME') ? DB_NAME : 'dbn';
-		$auth_key	 .= defined('DB_USER') ? DB_USER : 'dbu';
-		return hash('md5', $auth_key);
-	}
+    public static function GetDefaultKey()
+    {
+        $auth_key  = defined('AUTH_KEY') ? AUTH_KEY : 'atk';
+        $auth_key .= defined('DB_HOST') ? DB_HOST : 'dbh';
+        $auth_key .= defined('DB_NAME') ? DB_NAME : 'dbn';
+        $auth_key .= defined('DB_USER') ? DB_USER : 'dbu';
+        return hash('md5', $auth_key);
+    }
 
     /**
-	 * Gets the current file size of the old trace file "1"
-	 *
-	 * @return string   Returns a human readable file size of the active trace file
-	 */
-	public static function GetBackupTraceFilepath()
-	{
-		$default_key		 = self::getDefaultKey();
-		$backup_log_filename = "dup_$default_key.log1";
-		$backup_path		 = DUP_Settings::getSsdirPath()."/".$backup_log_filename;
-		return $backup_path;
-	}
+     * Gets the current file size of the old trace file "1"
+     *
+     * @return string   Returns a human readable file size of the active trace file
+     */
+    public static function GetBackupTraceFilepath()
+    {
+        $default_key         = self::getDefaultKey();
+        $backup_log_filename = "dup_$default_key.log1";
+        $backup_path         = DUP_Settings::getSsdirPath() . "/" . $backup_log_filename;
+        return $backup_path;
+    }
 
-	/**
-	 * Gets the active trace file path
-	 *
-	 * @return string   Returns the full path to the active trace file (i.e. dup-pro_hash.log)
-	 */
-	public static function GetTraceFilepath()
-	{
-		$default_key	 = self::getDefaultKey();
-		$log_filename	 = "dup_$default_key.log";
-		$file_path		 = DUP_Settings::getSsdirPath()."/".$log_filename;
-		return $file_path;
-	}
+    /**
+     * Gets the active trace file path
+     *
+     * @return string   Returns the full path to the active trace file (i.e. dup-pro_hash.log)
+     */
+    public static function GetTraceFilepath()
+    {
+        $default_key  = self::getDefaultKey();
+        $log_filename = "dup_$default_key.log";
+        $file_path    = DUP_Settings::getSsdirPath() . "/" . $log_filename;
+        return $file_path;
+    }
 
-	/**
-	 * Deletes the trace log and backup trace log files
-	 *
-	 * @return null
-	 */
-	public static function DeleteTraceLog()
-	{
-		$file_path	 = self::GetTraceFilepath();
-		$backup_path = self::GetBackupTraceFilepath();
-		self::trace("deleting $file_path");
-		@unlink($file_path);
-		self::trace("deleting $backup_path");
-		@unlink($backup_path);
-	}
+    /**
+     * Deletes the trace log and backup trace log files
+     *
+     * @return null
+     */
+    public static function DeleteTraceLog()
+    {
+        $file_path   = self::GetTraceFilepath();
+        $backup_path = self::GetBackupTraceFilepath();
+        self::trace("deleting $file_path");
+        @unlink($file_path);
+        self::trace("deleting $backup_path");
+        @unlink($backup_path);
+    }
 
     /**
      *  Called when an error is detected and no further processing should occur
@@ -259,84 +276,83 @@ class DUP_Log
      * @param int $behavior
      * @throws Exception
      */
-	public static function error($msg, $detail = '', $behavior = Dup_ErrorBehavior::Quit)
-	{
+    public static function error($msg, $detail = '', $behavior = Dup_ErrorBehavior::Quit)
+    {
 
-		error_log($msg.' DETAIL:'.$detail);
-		$source = self::getStack(debug_backtrace());
+        error_log($msg . ' DETAIL:' . $detail);
+        $source = self::getStack(debug_backtrace());
 
-		$err_msg = "\n==================================================================================\n";
-		$err_msg .= "DUPLICATOR ERROR\n";
-		$err_msg .= "Please try again! If the error persists see the Duplicator 'Help' menu.\n";
-		$err_msg .= "---------------------------------------------------------------------------------\n";
-		$err_msg .= "MESSAGE:\n\t{$msg}\n";
-		if (strlen($detail)) {
-			$err_msg .= "DETAILS:\n\t{$detail}\n";
-		}
-		$err_msg .= "TRACE:\n{$source}";
-		$err_msg .= "==================================================================================\n\n";
-		@fwrite(self::$logFileHandle, "{$err_msg}");
+        $err_msg  = "\n==================================================================================\n";
+        $err_msg .= "DUPLICATOR ERROR\n";
+        $err_msg .= "Please try again! If the error persists see the Duplicator 'Help' menu.\n";
+        $err_msg .= "---------------------------------------------------------------------------------\n";
+        $err_msg .= "MESSAGE:\n\t{$msg}\n";
+        if (strlen($detail)) {
+            $err_msg .= "DETAILS:\n\t{$detail}\n";
+        }
+        $err_msg .= "TRACE:\n{$source}";
+        $err_msg .= "==================================================================================\n\n";
+        @fwrite(self::$logFileHandle, "{$err_msg}");
 
-		switch ($behavior) {
-            
-			case Dup_ErrorBehavior::ThrowException:
-				DUP_LOG::trace("throwing exception");
+        switch ($behavior) {
+            case Dup_ErrorBehavior::ThrowException:
+                DUP_LOG::trace("throwing exception");
                 throw new Exception($msg);
-				break;
+                break;
 
-			case Dup_ErrorBehavior::Quit:
-				DUP_LOG::trace("quitting");
-				die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
-				break;
+            case Dup_ErrorBehavior::Quit:
+                DUP_LOG::trace("quitting");
+                die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
+                break;
 
-			default:
-			// Nothing
-		}
-	}
+            default:
+            // Nothing
+        }
+    }
 
-	/**
-	 * The current stack trace of a PHP call
-	 * @param $stacktrace The current debug stack
-	 * @return string
-	 */
-	public static function getStack($stacktrace)
-	{
-		$output	 = "";
-		$i		 = 1;
-		foreach ($stacktrace as $node) {
-			$output .= "\t $i. ".basename($node['file'])." : ".$node['function']." (".$node['line'].")\n";
-			$i++;
-		}
-		return $output;
-	}
+    /**
+     * The current stack trace of a PHP call
+     * @param $stacktrace The current debug stack
+     * @return string
+     */
+    public static function getStack($stacktrace)
+    {
+        $output = "";
+        $i      = 1;
+        foreach ($stacktrace as $node) {
+            $output .= "\t $i. " . basename($node['file']) . " : " . $node['function'] . " (" . $node['line'] . ")\n";
+            $i++;
+        }
+        return $output;
+    }
 
-	/**
-	 * Manages writing the active or backup log based on the size setting
-	 *
-	 * @return null
-	 */
-	private static function WriteToTrace($formatted_logging_message)
-	{
-		$log_filepath = self::GetTraceFilepath();
+    /**
+     * Manages writing the active or backup log based on the size setting
+     *
+     * @return null
+     */
+    private static function WriteToTrace($formatted_logging_message)
+    {
+        $log_filepath = self::GetTraceFilepath();
 
-		if (@filesize($log_filepath) > DUPLICATOR_MAX_LOG_SIZE) {
-			$backup_log_filepath = self::GetBackupTraceFilepath();
+        if (@filesize($log_filepath) > DUPLICATOR_MAX_LOG_SIZE) {
+            $backup_log_filepath = self::GetBackupTraceFilepath();
 
-			if (file_exists($backup_log_filepath)) {
-				if (@unlink($backup_log_filepath) === false) {
-					self::errLog("Couldn't delete backup log $backup_log_filepath");
-				}
-			}
+            if (file_exists($backup_log_filepath)) {
+                if (@unlink($backup_log_filepath) === false) {
+                    self::errLog("Couldn't delete backup log $backup_log_filepath");
+                }
+            }
 
-			if (@rename($log_filepath, $backup_log_filepath) === false) {
-				self::errLog("Couldn't rename log $log_filepath to $backup_log_filepath");
-			}
-		}
+            if (@rename($log_filepath, $backup_log_filepath) === false) {
+                self::errLog("Couldn't rename log $log_filepath to $backup_log_filepath");
+            }
+        }
 
-		if (@file_put_contents($log_filepath, $formatted_logging_message, FILE_APPEND) === false) {
-			// Not en error worth reporting
-		}
-	}
+        if (@file_put_contents($log_filepath, $formatted_logging_message, FILE_APPEND) === false) {
+            // Not en error worth reporting
+        }
+    }
 }
 
 class DUP_Handler
@@ -415,18 +431,18 @@ class DUP_Handler
                 }
                 break;
             case self::MODE_VAR:
-                self::$varModeLog .= self::getMessage($errno, $errstr, $errfile, $errline)."\n";
+                self::$varModeLog .= self::getMessage($errno, $errstr, $errfile, $errline) . "\n";
                 break;
             case self::MODE_LOG:
             default:
                 switch ($errno) {
-                    case E_ERROR :
+                    case E_ERROR:
                         $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
                         DUP_Log::error($log_message);
                         break;
-                    case E_NOTICE :
-                    case E_WARNING :
-                    default :
+                    case E_NOTICE:
+                    case E_WARNING:
+                    default:
                         $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
                         DUP_Log::Info($log_message);
                         break;
@@ -441,16 +457,16 @@ class DUP_Handler
         if (self::$errPrefix) {
             $result = '[PHP ERR]';
             switch ($errno) {
-                case E_ERROR :
+                case E_ERROR:
                     $result .= '[FATAL]';
                     break;
-                case E_WARNING :
+                case E_WARNING:
                     $result .= '[WARN]';
                     break;
-                case E_NOTICE :
+                case E_NOTICE:
                     $result .= '[NOTICE]';
                     break;
-                default :
+                default:
                     $result .= '[ISSUE]';
                     break;
             }
@@ -460,8 +476,8 @@ class DUP_Handler
         $result .= $errstr;
 
         if (self::$codeReference) {
-            $result .= ' [CODE:'.$errno.'|FILE:'.$errfile.'|LINE:'.$errline.']';
-            $result .= "\n".wp_debug_backtrace_summary();
+            $result .= ' [CODE:' . $errno . '|FILE:' . $errfile . '|LINE:' . $errline . ']';
+            $result .= "\n" . wp_debug_backtrace_summary();
         }
 
         return $result;

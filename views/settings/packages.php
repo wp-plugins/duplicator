@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Libs\Snap\SnapUtil;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 global $wp_version;
@@ -10,7 +13,6 @@ $mysqldump_exe_file = '';
 
 //SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
-
     //Nonce Check
     $nonce = sanitize_text_field($_POST['dup_settings_save_nonce_field']);
     if (!isset($_POST['dup_settings_save_nonce_field']) || !wp_verify_nonce($nonce, 'dup_settings_save')) {
@@ -20,7 +22,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     //Package
     $mysqldump_enabled = isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
     if (isset($_POST['package_mysqldump_path'])) {
-        $mysqldump_exe_file = DupLiteSnapLibUtil::sanitize_non_stamp_chars_newline_and_trim($_POST['package_mysqldump_path']);
+        $mysqldump_exe_file = SnapUtil::sanitizeNSCharsNewlineTrim($_POST['package_mysqldump_path']);
         $mysqldump_exe_file = preg_match('/^([A-Za-z]\:)?[\/\\\\]/', $mysqldump_exe_file) ? $mysqldump_exe_file : '';
         $mysqldump_exe_file = preg_replace('/[\'";]/m', '', $mysqldump_exe_file);
         $mysqldump_exe_file = DUP_Util::safePath($mysqldump_exe_file);
@@ -70,7 +72,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
     select#package_ui_created {font-family: monospace}
     div.engine-radio {float: left; min-width: 100px}
     div.engine-sub-opts {padding:5px 0 10px 15px; display:none }
-    i.lock-info {display:inline-block; width: 25px;}
+    .dup-install-meta {display: inline-block; min-width: 50px}
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url('admin.php?page=duplicator-settings&tab=package'); ?>" method="post">
@@ -121,10 +123,12 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                    data-tooltip="<?php esc_html_e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
                                     <i class="far fa-lightbulb" aria-hidden="true"></i>
                                     <?php
-                                    printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+                                    printf(
+                                        "%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
                                         __("Please visit our recommended", 'duplicator'),
                                         __("host list", 'duplicator'),
-                                        __("for reliable access to mysqldump", 'duplicator'));
+                                        __("for reliable access to mysqldump", 'duplicator')
+                                    );
                                     ?>
                                 </i>
                             </small>
@@ -143,12 +147,14 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                     <i class="fa fa-exclamation-triangle fa-sm"></i>
                                     <?php
                                     _e('Mysqldump was not found at its default location or the location provided.  Please enter a custom path to a valid location where mysqldump can run.  '
-                                        .'If the problem persist contact your host or server administrator.  ', 'duplicator');
+                                        . 'If the problem persist contact your host or server administrator.  ', 'duplicator');
 
-                                    printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+                                    printf(
+                                        "%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
                                         __("See the", 'duplicator'),
                                         __("host list", 'duplicator'),
-                                        __("for reliable access to mysqldump.", 'duplicator'));
+                                        __("for reliable access to mysqldump.", 'duplicator')
+                                    );
                                     ?>
                                 </div><br/>
                             <?php endif; ?>
@@ -157,18 +163,23 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                             <i class="fas fa-question-circle fa-sm"
                                data-tooltip-title="<?php esc_attr_e("mysqldump path:", 'duplicator'); ?>"
                                data-tooltip="<?php
-                               esc_attr_e('Add a custom path if the path to mysqldump is not properly detected.   For all paths use a forward slash as the '
-                                   .'path seperator.  On Linux systems use mysqldump for Windows systems use mysqldump.exe.  If the path tried does not work please contact your hosting '
-                                   .'provider for details on the correct path.', 'duplicator');
-                               ?>"></i>
+                                esc_attr_e('Add a custom path if the path to mysqldump is not properly detected.   For all paths use a forward slash as the '
+                                   . 'path seperator.  On Linux systems use mysqldump for Windows systems use mysqldump.exe.  If the path tried does not work please contact your hosting '
+                                   . 'provider for details on the correct path.', 'duplicator');
+                                                ?>"></i>
                             <br/>
-                            <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo esc_attr($package_mysqldump_path); ?>" placeholder="<?php esc_attr_e("/usr/bin/mypath/mysqldump", 'duplicator'); ?>" />
+                            <input 
+                                type="text" name="package_mysqldump_path" 
+                                id="package_mysqldump_path" 
+                                value="<?php echo esc_attr($package_mysqldump_path); ?>" 
+                                placeholder="<?php esc_attr_e("/usr/bin/mypath/mysqldump", 'duplicator'); ?>" 
+                            >
                             <div class="dup-feature-notfound">
                                 <?php
                                 if (!$mysqlDumpFound && strlen($mysqldump_exe_file)) {
                                     _e('<i class="fa fa-exclamation-triangle fa-sm"></i> The custom path provided is not recognized as a valid mysqldump file:<br/>', 'duplicator');
                                     $mysqldump_path = esc_html($package_mysqldump_path);
-                                    echo "'".esc_html($mysqldump_path)."'";
+                                    echo "'" . esc_html($mysqldump_path) . "'";
                                 }
                                 ?>
                             </div>
@@ -187,29 +198,34 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                             <?php esc_html_e("Single-Threaded", 'duplicator'); ?>
                         </option>
                         <option  disabled="disabled"  value="0">
-                            <?php esc_html_e("Multi-Threaded", 'duplicator'); ?>
+                            <?php esc_html_e("Multi-Threaded (Pro)", 'duplicator'); ?>
                         </option>
                     </select>
                     <i style="margin-right:7px;" class="fas fa-question-circle fa-sm"
                        data-tooltip-title="<?php esc_attr_e("PHP Code Mode:", 'duplicator'); ?>"
                        data-tooltip="<?php
-                       esc_attr_e('Single-Threaded mode attempts to create the entire database script in one request.  Multi-Threaded mode allows the database script '
-                           .'to be chunked over multiple requests.  Multi-Threaded mode is typically slower but much more reliable especially for larger databases.', 'duplicator');
-                       esc_attr_e('<br><br><i>Multi-Threaded mode is only available in Duplicator Pro.</i>', 'duplicator');
-                       ?>"></i>
+                        esc_attr_e('Single-Threaded mode attempts to create the entire database script in one request.  Multi-Threaded mode allows the database script '
+                           . 'to be chunked over multiple requests.  Multi-Threaded mode is typically slower but much more reliable especially for larger databases.', 'duplicator');
+                        esc_attr_e('<br><br><i>Multi-Threaded mode is only available in Duplicator Pro.</i>', 'duplicator');
+                        ?>"></i>
                     <div>
                         <label for="package_phpdump_qrylimit"><?php esc_html_e("Query Limit Size", 'duplicator'); ?>:</label> &nbsp;
                         <select name="package_phpdump_qrylimit" id="package_phpdump_qrylimit">
                             <?php
                             foreach ($phpdump_chunkopts as $value) {
                                 $selected = ( $phpdump_qrylimit == $value ? "selected='selected'" : '' );
-                                echo "<option {$selected} value='".esc_attr($value)."'>".number_format($value).'</option>';
+                                echo "<option {$selected} value='" . esc_attr($value) . "'>" . number_format($value) . '</option>';
                             }
                             ?>
                         </select>
                         <i class="fas fa-question-circle fa-sm"
                            data-tooltip-title="<?php esc_attr_e("PHP Query Limit Size", 'duplicator'); ?>"
-                           data-tooltip="<?php esc_attr_e('A higher limit size will speed up the database build time, however it will use more memory.  If your host has memory caps start off low.', 'duplicator'); ?>"></i>
+                           data-tooltip="<?php esc_attr_e(
+                               'A higher limit size will speed up the database build time, however it will use more memory. ' .
+                               'If your host has memory caps start off low.',
+                               'duplicator'
+                           ); ?>">
+                        </i>
 
                     </div>
                 </div>
@@ -239,24 +255,44 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                 <br style="clear:both"/>
 
                 <!-- ZIPARCHIVE -->
-                <div class="engine-sub-opts" id="engine-details-1" style="display:none">
+                <div id="engine-details-1" style="display:none">
                     <p class="description">
-                        <?php
-                        esc_html_e('Creates a archive format (archive.zip).', 'duplicator');
-                        echo '<br/>';
-                        esc_html_e('This option uses the internal PHP ZipArchive classes to create a Zip file.', 'duplicator');
-                        ?>
+                        <?php esc_html_e('Creates a archive format (archive.zip).', 'duplicator');?><br/>
+                        <i>
+                            <?php
+                                esc_html_e('This option uses the internal PHP ZipArchive classes to create a zip file.', 'duplicator');
+                                echo '&nbsp; ';
+                                esc_html_e('Duplicator Lite has no fixed size constraints for zip formats.  The only constraints are timeouts '
+                                    . 'on the server.', 'duplicator');
+                            ?>
+                        </i>
                     </p>
                 </div>
 
                 <!-- DUPARCHIVE -->
-                <div class="engine-sub-opts" id="engine-details-2" style="display:none">
+                <div id="engine-details-2" style="display:none">
                     <p class="description">
                         <?php
-                        esc_html_e('Creates a custom archive format (archive.daf).', 'duplicator');
-                        echo '<br/>';
-                        esc_html_e('This option is recommended for large sites or sites on constrained servers.', 'duplicator');
+                            $utmCodes = "utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;"
+                                      . "utm_content=free_settings_package_duparchive&amp;utm_campaign=duplicator_pro";
+                            $proURL   = "https://snapcreek.com/duplicator?{$utmCodes}";
+                            esc_html_e('Creates a custom archive format (archive.daf).', 'duplicator');
                         ?>
+                        <br/>
+                        <i>
+                            <?php esc_html_e('This option is recommended for large sites or sites on constrained servers.', 'duplicator'); ?>
+                            <?php esc_html_e('Duplicator Lite has a fixed constraint of 500MB for daf formats.', 'duplicator'); ?>
+                            <?php
+                                printf(
+                                    _x(
+                                        'Consider upgrading to %1$sDuplicator Pro%2$s for unlimited large site support with DupArchive.',
+                                        '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
+                                        'duplicator'
+                                    ),
+                                    "<a href='{$proURL}' target='_blank'>", '</a>'
+                                );
+                            ?>
+                        </i>
                     </p>
                 </div>
             </td>
@@ -270,7 +306,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                 <p class="description">
                     <?php
                     esc_html_e("This will attempt to keep a network connection established for large archives.", 'duplicator');
-                    echo '<br/>';
+                    echo '&nbsp; ';
                     esc_html_e(" Valid only when Archive Engine for ZipArchive is enabled.");
                     ?>
                 </p>
@@ -282,23 +318,25 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
     <hr size="1" />
     <table class="form-table">
         <tr>
-            <th scope="row"><label><?php esc_html_e("Name", 'duplicator'); ?></label></th>
+            <th scope="row"><label><?php esc_html_e("File Name", 'duplicator'); ?></label></th>
             <td id="installer-name-mode-option" >
                 <b><?php esc_html_e("Default 'Save as' name:", 'duplicator'); ?></b> <br/>
                 <label>
-                    <i class='fas fa-lock lock-info'></i>
+                    <i class="fas fa-shield-alt fa-fw shield-off"></i>
+                    <input type="radio" name="installer_name_mode"
+                        value="<?php echo DUP_Settings::INSTALLER_NAME_MODE_SIMPLE; ?>"
+                        <?php checked($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_SIMPLE); ?>>
+                        <b class="dup-install-meta"><?php esc_html_e("Basic", 'duplicator'); ?></b> &nbsp;
+                        <?php echo DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH . '.php'; ?>
+                </label>
+                <br/>
+                <label>
+                    <i class="fas fa-shield-alt fa-fw shield-on"></i>
                     <input type="radio" name="installer_name_mode"
                         value="<?php echo DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH; ?>"
                         <?php checked($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH); ?> />
-                    [name]_[hash]_[date]_installer.php <i>(<?php esc_html_e("recommended", 'duplicator'); ?>)</i>
-                </label><br>
-                <label>
-                    <i class='fas fa-lock-open lock-info'></i>
-                    <input type="radio" name="installer_name_mode"
-                        value="<?php echo DUP_Settings::INSTALLER_NAME_MODE_SIMPLE; ?>"
-                        <?php checked($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_SIMPLE); ?> 
-                    >
-                    <?php echo DUP_Installer::DEFAULT_INSTALLER_FILE_NAME_WITHOUT_HASH . DUP_Installer::INSTALLER_SERVER_EXTENSION; ?>
+                    <b class="dup-install-meta"><?php esc_html_e("Secure", 'duplicator'); ?></b> &nbsp; [name]_[hash]_[time]_installer.php &nbsp;
+                    <i>(<?php esc_html_e("recommended", 'duplicator'); ?>)</i>
                 </label>
                 <p class="description">
                     <?php esc_html_e("To understand the importance and usage of the installer name, please", 'duplicator') ?>
@@ -306,29 +344,35 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                 </p>
                 <div id="dup-lite-inst-mode-details">
                     <p>
-                        <i><?php esc_html_e('Using the full hashed format provides a higher level of security by helping to prevent the discovery of the installer file.', 'duplicator'); ?></i> <br/>
-                        <b><?php esc_html_e('Hashed example', 'duplicator'); ?>:</b>  my-name_64fc6df76c17f2023225_19990101010101_installer.php
+                        <?php esc_html_e("Using a 'Secure' file helps prevent unauthorized access to the installer file.", 'duplicator'); ?> <br/>
+                        <i><b><?php esc_html_e('Example', 'duplicator'); ?>:</b>  my-name_64fc6df76c17f2023225_20220815053010_installer.php</i>
                     </p>
                     <p>
                         <?php
-                        esc_html_e('The Installer \'Name\' setting specifies the name of the installer used at download-time. It\'s recommended you choose the hashed name to better protect the installer file.  '
-                            .'Independent of the value of this setting, you can always change the name in the \'Save as\' file dialog at download-time. If you choose to use a custom name, use a filename that is '
-                            .'known only to you. Installer filenames	must end in \'.php\'.', 'duplicator');
+                        esc_html_e(
+                            'This setting specifies the name of the installer used at download-time.  Independent of the value of this setting, you can '
+                            . 'change the name of the installer in the "Save as" file dialog at download-time.  If you choose to use a custom name, '
+                            . 'use a file name that is known only to you. Installer filenames must end in "php".  Changes to the archive file should not '
+                            . 'be made.',
+                            'duplicator'
+                        );
                         ?>
                     </p>
                     <p>
                         <?php
-                        esc_html_e('It\'s important not to leave the installer files on the destination server longer than necessary.  '
-                            .'After installing the migrated or restored site, just logon as a WordPress administrator and follow the prompts to have the plugin remove the files.  '
-                            .'Alternatively, you can remove them manually.', 'duplicator');
+                        esc_html_e('Do not to leave any installer files on the destination server, after installing the migrated/restored site.  '
+                            . 'Logon as a WordPress administrator and follow the prompts to remove the installer files or remove them manually.', 'duplicator');
                         ?>
                     </p>
                     <p>
-                        <i class="fas fa-info-circle"></i>
-                        <?php
-                        esc_html_e('Tip: Each row on the packages screen includes a copy button that copies the installer name to the clipboard.  After clicking this button, paste the installer '
-                            .'name into the URL you\'re using to install the destination site. This feature is handy when using the hashed installer name.', 'duplicator');
-                        ?>
+                        <i>
+                            <i class="fas fa-info-circle fa-sm"></i>
+                            <?php
+                            esc_html_e('Tip: Each row on the packages screen includes a copy button to copy the installer name to the clipboard.  '
+                                . 'Paste the installer name from the clipboard into the URL being used to install the destination site.  '
+                                . 'This feature is handy when using the secure installer name.', 'duplicator');
+                            ?>
+                        </i>
                     </p>
                 </div>
             </td>
@@ -344,29 +388,29 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                 <select name="package_ui_created" id="package_ui_created">
                     <!-- YEAR -->
                     <optgroup label="<?php esc_html_e("By Year", 'duplicator'); ?>">
-                        <option value="1">Y-m-d H:i &nbsp;	[2000-01-05 12:00]</option>
-                        <option value="2">Y-m-d H:i:s		[2000-01-05 12:00:01]</option>
-                        <option value="3">y-m-d H:i &nbsp;	[00-01-05   12:00]</option>
-                        <option value="4">y-m-d H:i:s		[00-01-05   12:00:01]</option>
+                        <option value="1">Y-m-d H:i &nbsp;  [2000-01-05 12:00]</option>
+                        <option value="2">Y-m-d H:i:s       [2000-01-05 12:00:01]</option>
+                        <option value="3">y-m-d H:i &nbsp;  [00-01-05   12:00]</option>
+                        <option value="4">y-m-d H:i:s       [00-01-05   12:00:01]</option>
                     </optgroup>
                     <!-- MONTH -->
                     <optgroup label="<?php esc_html_e("By Month", 'duplicator'); ?>">
                         <option value="5">m-d-Y H:i  &nbsp; [01-05-2000 12:00]</option>
-                        <option value="6">m-d-Y H:i:s		[01-05-2000 12:00:01]</option>
+                        <option value="6">m-d-Y H:i:s       [01-05-2000 12:00:01]</option>
                         <option value="7">m-d-y H:i  &nbsp; [01-05-00   12:00]</option>
-                        <option value="8">m-d-y H:i:s		[01-05-00   12:00:01]</option>
+                        <option value="8">m-d-y H:i:s       [01-05-00   12:00:01]</option>
                     </optgroup>
                     <!-- DAY -->
                     <optgroup label="<?php esc_html_e("By Day", 'duplicator'); ?>">
-                        <option value="9"> d-m-Y H:i &nbsp;	[05-01-2000 12:00]</option>
-                        <option value="10">d-m-Y H:i:s		[05-01-2000 12:00:01]</option>
-                        <option value="11">d-m-y H:i &nbsp;	[05-01-00	12:00]</option>
-                        <option value="12">d-m-y H:i:s		[05-01-00	12:00:01]</option>
+                        <option value="9"> d-m-Y H:i &nbsp; [05-01-2000 12:00]</option>
+                        <option value="10">d-m-Y H:i:s      [05-01-2000 12:00:01]</option>
+                        <option value="11">d-m-y H:i &nbsp; [05-01-00   12:00]</option>
+                        <option value="12">d-m-y H:i:s      [05-01-00   12:00:01]</option>
                     </optgroup>
                 </select>
                 <p class="description">
                     <?php esc_html_e("The UTC date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?> <br/>
-                    <small><?php esc_html_e("To use WordPress timezone formats consider an upgrade to Duplicator Pro.", 'duplicator'); ?></small>
+                    <i><?php esc_html_e("To use WordPress timezone formats consider an upgrade to Duplicator Pro.", 'duplicator'); ?></i>
                 </p>
             </td>
         </tr>
@@ -393,7 +437,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                 case isMysqlDump :
                     $('#dbengine-details-1').show();
                     break;
-                case isPHPMode	 :
+                case isPHPMode   :
                 case isPHPChunkMode :
                     $('#dbengine-details-2').show();
                     break;

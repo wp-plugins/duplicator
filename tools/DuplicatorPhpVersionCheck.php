@@ -1,9 +1,11 @@
 <?php
+
 /**
  * These functions are performed before including any other Duplicator file so
  * do not use any Duplicator library or feature and use code compatible with PHP 5.2
  *
  */
+
 defined('ABSPATH') || exit;
 
 // In the future it will be included on both PRO and LITE so you need to check if the define exists.
@@ -11,7 +13,6 @@ if (!class_exists('DuplicatorPhpVersionCheck')) {
 
     class DuplicatorPhpVersionCheck
     {
-
         protected static $minVer       = null;
         protected static $suggestedVer = null;
 
@@ -38,10 +39,10 @@ if (!class_exists('DuplicatorPhpVersionCheck')) {
             <div class="error notice">
                 <p>
                     <?php
-                    $str = 'DUPLICATOR: '.__('Your system is running a very old version of PHP (%s) that is no longer supported by Duplicator.  ', 'duplicator');
+                    $str = 'DUPLICATOR: ' . __('Your system is running a very old version of PHP (%s) that is no longer supported by Duplicator.  ', 'duplicator');
                     printf($str, PHP_VERSION);
-                    
-                    $str = __('Please ask your host or server administrator to update to PHP %1s or greater.') . '<br/>';
+
+                    $str  = __('Please ask your host or server administrator to update to PHP %1s or greater.') . '<br/>';
                     $str .= __('If this is not possible, please visit the FAQ link titled ', 'duplicator');
                     $str .= '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-017-q" target="blank">';
                     $str .= __('"What version of PHP Does Duplicator Support?"', 'duplicator');

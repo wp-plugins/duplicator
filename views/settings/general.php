@@ -9,7 +9,6 @@ $action_response = __("General Settings Saved", 'duplicator');
 
 //SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
-
     //Nonce Check
     if (!isset($_POST['dup_settings_save_nonce_field']) || !wp_verify_nonce($_POST['dup_settings_save_nonce_field'], 'dup_settings_save')) {
         die('Invalid token permissions to perform this request.');
@@ -31,33 +30,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     $unhook_third_party_css = filter_input(INPUT_POST, 'unhook_third_party_css', FILTER_VALIDATE_BOOLEAN);
     DUP_Settings::Set('unhook_third_party_css', $unhook_third_party_css);
 
-    switch (filter_input(INPUT_POST, 'storage_position', FILTER_DEFAULT)) {
-        case DUP_Settings::STORAGE_POSITION_LECAGY:
-            $setPostion = DUP_Settings::STORAGE_POSITION_LECAGY;
-            break;
-        case DUP_Settings::STORAGE_POSITION_WP_CONTENT:
-        default:
-            $setPostion = DUP_Settings::STORAGE_POSITION_WP_CONTENT;
-            break;
-    }
-
-    if (DUP_Settings::setStoragePosition($setPostion) != true) {
-        $targetFolder = ($setPostion === DUP_Settings::STORAGE_POSITION_WP_CONTENT) ? DUP_Settings::getSsdirPathWpCont() : DUP_Settings::getSsdirPathLegacy();
-        ?>
-        <div id="message" class="notice notice-error is-dismissible">
-            <p>
-                <b><?php esc_html_e('Storage folder move problem'); ?></b>
-            </p>
-            <p>
-                <?php echo sprintf(__('Duplicator can\'t change the storage folder to <i>%s</i>', 'duplicator'), esc_html($targetFolder)); ?><br>
-                <?php echo sprintf(__('Check the parent folder permissions. ( <i>%s</i> )', 'duplicator'), esc_html(dirname($targetFolder))); ?>
-            </p>
-        </div>
-        <?php
-    }
-
     if (isset($_REQUEST['trace_log_enabled'])) {
-
         dup_log::trace("#### trace log enabled");
         // Trace on
 
@@ -114,9 +87,9 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Version", 'duplicator'); ?></label></th>
             <td>
-                <?php 
+                <?php
                     echo DUPLICATOR_VERSION . ' &nbsp; ';
-                    echo (stristr(DUPLICATOR_VERSION_BUILD, 'rc'))
+                    echo (stristr(DUPLICATOR_VERSION, 'rc'))
                         ? "<span style='color:red'>["  . DUPLICATOR_VERSION_BUILD . "]</span>"
                         : "<span style='color:gray'>[" . DUPLICATOR_VERSION_BUILD . "]</span>";
                 ?>
@@ -165,7 +138,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                     echo 'disabled';
                 }
                 ?> onclick="Duplicator.Pack.DownloadTraceLog(); return false">
-                    <i class="fa fa-download"></i> <?php echo esc_html__('Download Trace Log', 'duplicator').' ('.DUP_LOG::GetTraceStatus().')'; ?>
+                    <i class="fa fa-download"></i> <?php echo esc_html__('Download Trace Log', 'duplicator') . ' (' . DUP_LOG::GetTraceStatus() . ')'; ?>
                 </button>
             </td>
         </tr>
@@ -185,7 +158,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 <p class="description">
                     <?php
                     esc_html_e("This process will reset all packages by deleting those without a completed status, reset the active package id and perform a "
-                        ."cleanup of the build tmp file.", 'duplicator');
+                        . "cleanup of the build tmp file.", 'duplicator');
                     ?>
                     <i class="fas fa-question-circle fa-sm"
                        data-tooltip-title="<?php esc_attr_e("Reset Settings", 'duplicator'); ?>"
@@ -201,7 +174,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 <p class="description">
                     <?php
                     esc_html_e('If enabled all files check on scan will be skipped before package creation.  '
-                        .'In some cases, this option can be beneficial if the scan process is having issues running or returning errors.', 'duplicator');
+                        . 'In some cases, this option can be beneficial if the scan process is having issues running or returning errors.', 'duplicator');
                     ?>
                 </p>
             </td>
@@ -214,9 +187,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 <p class="description">
                     <?php
                     esc_html_e("Check this option if other plugins/themes JavaScript files are conflicting with Duplicator.", 'duplicator');
-                    ?>
-                    <br>
-                    <?php
+                    echo '<br/>';
                     esc_html_e("Do not modify this setting unless you know the expected result or have talked to support.", 'duplicator');
                     ?>
                 </p>
@@ -230,9 +201,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 <p class="description">
                     <?php
                     esc_html_e("Check this option if other plugins/themes CSS files are conflicting with Duplicator.", 'duplicator');
-                    ?>
-                    <br>
-                    <?php
+                    echo '<br/>';
                     esc_html_e("Do not modify this setting unless you know the expected result or have talked to support.", 'duplicator');
                     ?>
                 </p>
@@ -243,12 +212,13 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
             <td>
                 <input type="checkbox" name="wpfront_integrate" id="wpfront_integrate" <?php echo ($wpfront_integrate) ? 'checked="checked"' : ''; ?> <?php echo $wpfront_ready ? '' : 'disabled'; ?> />
                 <label for="wpfront_integrate"><?php esc_html_e("Enable User Role Editor Plugin Integration", 'duplicator'); ?></label>
-                <p class="description" style="max-width: 800px">
+                <p class="description">
                     <?php
-                    printf('%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
-                        .' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s '
-                        .' <a href="https://wpfront.com/integrations/duplicator-integration/?ref=3" target="_blank">%s</a>. %s'
-                        .' <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=user_role_plugin&utm_campaign=duplicator_pro" target="_blank">%s</a>.',
+                    printf(
+                        '%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
+                        . ' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s '
+                        . ' <a href="https://wpfront.com/integrations/duplicator-integration/?ref=3" target="_blank">%s</a>. %s'
+                        . ' <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=user_role_plugin&utm_campaign=duplicator_pro" target="_blank">%s</a>.',
                         esc_html__('To enable custom roles with Duplicator please install the ', 'duplicator'),
                         esc_html__('User Role Editor Free', 'duplicator'),
                         esc_html__('OR', 'duplicator'),
@@ -285,7 +255,11 @@ $reset_confirm->cancelText     = __('No', 'duplicator');
 $reset_confirm->closeOnConfirm = true;
 $reset_confirm->initConfirm();
 
-$msg_ajax_error                 = new DUP_UI_Messages(__('AJAX Call Error!', 'duplicator').'<br>'.__('AJAX error encountered when resetting packages. Please see <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-053-q" target="_blank">this FAQ entry</a> for possible resolutions.', 'duplicator'), DUP_UI_Messages::ERROR);
+$msg_ajax_error                 = new DUP_UI_Messages(
+    __('AJAX Call Error!', 'duplicator') . '<br>' .
+    __('AJAX error encountered when resetting packages. Please see <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-053-q" target="_blank">this FAQ entry</a> for possible resolutions.', 'duplicator'),
+    DUP_UI_Messages::ERROR
+);
 $msg_ajax_error->hide_on_init   = true;
 $msg_ajax_error->is_dismissible = true;
 $msg_ajax_error->initMessage();

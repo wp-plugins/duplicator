@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Custom exceptions
  *
@@ -8,6 +9,7 @@
  * @package SC\DUPX\U
  *
  */
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
@@ -74,12 +76,12 @@ class DupxException extends Exception
     // custom string representation of object
     public function __toString()
     {
-        $result = __CLASS__.": [{$this->code}]: {$this->message}";
+        $result = __CLASS__ . ": [{$this->code}]: {$this->message}";
         if ($this->haveFaqLink()) {
-            $result .= "\n\tSee FAQ ".$this->faqLink['label'].': '.$this->faqLink['url'];
+            $result .= "\n\tSee FAQ " . $this->faqLink['label'] . ': ' . $this->faqLink['url'];
         }
         if (!empty($this->longMsg)) {
-            $result .= "\n\t".strip_tags($this->longMsg);
+            $result .= "\n\t" . strip_tags($this->longMsg);
         }
         $result .= "\n";
         return $result;

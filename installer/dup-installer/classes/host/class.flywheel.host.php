@@ -1,6 +1,7 @@
 <?php
+
 /**
- * godaddy custom hosting class
+ * Flywheel custom hosting class
  *
  * Standard: PSR-2
  *
@@ -8,19 +9,21 @@
  * @link http://www.php-fig.org/psr/psr-2/
  *
  */
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
+use Duplicator\Installer\Core\Params\PrmMng;
+
 /**
- * class for GoDaddy managed hosting
+ * class for wordpress.com managed hosting
  *
  * @todo not yet implemneted
  *
  */
-class DUPX_FlyWheel_Host implements DUPX_Host_interface
+class DUPX_Flywheel_Host implements DUPX_Host_interface
 {
-
     /**
-     * return the current host identifier
+     * return the current host itentifier
      *
      * @return string
      */
@@ -36,8 +39,8 @@ class DUPX_FlyWheel_Host implements DUPX_Host_interface
     {
         // check only mu plugin file exists
 
-        $file = $GLOBALS['DUPX_ROOT'].'/.fw-config.php';
-        return file_exists($file);
+        $testFile = PrmMng::getInstance()->getValue(PrmMng::PARAM_PATH_NEW) . '/.fw-config.php';
+        return file_exists($testFile);
     }
 
     /**
@@ -48,7 +51,6 @@ class DUPX_FlyWheel_Host implements DUPX_Host_interface
      */
     public function init()
     {
-
     }
 
     /**
@@ -57,6 +59,16 @@ class DUPX_FlyWheel_Host implements DUPX_Host_interface
      */
     public function getLabel()
     {
-        return 'FlyWheel';
+        return 'Flywheel';
+    }
+
+    /**
+     * this function is called if current hosting is this
+     */
+    public function setCustomParams()
+    {
+        $paramsManager = PrmMng::getInstance();
+
+        $paramsManager->setValue(PrmMng::PARAM_ARCHIVE_ENGINE_SKIP_WP_FILES, DUP_Extraction::FILTER_SKIP_WP_CORE);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
@@ -7,7 +8,6 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  */
 class DUP_LITE_Plugin_Upgrade
 {
-
     const DUP_VERSION_OPT_KEY = 'duplicator_version_plugin';
 
     /**
@@ -24,7 +24,7 @@ class DUP_LITE_Plugin_Upgrade
             self::updateInstallation($oldDupVersion);
         }
 
-        //Initilize Backup Directories
+        //Init Database & Backup Directories
         self::updateDatabase();
         DUP_Util::initSnapshotDirectory();
     }
@@ -52,15 +52,15 @@ class DUP_LITE_Plugin_Upgrade
         //PRE 1.3.35
         //Do not update to new wp-content storage till after
         if (version_compare($oldVersion, '1.3.35', '<')) {
-            DUP_Settings::Set('storage_position', DUP_Settings::STORAGE_POSITION_LECAGY);
+            DUP_Settings::Set('storage_position', DUP_Settings::STORAGE_POSITION_LEGACY);
             DUP_Settings::Save();
         }
-        
+
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
     }
 
-    /**
+     /**
      * Runs for both new and update installs and creates the database tables
      *
      * @return void
@@ -69,7 +69,7 @@ class DUP_LITE_Plugin_Upgrade
     {
         global $wpdb;
 
-        $table_name = $wpdb->prefix."duplicator_packages";
+        $table_name = $wpdb->prefix . "duplicator_packages";
 
         //PRIMARY KEY must have 2 spaces before for dbDelta to work
         //see: https://codex.wordpress.org/Creating_Tables_with_Plugins
@@ -85,7 +85,7 @@ class DUP_LITE_Plugin_Upgrade
 			   KEY hash (hash))";
 
         $abs_path = duplicator_get_abs_path();
-        require_once($abs_path.'/wp-admin/includes/upgrade.php');
+        require_once($abs_path . '/wp-admin/includes/upgrade.php');
         @dbDelta($sql);
     }
 }

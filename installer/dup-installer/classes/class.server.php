@@ -1,129 +1,128 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
+defined("DUPXABSPATH") or die("");
+
+use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Libs\Snap\SnapIO;
+use Duplicator\Libs\Snap\SnapWP;
 
 /**
- * DUPX_cPanel  
+ * DUPX_cPanel
  * Wrapper Class for cPanel API  */
 class DUPX_Server
 {
-	/**
-	 * Returns true if safe mode is enabled
-	 */
-	public static $php_safe_mode_on = false;
+    /**
+     * A list of the core WordPress directories
+     */
+    public static $wpCoreDirsList = array(
+        'wp-admin',
+        'wp-includes'
+    );
 
-	/**
-	 * The servers current PHP version
-	 */
-	public static $php_version = 0;
+    public static function phpSafeModeOn()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+            // safe_mode  has been DEPRECATED as of PHP 5.3.0 and REMOVED as of PHP 5.4.0.
+            return false;
+        } else {
+            return filter_var(
+                ini_get('safe_mode'),
+                FILTER_VALIDATE_BOOLEAN,
+                array(
+                    'options' => array(
+                        'default' => false
+                    )
+                )
+            );
+        }
+    }
 
-	/**
-	 * The minimum PHP version the installer will support
-	 */
-	public static $php_version_min = "5.3.8";
+    /**
+     * Check given path prefixed with path array
+     *
+     * @param string $checkPath Path to check
+     * @param array $pathsArr check against
+     * @return boolean
+     */
+    private static function isPathPrefixedWithArrayPath($checkPath, $pathsArr)
+    {
+        foreach ($pathsArr as $path) {
+            if (0 === strpos($checkPath, $path)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Is the current servers version of PHP safe to use with the installer
-	 */
-	public static $php_version_safe = false;
-
-	/**
-	 * A list of the core WordPress directories
-	 */
-	public static $wpCoreDirsList = "wp-admin,wp-includes,wp-content";
-
-	public static function _init()
-	{
-		self::$php_safe_mode_on	 = in_array(strtolower(@ini_get('safe_mode')), array('on', 'yes', 'true', 1, "1"));
-		self::$php_version		 = phpversion();
-		self::$php_version_safe	 = (version_compare(phpversion(), self::$php_version_min) >= 0);
-	}
-
-	/**
-	 *  Display human readable byte sizes
-	 *  @param string $size		The size in bytes
-	 */
-	public static function is_dir_writable($path)
-	{
-		if (!@is_writeable($path)) return false;
-
-		if (is_dir($path)) {
-			if ($dh = @opendir($path)) {
-				closedir($dh);
-			} else {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 *  Can this server process in shell_exec mode
-	 *  @return bool
-	 */
-	public static function is_shell_exec_available()
-	{
-		if (array_intersect(array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded'), array_map('trim', explode(',', @ini_get('disable_functions'))))) {
+    /**
+     *  Can this server process in shell_exec mode
+     *
+     *  @return bool
+     */
+    public static function is_shell_exec_available()
+    {
+        if (array_intersect(array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded'), array_map('trim', explode(',', @ini_get('disable_functions'))))) {
             return false;
         }
 
-		//Suhosin: http://www.hardened-php.net/suhosin/
-		//Will cause PHP to silently fail.
-		if (extension_loaded('suhosin')) {
+        //Suhosin: http://www.hardened-php.net/suhosin/
+        //Will cause PHP to silently fail.
+        if (extension_loaded('suhosin')) {
             return false;
         }
 
         if (! function_exists('shell_exec')) {
-			return false;
-	    }
-
-		// Can we issue a simple echo command?
-		if (!@shell_exec('echo duplicator')) {
             return false;
         }
 
-		return true;
-	}
+        // Can we issue a simple echo command?
+        if (!@shell_exec('echo duplicator')) {
+            return false;
+        }
 
-	/**
-	 *  Returns the path this this server where the zip command can be called
-	 *  @return string	The path to where the zip command can be processed
-	 */
-	public static function get_unzip_filepath()
-	{
-		$filepath = null;
-		if (self::is_shell_exec_available()) {
-			if (shell_exec('hash unzip 2>&1') == NULL) {
-				$filepath = 'unzip';
-			} else {
-				$possible_paths = array('/usr/bin/unzip', '/opt/local/bin/unzip');
-				foreach ($possible_paths as $path) {
-					if (file_exists($path)) {
-						$filepath = $path;
-						break;
-					}
-				}
-			}
-		}
-		return $filepath;
-	}
-    
+        return true;
+    }
+
     /**
-     * 
+     *  Returns the path this this server where the zip command can be called
+     *
+     *  @return null|string     // null if can't find unzip
+     */
+    public static function get_unzip_filepath()
+    {
+        $filepath = null;
+        if (self::is_shell_exec_available()) {
+            if (shell_exec('hash unzip 2>&1') == null) {
+                $filepath = 'unzip';
+            } else {
+                $possible_paths = array('/usr/bin/unzip', '/opt/local/bin/unzip');
+                foreach ($possible_paths as $path) {
+                    if (file_exists($path)) {
+                        $filepath = $path;
+                        break;
+                    }
+                }
+            }
+        }
+        return $filepath;
+    }
+
+    /**
+     *
      * @return string[]
      */
     public static function getWpAddonsSiteLists()
     {
         $addonsSites  = array();
-        $pathsToCheck = $GLOBALS['DUPX_ROOT'];
-        
+        $pathsToCheck = DUPX_ArchiveConfig::getInstance()->getPathsMapping();
+
         if (is_scalar($pathsToCheck)) {
             $pathsToCheck = array($pathsToCheck);
         }
 
         foreach ($pathsToCheck as $mainPath) {
-            DupLiteSnapLibIOU::regexGlobCallback($mainPath, function ($path) use (&$addonsSites) {
-                if (DupLiteSnapLibUtilWp::isWpHomeFolder($path)) {
+            SnapIO::regexGlobCallback($mainPath, function ($path) use (&$addonsSites) {
+                if (SnapWP::isWpHomeFolder($path)) {
                     $addonsSites[] = $path;
                 }
             }, array(
@@ -135,94 +134,26 @@ class DUPX_Server
         return $addonsSites;
     }
 
-	/**
-	* Does the site look to be a WordPress site
-	*
-	* @return bool		Returns true if the site looks like a WP site
-	*/
-	public static function isWordPress()
-	{
-		$search_list  = explode(',', self::$wpCoreDirsList);
-		$root_files   = scandir($GLOBALS['DUPX_ROOT']);
-		$search_count = count($search_list);
-		$file_count   = 0;
-		foreach ($root_files as $file) {
-			if (in_array($file, $search_list)) {
-				$file_count++;
-			} 
-		}
-		return ($search_count == $file_count);
-	}
-
-    public static function parentWordfencePath()
+    /**
+     * Does the site look to be a WordPress site
+     *
+     * @return bool     Returns true if the site looks like a WP site
+     */
+    public static function isWordPress()
     {
-        $scanPath = $GLOBALS['DUPX_ROOT'];
-        $rootPath = DupLiteSnapLibIOU::getMaxAllowedRootOfPath($scanPath);
-
-        if ($rootPath === false) {
-            //$scanPath is not contained in open_basedir paths skip
+        $absPathNew = PrmMng::getInstance()->getValue(PrmMng::PARAM_PATH_WP_CORE_NEW);
+        if (!is_dir($absPathNew)) {
             return false;
         }
-
-        DUPX_Handler::setMode(DUPX_Handler::MODE_OFF);
-        $continueScan = true;
-        while ($continueScan) {
-            if (self::wordFenceFirewallEnabled($scanPath)) {
-                return $scanPath;
-                break;
-            }
-            $continueScan = $scanPath !== $rootPath && $scanPath != dirname($scanPath);
-            $scanPath     = dirname($scanPath);
+        if (($root_files = scandir($absPathNew)) == false) {
+            return false;
         }
-        DUPX_Handler::setMode();
-
-        return false;
-    }
-
-    protected static function wordFenceFirewallEnabled($path)
-    {
-        $configFiles = array(
-            'php.ini',
-            '.user.ini',
-            '.htaccess'
-        );
-
-        foreach ($configFiles as $configFile) {
-            $file = $path.'/'.$configFile;
-
-            if (!@is_readable($file)) {
-                continue;
-            }
-
-            if (($content = @file_get_contents($file)) === false) {
-                continue;
-            }
-
-            if (strpos($content, 'wordfence-waf.php') !== false) {
-                return true;
+        $file_count = 0;
+        foreach ($root_files as $file) {
+            if (in_array($file, self::$wpCoreDirsList)) {
+                $file_count++;
             }
         }
-
-        return false;
+        return (count(self::$wpCoreDirsList) == $file_count);
     }
-	
-	/**
-	* Is the web server IIS
-	*
-	* @return bool		Returns true if web server is IIS
-	*/
-    public static function isIISRunning()
-	{
-		$sSoftware = strtolower( $_SERVER["SERVER_SOFTWARE"] );
-		if ( strpos($sSoftware, "microsoft-iis") !== false ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-
-
 }
-//INIT Class Properties
-DUPX_Server::_init();

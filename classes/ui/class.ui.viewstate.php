@@ -1,4 +1,5 @@
 <?php
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Gets the view state of UI elements to remember its viewable state
@@ -13,7 +14,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  */
 
 // Exit if accessed directly
-if (! defined('DUPLICATOR_VERSION')) exit;
+if (! defined('DUPLICATOR_VERSION')) {
+    exit;
+}
 
 class DUP_UI_ViewState
 {
@@ -23,8 +26,7 @@ class DUP_UI_ViewState
      * @var string
      */
     private static $optionsViewStateKey = 'duplicator_ui_view_state';
-
-    /**
+/**
      * Save the view state of UI elements
      *
      * @param string $key A unique key to define the UI element
@@ -42,7 +44,7 @@ class DUP_UI_ViewState
     }
 
     /**
-     * 	Gets all the values from the settings array
+     *  Gets all the values from the settings array
      *
      *  @return array Returns and array of all the values stored in the settings array
      */
@@ -54,7 +56,7 @@ class DUP_UI_ViewState
     /**
      * Sets all the values from the settings array
      * @param array $view_state states
-     * 
+     *
      * @return boolean Returns whether updated or not
      */
     public static function setArray($view_state)

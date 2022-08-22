@@ -1,25 +1,89 @@
 <?php
+
+use Duplicator\Core\Controllers\ControllersManager;
+use Duplicator\Libs\Snap\SnapURL;
+use Duplicator\Libs\Snap\SnapUtil;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 // Exit if accessed directly
-if (! defined('DUPLICATOR_VERSION')) exit;
+if (! defined('DUPLICATOR_VERSION')) {
+    exit;
+}
 
-require_once(DUPLICATOR_PLUGIN_PATH . '/ctrls/ctrl.base.php'); 
+require_once(DUPLICATOR_PLUGIN_PATH . '/ctrls/ctrl.base.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.scancheck.php');
 
 /**
- * Controller for Tools 
+ * Controller for Tools
  * @package Duplicator\ctrls
  */
 class DUP_CTRL_Tools extends DUP_CTRL_Base
-{	 
-	/**
+{
+    /**
      *  Init this instance of the object
      */
-	function __construct() 
-	{
-		add_action('wp_ajax_DUP_CTRL_Tools_runScanValidator', array($this, 'runScanValidator'));
+    public function __construct()
+    {
+        add_action('wp_ajax_DUP_CTRL_Tools_runScanValidator', array($this, 'runScanValidator'));
         add_action('wp_ajax_DUP_CTRL_Tools_getTraceLog', array($this, 'getTraceLog'));
-	}
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public static function isToolPage()
+    {
+        return ControllersManager::isCurrentPage('duplicator-tools');
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public static function isDiagnosticPage()
+    {
+        return ControllersManager::isCurrentPage('duplicator-tools', 'diagnostics');
+    }
+
+    /**
+     * Return diagnostic URL
+     *
+     * @param bool $relative if true return relative URL else absolute
+     *
+     * @return string
+     */
+    public static function getDiagnosticURL($relative = true)
+    {
+        return ControllersManager::getMenuLink(
+            'duplicator-tools',
+            'diagnostics',
+            '',
+            array(),
+            $relative
+        );
+    }
+
+    /**
+     * Return clean installer files action URL
+     *
+     * @param bool $relative if true return relative URL else absolute
+     *
+     * @return string
+     */
+    public static function getCleanFilesAcrtionUrl($relative = true)
+    {
+        return ControllersManager::getMenuLink(
+            'duplicator-tools',
+            'diagnostics',
+            '',
+            array(
+                'action' => 'installer',
+                '_wpnonce' => wp_create_nonce('duplicator_cleanup_page')
+            ),
+            $relative
+        );
+    }
 
     /**
      * Calls the ScanValidator and returns a JSON result
@@ -30,9 +94,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
     {
         DUP_Handler::init_error_handler();
         check_ajax_referer('DUP_CTRL_Tools_runScanValidator', 'nonce');
-
         @set_time_limit(0);
-
         $isValid   = true;
         $inputData = filter_input_array(INPUT_POST, array(
             'recursive_scan' => array(
@@ -40,7 +102,6 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
                 'flags'   => FILTER_NULL_ON_FAILURE
             )
         ));
-
         if (is_null($inputData['recursive_scan'])) {
             $isValid = false;
         }
@@ -48,7 +109,6 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
         $result = new DUP_CTRL_Result($this);
         try {
             DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
-
             if (!$isValid) {
                 throw new Exception(__('Invalid Request.', 'duplicator'));
             }
@@ -61,8 +121,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
             $scanner            = new DUP_ScanCheck();
             $scanner->recursion = $inputData['recursive_scan'];
             $payload            = $scanner->run($path);
-
-            //RETURN RESULT
+//RETURN RESULT
             $test = ($payload->fileCount > 0)
                 ? DUP_CTRL_Status::SUCCESS
                 : DUP_CTRL_Status::FAILED;
@@ -75,15 +134,12 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
     public function getTraceLog()
     {
         DUP_Log::Trace("enter");
-        
         check_ajax_referer('DUP_CTRL_Tools_getTraceLog', 'nonce');
         Dup_Util::hasCapability('export');
-
         $file_path   = DUP_Log::GetTraceFilepath();
         $backup_path = DUP_Log::GetBackupTraceFilepath();
-        $zip_path    = DUP_Settings::getSsdirPath()."/".DUPLICATOR_ZIPPED_LOG_FILENAME;
+        $zip_path    = DUP_Settings::getSsdirPath() . "/" . DUPLICATOR_ZIPPED_LOG_FILENAME;
         $zipped      = DUP_Zip_U::zipFile($file_path, $zip_path, true, null, true);
-
         if ($zipped && file_exists($backup_path)) {
             $zipped = DUP_Zip_U::zipFile($backup_path, $zip_path, false, null, true);
         }
@@ -93,16 +149,12 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: private", false);
         header("Content-Transfer-Encoding: binary");
-
         $fp = fopen($zip_path, 'rb');
-
         if (($fp !== false) && $zipped) {
             $zip_filename = basename($zip_path);
-
             header("Content-Type: application/octet-stream");
             header("Content-Disposition: attachment; filename=\"$zip_filename\";");
-
-            // required or large files wont work
+        // required or large files wont work
             if (ob_get_length()) {
                 ob_end_clean();
             }
@@ -128,5 +180,4 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 
         exit;
     }
-	
 }

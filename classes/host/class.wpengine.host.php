@@ -1,5 +1,6 @@
 <?php
-defined("ABSPATH") or die("");
+
+use Duplicator\Libs\Snap\SnapIO;
 
 // New encryption class
 
@@ -21,7 +22,10 @@ class DUP_WPEngine_Host implements DUP_Host_interface
 
     public function isHosting()
     {
-        return apply_filters('duplicator_wp_engine_host_check', file_exists(DupLiteSnapLibIOU::safePathUntrailingslashit(WPMU_PLUGIN_DIR).'/wpengine-security-auditor.php'));
+        return apply_filters(
+            'duplicator_wp_engine_host_check',
+            file_exists(SnapIO::safePathUntrailingslashit(WPMU_PLUGIN_DIR) . '/wpengine-security-auditor.php')
+        );
     }
 
     public static function installerFilePath($path)
@@ -36,7 +40,7 @@ class DUP_WPEngine_Host implements DUP_Host_interface
 
     public static function globalFileFilters($files)
     {
-        $files[] = wp_normalize_path(WP_CONTENT_DIR).'/mysql.sql';
+        $files[] = wp_normalize_path(WP_CONTENT_DIR) . '/mysql.sql';
         return $files;
     }
 
@@ -45,5 +49,4 @@ class DUP_WPEngine_Host implements DUP_Host_interface
         $defaults['package_zip_flush'] = '1';
         return $defaults;
     }
-
 }

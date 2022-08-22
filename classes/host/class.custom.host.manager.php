@@ -10,15 +10,16 @@
  * @link http://www.php-fig.org/psr/psr-2/
  *
  */
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-require_once (DUPLICATOR_PLUGIN_PATH . '/classes/host/interface.host.php');
-require_once (DUPLICATOR_PLUGIN_PATH . '/classes/host/class.godaddy.host.php');
-require_once (DUPLICATOR_PLUGIN_PATH . '/classes/host/class.wpengine.host.php');
-require_once (DUPLICATOR_PLUGIN_PATH . '/classes/host/class.wordpresscom.host.php');
-require_once (DUPLICATOR_PLUGIN_PATH . '/classes/host/class.liquidweb.host.php');
-require_once (DUPLICATOR_PLUGIN_PATH . '/classes/host/class.pantheon.host.php');
-require_once (DUPLICATOR_PLUGIN_PATH . '/classes/host/class.flywheel.host.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/host/interface.host.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/host/class.godaddy.host.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/host/class.wpengine.host.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/host/class.wordpresscom.host.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/host/class.liquidweb.host.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/host/class.pantheon.host.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/host/class.flywheel.host.php');
 
 class DUP_Custom_Host_Manager
 {
@@ -60,7 +61,7 @@ class DUP_Custom_Host_Manager
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
-            self::$instance = new self;
+            self::$instance = new self();
         }
         return self::$instance;
     }
@@ -142,17 +143,17 @@ class DUP_Custom_Host_Manager
 
     public function WPConfigIsNotWriteable()
     {
-        $wpConfigPath = duplicator_get_abs_path()."/wp-config.php";
+        $wpConfigPath = duplicator_get_abs_path() . "/wp-config.php";
 
         return file_exists($wpConfigPath) && !is_writeable($wpConfigPath);
     }
 
     public function notAccessibleCoreDirPresent()
     {
-        $absPath = duplicator_get_abs_path();
+        $absPath  = duplicator_get_abs_path();
         $coreDirs = array(
-            $absPath.'/wp-admin',
-            $absPath.'/wp-includes',
+            $absPath . '/wp-admin',
+            $absPath . '/wp-includes',
             WP_CONTENT_DIR
         );
 

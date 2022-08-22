@@ -22,14 +22,16 @@ i.grey-icon {color:#777}
 .no-decoration {text-decoration:none;}
 p.description {padding-top:3px}
 .dup-guide-txt-color {color:#b0b0b0;}
+i.shield-on {color:#337114}
+i.shield-off {color:maroon}
 
 /*TABS*/
 ul.category-tabs li {cursor:pointer;user-select: none;}
 
 /*BOXES:Expandable sections */
 div.dup-box {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}
-div.dup-box-title {font-size:20px; padding:12px 0 3px 12px; font-weight:bold; cursor:pointer;  height:30px;  margin:0; color:#000; }
-div.dup-box-title:hover {color:#555;}
+div.dup-box-title {font-size:20px; padding:12px 0 3px 12px; font-weight:bold; cursor:pointer;  height:30px;  margin:0; color:#000; user-select:none; }
+div.dup-box-title:hover {background-color: #f9f9f9;}
 div.dup-box-arrow {text-decoration:none!important; float:right; width:27px; height:30px; font-size:16px; cursor:pointer; padding:1px 0 0 0; white-space:nowrap}
 div.dup-box-panel {padding:10px 15px 10px 15px;  border-top:1px solid #EEEEEE; margin:-1px 0 0 0;}
 div.dup-redirect {font-size:16px; font-weight:bold; padding:10px}
@@ -65,6 +67,34 @@ div.dup-global-error-reserved-files b.pass-msg {color:green; font-size:20px}
 div.dup-global-error-reserved-files p.pass-lnks {line-height:24px; margin:-7px 0 0 5px}
 div.dup-global-error-reserved-files div.pass-msg {padding:5px 0 0 10px; font-size:11px; color:#999; font-style:italic}
 div.dup-wpnotice-box {display:none;}
+
+.dup-migration-pass-wrapper p {
+    font-size: 14px;
+}
+
+.dup-migration-pass-title {
+    color: green;
+    font-size: 20px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.dup-stored-minstallation-files {
+    margin-left: 20px;
+    line-height: 1;
+    font-style: italic;
+    margin-top: 0;
+    font-size: 12px;
+}
+
+.dup-migration-pass-wrapper .sub-note {
+    font-size: 12px;
+}
+
+label.dup-store-lbl:hover {
+  color:#000;
+  font-weight:500;
+}
 
 /*================================================
 PARSLEY:Overrides*/
@@ -210,6 +240,8 @@ div.dup-screen-hlp-info {line-height:26px; padding:10px 0 10px 0}
 }
 
 /** Settings **/
+.dup-settings-pages p.description {max-width:700px; font-size:13px; color:#666; padding-left:15px; text-align:justify; }
+#dup-lite-inst-mode-details p {  margin:1em 0; max-width:700px; font-size:13px; color:#666; padding-left:15px; text-align:justify;}
 #installer-name-mode-option {
     line-height:25px;
 }
@@ -221,9 +253,7 @@ div.dup-screen-hlp-info {line-height:26px; padding:10px 0 10px 0}
     line-height:18px;
 }
 
-#dup-lite-inst-mode-details p {
-    margin:1em 0;
-}
+
 
 .storage_pos_fixed_label {
     display:inline-block;

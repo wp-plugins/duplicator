@@ -1,4 +1,5 @@
 <?php
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Recursivly scans a directory and finds all sym-links and unreadable files
@@ -13,7 +14,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  */
 
 // Exit if accessed directly
-if (! defined('DUPLICATOR_VERSION')) exit;
+if (! defined('DUPLICATOR_VERSION')) {
+    exit;
+}
 
 class DUP_ScanCheck
 {
@@ -21,63 +24,52 @@ class DUP_ScanCheck
      * The number of files scanned
      */
     public $fileCount = 0;
-
-    /**
+/**
      * The number of directories scanned
      */
-    public $dirCount  = 0;
-
-    /**
+    public $dirCount = 0;
+/**
      * The maximum count of files before the recursive function stops
      */
     public $maxFiles = 1000000;
-
-    /**
+/**
      * The maximum count of directories before the recursive function stops
      */
     public $maxDirs = 75000;
-
-    /**
+/**
      * Recursivly scan the root directory provided
      */
     public $recursion = true;
-
-    /**
+/**
      * Stores a list of symbolic link files
      */
     public $symLinks = array();
-
-    /**
+/**
      *  Stores a list of files unreadable by PHP
      */
     public $unreadable = array();
-
-	 /**
+/**
      *  Stores a list of dirs with utf8 settings
      */
     public $nameTestDirs = array();
-
-	 /**
+/**
      *  Stores a list of files with utf8 settings
      */
     public $nameTestFiles = array();
-
-    /**
+/**
      *  If the maxFiles or maxDirs limit is reached then true
      */
     protected $limitReached = false;
-
-    /**
+/**
      *  Is the server running on Windows
      */
     private $isWindows = false;
-
-    /**
+/**
      *  Init this instance of the object
      */
-    function __construct()
+    public function __construct()
     {
-       $this->isWindows = defined('PHP_WINDOWS_VERSION_BUILD');
+        $this->isWindows = defined('PHP_WINDOWS_VERSION_BUILD');
     }
 
     /**
@@ -99,35 +91,33 @@ class DUP_ScanCheck
         $files = @scandir($dir);
         if (is_array($files)) {
             foreach ($files as $key => $value) {
-                $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+                $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
                 if ($path) {
                     //Files
                     if (!is_dir($path)) {
                         if (!is_readable($path)) {
                             $results[]          = $path;
                             $this->unreadable[] = $path;
-                        } else if ($this->isLink($path)) {
+                        } elseif ($this->isLink($path)) {
                             $results[]        = $path;
                             $this->symLinks[] = $path;
                         } else {
-							$name = basename($path);
-							$invalid_test =  preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name)
-								|| trim($name) == ''
-								|| (strrpos($name, '.') == strlen($name) - 1 && substr($name, -1) == '.')
-								|| preg_match('/[^\x20-\x7f]/', $name);
-
-							if ($invalid_test) {
-								if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
-									$this->nameTestFiles[] = utf8_decode($path);
-								} else {
-									$this->nameTestFiles[] = $path;
-								}
-							}
-						}
+                            $name         = basename($path);
+                            $invalid_test =  preg_match('/(\/|\*|\?|\>|\<|\:|\\|\|)/', $name)
+                                || trim($name) == ''
+                                || (strrpos($name, '.') == strlen($name) - 1 && substr($name, -1) == '.')
+                                || preg_match('/[^\x20-\x7f]/', $name);
+                            if ($invalid_test) {
+                                if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
+                                                    $this->nameTestFiles[] = utf8_decode($path);
+                                } else {
+                                            $this->nameTestFiles[] = $path;
+                                }
+                            }
+                        }
                         $this->fileCount++;
-                    }
-                    //Dirs
-                    else if ($value != "." && $value != "..") {
+                    } elseif ($value != "." && $value != "..") {
+                        //Dirs
                         if (!$this->isLink($path) && $this->recursion) {
                             $this->Run($path, $results);
                         }
@@ -135,23 +125,21 @@ class DUP_ScanCheck
                         if (!is_readable($path)) {
                             $results[]          = $path;
                             $this->unreadable[] = $path;
-                        } else if ($this->isLink($path)) {
+                        } elseif ($this->isLink($path)) {
                             $results[]        = $path;
                             $this->symLinks[] = $path;
                         } else {
-
-							$invalid_test = strlen($path) > 244
-								|| trim($path) == ''
-								|| preg_match('/[^\x20-\x7f]/', $path);
-
-							if ($invalid_test) {
-								if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
-									$this->nameTestDirs[] = utf8_decode($path);
-								} else {
-									$this->nameTestDirs[] = $path;
-								}
-							}
-						}
+                            $invalid_test = strlen($path) > 244
+                                || trim($path) == ''
+                                || preg_match('/[^\x20-\x7f]/', $path);
+                            if ($invalid_test) {
+                                if (! DUP_Util::$PHP7_plus && DUP_Util::isWindows()) {
+                                                    $this->nameTestDirs[] = utf8_decode($path);
+                                } else {
+                                            $this->nameTestDirs[] = $path;
+                                }
+                            }
+                        }
 
                         $this->dirCount++;
                     }
@@ -170,9 +158,9 @@ class DUP_ScanCheck
      */
     private function isLink($target)
     {
-		//Currently Windows does not support sym-link detection
+        //Currently Windows does not support sym-link detection
         if ($this->isWindows) {
-           return false;
+            return false;
         } elseif (is_link($target)) {
             return true;
         }

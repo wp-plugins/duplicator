@@ -1,23 +1,18 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.create.php');
-require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/class.duparchive.processing.failure.php');
+use Duplicator\Libs\DupArchive\States\DupArchiveCreateState;
+
+defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 class DUP_DupArchive_Create_State extends DupArchiveCreateState
 {
-    /* @var $package DUP_Package */
-  //  private $package;
-
-//    public function setPackage(&$package)
-     public function setPackage(&$package)
+    /**
+     * Class constructor
+     */
+    public function __construct()
     {
-  //      $this->package = &$package;
+        parent::__construct();
+        $this->throttleDelayInUs = 10;
     }
 
     // Only one active package so straightforward
@@ -25,22 +20,16 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
     public static function get_instance()
     {
         $instance = new DUP_DupArchive_Create_State();
-
-        $data = DUP_Settings::Get('duparchive_create_state');
-        
+        $data     = DUP_Settings::Get('duparchive_create_state');
         DUP_Util::objectCopy($data, $instance);
-       
         $instance->startTimestamp = time();
-
         DUP_Log::TraceObject("retrieving create state", $instance);
-        
         return $instance;
     }
 
     public static function createNew($archivePath, $basePath, $timeSliceInSecs, $isCompressed, $setArchiveOffsetToEndOfArchive)
     {
         $instance = new DUP_DupArchive_Create_State();
-
         if ($setArchiveOffsetToEndOfArchive) {
             $instance->archiveOffset = filesize($archivePath);
         } else {
@@ -59,9 +48,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         $instance->working               = true;
         $instance->skippedDirectoryCount = 0;
         $instance->skippedFileCount      = 0;
-
-        $instance->startTimestamp = time();
-
+        $instance->startTimestamp        = time();
         return $instance;
     }
 
@@ -71,10 +58,9 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
     }
 
     public function save()
-    {              
+    {
         DUP_Log::TraceObject("Saving create state", $this);
         DUP_Settings::Set('duparchive_create_state', $this);
-        
         DUP_Settings::Save();
     }
 }

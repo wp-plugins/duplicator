@@ -1,9 +1,9 @@
 <?php
-defined("ABSPATH") or die("");
+
+use Duplicator\Libs\Snap\SnapIO;
 
 class DUP_GoDaddy_Host implements DUP_Host_interface
 {
-
     public static function getIdentifier()
     {
         return DUP_Custom_Host_Manager::HOST_GODADDY;
@@ -11,7 +11,10 @@ class DUP_GoDaddy_Host implements DUP_Host_interface
 
     public function isHosting()
     {
-        return apply_filters('duplicator_godaddy_host_check', file_exists(DupLiteSnapLibIOU::safePathUntrailingslashit(WPMU_PLUGIN_DIR).'/gd-system-plugin.php'));
+        return apply_filters(
+            'duplicator_godaddy_host_check',
+            file_exists(SnapIO::safePathUntrailingslashit(WPMU_PLUGIN_DIR) . '/gd-system-plugin.php')
+        );
     }
 
     public function init()
