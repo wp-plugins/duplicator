@@ -11,7 +11,9 @@
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
 use Duplicator\Installer\Utils\Log\Log;
+
 class DUPX_DB
 {
     const DELETE_CHUNK_SIZE          = 500;
@@ -540,9 +542,9 @@ class DUPX_DB
     /**
      * Sets the MySQL connection's character set.
      *
-     * @param \mysqli  $dbh     The resource given by mysqli_connect
-     * @param string   $charset The character set (optional)
-     * @param string   $collate The collation (optional)
+     * @param \mysqli $dbh     The resource given by mysqli_connect
+     * @param ?string $charset The character set, null default value
+     * @param ?string $collate The collation, null default value
      */
     public static function setCharset($dbh, $charset = null, $collate = null)
     {
@@ -552,16 +554,22 @@ class DUPX_DB
 
         $charset = (!isset($charset) ) ? $GLOBALS['DBCHARSET_DEFAULT'] : $charset;
         $collate = (!isset($collate) ) ? '' : $collate;
+
         if (empty($charset)) {
             return true;
         }
 
         if (function_exists('mysqli_set_charset') && self::hasAbility($dbh, 'set_charset')) {
-            if (($result1 = mysqli_set_charset($dbh, $charset)) === false) {
-                $errMsg = mysqli_error($dbh);
-                Log::info('DATABASE ERROR: mysqli_set_charset ' . Log::v2str($charset) . ' MSG: ' . $errMsg);
-            } else {
-                Log::info('DATABASE: mysqli_set_charset ' . Log::v2str($charset), Log::LV_DETAILED);
+            try {
+                if (($result1 = mysqli_set_charset($dbh, $charset)) === false) {
+                    $errMsg = mysqli_error($dbh);
+                    Log::info('DATABASE ERROR: mysqli_set_charset ' . Log::v2str($charset) . ' MSG: ' . $errMsg);
+                } else {
+                    Log::info('DATABASE: mysqli_set_charset ' . Log::v2str($charset), Log::LV_DETAILED);
+                }
+            } catch (Exception $e) {
+                Log::info('DATABASE ERROR: mysqli_set_charset ' . Log::v2str($charset) . ' MSG: ' . $e->getMessage());
+                $result1 = false;
             }
 
             if (!empty($collate)) {

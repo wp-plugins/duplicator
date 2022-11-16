@@ -18,12 +18,15 @@ use Duplicator\Installer\Core\Params\Items\ParamItem;
 use Duplicator\Installer\Core\Params\Items\ParamForm;
 use Duplicator\Installer\Core\Params\Items\ParamOption;
 use DUPX_InstallerState;
+use DUPX_ArchiveConfig;
 
 /**
  * class where all parameters are initialized. Used by the param manager
  */
 final class ParamDescEngines implements DescriptorInterface
 {
+    const AUTO_SKIP_PATH_REPLACE_LIST = ['', '/html'];
+
     /**
      * Init params
      *
@@ -241,7 +244,7 @@ final class ParamDescEngines implements DescriptorInterface
             PrmMng::PARAM_DB_CHUNK,
             ParamForm::TYPE_BOOL,
             array(
-            'default' => ($params[PrmMng::PARAM_DB_ENGINE]->getValue() === \DUPX_DBInstall::ENGINE_CHUNK)
+                'default' => ($params[PrmMng::PARAM_DB_ENGINE]->getValue() === \DUPX_DBInstall::ENGINE_CHUNK)
             )
         );
 
@@ -257,11 +260,25 @@ final class ParamDescEngines implements DescriptorInterface
             ))
         );
 
-        $params[PrmMng::PARAM_SKIP_PATH_REPLACE] = new ParamItem(
+        $oldHomePath                             = DUPX_ArchiveConfig::getInstance()->getRealValue('archivePaths')->home;
+        $params[PrmMng::PARAM_SKIP_PATH_REPLACE] = new ParamForm(
             PrmMng::PARAM_SKIP_PATH_REPLACE,
             ParamForm::TYPE_BOOL,
+            ParamForm::FORM_TYPE_CHECKBOX,
             array(
-            'default' => false
+                'default' => in_array($oldHomePath, self::AUTO_SKIP_PATH_REPLACE_LIST)
+            ),
+            array(
+                'label' => 'Skip Path Replace:',
+                'checkboxLabel' => 'Skips the replacement of the source path',
+                'status' => function (ParamForm $paramObj) {
+                    $sourcePath = PrmMng::getInstance()->getValue(PrmMng::PARAM_PATH_OLD);
+                    if (strlen($sourcePath) == 0) {
+                        return ParamForm::STATUS_DISABLED;
+                    } else {
+                        return ParamForm::STATUS_ENABLED;
+                    }
+                }
             )
         );
     }
@@ -280,12 +297,6 @@ final class ParamDescEngines implements DescriptorInterface
             DUPX_InstallerState::isRestoreBackup($params[PrmMng::PARAM_INST_TYPE]->getValue())
         ) {
             $params[PrmMng::PARAM_ARCHIVE_ACTION]->setValue(DUP_Extraction::ACTION_REMOVE_WP_FILES);
-        }
-
-        if ($params[PrmMng::PARAM_SKIP_PATH_REPLACE]->getStatus() !== ParamItem::STATUS_OVERWRITE) {
-            if (strlen($params[PrmMng::PARAM_PATH_OLD]->getValue()) === 0) {
-                $params[PrmMng::PARAM_SKIP_PATH_REPLACE]->setValue(true);
-            }
         }
 
         if (DUPX_InstallerState::isRestoreBackup($params[PrmMng::PARAM_INST_TYPE]->getValue())) {
@@ -412,14 +423,14 @@ SUBNOTEHTML;
             );
         }
 
-        if ($zipEnable) {
+        if ($manualEnable) {
+            $default = DUP_Extraction::ENGINE_MANUAL;
+        } elseif ($zipEnable) {
             $default = DUP_Extraction::ENGINE_ZIP_CHUNK;
         } elseif ($shellZipEnable) {
             $default = DUP_Extraction::ENGINE_ZIP_SHELL;
         } elseif ($dupEnable) {
             $default = DUP_Extraction::ENGINE_DUP;
-        } elseif ($manualEnable) {
-            $default = DUP_Extraction::ENGINE_MANUAL;
         } else {
             $default = null;
         }

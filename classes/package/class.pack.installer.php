@@ -120,9 +120,8 @@ web server is not set up properly.
 Please contact your host and ask them to enable "PHP" processing on your
 account.
 ----------------------------- NOTICE --------------------------------- */
-?>
 HEADER;
-        $installer_contents = $header . SnapCode::getSrcClassCode($template_filepath, false) . "\n/* DUPLICATOR_INSTALLER_EOF */";
+        $installer_contents = $header . SnapCode::getSrcClassCode($template_filepath, false, true) . "\n/* DUPLICATOR_INSTALLER_EOF */";
         // $installer_contents     = file_get_contents($template_filepath);
         // $csrf_class_contents = file_get_contents($csrf_class_filepath);
 
@@ -388,6 +387,7 @@ HEADER;
         $originalUrls                               = DUP_Archive::getOriginalUrls();
         $wpInfo->configs->realValues->siteUrl       = $originalUrls['abs'];
         $wpInfo->configs->realValues->homeUrl       = $originalUrls['home'];
+        $wpInfo->configs->realValues->loginUrl      = $originalUrls['login'];
         $wpInfo->configs->realValues->contentUrl    = $originalUrls['wpcontent'];
         $wpInfo->configs->realValues->uploadBaseUrl = $originalUrls['uploads'];
         $wpInfo->configs->realValues->pluginsUrl    = $originalUrls['plugins'];

@@ -17,16 +17,18 @@ class SnapCode
     /**
      * Get class code from file
      *
-     * @param string $file             file path
-     * @param bool   $wrapNamespace    if true wrap name space with brackets
-     * @param bool   $removeBalnkLines if treu remove balnk lines
-     * @param bool   $removeComments   if true remove comments
+     * @param string $file               file path
+     * @param bool   $wrapNamespace     if true wrap name space with brackets
+     * @param bool   $removeFirstPHPTag if true wrap name space with brackets
+     * @param bool   $removeBalnkLines  if treu remove balnk lines
+     * @param bool   $removeComments    if true remove comments
      *
      * @return string
      */
     public static function getSrcClassCode(
         $file,
         $wrapNamespace = true,
+        $removeFirstPHPTag = false,
         $removeBalnkLines = true,
         $removeComments = true
     ) {
@@ -36,6 +38,10 @@ class SnapCode
 
         if (($src = file_get_contents($file)) === false) {
             return '';
+        }
+
+        if ($removeFirstPHPTag) {
+            $src = preg_replace('/^(<\?php)/', "", $src);
         }
 
         if ($wrapNamespace) {

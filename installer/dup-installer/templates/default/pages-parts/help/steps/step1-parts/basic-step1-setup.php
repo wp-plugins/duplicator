@@ -4,14 +4,36 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 use Duplicator\Installer\Utils\Utils;
 ?>
 
+If no passwords were set on the installer or archive file then users will initially see step one of the installer.  The installer has two operating views
+that can be toggled via the Basic and Advanced buttons in the right-hand corner of the application.  These installer views can only be chosen on step 1.
+An overview of each view is explained below.
+<br/><br/>
+
+<b><i class="fas fa-angle-double-right"></i> Views:</b>
+<ul>
+    <li>
+        <b>Basic:</b>
+        This is a simple two-step mode with all options set to the defaults.  This is the default mode.  The Basic view is the easiest and fastest and
+        covers most setup types.   This is the recommended view for most installs.
+    </li>
+    <li>
+        <b>Advanced:</b>
+        This four-step mode allows for higher levels of customization with various detail settings. The Advanced view allows users to implement and apply
+        additional settings/features to the install process.   <br/>
+        <small class="hlp-lite-only">This is the only mode that Duplicator supported before version 1.5</small>
+    </li>
+</ul>
+
 <!-- ===================================
 OVERVIEW  -->
 <h3>Overview</h3>
-The overview section allows users to identify the install type and other details about the archive file.  The installer has two operating modes: Basic and 
-Advanced. Basic mode is the easiest and fastest install mode  and covers most setup types.   The Advanced mode allows users to implement and apply
-additional settings/features to the install process.   
-<br/><br/>
-Note: Duplicator Lite supports only single WordPress sites, while <a href="<?php echo Utils::getCampainUrl("lite_section_help") ?>" target="_blank">Duplicator Pro</a> supports single and multisite websites.
+The overview section allows users to identify the status, mode and select from the install type based on the user's install status.  Additionally there are
+other details about the archive file.   Below is an overview of the various status, mode and install types. <br/>
+
+<small class="hlp-lite-only">
+    Note: Duplicator Lite supports only single WordPress sites, while
+    <a href="<?php echo Utils::getCampainUrl("lite_section_help") ?>" target="_blank">Duplicator Pro</a> supports single and multisite websites.
+</small>
 <br/><br/>
 
 <h4>
@@ -21,21 +43,54 @@ Note: Duplicator Lite supports only single WordPress sites, while <a href="<?php
 This section will give an overview of the various install modes, methods and types that are currently being used.
 <br/><br/>
 
-<b><i class="fas fa-angle-double-right"></i> Mode:</b>
+<b><i class="fas fa-angle-double-right"></i> Status:</b>
 <ul>
     <li>
-        <b>Basic:</b>
-        This is a simple two-step mode with all options set to the defaults.  This is the default mode.
+        <b>Install - Single Site</b><br/>
+        This will perform the installation of a single WordPress site based on the associated method.
     </li>
     <li>
-        <b>Advanced:</b>
-        This four-step mode allows for higher levels of customization with various detail settings.<br/>
-        <small>This is the only mode that Duplicator supported before version 1.5</small>
+        <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Install - Multisite-Subdomain:</b><br/>
+        This is a full Multisite installation subdomain (i.e. subdomain.mysite.com) install. All sites in the network will be extracted and installed.
+    </li>
+    <li>
+        <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Install - Multisite-Subfolder:</b><br/>
+        This is a full Multisite installation via sub-folders install. All sites in the network will be extracted and installed.
+    </li>
+    <li>
+        <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Install - Standalone Site:</b><br/>
+        This installation converts the selected subsite into a standalone website.
+    </li>
+    <li>
+        <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Install - Archive Single Site into Subdomain/Subfolder Multisite:</b><br/>
+        This installation will insert the package site into the current multisite subdomain/subfolder setup.
+    </li>
+    <li>
+        <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Install - Selected Subsite in Subdomain/Subfolder Multisite:</b><br/>
+        This installation will insert the selected subsite of the package into the current subdomain/subfolder multisite installation.
+    </li>
+    <li>
+        <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Recovery - [Site Type]:</b><br/>
+        This status is enabled when the installer detects recovery mode installer was launched.  This process will overwrite this site from the recovery
+        point made on a specific date.  The site type will represent the type of site being recovered.
+    </li>
+    <li>
+         <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Restore Site Backup:</b><br/>
+        This method is enabled when the installer detects an archive is imported that matches the current setup.  The restore backup status restores the
+        original site by not performing any processing on the database or tables to ensure an exact copy of the original site exists.  Restore has the
+        following status types: <i>Restore: Single Site Backup, Restore - Multisite-Subdomain Backup, Restore - Multisite-Subfolder Backup</i>
     </li>
 </ul>
 
 
-<b><i class="fas fa-angle-double-right"></i> Method:</b>
+<b><i class="fas fa-angle-double-right"></i> Mode:</b>
 <ul>
     <li>
         <b>Standard Install</b>
@@ -72,18 +127,13 @@ This section will give an overview of the various install modes, methods and typ
             <li>Method is enabled when the installer detects an existing WordPress site is present.</li>
         </ul>
     </li>
-</ul>
-
-<b><i class="fas fa-angle-double-right"></i> Status:</b>
-<ul>
     <li>
-        <b>Standard Site Setup:</b>
-        This will perform the installation of a single WordPress site based on the associated method.
-    </li>
-    <li>
-        <b>Restore Site Backup:</b>
-        The restore backup status restores the original site by not performing any processing on the database or tables to ensure an exact copy
-        of the original site, exists.
+        <sup class="hlp-pro-lbl">Pro</sup>
+        <b>Custom Install</b><br/>
+        <ul>
+            <li>When the mode is custom this indicates the install is specifically driven by the status type.</li>
+            <li>See the status type of the install for all exact install details.</li>
+        </ul>
     </li>
 </ul>
 
@@ -100,7 +150,7 @@ This section will give an overview of the various install modes, methods and typ
     <i class="far fa-folder fa-fw"></i>
     Archive Tab
 </h4>
-The archive tab shows various details about the archive file and site details related to the site that was archived. With Duplicator Lite the following
+The archive tab shows various details about the archive file and site details related to the site that was archived. With Duplicator the following
 install modes are currently supported:
 <ul>
     <li>
@@ -115,7 +165,7 @@ install modes are currently supported:
     <li>
         <sup class="hlp-pro-lbl">Pro</sup>
         <b><a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-045-q" target="_blank">Import Install:</a></b> 
-        Drag and drop or use a URL for super-fast installs.  This Pro-only feature will import Lite archives.
+        Drag and drop or use a URL for super-fast installs.  This Pro-only feature will import both Pro and Lite archives.
         <ul>
             <li><b>Import File:</b>  Drag and drop an existing Duplicator Lite or Pro archive and quickly replace the existing WordPress site</li>
             <li><b>Import Link:</b> Provide a link to an existing Duplicator Lite or Pro archive and quickly replace the existing WordPress site.</li>

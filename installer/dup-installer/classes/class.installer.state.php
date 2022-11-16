@@ -595,9 +595,14 @@ class DUPX_InstallerState
      */
     public static function getAdminLogin()
     {
-        $paramsManager = PrmMng::getInstance();
-        $adminUrl      = rtrim($paramsManager->getValue(PrmMng::PARAM_SITE_URL), "/");
-        return $adminUrl . '/wp-login.php';
+        $paramsManager  = PrmMng::getInstance();
+        $archiveConfig  = \DUPX_ArchiveConfig::getInstance();
+        $adminUrl       = rtrim($paramsManager->getValue(PrmMng::PARAM_SITE_URL), "/");
+        $sourceAdminUrl = rtrim($archiveConfig->getRealValue("siteUrl"), "/");
+        $sourceLoginUrl = $archiveConfig->getRealValue("loginUrl");
+        $relLoginUrl    = substr($sourceLoginUrl, strlen($sourceAdminUrl));
+        $loginUrl       = $adminUrl . $relLoginUrl;
+        return $loginUrl;
     }
 
     /**

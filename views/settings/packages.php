@@ -22,9 +22,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     //Package
     $mysqldump_enabled = isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
     if (isset($_POST['package_mysqldump_path'])) {
-        $mysqldump_exe_file = SnapUtil::sanitizeNSCharsNewlineTrim($_POST['package_mysqldump_path']);
+        $mysqldump_exe_file = SnapUtil::sanitizeNSCharsNewlineTabs($_POST['package_mysqldump_path']);
         $mysqldump_exe_file = preg_match('/^([A-Za-z]\:)?[\/\\\\]/', $mysqldump_exe_file) ? $mysqldump_exe_file : '';
-        $mysqldump_exe_file = preg_replace('/[\'";]/m', '', $mysqldump_exe_file);
+        $mysqldump_exe_file = preg_replace('/[\'"]/m', '', $mysqldump_exe_file);
         $mysqldump_exe_file = DUP_Util::safePath($mysqldump_exe_file);
         $mysqldump_exe_file = DUP_DB::escSQL(strip_tags($mysqldump_exe_file), true);
     }
@@ -264,7 +264,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                 echo '&nbsp; ';
                                 esc_html_e('Duplicator Lite has no fixed size constraints for zip formats.  The only constraints are timeouts '
                                     . 'on the server.', 'duplicator');
-                            ?>
+                                ?>
                         </i>
                     </p>
                 </div>
@@ -289,9 +289,10 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                         '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
                                         'duplicator'
                                     ),
-                                    "<a href='{$proURL}' target='_blank'>", '</a>'
+                                    "<a href='{$proURL}' target='_blank'>",
+                                    '</a>'
                                 );
-                            ?>
+                                ?>
                         </i>
                     </p>
                 </div>

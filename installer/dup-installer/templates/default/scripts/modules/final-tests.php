@@ -8,14 +8,15 @@
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
+use Duplicator\Installer\Utils\Tests\WP\TestsExecuter;
 use Duplicator\Libs\Snap\SnapJson;
 
 
 ?>
 <script>
     DUPX.finalTests = {
-        frontendTest: <?php echo json_encode(DUPX_test_wordpress_exec::getFrontendUrl()); ?>,
-        backendTest: <?php echo json_encode(DUPX_test_wordpress_exec::getBackendUrl()); ?>,
+        frontendTest: <?php echo json_encode(TestsExecuter::getFrontendUrl()); ?>,
+        backendTest: <?php echo json_encode(TestsExecuter::getBackendUrl()); ?>,
         afterCallback: null,
         testsResults: {
             'wp_frontend': {

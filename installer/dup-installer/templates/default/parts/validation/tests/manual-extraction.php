@@ -14,12 +14,13 @@ $paramsManager = PrmMng::getInstance();
 ?><p>
     <b>Deployment Path:</b> <i><?php echo DUPX_U::esc_html($paramsManager->getValue(PrmMng::PARAM_PATH_NEW)); ?></i>
 </p>
-The installer has detected that the archive file has been extracted to the deployment path above.  To continue choose one of these options:
+The installer has detected that the archive file has been extracted to the deployment path above.
 
-<ol>
-    <li>Skip the extraction process by <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[enabling manual archive extraction]</a> </li>
-    <li>Ignore this message and continue with the install process to re-extract the archive file.</li>
-</ol>
+<p>
+    The installer has detected that the archive file has been extracted to the deployment path above. The installer is going
+    to skip the extraction process by default. If you want to re-extract the archive file, switch to "Advanced" mode, and
+    under "Options" > "Extraction Mode" choose the preferred extraction mode.
+</p>
 
 <small>
     Note: This test looks for a file named <i>dup-manual-extract__[HASH]</i> in the <?php echo DUPX_U::esc_html(DUPX_INIT); ?> directory. 

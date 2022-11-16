@@ -325,6 +325,7 @@ final class DUPX_Ctrl_Params
         $readParamsList = array(
             PrmMng::PARAM_EMAIL_REPLACE,
             PrmMng::PARAM_FULL_SEARCH,
+            PrmMng::PARAM_SKIP_PATH_REPLACE,
             PrmMng::PARAM_POSTGUID,
             PrmMng::PARAM_MAX_SERIALIZE_CHECK,
             PrmMng::PARAM_PLUGINS,

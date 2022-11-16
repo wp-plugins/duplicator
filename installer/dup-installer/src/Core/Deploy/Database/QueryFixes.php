@@ -45,7 +45,7 @@ class QueryFixes extends AbstractJsonSerializable
     /**
      * Filter props on json encode
      *
-     * @return strng[]
+     * @return string[]
      */
     public function __sleep()
     {
@@ -109,10 +109,9 @@ class QueryFixes extends AbstractJsonSerializable
     }
 
     /**
-     * return search and replace rules
+     * Set search and replace rules
      *
-     * @return array
-     * @throws Exception
+     * @return void
      */
     protected function rulesProcAndViews()
     {
@@ -160,6 +159,8 @@ class QueryFixes extends AbstractJsonSerializable
     }
 
     /**
+     * Set legacy charset adn collation rules
+     *
      * regex managed examples
      *  - `meta_value` longtext CHARACTER SET utf16 COLLATE utf16_slovak_ci DEFAULT NULL,
      *  - `comment_author` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -168,7 +169,7 @@ class QueryFixes extends AbstractJsonSerializable
      *
      * accept ['"`]charset['"`]
      *
-     * @return boolean|array
+     * @return void
      */
     public function legacyCharsetAndCollation()
     {
@@ -183,12 +184,12 @@ class QueryFixes extends AbstractJsonSerializable
             }, $invalidCharsets)) . ')';
 
             $this->globalRules['search'][]  = '/(^.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)(' .
-                $invalidChrRegex . ')([`\'"]?\s.*COLLATE\s*[\s=]\s*[`\'"]?)([^`\'"\s;]+)([`\'"]?.*$)/m';
+                $invalidChrRegex . ')([`\'"]?\s.*COLLATE\s*[\s=]\s*[`\'"]?)([^`\'"\s;,]+)([`\'"]?.*$)/m';
             $this->globalRules['replace'][] = '$1' . $defCharsetRegex . '$3' . $defCollateRegex . '$5';
-            $this->globalRules['search'][]  = '/(^.*COLLATE\s*[\s=]\s*[`\'"]?)([^`\'"\s;]+)([`\'"]?\s.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)(' .
-                $invalidChrRegex . ')([`\'"]?[\s;].*$)/m';
+            $this->globalRules['search'][]  = '/(^.*COLLATE\s*[\s=]\s*[`\'"]?)([^`\'"\s;,]+)([`\'"]?\s.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)(' .
+                $invalidChrRegex . ')([`\'"]?[\s;,].*$)/m';
             $this->globalRules['replace'][] = '$1' . $defCollateRegex . '$3' . $defCharsetRegex . '$5';
-            $this->globalRules['search'][]  = '/(^.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)(' . $invalidChrRegex . ')([`\'"]?[\s;].*$)/m';
+            $this->globalRules['search'][]  = '/(^.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)(' . $invalidChrRegex . ')([`\'"]?[\s;,].*$)/m';
             $this->globalRules['replace'][] = '$1' . $defCharsetRegex . '$3';
 
             $this->generatorLog .= "GLOBAL RULES ADDED: INVALID CHARSETS\n";
@@ -199,13 +200,13 @@ class QueryFixes extends AbstractJsonSerializable
                         return preg_quote($val, '/');
             }, $invalidCollations)) . ')';
 
-            $this->globalRules['search'][]  = '/(^.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)([^`\'"\s;]+)([`\'"]?\s.*COLLATE\s*[\s=]\s*[`\'"]?)(' .
-                $invalidColRegex . ')([`\'"]?[\s;].*$)/m';
+            $this->globalRules['search'][]  = '/(^.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)([^`\'"\s;,]+)([`\'"]?\s.*COLLATE\s*[\s=]\s*[`\'"]?)(' .
+                $invalidColRegex . ')([`\'"]?[\s;,].*$)/m';
             $this->globalRules['replace'][] = '$1' . $defCharsetRegex . '$3' . $defCollateRegex . '$5';
             $this->globalRules['search'][]  = '/(^.*COLLATE\s*[\s=]\s*[`\'"]?)(' .
-                $invalidColRegex . ')([`\'"]?\s.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)([^`\'"\s;]+)([`\'"]?.*$)/m';
+                $invalidColRegex . ')([`\'"]?\s.*(?:CHARSET|CHARACTER SET)\s*[\s=]\s*[`\'"]?)([^`\'"\s;,]+)([`\'"]?.*$)/m';
             $this->globalRules['replace'][] = '$1' . $defCollateRegex . '$3' . $defCharsetRegex . '$5';
-            $this->globalRules['search'][]  = '/(^.*COLLATE\s*[\s=]\s*[`\'"]?)(' . $invalidColRegex . ')([`\'"]?[\s;].*$)/m';
+            $this->globalRules['search'][]  = '/(^.*COLLATE\s*[\s=]\s*[`\'"]?)(' . $invalidColRegex . ')([`\'"]?[\s;,].*$)/m';
             $this->globalRules['replace'][] = '$1' . $defCollateRegex . '$3';
 
             $this->generatorLog .= "GLOBAL RULES ADDED: INVALID COLLATIONS\n";
@@ -213,9 +214,9 @@ class QueryFixes extends AbstractJsonSerializable
     }
 
     /**
-     * return search and replace table prefix rules
+     * Set search and replace table prefix rules
      *
-     * @return array
+     * @return void
      */
     protected function rulesTableNames()
     {

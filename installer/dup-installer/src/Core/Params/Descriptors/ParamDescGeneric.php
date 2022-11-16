@@ -19,6 +19,7 @@ use Duplicator\Installer\Core\Params\Items\ParamOption;
 use Duplicator\Installer\Core\Params\Items\ParamFormPass;
 use Duplicator\Installer\Utils\Log\Log;
 use Duplicator\Libs\Snap\SnapOS;
+use DUPX_ArchiveConfig;
 use DUPX_InstallerState;
 
 /**
@@ -149,10 +150,24 @@ final class ParamDescGeneric implements DescriptorInterface
             ),
             array(
                 'label'   => 'File Times:',
+                'status'        => function (ParamItem $paramObj) {
+                    if (DUPX_ArchiveConfig::getInstance()->isZipArchive()) {
+                        return ParamForm::STATUS_ENABLED;
+                    } else {
+                        return ParamForm::STATUS_DISABLED;
+                    }
+                },
                 'options' => array(
                     new ParamOption('current', 'Current', ParamOption::OPT_ENABLED, array('title' => 'Set the files current date time to now')),
                     new ParamOption('original', 'Original', ParamOption::OPT_ENABLED, array('title' => 'Keep the files date time the same'))
-                )
+                ),
+                'subNote' => function (ParamItem $paramObj) {
+                    if (DUPX_ArchiveConfig::getInstance()->isZipArchive()) {
+                        return '';
+                    } else {
+                        return 'This option is not supported for Dup Archive (.daf)';
+                    }
+                }
             )
         );
 

@@ -58,6 +58,23 @@ $expandClass = $sectionId == $open_section ? 'open' : 'close';
                 </td>
             </tr>
             <tr>
+                <td class="col-opt">Skip Path<br/> Replace</td>
+                <td>
+                    This is an advanced option that should be used when trying to install from either the "/" or "/html" location.   The following 
+                    conditions are set with this option when the install location is detected.
+                    <ul>
+                        <li>Source folder is <i>/</i> the parameter should be visible in read-only mode and not checkable.</li>
+                        <li>Source folder is <i>/html</i> the parameter must be check by default and kept checked.</li>
+                        <li>In other cases, the parameter must be inactive by default and checkable.</li>
+                    </ul>
+
+                    This option helps to resolve issues when the install path is either <i>"/" or "/html"</i>. In case the source path is /html this option
+                    is required to prevent data update conflicts.  For example the html_type option in the wp_options table with data such as
+                    <i>text/html</i> is replaced with text/[new_path] which can lead to other issues therefore this option is required to be checked to
+                    prevent those types of database update issues.
+                </td>
+            </tr>            
+            <tr>
                 <td class="col-opt">Email<br/> Domains</td>
                 <td>The domain portion of all email addresses will be updated if this option is enabled.</td>
             </tr>
@@ -94,7 +111,7 @@ $expandClass = $sectionId == $open_section ? 'open' : 'close';
                 </td>
             </tr>
             <tr>
-                <td class="col-opt">Serialized obj<br/> max size</td>
+                <td class="col-opt">Serialized<br/> Max Size</td>
                 <td>
                     Large serialized objects can cause a fatal error when Duplicator attempts to transform them. <br>
                     If a fatal error is generated, lower this limit. <br>

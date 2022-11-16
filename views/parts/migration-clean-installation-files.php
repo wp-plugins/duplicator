@@ -43,7 +43,7 @@ use Duplicator\Utils\CachesPurge\CachesPurge;
         ?>
         <p>
         <?php _e('Some of the installer files did not get removed, ', 'duplicator'); ?>
-            <span class="link-style" onclick="DupPro.Tools.removeInstallerFiles();">
+            <span class="link-style" onclick="Duplicator.Tools.deleteInstallerFiles();">
         <?php _e('please retry the installer cleanup process', 'duplicator'); ?>
             </span><br>
         <?php _e(' If this process continues please see the previous FAQ link.', 'duplicator'); ?>

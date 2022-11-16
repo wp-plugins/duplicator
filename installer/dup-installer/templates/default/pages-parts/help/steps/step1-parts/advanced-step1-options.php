@@ -84,8 +84,19 @@ These are the advanced options for advanced users.
 
             <sup class="hlp-pro-lbl">Pro</sup>
             <b>Remove all files except add-on sites and extract</b><br/>
-            All files except an add-on site will be removed, and then the archive will be extracted.
-            <br/>
+            All files except an add-on site will be removed, and then the archive will be extracted.  An add-on site is a site/domain that is stored in a
+            directory off of your main site that has been "added on" to your main hosting account.  For instance, when you purchased a hosting account it
+            could be for a.com.  Then after that, you decided to add b.com and c.com to the same hosting account.  The structure of this setup is often the
+            following although it can vary some:
+
+            <ul>
+                <li>/public_html - contains files for a.com</li>
+                <li>/public_html/b.com - contains files for b.com</li>
+                <li>/public_html/c.com - contains files for c.com</li>
+            </ul>
+
+            The directories /public_html/b.com and c.com contain the files for the add-on sites b.com and c.com (so the option above means that b.com and c.com
+            would be preserved and not deleted when you installed to a.com)
         </td>
     </tr>
     <tr>
@@ -116,6 +127,7 @@ These are the advanced options for advanced users.
         <td>
             When the archive is extracted it should show the current date-time or keep the original time it had when it was built.
             This setting will be applied to all files and directories.
+            <i>Note: Setting the Original time is currently only supported when using the ZipArchive Format.</i>
         </td>
     </tr>
     <tr>

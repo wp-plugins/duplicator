@@ -15,6 +15,7 @@ i[data-tooltip].fa-lightbulb-o {cursor:pointer; color:gray}
 span.btn-separator {content:''; display:inline-block; background:silver; margin:2px 3px; height:25px; width:1px; vertical-align:top;}
 a.grey-icon i.fa {color:#777}
 i.grey-icon {color:#777}
+.maroon {color:maroon}
 
 .no-display {display:none !important;}
 .link-style {color:#0074ab; cursor:pointer; text-decoration:underline;}

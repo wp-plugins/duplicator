@@ -14,6 +14,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Utils\Log\Log;
 use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Installer\Utils\Tests\WP\TestsExecuter;
 use Duplicator\Libs\Snap\SnapJson;
 use Duplicator\Libs\Snap\SnapString;
 use Duplicator\Libs\Snap\SnapUtil;
@@ -215,10 +216,10 @@ final class DUPX_Ctrl_ajax
                 $actionData = DUPX_S3_Funcs::getInstance()->updateWebsite();
                 break;
             case self::ACTION_FINAL_TESTS_PREPARE:
-                $actionData = DUPX_test_wordpress_exec::preTestPrepare();
+                $actionData = TestsExecuter::preTestPrepare();
                 break;
             case self::ACTION_FINAL_TESTS_AFTER:
-                $actionData = DUPX_test_wordpress_exec::afterTestClean();
+                $actionData = TestsExecuter::afterTestClean();
                 break;
             case self::ACTION_SET_AUTO_CLEAN_FILES:
                 if (DUPX_Ctrl_Params::setParamAutoClean()) {

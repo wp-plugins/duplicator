@@ -42,6 +42,7 @@ if (DUPX_InstallerState::isRestoreBackup()) {
 <div class="hdr-sub3 margin-top-2">Database Scan Options</div>
 <div  class="dupx-opts">
     <?php
+    $paramsManager->getHtmlFormParam(PrmMng::PARAM_SKIP_PATH_REPLACE);
     $paramsManager->getHtmlFormParam(PrmMng::PARAM_EMAIL_REPLACE);
     $paramsManager->getHtmlFormParam(PrmMng::PARAM_FULL_SEARCH);
     $paramsManager->getHtmlFormParam(PrmMng::PARAM_POSTGUID);

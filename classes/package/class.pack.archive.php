@@ -804,6 +804,7 @@ class DUP_Archive
             $origUrls = array(
                 'home'      => $homeUrl,
                 'abs'       => site_url(),
+                'login'     => wp_login_url(),
                 'wpcontent' => content_url(),
                 'uploads'   => $updDirs['baseurl'],
                 'plugins'   => plugins_url(),

@@ -358,6 +358,7 @@ final class DUPX_S3_Funcs
     public function initLog()
     {
         $paramsManager = PrmMng::getInstance();
+        $labelPadSize  = 22;
 
         // make sure dbConnection is initialized
         $this->dbConnection();
@@ -377,6 +378,8 @@ final class DUPX_S3_Funcs
             "CHARSET CLIENT:\t" . Log::v2str($charsetClient) . "\n" .
             "********************************************************************************\n" .
             "OPTIONS:\n";
+
+        $log  .= str_pad('SKIP PATH REPLACE', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str($paramsManager->getValue(PrmMng::PARAM_SKIP_PATH_REPLACE)) . "\n";
 
         $wpConfigsKeys = array(
             PrmMng::PARAM_WP_CONF_DISALLOW_FILE_EDIT,
@@ -405,7 +408,7 @@ final class DUPX_S3_Funcs
         foreach ($wpConfigsKeys as $key) {
             $label = $paramsManager->getLabel($key);
             $value = SnapString::implodeKeyVals(', ', $paramsManager->getValue($key), '[%s = %s]');
-            $log  .= str_pad($label, 22, '_', STR_PAD_RIGHT) . ': ' . $value . "\n";
+            $log   .= str_pad($label, $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $value . "\n";
         }
         $log .= "********************************************************************************\n";
 

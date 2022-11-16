@@ -107,7 +107,7 @@ final class ParamDescReplace implements DescriptorInterface
             'max'              => 99,
             'step'             => 1,
             'wrapperClasses'   => array('small'),
-            'label'            => 'Serialized obj max size:',
+            'label'            => 'Serialized Max Size:',
             'postfix'         => array('type' => 'label', 'label' => 'MB'),
             'subNote'          => 'If the serialized object stored in the database exceeds this size, it will not be parsed for replacement.'
             . '<br><b>Too large a size in low memory installations can generate a fatal error.</b>'

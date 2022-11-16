@@ -204,7 +204,6 @@ class Bootstrap
         require_once(DUPX_INIT . '/classes/config/class.constants.php');
         require_once(DUPX_INIT . '/classes/config/class.conf.utils.php');
         require_once(DUPX_INIT . '/classes/class.installer.state.php');
-        require_once(DUPX_INIT . '/classes/tests/class.test.wordpress.exec.php');
         require_once(DUPX_INIT . '/ctrls/classes/class.ctrl.ajax.php');
         require_once(DUPX_INIT . '/ctrls/classes/class.ctrl.params.php');
         require_once(DUPX_INIT . '/ctrls/ctrl.base.php');

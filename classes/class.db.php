@@ -125,7 +125,9 @@ class DUP_DB extends wpdb
 
         $custom_mysqldump_path = DUP_Settings::Get('package_mysqldump_path');
         $custom_mysqldump_path = (strlen($custom_mysqldump_path)) ? $custom_mysqldump_path : '';
-//Common Windows Paths
+        $custom_mysqldump_path = escapeshellcmd($custom_mysqldump_path);
+
+        // Common Windows Paths
         if (DUP_Util::isWindows()) {
             $paths = array(
                 $custom_mysqldump_path,
@@ -137,7 +139,7 @@ class DUP_DB extends wpdb
                 'C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump',
                 'C:/Program Files/MySQL/MySQL Server 5.4/bin/mysqldump'
             );
-//Common Linux Paths
+        // Common Linux Paths
         } else {
             $paths = array(
                 $custom_mysqldump_path,
@@ -214,10 +216,9 @@ class DUP_DB extends wpdb
      * Returns all collation types that are assigned to the tables and columns table in
      * the current database.  Each element in the array is unique
      *
-     * @param array &$tablesToInclude A list of tables to include in the search.
-     *        Parameter does not change in the function, is passed by reference only to avoid copying.
+     * @param string[] $tablesToInclude A list of tables to include in the search.
      *
-     * @return array    Returns an array with all the collation types being used
+     * @return string[]    Returns an array with all the collation types being used
      */
     public static function getTableCollationList($tablesToInclude)
     {
@@ -240,6 +241,7 @@ class DUP_DB extends wpdb
 
                 $collations = array_unique(array_merge($collations, $wpdb->get_col()));
             }
+            $collations = array_values($collations);
             sort($collations);
         }
         return $collations;
@@ -249,7 +251,7 @@ class DUP_DB extends wpdb
      * Returns list of MySQL engines used by $tablesToInclude in the current DB
      *
      * @param string[] $tablesToInclude tables to check the engines for
-     * @return null
+     * @return string[]
      * @throws Exception
      */
     public static function getTableEngineList($tablesToInclude)
@@ -265,8 +267,9 @@ class DUP_DB extends wpdb
                     DUP_Log::info("GET TABLE ENGINES ERROR: " . $wpdb->last_error);
                 }
 
-                $engines = array_unique(array_merge($engines, $wpdb->get_col($query)));
+                $engines = array_merge($engines, $wpdb->get_col($query));
             }
+            $engines = array_values(array_unique($engines));
         }
 
         return $engines;
