@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Libs\Upsell;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <style>
@@ -32,7 +35,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
     <p style="text-align:center">
         <a 
-            href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=manual_transfer&utm_campaign=duplicator_pro" 
+            href="<?php echo esc_url(Upsell::getCampaignUrl('transfer-tab')); ?>"
             target="_blank" 
             class="button button-primary button-large dup-check-it-btn" 
         >

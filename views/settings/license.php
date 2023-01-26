@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Libs\Upsell;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <h3 class="title"><?php esc_html_e("Activation"); ?> </h3>
@@ -6,7 +9,15 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 <table class="form-table">
 <tr valign="top">
     <th scope="row"><?php esc_html_e("Manage") ?></th>
-    <td><?php echo sprintf(esc_html__('%1$sManage Licenses%2$s'), '<a target="_blank" href="https://snapcreek.com/dashboard?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=settings_license_manage_licenses">', '</a>'); ?></td>
+    <td>
+        <?php
+            echo sprintf(
+                __('%1$sManage Licenses%2$s', 'duplicator'),
+                '<a target="_blank" href="' . esc_url(Upsell::getCampaignUrl('license-tab', 'Manage Licenses')) . '">',
+                '</a>'
+            );
+            ?>
+    </td>
 </tr>
 <tr valign="top">
     <th scope="row"><?php esc_html_e("Type") ?></th>
@@ -14,7 +25,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
         <?php esc_html_e('Duplicator Lite'); ?>
         <div style="padding: 10px">
             <i class="far fa-check-square"></i> <?php esc_html_e('Basic Features'); ?> <br/>
-            <i class="far fa-square"></i> <a target="_blank" href="https://snapcreek.com/duplicator/comparison/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=pro_features&utm_campaign=duplicator_pro"><?php esc_html_e('Pro Features'); ?></a><br>
+            <i class="far fa-square"></i> 
+            <a target="_blank" 
+                href="<?php echo esc_url(Upsell::getCampaignUrl('license-tab', 'Pro Features')); ?>"
+            >
+                <?php esc_html_e('Pro Features'); ?>
+            </a><br>
         </div>
     </td>
 </tr>
@@ -32,7 +48,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
                 <li>
                     <?php
                         esc_html_e("If you would like to purchase the professional version you can ", 'duplicator');
-                        echo '<a href="https://snapcreek.com/duplicator?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=settings_license_get_copy_here_lite" target="_blank">' .  esc_html__("get a copy here", 'duplicator') . '</a>!';
+                        echo '<a href="' . esc_url(Upsell::getCampaignUrl('license-tab', 'get a copy here')) . '" target="_blank">' .
+                            esc_html__("get a copy here", 'duplicator') .
+                            '</a>!';
                     ?>
                 </li>
             </ul>

@@ -708,4 +708,29 @@ class SnapWP
 
         return $postTypeCount;
     }
+
+    /**
+     * Delete all user meta by key
+     *
+     * @param string $key
+     *
+     * @return bool true on success, false on failure
+     */
+    public static function deleteUserMetaKey($key)
+    {
+        /** @var wpdb $wpdb */
+        global $wpdb;
+
+        if (
+            $wpdb->delete(
+                $wpdb->usermeta,
+                ['meta_key' => $key],
+                ['%s']
+            ) === false
+        ) {
+            return false;
+        }
+
+        return true;
+    }
 }

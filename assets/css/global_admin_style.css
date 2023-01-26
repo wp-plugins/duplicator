@@ -45,3 +45,7 @@
 .duplicator-plugin-activation-admin-notice {
     display: block;
 }
+
+.dup-plugins-list-pro-upgrade {
+    color: #1da867!important;
+}

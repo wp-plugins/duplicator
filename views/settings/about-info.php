@@ -64,9 +64,9 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
                     <table style="text-align: center;width:100%; font-size:11px; font-style:italic; margin-top:35px">
                         <tr>
                             <td valign="top">
-                                <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
+                                <a href="<?php echo esc_url(\Duplicator\Core\Notifications\Review::getReviewUrl()); ?>" target="vote-wp"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
                                 <div  style=" font-size: 16px; font-weight: bold; line-height: 22px">
-                                    <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp">
+                                    <a href="<?php echo esc_url(\Duplicator\Core\Notifications\Review::getReviewUrl()); ?>" target="vote-wp">
                                         <?php
                                             esc_html_e('Support Duplicator', 'duplicator');
                                             echo '<br/>';
@@ -106,75 +106,7 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
                 <br style="clear:both" /><br/>
             </td>
         </tr>
-    </table><br/>
-
-
-    <!-- STAY IN THE LOOP  -->
-    <div class="dup-support-email-area">
-        <table class="dup-support-hlp-hdrs">
-            <tr>
-                <td style="height:30px; text-align: center;">
-                    <span style="display: inline-block; margin-top: 5px"><?php esc_html_e('Stay in the Loop', 'duplicator') ?></span>
-                </td>
-            </tr>
-        </table>
-        <div class="dup-support-hlp-txt">
-            <div class="email-box">
-                <div class="email-area">
-                    <!-- Begin MailChimp Signup Form -->
-                    <div class="email-form">
-                        <div style="width:425px; padding: 5px 0 15px 0; text-align: center; font-style: italic; margin: auto">
-                            <?php esc_html_e('Subscribe to the Duplicator newsletter and stay on top of great ideas, tutorials, and better ways to improve your workflows', 'duplicator') ?>...
-                        </div>
-
-
-                        <div id="mc_embed_signup">
-                            <form action="//snapcreek.us11.list-manage.com/subscribe/post?u=e2a9a514bfefa439bf2b7cf16&amp;id=1270a169c1" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-                                <div id="mc_embed_signup_scroll">
-                                    <div class="mc-field-group">
-                                        <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Your Best Email *">
-                                    </div>
-                                    <div id="mce-responses" class="clear">
-                                        <div class="response" id="mce-error-response" style="display:none"></div>
-                                        <div class="response" id="mce-success-response" style="display:none"></div>
-                                    </div>
-                                    <div style="position:absolute; left:-5000px;"><input type="text" name="b_e2a9a514bfefa439bf2b7cf16_1270a169c1" tabindex="-1" value=""></div>
-                                    <div style="margin: auto; text-align: center">
-                                        <input disabled="disabled" type="submit" class="button-primary button-large" value="Sign me up!" name="subscribe" id="mc-embedded-subscribe" >
-                                    </div>
-                                    <!-- Forces the submission to use Duplicator group -->
-                                    <input style="display:none" checked="checked" type="checkbox" value="1" name="group[15741][1]" id="mce-group[15741]-15741-0">
-                                </div>
-                                <div style="margin-top:10px; margin-left:100px; width: 650px;text-align:left">
-                                    <small>
-                                        <input type="checkbox" name="privacy" id="privacy-checkbox" />
-                                        <label for="privacy-checkbox" 
-                                            style="padding-left:5px; display:block; margin-top:-20px; margin-left:20px;"
-                                        >
-                                        Check box  this box if you would like us to contact you by email with helpful information about Duplicator and 
-                                        other Snap Creek products.<br/></br> We will process your data in accordance with our 
-                                        <a target="_blank" href="//snapcreek.com/privacy-policy">privacy policy</a>. 
-                                        You may withdraw this consent at any time by <a target="_blank" href="mailto:admin@snapcreek.com">emailing us</a>
-                                        or updating your information by clicking the unsubscribe link in the emails you receive.</span>
-                                    </label>
-                                    </small>
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-                    <script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
-                    <!--End mc_embed_signup-->
-                </div>
-            </div>
-
-
-
-        </div>
-    </div>
-    <br style="clear:both" /><br/>
+    </table>
 
 </div>
 </div><br/><br/><br/><br/>

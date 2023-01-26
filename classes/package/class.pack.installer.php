@@ -644,6 +644,12 @@ HEADER;
         );
 
         $result[] = array(
+            'sourcePath'  => DUPLICATOR_LITE_PATH . '/src/Libs/Upsell.php',
+            'archivePath' => 'dup-installer/libs/Upsell.php',
+            'label'       => 'Upgrade class'
+        );
+
+        $result[] = array(
             'sourcePath'  => DUPLICATOR_LITE_PATH . '/vendor/requests',
             'archivePath' => 'dup-installer/vendor/',
             'label'       => 'Requests library'

@@ -770,6 +770,4 @@ class SnapUtil
         }
         return phpinfo($flags);
     }
-
-
 }

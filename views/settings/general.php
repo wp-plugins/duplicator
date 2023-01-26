@@ -207,31 +207,6 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 </p>
             </td>
         </tr>
-        <tr>
-            <th scope="row"><label><?php esc_html_e("Custom Roles", 'duplicator'); ?></label></th>
-            <td>
-                <input type="checkbox" name="wpfront_integrate" id="wpfront_integrate" <?php echo ($wpfront_integrate) ? 'checked="checked"' : ''; ?> <?php echo $wpfront_ready ? '' : 'disabled'; ?> />
-                <label for="wpfront_integrate"><?php esc_html_e("Enable User Role Editor Plugin Integration", 'duplicator'); ?></label>
-                <p class="description">
-                    <?php
-                    printf(
-                        '%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
-                        . ' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s '
-                        . ' <a href="https://wpfront.com/integrations/duplicator-integration/?ref=3" target="_blank">%s</a>. %s'
-                        . ' <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=user_role_plugin&utm_campaign=duplicator_pro" target="_blank">%s</a>.',
-                        esc_html__('To enable custom roles with Duplicator please install the ', 'duplicator'),
-                        esc_html__('User Role Editor Free', 'duplicator'),
-                        esc_html__('OR', 'duplicator'),
-                        esc_html__('User Role Editor Professional', 'duplicator'),
-                        esc_html__('plugins.  Please note the User Role Editor Plugin is a separate plugin and does not unlock any Duplicator features.  For more information on User Role Editor plugin please see', 'duplicator'),
-                        esc_html__('the documentation', 'duplicator'),
-                        esc_html__('If you are interested in downloading Duplicator Pro then please use', 'duplicator'),
-                        esc_html__('this link', 'duplicator')
-                    );
-                    ?>
-                </p>
-            </td>
-        </tr>        
     </table>
 
     <p class="submit" style="margin: 20px 0px 0xp 5px;">

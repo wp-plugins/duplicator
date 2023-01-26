@@ -81,7 +81,7 @@ use Duplicator\Utils\CachesPurge\CachesPurge;
             echo '<br/>';
             _e(
                 'Show your support with a '
-                . '<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" '
+                . '<a href="' . esc_url(\Duplicator\Core\Notifications\Review::getReviewUrl()) . '" '
                 . 'target="_blank">5 star review</a>! We would be thrilled if you could!',
                 'duplicator'
             );

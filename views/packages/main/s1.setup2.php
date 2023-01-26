@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Libs\Upsell;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <style>
@@ -170,7 +173,9 @@ STORAGE -->
                                     '<i class="fas fa-network-wired fa-fw"></i>&nbsp;' . 'FTP/SFTP'
                                 );
                         ?>
-                                <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage_bw&utm_campaign=duplicator_pro" target="_blank"><?php esc_html_e('Duplicator Pro', 'duplicator');?></a>
+                                <a href="<?php echo esc_url(Upsell::getCampaignUrl('package-build-setup', 'Additional Storages')); ?>" target="_blank">
+                                    <?php esc_html_e('Duplicator Pro', 'duplicator');?>
+                                </a>
                                 <i class="fas fa-question-circle"
                                     data-tooltip-title="<?php esc_attr_e("Additional Storage:", 'duplicator'); ?>"
                                     data-tooltip="<?php esc_attr_e('Duplicator Pro allows you to create a package and store it at a custom location on this server or to a remote '
@@ -497,7 +502,7 @@ INSTALLER -->
         <tr>
             <td style="width:130px;"><b><?php esc_html_e("Branding", 'duplicator') ?></b></td>
             <td>
-                <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_branding&utm_campaign=duplicator_pro" target="_blank">
+                <a href="<?php echo esc_url(Upsell::getCampaignUrl('package-build-setup', 'Installer Branding')); ?>" target="_blank">
                     <span class="dup-pro-text"><?php esc_html_e('Available with Duplicator Pro - Freelancer!', 'duplicator'); ?></span></a> 
                 <i class="fas fa-question-circle fa-sm"
                        data-tooltip-title="<?php esc_attr_e("Branding", 'duplicator'); ?>:"
@@ -584,7 +589,9 @@ INSTALLER -->
                     <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL . "assets/img/cpanel-48.png"); ?>" style="width:16px; height:12px" />
                     <?php esc_html_e("Create the database and database user at install time without leaving the installer!", 'duplicator'); ?><br/>
                     <?php esc_html_e("This feature is only availble in ", 'duplicator'); ?>
-                    <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_cpanel&utm_campaign=duplicator_pro" target="_blank"><?php esc_html_e('Duplicator Pro!', 'duplicator');?></a><br/>
+                    <a href="<?php echo esc_url(Upsell::getCampaignUrl('package-build-setup', 'cPanel')); ?>" target="_blank">
+                        <?php esc_html_e('Duplicator Pro!', 'duplicator');?>
+                    </a><br/>
                     <small><i><?php esc_html_e("This feature works only with hosts that support cPanel.", 'duplicator'); ?></i></small>
             </div>
         </div>

@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Libs\Upsell;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 //Nonce Check
 if (!isset($_POST['dup_form_opts_nonce_field']) || !wp_verify_nonce(sanitize_text_field($_POST['dup_form_opts_nonce_field']), 'dup_form_opts')) {
@@ -12,7 +15,7 @@ $duparchive_build_nonce = wp_create_nonce('duplicator_duparchive_package_build')
 $active_package_present = true;
 
 //Help support Duplicator
-$atext0  = "<a target='_blank' href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5'>";
+$atext0  = "<a target='_blank' href='" . esc_url(\Duplicator\Core\Notifications\Review::getReviewUrl()) . "'>";
 $atext0 .= __('Help review the plugin', 'duplicator') . '!</a>';
 
 //Get even more power & features with Duplicator Pro
@@ -227,7 +230,7 @@ TOOL BAR:STEPS -->
                 esc_html_e('Notice:Duplicator Lite does not officially support WordPress multisite.', 'duplicator');
                 echo "<br/>";
                 esc_html_e('We strongly recommend upgrading to ', 'duplicator');
-                echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn6&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
+                echo "&nbsp;<i><a href='" . esc_url(Upsell::getCampaignUrl('package-build-complete', 'Multisite Get Pro')) . "' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
                 echo '</div>';
             }
             ?>
@@ -320,7 +323,7 @@ TOOL BAR:STEPS -->
                             . 'below 500MB or try the other options mentioned below.  Alternatively, you may want to consider',
                             'duplicator'
                         ); ?>
-                        <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=build_interrupt&amp;utm_campaign=duplicator_pro" target="_blank">
+                        <a href="<?php echo esc_url(Upsell::getCampaignUrl('package-build-complete', 'Build Failed Get Pro')); ?>" target="_blank">
                             Duplicator Pro,
                         </a>
                         <?php esc_html_e(' which is capable of migrating sites much larger than 500MB.'); ?>

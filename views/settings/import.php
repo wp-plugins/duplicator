@@ -19,7 +19,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
         ?>
     </div>
 
-    <a class="dup-btn-call-action" href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_tools_imports_checkitout&utm_campaign=duplicator_pro" target="_blank">
+    <a class="dup-btn-call-action" href="<?php echo esc_url(\Duplicator\Libs\Upsell::getCampaignUrl('import-tab')); ?>" target="_blank">
         <?php esc_html_e('Check It Out!', 'duplicator') ?>
     </a>
 </div>

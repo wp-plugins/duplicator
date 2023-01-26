@@ -50,6 +50,29 @@ final class ControllersManager
     }
 
     /**
+     * Return true if current page is a duplicator page
+     *
+     * @return boolean
+     */
+    public static function isDuplicatorPage()
+    {
+        if (!is_admin()) {
+            return false;
+        }
+
+        switch (SnapUtil::sanitizeStrictInput(SnapUtil::INPUT_REQUEST, 'page', '', '-_ ')) {
+            case 'duplicator':
+            case 'duplicator-pro':
+            case 'duplicator-settings':
+            case 'duplicator-tools':
+            case 'duplicator-help':
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
      * Return current action key or false if not exists
      *
      * @return string|bool

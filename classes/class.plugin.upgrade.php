@@ -11,6 +11,11 @@ class DUP_LITE_Plugin_Upgrade
     const DUP_VERSION_OPT_KEY = 'duplicator_version_plugin';
 
     /**
+     * wp_options key containing info about when the plugin was activated
+     */
+    const DUP_ACTIVATED_OPT_KEY = 'duplicator_activated';
+
+    /**
      * Called as part of WordPress register_activation_hook
      *
      * @return void
@@ -24,9 +29,25 @@ class DUP_LITE_Plugin_Upgrade
             self::updateInstallation($oldDupVersion);
         }
 
+        self::setActivatedTime();
+
         //Init Database & Backup Directories
         self::updateDatabase();
         DUP_Util::initSnapshotDirectory();
+    }
+
+    /**
+     * Set time of plugin activation in wp-options
+     *
+     * @return void
+     */
+    public static function setActivatedTime()
+    {
+        if (get_option(self::DUP_ACTIVATED_OPT_KEY, false) !== false) {
+            return;
+        }
+
+        update_option(self::DUP_ACTIVATED_OPT_KEY, array('lite' => time()));
     }
 
      /**

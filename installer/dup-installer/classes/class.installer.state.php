@@ -574,6 +574,7 @@ class DUPX_InstallerState
         $paramsManager = PrmMng::getInstance();
 
         return array(
+            'time'                => time(),
             'installType'         => $paramsManager->getValue(PrmMng::PARAM_INST_TYPE),
             'restoreBackupMode'   => self::isRestoreBackup(),
             'recoveryMode'        => false,

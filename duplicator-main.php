@@ -10,12 +10,16 @@
 defined('ABSPATH') || exit;
 
 use Duplicator\Core\MigrationMng;
+use Duplicator\Core\Notifications\Notice;
+use Duplicator\Core\Notifications\NoticeBar;
+use Duplicator\Core\Notifications\Review;
+use Duplicator\Libs\Upsell;
 use Duplicator\Lite as Duplicator;
 
 /* @var $currentPluginBootFile string */
 
 // CHECK IF PLUGIN CAN BE EXECTUED
-require_once(__DIR__ . "/tools/Lite/Requirements.php");
+require_once __DIR__ . '/src/Lite/Requirements.php';
 if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
     return;
 } else {
@@ -65,6 +69,9 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
         DUP_Util::init();
         DUP_DB::init();
         MigrationMng::init();
+        Notice::init();
+        NoticeBar::init();
+        Review::init();
 
         /** ========================================================
          * ACTIVATE/DEACTIVE/UPDATE HOOKS
@@ -112,6 +119,7 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
 
         add_action('admin_init', 'duplicator_admin_init');
         add_action('admin_menu', 'duplicator_menu');
+        add_action('admin_footer', 'duplicator_adjust_pro_menu_item_class');
         add_action('admin_enqueue_scripts', 'duplicator_admin_enqueue_scripts');
         DUP_UI_Notice::init();
 
@@ -126,6 +134,18 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
         $GLOBALS['CTRLS_DUP_CTRL_UI']      = new DUP_CTRL_UI();
         $GLOBALS['CTRLS_DUP_CTRL_Tools']   = new DUP_CTRL_Tools();
         $GLOBALS['CTRLS_DUP_CTRL_Package'] = new DUP_CTRL_Package();
+
+        //Add the class duplicator-pages to the <body> tag
+        add_filter('admin_body_class', function ($classes) {
+            if (
+                empty($_REQUEST['page']) ||
+                strpos($_REQUEST['page'], 'duplicator') === false
+            ) {
+                return $classes;
+            }
+
+            return $classes . ' duplicator-pages';
+        });
 
         /**
          * User role editor integration
@@ -252,19 +272,8 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
             $lang_txt      = esc_html__('Settings', 'duplicator');
             $page_settings = add_submenu_page('duplicator', $lang_txt, $lang_txt, $perms, 'duplicator-settings', 'duplicator_get_menu');
 
-            $perms                   = 'manage_options';
-            $admin_color             = get_user_option('admin_color');
-            $orange_for_admin_colors = array(
-                'fresh',
-                'coffee',
-                'ectoplasm',
-                'midnight'
-            );
-            $style                   = in_array($admin_color, $orange_for_admin_colors) ? 'style="color:#f18500"' : '';
-            $lang_txt                = esc_html__('Go Pro!', 'duplicator');
-            $go_pro_link             = '<span ' . $style . '>' . $lang_txt . '</span>';
-            $perms                   = apply_filters($wpfront_caps_translator, $perms);
-            $page_gopro              = add_submenu_page('duplicator', $go_pro_link, $go_pro_link, $perms, 'duplicator-gopro', 'duplicator_get_menu');
+            $text       = '<span id="dup-link-upgrade-highlight">' . __('Upgrade to Pro', 'duplicator') . "</span>";
+            $page_gopro = add_submenu_page('duplicator', $text, $text, 'manage_options', Upsell::getCampaignUrl('admin-menu', 'Upgrade to Pro'));
 
             //Apply Scripts
             add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
@@ -277,6 +286,33 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
             add_action('admin_print_styles-' . $page_settings, 'duplicator_styles');
             add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
             add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
+        }
+
+        /**
+         * Add the PRO badge to left sidebar menu item.
+         *
+         * @return void
+         */
+        function duplicator_adjust_pro_menu_item_class()
+        {
+            //Add to footer so it's applied on hovered item too
+            ?>
+            <script>jQuery(function($) {
+                $('#dup-link-upgrade-highlight').parent().attr('target','_blank');
+                $('#dup-link-upgrade-highlight').closest('li').addClass('dup-submenu-upgrade-highlight')
+            });
+            </script>
+            <style>
+                .dup-submenu-upgrade-highlight,
+                .dup-submenu-upgrade-highlight a,
+                .dup-submenu-upgrade-highlight a span#dup-link-upgrade-highlight {
+                    background-color: #1da867!important;
+                    color: #fff!important;
+                    border-color: #fff!important;
+                    font-weight: 600!important;
+                }
+            </style>
+            <?php
         }
 
         /**
@@ -331,9 +367,10 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
                   $settings_link = '<a href="admin.php?page=duplicator">' . esc_html__("Manage", 'duplicator') . '</a>';
                   array_unshift($links, $settings_link);
                  */
-                $upgrade_link = '<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=plugins_page&utm_campaign=duplicator_pro">' .
-                    '<strong style="color: #11967A; display: inline;">' .
-                    esc_html__("Upgrade to Professional", 'duplicator') .
+                $upgrade_link = '<a style="color: #1da867;" class="dup-plugins-list-pro-upgrade" href="' .
+                    esc_url(Upsell::getCampaignUrl('plugin-actions-link')) . '" target="_blank">' .
+                    '<strong style="display: inline;">' .
+                    esc_html__("Upgrade to Pro", 'duplicator') .
                     '</strong></a>';
                 array_unshift($links, $upgrade_link);
             }

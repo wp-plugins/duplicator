@@ -4,6 +4,8 @@
  * ================================================ */
 
 /*Global Elements*/
+.duplicator-pages #wpcontent{margin-left: 140px;}
+.duplicator-pages #wpbody{padding-left: 20px;}
 input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
 input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
 fieldset {border:1px solid gray; padding:0px 5px 5px 5px; }
@@ -306,3 +308,65 @@ a.dup-btn-call-action:hover {
 }
 
 td.dup-store-promo-area {padding:7px 0 7px 7px; border-top:1px solid silver; background-color: #F0F0F1}
+
+#dup-notice-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1da867!important;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    padding: 7px;
+    margin-bottom: -4px;
+    max-height: 100px;
+    overflow: hidden;
+    z-index: 999;
+}
+
+#dup-notice-bar a {
+    color: #fff;
+    font-weight: bold;
+}
+
+#dup-notice-bar .dup-dismiss-button{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    padding: 5px;
+    margin-top: 1px;
+    background: 0 0;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#dup-notice-bar .dup-dismiss-button:before {
+    background: 0 0;
+    color: #fff;
+    content: "\f335";
+    display: block;
+    font: normal 20px/20px dashicons;
+    speak: none;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+}
+
+#dup-notice-bar .dup-upgrade-arrow {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#dup-notice-bar .dup-notice-logo {
+    line-height: 0;
+}
+
+#dup-notice-bar .dup-notice-logo img {
+    width: 20px;
+    height: 20px;
+    margin-right: 6fpx;
+}

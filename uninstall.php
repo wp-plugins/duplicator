@@ -20,7 +20,9 @@ if (DuplicatorPhpVersionCheck::check(DUPLICATOR_LITE_PHP_MINIMUM_VERSION, DUPLIC
     return;
 }
 
-require_once 'src/Libs/Snap/SnapIO.php';
+require_once(DUPLICATOR_LITE_PATH . '/src/Utils/Autoloader.php');
+\Duplicator\Utils\Autoloader::register();
+
 require_once 'helper.php';
 require_once 'define.php';
 require_once 'classes/class.settings.php';
@@ -50,8 +52,14 @@ if (DUP_Settings::Get('uninstall_files')) {
 //Remove all Settings
 if (DUP_Settings::Get('uninstall_settings')) {
     DUP_Settings::Delete();
+    \Duplicator\Core\Notifications\Notice::deleteOption();
+    \Duplicator\Core\Notifications\NoticeBar::deleteOption();
+    delete_option(DUP_LITE_Plugin_Upgrade::DUP_ACTIVATED_OPT_KEY);
     delete_option('duplicator_ui_view_state');
     delete_option('duplicator_package_active');
     delete_option("duplicator_exe_safe_mode");
     delete_option('duplicator_lite_inst_hash_notice');
+    foreach ($GLOBALS['DUPLICATOR_OPTS_DELETE'] as $optionKey) {
+        delete_option($optionKey);
+    }
 }

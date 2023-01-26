@@ -3,6 +3,7 @@ defined("DUPXABSPATH") or die("");
 
 use Duplicator\Installer\Core\Params\PrmMng;
 use Duplicator\Libs\Snap\SnapJson;
+use Duplicator\Libs\Upsell;
 
 $paramsManager = PrmMng::getInstance();
 ?>
@@ -458,7 +459,7 @@ $paramsManager = PrmMng::getInstance();
         });
         
         $('sup.hlp-pro-lbl, sup.small-pro-lbl').click(function() {
-            window.open('https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=pro_label&utm_campaign=duplicator_free');
+            window.open('<?php echo Upsell::getCampaignUrl('installer', 'Help Section Pro Flag');?>');
         });
     });
 </script>

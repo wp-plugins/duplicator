@@ -127,7 +127,8 @@ class DUP_Settings
 
     /**
      *  Deletes all the setting values to the database
-     *  @return True if option value has changed, false if not or if update failed.
+     *
+     *  @return bool true if option value has changed, false if not or if update failed.
      */
     public static function Delete()
     {
@@ -136,7 +137,7 @@ class DUP_Settings
 
     /**
      *  Sets the defaults if they have not been set
-     *  @return True if option value has changed, false if not or if update failed.
+     *  @return bool True if option value has changed, false if not or if update failed.
      */
     public static function SetDefaults()
     {

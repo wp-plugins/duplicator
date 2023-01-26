@@ -149,7 +149,7 @@ function dup_lite_storage_advanced_pro_content()
         </i>
     </div>
     <p style="text-align: center">
-        <a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_settings_storage_popup_green&utm_campaign=duplicator_pro"
+        <a href="<?php echo esc_url(\Duplicator\Libs\Upsell::getCampaignUrl('storage-tab')); ?>"
            target="_blank"
            class="dup-btn-call-action" style="font-size:15px; padding:8px 10px; width: 120px">
             <?php esc_html_e('Learn More', 'duplicator'); ?>

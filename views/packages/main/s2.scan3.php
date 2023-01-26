@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Libs\Upsell;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     /*IDE Helper*/
     /* @var $Package DUP_Package */
@@ -109,7 +112,7 @@ TOTAL SIZE -->
                     "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=pkg_s2scan3_tolimits#faq-trouble-100-q' target='_blank'>" .
                     esc_html__('What can I try for Timeout Issues?', 'duplicator') . '</a></li>';
                 echo '<li>' . esc_html__('Consider trying multi-threaded support in ', 'duplicator');
-                echo "<a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=multithreaded_pro&utm_campaign=duplicator_pro' target='_blank'>" . esc_html__('Duplicator Pro.', 'duplicator') . "</a>";
+                echo "<a href='" . esc_url(Upsell::getCampaignUrl(array('utm_medium' => 'package-build-scan', 'utm_content' => 'Multi Threaded Get Pro')))  . "' target='_blank'>" . esc_html__('Duplicator Pro.', 'duplicator') . "</a>";
                 echo '</li>';
                 echo '</ul>';
 
@@ -546,7 +549,7 @@ DATABASE -->
             printf(__("- Switch to the %s which requires a capable hosting provider (VPS recommended).", 'duplicator'), $lnk);
             echo '<br/><br/>';
 
-            $lnk = '<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_da_size_limit&utm_campaign=duplicator_pro" target="_blank">' . esc_html__('Duplicator Pro', 'duplicator') . '</a>';
+            $lnk = '<a href="' . esc_url(Upsell::getCampaignUrl('package-build-scan', 'Package to big Get Pro')) . '" target="_blank">' . esc_html__('Duplicator Pro', 'duplicator') . '</a>';
             printf(__("- Consider upgrading to %s for unlimited large site support.", 'duplicator'), $lnk);
 
             echo '</div>';
@@ -558,7 +561,7 @@ DATABASE -->
     <?php
         echo '<div class="dup-pro-support">&nbsp;';
         esc_html_e('Migrate large, multi-gig sites with', 'duplicator');
-        echo '&nbsp;<i><a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_size_warn_multigig&amp;utm_campaign=duplicator_pro" target="_blank">' . esc_html__('Duplicator Pro', 'duplicator') . '!</a></i>';
+        echo '&nbsp;<i><a href="' .  esc_url(Upsell::getCampaignUrl('package-build-scan', 'Multi Gig Package Get Pro')) . '" target="_blank">' . esc_html__('Duplicator Pro', 'duplicator') . '!</a></i>';
         echo '</div>';
     ?>
 </div>

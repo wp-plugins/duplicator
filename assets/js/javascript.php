@@ -399,7 +399,7 @@ jQuery(document).ready(function($) {
                 $wrapperElm.remove();
             });
         });
-    });   
+    });
 });
 
 </script>

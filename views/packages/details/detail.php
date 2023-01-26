@@ -1,6 +1,7 @@
 <?php
 
 use Duplicator\Libs\Snap\SnapJson;
+use Duplicator\Libs\Upsell;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 $view_state     = DUP_UI_ViewState::getArray();
@@ -30,9 +31,9 @@ $dup_install_secure_on   = isset($package->Installer->OptsSecureOn) ? $package->
 $dup_install_secure_pass = isset($package->Installer->OptsSecurePass) ? DUP_Util::installerUnscramble($package->Installer->OptsSecurePass) : '';
 $installerNameMode       = DUP_Settings::Get('installer_name_mode');
 
-$currentStoreURLPath     = DUP_Settings::getSsdirUrl();
-$installerSecureName     = $package->getInstDownloadName(true);
-$installerDirectLink     = "{$currentStoreURLPath}/" . pathinfo($installerSecureName, PATHINFO_FILENAME) .DUP_Installer::INSTALLER_SERVER_EXTENSION;
+$currentStoreURLPath = DUP_Settings::getSsdirUrl();
+$installerSecureName = $package->getInstDownloadName(true);
+$installerDirectLink = "{$currentStoreURLPath}/" . pathinfo($installerSecureName, PATHINFO_FILENAME) . DUP_Installer::INSTALLER_SERVER_EXTENSION;
 ?>
 
 <style>
@@ -169,14 +170,14 @@ GENERAL -->
                 <div id="dup-downloads-area">
                     <?php if (!$err_found) :?>
                         <?php
-                             if ($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH) {
-                                 $installBtnTooltip  = __('Download hashed installer ([name]_[hash]_[time]_installer.php)', 'duplicator');
-                                 $installBtnIcon     = '<i class="fas fa-shield-alt fa-sm fa-fw shield-on"></i>';
-                             } else {
-                                 $installBtnTooltip  = __('Download basic installer (installer.php)', 'duplicator');
-                                 $installBtnIcon      = '<i class="fas fa-shield-alt fa-sm fa-fw shield-off"></i>';
-                             }
-                         ?>
+                        if ($installerNameMode === DUP_Settings::INSTALLER_NAME_MODE_WITH_HASH) {
+                            $installBtnTooltip = __('Download hashed installer ([name]_[hash]_[time]_installer.php)', 'duplicator');
+                            $installBtnIcon    = '<i class="fas fa-shield-alt fa-sm fa-fw shield-on"></i>';
+                        } else {
+                            $installBtnTooltip = __('Download basic installer (installer.php)', 'duplicator');
+                            $installBtnIcon    = '<i class="fas fa-shield-alt fa-sm fa-fw shield-off"></i>';
+                        }
+                        ?>
                         <div class="sub-notes">
                             <i class="fas fa-download fa-fw"></i>
                              <?php _e("Click buttons or links to download.", 'duplicator') ?>
@@ -315,10 +316,9 @@ STORAGE -->
                                 '<i class="fab fa-google-drive  fa-fw"></i>&nbsp;' . 'Google Drive',
                                 '<i class="fas fa-cloud  fa-fw"></i>&nbsp;' . 'OneDrive',
                                 '<i class="fas fa-network-wired fa-fw"></i>&nbsp;' . 'FTP/SFTP'
-                                );
-                            ?>
+                            ); ?>
                             <a 
-                                href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage_detail_bw&utm_campaign=duplicator_pro" 
+                                href="<?php echo esc_url(Upsell::getCampaignUrl('details-storage')); ?>"
                                 target="_blank"
                                 class="link-style">
                                 <?php esc_html_e('Duplicator Pro', 'duplicator');?>
@@ -471,11 +471,11 @@ INSTALLER -->
             </td>
             <td>
                 <?php
-                    if ($dup_install_secure_on ) {
-                        _e('Password Protection Enabled', 'duplicator');
-                    } else {
-                        _e('Password Protection Disabled', 'duplicator');
-                    }
+                if ($dup_install_secure_on) {
+                    _e('Password Protection Enabled', 'duplicator');
+                } else {
+                    _e('Password Protection Disabled', 'duplicator');
+                }
                 ?>
             </td>
         </tr>

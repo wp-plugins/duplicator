@@ -1,6 +1,7 @@
 <?php
 
 use Duplicator\Libs\Snap\SnapJson;
+use Duplicator\Libs\Upsell;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /* @var $Package DUP_Package */
@@ -157,7 +158,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                                     esc_html_e('Duplicator Lite does not officially support WordPress multisite.', 'duplicator');
                                     echo "<br/>";
                                     esc_html_e('We strongly recommend upgrading to ', 'duplicator');
-                                    echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn1&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
+                                    echo "&nbsp;<i><a href='" . esc_url(Upsell::getCampaignUrl('packages-list', "Mutlisite no packages")) . "' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
                                     echo '</div>';
                             }
                             ?>
@@ -322,14 +323,14 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                                 esc_html_e('Duplicator Lite does not officially support WordPress multisite.', 'duplicator');
                                 echo '<br/>';
                                 esc_html_e('We strongly recommend using', 'duplicator');
-                                echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn2&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
+                                echo "&nbsp;<i><a href='" . esc_url(Upsell::getCampaignUrl('packages-list', "Mutlisite bottom package list")) . "' target='_blank'>[" . esc_html__('Duplicator Pro', 'duplicator') . "]</a></i>.";
                             }
                             ?>
                         </div>
                         <div class="sc-footer-right">
                            <span style="cursor:help" title="<?php esc_attr_e("Current Server Time", 'duplicator') ?>">
                             <?php
-                                $dup_serv_time = date_i18n('H:i');                               
+                                $dup_serv_time = date_i18n('H:i');
                                 esc_html_e("Time", 'duplicator');
                                 echo ": {$dup_serv_time}";
                             ?>
@@ -411,7 +412,7 @@ DIALOG: HELP DIALOG -->
     <a href="https://snapcreek.com/ticket/index.php?a=add&category=69" target="_blank"><?php esc_html_e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
     <?php if ($completeCount >= 3) : ?>
         <i class="fa fa-star fa-fw"></i>
-        <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php esc_html_e("Help review the plugin!", 'duplicator') ?></a>
+        <a href="<?php echo esc_url(\Duplicator\Core\Notifications\Review::getReviewUrl()); ?>" target="vote-wp"><?php esc_html_e("Help review the plugin!", 'duplicator') ?></a>
     <?php endif; ?>
 </div>
 

@@ -9,7 +9,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Params\PrmMng;
-use Duplicator\Installer\Utils\Utils;
+use Duplicator\Libs\Upsell;
 
 $paramsManager = PrmMng::getInstance();
 ?>
@@ -20,7 +20,7 @@ $paramsManager = PrmMng::getInstance();
         data-tooltip-title="Upgrade Features"
         data-tooltip="<?php echo DUPX_U::esc_attr(
             '<p>Enhancements for full customization of all WordPress paths and URLs are available in Duplicator Pro.</p>' .
-            Utils::getCampainUrlHtml('custom_urls_path_options')
+            Upsell::getCampaignTooltipHTML(array('utm_medium' => 'installer', 'utm_content' => "Secondary URLs and paths"))
         ); ?>">*
     </sup>
 </div>

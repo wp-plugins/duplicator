@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Libs\Upsell;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <!-- ================================================================
@@ -97,7 +100,7 @@ SYSTEM AND WORDPRESS -->
             echo '<span style="font-weight:bold">';
             _e('Get faster builds with Duplicator Pro with access to shell_exec zip.', 'duplicator');
             echo '</span>';
-            echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_max_execution_time_warn&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('details', 'duplicator') . "]</a></i>";
+            echo "&nbsp;<i><a href='" .  esc_url(Upsell::getCampaignUrl('package-build-scan', 'For Shell Zip Get Pro'))  . "' target='_blank'>[" . esc_html__('details', 'duplicator') . "]</a></i>";
         }
 
         //MANAGED HOST
@@ -112,7 +115,7 @@ SYSTEM AND WORDPRESS -->
         _e('<b>Due to these constraints Lite does not officially support the migration of managed hosts.</b> '
             . 'It’s possible one could get the package to install but it may require custom manual effort. '
             . 'To get support and the advanced installer processing required for managed host support we encourage users to <i>'
-            . '<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_is_mu_warn3&amp;utm_campaign=duplicator_pro" target="_blank">upgrade to Duplicator Pro</a></i>. '
+            . '<a href="' .  esc_url(Upsell::getCampaignUrl('package-build-scan', 'Managed Host Support'))  . '" target="_blank">upgrade to Duplicator Pro</a></i>. '
             . 'Pro has more sophisticated package and installer logic and accounts for odd configurations associated with managed hosts.', 'duplicator');
         echo '<br/><br/>';
 
@@ -197,12 +200,12 @@ WP SETTINGS -->
 
             esc_html_e('While it is not recommended you can still continue with the build of this package.  At install time additional manual custom configurations will '
                 . 'need to be made to finalize this multisite migration.  Please note that any support requests for mulitsite with Duplicator Lite will not be supported.', 'duplicator');
-            echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn4&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('upgrade to pro', 'duplicator') . "]</a></i>";
+            echo "&nbsp;<i><a href='" .  esc_url(Upsell::getCampaignUrl('package-build-scan', 'Not Multisite Get Pro'))  . "' target='_blank'>[" . esc_html__('upgrade to pro', 'duplicator') . "]</a></i>";
         } else {
             echo '<hr size="1" /><span><div class="scan-good"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . esc_html__('Multisite: N/A', 'duplicator') . "</b> <br/>";
             esc_html_e('This is not a multisite install so duplication will proceed without issue.  Duplicator does not officially support multisite. However, Duplicator Pro supports '
                 . 'duplication of a full multisite network and also has the ability to install a multisite subsite as a standalone site.', 'duplicator');
-            echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn5&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('upgrade to pro', 'duplicator') . "]</a></i>";
+            echo "&nbsp;<i><a href='" .  esc_url(Upsell::getCampaignUrl('package-build-scan', 'Multisite Get Pro'))  . "' target='_blank'>[" . esc_html__('upgrade to pro', 'duplicator') . "]</a></i>";
         }
         ?>
     </div>
