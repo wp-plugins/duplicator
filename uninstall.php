@@ -15,7 +15,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 define('DUPLICATOR_LITE_PATH', dirname(__FILE__));
 define('DUPLICATOR_LITE_PHP_MINIMUM_VERSION', '5.3.8');
 define('DUPLICATOR_LITE_PHP_SUGGESTED_VERSION', '5.6.20');
-require_once(dirname(__FILE__) . "/tools/DuplicatorPhpVersionCheck.php");
+require_once(dirname(__FILE__) . "/src/Utils/DuplicatorPhpVersionCheck.php");
 if (DuplicatorPhpVersionCheck::check(DUPLICATOR_LITE_PHP_MINIMUM_VERSION, DUPLICATOR_LITE_PHP_SUGGESTED_VERSION) === false) {
     return;
 }
