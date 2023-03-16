@@ -1,0 +1,410 @@
+#dup-admin-about{
+    margin-top: 20px;
+}
+
+#dup-admin-about *,
+#dup-admin-about *::before,
+#dup-admin-about *::after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#dup-admin-about .dup-admin-about-section {
+    margin-bottom: 20px;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    line-height: 2;
+}
+
+#dup-admin-about .dup-admin-about-section h1,
+#dup-admin-about .dup-admin-about-section h2,
+#dup-admin-about .dup-admin-about-section h3,
+#dup-admin-about .dup-admin-about-section h4,
+#dup-admin-about .dup-admin-about-section h5 {
+    margin-top: 0;
+    padding-top: 0;
+    line-height: 1.6;
+}
+
+#dup-admin-about .dup-admin-about-section h2 {
+    font-size: 24px;
+}
+
+#dup-admin-about .dup-admin-about-section h3 {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #23282c;
+}
+
+#dup-admin-about .dup-admin-about-section ul,
+#dup-admin-about .dup-admin-about-section p {
+    font-size: 16px;
+}
+
+#dup-admin-about .dup-admin-about-section p {
+    margin-bottom: 20px;
+}
+
+#dup-admin-about .dup-admin-about-section p.bigger {
+    font-size: 18px;
+}
+
+#dup-admin-about .dup-admin-about-section p.smaller {
+    font-size: 14px;
+}
+
+#dup-admin-about .dup-admin-about-section p:last-child {
+    margin-bottom: 0;
+}
+
+#dup-admin-about .dup-admin-about-section hr {
+    margin: 30px 0;
+}
+
+#dup-admin-about .dup-admin-about-section figure {
+    margin: 0;
+}
+
+#dup-admin-about .dup-admin-about-section figure img {
+    width: 100%;
+}
+
+#dup-admin-about .dup-admin-about-section figure figcaption {
+    font-size: 14px;
+    color: #888888;
+    margin-top: 5px;
+    text-align: center;
+    line-height: initial;
+}
+
+#dup-admin-about .dup-admin-about-section .dup-admin-column-40 {
+    padding-left: 15px;
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section .dup-admin-column-40 {
+        width: 100%;
+        padding-left: 0;
+        padding-top: 20px;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section .dup-admin-column-60 {
+    padding-right: 15px;
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section .dup-admin-column-60 {
+        width: 100%;
+        padding-right: 0;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section ul.list-plain {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#dup-admin-about .dup-admin-about-section ul.list-plain li {
+    margin-bottom: 0;
+}
+
+#dup-admin-about .dup-admin-about-section ul.list-features li .fa {
+    color: #2a9b39;
+    margin: 0 8px 0 0;
+}
+
+#dup-admin-about .dup-admin-about-section .fa-star {
+    color: gold;
+}
+
+#dup-admin-about .dup-admin-about-section .no-margin {
+    margin: 0 !important;
+}
+
+#dup-admin-about .dup-admin-about-section .no-padding {
+    padding: 0 !important;
+}
+
+#dup-admin-about .dup-admin-about-section .centered {
+    text-align: center !important;
+}
+
+#dup-admin-about .dup-admin-about-section-first-form {
+    display: flex;
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section-first-form {
+        display: block !important;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section-first-form .dup-admin-about-section-first-form-text {
+    flex: 1;
+    padding-right: 30px;
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section-first-form .dup-admin-about-section-first-form-text {
+        flex: none;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section-first-form .dup-admin-about-section-first-form-video iframe {
+    border: 1px solid #dddddd;
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section-first-form .dup-admin-about-section-first-form-video {
+        padding-top: 20px;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section-hero {
+    padding: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-hero .dup-admin-about-section-hero-main,
+#dup-admin-about .dup-admin-about-section-hero .dup-admin-about-section-hero-extra {
+    padding: 30px;
+}
+
+#dup-admin-about .dup-admin-about-section-features {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: left;
+}
+
+#dup-admin-about .dup-admin-about-section-features .list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: #555;
+    font-size: 14px;
+    list-style: none;
+    margin: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-features .list > .item {
+    flex: 33.33% 0;
+    box-sizing: border-box;
+    padding: 0 0 2px 0;
+}
+
+#dup-admin-about .dup-admin-about-section-features .list > .item span::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f00c";
+    color: #00a32a;
+    margin: 0 8px 0 0;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-weight: 900;
+}
+
+@media (max-width: 1000px) {
+    #dup-admin-about .dup-admin-about-section-features .list > .item {
+        flex: 50% 0;
+    }
+}
+
+@media (max-width: 600px) {
+    #dup-admin-about .dup-admin-about-section-features .list > .item {
+        flex: 100% 0;
+    }
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section-hero .dup-admin-about-section-hero-extra .dup-admin-column-50 {
+        float: none;
+        width: 100%;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section-hero .dup-admin-about-section-hero-main {
+    background-color: #fafafa;
+    border-bottom: 1px solid #dddddd;
+}
+
+#dup-admin-about .dup-admin-about-section-hero .dup-admin-about-section-hero-main.no-border {
+    border-bottom: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-hero .dup-admin-about-section-hero-main p {
+    color: #666;
+}
+
+#dup-admin-about .dup-admin-about-section-hero h3.call-to-action {
+    margin-bottom: -10px;
+}
+
+#dup-admin-about .dup-admin-about-section-hero span.price-20-off {
+    color: #6ab255;
+}
+
+#dup-admin-about .dup-admin-about-section-squashed {
+    margin-bottom: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-squashed:not(:last-of-type) {
+    border-bottom: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-post h2 {
+    margin-bottom: -10px;
+}
+
+#dup-admin-about .dup-admin-about-section-post h3 {
+    margin-bottom: 15px;
+}
+
+#dup-admin-about .dup-admin-about-section-post p:last-of-type {
+    margin-bottom: 30px;
+}
+
+#dup-admin-about .dup-admin-about-section-post .dup-admin-column-20 {
+    padding-right: 20px;
+    width: auto;
+}
+
+#dup-admin-about .dup-admin-about-section-post .dup-admin-column-20 img {
+    width: 270px;
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section-post .dup-admin-column-20 {
+        width: 20%;
+    }
+    #dup-admin-about .dup-admin-about-section-post .dup-admin-column-20 img {
+        width: auto;
+        max-width: 100%;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section-post .dup-admin-column-80 {
+    padding-left: 20px;
+    width: calc(100% - 20px - 270px);
+}
+
+@media (max-width: 767px) {
+    #dup-admin-about .dup-admin-about-section-post .dup-admin-column-80 {
+        width: 80%;
+    }
+}
+
+#dup-admin-about .dup-admin-about-section-post .dup-admin-about-section-post-link {
+    padding: 10px 15px;
+    background-color: #df7739;
+    color: #fff;
+    border-radius: 3px;
+    text-decoration: none;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+#dup-admin-about .dup-admin-about-section-post .dup-admin-about-section-post-link:hover, #dup-admin-about .dup-admin-about-section-post .dup-admin-about-section-post-link:focus {
+    background-color: #b85a1b;
+    color: #fff;
+}
+
+#dup-admin-about .dup-admin-about-section-post .dup-admin-about-section-post-link:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 3px #b85a1b;
+    outline: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-post .dup-admin-about-section-post-link .fa {
+    color: #edba9e;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+#dup-admin-about .dup-admin-about-section-table table {
+    border-collapse: collapse;
+}
+
+#dup-admin-about .dup-admin-about-section-table table tr td,
+#dup-admin-about .dup-admin-about-section-table table tr th{
+    border-bottom: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    padding: 30px;
+    vertical-align: top;
+}
+
+#dup-admin-about .dup-admin-about-section-table table tr th {
+    padding: 20px;
+}
+
+#dup-admin-about .dup-admin-about-section-table table tr td:last-of-type {
+    border-right: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-table table tr:last-child td {
+    border-bottom: none;
+}
+
+#dup-admin-about .dup-admin-about-section-table table p {
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    background-position: 0 6px;
+    margin: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-table table p.features-full {
+    padding-left: 30px;
+    background-image: url(../img/about/icon-full.svg);
+}
+
+#dup-admin-about .dup-admin-about-section-table table p.features-none {
+    padding-left: 30px;
+    background-image: url(../img/about/icon-none.svg);
+}
+
+#dup-admin-about .dup-admin-about-section-table table p.features-partial {
+    padding-left: 30px;
+    background-position: -3px 0;
+    background-size: 23px auto;
+    background-image: url(../img/about/icon-partial.svg);
+}
+
+#dup-admin-about .dup-admin-about-section-table .dup-admin-about-section-hero-main {
+    padding: 0;
+}
+
+#dup-admin-about .dup-admin-about-section-table .dup-admin-about-section-hero-main h3 {
+    padding: 30px 30px 30px 60px;
+}
+
+#dup-admin-about .dup-admin-about-section-table .dup-admin-about-section-hero-main .dup-admin-column-33:first-child h3 {
+    padding: 30px;
+}
+
+#dup-admin-about #dup-admin-addons .addon-container {
+    padding: 0 10px;
+}
+
+#dup-admin-about #dup-admin-addons .addon-item .details {
+    padding: 20px;
+}
+
+#dup-admin-about #dup-admin-addons .addon-item h5 {
+    margin-bottom: 10px;
+}
+
+#dup-admin-about #dup-admin-addons .addon-item img {
+    padding: 10px;
+}
+
+#dup-admin-about #dup-admin-addons .addon-item img[src*="-mi"] {
+    padding: 13px;
+}
+
+#dup-admin-about #dup-admin-addons .addon-item .action-button .button.disabled, #dup-admin-about #dup-admin-addons .addon-item .action-button .button.loading {
+    cursor: default;
+}
