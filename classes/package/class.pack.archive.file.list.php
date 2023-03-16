@@ -4,12 +4,12 @@
  * archive path file list object
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package name
+ * @package   name
  * @copyright (c) 2019, Snapcreek LLC
- * @license https://opensource.org/licenses/GPL-3.0 GNU Public License
- *
+ * @license   https://opensource.org/licenses/GPL-3.0 GNU Public License
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -96,6 +96,7 @@ class DUP_Archive_File_List
     /**
      *
      * @param bool $pathOnly if true return only payth
+     *
      * @return boolean|array|string return false if is end of filer.
      */
     public function getEntry($pathOnly = false)

@@ -258,6 +258,7 @@ final class Hook implements \Iterator, \ArrayAccess
      * @param mixed $value The value to filter.
      * @param array $args  Additional parameters to pass to the callback functions.
      *                     This array is expected to include $value at index 0.
+     *
      * @return mixed The filtered value after all hooked functions are applied to it.
      */
     public function applyFilters($value, $args)
@@ -379,6 +380,7 @@ final class Hook implements \Iterator, \ArrayAccess
      *     );
      *
      * @param array $filters Filters to normalize. See documentation above for details.
+     *
      * @return WP_Hook[] Array of normalized filters.
      */
     public static function buildPreinitializedHooks($filters)
@@ -411,6 +413,7 @@ final class Hook implements \Iterator, \ArrayAccess
      * @link https://www.php.net/manual/en/arrayaccess.offsetexists.php
      *
      * @param mixed $offset An offset to check for.
+     *
      * @return bool True if the offset exists, false otherwise.
      */
     #[\ReturnTypeWillChange]
@@ -425,6 +428,7 @@ final class Hook implements \Iterator, \ArrayAccess
      * @link https://www.php.net/manual/en/arrayaccess.offsetget.php
      *
      * @param mixed $offset The offset to retrieve.
+     *
      * @return mixed If set, the value at the specified offset, null otherwise.
      */
     #[\ReturnTypeWillChange]
@@ -552,8 +556,8 @@ final class Hook implements \Iterator, \ArrayAccess
      *
      * @link https://core.trac.wordpress.org/ticket/3875
      *
-     * @since 2.2.3
-     * @since 5.3.0 Removed workarounds for spl_object_hash().
+     * @since  2.2.3
+     * @since  5.3.0 Removed workarounds for spl_object_hash().
      *              `$tag` and `$priority` are no longer used,
      *              and the function always returns a string.
      * @access private
@@ -562,6 +566,7 @@ final class Hook implements \Iterator, \ArrayAccess
      * @param callable $function The function to generate ID for.
      * @param int      $priority Unused. The order in which the functions
      *                           associated with a particular action are executed.
+     *
      * @return string Unique function ID for usage as array key.
      */
     protected static function wpFilterBuildUniqueId($tag, $function, $priority)

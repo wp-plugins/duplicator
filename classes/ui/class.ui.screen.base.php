@@ -9,12 +9,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * screen object please extent this class.
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/ui
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 // Exit if accessed directly
 if (!defined('DUPLICATOR_VERSION')) {

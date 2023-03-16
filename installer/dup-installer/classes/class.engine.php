@@ -5,10 +5,10 @@
  * large tables are split into 50k row blocks to save on memory.
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\UpdateEngine
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -713,6 +713,7 @@ MSG;
      *
      * @param string $data   Value to check to see if was serialized.
      * @param bool   $strict Optional. Whether to be strict about the end of the string. Default true.
+     *
      * @return bool False if not serialized and true if it was.
      */
     public static function is_serialized_string($data, $strict = true)
@@ -839,6 +840,7 @@ MSG;
      *
      * @param string $table
      * @param string $column
+     *
      * @return boolean|string  false if custom scope not found or return custom scoper for table/column
      */
     private static function getSearchReplaceCustomScope($table, $column)
@@ -865,6 +867,7 @@ MSG;
      *
      * @param string $table
      * @param string $column
+     *
      * @return boolean if true search a exact match in column if false search as LIKE
      */
     private static function isExactMatch($table, $column)

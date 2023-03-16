@@ -49,7 +49,7 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
                     esc_html_e("Duplicator can streamline your workflow and quickly clone/migrate a WordPress site. The plugin helps admins, designers and "
                         . "developers speed up the migration process of moving a WordPress site. Please help us continue development by giving the plugin a "
                         . "5 star and consider purchasing our Pro product.", 'duplicator');
-                ?>
+                    ?>
                 <br/><br/>
 
                 <!-- PARTNER WITH US -->

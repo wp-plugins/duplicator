@@ -4,10 +4,10 @@
  * Class used to log information
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\Log
- *
  */
 
 namespace Duplicator\Installer\Utils\Log;
@@ -32,18 +32,21 @@ class Log
 
     /**
      * if true throw exception on error else die on error
+     *
      * @var bool
      */
     private static $thowExceptionOnError = false;
 
     /**
      * log level
+     *
      * @var int
      */
     private static $logLevel = self::LV_DEFAULT;
 
     /**
      * num of \t before log string.
+     *
      * @var int
      */
     private static $indentation = 0;

@@ -4,10 +4,10 @@
  * Customizes final report error messages
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 namespace Duplicator\Installer\Utils\Tests;
@@ -24,6 +24,7 @@ class MessageCustomizer
      * @param string $shortMessage short message of notice to be customized
      * @param string $longMessage  long message of notice to be customized
      * @param string $noticeId     notice IDfinal-tests.php
+     *
      * @return bool true if any of the customizations were applied, false otherwise
      */
     public static function applyAllNoticeCustomizations(&$shortMessage, &$longMessage, &$noticeId)
@@ -189,6 +190,7 @@ class MessageCustomizer
 
     /**
      * @param string $version a version number
+     *
      * @return string returns only the first 2 levels of the version numbers
      */
     private static function getTwoLevelVersion($version)

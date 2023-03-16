@@ -2,13 +2,21 @@
 
 /**
  * Standard: PSR-2
- * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
+ * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  */
 
 use Duplicator\Libs\Snap\SnapJson;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
+/**
+ * Deactivation function
+ *
+ * @param string $hook Hook
+ *
+ * @return void
+ */
 function duplicator_deactivation_enqueue_scripts($hook)
 {
     if ('plugins.php' == $hook && !defined('DOING_AJAX')) {
@@ -17,6 +25,12 @@ function duplicator_deactivation_enqueue_scripts($hook)
 }
 add_action('admin_enqueue_scripts', 'duplicator_deactivation_enqueue_scripts');
 if (!function_exists('duplicator_plugins_admin_footer')) {
+
+    /**
+     * admin footer
+     *
+     * @return void
+     */
     function duplicator_plugins_admin_footer()
     {
         global $hook_suffix;
@@ -31,9 +45,15 @@ add_action('admin_footer', 'duplicator_plugins_admin_footer');
  * Displays a confirmation and feedback dialog box when the user clicks on the "Deactivate" link on the plugins
  * page.
  *
- * @since  2.1.3
+ * @since 2.1.3
  */
 if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
+
+    /**
+     *Deactivation feedback dialog box
+     *
+     * @return void
+     */
     function duplicator_add_deactivation_feedback_dialog_box()
     {
         $basename = 'duplicator/duplicator.php';
@@ -80,7 +100,10 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
             ),
             array(
                 'id' => 'SWITCHING_PRO_VERSION',
-                'text' => sprintf(__("I'm switching over to the %s", 'duplicator'), '<a href="https://snapcreek.com/duplicator/" target="_blank">' . __('Pro version', 'duplicator') . '</a>'),
+                'text' => sprintf(
+                    __("I'm switching over to the %s", 'duplicator'),
+                    '<a href="https://snapcreek.com/duplicator/" target="_blank">' . __('Pro version', 'duplicator') . '</a>'
+                ),
                 'input_type' => '',
                 'input_placeholder' => ''
             ),
@@ -103,7 +126,8 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
                 $reason_internal_message = '';
             }
 
-            $reasons_list_items_html .= '<li class="' . $list_item_classes . '" data-input-type="' . $reason['input_type'] . '" data-input-placeholder="' . $reason['input_placeholder'] . '">
+            $reasons_list_items_html .= '<li class="' . $list_item_classes . '" data-input-type="' .
+                $reason['input_type'] . '" data-input-placeholder="' . $reason['input_placeholder'] . '">
                 <label>
                     <span>
                         <input type="radio" name="selected-reason" value="' . $reason['id'] . '"/>
@@ -121,18 +145,22 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
                         + '  <div class="duplicator-modal-dialog">'
                         + '      <div class="duplicator-modal-body">'
                         + '         <h2><?php _e('Quick Feedback', 'duplicator'); ?></h2>'
-                        + '         <div class="duplicator-modal-panel active"><p><?php _e('If you have a moment, please let us know why you are deactivating', 'duplicator'); ?>:</p>' 
+                        + '         <div class="duplicator-modal-panel active">'
+                        + '<p><?php _e('If you have a moment, please let us know why you are deactivating', 'duplicator'); ?>:</p>' 
                         +                  '<ul>' + <?php echo SnapJson::jsonEncode($reasons_list_items_html); ?> + '</ul>'
                         + '            </div>'
                         + '     </div>'
                         + '     <div class="duplicator-modal-footer">'
                         + '          <div>'
                         + '             <a href="#" class="button button-secondary duplicator-modal-button-close"><?php _e('Cancel', 'duplicator'); ?></a>'
-                        + '             <a href="#" class="button button-secondary duplicator-modal-button-skip"><?php _e('Skip & Deactivate', 'duplicator'); ?></a>'
-                        + '             <a href="#" class="button button-primary duplicator-modal-button-deactivate" disabled="disabled" ><?php _e('Send & Deactivate', 'duplicator'); ?></a>'
+                        + '             <a href="#" class="button button-secondary duplicator-modal-button-skip">'
+                        + '<?php _e('Skip & Deactivate', 'duplicator'); ?></a>'
+                        + '             <a href="#" class="button button-primary duplicator-modal-button-deactivate" disabled="disabled" >'
+                        + '<?php _e('Send & Deactivate', 'duplicator'); ?></a>'
                         + '         </div>'
                         + '         <div class="clear"></div>'
-                        + '         <div><small class="duplicator-modal-resp-msg" ><i><?php _e('Your response is sent anonymously.', 'duplicator'); ?></i></small></div>'
+                        + '         <div>'
+                        * '<small class="duplicator-modal-resp-msg" ><i><?php _e('Your response is sent anonymously.', 'duplicator'); ?></i></small></div>'
                         + '        </div>'
                         + ' </div>'
                         + '</div>',
@@ -228,7 +256,8 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
                                 beforeSend: function () {
                                     _parent.find('.duplicator-modal-footer .button').addClass('disabled');
                                     // _parent.find( '.duplicator-modal-footer .button-secondary' ).text( '<?php _e('Processing', 'duplicator'); ?>' + '...' );
-                                    _parent.find('.duplicator-modal-footer .duplicator-modal-button-deactivate').text('<?php _e('Processing', 'duplicator'); ?>' + '...');
+                                    _parent.find('.duplicator-modal-footer .duplicator-modal-button-deactivate')
+                                        .text('<?php _e('Processing', 'duplicator'); ?>' + '...');
                                 },
                                 complete: function (message) {
                                     /* Do not show the dialog box, deactivate the plugin. */
@@ -270,7 +299,12 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
 
                         if (_parent.hasClass('has-input')) {
                             var reasonInputHtml = '<div class="duplicator-modal-reason-input"><span class="message"></span>' +
-                                 (('textfield' === _parent.data('input-type')) ? '<input type="text" />' : '<textarea rows="5" maxlength="200"></textarea>') + '</div>';
+                                (
+                                    'textfield' === _parent.data('input-type') ? 
+                                    '<input type="text" />' : 
+                                    '<textarea rows="5" maxlength="200"></textarea>'
+                                ) + 
+                                '</div>';
 
                             _parent.append($(reasonInputHtml));
                             _parent.find('input, textarea').attr('placeholder', _parent.data('input-placeholder')).focus();
@@ -292,7 +326,13 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
                         }
 
                         /* If the user has not clicked the close button and the clicked element is inside the modal dialog, just return. */
-                        if (!$target.hasClass('duplicator-modal-button-close') && ($target.parents('.duplicator-modal-body').length > 0 || $target.parents('.duplicator-modal-footer').length > 0)) {
+                        if (
+                            !$target.hasClass('duplicator-modal-button-close') && 
+                            (
+                                $target.parents('.duplicator-modal-body').length > 0 || 
+                                $target.parents('.duplicator-modal-footer').length > 0
+                            )
+                        ) {
                             return;
                         }
 
@@ -349,9 +389,14 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
 
 /**
  * Called after the user has submitted his reason for deactivating the plugin.
- *
  */
 if (!function_exists('duplicator_submit_uninstall_reason_action')) {
+
+    /**
+     * submit uninstall reason action
+     *
+     * @return void
+     */
     function duplicator_submit_uninstall_reason_action()
     {
         DUP_Handler::init_error_handler();

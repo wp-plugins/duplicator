@@ -26,6 +26,7 @@ class MessageCustomizerItem
 
     /**
      * @param mixed $input necessary input to check condition
+     *
      * @return bool
      */
     public function conditionSatisfied($input)
@@ -36,6 +37,7 @@ class MessageCustomizerItem
     /**
      * @param string $string  string to be customized
      * @param mixed  $context context about what to apply
+     *
      * @return false|mixed
      */
     public function apply($string, $context)

@@ -4,7 +4,7 @@
  * ================================================ */
 
 /*Global Elements*/
-.duplicator-pages #wpcontent{margin-left: 140px;}
+.duplicator-pages #wpcontent{padding-left: 0px; position: relative;}
 .duplicator-pages #wpbody{padding-left: 20px;}
 input[type=button]{cursor:pointer;padding:5px;cursor:pointer;}
 input[type=submit]{cursor:pointer;padding:5px;cursor:pointer;}
@@ -29,7 +29,14 @@ i.shield-on {color:#337114}
 i.shield-off {color:maroon}
 
 /*TABS*/
-ul.category-tabs li {cursor:pointer;user-select: none;}
+ul.category-tabs li {
+    cursor:pointer;
+    user-select: none;
+}
+
+ul.category-tabs {
+    font-size: 14px;
+}
 
 /*BOXES:Expandable sections */
 div.dup-box {padding:0px; display:block; background-color:#fff; border:1px solid #e5e5e5; box-shadow:0 1px 1px rgba(0,0,0,.04);}
@@ -49,7 +56,18 @@ div.dup-info-box {padding:8px; border:1px solid #ccc; border-radius:4px; backgro
 div.dup-info-box small {margin-top:10px; display:block}
 
 /*PACKAGE:Progress Boxes */
-div#dup-progress-bar-area {width:500px; margin:40px auto 0px auto; padding:25px 50px 35px 50px; border:1px solid #ccc; box-shadow:0 8px 6px -6px #999; text-align:center; border-radius:4px; color:#000;}
+div#dup-scan-progress-bar-wrapper,
+div#dup-build-progress-bar-wrapper {
+    width: 700px;
+    margin: 40px auto 0px auto;
+    border: 1px solid #ccc;
+    box-shadow: 0 8px 6px -6px #999;
+    text-align: center;
+    border-radius: 4px;
+    color: #000;
+    overflow: hidden;
+}
+div#dup-progress-bar-area {padding:40px 50px;}
 div#dup-progress-bar-area h2 {margin-bottom:15px}
 
 /*HEADER MESSAGES*/
@@ -244,6 +262,9 @@ div.dup-screen-hlp-info {line-height:26px; padding:10px 0 10px 0}
 
 /** Settings **/
 .dup-settings-pages p.description {max-width:700px; font-size:13px; color:#666; padding-left:15px; text-align:justify; }
+.licenses-table .description p {margin-bottom: 15px;}
+.licenses-table .description p.discount-note {font-style: italic;color: #666;}
+.licenses-table .description p.discount-note strong {color: green;}
 #dup-lite-inst-mode-details p {  margin:1em 0; max-width:700px; font-size:13px; color:#666; padding-left:15px; text-align:justify;}
 #installer-name-mode-option {
     line-height:25px;
@@ -307,26 +328,28 @@ a.dup-btn-call-action:hover {
     color:#fff;
 }
 
-td.dup-store-promo-area {padding:7px 0 7px 7px; border-top:1px solid silver; background-color: #F0F0F1}
+td.dup-store-promo-area {padding:7px 0 7px 7px; border-top:1px solid silver; background-color: #fcf9e8}
+td.dup-store-promo-area i[data-tooltip].fa-question-circle {color: #fe4716;}
 
+/* Notice bar */
 #dup-notice-bar {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #1da867!important;
-    color: #fff;
+    background-color: #dddddd!important;
+    color: #777777;
     text-align: center;
     position: relative;
     padding: 7px;
     margin-bottom: -4px;
     max-height: 100px;
     overflow: hidden;
+    border-top: #fe4716 3px solid;
     z-index: 999;
 }
 
 #dup-notice-bar a {
-    color: #fff;
-    font-weight: bold;
+    color: #fe4716;
 }
 
 #dup-notice-bar .dup-dismiss-button{
@@ -337,14 +360,13 @@ td.dup-store-promo-area {padding:7px 0 7px 7px; border-top:1px solid silver; bac
     padding: 5px;
     margin-top: 1px;
     background: 0 0;
-    color: #fff;
+    color: #777777;
     cursor: pointer;
     margin-right: 10px;
 }
 
 #dup-notice-bar .dup-dismiss-button:before {
     background: 0 0;
-    color: #fff;
     content: "\f335";
     display: block;
     font: normal 20px/20px dashicons;
@@ -356,7 +378,6 @@ td.dup-store-promo-area {padding:7px 0 7px 7px; border-top:1px solid silver; bac
 }
 
 #dup-notice-bar .dup-upgrade-arrow {
-    color: #fff;
     font-weight: bold;
     text-decoration: none;
 }
@@ -368,5 +389,629 @@ td.dup-store-promo-area {padding:7px 0 7px 7px; border-top:1px solid silver; bac
 #dup-notice-bar .dup-notice-logo img {
     width: 20px;
     height: 20px;
-    margin-right: 6fpx;
+    margin-right: 6px;
+}
+
+.dup-header {
+    border-top: 3px solid #fe4716;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+/* Allow screen meta to go over other content and not push it */
+#dup-meta-screen {
+    margin: 0;
+    position: absolute;
+    top: -1px;
+    left: 0px;
+    right: 0;
+    z-index: 99;
+}
+
+#dup-notice-bar+#dup-meta-screen {
+    top:34px
+}
+
+.duplicator-pages #screen-meta {
+    margin: 0 20px -1px 20px;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #c3c4c7;
+    border-top: none;
+    box-shadow: 0 0 0 transparent;
+}
+
+#screen-meta-links .screen-meta-toggle {
+    position: absolute;
+    right: 20px;
+    top: auto;
+}
+
+.duplicator-pages #screen-meta-links,
+.duplicator-pages #screen-meta {
+    display: none;
+}
+
+.duplicator-pages .wrap > h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.mock-blur {
+    filter: blur(4px);
+    pointer-events: none;
+}
+
+.dup-clearfix:before {
+    content: " ";
+    display: table;
+}
+
+.dup-clearfix:after {
+    clear: both;
+    content: " ";
+    display: table;
+}
+
+/* New button designs in the red color of the logo */
+.dup-btn {
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    box-shadow: none;
+    border: none;
+}
+
+.dup-btn-block {
+    display: block;
+    width: 100%;
+}
+
+.dup-btn-lg {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 16px 28px;
+}
+
+.dup-btn-md {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 12px;
+}
+
+.dup-btn-orange {
+    background-color: #fe4716;
+    color: white;
+}
+
+.dup-btn-orange:hover,
+.dup-btn-orange:focus {
+    color: white;
+    background-color: #d83307;
+}
+
+.dup-btn-orange:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 3px #d83307;
+}
+
+.dup-btn-grey {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    color: #666;
+}
+
+.dup-btn-grey:hover,
+.dup-btn-grey:focus {
+    background-color: #d7d7d7;
+    color: #444;
+}
+
+.dup-btn-grey:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 3px #d7d7d7;
+}
+
+.dup-btn-green {
+    background-color: #1da867;
+    color: white;
+}
+
+.dup-btn-green:hover,
+.dup-btn-green:focus {
+    color: white;
+    background-color: #199a5e;
+}
+
+.dup-btn-green:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 3px #199a5e;
+}
+
+.dup-btn-trans-green {
+    color: #1da867;
+}
+
+.dup-btn-trans-green:hover,
+.dup-btn-trans-green:focus {
+    color: white;
+    background-color: #1da867;
+}
+
+.dup-btn-trans-green:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 3px #1da867;
+}
+
+.dup-btn-trans-green .underline {
+    position: relative;
+}
+
+.dup-btn-trans-green .underline:after {
+    content: " ";
+    border-bottom: 1px dashed #1da867;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+}
+
+/* ADDONS LIST STYLE */
+.dup-btn-green {
+    background-color: #1da867;
+    color: white;
+}
+
+.dup-btn-green:hover,
+.dup-btn-green:focus {
+    color: white;
+    background-color: #199a5e;
+}
+
+.dup-btn-green:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 3px #199a5e;
+}
+
+/* STORAGE PAGE STYLE */
+
+#dup-admin-addons *,
+#dup-admin-addons *::before,
+#dup-admin-addons *::after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#dup-admin-addons #dup-admin-addons-list .list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+#dup-admin-addons #dup-admin-addons-list .list .action-button button,
+#dup-admin-addons #dup-admin-addons-list .list .action-button a {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: none;
+    font-weight: 600;
+    width: 140px;
+    text-align: center;
+}
+
+#dup-admin-addons #dup-admin-addons-list .list .action-button button:focus,
+#dup-admin-addons #dup-admin-addons-list .list .action-button a:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+#dup-admin-addons .unlock-msg h4 {
+    margin: 1.5em 0 8px;
+}
+
+#dup-admin-addons .unlock-msg p {
+    margin: 0 0 1.5em;
+}
+
+#dup-admin-addons .addons-container {
+    padding: 0 20px;
+    width: 33.333333%;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 1249px) {
+    #dup-admin-addons .addons-container {
+        width: 50%;
+    }
+}
+
+@media (max-width: 767px) {
+    #dup-admin-addons .addons-container {
+        width: 100%;
+    }
+}
+
+#dup-admin-addons h4 {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#dup-admin-addons .addon-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+#dup-admin-addons .addon-item img {
+    border: 1px solid #eee;
+    float: left;
+    width: 75px;
+}
+
+#dup-admin-addons .addon-item h5 {
+    margin: 0 0 0 100px;
+    font-size: 16px;
+}
+
+#dup-admin-addons .addon-item h5 a {
+    color: #444;
+    display: inline-block;
+    margin: 0 10px 10px 0;
+}
+
+#dup-admin-addons .addon-item h5 a:hover {
+    color: #006799;
+}
+
+#dup-admin-addons .addon-item p {
+    margin: 0 0 0 100px;
+}
+
+#dup-admin-addons .addon-item .status {
+    flex-grow: 1;
+}
+
+#dup-admin-addons .addon-item .details {
+    padding: 30px 20px;
+}
+
+#dup-admin-addons .addon-item .actions {
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    border-top: 1px solid #ddd;
+    padding: 20px;
+    min-height: 75px;
+    position: relative;
+}
+
+#dup-admin-addons .addon-item .actions .msg p {
+    margin: 0;
+}
+
+#dup-admin-addons .addon-item .actions .msg a,
+#dup-admin-addons .addon-item .actions .msg a:hover {
+    color: inherit;
+}
+
+#dup-admin-addons .addon-item .upgrade-button {
+    text-align: center;
+}
+
+#dup-admin-addons .addon-item .upgrade-button a {
+    font-weight: 600;
+    width: 140px;
+    text-align: center;
+    padding: 8px 5px;
+}
+
+#dup-admin-addons .addon-item .action-button button {
+    width: 140px;
+}
+
+#dup-admin-addons .addon-item .dup-storage-recommended i {
+    opacity: 0.8;
+}
+
+.addon-item .upgrade-button {
+    text-align: center;
+}
+
+.addon-item .upgrade-button a {
+    font-weight: 600;
+    width: 140px;
+    text-align: center;
+}
+
+.addon-item .action-button button {
+    cursor: pointer;
+}
+
+.addon-item .action-button a {
+    text-decoration: none;
+}
+
+
+#dup-admin-addons .addon-item .status .status-active {
+    color: #00a32a
+}
+
+#dup-admin-addons .addon-item .status .status-installed {
+    color: #d63638
+}
+
+#dup-admin-addons .addon-item .actions .msg.error {
+    color: #d63638
+}
+
+.addon-item .action-button button.status-installed .fa {
+    color: #d63638
+}
+
+.addon-item .action-button button.status-active .fa {
+    color: #00a32a
+}
+
+.addon-item .action-button button.loading .fa {
+    color: #666
+}
+
+
+/* COLUMN STYLES */
+
+.dup-admin-columns > div[class*="-column-"] {
+    float: left;
+}
+
+.dup-admin-columns .dup-admin-column-20 {
+    width: 20%;
+}
+
+.dup-admin-columns .dup-admin-column-33 {
+    width: 33.33333%;
+}
+
+.dup-admin-columns .dup-admin-column-40 {
+    width: 40%;
+}
+
+.dup-admin-columns .dup-admin-column-50 {
+    width: 50%;
+}
+
+.dup-admin-columns .dup-admin-column-60 {
+    width: 60%;
+}
+
+.dup-admin-columns .dup-admin-column-80 {
+    width: 80%;
+}
+
+.dup-admin-columns .dup-admin-column-last {
+    float: right !important;
+}
+
+.dup-admin-columns:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.dup-subscribe-form{
+    color: #3c434a;
+}
+
+#dup-scan-progress-bar-wrapper .dup-subscribe-form,
+#dup-build-progress-bar-wrapper .dup-subscribe-form {
+    padding-bottom: 35px;
+}
+
+#dup-msg-success .dup-subscribe-form {
+    padding-bottom: 10px;
+}
+
+.dup-subscribe-form input[type=email] {
+    padding: 4px 12px;
+    vertical-align: middle;
+    margin: 0;
+    width: 320px;
+    border-radius: 3px 0 0 3px;
+    font-size: 14px;
+    border: 1px solid #c5c5c5;
+    border-right: 0;
+}
+
+.dup-subscribe-form .dup-btn {
+    border-radius: 0 3px 3px 0;
+    margin: 0;
+    font-size: 15px;
+    padding: 10px 12px;
+}
+
+.dup-subscribe-form .desc {
+    margin-top: 10px;
+}
+.dup-subscribe-form small {
+    font-size: 13px;
+}
+
+/* PACKAGES BOTTOM BAR */
+#dup-packages-bottom-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#dup-packages-bottom-bar .feature {
+    flex-grow: 4;
+ }
+
+#dup-packages-bottom-bar .fa-info-circle {
+    text-align: center;
+    padding: 0 20px 0 10px;
+    font-size: 40px;
+    color: #fe4716;
+}
+
+#dup-packages-bottom-bar p {
+    margin: 0;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 600px;
+}
+
+#dup-packages-bottom-bar-dismiss {
+    margin: 0;
+    padding: 0 0 0 15px;
+    border: 0 none;
+    background: transparent;
+    color: #787c82;
+    cursor: pointer;
+}
+
+/** Callout CTA */
+
+.dup-settings-lite-cta {
+    background-color: #fff;
+    border: 1px solid #dadada;
+    padding: 25px 20px;
+    margin: 10px 0 0 0;
+    position: relative;
+}
+
+.dup-settings-lite-cta .dismiss {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #666;
+    font-size: 16px;
+}
+
+.dup-settings-lite-cta h5 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.dup-settings-lite-cta h6 {
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 0 16px;
+}
+
+.dup-settings-lite-cta p {
+    color: #555;
+    font-size: 14px;
+    margin: 0 0 16px;
+}
+
+.dup-settings-lite-cta p:last-of-type {
+    margin: 0;
+}
+
+.dup-settings-lite-cta p a {
+    color: #fe4716;
+}
+
+.dup-settings-lite-cta p a:hover {
+    color: #b85a1b;
+}
+
+.dup-settings-lite-cta .list {
+    display: flex;
+    margin: 0 0 16px 0;
+    overflow: auto;
+    max-width: 900px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: #555;
+    font-size: 14px;
+    list-style: none;
+}
+
+.dup-settings-lite-cta .list > .item {
+    flex: 33.33% 0;
+    box-sizing: border-box;
+    padding: 0 0 2px 0;
+}
+
+.dup-settings-lite-cta  .list > .item > span::before {
+    content: '+ ';
+}
+
+@media (max-width: 900px) {
+    .dup-settings-lite-cta .list > .item {
+        flex: 50% 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .dup-settings-lite-cta .list > .item {
+        flex: 100% 1;
+    }
+}
+
+.dup-settings-lite-cta .green {
+    color: #218900;
+    font-weight: 700;
+}
+
+.dup-settings-lite-cta .fa-star {
+    color: #ff982d;
+}
+
+/* DID YOU KNOW STYLE */
+
+#duplicator-did-you-know {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: #444444;
+    background: #fcf9e8;
+    border-bottom: 1px solid #ede2a0;
+}
+
+#duplicator-did-you-know a {
+    margin-left: 5px;
+}
+
+#duplicator-did-you-know .fa-info-circle {
+    font-size: 20px;
+    margin-right: 5px;
+    vertical-align: text-top;
+    color: #e27730;
+}
+
+/* ADVANCED STORAGES POPUP */
+.advanced-storages-popup-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px
+}
+
+.advanced-storages-popup-content img {
+    width: 250px;
+}
+
+.advanced-storages-popup-content ul {
+    text-align: left;
+    maring: 0;
 }

@@ -141,7 +141,7 @@ final class ParamDescController implements DescriptorInterface
             array(
             'persistence'      => false,
             'default'          => null,
-            'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline')
+            'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline')
             )
         );
 

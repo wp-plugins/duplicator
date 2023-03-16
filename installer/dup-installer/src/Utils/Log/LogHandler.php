@@ -4,10 +4,10 @@
  * Error Hadler logging
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\Log
- *
  */
 
 namespace Duplicator\Installer\Utils\Log;
@@ -69,10 +69,11 @@ class LogHandler
     /**
      * Error handler
      *
-     * @param  integer $errno   Error level
-     * @param  string  $errstr  Error message
-     * @param  string  $errfile Error file
-     * @param  integer $errline Error line
+     * @param integer $errno   Error level
+     * @param string  $errstr  Error message
+     * @param string  $errfile Error file
+     * @param integer $errline Error line
+     *
      * @return void
      */
     public static function error($errno, $errstr, $errfile, $errline)

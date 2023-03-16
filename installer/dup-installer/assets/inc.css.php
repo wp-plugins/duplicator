@@ -1949,9 +1949,6 @@ table.s4-final-step td:first-child {white-space:nowrap; width:165px}
     padding-left: 12px;
 }
 
-.final-review-drag-drop-advertisement {
-    text-align: center;
-}
 
 button.s4-final-btns {
     cursor:pointer; 
@@ -2220,6 +2217,150 @@ div.more-faq-link {
     padding:15px 0 15px 0;
     text-align:center;
     margin-bottom:25px;
+}
+
+.subscribe-form {
+    text-align: center;
+    width: 500px;
+    margin: 30px auto 15px;
+    background: #fcf9e8;
+}
+
+.subscribe-form .sub-note {
+    font-size: 13px;
+}
+
+.subscribe-form input {
+    height: 35px!important;
+    padding: 0 15px!important;
+    font-size: 14px;
+}
+
+.subscribe-form .postfix{
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    padding: 0 20px;
+    background-color: #1da867;
+}
+
+/** Callout CTA */
+
+.dup-settings-lite-cta {
+    width: calc(900px + 42px);
+    max-width: calc(100vw - 40px);
+    margin: 20px auto;
+    box-sizing: border-box;
+    box-shadow: 0 8px 6px -6px #999;
+    background-color: #fff;
+    border: 1px solid #dadada;
+    padding: 25px 20px;
+    position: relative;
+}
+
+.dup-settings-lite-cta .dismiss {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #666;
+    font-size: 16px;
+}
+
+.dup-settings-lite-cta h5 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.dup-settings-lite-cta h6 {
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 0 16px;
+}
+
+.dup-settings-lite-cta p {
+    color: #555;
+    font-size: 14px;
+    margin: 0 0 16px;
+}
+
+.dup-settings-lite-cta p:last-of-type {
+    margin: 0;
+}
+
+.dup-settings-lite-cta p a {
+    color: #fe4716;
+}
+
+.dup-settings-lite-cta p a:hover {
+    color: #b85a1b;
+}
+
+.dup-settings-lite-cta .list {
+    display: flex;
+    margin: 0 0 16px 0;
+    overflow: auto;
+    max-width: 900px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: #555;
+    font-size: 14px;
+    list-style: none;
+    padding: 0;
+}
+
+.dup-settings-lite-cta .list > .item {
+    flex: 33.33% 0;
+    box-sizing: border-box;
+    padding: 0 0 2px 0;
+}
+
+.dup-settings-lite-cta  .list > .item > span::before {
+    content: '+ ';
+}
+
+@media (max-width: 900px) {
+    .dup-settings-lite-cta .list > .item {
+        flex: 50% 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .dup-settings-lite-cta .list > .item {
+        flex: 100% 1;
+    }
+}
+
+.dup-settings-lite-cta .green {
+    color: #218900;
+    font-weight: 700;
+}
+
+.dup-settings-lite-cta .fa-star {
+    color: #ff982d;
+}
+
+/* DID YOU KNOW STYLE */
+
+#duplicator-did-you-know {
+    border-bottom: none;
+    border-top: 1px solid #ede2a0;
+    padding: 15px 0;
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: #444444;
+    background: #fcf9e8;
+    border-bottom: 1px solid #ede2a0;
+}
+
+#duplicator-did-you-know .fa-info-circle {
+    font-size: 20px;
+    margin-right: 5px;
+    vertical-align: text-top;
+    color: #e27730;
 }
 </style>
 <?php

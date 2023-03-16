@@ -6,7 +6,6 @@
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package CTRL
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -40,29 +39,30 @@ class DUPX_DBInstall extends AbstractJsonSerializable
     const TABLES_REGEX_CHUNK_SIZE           = 100;
 
     /** @var \mysqli */
-    private $dbh            = null;
-    public $post            = array();
-    public $dbaction        = self::DBACTION_EMPTY;
-    public $dbcharset       = '';
-    public $dbcollate       = '';
-    public $dbvar_maxtime   = 300;
-    public $dbvar_maxpacks  = MB_IN_BYTES;
-    public $dbvar_sqlmode   = 'NOT_SET';
-    public $sql_file_path   = '';
-    public $table_count     = 0;
-    public $table_rows      = 0;
-    public $query_errs      = 0;
-    public $drop_tbl_log    = 0;
-    public $rename_tbl_log  = 0;
-    public $dbquery_errs    = 0;
-    public $dbquery_rows    = 0;
-    public $dbtable_count   = 0;
-    public $dbtable_rows    = 0;
-    public $profile_start   = 0;
-    public $start_microtime = 0;
-    public $dbsplit_creates = true;
-    public $dbFileSize      = 0;
-    public $setQueries      = array();
+    private $dbh              = null;
+    public $post              = array();
+    public $dbaction          = self::DBACTION_EMPTY;
+    public $dbcharset         = '';
+    public $dbcollate         = '';
+    public $dbvar_maxtime     = 300;
+    public $dbvar_maxpacks    = MB_IN_BYTES;
+    public $dbvar_sqlmode     = 'NOT_SET';
+    public $sql_file_path     = '';
+    public $table_count       = 0;
+    public $table_rows        = 0;
+    public $query_errs        = 0;
+    public $drop_tbl_log      = 0;
+    public $rename_tbl_log    = 0;
+    public $dbquery_errs      = 0;
+    public $dbquery_rows      = 0;
+    public $dbtable_count     = 0;
+    public $dbtable_rows      = 0;
+    public $profile_start     = 0;
+    public $start_microtime   = 0;
+    public $thread_start_time = 0;
+    public $dbsplit_creates   = true;
+    public $dbFileSize        = 0;
+    public $setQueries        = array();
     /** @var DbUserMode */
     protected $dbUserMode = null;
     /** @var QueryFixes */
@@ -343,7 +343,7 @@ class DUPX_DBInstall extends AbstractJsonSerializable
     /**
      *
      * @staticvar string $path
-     * @return string
+     * @return    string
      */
     protected static function seekTellFilePath()
     {
@@ -1305,8 +1305,8 @@ class DUPX_DBInstall extends AbstractJsonSerializable
     /**
      * @param $err   string Error message
      * @param $query string the SQL query
+     *
      * @return bool if true will skip front-end notice of error message
-     * @throws Exception
      */
     private function skipErrorNotice($err, $query)
     {

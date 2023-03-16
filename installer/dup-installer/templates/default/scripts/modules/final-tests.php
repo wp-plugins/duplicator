@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -41,7 +40,7 @@ use Duplicator\Libs\Snap\SnapJson;
             let action = <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::ACTION_FINAL_TESTS_PREPARE); ?>;
             let token = <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::generateToken(DUPX_Ctrl_ajax::ACTION_FINAL_TESTS_PREPARE)); ?>;
 
-            DUPX.StandarJsonAjaxWrapper(
+            DUPX.StandardJsonAjaxWrapper(
                     action,
                     token,
                     {},
@@ -98,7 +97,7 @@ use Duplicator\Libs\Snap\SnapJson;
             let action = <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::ACTION_FINAL_TESTS_AFTER); ?>;
             let token = <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::generateToken(DUPX_Ctrl_ajax::ACTION_FINAL_TESTS_AFTER)); ?>;
 
-            DUPX.StandarJsonAjaxWrapper(
+            DUPX.StandardJsonAjaxWrapper(
                     action,
                     token,
                     {},

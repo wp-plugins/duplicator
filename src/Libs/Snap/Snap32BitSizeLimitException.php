@@ -2,9 +2,8 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;

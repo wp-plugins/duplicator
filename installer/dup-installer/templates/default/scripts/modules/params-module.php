@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -67,14 +66,15 @@ $paramsManager = PrmMng::getInstance();
         DUPX.pageComponents.resetTopMessages().showProgress({
             'title': 'Parameters Update',
             'bottomText': '<i>Keep this window open.</i><br/>' +
-                '<i>This can take several minutes.</i>'
+                '<i>This can take several minutes.</i>',
+            'showUpsell': false
         });
         let setParamAction = <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::ACTION_SET_PARAMS_S1); ?>;
         let setParamToken = <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::generateToken(DUPX_Ctrl_ajax::ACTION_SET_PARAMS_S1)); ?>;
 
         var formData = form.serializeForm();
 
-        DUPX.StandarJsonAjaxWrapper(
+        DUPX.StandardJsonAjaxWrapper(
             setParamAction,
             setParamToken,
             formData,
@@ -107,7 +107,7 @@ $paramsManager = PrmMng::getInstance();
 
         formData = DUPX.setTablesFormData(formData);
 
-        DUPX.StandarJsonAjaxWrapper(
+        DUPX.StandardJsonAjaxWrapper(
             setParamAction,
             setParamToken,
             formData,
@@ -200,7 +200,7 @@ $paramsManager = PrmMng::getInstance();
 
         var formData = form.serializeForm();
 
-        DUPX.StandarJsonAjaxWrapper(
+        DUPX.StandardJsonAjaxWrapper(
             setParamAction,
             setParamToken,
             formData,
@@ -232,7 +232,7 @@ $paramsManager = PrmMng::getInstance();
             <?php echo SnapJson::jsonEncode(PrmMng::PARAM_AUTO_CLEAN_INSTALLER_FILES); ?>: $('#' + autoCleanInputId).prop('checked')
         };
 
-        DUPX.StandarJsonAjaxWrapper(
+        DUPX.StandardJsonAjaxWrapper(
             setParamAction,
             setParamToken,
             formData,

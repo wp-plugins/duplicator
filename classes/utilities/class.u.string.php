@@ -5,13 +5,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * Utility class working with strings
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package DUP
+ * @package    DUP
  * @subpackage classes/utilities
- * @copyright (c) 2017, Snapcreek LLC
- * @license https://opensource.org/licenses/GPL-3.0 GNU Public License
- *
+ * @copyright  (c) 2017, Snapcreek LLC
+ * @license    https://opensource.org/licenses/GPL-3.0 GNU Public License
  */
 class DUP_STR
 {
@@ -30,6 +30,7 @@ class DUP_STR
 
     /**
      * Returns true if the string contains UTF8 characters
+     *
      * @see http://php.net/manual/en/function.mb-detect-encoding.php
      *
      * @param string  $string     The class name where the $destArray exists

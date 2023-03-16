@@ -2,7 +2,7 @@
 /**
  *
  * @package templates/default
- * @var $wordFencePath
+ * @var     $wordFencePath
  */
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>

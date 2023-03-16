@@ -90,7 +90,7 @@ class Notice
     {
 
         add_action('admin_notices', array(__CLASS__, 'display'), PHP_INT_MAX);
-        add_action('wp_ajax_dup_notice_dismiss', array(__CLASS__, 'dismiss_ajax'));
+        add_action('wp_ajax_dup_notice_dismiss', array(__CLASS__, 'dismissAjax'));
     }
 
     /**
@@ -198,6 +198,7 @@ class Notice
      *
      * @param array  $steps Array of info for each step.
      * @param string $slug  Unique slug identifying the notice
+     * @param string $type  Type of the notice. Can be [ '' (default) | 'info' | 'error' | 'success' | 'warning' ].
      * @param array  $args  Array of additional arguments. Details in the self::add() method.
      *
      * @return void
@@ -292,7 +293,7 @@ class Notice
      *
      * @return void
      */
-    public static function dismiss_ajax()
+    public static function dismissAjax()
     {
 
         // Run a security check.
@@ -308,10 +309,10 @@ class Notice
                 wp_send_json_error();
             }
 
-            $notices = self::dismiss_global($post['id']);
+            $notices = self::dismissGlobal($post['id']);
             $level   = self::DISMISS_GLOBAL;
         } else {
-            $notices = self::dismiss_user($post['id']);
+            $notices = self::dismissUser($post['id']);
             $level   = self::DISMISS_USER;
         }
 
@@ -342,7 +343,7 @@ class Notice
      *
      * @return array Notices.
      */
-    private static function dismiss_global($id)
+    private static function dismissGlobal($id)
     {
 
         $id           = str_replace(self::GLOBAL_PREFIX, '', $id);
@@ -363,7 +364,7 @@ class Notice
      *
      * @return array Notices.
      */
-    private static function dismiss_user($id)
+    private static function dismissUser($id)
     {
 
         $user_id      = get_current_user_id();

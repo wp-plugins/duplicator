@@ -21,13 +21,13 @@ require_once(DUPLICATOR_PLUGIN_PATH . 'lib/forceutf8/Encoding.php');
  * Class for handling archive setup and build process
  *
  * Standard: PSR-2 (almost)
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package DUP
+ * @package    DUP
  * @subpackage classes/package
- * @copyright (c) 2017, Snapcreek LLC
- * @license https://opensource.org/licenses/GPL-3.0 GNU Public License
- *
+ * @copyright  (c) 2017, Snapcreek LLC
+ * @license    https://opensource.org/licenses/GPL-3.0 GNU Public License
  */
 class DUP_Archive
 {
@@ -214,6 +214,7 @@ class DUP_Archive
      *  Builds a list of files and directories to be included in the archive
      *
      *  Get the directory size recursively, but don't calc the snapshot directory, exclusion directories
+     *
      *  @link http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx Windows filename restrictions
      *
      *  @return obj Returns a DUP_Archive object
@@ -288,7 +289,7 @@ class DUP_Archive
      *  /path1_/path/;/path1_/path2/;
      *
      * @returns string A cleaned up list of directory filters
-     * @return string
+     * @return  string
      */
     public function parseDirectoryFilter($dirs = "")
     {
@@ -317,7 +318,7 @@ class DUP_Archive
      *  /path1_/path/file1.ext;/path1_/path2/file2.ext;
      *
      * @returns string A cleaned up list of file filters
-     * @return string
+     * @return  string
      */
     public function parseFileFilter($files = "")
     {
@@ -760,7 +761,7 @@ class DUP_Archive
      * get the main target root path to make archive
      *
      * @staticvar type $targerRoorPath
-     * @return string
+     * @return    string
      */
     public static function getTargetRootPath()
     {
@@ -775,6 +776,7 @@ class DUP_Archive
 
     /**
      * @param null|string $urlKey if set will only return the url identified by that key
+     *
      * @return array|string|bool
      */
     public static function getOriginalUrls($urlKey = null)
@@ -863,7 +865,6 @@ class DUP_Archive
     /**
      * return the wordpress original dir paths
      *
-     * @staticvar string[] $origPaths if is null retur the array of paths or the single key path
      * @param string|null $pathKey
      *
      * @return string[]|string|bool return false if key doesn\'t exist
@@ -914,7 +915,6 @@ class DUP_Archive
     /**
      * return the wordpress original dir paths
      *
-     * @staticvar string[] $paths if is null retur the array of paths or the single key path
      * @param string|null $pathKey
      *
      * @return string[]|string|bool return false if key doesn\'t exist
@@ -963,6 +963,7 @@ class DUP_Archive
      * return true if path is child of duplicator backup path
      *
      * @param string $path
+     *
      * @return boolean
      */
     public static function isBackupPathChild($path)

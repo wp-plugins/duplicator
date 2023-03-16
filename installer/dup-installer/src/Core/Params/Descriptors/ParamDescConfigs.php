@@ -192,7 +192,7 @@ final class ParamDescConfigs implements DescriptorInterface
     /**
      * Return default install type from install types enabled
      *
-     * @param  int[] $acceptValues install types enabled
+     * @param int[] $acceptValues install types enabled
      *
      * @return int
      */

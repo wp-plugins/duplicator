@@ -8,10 +8,10 @@
  * *******************
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 namespace Duplicator\Installer\Utils\Tests\WP;
@@ -47,6 +47,7 @@ class TestsErrorHandler
 
     /**
      * @param callable $callback shutdown callback
+     *
      * @return void
      */
     public static function setShutdownCallabck($callback)
@@ -66,6 +67,7 @@ class TestsErrorHandler
      * @param string $errfile error file
      * @param int    $errline error line
      * @param array  $trace   error trace
+     *
      * @return void
      */
     protected static function addError($errno, $errstr, $errfile, $errline, $trace)
@@ -89,6 +91,7 @@ class TestsErrorHandler
 
     /**
      * @param array $error the error array
+     *
      * @return string human-readable error message with trace
      */
     public static function errorToString($error)
@@ -112,10 +115,11 @@ class TestsErrorHandler
     /**
      * Error handler
      *
-     * @param  integer $errno   Error level
-     * @param  string  $errstr  Error message
-     * @param  string  $errfile Error file
-     * @param  integer $errline Error line
+     * @param integer $errno   Error level
+     * @param string  $errstr  Error message
+     * @param string  $errfile Error file
+     * @param integer $errline Error line
+     *
      * @return void
      */
     public static function error($errno, $errstr, $errfile, $errline)
@@ -129,6 +133,7 @@ class TestsErrorHandler
      * Exception handler
      *
      * @param Exception|Error $e // Throwable in php 7
+     *
      * @return void
      */
     public static function exception($e)
@@ -181,6 +186,7 @@ class TestsErrorHandler
 
     /**
      * @param array $elem normalize error element
+     *
      * @return array
      */
     public static function normalizeTraceElement($elem)
@@ -203,6 +209,7 @@ class TestsErrorHandler
     /**
      *
      * @param int $errno error number
+     *
      * @return string
      */
     public static function getErrorCategoryFromErrno($errno)
@@ -243,6 +250,7 @@ class TestsErrorHandler
     /**
      *
      * @param int $errno error number
+     *
      * @return string
      */
     public static function errnoToString($errno)

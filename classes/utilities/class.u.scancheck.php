@@ -5,12 +5,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * Recursivly scans a directory and finds all sym-links and unreadable files
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/utilities
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 
 // Exit if accessed directly

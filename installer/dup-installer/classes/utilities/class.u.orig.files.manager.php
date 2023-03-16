@@ -4,10 +4,10 @@
  * Original installer files manager
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;

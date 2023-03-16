@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 use Duplicator\Libs\Snap\SnapUtil;

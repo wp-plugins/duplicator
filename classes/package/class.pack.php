@@ -158,6 +158,7 @@ abstract class DUP_PackageFileType
  * Class used to store and process all Package logic
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
  * @package Duplicator\classes
@@ -167,7 +168,9 @@ class DUP_Package
     const OPT_ACTIVE = 'duplicator_package_active';
 
     //Properties
-    public $Created;
+
+    /** @var string */
+    public $Created = '';
     public $Version;
     public $VersionWP;
     public $VersionDB;
@@ -581,7 +584,7 @@ class DUP_Package
      *
      * @return bool
      */
-    public static function is_active_package_present()
+    public static function isPackageRunning()
     {
         $activePakcs = self::get_ids_by_status(array(
                 array('op' => '>=', 'status' => DUP_PackageStatus::CREATED),
@@ -600,6 +603,7 @@ class DUP_Package
      *                                  [ 'op' => '<' ,
      *                                    'status' =>  DUP_PackageStatus::COMPLETED ]
      *                              ]
+     *
      * @return string
      */
     protected static function statusContitionsToWhere($conditions = array())
@@ -749,7 +753,6 @@ class DUP_Package
     /**
      * count package with status condition
      *
-     * @global wpdb $wpdb
      * @param array $conditions es. [
      *                                  relation = 'AND',
      *                                  [ 'op' => '>=' ,
@@ -757,6 +760,7 @@ class DUP_Package
      *                                  [ 'op' => '<' ,
      *                                    'status' =>  DUP_PackageStatus::COMPLETED ]
      *                              ]
+     *
      * @return int
      */
     public static function count_by_status($conditions = array())
@@ -1114,6 +1118,7 @@ class DUP_Package
 
     /**
      * @param int $type
+     *
      * @return array
      */
     public function getPackageFileDownloadInfo($type)
@@ -1854,5 +1859,29 @@ class DUP_Package
         DUP_Log::Info($info);
 
         $info = null;
+    }
+
+    /**
+     * Return package life
+     *
+     * @param string $type can be hours,human,timestamp
+     *
+     * @return int|string package life in hours, timestamp or human readable format
+     */
+    public function getPackageLife($type = 'timestamp')
+    {
+        $created = strtotime($this->Created);
+        $current = strtotime(gmdate("Y-m-d H:i:s"));
+        $delta   = $current - $created;
+
+        switch ($type) {
+            case 'hours':
+                return max(0, floor($delta / 60 / 60));
+            case 'human':
+                return human_time_diff($created, $current);
+            case 'timestamp':
+            default:
+                return $delta;
+        }
     }
 }

@@ -5,10 +5,10 @@
  * for .htaccess, web.config and user.ini
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\ServerConfig
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -35,7 +35,7 @@ class DUPX_ServerConfig
      * Common timestamp of all members of this class
      *
      * @staticvar type $time
-     * @return type
+     * @return    type
      */
     public static function getFixedTimestamp()
     {
@@ -239,9 +239,9 @@ class DUPX_ServerConfig
      * Moves the configuration file to the dup_installer/original_files_[hash] folder
      *
      * @param string $filePath file path to store
-     * @param string if not false rename
-     * @return bool        Returns true if the file was backed-up and reset or there was no file to reset
-     * @throws Exception
+     * @param string $storedName if not false rename
+     *
+     * @return bool Returns true if the file was backed-up and reset or there was no file to reset
      */
     private static function runReset($filePath, $storedName)
     {
@@ -258,11 +258,14 @@ class DUPX_ServerConfig
 
                 Log::info("RESET CONFIG FILES: I'M GOING TO MOVE CONFIG FILE " . Log::v2str($fileName) . " IN ORIGINAL FOLDER");
 
-                if ($origFiles->addEntry(self::INSTALLER_HOST_ENTITY_PREFIX . $storedName, 
-                                         $filePath,
-                                         DUPX_Orig_File_Manager::MODE_MOVE,
-                                         self::INSTALLER_HOST_ENTITY_PREFIX . $storedName))
-                {
+                if (
+                    $origFiles->addEntry(
+                        self::INSTALLER_HOST_ENTITY_PREFIX . $storedName,
+                        $filePath,
+                        DUPX_Orig_File_Manager::MODE_MOVE,
+                        self::INSTALLER_HOST_ENTITY_PREFIX . $storedName
+                    )
+                ) {
                     Log::info("\tCONFIG FILE HAS BEEN RESET");
                 } else {
                     throw new Exception("cannot store file " . Log::v2str($fileName) . " in orginal file folder");

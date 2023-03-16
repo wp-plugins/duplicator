@@ -1,12 +1,11 @@
 <?php
 
 /**
- *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\Crypt
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -82,7 +81,7 @@ final class DUPX_S3_Funcs
 
         switch ($this->getEngineMode()) {
             case DUPX_S3_Funcs::MODE_CHUNK:
-                /** START CHUNK MANAGER */
+                /* START CHUNK MANAGER */
                 $maxIteration = 0;     // max iteration before stop. If 0 have no limit
                 // auto set prevent timeout
                 $inimaxExecutionTime           = ini_get('max_execution_time');
@@ -328,7 +327,6 @@ final class DUPX_S3_Funcs
      * open db connection if is closed
      *
      * @return database connection handle
-     *
      */
     private function dbConnection()
     {
@@ -379,7 +377,7 @@ final class DUPX_S3_Funcs
             "********************************************************************************\n" .
             "OPTIONS:\n";
 
-        $log  .= str_pad('SKIP PATH REPLACE', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str($paramsManager->getValue(PrmMng::PARAM_SKIP_PATH_REPLACE)) . "\n";
+        $log .= str_pad('SKIP PATH REPLACE', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str($paramsManager->getValue(PrmMng::PARAM_SKIP_PATH_REPLACE)) . "\n";
 
         $wpConfigsKeys = array(
             PrmMng::PARAM_WP_CONF_DISALLOW_FILE_EDIT,
@@ -408,7 +406,7 @@ final class DUPX_S3_Funcs
         foreach ($wpConfigsKeys as $key) {
             $label = $paramsManager->getLabel($key);
             $value = SnapString::implodeKeyVals(', ', $paramsManager->getValue($key), '[%s = %s]');
-            $log   .= str_pad($label, $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $value . "\n";
+            $log  .= str_pad($label, $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $value . "\n";
         }
         $log .= "********************************************************************************\n";
 

@@ -6,8 +6,7 @@
  * Standard: PSR-2
  *
  * @package SC\DUPX\DB
- * @link http://www.php-fig.org/psr/psr-2/
- *
+ * @link    http://www.php-fig.org/psr/psr-2/
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -28,9 +27,12 @@ class DUPX_DB_Functions
 
     /** @var \mysqli connection */
     private $dbh = null;
+    /** @var float */
+    protected $timeStart = 0;
 
     /**
      * current data connection
+     *
      * @var array connection
      */
     private $dataConnection = null;
@@ -55,6 +57,8 @@ class DUPX_DB_Functions
      * @var string
      */
     private $defaultCharset = null;
+    /** @var int */
+    private $rename_tbl_log = 0;
 
     private function __construct()
     {
@@ -77,8 +81,8 @@ class DUPX_DB_Functions
      * Returns mysqli handle
      *
      * @param array|null $customConnection
+     *
      * @return mysqli|null
-     * @throws Exception
      */
     public function dbConnection($customConnection = null)
     {
@@ -171,6 +175,8 @@ class DUPX_DB_Functions
             $dbflag                         = MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT;
             $wpConfigFalgsVal['inWpConfig'] = true;
             $wpConfigFalgsVal['value']      = array(MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
+        } else {
+            $dbflag = DUPX_DB::MYSQLI_CLIENT_NO_FLAGS;
         }
 
         $paramsManager->setValue(PrmMng::PARAM_DB_FLAG, $dbflag);
@@ -221,6 +227,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param string $charset
+     *
      * @return string|bool // false if charset don't exists
      */
     public function getDefaultCollateOfCharset($charset)
@@ -230,8 +237,7 @@ class DUPX_DB_Functions
     }
 
     /**
-     * @return array list of supported MySQL engine data
-     * @throws Exception
+     * @return array list of supported MySQL engine data\
      */
     public function getEngineData()
     {
@@ -260,7 +266,6 @@ class DUPX_DB_Functions
 
     /**
      * @return array list of supported MySQL engine names
-     * @throws Exception
      */
     public function getSupportedEngineList()
     {
@@ -271,7 +276,6 @@ class DUPX_DB_Functions
 
     /**
      * @return string the default MySQL engine of the database
-     * @throws Exception
      */
     public function getDefaultEngine()
     {
@@ -287,7 +291,6 @@ class DUPX_DB_Functions
     /**
      *
      * @return array
-     * @throws Exception
      */
     public function getCharsetAndCollationData()
     {
@@ -375,6 +378,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param null|string $prefix
+     *
      * @return string
      */
     public static function getOptionsTableName($prefix = null)
@@ -388,6 +392,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param null|string $prefix
+     *
      * @return string
      */
     public static function getPostsTableName($prefix = null)
@@ -401,6 +406,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param null|string $prefix
+     *
      * @return string
      */
     public static function getUserTableName($prefix = null)
@@ -414,6 +420,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param null|string $prefix
+     *
      * @return string
      */
     public static function getUserMetaTableName($prefix = null)
@@ -427,6 +434,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param null|string $prefix
+     *
      * @return string
      */
     public static function getPackagesTableName($prefix = null)
@@ -440,8 +448,8 @@ class DUPX_DB_Functions
     /**
      *
      * @param string $userLogin
+     *
      * @return boolean return true if user login name exists in users table
-     * @throws Exception
      */
     public function checkIfUserNameExists($userLogin)
     {
@@ -543,7 +551,6 @@ class DUPX_DB_Functions
      *
      * @param type $newPrefix
      * @param type $options
-     * @throws Exception
      */
     public function pregReplaceTableName($pattern, $replacement, $options = array())
     {
@@ -617,6 +624,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param string $tableNamePatten
+     *
      * @return array
      */
     public function getForeinKeysData($tableNamePatten = false)
@@ -643,6 +651,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param string $tableNamePatten
+     *
      * @return boolean
      */
     public function dropForeignKeys($tableNamePatten = false)
@@ -679,6 +688,7 @@ class DUPX_DB_Functions
     /**
      *
      * @param string $prefix
+     *
      * @return boolean
      */
     public function getAdminUsers($prefix)
@@ -707,6 +717,7 @@ class DUPX_DB_Functions
      * Returns the Duplicator version if it exists, otherwise false
      *
      * @param $prefix
+     *
      * @return false|string Duplicator version
      */
     public function getDuplicatorVersion($prefix)
@@ -726,6 +737,7 @@ class DUPX_DB_Functions
      *
      * @param int $userId
      * @param null|string $prefix
+     *
      * @return boolean
      */
     public function updatePostsAuthor($userId, $prefix = null)

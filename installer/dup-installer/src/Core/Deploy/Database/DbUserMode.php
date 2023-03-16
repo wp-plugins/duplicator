@@ -486,7 +486,7 @@ class DbUserMode extends AbstractJsonSerializable
                     }
                 }
 
-                $user                                        = new ImportUser($targetId, $newLogin, $rowMail, $rowId, $rowLogin, true);
+                $user = new ImportUser($targetId, $newLogin, $rowMail, $rowId, $rowLogin, true);
                 $this->targetUsersById[$user->getId()]       = $user;
                 $this->targetUsersByMail[$user->getMail()]   = $user;
                 $this->targetUsersByLogin[$user->getLogin()] = $user;

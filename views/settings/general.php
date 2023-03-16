@@ -16,7 +16,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 
     DUP_Settings::Set('uninstall_settings', isset($_POST['uninstall_settings']) ? "1" : "0");
     DUP_Settings::Set('uninstall_files', isset($_POST['uninstall_files']) ? "1" : "0");
-    DUP_Settings::Set('uninstall_tables', isset($_POST['uninstall_tables']) ? "1" : "0");
 
     DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
     DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
@@ -54,7 +53,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 $trace_log_enabled      = DUP_Settings::Get('trace_log_enabled');
 $uninstall_settings     = DUP_Settings::Get('uninstall_settings');
 $uninstall_files        = DUP_Settings::Get('uninstall_files');
-$uninstall_tables       = DUP_Settings::Get('uninstall_tables');
 $wpfront_integrate      = DUP_Settings::Get('wpfront_integrate');
 $wpfront_ready          = apply_filters('wpfront_user_role_editor_duplicator_integration_ready', false);
 $package_debug          = DUP_Settings::Get('package_debug');

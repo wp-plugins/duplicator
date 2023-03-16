@@ -9,9 +9,6 @@ use Duplicator\Installer\Core\Params\PrmMng;
 
 class DUPX_REST
 {
-    /**
-     *
-     */
     const DUPLICATOR_NAMESPACE = 'duplicator/v1/';
 
     /**

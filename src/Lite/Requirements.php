@@ -4,16 +4,14 @@
  * Class that collects the functions of initial checks on the requirements to run the plugin
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2021, Snapcreek LLC
- *
  */
 
 namespace Duplicator\Lite;
-
-defined('ABSPATH') || exit;
 
 class Requirements
 {
@@ -36,7 +34,8 @@ class Requirements
      * At this point WordPress is not yet completely initialized so functionality is limited.
      * It need to hook into "admin_init" to get the full functionality of WordPress.
      *
-     * @param string $pluginFile    // main plugin file path
+     * @param string $pluginFile // main plugin file path
+     *
      * @return boolean              // true if plugin can be executed
      */
     public static function canRun($pluginFile)
@@ -62,8 +61,9 @@ class Requirements
 
     /**
      *
-     * @param string $plugin
-     * @return boolean // return true if plugin key is active and plugin file exists
+     * @param string $plugin plugin slug
+     *
+     * @return boolean return true if plugin key is active and plugin file exists
      */
     protected static function isPluginActive($plugin)
     {
@@ -84,6 +84,8 @@ class Requirements
 
     /**
      * display admin notice only if user can manage plugins.
+     *
+     * @return void
      */
     public static function addProEnableNotice()
     {
@@ -94,6 +96,8 @@ class Requirements
 
     /**
      * display admin notice
+     *
+     * @return void
      */
     public static function addMultisiteNotice()
     {
@@ -104,6 +108,8 @@ class Requirements
 
     /**
      * deactivate current plugin on activation
+     *
+     * @return void
      */
     public static function deactivateOnActivation()
     {
@@ -113,6 +119,8 @@ class Requirements
 
     /**
      * Display admin notice if duplicator pro is enabled
+     *
+     * @return void
      */
     public static function proEnabledNotice()
     {

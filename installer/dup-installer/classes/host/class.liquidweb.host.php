@@ -6,8 +6,7 @@
  * Standard: PSR-2
  *
  * @package SC\DUPX\DB
- * @link http://www.php-fig.org/psr/psr-2/
- *
+ * @link    http://www.php-fig.org/psr/psr-2/
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;

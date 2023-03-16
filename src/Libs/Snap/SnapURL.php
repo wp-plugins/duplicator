@@ -2,15 +2,15 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;
 
 class SnapURL
 {
+    /** @var array<string, scalar> */
     protected static $DEF_ARRAY_PARSE_URL = array(
         'scheme'   => false,
         'host'     => false,
@@ -18,7 +18,6 @@ class SnapURL
         'user'     => false,
         'pass'     => false,
         'path'     => '',
-        'scheme'   => false,
         'query'    => false,
         'fragment' => false
     );
@@ -26,16 +25,16 @@ class SnapURL
     /**
      * Append a new query value to the end of a URL
      *
-     * @param string $url   The URL to append the new value to
-     * @param string $key   The new key name
-     * @param string $value The new key name value
+     * @param string  $url   The URL to append the new value to
+     * @param string  $key   The new key name
+     * @param ?scalar $value The new key name value
      *
      * @return string Returns the new URL with with the query string name and value
      */
     public static function appendQueryValue($url, $key, $value)
     {
         $separator    = (parse_url($url, PHP_URL_QUERY) == null) ? '?' : '&';
-        $modified_url = $url . "$separator$key=$value";
+        $modified_url = $url . "$separator$key=" . $value;
 
         return $modified_url;
     }
@@ -91,7 +90,7 @@ class SnapURL
         }
         if (isset($_SERVER['HTTP_CF_VISITOR'])) {
             $visitor = json_decode($_SERVER['HTTP_CF_VISITOR']);
-            if ($visitor->scheme == 'https') {
+            if (is_object($visitor) && property_exists($visitor, 'scheme') && $visitor->scheme == 'https') {
                 $_SERVER ['HTTPS'] = 'on';
             }
         }
@@ -114,13 +113,30 @@ class SnapURL
     }
 
     /**
+     * Get current query string data array
+     *
+     * @return string[]
+     */
+    public static function getCurrentQueryURLdata()
+    {
+        $result = array();
+        if (!isset($_SERVER['QUERY_STRING']) || strlen($_SERVER['QUERY_STRING']) == 0) {
+            return $result;
+        }
+
+        parse_str($_SERVER['QUERY_STRING'], $result);
+
+        return $result;
+    }
+
+    /**
      * this function is a native PHP parse_url wrapper
      * this function returns an associative array with all the keys present and the values = false if they do not exist.
      *
      * @param string $url       <p>The URL to parse. Invalid characters are replaced by <i>_</i>.</p>
      * @param int    $component if != 1 return specific URL component
      *
-     * @return mixed <p>On seriously malformed URLs, <b>parse_url()</b> may return <b><code>FALSE</code></b>.</p>
+     * @return mixed[]|string|int|null|false <p>On seriously malformed URLs, <b>parse_url()</b> may return <b><code>FALSE</code></b>.</p>
      *               <p>If the <code>component</code> parameter is omitted, an associative <code>array</code> is returned.
      *               At least one element will be present within the array. Potential keys within this array are:</p>
      *               <ul>
@@ -176,7 +192,7 @@ class SnapURL
      * this function build a url from array result of parse url.
      * if work with both parse_url native function result and snap parseUrl result
      *
-     * @param array $parts url parts from parseUrl
+     * @param array<string, mixed> $parts url parts from parseUrl
      *
      * @return bool|string return false if param isn't array
      */

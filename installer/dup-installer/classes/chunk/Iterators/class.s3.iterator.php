@@ -4,10 +4,10 @@
  * Step 3 iterator
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\Chunk
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;

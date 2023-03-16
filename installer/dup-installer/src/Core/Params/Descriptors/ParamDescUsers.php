@@ -75,7 +75,7 @@ final class ParamDescUsers implements DescriptorInterface
             ),
             array(
                 'status' => function () {
-                    /** Hide user mode instandalone migration for now */
+                    /* Hide user mode instandalone migration for now */
                     return ParamForm::STATUS_SKIP;
                     if (DUPX_InstallerState::getInstance()->getMode() !== DUPX_InstallerState::MODE_OVR_INSTALL) {
                         return ParamForm::STATUS_DISABLED;
@@ -111,7 +111,7 @@ final class ParamDescUsers implements DescriptorInterface
                 'default' => array_map(function ($value) {
                     return '';
                 }, \DUPX_ArchiveConfig::getInstance()->getUsersLists()),
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
                 'validateCallback' => function ($value) {
                     return strlen($value) == 0 || strlen($value) >= \DUPX_Constants::MIN_NEW_PASSWORD_LEN;
                 },

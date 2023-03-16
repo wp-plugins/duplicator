@@ -4,10 +4,10 @@
  * database table item descriptor
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -18,7 +18,6 @@ use Duplicator\Libs\Snap\SnapWP;
 
 /**
  * This class manages the installer table, all table management refers to the table name in the original site.
- *
  */
 class DUPX_DB_Table_item
 {
@@ -84,6 +83,7 @@ class DUPX_DB_Table_item
     /**
      *
      * @param array $diffData
+     *
      * @return boolean
      */
     public function isDiffPrefix(&$diffData)
@@ -169,6 +169,7 @@ class DUPX_DB_Table_item
     /**
      *
      * @param type $formatted
+     *
      * @return int|string
      */
     public function getSize($formatted = false)

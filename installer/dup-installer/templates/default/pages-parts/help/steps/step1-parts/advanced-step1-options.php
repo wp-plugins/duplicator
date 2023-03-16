@@ -244,7 +244,8 @@ These are the advanced options for advanced users.
                     </code>
                 </li>
                 <li>
-                    The installer last step copies all "Config Files" from the archive backups to the correct location on the new host. They are copied from this location:<br/>
+                    The installer last step copies all "Config Files" from the archive backups to the correct location on the new host. 
+                    They are copied from this location:<br/>
                     <code>
                         /dup-installer/original_files_[HASH]/<b>source_site</b>_[CONFIG-TYPE]
                     </code>

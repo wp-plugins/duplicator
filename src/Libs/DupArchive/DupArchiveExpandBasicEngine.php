@@ -2,9 +2,8 @@
 
 /**
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2021, Snapcreek LLC
- *
  */
 
 namespace Duplicator\Libs\DupArchive;
@@ -28,6 +27,7 @@ class DupArchiveExpandBasicEngine extends DupArchive
      * @param null|callable $log   function callback
      * @param null|callable $chmod function callback
      * @param null|callable $mkdir function callback
+     *
      * @return void
      */
     public static function setCallbacks($log, $chmod, $mkdir)

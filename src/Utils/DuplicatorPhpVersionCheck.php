@@ -3,7 +3,6 @@
 /**
  * These functions are performed before including any other Duplicator file so
  * do not use any Duplicator library or feature and use code compatible with PHP 5.2
- *
  */
 
 defined('ABSPATH') || exit;
@@ -11,11 +10,21 @@ defined('ABSPATH') || exit;
 // In the future it will be included on both PRO and LITE so you need to check if the define exists.
 if (!class_exists('DuplicatorPhpVersionCheck')) {
 
-    class DuplicatorPhpVersionCheck
+    class DuplicatorPhpVersionCheck // phpcs:ignore 
     {
-        protected static $minVer       = null;
-        protected static $suggestedVer = null;
+        /** @var string */
+        protected static $minVer = '';
+        /** @var string */
+        protected static $suggestedVer = '';
 
+        /**
+         * Check PhpVersin
+         *
+         * @param string $minVer       min version of PHP
+         * @param string $suggestedVer suggested version of PHP
+         *
+         * @return bool
+         */
         public static function check($minVer, $suggestedVer)
         {
             self::$minVer       = $minVer;
@@ -33,13 +42,21 @@ if (!class_exists('DuplicatorPhpVersionCheck')) {
             }
         }
 
+        /**
+         * Display notice
+         *
+         * @return void
+         */
         public static function notice()
         {
             ?>
             <div class="error notice">
                 <p>
                     <?php
-                    $str = 'DUPLICATOR: ' . __('Your system is running a very old version of PHP (%s) that is no longer supported by Duplicator.  ', 'duplicator');
+                    $str = 'DUPLICATOR: ' . __(
+                        'Your system is running a very old version of PHP (%s) that is no longer supported by Duplicator.  ',
+                        'duplicator'
+                    );
                     printf($str, PHP_VERSION);
 
                     $str  = __('Please ask your host or server administrator to update to PHP %1s or greater.') . '<br/>';

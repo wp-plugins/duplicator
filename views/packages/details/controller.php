@@ -1,4 +1,8 @@
 <?php
+
+use Duplicator\Core\Bootstrap;
+use Duplicator\Core\Views\TplMng;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 DUP_Util::hasCapability('manage_options');
 global $wpdb;
@@ -58,7 +62,8 @@ $err_link_ticket = '<a target="_blank" href="https://snapcreek.com/duplicator/do
             include(DUPLICATOR_PLUGIN_PATH . 'views/packages/details/detail.php');
             break;
         case 'transfer':
-            include(DUPLICATOR_PLUGIN_PATH . 'views/packages/details/transfer.php');
+            Bootstrap::mocksStyles();
+            TplMng::getInstance()->render('mocks/transfer/transfer', array(), true);
             break;
     }
     ?>

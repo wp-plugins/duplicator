@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -27,7 +26,7 @@ $jsList = array(
     'vendor/select2/js/select2.js'
 );
 
-/** CSS */
+/* CSS */
 foreach ($cssList as $css) {
     ?>
     <link rel="stylesheet" href="<?php echo DUPX_INIT_URL . '/' . $css . '?ver=' . $versionDup; ?>" type="text/css" media="all" >
@@ -36,7 +35,7 @@ foreach ($cssList as $css) {
 require(DUPX_INIT . '/assets/inc.libs.css.php');
 require(DUPX_INIT . '/assets/inc.css.php');
 
-/** JAVASCRIPT */
+/* JAVASCRIPT */
 foreach ($jsList as $js) {
     ?>
     <script src="<?php echo DUPX_INIT_URL . '/' . $js . '?ver=' . $versionDup; ?>" ></script>

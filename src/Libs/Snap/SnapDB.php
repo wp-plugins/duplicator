@@ -2,14 +2,15 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;
 
 use Exception;
+use mysqli;
+use mysqli_result;
 
 class SnapDB
 {
@@ -20,6 +21,7 @@ class SnapDB
     const DB_ENGINE_MARIA                 = 'MariaDB';
     const DB_ENGINE_PERCONA               = 'Percona';
 
+    /** @var array<string, mixed> */
     private static $cache = array();
 
     /**
@@ -29,7 +31,7 @@ class SnapDB
      * @param string          $tableName   table name
      * @param null|callable   $logCallback log callback
      *
-     * @return string|string[]
+     * @return false|string|string[] return unique index column ky or false if don't exists
      */
     public static function getUniqueIndexColumn($dbh, $tableName, $logCallback = null)
     {
@@ -115,11 +117,11 @@ class SnapDB
     /**
      * Returns the offset from the current row
      *
-     * @param  array               $row          current database row
-     * @param  int|string|string[] $indexColumns columns of the row that generated the index offset
-     * @param  mixed               $lastOffset   last offset
+     * @param mixed[]             $row          current database row
+     * @param int|string|string[] $indexColumns columns of the row that generated the index offset
+     * @param mixed               $lastOffset   last offset
      *
-     * @return string|string[]
+     * @return mixed
      */
     public static function getOffsetFromRowAssoc($row, $indexColumns, $lastOffset)
     {
@@ -132,7 +134,11 @@ class SnapDB
         } elseif (strlen($indexColumns) > 0) {
             return isset($row[$indexColumns]) ? $row[$indexColumns] : 0;
         } else {
-            return $lastOffset + 1;
+            if (is_scalar($lastOffset)) {
+                return $lastOffset + 1;
+            } else {
+                return $lastOffset;
+            }
         }
     }
 
@@ -142,15 +148,15 @@ class SnapDB
      * If there are no conditions, you still have to perform an always true condition, for example
      * SELECT * FROM `copy1_postmeta` WHERE 1
      *
-     * @param \mysqli|resource $dbh           database connection
-     * @param string           $query         query string
-     * @param string           $table         table name
-     * @param int              $offset        row offset
-     * @param int              $limit         limit of query, 0 no limit
-     * @param mixed            $lastRowOffset last offset to use on next function call
-     * @param null|callable    $logCallback   log callback
+     * @param mysqli|resource $dbh           database connection
+     * @param string          $query         query string
+     * @param string          $table         table name
+     * @param int             $offset        row offset
+     * @param int             $limit         limit of query, 0 no limit
+     * @param mixed           $lastRowOffset last offset to use on next function call
+     * @param null|callable   $logCallback   log callback
      *
-     * @return \mysqli_result
+     * @return mysqli_result
      */
     public static function selectUsingPrimaryKeyAsOffset($dbh, $query, $table, $offset, $limit, &$lastRowOffset = null, $logCallback = null)
     {
@@ -209,13 +215,13 @@ class SnapDB
             }
         } else {
             if ($primaryColumn == false) {
-                $lastRowOffset = $offset + mysql_num_rows($result);
+                $lastRowOffset = $offset + mysql_num_rows($result); // @phpstan-ignore-line
             } else {
-                if (mysql_num_rows($result) == 0) {
+                if (mysql_num_rows($result) == 0) {  // @phpstan-ignore-line
                     $lastRowOffset = $offset;
                 } else {
-                    mysql_data_seek($result, (mysql_num_rows($result) - 1));
-                    $row = mysql_fetch_assoc($result);
+                    mysql_data_seek($result, (mysql_num_rows($result) - 1));  // @phpstan-ignore-line
+                    $row = mysql_fetch_assoc($result);  // @phpstan-ignore-line
                     if (is_array($primaryColumn)) {
                         $lastRowOffset = array();
                         foreach ($primaryColumn as $col) {
@@ -224,7 +230,7 @@ class SnapDB
                     } else {
                         $lastRowOffset = $row[$primaryColumn];
                     }
-                    mysql_data_seek($result, 0);
+                    mysql_data_seek($result, 0); // @phpstan-ignore-line
                 }
             }
         }
@@ -279,7 +285,7 @@ class SnapDB
     /**
      * get current database engine (mysql, maria, percona)
      *
-     * @param \mysqli|resource $dbh database connection
+     * @param mysqli|resource $dbh database connection
      *
      * @return string
      */
@@ -318,24 +324,24 @@ class SnapDB
     /**
      * Escape string
      *
-     * @param resoruce|\mysqli $dbh    database connection
-     * @param string           $string string to escape
+     * @param resource|mysqli $dbh    database connection
+     * @param string          $string string to escape
      *
-     * @return string <p>Returns an escaped string.</p>
+     * @return string Returns an escaped string.
      */
     public static function realEscapeString($dbh, $string)
     {
         if (self::dbConnType($dbh) === self::CONN_MYSQLI) {
             return mysqli_real_escape_string($dbh, $string);
         } else {
-            return mysql_real_escape_string($string, $dbh);
+            return mysql_real_escape_string($string, $dbh);  // @phpstan-ignore-line
         }
     }
 
     /**
      *
-     * @param resoruce|\mysqli $dbh   database connection
-     * @param string           $query query string
+     * @param resource|mysqli $dbh   database connection
+     * @param string          $query query string
      *
      * @return mixed <p>Returns <b><code>FALSE</code></b> on failure. For successful <i>SELECT, SHOW, DESCRIBE</i> or
      *               <i>EXPLAIN</i> queries <b>mysqli_query()</b> will return a mysqli_result object.
@@ -347,7 +353,7 @@ class SnapDB
             if (self::dbConnType($dbh) === self::CONN_MYSQLI) {
                 return mysqli_query($dbh, $query);
             } else {
-                return mysql_query($query, $dbh);
+                return mysql_query($query, $dbh); // @phpstan-ignore-line
             }
         } catch (Exception $e) {
             return false;
@@ -356,7 +362,7 @@ class SnapDB
 
     /**
      *
-     * @param resoruce|\mysqli_result $result query result
+     * @param resource|mysqli_result $result query result
      *
      * @return int
      */
@@ -365,31 +371,32 @@ class SnapDB
         if (self::dbConnTypeByResult($result) === self::CONN_MYSQLI) {
             return $result->num_rows;
         } else {
-            return mysql_num_rows($result);
+            return mysql_num_rows($result); // @phpstan-ignore-line
         }
     }
 
     /**
      *
-     * @param resoruce|\mysqli_result $result query result
+     * @param resource|mysqli_result $result query result
      *
-     * @return array|null|false Returns an array of strings that corresponds to the fetched row. NULL if there are no more rows in result set
-     *
+     * @return string[]|null|false Returns an array of strings that corresponds to the fetched row. NULL if there are no more rows in result set
      */
     public static function fetchRow($result)
     {
         if (self::dbConnTypeByResult($result) === self::CONN_MYSQLI) {
             return mysqli_fetch_row($result);
         } elseif (is_resource($result)) {
-            return mysql_fetch_row($result);
+            return mysql_fetch_row($result); // @phpstan-ignore-line
+        } else {
+            return false;
         }
     }
 
     /**
      *
-     * @param resoruce|\mysqli_result $result query result
+     * @param resource|mysqli_result $result query result
      *
-     * @return array Returns an associative array of values representing the fetched row in the result set,
+     * @return string[]|null|false Returns an associative array of values representing the fetched row in the result set,
      *               where each key in the array represents the name of one of the result set's
      *               columns or null if there are no more rows in result set.
      */
@@ -398,22 +405,25 @@ class SnapDB
         if (self::dbConnTypeByResult($result) === self::CONN_MYSQLI) {
             return mysqli_fetch_assoc($result);
         } elseif (is_resource($result)) {
-            return mysql_fetch_assoc($result);
+            return mysql_fetch_assoc($result); // @phpstan-ignore-line
+        } else {
+            return false;
         }
     }
 
     /**
      *
-     * @param resoruce|mysqli_result $result query result
+     * @param resource|mysqli_result $result query result
      *
      * @return boolean
      */
     public static function freeResult($result)
     {
         if (self::dbConnTypeByResult($result) === self::CONN_MYSQLI) {
-            return $result->free();
+            $result->free();
+            return true;
         } elseif (is_resource($result)) {
-            return mysql_free_result($result);
+            return mysql_free_result($result); // @phpstan-ignore-line
         } else {
             $result = null;
             return true;
@@ -422,21 +432,21 @@ class SnapDB
 
     /**
      *
-     * @param resoruce|\mysqli $dbh database connection
+     * @param resource|mysqli $dbh database connection
      *
      * @return string
      */
     public static function error($dbh)
     {
         if (self::dbConnType($dbh) === self::CONN_MYSQLI) {
-            if ($dbh instanceof \mysqli) {
+            if ($dbh instanceof mysqli) {
                 return mysqli_error($dbh);
             } else {
                 return 'Unable to retrieve the error message from MySQL';
             }
         } else {
             if (is_resource($dbh)) {
-                return mysql_error($dbh);
+                return mysql_error($dbh); // @phpstan-ignore-line
             } else {
                 return 'Unable to retrieve the error message from MySQL';
             }
@@ -445,7 +455,7 @@ class SnapDB
 
     /**
      *
-     * @param resoruce|\mysqli $dbh database connection
+     * @param resource|mysqli $dbh database connection
      *
      * @return string // self::CONN_MYSQLI|self::CONN_MYSQL
      */
@@ -456,9 +466,9 @@ class SnapDB
 
     /**
      *
-     * @param resoruce|\mysqli_result $result query resyult
+     * @param resource|mysqli_result $result query resyult
      *
-     * @return type // self::CONN_MYSQLI|self::CONN_MYSQL
+     * @return string Enum self::CONN_MYSQLI|self::CONN_MYSQL
      */
     public static function dbConnTypeByResult($result)
     {
@@ -479,7 +489,7 @@ class SnapDB
      *
      * @param string $query query values
      *
-     * @return array
+     * @return array<array<scalar>>
      */
     public static function getValuesFromQueryInsert($query)
     {
@@ -546,11 +556,11 @@ class SnapDB
     /**
      * This is the inverse of getValuesFromQueryInsert, from an array of values it returns the valody of an insert query
      *
-     * @param array $values rows values
+     * @param mixed[] $values rows values
      *
      * @return string
      */
-    public static function getQueryInsertValuesFromArray($values)
+    public static function getQueryInsertValuesFromArray(array $values)
     {
 
         return implode(
@@ -595,12 +605,13 @@ class SnapDB
 
     /**
      * Return the list of mysqlrealconnect existing flags values from mask
+     *
      * @see https://www.php.net/manual/en/mysqli.real-connect.php
      *
      * @param bool       $returnStr if true return define string else values
      * @param null|int[] $filter    if not null only the values that exist and are contained in the array are returned
      *
-     * @return string[]
+     * @return int[]|string[]
      */
     public static function getMysqlConnectFlagsList($returnStr = true, $filter = null)
     {
@@ -650,6 +661,7 @@ class SnapDB
 
     /**
      * Return the list of mysqlrealconnect flags values from mask
+     *
      * @see https://www.php.net/manual/en/mysqli.real-connect.php
      *
      * @param int $value mask value

@@ -4,10 +4,10 @@
  * Notice manager
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -82,7 +82,7 @@ final class DUPX_NOTICE_MANAGER
      */
     public function saveNotices()
     {
-        if (class_exists('\\Duplicator\\Installer\\Utils\\Log\\Log', false)) {
+        if (class_exists('Duplicator\\Installer\\Utils\\Log\\Log', false)) {
             Log::info('SAVE NOTICES', Log::LV_DEBUG);
         }
         $notices = array(
@@ -115,7 +115,7 @@ final class DUPX_NOTICE_MANAGER
     private function loadNotices()
     {
         if (file_exists($this->persistanceFile)) {
-            if (class_exists('\\Duplicator\\Installer\\Utils\\Log\\Log', false)) {
+            if (class_exists('Duplicator\\Installer\\Utils\\Log\\Log', false)) {
                 Log::info('LOAD NOTICES', Log::LV_DEBUG);
             }
             $json    = file_get_contents($this->persistanceFile);
@@ -147,7 +147,7 @@ final class DUPX_NOTICE_MANAGER
      */
     public function resetNotices()
     {
-        if (class_exists('\\Duplicator\\Installer\\Utils\\Log\\Log', false)) {
+        if (class_exists('Duplicator\\Installer\\Utils\\Log\\Log', false)) {
             Log::info('RESET NOTICES', Log::LV_DEBUG);
         }
         $this->nextStepNotices   = array();
@@ -160,6 +160,7 @@ final class DUPX_NOTICE_MANAGER
      * return next step notice by id
      *
      * @param string $id
+     *
      * @return DUPX_NOTICE_ITEM
      */
     public function getNextStepNoticeById($id)
@@ -175,6 +176,7 @@ final class DUPX_NOTICE_MANAGER
      * return last report notice by id
      *
      * @param string $id
+     *
      * @return DUPX_NOTICE_ITEM
      */
     public function getFinalReporNoticeById($id)
@@ -203,8 +205,6 @@ final class DUPX_NOTICE_MANAGER
      * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
      *
      * @return string   // notice insert id
-     *
-     * @throws Exception
      */
     public function addBothNextAndFinalReportNotice($item, $mode = self::ADD_NORMAL, $uniqueId = null)
     {
@@ -229,8 +229,6 @@ final class DUPX_NOTICE_MANAGER
      * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
      *
      * @return string   // notice insert id
-     *
-     * @throws Exception
      */
     public function addNextStepNotice($item, $mode = self::ADD_NORMAL, $uniqueId = null)
     {
@@ -249,8 +247,6 @@ final class DUPX_NOTICE_MANAGER
      * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
      *
      * @return string   // notice insert id
-     *
-     * @throws Exception
      */
     public function addNextStepNoticeMessage($message, $level = DUPX_NOTICE_ITEM::INFO, $mode = self::ADD_NORMAL, $uniqueId = null)
     {
@@ -277,8 +273,6 @@ final class DUPX_NOTICE_MANAGER
      * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
      *
      * @return string   // notice insert id
-     *
-     * @throws Exception
      */
     public function addFinalReportNotice($item, $mode = self::ADD_NORMAL, $uniqueId = null)
     {
@@ -298,8 +292,6 @@ final class DUPX_NOTICE_MANAGER
      * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
      *
      * @return string   // notice insert id
-     *
-     * @throws Exception
      */
     public function addFinalReportNoticeMessage($message, $sections, $level = DUPX_NOTICE_ITEM::INFO, $mode = self::ADD_NORMAL, $uniqueId = null)
     {
@@ -328,8 +320,6 @@ final class DUPX_NOTICE_MANAGER
      * @param string $uniqueId  // used for ADD_UNIQUE or ADD_UNIQUE_UPDATE
      *
      * @return string   // notice insert id
-     *
-     * @throws Exception
      */
     private static function addReportNoticeToList(&$list, $item, $mode = self::ADD_NORMAL, $uniqueId = null)
     {
@@ -415,9 +405,8 @@ final class DUPX_NOTICE_MANAGER
      *                                                                               ]
      *                                                                 ]
      * @param int $level message level considered only in the case where $item is a string.
-     * @return \DUPX_NOTICE_ITEM
      *
-     * @throws Exception
+     * @return \DUPX_NOTICE_ITEM
      */
     private static function getObjFromParams($item, $level = DUPX_NOTICE_ITEM::INFO)
     {
@@ -518,6 +507,7 @@ final class DUPX_NOTICE_MANAGER
     /**
      *
      * @param string $section
+     *
      * @return boolean
      */
     public function haveSection($section)
@@ -535,7 +525,6 @@ final class DUPX_NOTICE_MANAGER
      * @param null|string $section  if null is a global result
      *
      * @return int // returns the worst level found
-     *
      */
     public function getSectionErrLevel($section = null)
     {
@@ -553,6 +542,7 @@ final class DUPX_NOTICE_MANAGER
      *
      * @param string $section
      * @param bool $echo
+     *
      * @return void|string
      */
     public function getSectionErrLevelHtml($section = null, $echo = true)
@@ -564,6 +554,7 @@ final class DUPX_NOTICE_MANAGER
      * Displa next step notice message
      *
      * @param bool $deleteListAfterDisaply
+     *
      * @return void
      */
     public function displayStepMessages($deleteAfterDisaply = true)
@@ -729,6 +720,7 @@ final class DUPX_NOTICE_MANAGER
      * Write next step notices in log
      *
      * @param boolean $title
+     *
      * @return void
      */
     public function nextStepLog($title = true)
@@ -786,6 +778,7 @@ final class DUPX_NOTICE_MANAGER
      * get html class from level
      *
      * @param int $level
+     *
      * @return string
      */
     private static function getClassFromLevel($level)
@@ -807,11 +800,12 @@ final class DUPX_NOTICE_MANAGER
     }
 
     /**
-     * get level label from level
+     * Get level label from level
      *
      * @param int $level
      * @param bool $echo
-     * @return type
+     *
+     * @return string
      */
     public static function getErrorLevelHtml($level, $echo = true)
     {
@@ -844,16 +838,18 @@ final class DUPX_NOTICE_MANAGER
         <?php
         if ($echo) {
             ob_end_flush();
+            return '';
         } else {
             return ob_get_clean();
         }
     }
 
     /**
-     * get next step message prefix
+     * Get next step message prefix
      *
      * @param int $level
      * @param bool $echo
+     *
      * @return string
      */
     public static function getNextStepLevelPrefixMessage($level, $echo = true)
@@ -1018,26 +1014,26 @@ LONGMSG;
 
 
         $longMsg = <<<LONGMSG
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus porttitor consectetur. Nunc faucibus elementum nisl nec ornare. Phasellus sit amet urna in diam ultricies ornare nec sit amet nibh. Nulla a aliquet leo. Quisque aliquet posuere lectus sit amet commodo. Nullam tempus enim eget urna rutrum egestas. Aliquam eget lorem nisl. Nulla tincidunt massa erat. Phasellus lectus tellus, mollis sit amet aliquam in, dapibus quis metus. Nunc venenatis nulla vitae convallis accumsan.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus porttitor consectetur. 
+Nunc faucibus elementum nisl nec ornare. Phasellus sit amet urna in diam ultricies ornare nec sit amet nibh. 
+Nulla a aliquet leo. Quisque aliquet posuere lectus sit amet commodo. 
+Nullam tempus enim eget urna rutrum egestas. Aliquam eget lorem nisl. 
+Nulla tincidunt massa erat. Phasellus lectus tellus, mollis sit amet aliquam in, dapibus quis metus. 
+Nunc venenatis nulla vitae convallis accumsan.
 
-Mauris eu ullamcorper metus. Aenean ultricies et turpis eget mollis. Aliquam auctor, elit scelerisque placerat pellentesque, quam augue fermentum lectus, vel pretium nisi justo sit amet ante. Donec blandit porttitor tempus. Duis vulputate nulla ut orci rutrum, et consectetur urna mollis. Sed at iaculis velit. Pellentesque id quam turpis. Curabitur eu ligula velit. Cras gravida, ipsum sed iaculis eleifend, mauris nunc posuere quam, vel blandit nisi justo congue ligula. Phasellus aliquam eu odio ac porttitor. Fusce dictum mollis turpis sit amet fringilla.
+Mauris eu ullamcorper metus. Aenean ultricies et turpis eget mollis. 
+Aliquam auctor, elit scelerisque placerat pellentesque, quam augue fermentum lectus, 
+vel pretium nisi justo sit amet ante. Donec blandit porttitor tempus. Duis vulputate nulla ut orci rutrum, 
+et consectetur urna mollis. Sed at iaculis velit. Pellentesque id quam turpis. Curabitur eu ligula velit. 
+Cras gravida, ipsum sed iaculis eleifend, mauris nunc posuere quam, vel blandit nisi justo congue ligula. Phasellus aliquam eu odio ac porttitor.
+Fusce dictum mollis turpis sit amet fringilla.
 
-Nulla eu ligula mauris. Fusce lobortis ligula elit, a interdum nibh pulvinar eu. Pellentesque rhoncus nec turpis id blandit. Morbi fringilla, justo non varius consequat, arcu ante efficitur ante, sit amet cursus lorem elit vel odio. Phasellus neque ligula, vehicula vel ipsum sed, volutpat dignissim eros. Curabitur at lacus id felis elementum auctor. Nullam ac tempus nisi. Phasellus nibh purus, aliquam nec purus ut, sodales lobortis nulla. Cras viverra dictum magna, ac malesuada nibh dictum ac. Mauris euismod, magna sit amet pretium posuere, ligula nibh ultrices tellus, sit amet pretium odio urna egestas justo. Suspendisse purus erat, eleifend sed magna in, efficitur interdum nibh.
-
-Vivamus nibh nunc, fermentum non tortor volutpat, consectetur vulputate velit. Phasellus lobortis, purus et faucibus mollis, metus eros viverra ante, sit amet euismod nibh est eu orci. Duis sodales cursus lacinia. Praesent laoreet ut ipsum ut interdum. Praesent venenatis massa vitae ligula consequat aliquet. Fusce in purus in odio molestie laoreet at ac augue. Fusce consectetur elit a magna mollis aliquet.
-
-Nulla eros nisi, dapibus eget diam vitae, tincidunt blandit odio. Fusce interdum tellus nec varius condimentum. Fusce non magna a purus sodales imperdiet sit amet vitae ligula. Quisque viverra leo sit amet mi egestas, et posuere nunc tincidunt. Suspendisse feugiat malesuada urna sed tincidunt. Morbi a urna sed magna volutpat pellentesque sit amet ac mauris. Nulla sed ultrices dui. Etiam massa arcu, tempor ut erat at, cursus malesuada ipsum. Duis sit amet felis dolor.
-
-Morbi gravida nisl nunc, vulputate iaculis risus vehicula non. Proin cursus, velit et laoreet consectetur, lacus libero sagittis lacus, quis accumsan odio lectus non erat. Aenean dolor lectus, euismod sit amet justo eget, dictum gravida nisl. Phasellus sed nunc non odio ullamcorper rhoncus non ut ipsum. Duis ante ligula, pellentesque sit amet imperdiet eget, congue vel dui. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla facilisi. Suspendisse luctus leo eget justo mollis, convallis convallis ex suscipit. Integer et justo eget odio lobortis sollicitudin. Pellentesque accumsan rhoncus augue, luctus suscipit ex accumsan nec. Maecenas lacinia consectetur risus at bibendum. Etiam venenatis purus lorem, sit amet elementum turpis tristique eu. Proin vulputate faucibus feugiat. Nunc vehicula congue odio consequat vulputate. Quisque bibendum augue id iaculis faucibus. Donec blandit cursus sem, eget accumsan orci commodo sed.
-
-Suspendisse iaculis est quam, sed scelerisque purus tincidunt non. Cras hendrerit ante turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse purus ipsum, rutrum id sem in, venenatis laoreet metus. Aliquam ac bibendum mauris. Cras egestas rhoncus est, sed lacinia nibh vestibulum id. Proin diam quam, sagittis congue molestie ac, rhoncus et mauris. Phasellus massa neque, ornare vel erat a, rutrum pharetra arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi et nulla eget massa auctor fermentum. Quisque maximus tellus sed cursus cursus. Ut vehicula erat at purus aliquet, quis imperdiet dui sagittis. Nullam eget quam leo.
-
-Nulla magna ipsum, congue nec dui ut, lacinia malesuada felis. Cras mattis metus non maximus venenatis. Aliquam euismod est vitae erat sollicitudin, at pellentesque augue sollicitudin. Curabitur euismod maximus cursus. In tortor dui, convallis sed sapien ac, varius congue metus. Nunc ullamcorper ac orci sit amet finibus. Vivamus molestie nibh vitae quam rhoncus, eu ultrices est molestie. Maecenas consectetur eu quam sit amet placerat.
-
-Curabitur ut fermentum mauris. Donec et congue nibh. Sed cursus elit sit amet convallis varius. Donec malesuada porta odio condimentum varius. Pellentesque ornare tempor ante, ut volutpat nulla lobortis sed. Nunc congue aliquet erat ac elementum. Quisque a ex sit amet turpis placerat sagittis eget ac ligula. Etiam in augue malesuada, aliquam est non, lacinia justo. Vivamus tincidunt dolor orci, id dignissim lorem maximus at. Vivamus ligula mauris, venenatis vel nibh id, lacinia ultrices ipsum. Mauris cursus, urna ac rutrum aliquet, risus ipsum tincidunt purus, sit amet blandit nunc sem sit amet nibh.
-
-Nam eleifend risus lacus, eu pharetra risus egestas eu. Maecenas hendrerit nisl in semper placerat. Vestibulum massa tellus, laoreet non euismod quis, sollicitudin id sapien. Morbi vel cursus metus. Aenean tincidunt nisi est, ut elementum est auctor id. Duis auctor elit leo, ac scelerisque risus suscipit et. Pellentesque lectus nisi, ultricies in elit sed, pulvinar iaculis massa. Morbi viverra eros mi, pretium facilisis neque egestas id. Curabitur non massa accumsan, porttitor sem vitae, ultricies lacus. Curabitur blandit nisl velit. Mauris sollicitudin ultricies purus sit amet placerat. Fusce ac neque sed leo venenatis laoreet ut non ex. Integer elementum rhoncus orci, eu maximus neque tempus eu. Curabitur euismod dignissim tellus, vitae lacinia metus. Mauris imperdiet metus vitae vulputate accumsan. Duis eget luctus nibh, sit amet finibus libero.
-        
+Nulla eu ligula mauris. Fusce lobortis ligula elit, a interdum nibh pulvinar eu. 
+Pellentesque rhoncus nec turpis id blandit. Morbi fringilla, justo non varius consequat, arcu ante efficitur ante, 
+sit amet cursus lorem elit vel odio. Phasellus neque ligula, vehicula vel ipsum sed, volutpat dignissim eros. Curabitur at 
+lacus id felis elementum auctor. Nullam ac tempus nisi. Phasellus nibh purus, aliquam nec purus ut, sodales lobortis nulla. 
+Cras viverra dictum magna, ac malesuada nibh dictum ac. Mauris euismod, magna sit amet pretium posuere, 
+ligula nibh ultrices tellus, sit amet pretium odio urna egestas justo. Suspendisse purus erat, eleifend sed magna in, efficitur interdum nibh.   
 LONGMSG;
         $manager->addNextStepNotice(array(
             'shortMsg'    => 'Full elements LONG LONG',
@@ -1254,6 +1250,7 @@ class DUPX_NOTICE_ITEM
      *                              'label' => link text if empty get external url link
      *                          ]
      *                      ]
+     *
      * @return DUPX_NOTICE_ITEM
      */
     public static function getItemFromArray($array)

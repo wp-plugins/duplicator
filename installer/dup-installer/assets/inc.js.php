@@ -95,7 +95,7 @@ $paramsManager = PrmMng::getInstance();
         return false;
     }
 
-    DUPX.StandarJsonAjaxWrapper = function (action, token, ajaxData, callbackSuccess, callbackFail, options) {
+    DUPX.StandardJsonAjaxWrapper = function (action, token, ajaxData, callbackSuccess, callbackFail, options) {
         var ajax_url = document.location.href;
         var currentOptions = jQuery.extend({}, DUPX.standarJsonAjaxOptions, options);
 
@@ -115,10 +115,10 @@ $paramsManager = PrmMng::getInstance();
 
             if (currentOptions.delayRetryOnFailure > 0) {
                 setTimeout(function () {
-                    DUPX.StandarJsonAjaxWrapper(action, token, ajaxData, callbackSuccess, callbackFail, retryOptions);
+                    DUPX.StandardJsonAjaxWrapper(action, token, ajaxData, callbackSuccess, callbackFail, retryOptions);
                 }, currentOptions.delayRetryOnFailure);
             } else {
-                DUPX.StandarJsonAjaxWrapper(action, token, ajaxData, callbackSuccess, callbackFail, retryOptions);
+                DUPX.StandardJsonAjaxWrapper(action, token, ajaxData, callbackSuccess, callbackFail, retryOptions);
             }
         }
 
@@ -258,6 +258,40 @@ $paramsManager = PrmMng::getInstance();
     DUPX.getNewUrlByDomObj = function (button) {
         var inputId = $(button).parent().find('input').attr('id');
         DUPX.getNewURL(inputId);
+    };
+
+    DUPX.submitEmail = function (button) {
+        var button  = $(button);
+        var wrapper = $('.subscribe-form');
+        var input   = $('.subscribe-form input');
+        var inputDAta = input.serializeForm();
+
+        button.html('Subscribing...');
+        input.attr('disabled', 'disabled');
+
+        DUPX.StandardJsonAjaxWrapper(
+            <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::ACTION_EMAIL_SUBSCRIPTION); ?>,
+            <?php echo SnapJson::jsonEncode(DUPX_Ctrl_ajax::generateToken(DUPX_Ctrl_ajax::ACTION_EMAIL_SUBSCRIPTION)); ?>,
+            inputDAta,
+            function (data) {
+                wrapper.fadeOut(300);
+                button.html('Subscribed &#10003');
+                wrapper.fadeIn(300);
+
+                setTimeout(function () {
+                    wrapper.fadeOut(300);
+                }, 3000);
+            },
+            function (data) {
+                console.log("Email subscription failed with message: " + data.message);
+                button.html('Failed &#10007');
+
+                setTimeout(function () {
+                    button.html('Subscribe');
+                    input.removeAttr('disabled');
+                }, 3000);
+            },
+        );
     };
 
     DUPX.editActivate = function (button, msg)

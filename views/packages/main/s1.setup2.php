@@ -17,7 +17,6 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     input#package-name {padding:4px; height: 2em;  font-size: 1.2em;  line-height: 100%; width: 100%;   margin: 0 0 3px;}
     tr.dup-store-path td {padding:14px}
     label.lbl-larger {font-size:1.2em}
-    form#dup-form-opts ul li.tabs {font-size:16px}
     div.tab-hdr-title {font-size: 16px; font-weight: bold; padding: 1px; margin:2px 0 5px 0; border-bottom:1px solid #dcdcde }
 
     /*EXPANDER TITLE BOXES */
@@ -226,6 +225,7 @@ ARCHIVE -->
             <ul>
                 <li><?php esc_html_e('Files', 'duplicator') ?></li>
                 <li><?php esc_html_e('Database', 'duplicator') ?></li>
+                <li><?php esc_html_e('File Archive Encryption', 'duplicator') ?></li>
             </ul>
 
             <!-- TAB1:PACKAGE -->
@@ -458,6 +458,18 @@ ARCHIVE -->
                     <?php endif; ?>
                </div>
             </div>
+
+            <!-- TAB3: SECURITY -->
+            <div>
+                <p>
+                    <?php _e('Protect and secure the archive file with industry-standard AES-256 encryption.', 'duplicator'); ?>
+                </p>
+                <a href="<?php echo esc_url(Upsell::getCampaignUrl('package_build-securit_tab', 'Upgrade To Pro')); ?>"
+                   class="dup-btn dup-btn-md dup-btn-green"
+                   target="_blank">
+                    <?php _e('Upgrade To Pro', 'duplicator'); ?>
+                </a>
+            </div>
         </div>      
     </div>
 </div><br/>
@@ -503,7 +515,7 @@ INSTALLER -->
             <td style="width:130px;"><b><?php esc_html_e("Branding", 'duplicator') ?></b></td>
             <td>
                 <a href="<?php echo esc_url(Upsell::getCampaignUrl('package-build-setup', 'Installer Branding')); ?>" target="_blank">
-                    <span class="dup-pro-text"><?php esc_html_e('Available with Duplicator Pro - Freelancer!', 'duplicator'); ?></span></a> 
+                    <span class="dup-pro-text"><?php esc_html_e('Available with Duplicator Pro!', 'duplicator'); ?></span></a>
                 <i class="fas fa-question-circle fa-sm"
                        data-tooltip-title="<?php esc_attr_e("Branding", 'duplicator'); ?>:"
                        data-tooltip="<?php esc_attr_e('Branding is a way to customize the installer look and feel.  With branding you can create multiple brands of installers.', 'duplicator'); ?>"></i>
@@ -557,27 +569,81 @@ INSTALLER -->
                 </tr>
                 <tr>
                     <td style="width:130px"><?php esc_html_e("Host", 'duplicator') ?></td>
-                    <td><input type="text" name="dbhost" id="dbhost" value="<?php echo esc_attr($Package->Installer->OptsDBHost); ?>"  maxlength="200" placeholder="<?php esc_attr_e('example: localhost (value is optional)', 'duplicator'); ?>"/></td>
+                    <td>
+                        <input 
+                            type="text" 
+                            name="dbhost"
+                            id="dbhost" 
+                            value="<?php echo esc_attr($Package->Installer->OptsDBHost); ?>"  
+                            maxlength="200" 
+                            placeholder="<?php esc_attr_e('example: localhost (value is optional)', 'duplicator'); ?>"
+                        >
+                    </td>
                 </tr>
                 <tr>
                     <td><?php esc_html_e("Host Port", 'duplicator') ?></td>
-                    <td><input type="text" name="dbport" id="dbport" value="<?php echo esc_attr($Package->Installer->OptsDBPort); ?>"  maxlength="200" placeholder="<?php esc_attr_e('example: 3306 (value is optional)', 'duplicator'); ?>"/></td>
+                    <td>
+                        <input 
+                            type="text" 
+                            name="dbport" 
+                            id="dbport" 
+                            value="<?php echo esc_attr($Package->Installer->OptsDBPort); ?>"  
+                            maxlength="200" 
+                            placeholder="<?php esc_attr_e('example: 3306 (value is optional)', 'duplicator'); ?>"
+                        >
+                    </td>
                 </tr>
                 <tr>
                     <td><?php esc_html_e("Database", 'duplicator') ?></td>
-                    <td><input type="text" name="dbname" id="dbname" value="<?php echo esc_attr($Package->Installer->OptsDBName); ?>" maxlength="100" placeholder="<?php esc_attr_e('example: DatabaseName (value is optional)', 'duplicator'); ?>" /></td>
+                    <td>
+                        <input 
+                            type="text" 
+                            name="dbname" 
+                            id="dbname" 
+                            value="<?php echo esc_attr($Package->Installer->OptsDBName); ?>" 
+                            maxlength="100" 
+                            placeholder="<?php esc_attr_e('example: DatabaseName (value is optional)', 'duplicator'); ?>" 
+                        >
+                    </td>
                 </tr>
                 <tr>
                     <td><?php esc_html_e("User", 'duplicator') ?></td>
-                    <td><input type="text" name="dbuser" id="dbuser" value="<?php echo esc_attr($Package->Installer->OptsDBUser); ?>"  maxlength="100" placeholder="<?php esc_attr_e('example: DatabaseUserName (value is optional)', 'duplicator'); ?>" /></td>
+                    <td>
+                        <input 
+                            type="text" 
+                            name="dbuser" 
+                            id="dbuser" 
+                            value="<?php echo esc_attr($Package->Installer->OptsDBUser); ?>"  
+                            maxlength="100" 
+                            placeholder="<?php esc_attr_e('example: DatabaseUserName (value is optional)', 'duplicator'); ?>"
+                        >
+                    </td>
                 </tr>
                 <tr>
                     <td><?php esc_html_e("Charset", 'duplicator') ?></td>
-                    <td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo esc_attr($Package->Installer->OptsDBCharset); ?>"  maxlength="100" placeholder="<?php esc_attr_e('example: utf8 (value is optional)', 'duplicator'); ?>" /></td>
+                    <td>
+                        <input 
+                            type="text" 
+                            name="dbcharset" 
+                            id="dbcharset" 
+                            value="<?php echo esc_attr($Package->Installer->OptsDBCharset); ?>" 
+                            maxlength="100" 
+                            placeholder="<?php esc_attr_e('example: utf8 (value is optional)', 'duplicator'); ?>" 
+                        >
+                    </td>
                 </tr>
                 <tr>
                     <td><?php esc_html_e("Collation", 'duplicator') ?></td>
-                    <td><input type="text" name="dbcollation" id="dbcollation" value="<?php echo esc_attr($Package->Installer->OptsDBCollation); ?>"  maxlength="100" placeholder="<?php esc_attr_e('example: utf8_general_ci (value is optional)', 'duplicator'); ?>" /></td>
+                    <td>
+                        <input 
+                            type="text" 
+                            name="dbcollation" 
+                            id="dbcollation" 
+                            value="<?php echo esc_attr($Package->Installer->OptsDBCollation); ?>"  
+                            maxlength="100" 
+                            placeholder="<?php esc_attr_e('example: utf8_general_ci (value is optional)', 'duplicator'); ?>" 
+                        >
+                    </td>
                 </tr>
             </table><br />
         </div>

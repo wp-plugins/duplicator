@@ -3,12 +3,11 @@
 namespace Duplicator\Core\Notifications;
 
 use Duplicator\Core\Controllers\ControllersManager;
+use Duplicator\Core\Views\TplMng;
 use Duplicator\Libs\Snap\SnapWP;
 
 /**
  * Admin/NoticeBar Education feature for Lite.
- *
- * @since 1.6.6
  */
 class NoticeBar
 {
@@ -44,14 +43,18 @@ class NoticeBar
             return;
         }
 
-        $umt_content = '';
+        $utm_content = '';
         foreach (ControllersManager::getMenuLevels() as $key => $value) {
-            if (strlen($value) > 0) {
-                $umt_content .= ucfirst($key) . ' ' . $value . ' ';
+            if (strlen((string) $value) == 0) {
+                continue;
             }
+            $utm_content .= ucfirst($key) . ' ' . $value . ' ';
         }
-        $umt_content = trim($umt_content);
-        require DUPLICATOR_LITE_PATH . '/views/parts/notice-bar.php';
+        $utm_content = trim($utm_content);
+
+        TplMng::getInstance()->render('/parts/notice-bar', array(
+            'utm_content' => $utm_content
+        ));
     }
 
     /**

@@ -2,13 +2,15 @@
 
 defined("DUPXABSPATH") or die("");
 
-/** * *****************************************************
+/**
  *  CLASS::DUPX_Http
- *  Http Class Utility */
+ *  Http Class Utility
+ */
 class DUPX_HTTP
 {
     /**
      *  Do an http post request with curl or php code
+     *
      *  @param string $url      A URL to post to
      *  @param string $params   A valid key/pair combo $data = array('key1' => 'value1', 'key2' => 'value2');
      *  @param array $headers  Optional header elements
@@ -46,10 +48,12 @@ class DUPX_HTTP
 
     /**
      *  Do an http post request with curl or php code
+     *
      *  @param string $url      A URL to get.  If $params is not null then all query strings will be removed.
      *  @param string $params   A valid key/pair combo $data = array('key1' => 'value1', 'key2' => 'value2');
      *  @param string $headers  Optional header elements
-     *  @return a string or FALSE on failure.
+     *
+     *  @return string|bool a string or FALSE on failure.
      */
     public static function get($url, $params = array(), $headers = null)
     {
@@ -84,8 +88,10 @@ class DUPX_HTTP
 
     /**
      *  Check to see if the internet is accessible
+     *
      *  @param string $host      A URL e.g without prefix "ajax.googleapis.com"
      *  @param string $port      A valid port number
+     *
      *  @return bool
      */
     public static function is_url_active($url, $port = 443, $timeout = 5)
@@ -95,25 +101,26 @@ class DUPX_HTTP
             return false;
         }
 
-        switch(true)  {
-
-          case function_exists('curl_init') :
-            return self::is_url_active_curl($url, $port, $timeout);
+        switch (true) {
+            case function_exists('curl_init'):
+                return self::is_url_active_curl($url, $port, $timeout);
             break;
 
-          case function_exists('fsockopen') :
-            return self::is_url_active_fsockopen($url, $port, $timeout);
+            case function_exists('fsockopen'):
+                return self::is_url_active_fsockopen($url, $port, $timeout);
             break;
 
-          default:
-            return false;
+            default:
+                return false;
             break;
         }
     }
 
     /**
      *  Returns the host part of a URL
+     *
      *  @param string $url      A valid URL
+     *
      *  @return string
      */
     public static function parse_host($url)
@@ -127,7 +134,9 @@ class DUPX_HTTP
 
     /**
      *  Return the current page URL
+     *
      *  @param bool $withQuery      Return the URL with its string
+     *
      *  @return string
      */
     public static function get_page_url($withQuery = true)
@@ -179,13 +188,12 @@ class DUPX_HTTP
             $message    = 'Error with fsockopen';
             $connection = @fsockopen($host, $port, $code, $message, $timeout);
 
-            if(!is_resource($connection)) {
+            if (!is_resource($connection)) {
                 return false;
             }
             @fclose($connection);
             return true;
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -194,19 +202,18 @@ class DUPX_HTTP
     private static function is_url_active_curl($url, $port = 443, $timeout = 5)
     {
         try {
-
-            $result     = false;
-            $url        = filter_var($url, FILTER_VALIDATE_URL);
-            $handle     = curl_init($url);
+            $result = false;
+            $url    = filter_var($url, FILTER_VALIDATE_URL);
+            $handle = curl_init($url);
 
             /* Set curl parameter */
             curl_setopt_array($handle, array(
-                CURLOPT_FOLLOWLOCATION => TRUE,
-                CURLOPT_NOBODY => TRUE,
-                CURLOPT_HEADER => FALSE,
-                CURLOPT_RETURNTRANSFER => FALSE,
-                CURLOPT_SSL_VERIFYHOST => FALSE,
-                CURLOPT_SSL_VERIFYPEER => FALSE,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_NOBODY => true,
+                CURLOPT_HEADER => false,
+                CURLOPT_RETURNTRANSFER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_TIMEOUT => $timeout,
                 CURLOPT_PORT => $port
             ));
@@ -217,17 +224,14 @@ class DUPX_HTTP
             $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);      // Get http status from last url
 
             /* Check for 200 (file is found). */
-            if($httpCode == 200) {
+            if ($httpCode == 200) {
                 $result = true;
             }
 
             curl_close($handle);
             return $result;
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
-
-
 }

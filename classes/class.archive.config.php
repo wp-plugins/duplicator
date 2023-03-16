@@ -16,7 +16,6 @@ class DUP_Archive_Config
     public $dbhost                   = null;
     public $dbname                   = null;
     public $dbuser                   = null;
-    public $dbpass                   = null;
     public $cpnl_host                = null;
     public $cpnl_user                = null;
     public $cpnl_pass                = null;
@@ -29,6 +28,7 @@ class DUP_Archive_Config
     public $main_site_id             = 1;
     public $mu_is_filtered           = false;
     public $license_limit            = 0;
+    public $license_type             = 0;
     public $dbInfo                   = array();
     public $packInfo                 = array();
     public $fileInfo                 = array();

@@ -4,10 +4,10 @@
  * This is the class that manages the functions related to the views
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -86,6 +86,7 @@ class DUPX_View_Funcs
      * Get badge class attr val from status
      *
      * @param string $status
+     *
      * @return string html class attribute
      */
     public static function getBadgeClassFromCheckStatus($status)

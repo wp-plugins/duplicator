@@ -3,12 +3,13 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-/** Variables
+/**
+ * Variables
+ *
  * @var int    $testResult int // DUPX_Validation_abstract_item::[LV_FAIL|LV_HARD_WARNING|...]
  * @var string $importerVer
  */

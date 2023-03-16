@@ -154,7 +154,7 @@ class ImportUser
      *
      * @param string $oldLogin old login
      *
-     * @return  void
+     * @return void
      */
     public function setOldLogin($oldLogin)
     {

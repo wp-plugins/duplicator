@@ -57,7 +57,7 @@ final class ParamDescNewAdmin implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(
             'default'          => '',
-            'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
+            'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
             'validateCallback' => function ($value, ParamItem $paramObj) {
                 if (!PrmMng::getInstance()->getValue(PrmMng::PARAM_WP_ADMIN_CREATE_NEW)) {
                     return true;
@@ -88,7 +88,7 @@ final class ParamDescNewAdmin implements DescriptorInterface
             ParamFormPass::FORM_TYPE_PWD_TOGGLE,
             array(
                 'default'          => '',
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
                 'validateCallback' => function ($value, ParamItem $paramObj) {
                     if (!PrmMng::getInstance()->getValue(PrmMng::PARAM_WP_ADMIN_CREATE_NEW)) {
                         return true;
@@ -119,7 +119,7 @@ final class ParamDescNewAdmin implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(
                 'default'          => '',
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
                 'validateCallback' => function ($value, ParamItem $paramObj) {
                     if (!PrmMng::getInstance()->getValue(PrmMng::PARAM_WP_ADMIN_CREATE_NEW)) {
                         return true;
@@ -155,7 +155,7 @@ final class ParamDescNewAdmin implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(
                 'default'          => '',
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
             ),
             array(
                 'status'  => array(__CLASS__, 'getStatuOfNewAdminParams'),
@@ -174,7 +174,7 @@ final class ParamDescNewAdmin implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(
                 'default'          => '',
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
             ),
             array(
                 'status'  => array(__CLASS__, 'getStatuOfNewAdminParams'),
@@ -193,7 +193,7 @@ final class ParamDescNewAdmin implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(
                 'default'          => '',
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
             ),
             array(
                 'status'  => array(__CLASS__, 'getStatuOfNewAdminParams'),

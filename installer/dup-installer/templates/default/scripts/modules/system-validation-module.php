@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -25,10 +24,11 @@ $paramsManager = PrmMng::getInstance();
             'title': 'System Validation',
             'bottomText':
                     '<i>Keep this window open during the validation process.</i><br/>' +
-                    '<i>This can take several minutes.</i>'
+                    '<i>This can take several minutes.</i>',
+            'showUpsell': false
         });
 
-        DUPX.StandarJsonAjaxWrapper(
+        DUPX.StandardJsonAjaxWrapper(
                 validateAction,
                 validateToken,
                 {},

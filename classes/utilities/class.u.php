@@ -6,11 +6,12 @@ use Duplicator\Libs\Snap\SnapIO;
  * Recursivly scans a directory and finds all sym-links and unreadable files
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/utilities
- * @copyright (c) 2017, Snapcreek LLC
+ * @copyright  (c) 2017, Snapcreek LLC
  *
  * @todo Refactor out IO methods into class.io.php file
  */
@@ -100,6 +101,7 @@ class DUP_Util
 
     /**
      * return absolute path for the files that are core directories
+     *
      * @return string array
      */
     public static function getWPCoreFiles()
@@ -272,7 +274,7 @@ class DUP_Util
      *
      * @see elapsedTime
      *
-     * @return  string   A float in the form "msec sec", where sec is the number of seconds since the Unix epoch
+     * @return string   A float in the form "msec sec", where sec is the number of seconds since the Unix epoch
      */
     public static function getMicrotime()
     {
@@ -300,7 +302,7 @@ class DUP_Util
      * @param mixed number $end     The final time in the sequence to measure
      * @param mixed number $start   The start time in the sequence to measure
      *
-     * @return  string   The time elapsed from $start to $end
+     * @return string   The time elapsed from $start to $end
      */
     public static function elapsedTime($end, $start)
     {
@@ -386,7 +388,6 @@ class DUP_Util
      * @param string $path The full path to a system directory
      *
      * @return int Returns the size of the directory in bytes
-     *
      */
     public static function getDirectorySize($path)
     {
@@ -411,7 +412,6 @@ class DUP_Util
      * Can shell_exec be called on this server
      *
      * @return bool Returns true if shell_exec can be called on server
-     *
      */
     public static function hasShellExec()
     {
@@ -447,7 +447,6 @@ class DUP_Util
      * Is the server running Windows operating system
      *
      * @return bool Returns true if operating system is Windows
-     *
      */
     public static function isWindows()
     {
@@ -692,8 +691,8 @@ HTACCESS;
         $backupsDir = DUP_Settings::getSsdirPath();
 
         //Edge Case: Remove any main.installer.php files
-        $dupInstallFile  = "{$backupsDir}/dup-installer/main.installer.php";
-        if (file_exists($dupInstallFile) ) {
+        $dupInstallFile = "{$backupsDir}/dup-installer/main.installer.php";
+        if (file_exists($dupInstallFile)) {
             SnapIO::chmod($dupInstallFile, "a+w");
             SnapIO::unlink("{$dupInstallFile}");
         }
@@ -748,7 +747,7 @@ HTACCESS;
     /**
      * Is the server PHP 5.3 or better
      *
-     * @return  bool    Returns true if the server PHP 5.3 or better
+     * @return bool    Returns true if the server PHP 5.3 or better
      */
     public static function PHP53()
     {
@@ -842,7 +841,8 @@ HTACCESS;
      * Check given table is exist in real
      *
      * @param $table string Table name
-     * @return booleam
+     *
+     * @return bool
      */
     public static function isTableExists($table)
     {
@@ -859,8 +859,8 @@ HTACCESS;
     /**
      * Finds if its a valid executable or not
      *
-     * @param type $exe A non zero length executable path to find if that is executable or not.
-     * @param type $expectedValue expected value for the result
+     * @param string $cmd $exe A non zero length executable path to find if that is executable or not.
+     *
      * @return boolean
      */
     public static function isExecutable($cmd)
@@ -936,6 +936,7 @@ HTACCESS;
      * Check if function exists and isn't in ini disable_functions
      *
      * @param string $function_name
+     *
      * @return bool
      */
     public static function isIniFunctionEnalbe($function_name)

@@ -15,6 +15,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.scancheck.php'
 
 /**
  * Controller for Tools
+ *
  * @package Duplicator\ctrls
  */
 class DUP_CTRL_Tools extends DUP_CTRL_Base
@@ -34,7 +35,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
      */
     public static function isToolPage()
     {
-        return ControllersManager::isCurrentPage('duplicator-tools');
+        return ControllersManager::isCurrentPage(ControllersManager::TOOLS_SUBMENU_SLUG);
     }
 
     /**
@@ -43,7 +44,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
      */
     public static function isDiagnosticPage()
     {
-        return ControllersManager::isCurrentPage('duplicator-tools', 'diagnostics');
+        return ControllersManager::isCurrentPage(ControllersManager::TOOLS_SUBMENU_SLUG, 'diagnostics');
     }
 
     /**
@@ -56,7 +57,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
     public static function getDiagnosticURL($relative = true)
     {
         return ControllersManager::getMenuLink(
-            'duplicator-tools',
+            ControllersManager::TOOLS_SUBMENU_SLUG,
             'diagnostics',
             '',
             array(),
@@ -74,7 +75,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
     public static function getCleanFilesAcrtionUrl($relative = true)
     {
         return ControllersManager::getMenuLink(
-            'duplicator-tools',
+            ControllersManager::TOOLS_SUBMENU_SLUG,
             'diagnostics',
             '',
             array(

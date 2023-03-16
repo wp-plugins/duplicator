@@ -33,8 +33,8 @@ function duplicator_package_scan_shutdown()
  *  DUPLICATOR_PACKAGE_SCAN
  *  Returns a JSON scan report object which contains data about the system
  *
- *  @return json   JSON report object
- *  @example       to test: /wp-admin/admin-ajax.php?action=duplicator_package_scan
+ *  @return  json   JSON report object
+ *  @example to test: /wp-admin/admin-ajax.php?action=duplicator_package_scan
  */
 function duplicator_package_scan()
 {
@@ -296,7 +296,7 @@ function duplicator_active_package_info()
             'html'           => '',
             'message'        => ''
         );
-        $result['active_package']['present'] = DUP_Package::is_active_package_present();
+        $result['active_package']['present'] = DUP_Package::isPackageRunning();
         if ($result['active_package']['present']) {
             $id      = DUP_Settings::Get('active_package_id');
             $package = DUP_Package::getByID($id);
@@ -322,6 +322,7 @@ function duplicator_active_package_info()
 
 /**
  * Controller for Tools
+ *
  * @package Duplicator\ctrls
  */
 class DUP_CTRL_Package extends DUP_CTRL_Base

@@ -173,7 +173,6 @@ class FilterMng
      * @param string[] $acceptFolders             Folders not to filtered
      *
      * @return void
-     *
      */
     private static function filterAllChildsOfPathExcept(Filters $filters, $filterFilesChildOfFolders, $acceptFolders = array())
     {

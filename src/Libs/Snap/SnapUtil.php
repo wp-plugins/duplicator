@@ -2,9 +2,8 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;
@@ -20,7 +19,7 @@ class SnapUtil
     /**
      * Return array element value or default if not set
      *
-     * @param array   $array    input array
+     * @param mixed[] $array    input array
      * @param string  $key      array key
      * @param boolean $required if is required thorw Exception if isn't in array
      * @param mixed   $default  default value
@@ -53,11 +52,11 @@ class SnapUtil
         $backTraceL1 = 1 + $backTraceBack;
         $backTraceL2 = 2 + $backTraceBack;
         $result      = '[' . str_pad(basename($callers[$backTraceL1]['file']), 25, '_', STR_PAD_RIGHT) . ':'
-            . str_pad($callers[$backTraceL1]['line'], 4, ' ', STR_PAD_LEFT) . ']';
-        if (isset($callers[$backTraceL2]) && (isset($callers[$backTraceL2]['class']) || isset($callers[$backTraceL2]['function']))) {
+            . str_pad((string) $callers[$backTraceL1]['line'], 4, ' ', STR_PAD_LEFT) . ']';
+        if (isset($callers[$backTraceL2])) {
             $result .= ' [';
             $result .= isset($callers[$backTraceL2]['class']) ? $callers[$backTraceL2]['class'] . '::' : '';
-            $result .= isset($callers[$backTraceL2]['function']) ? $callers[$backTraceL2]['function'] : '';
+            $result .= $callers[$backTraceL2]['function'];
             $result .= ']';
         }
 
@@ -127,19 +126,17 @@ class SnapUtil
      * Based on {@author Jake Zatecky}'s {@link https://github.com/jakezatecky/array_group_by array_group_by()} function.
      * This variant allows $key to be closures.
      *
-     * @param array $array The array to have grouping performed on.
-     * @param mixed $key   The key to group or split by. Can be a _string_, an _integer_, a _float_, or a _callable_.
-     *                     - If the key is a callback, it must return a valid key from the array.
-     *                     - If the key is _NULL_, the iterated element is skipped.
-     *                     - string|int callback ( mixed $item )
+     * @param mixed[] $array The array to have grouping performed on.
+     * @param mixed   $key   The key to group or split by. Can be a _string_, an _integer_, a _float_, or a _callable_.
+     *                       - If the key is a callback, it must return a valid key from the array. - If the key is
+     *                       _NULL_, the iterated element is skipped. - string|int callback ( mixed $item )
      *
-     * @return array|null Returns a multidimensional array or `null` if `$key` is invalid.
+     * @return mixed[]|null Returns a multidimensional array or `null` if `$key` is invalid.
      */
     public static function arrayGroupBy(array $array, $key)
     {
         if (!is_string($key) && !is_int($key) && !is_float($key) && !is_callable($key)) {
             trigger_error('array_group_by(): The key should be a string, an integer, or a callback', E_USER_ERROR);
-            return null;
         }
         $func = (!is_string($key) && is_callable($key) ? $key : null);
         $_key = $key;
@@ -176,15 +173,15 @@ class SnapUtil
      *
      * @param string $from A human readable byte size such as 100MB
      *
-     * @return int Returns and integer of the byte size
+     * @return int<-1, max> Returns and integer of the byte size, -1 if isn't well formatted
      */
     public static function convertToBytes($from)
     {
         if (is_numeric($from)) {
-            return $from;
+            return (int) $from;
         }
 
-        $number = substr($from, 0, -2);
+        $number = (int) substr($from, 0, -2);
         switch (strtoupper(substr($from, -2))) {
             case "KB":
                 return $number * 1024;
@@ -198,7 +195,7 @@ class SnapUtil
                 return $number * pow(1024, 5);
         }
 
-        $number = substr($from, 0, -1);
+        $number = (int) substr($from, 0, -1);
         switch (strtoupper(substr($from, -1))) {
             case "K":
                 return $number * 1024;
@@ -211,7 +208,8 @@ class SnapUtil
             case "P":
                 return $number * pow(1024, 5);
         }
-        return $from;
+
+        return -1;
     }
 
     /**
@@ -286,6 +284,7 @@ class SnapUtil
      * @link https://secure.php.net/manual/en/function.ini-get-all.php
      *
      * @param string $setting The name of the ini setting to check.
+     *
      * @return bool True if the value is changeable at runtime. False otherwise.
      */
     public static function isIniValChangeable($setting)
@@ -293,10 +292,6 @@ class SnapUtil
         // if ini_set is disabled can change the values
         if (!function_exists('ini_set')) {
             return false;
-        }
-
-        if (function_exists('isIniValChangeable')) {
-            return isIniValChangeable($setting);
         }
 
         static $ini_all;
@@ -323,11 +318,44 @@ class SnapUtil
     }
 
     /**
+     * get php.ini value
+     *
+     * @param string $key        php ini value
+     * @param mixed  $default    default valu if init_get is disabled or key don't exists
+     * @param string $returnType the return type, accept only scalar values (bool, int, float, string)
+     *
+     * @return mixed
+     */
+    public static function phpIniGet($key, $default, $returnType = 'string')
+    {
+        if (!function_exists('ini_get')) {
+            return $default;
+        }
+
+        if (($result = ini_get($key)) === false) {
+            return $default;
+        }
+
+        switch ($returnType) {
+            case "bool":
+                return filter_var($result, FILTER_VALIDATE_BOOLEAN);
+            case "int":
+                return (int) $result;
+            case "float":
+                return (float) $result;
+            case "string":
+                return (string) $result;
+            default:
+                throw new Exception('Invalid return type ' . $returnType);
+        }
+    }
+
+    /**
      * The val value returns if it is between min and max otherwise it returns min or max
      *
-     * @param int $val input value
-     * @param int $min min value
-     * @param int $max max value
+     * @param int|float $val input value
+     * @param int|float $min min value
+     * @param int|float $max max value
      *
      * @return int
      */
@@ -339,22 +367,18 @@ class SnapUtil
     /**
      * Gets a specific external variable by name and optionally filters it by request
      *
-     * @param string    $variable_name <p>Name of a variable to get.</p>
-     * @param int       $filter        <p>The ID of the filter to apply. The Types of filters manual page lists the available filters.</p>
-     *                                 <p>If omitted, <b><code>FILTER_DEFAULT</code></b> will be used,
-     *                                 which is equivalent to <b><code>FILTER_UNSAFE_RAW</code></b>.
-     *                                 This will result in no filtering taking place by default.</p>
-     * @param array|int $options       <p>Associative array of options or bitwise disjunction of flags.
-     *                                 If filter accepts options, flags can be provided in "flags" field of array.</p>
+     * @param string      $variable_name <p>Name of a variable to get.</p>
+     * @param int         $filter        <p>The ID of the filter to apply. The Types of filters manual page lists the available filters.</p>
+     *                                   <p>If omitted, <b><code>FILTER_DEFAULT</code></b> will be used, which is equivalent to
+     *                                   <b><code>FILTER_UNSAFE_RAW</code></b>. This will result in no filtering taking place by
+     *                                   default.</p>
+     * @param mixed[]|int $options       <p>Associative array of options or bitwise disjunction of flags.
+     *                                   If filter accepts options, flags can be provided in "flags" field of array.</p>
      *
-     * @return mixed <p>Value of the requested variable on success, <b><code>FALSE</code></b>
-     *               if the filter fails, or <b><code>NULL</code></b>
-     *               if the <code>variable_name</code> variable is not set.
-     *               If the flag <b><code>FILTER_NULL_ON_FAILURE</code></b> is used,
-     *               it returns <b><code>FALSE</code></b> if the variable is not set and <b><code>NULL</code></b> if the filter fails.</p>
+     * @return mixed Value of the requested variable on success
      *
      * @link http://php.net/manual/en/function.filter-input.php
-     * @see filter_var(), filter_input_array(), filter_var_array()
+     * @see  filter_var(), filter_input_array(), filter_var_array()
      */
     public static function filterInputRequest($variable_name, $filter = FILTER_DEFAULT, $options = 0)
     {
@@ -363,6 +387,33 @@ class SnapUtil
         }
 
         return filter_input(INPUT_POST, $variable_name, $filter, $options);
+    }
+
+    /**
+     * Return input from type
+     *
+     * @param int $type One of INPUT_GET, INPUT_POST, INPUT_COOKIE, INPUT_SERVER, or INPUT_ENV, self::INPUT_REQUEST
+     *
+     * @return mixed[]
+     */
+    public static function getInputFromType($type)
+    {
+        switch ($type) {
+            case INPUT_GET:
+                return $_GET;
+            case INPUT_POST:
+                return $_POST;
+            case INPUT_COOKIE:
+                return $_COOKIE;
+            case INPUT_SERVER:
+                return $_SERVER;
+            case INPUT_ENV:
+                return $_ENV;
+            case self::INPUT_REQUEST:
+                return array_merge($_GET, $_POST);
+            default:
+                throw new Exception('Invalid type ' . $type);
+        }
     }
 
     /**
@@ -402,7 +453,7 @@ class SnapUtil
      */
     public static function sanitizeStrict($input, $extraAcceptChars = '')
     {
-        $regex = '/[^a-zA-Z0-9 ' . preg_quote($extraAcceptChars, '/') . ' ]/m';
+        $regex = '/[^a-zA-Z0-9' . preg_quote($extraAcceptChars, '/') . ' ]/m';
         if (is_scalar($input) || is_null($input)) {
             $input = (string) $input;
         } elseif (is_array($input)) {
@@ -424,6 +475,25 @@ class SnapUtil
     }
 
     /**
+     * Sanitize valu to int
+     *
+     * @param mixed $input   Input valie
+     * @param int   $default Default value if input isnt valid
+     *
+     * @return int
+     */
+    public static function sanitizeInt($input, $default = 0)
+    {
+        if (!is_scalar($input)) {
+            return $default;
+        } elseif (is_bool($input)) {
+            return (int) $input;
+        } else {
+            return filter_var($input, FILTER_VALIDATE_INT, array( 'options' => array( 'default' => $default)));
+        }
+    }
+
+    /**
      * Sanitize value from input $_GET, $_POST, $_REQUEST ...
      *
      * @param int    $type             One of INPUT_GET, INPUT_POST, INPUT_COOKIE, INPUT_SERVER, INPUT_ENV or Sanitize::INPUT_REQUEST
@@ -442,6 +512,40 @@ class SnapUtil
         return self::sanitizeStrict($value, $extraAcceptChars);
     }
 
+    /**
+     * Sanitize value from input $_GET, $_POST, $_REQUEST ...
+     *
+     * @param int    $type    One of INPUT_GET, INPUT_POST, INPUT_COOKIE, INPUT_SERVER, INPUT_ENV or Sanitize::INPUT_REQUEST
+     * @param string $varName Name of a variable to get.
+     * @param int    $default default value if var $varName don't exists
+     *
+     * @return int return default value if varName isn't defined
+     */
+    public static function sanitizeIntInput($type, $varName, $default = 0)
+    {
+        if (($value = self::getValueByType($type, $varName)) === null) {
+            return $default;
+        }
+
+        return self::sanitizeInt($value);
+    }
+
+    /**
+     * Sanitize value from input $_GET, $_POST, $_REQUEST ...
+     *
+     * @param int    $type    One of INPUT_GET, INPUT_POST, INPUT_COOKIE, INPUT_SERVER, INPUT_ENV or Sanitize::INPUT_REQUEST
+     * @param string $varName Name of a variable to get.
+     * @param mixed  $default default value if var $varName don't exists
+     *
+     * @return string|string[]|mixed return default value if varName isn't defined
+     */
+    public static function sanitizeInput($type, $varName, $default = false)
+    {
+        if (($value = self::getValueByType($type, $varName)) === null) {
+            return $default;
+        }
+        return self::sanitize($value);
+    }
 
     /**
      * Return value input by type null if don't exists
@@ -470,35 +574,28 @@ class SnapUtil
      * Gets external variables and optionally filters them
      * <p>This function is useful for retrieving many values without repetitively calling <code>filter_input()</code>.</p>
      *
-     * @param array|int $definition <p>An array defining the arguments.
-     *                              A valid key is a <code>string</code> containing a variable name and a valid value is either a filter type,
-     *                              or an <code>array</code> optionally specifying the filter, flags and options.
-     *                              If the value is an array, valid keys are <i>filter</i> which specifies the filter type,
-     *                              <i>flags</i> which specifies any flags that apply to the filter, and <i>options</i>
-     *                              which specifies any options that apply to the filter. See the example below for a better understanding.</p>
-     *                              <p>This parameter can be also an integer holding a filter constant.
-     *                              Then all values in the input array are filtered by this filter.</p>
-     * @param bool      $add_empty  <p>Add missing keys as <b><code>NULL</code></b> to the return value.</p>
+     * @param mixed[]|int $definition <p>An array defining the arguments.
+     *                                A valid key is a <code>string</code> containing a variable name and a valid value is either a filter type,
+     *                                or an <code>array</code> optionally specifying the filter, flags and options.
+     *                                If the value is an array, valid keys are <i>filter</i> which specifies the filter type,
+     *                                <i>flags</i> which specifies any flags that apply to the filter, and <i>options</i>
+     *                                which specifies any options that apply to the filter. See the example below for a better understanding.</p>
+     *                                <p>This parameter can be also an integer holding a filter constant.
+     *                                Then all values in the input array are filtered by this filter.</p>
+     * @param bool        $add_empty  <p>Add missing keys as <b><code>NULL</code></b> to the return value.</p>
      *
-     * @return mixed <p>An array containing the values of the requested variables on success.
-     *               If the input array designated by <code>type</code> is not populated,
-     *               the function returns <b><code>NULL</code></b> if the <b><code>FILTER_NULL_ON_FAILURE</code></b> flag is not given,
-     *               or <b><code>FALSE</code></b> otherwise. For other failures, <b><code>FALSE</code></b> is returned.</p>
-     *               <p>An array value will be <b><code>FALSE</code></b> if the filter fails, or <b><code>NULL</code></b>
-     *               if the variable is not set. Or if the flag <b><code>FILTER_NULL_ON_FAILURE</code></b> is used,
-     *               it returns <b><code>FALSE</code></b> if the variable is not set and <b><code>NULL</code></b> if the filter fails.
-     *               If the <code>add_empty</code> parameter is <b><code>FALSE</code></b>, no array element will be added for unset variables.</p>
+     * @return mixed An array containing the values of the requested variables on success.
      *
      * @link http://php.net/manual/en/function.filter-input-array.php
-     * @see filter_input(), filter_var_array()
+     * @see  filter_input(), filter_var_array()
      */
     public static function filterInputRequestArray($definition = FILTER_DEFAULT, $add_empty = true)
     {
         if (!is_array($definition) || count($definition) === 0) {
             return array();
         }
-        $getKeys  = is_array($_GET) ? array_keys($_GET) : array();
-        $postKeys = is_array($_POST) ? array_keys($_POST) : array();
+        $getKeys  = array_keys($_GET);
+        $postKeys = array_keys($_POST);
         $keys     = array_keys($definition);
 
         if (count(array_intersect($keys, $getKeys)) && !count(array_intersect($keys, $postKeys))) {
@@ -527,19 +624,10 @@ class SnapUtil
      */
     public static function obCleanAll($getContent = true)
     {
-        static $minLevel = null;
-        if ($minLevel === null) {
-            $isZipCompression = filter_var(@ini_get('zlib.output_compression'), FILTER_VALIDATE_BOOLEAN);
-            $minLevel         = ($isZipCompression ? 1 : 0);
-        }
         $result = '';
-        $levels = ob_list_handlers();
-        for ($i = (count($levels) - 1); $i > $minLevel; $i--) {
-            if (strcmp($levels[$i], 'ob_gzhandler') === 0) {
-                break;
-            }
+        for ($i = 0; $i < ob_get_level(); $i++) {
             if ($getContent) {
-                $result .= ob_get_clean();
+                $result .= ob_get_contents();
             }
             ob_clean();
         }
@@ -549,10 +637,10 @@ class SnapUtil
     /**
      * Array map recursively
      *
-     * @param callable $callback
-     * @param array $array
+     * @param callable $callback callback function
+     * @param mixed[]  $array    array input
      *
-     * @return array
+     * @return mixed[]
      */
     public static function arrayMapRecursive($callback, $array)
     {
@@ -573,7 +661,7 @@ class SnapUtil
      *
      * @link https://www.php.net/manual/en/function.array-key-first.php
      *
-     * @param array $arr array input
+     * @param mixed[] $arr array input
      *
      * @return int|string|null
      */
@@ -602,7 +690,7 @@ class SnapUtil
     /**
      * In array check by callback
      *
-     * @param array    $haystack array input
+     * @param mixed[]  $haystack array input
      * @param callable $callback callback function
      *
      * @return null|bool
@@ -690,12 +778,9 @@ class SnapUtil
      * Generates a random number
      * Copy of the wp_rand() function from wp-includes/pluggable.php with minor tweaks
      *
-     * @global string $rnd_value
-     * @staticvar string $seed
-     * @staticvar bool $external_rand_source_available
-     *
      * @param int $min Lower limit for the generated number
      * @param int $max Upper limit for the generated number
+     *
      * @return int A random number between min and max
      */
     public static function rand($min = 0, $max = 0)
@@ -703,7 +788,7 @@ class SnapUtil
         global $rnd_value;
         // Some misconfigured 32bit environments (Entropy PHP, for example) truncate integers
         // larger than PHP_INT_MAX to PHP_INT_MAX rather than overflowing them to floats.
-        $max_random_number = 3000000000 === 2147483647 ? (float) "4294967295" : 4294967295;
+        $max_random_number = 3000000000 === 2147483647 ? (float) "4294967295" : 4294967295; // @phpstan-ignore-line
         // 4294967295 = 0xffffffff
         // We only handle Ints, floats are truncated to their integer value.
         $min = (int) $min;
@@ -722,7 +807,7 @@ class SnapUtil
                 $val  = random_int($_min, $_max);
                 if (false !== $val) {
                     return abs(intval($val));
-                } else {
+                } else { // @phpstan-ignore-line
                     $use_random_int_functionality = false;
                 }
             } catch (Error $e) {
@@ -756,7 +841,29 @@ class SnapUtil
     }
 
     /**
+     * Returns true if the class exists, false otherwise
+     *
+     * @param string  $className Name of the class to check if it exists
+     * @param boolean $autoload  Parameter that will be passed to class_exists as second
+     *
+     * @return boolean
+     */
+    public static function classExists($className, $autoload = true)
+    {
+        if (!class_exists($className, $autoload)) {
+            return false;
+        }
+        if (function_exists("ini_get")) {
+            $disabled = explode(',', ini_get('disable_classes'));
+            return in_array($className, $disabled) ? false : true;
+        }
+        // We can only suppose that it exists, can't be 100% sure, but it's the best guess
+        return true;
+    }
+
+    /**
      * Function phpinfo wrapper
+     *
      * @see https://www.php.net/manual/en/function.phpinfo.php
      *
      * @param int $flags see phpinfo function flags

@@ -82,8 +82,8 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
                 'default'          => $newHomeUrl,
-                'sanitizeCallback' => array('\\Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizeUrl'),
-                'validateCallback' => array('\\Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'validateUrlWithScheme')
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizeUrl'),
+                'validateCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'validateUrlWithScheme')
             ),
             array(// FORM ATTRIBUTES
                 'label'  => 'New Site URL:',
@@ -123,7 +123,7 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
                 'default'          => $newMainPath,
-                'sanitizeCallback' => array('\\Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath'),
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath'),
                 'validateCallback' => function ($value, ParamItem $paramObj) {
                     if (strlen($value) == 0) {
                         $paramObj->setInvalidMessage('The new path can\'t be empty.');

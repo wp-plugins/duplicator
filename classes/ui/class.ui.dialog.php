@@ -5,12 +5,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * Used to generate a thick-box inline dialog such as an alert or confirm pop-up
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/ui
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 
 // Exit if accessed directly
@@ -65,6 +65,7 @@ class DUP_UI_Dialog
     public $cancelText;
 /**
      * If true close dialog on confirm
+ *
      * @var bool
      */
     public $closeOnConfirm = false;
@@ -121,7 +122,7 @@ class DUP_UI_Dialog
             $onClickClose .= $this->jscallback . ';';
         }
         $onClickClose .= 'tb_remove();';
-        $hideButton = "";
+        $hideButton    = "";
         if (strlen($this->okText) == 0) {
             $hideButton = "style='display:none'";
         }

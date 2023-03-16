@@ -16,8 +16,8 @@ if (!defined('DUPLICATOR_VERSION')) {
  * Class for gathering system information about a database
  *
  * Standard: PSR-2
- * @link http://www.php-fig.org/psr/psr-2
  *
+ * @link http://www.php-fig.org/psr/psr-2
  */
 class DUP_DatabaseInfo
 {
@@ -66,17 +66,20 @@ class DUP_DatabaseInfo
     public $varLowerCaseTables = false;
     /**
      * The database engine (MySQL/MariaDB/Percona)
-     * @var string
+     *
+     * @var     string
      * @example MariaDB
      */
     public $dbEngine = '';
     /**
      * The simple numeric version number of the database server
+     *
      * @exmaple: 5.5
      */
     public $version = 0;
     /**
      * The full text version number of the database server
+     *
      * @exmaple: 10.2 mariadb.org binary distribution
      */
     public $versionComment = 0;

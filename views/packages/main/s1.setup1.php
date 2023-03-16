@@ -25,7 +25,7 @@ $ctrl_ui = new DUP_CTRL_UI();
 $ctrl_ui->setResponseType('PHP');
 $data = $ctrl_ui->GetViewStateList();
 
-$ui_css_storage     = (isset($data->payload['dup-pack-storage-panel']) && $data->payload['dup-pack-storage-panel']) ? 'display:block' : 'display:none';
+$ui_css_storage     = (isset($data->payload['dup-pack-storage-panel']) && !$data->payload['dup-pack-storage-panel']) ? 'display:none' : 'display:block';
 $ui_css_archive     = (isset($data->payload['dup-pack-archive-panel']) && $data->payload['dup-pack-archive-panel']) ? 'display:block' : 'display:none';
 $ui_css_installer   = (isset($data->payload['dup-pack-installer-panel']) && $data->payload['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
 $dup_intaller_files = implode(", ", array_keys(DUP_Server::getInstallerFiles()));
@@ -205,7 +205,11 @@ SYSTEM REQUIREMENTS -->
                     </table>
                     <small>
                         <?php
-                        esc_html_e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed.", 'duplicator');
+                        esc_html_e(
+                            "MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  " .
+                            "Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed.",
+                            'duplicator'
+                        );
                         echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . esc_html__('more info', 'duplicator') . "]</a></i>";
                         ?>                                      
                     </small>

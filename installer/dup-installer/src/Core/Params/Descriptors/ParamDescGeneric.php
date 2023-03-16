@@ -42,7 +42,7 @@ final class ParamDescGeneric implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(
                 'default'          => '644',
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
                 'validateRegex'    => '/^[ugorwx,\s\+\-0-7]+$/' // octal + ugo rwx,
             ),
             array(
@@ -79,7 +79,7 @@ final class ParamDescGeneric implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array(
                 'default'          => '755',
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
                 'validateRegex'    => '/^[ugorwx,\s\+\-0-7]+$/' // octal + ugo rwx
             ),
             array(
@@ -254,6 +254,46 @@ final class ParamDescGeneric implements DescriptorInterface
                 'label'         => 'CLean installation files',
                 'renderLabel'   => false,
                 'checkboxLabel' => 'Auto delete installer files after login to secure site (recommended!)'
+            )
+        );
+
+        $params[PrmMng::PARAM_SUBSCRIBE_EMAIL] = new ParamForm(
+            PrmMng::PARAM_SUBSCRIBE_EMAIL,
+            ParamForm::TYPE_STRING,
+            ParamForm::FORM_TYPE_TEXT,
+            array(// ITEM ATTRIBUTES
+                'default'          => '',
+                'validateCallback' => function ($value, ParamItem $paramObj) {
+                    if (strlen($value) < 4) {
+                        $paramObj->setInvalidMessage('Email name must have 4 or more characters');
+                        return false;
+                    }
+
+                    if (filter_var($value, FILTER_VALIDATE_EMAIL) == false) {
+                        $paramObj->setInvalidMessage('Email "' . $value . '"  isn\'t valid');
+                        return false;
+                    }
+
+                    return true;
+                }
+            ),
+            array(// FORM ATTRIBUTES
+                'label'  => 'Subscribe to our newsletter:',
+                'renderLabel' => false,
+                'wrapperClasses' => array('subscribe-form'),
+                'attr'           => array(
+                    'placeholder' => 'Email Address'
+                ),
+                'subNote'        => 'Get tips and product updates straight to your inbox.',
+                'status' => function ($paramObj) {
+                    if ($paramObj->getValue() !== '') {
+                        return ParamForm::STATUS_SKIP;
+                    }
+
+                    return ParamForm::STATUS_ENABLED;
+                },
+                'postfix' => array('type' => 'button', 'label' => 'Subscribe', 'btnAction' => 'DUPX.submitEmail(this);')
+
             )
         );
     }

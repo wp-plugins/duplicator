@@ -4,10 +4,10 @@
  * Original installer files manager
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -40,6 +40,9 @@ final class DUPX_Plugins_Manager
     const SLUG_WP_ROCKET             = 'wp-rocket/wp-rocket.php';
     const SLUG_BETTER_WP_SECURITY    = 'better-wp-security/better-wp-security.php';
     const SLUG_HTTPS_REDIRECTION     = 'https-redirection/https-redirection.php';
+    const SLUG_LOGIN_NOCAPTCHA       = 'login-recaptcha/login-nocaptcha.php';
+    const SLUG_GOOGLE_CAPTCHA        = 'google-captcha/google-captcha.php';
+    const SLUG_ADVANCED_CAPTCHA      = 'advanced-google-recaptcha/advanced-google-recaptcha.php';
     const OPTION_ACTIVATE_PLUGINS    = 'duplicator_activate_plugins_after_installation';
 
     /**
@@ -53,18 +56,6 @@ final class DUPX_Plugins_Manager
      * @var DUPX_Plugin_item[]
      */
     private $plugins = array();
-
-    /**
-     *
-     * @var DUPX_Plugin_item[]
-     */
-    private $pluginsToActivate = array();
-
-    /**
-     *
-     * @var array
-     */
-    private $pluginsAutoDeactivate = array();
 
     /**
      *
@@ -129,7 +120,7 @@ final class DUPX_Plugins_Manager
             'have Duplicator PRO active at the same time as PRO.'
         );
 
-        $longMsg = "This plugin is deactivated by default automatically. "
+        $longMsg                                                      = "This plugin is deactivated by default automatically. "
             . "<strong>You must reactivate from the WordPress admin panel after completing the installation</strong> "
             . "or from the plugins tab."
             . " Your site's frontend will render properly after reactivating the plugin.";
@@ -199,7 +190,7 @@ final class DUPX_Plugins_Manager
     /**
      *
      * @staticvar string[] $dropInsPaths
-     * @return string[]
+     * @return    string[]
      */
     public function getDropInsPaths()
     {
@@ -433,7 +424,6 @@ final class DUPX_Plugins_Manager
     /**
      * remove inactive plugins
      * this method must calle after wp-config set
-     *
      */
     public function unistallInactivePlugins()
     {
@@ -449,63 +439,51 @@ final class DUPX_Plugins_Manager
     }
 
     /**
-     * Get Automatic actions for plugins
+     * Set automatic actions for plugins
      *
-     * @return array key as plugin slug and val as plugin title
+     * @return void
      */
     public function setAutoActions($subsiteId = -1)
     {
-        $paramManager                = PrmMng::getInstance();
-        $this->pluginsAutoDeactivate = array();
+        $paramManager  = PrmMng::getInstance();
+        $casesToHandle = array(
+            array(
+                'slugs' => array(
+                    self::SLUG_SIMPLE_SSL,
+                    self::SLUG_WP_FORCE_SSL,
+                    self::SLUG_HTTPS_REDIRECTION,
+                    self::SLUG_ONE_CLICK_SSL
+                ),
+                'longMsg' => "The plugin '%name%' has been deactivated because you are migrating from SSL (HTTPS) to Non-SSL (HTTP).<br>" .
+                    "If it was not deactivated, you would not be able to login.",
+                'info' => '%name% [as Non-SSL installation] will be deactivated',
+                'condition' => !DUPX_U::is_ssl()
+            ),
+            array(
+                'slugs' => array(
+                    self::SLUG_RECAPTCHA,
+                    self::SLUG_LOGIN_NOCAPTCHA,
+                    self::SLUG_GOOGLE_CAPTCHA,
+                    self::SLUG_ADVANCED_CAPTCHA
+                ),
+                'longMsg' => "The plugin '%name%' has been deactivated because reCaptcha requires a site key which is bound to the site's address." .
+                    "Your package site's address and installed site's address don't match. " .
+                    "You can reactivate it after finishing with the installation.<br>" .
+                    "<strong>Please do not forget to change the reCaptcha site key after activating it.</strong>",
+                'info' => '%name% [as package creation site URL and the installation site URL are different] will be deactivated',
+                'condition' => $paramManager->getValue(PrmMng::PARAM_SITE_URL_OLD) != $paramManager->getValue(PrmMng::PARAM_SITE_URL),
+            ),
+        );
 
-        if (!DUPX_U::is_ssl() && isset($this->plugins[self::SLUG_SIMPLE_SSL]) && $this->plugins[self::SLUG_SIMPLE_SSL]->isActive($subsiteId)) {
-            Log::info('Really Simple SSL [as Non-SSL installation] will be deactivated', Log::LV_DEBUG);
-            $shortMsg = "Deactivated plugin: " . $this->plugins[self::SLUG_SIMPLE_SSL]->name;
-            $longMsg  = "This plugin is deactivated because you are migrating from SSL (HTTPS) to Non-SSL (HTTP).<br>" .
-                "If it was not deactivated, you would not be able to login.";
-
-            $this->plugins[self::SLUG_SIMPLE_SSL]->setDeactivateAction($subsiteId, $shortMsg, $longMsg);
-        }
-
-        if (!DUPX_U::is_ssl() && isset($this->plugins[self::SLUG_ONE_CLICK_SSL]) && $this->plugins[self::SLUG_ONE_CLICK_SSL]->isActive($subsiteId)) {
-            Log::info('One Click SSL [as Non-SSL installation] will be deactivated', Log::LV_DEBUG);
-            $shortMsg = "Deactivated plugin: " . $this->plugins[self::SLUG_ONE_CLICK_SSL]->name;
-            $longMsg  = "This plugin is deactivated because you are migrating from SSL (HTTPS) to Non-SSL (HTTP).<br>" .
-                "If it was not deactivated, you would not be able to login.";
-
-            $this->plugins[self::SLUG_ONE_CLICK_SSL]->setDeactivateAction($subsiteId, $shortMsg, $longMsg);
-        }
-
-        if (!DUPX_U::is_ssl() && isset($this->plugins[self::SLUG_WP_FORCE_SSL]) && $this->plugins[self::SLUG_WP_FORCE_SSL]->isActive($subsiteId)) {
-            Log::info('WP Force SSL & HTTPS Redirect [as Non-SSL installation] will be deactivated', Log::LV_DEBUG);
-            $shortMsg = "Deactivated plugin: " . $this->plugins[self::SLUG_WP_FORCE_SSL]->name;
-            $longMsg  = "This plugin is deactivated because you are migrating from SSL (HTTPS) to Non-SSL (HTTP).<br>" .
-                "If it was not deactivated, you would not be able to login.";
-
-            $this->plugins[self::SLUG_WP_FORCE_SSL]->setDeactivateAction($subsiteId, $shortMsg, $longMsg);
-        }
-
-        if (!DUPX_U::is_ssl() && isset($this->plugins[self::SLUG_HTTPS_REDIRECTION]) && $this->plugins[self::SLUG_HTTPS_REDIRECTION]->isActive($subsiteId)) {
-            Log::info('Easy HTTPS Redirection (SSL) [as Non-SSL installation] will be deactivated', Log::LV_DEBUG);
-            $shortMsg = "Deactivated plugin: " . $this->plugins[self::SLUG_HTTPS_REDIRECTION]->name;
-            $longMsg  = "This plugin is deactivated because you are migrating from SSL (HTTPS) to Non-SSL (HTTP).<br>" .
-                "If it was not deactivated, you would not be able to login.";
-
-            $this->plugins[self::SLUG_HTTPS_REDIRECTION]->setDeactivateAction($subsiteId, $shortMsg, $longMsg);
-        }
-
-        if (
-            $paramManager->getValue(PrmMng::PARAM_SITE_URL_OLD) != $paramManager->getValue(PrmMng::PARAM_SITE_URL) &&
-            isset($this->plugins[self::SLUG_RECAPTCHA]) && $this->plugins[self::SLUG_RECAPTCHA]->isActive($subsiteId)
-        ) {
-            Log::info('Simple Google reCAPTCHA [as package creation site URL and the installation site URL are different] will be deactivated', Log::LV_DEBUG);
-            $shortMsg = "Deactivated plugin: " . $this->plugins[self::SLUG_RECAPTCHA]->name;
-            $longMsg  = "It is deactivated because the Google Recaptcha required reCaptcha site key which is bound to the site's address." .
-                "Your package site's address and installed site's address doesn't match. " .
-                "You can reactivate it from the installed site login panel after completion of the installation.<br>" .
-                "<strong>Please do not forget to change the reCaptcha site key after activating it.</strong>";
-
-            $this->plugins[self::SLUG_RECAPTCHA]->setDeactivateAction($subsiteId, $shortMsg, $longMsg);
+        foreach ($casesToHandle as $case) {
+            foreach ($case['slugs'] as $slug) {
+                if (isset($this->plugins[$slug]) && $this->plugins[$slug]->isActive($subsiteId) && $case['condition']) {
+                    $info    = str_replace('%name%', $this->plugins[$slug]->name, $case['info']);
+                    $longMsg = str_replace('%name%', $this->plugins[$slug]->name, $case['longMsg']);
+                    Log::info($info, Log::LV_DEBUG);
+                    $this->plugins[$slug]->setDeactivateAction($subsiteId, $info, $longMsg);
+                }
+            }
         }
 
         foreach ($this->customPluginsActions as $slug => $customPlugin) {
@@ -516,8 +494,6 @@ final class DUPX_Plugins_Manager
                 $this->plugins[$slug]->setActivationAction($subsiteId);
             }
         }
-
-        Log::info('Activated plugins listed here will be deactivated: ' . Log::v2str(array_keys($this->pluginsAutoDeactivate)));
     }
 
     private function __clone()

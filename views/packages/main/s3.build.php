@@ -1,6 +1,7 @@
 <?php
 
 use Duplicator\Libs\Upsell;
+use Duplicator\Views\EducationElements;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 //Nonce Check
@@ -39,7 +40,7 @@ $rand_txt[0] = $atext0;
 
 <style>
     a#dup-create-new {margin-left:-5px}
-    div#dup-progress-area {text-align:center; max-width:800px; min-height:200px;  border:1px solid silver; border-radius:3px; margin:25px auto 10px auto;
+    div#dup-progress-area {text-align:center; max-width:800px; min-height:200px;  border:1px solid silver; border-radius:3px; margin:25px auto 50px auto;
                            padding:0px; box-shadow:0 8px 6px -6px #999;}
     div.dup-progress-title {font-size:22px;padding:5px 0 20px 0; font-weight:bold}
     div#dup-progress-area div.inner {padding:10px; line-height:22px}
@@ -69,7 +70,8 @@ $rand_txt[0] = $atext0;
     div.dup-button-footer {text-align:right; margin:20px 10px 0px 0px}
     button.button {font-size:16px !important; height:30px !important; font-weight:bold; padding:0px 10px 5px 10px !important; min-width:150px }
     span.dup-btn-size {font-size:11px;font-weight:normal}
-    p.get-pro {font-size:13px; color:#222; border-top:1px solid #eeeeee; padding:5px 0 0 0; margin:0; font-style:italic}
+    p.get-pro {font-size:13px; color:#222; border-bottom:1px solid #eeeeee; padding-bottom: 10px; margin-bottom: 25px; font-style:italic}
+    p.get-pro.subscribed {border-top: 1px solid #eeeeee; border-bottom: 0; padding:5px 0 0 0; margin:0;}
     div.dup-howto-exe {font-size:14px; font-weight:bold; margin:25px 0 40px 0;line-height:20px; color:#000; padding-top:10px;}
     div.dup-howto-exe-title {font-size:18px; margin:0 0 8px 0; color:#000}
     div.dup-howto-exe-title a {text-decoration:none; outline:none; box-shadow:none}
@@ -153,12 +155,16 @@ TOOL BAR:STEPS -->
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
 <!--  PROGRESS BAR -->
-<div id="dup-progress-bar-area">
-    <div class="dup-progress-title"><?php esc_html_e('Building Package', 'duplicator'); ?> <i class="fa fa-cog fa-spin"></i> <span id="dup-progress-percent">0%</span></div>
-    <div id="dup-progress-bar"></div>
-    <b><?php esc_html_e('Please Wait...', 'duplicator'); ?></b><br/><br/>
-    <i><?php esc_html_e('Keep this window open and do not close during the build process.', 'duplicator'); ?></i><br/>
-    <i><?php esc_html_e('This may take several minutes to complete.', 'duplicator'); ?></i><br/>
+<div id="dup-build-progress-bar-wrapper">
+    <?php do_action('duplicator_build_progress_header'); ?>
+    <div id="dup-progress-bar-area">
+        <div class="dup-progress-title"><?php esc_html_e('Building Package', 'duplicator'); ?> <i class="fa fa-cog fa-spin"></i> <span id="dup-progress-percent">0%</span></div>
+        <div id="dup-progress-bar"></div>
+        <b><?php esc_html_e('Please Wait...', 'duplicator'); ?></b><br/><br/>
+        <i><?php esc_html_e('Keep this window open and do not close during the build process.', 'duplicator'); ?></i><br/>
+        <i><?php esc_html_e('This may take several minutes to complete.', 'duplicator'); ?></i><br/>
+    </div>
+    <?php do_action('duplicator_build_progress_footer'); ?>
 </div>
 
 <div id="dup-progress-area" class="dup-panel" style="display:none">
@@ -248,7 +254,10 @@ TOOL BAR:STEPS -->
 
                             <!-- CLASSIC -->
                             <i class="far fa-save fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording2&utm_campaign=duplicator_free#quick-040-q" target="_blank">
+                            <a 
+                                href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording2&utm_campaign=duplicator_free#quick-040-q" 
+                                target="_blank"
+                            >
                                 <?php esc_html_e('Install to Empty Directory ', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
@@ -264,7 +273,10 @@ TOOL BAR:STEPS -->
 
                             <!-- OVERWRITE -->
                             <i class="far fa-window-close fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording2&utm_campaign=duplicator_free#quick-043-q" target="_blank">
+                            <a 
+                                href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording2&utm_campaign=duplicator_free#quick-043-q" 
+                                target="_blank"
+                            >
                                 <?php esc_html_e('Overwrite Site', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
@@ -278,7 +290,10 @@ TOOL BAR:STEPS -->
 
                             <!-- IMPORT -->
                             <i class="fas fa-arrow-alt-circle-down fa-sm fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording2&utm_campaign=duplicator_free#quick-045-q" target="_blank">
+                            <a 
+                                href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording2&utm_campaign=duplicator_free#quick-045-q" 
+                                target="_blank"
+                            >
                                 <?php esc_html_e('Import Archive and Overwrite Site', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
@@ -292,9 +307,10 @@ TOOL BAR:STEPS -->
                 </div>
             </div>
 
-            <p class="get-pro">
+            <p class="get-pro<?php echo EducationElements::userIsSubscribed() ? ' subscribed' : ''; ?>">
                 <?php echo $rand_txt[array_rand($rand_txt, 1)]; ?>
             </p>
+            <?php do_action('duplicator_build_success_footer'); ?>
         </div>
 
         <!--  =========================
@@ -408,8 +424,10 @@ TOOL BAR:STEPS -->
                             <?php esc_html_e('Complete the package build and follow the ', 'duplicator'); ?>
                             <?php
                             printf(
-                                '%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink2&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>".',
+                                '%s "<a href="%s" target="faq">%s</a>".',
                                 '',
+                                'https://snapcreek.com/duplicator/docs/quick-start/' .
+                                '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink2&utm_campaign=build_issues#quick-060-q',
                                 esc_html__('Quick Start Two-Part Install Instructions', 'duplicator')
                             );
                             ?>
@@ -517,12 +535,12 @@ TOOL BAR:STEPS -->
             <br/><br/>
 
         </div>
-
-
     </div>
 </div>
 </form>
-
+<div id="build-success-footer-cta" style="display: none;">
+    <?php EducationElements::displayCalloutCTA(); ?>
+</div>
 <script>
 jQuery(document).ready(function ($) {
 
@@ -559,7 +577,7 @@ jQuery(document).ready(function ($) {
                 } catch(err) {
                     console.error(err);
                     console.error('JSON parse failed for response data:' + respData);
-                    $('#dup-progress-bar-area').hide();
+                    $('#dup-build-progress-bar-wrapper').hide();
                     $('#dup-progress-area, #dup-msg-error').show(200);
                     var status = xHr.status + ' -' + data.statusText;
                     var response = (xHr.responseText != undefined && xHr.responseText.trim().length > 1)
@@ -580,7 +598,7 @@ jQuery(document).ready(function ($) {
 
             },
             error:function (xHr) {
-                $('#dup-progress-bar-area').hide();
+                $('#dup-build-progress-bar-wrapper').hide();
                 $('#dup-progress-area, #dup-msg-error').show(200);
                 var status = xHr.status + ' -' + data.statusText;
                 var response = (xHr.responseText != undefined && xHr.responseText.trim().length > 1)
@@ -758,8 +776,9 @@ jQuery(document).ready(function ($) {
             hash:pack.Hash
         };
 
-        $('#dup-progress-bar-area').hide();
+        $('#dup-build-progress-bar-wrapper').hide();
         $('#dup-progress-area, #dup-msg-success').show(300);
+        $('#build-success-footer-cta').show();
 
         $('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
         $('#data-name-hash').text(pack.NameHash || 'error read');
@@ -806,7 +825,7 @@ jQuery(document).ready(function ($) {
     };
 
     Duplicator.Pack.DupArchiveProcessingFailed = function (errorText) {
-        $('#dup-progress-bar-area').hide();
+        $('#dup-build-progress-bar-wrapper').hide();
         $('#dup-progress-area, #dup-msg-error').show(200);
         $('#dup-msg-error-response-text span.data').html(errorText);
         $('#dup-pack-build-err-info').trigger('click');

@@ -26,15 +26,15 @@ if (!defined('DUPXABSPATH')) {
 }
 
 $disabled_dirs = array(
-	'backups-dup-lite',
-	'wp-snapshots'
+    'backups-dup-lite',
+    'wp-snapshots'
 );
 
 if (in_array(basename(dirname(__FILE__)), $disabled_dirs)) {
-	die;
+    die;
 }
 
-define('DUPX_VERSION', '1.5.2.1');
+define('DUPX_VERSION', '1.5.3');
 define('DUPX_INIT', str_replace('\\', '/', dirname(__FILE__)));
 define('DUPX_ROOT', preg_match('/^[\\\\\/]?$/', dirname(DUPX_INIT)) ? '/' : dirname(DUPX_INIT));
 

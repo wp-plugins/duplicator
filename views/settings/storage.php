@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Controllers\StorageController;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <style>
@@ -120,51 +123,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 <!-- ==========================================
 THICK-BOX DIALOGS: -->
 <?php
-
-function dup_lite_storage_advanced_pro_content()
-{
-    ob_start();
-    ?>
-    <div style="text-align: center">
-        <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL . "assets/img/logo-dpro-300x50.png"); ?>" style="height:50px; width:250px" /><br/>
-        <?php
-                esc_html_e('Store to Multiple Endpoints', 'duplicator');
-                echo '<br/>';
-                esc_html_e('with Duplicator Pro', 'duplicator');
-        ?>
-  
-        <div style="text-align: left; margin:auto; width:200px">
-            <ul>
-                <li><i class="fab fa-amazon"></i>&nbsp;<?php esc_html_e('Amazon S3', 'duplicator'); ?></li>
-                <li><i class="fab fa-dropbox"></i>&nbsp;<?php esc_html_e(' Dropbox', 'duplicator'); ?></li>
-                <li><i class="fab fa-google-drive"></i>&nbsp;<?php esc_html_e('Google Drive', 'duplicator'); ?></li>
-                <li><i class="fa fa-cloud fa-sm"></i>&nbsp;<?php esc_html_e('One Drive', 'duplicator'); ?></li>
-                <li><i class="fas fa-network-wired"></i>&nbsp;<?php esc_html_e('FTP &amp; SFTP', 'duplicator'); ?></li>
-                <li><i class="fas fa-hdd"></i>&nbsp;<?php esc_html_e('Custom Directory', 'duplicator'); ?></li>
-            </ul>
-        </div>
-        <i>
-        <?php esc_html_e('Set up one-time storage locations and automatically', 'duplicator'); ?><br>
-        <?php esc_html_e('push the package to your destination.', 'duplicator'); ?>
-        </i>
-    </div>
-    <p style="text-align: center">
-        <a href="<?php echo esc_url(\Duplicator\Libs\Upsell::getCampaignUrl('storage-tab')); ?>"
-           target="_blank"
-           class="dup-btn-call-action" style="font-size:15px; padding:8px 10px; width: 120px">
-            <?php esc_html_e('Learn More', 'duplicator'); ?>
-        </a>
-    </p>
-    <?php
-    return ob_get_clean();
-}
-$storageAlert          = new DUP_UI_Dialog();
-$storageAlert->title   = __('Advanced Storage', 'duplicator');
-$storageAlert->height  = 500;
-$storageAlert->width   = 400;
-$storageAlert->okText  = '';
-$storageAlert->message = dup_lite_storage_advanced_pro_content();
-$storageAlert->initAlert();
+$storageAlert = StorageController::getDialogBox('settings-storage-tab');
 ?>
 <script>
     jQuery(document).ready(function ($) {

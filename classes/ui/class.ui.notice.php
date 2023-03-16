@@ -9,12 +9,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * This class takes advantage of the admin_notice action.
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/ui
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 
 class DUP_UI_Notice
@@ -302,7 +302,19 @@ class DUP_UI_Notice
                     <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL . "assets/img/logo.png"); ?>" style="text-align:top; margin:0; height:60px; width:60px;" alt="Duplicator">
                 </div>
                 <div class="duplicator-message-content">
-                    <p><strong><?php echo __('Congrats!', 'duplicator'); ?></strong> <?php printf(esc_html__('You created over %d packages with Duplicator. Great job! If you can spare a minute, please help us by leaving a five star review on WordPress.org.', 'duplicator'), DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE); ?></p>
+                    <p>
+                        <strong>
+                            <?php echo __('Congrats!', 'duplicator'); ?>
+                        </strong> 
+                        <?php
+                        printf(
+                            esc_html__(
+                                'You created over %d packages with Duplicator. Great job! If you can spare a minute, please help us by leaving a five star review on WordPress.org.',
+                                'duplicator'
+                            ),
+                            DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE
+                        ); ?>
+                    </p>
                     <p class="duplicator-message-actions">
                         <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5/#new-post" target="_blank" class="button button-primary duplicator-notice-rate-now"><?php esc_html_e("Sure! I'd love to help", 'duplicator'); ?></a>
                         <a href="<?php echo esc_url_raw($dismiss_url); ?>" class="button duplicator-notice-dismiss"><?php esc_html_e('Hide Notification', 'duplicator'); ?></a>
@@ -323,7 +335,14 @@ class DUP_UI_Notice
         if (is_admin() && in_array('administrator', $GLOBALS['current_user']->roles) && !current_user_can('export')) {
             $errorMessage = __('<strong>Duplicator</strong><hr> Your logged-in user role does not have export capability so you don\'t have access to Duplicator functionality.', 'duplicator') .
                 "<br>" .
-                sprintf(__('<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>', 'duplicator'), 'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-040-q', __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator'));
+                sprintf(
+                    __(
+                        '<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>',
+                        'duplicator'
+                    ),
+                    'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-040-q',
+                    __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator')
+                );
             DUP_UI_Notice::displayGeneralAdminNotice($errorMessage, self::GEN_ERROR_NOTICE, true);
         }
     }
@@ -335,6 +354,7 @@ class DUP_UI_Notice
      * @param integer $noticeType constant value of SELF::GEN_
      * @param boolean $isDismissible whether the notice is dismissable or not. Default is true
      * @param array|string $extraClasses add more classes to the notice div
+     *
      * @return void
      */
     public static function displayGeneralAdminNotice($htmlMsg, $noticeType, $isDismissible = true, $extraClasses = array())

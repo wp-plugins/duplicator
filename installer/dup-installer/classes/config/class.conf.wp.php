@@ -5,10 +5,10 @@
  * for both Apache and IIS files .htaccess and web.config
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\WPConfig
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -78,6 +78,7 @@ class DUPX_WPConfig
      * @param string $name
      * @param string $type  // constant | variable
      * @param mixed $default
+     *
      * @return mixed
      */
     public static function getValueFromLocalWpConfig($name, $type = 'constant', $default = '')

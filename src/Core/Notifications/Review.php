@@ -6,8 +6,6 @@ use Duplicator\Core\MigrationMng;
 
 /**
  * Ask for some love.
- *
- * @since 1.3.2
  */
 class Review
 {
@@ -25,10 +23,10 @@ class Review
     {
 
         // Admin notice requesting review.
-        add_action('admin_init', array(__CLASS__, 'review_request'));
+        add_action('admin_init', array(__CLASS__, 'reviewRequest'));
 
         // Admin footer text.
-        add_filter('admin_footer_text', array(__CLASS__, 'admin_footer'), 1, 2);
+        add_filter('admin_footer_text', array(__CLASS__, 'adminFooter'), 1, 2);
     }
 
     /**
@@ -36,7 +34,7 @@ class Review
      *
      * @return void
      */
-    public static function review_request()
+    public static function reviewRequest()
     {
 
         // Only consider showing the review request to admin users.
@@ -52,7 +50,7 @@ class Review
             return;
         }
 
-        self::review_lite();
+        self::reviewLite();
     }
 
     /**
@@ -60,7 +58,7 @@ class Review
      *
      * @return void
      */
-    public static function review_lite()
+    public static function reviewLite()
     {
         $display = false;
 
@@ -105,7 +103,12 @@ class Review
                     )
                 ),
                 array(
-                    "message" => "<p>" . __('That’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation?', 'duplicator') . "</p>" .
+                    "message" => "<p>" .
+                        __(
+                            'That’s awesome! Could you please do me a BIG favor and give it a 5-star rating on ' .
+                            'WordPress to help us spread the word and boost our motivation?',
+                            'duplicator'
+                        ) . "</p>" .
                         "<p>" . wp_kses(__('~ John Turner<br>President of Duplicator', 'duplicator'), array('br' => array())) . "</p>",
                     "links"   => array(
                         array(
@@ -124,7 +127,12 @@ class Review
                     )
                 ),
                 array(
-                    "message" => "<p>" . __('We\'re sorry to hear you aren\'t enjoying Duplicator. We would love a chance to improve. Could you take a minute and let us know what we can do better?', 'duplicator') . "</p>",
+                    "message" => "<p>" .
+                        __(
+                            'We\'re sorry to hear you aren\'t enjoying Duplicator. We would love a chance to improve. ' .
+                            'Could you take a minute and let us know what we can do better?',
+                            'duplicator'
+                        ) . "</p>",
                     "links"   => array(
                         array(
                             "url"  => self::getFeedbackUrl(),
@@ -172,20 +180,25 @@ class Review
      *
      * @return string
      */
-    public static function admin_footer($text)
+    public static function adminFooter($text)
     {
         //Show only on duplicator pages
         if (
             ! is_admin() ||
-            empty( $_REQUEST['page'] ) ||
-            strpos( $_REQUEST['page'], 'duplicator' ) === false
+            empty($_REQUEST['page']) ||
+            strpos($_REQUEST['page'], 'duplicator') === false
         ) {
             return false;
         }
 
         $text = sprintf(
             wp_kses( /* translators: $1$s - WPForms plugin name; $2$s - WP.org review link; $3$s - WP.org review link. */
-                __('Please rate <strong>Duplicator</strong> <a href="%1$s" target="_blank" rel="noopener noreferrer">&#9733;&#9733;&#9733;&#9733;&#9733;</a> on <a href="%1$s" target="_blank" rel="noopener">WordPress.org</a> to help us spread the word. Thank you from the Duplicator team!', 'duplicator'),
+                __(
+                    'Please rate <strong>Duplicator</strong> ' .
+                    '<a href="%1$s" target="_blank" rel="noopener noreferrer">&#9733;&#9733;&#9733;&#9733;&#9733;</a>' .
+                    ' on <a href="%1$s" target="_blank" rel="noopener">WordPress.org</a> to help us spread the word. Thank you from the Duplicator team!',
+                    'duplicator'
+                ),
                 array(
                     'a' => array(
                         'href'   => array(),
@@ -200,5 +213,4 @@ class Review
 
         return $text;
     }
-
 }

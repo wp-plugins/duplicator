@@ -248,7 +248,7 @@ final class ParamDescWpConfig implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array( // ITEM ATTRIBUTES
                 'default'          => $archiveConfig->getDefineArrayValue("WP_TEMP_DIR"),
-                'sanitizeCallback' => array('\\Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath')
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath')
             ),
             array( // FORM ATTRIBUTES
                 'label' => 'WP_TEMP_DIR:',
@@ -439,7 +439,7 @@ final class ParamDescWpConfig implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array( // ITEM ATTRIBUTES
                 'default'          => $archiveConfig->getDefineArrayValue("COOKIE_DOMAIN"),
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
             ),
             array( // FORM ATTRIBUTES
                 'label'   => 'COOKIE_DOMAIN:',
@@ -454,7 +454,7 @@ final class ParamDescWpConfig implements DescriptorInterface
             ParamForm::FORM_TYPE_TEXT,
             array( // ITEM ATTRIBUTES
                 'default'          => $archiveConfig->getDefineArrayValue('WP_MEMORY_LIMIT'),
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim'),
                 'validateRegex'    => ParamItem::VALIDATE_REGEX_AZ_NUMBER
             ),
             array( // FORM ATTRIBUTES
@@ -664,7 +664,7 @@ final class ParamDescWpConfig implements DescriptorInterface
     {
         $noticeManager = \DUPX_NOTICE_MANAGER::getInstance();
 
-        /** PREPEND IF EXISTS */
+        /* PREPEND IF EXISTS */
         $noticeManager->addNextStepNotice(array(
             'shortMsg'    => '',
             'level'       => \DUPX_NOTICE_ITEM::NOTICE,
@@ -673,7 +673,7 @@ final class ParamDescWpConfig implements DescriptorInterface
             'longMsgMode' => \DUPX_NOTICE_ITEM::MSG_MODE_HTML
         ), \DUPX_NOTICE_MANAGER::ADD_UNIQUE_PREPEND_IF_EXISTS, self::NOTICE_ID_WP_CONF_PARAM_PATHS_EMPTY);
 
-        /** APPEND IF EXISTS */
+        /* APPEND IF EXISTS */
         $msg  = '<br>Keeping config paths that are outside of the home path may cause malfunctions, so these settings have been disabled by default,';
         $msg .= ' but you can set them manually if necessary by switching the install mode ';
         $msg .= 'to "Advanced" and at Step 3 navigating to "Options" &gt; "WP-Config File"';
@@ -697,7 +697,7 @@ final class ParamDescWpConfig implements DescriptorInterface
     {
         $noticeManager = \DUPX_NOTICE_MANAGER::getInstance();
 
-        /** PREPEND IF EXISTS */
+        /* PREPEND IF EXISTS */
         $noticeManager->addNextStepNotice(array(
             'shortMsg'    => '',
             'level'       => \DUPX_NOTICE_ITEM::NOTICE,
@@ -705,7 +705,7 @@ final class ParamDescWpConfig implements DescriptorInterface
             'longMsgMode' => \DUPX_NOTICE_ITEM::MSG_MODE_HTML
         ), \DUPX_NOTICE_MANAGER::ADD_UNIQUE_PREPEND_IF_EXISTS, self::NOTICE_ID_WP_CONF_PARAM_DOMAINS_MODIFIED);
 
-        /** APPEND IF EXISTS */
+        /* APPEND IF EXISTS */
         $msg  = '<br>The plugin was unable to automatically replace the domain, so the setting has been disabled by default.';
         $msg .= ' Please review them by switching the install mode to "Advanced" and at Step 3 navigating to "Options" &gt; "WP-Config File"';
 

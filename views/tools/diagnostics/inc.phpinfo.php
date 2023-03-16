@@ -1,7 +1,7 @@
 <?php
 
     use Duplicator\Libs\Snap\SnapUtil;
-    
+
     defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
     ob_start();
@@ -9,13 +9,13 @@
     $serverinfo = ob_get_contents();
     ob_end_clean();
 
-    if (strlen($serverinfo) < 100) {
-        $serverinfo = 'The <a href="https://www.php.net/manual/en/function.phpinfo.php" target="_blank">phpinfo function</a> is not supported on this server, '
-            . 'for more details contact your hosting provider.';
-    } else {
-        $serverinfo = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $serverinfo);
-        $serverinfo = preg_replace('%^.*<title>(.*)</title>.*$%ms', '$1', $serverinfo);
-    }
+if (strlen($serverinfo) < 100) {
+    $serverinfo = 'The <a href="https://www.php.net/manual/en/function.phpinfo.php" target="_blank">phpinfo function</a> is not supported on this server, '
+        . 'for more details contact your hosting provider.';
+} else {
+    $serverinfo = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $serverinfo);
+    $serverinfo = preg_replace('%^.*<title>(.*)</title>.*$%ms', '$1', $serverinfo);
+}
 ?>
 
 <!-- ==============================

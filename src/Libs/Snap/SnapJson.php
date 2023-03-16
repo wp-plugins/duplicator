@@ -2,9 +2,8 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;
@@ -24,6 +23,7 @@ class SnapJson
      * @param int   $options Optional. Options to be passed to json_encode(). Default 0.
      * @param int   $depth   Optional. Maximum depth to walk through $data. Must be
      *                       greater than 0. Default 512.
+     *
      * @return string|false The JSON encoded string, or false if it cannot be encoded.
      */
     public static function jsonEncode($data, $options = 0, $depth = 512)
@@ -49,7 +49,7 @@ class SnapJson
         // Prepare the data for JSON serialization.
         $args[0] = $preparedData;
 
-        $json = call_user_func_array('json_encode', $args);
+        $json = @call_user_func_array('json_encode', $args);
 
         // If json_encode() was successful, no need to do more sanity checking.
         // ... unless we're in an old version of PHP, and json_encode() returned
@@ -64,8 +64,6 @@ class SnapJson
             return false;
         }
 
-        $json = null;
-        $preparedData = null;
         return call_user_func_array('json_encode', $args);
     }
 
@@ -76,6 +74,7 @@ class SnapJson
      * @param int   $options Optional. Options to be passed to json_encode(). Default 0.
      * @param int   $depth   Optional. Maximum depth to walk through $data. Must be
      *                       greater than 0. Default 512.
+     *
      * @return string|false The JSON encoded string, or false if it cannot be encoded.
      */
     public static function jsonEncodePPrint($data, $options = 0, $depth = 512)
@@ -92,12 +91,9 @@ class SnapJson
      *
      * This supports the JsonSerializable interface for PHP 5.2-5.3 as well.
      *
-     * @ignore
-     * @since 4.4.0
-     * @access private
-     *
      * @param mixed $data Native representation.
-     * @return bool|int|float|null|string|array Data ready for `json_encode()`.
+     *
+     * @return bool|int|float|null|string|mixed[] Data ready for `json_encode()`.
      */
     private static function jsonPrepareData($data)
     {
@@ -145,13 +141,14 @@ class SnapJson
      * Perform sanity checks on data that shall be encoded to JSON.
      *
      * @ignore
-     * @since 4.1.0
+     * @since  4.1.0
      * @access private
      *
      * @see wp_json_encode()
      *
      * @param mixed $data  Variable (usually an array or object) to encode as JSON.
      * @param int   $depth Maximum depth to walk through $data. Must be greater than 0.
+     *
      * @return mixed The sanitized data that shall be encoded to JSON.
      */
     private static function jsonSanityCheck($data, $depth)
@@ -275,10 +272,10 @@ class SnapJson
     }
 
     /**
-     *
      * todo remove esc_attr wp function
      *
      * @param mixed $val object to be encoded
+     *
      * @return string escaped json string
      */
     public static function jsonEncodeEscAttr($val)
@@ -290,8 +287,8 @@ class SnapJson
      * this function return a json encoded string without quotes at the beginning and the end
      *
      * @param string $string json string
+     *
      * @return string
-     * @throws \Exception
      */
     public static function getJsonWithoutQuotes($string)
     {

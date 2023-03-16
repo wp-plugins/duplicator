@@ -4,10 +4,10 @@
  * Search and reaplace manager
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -29,7 +29,6 @@ class DUPX_TemplateItem
      * @param string $name
      * @param string $mainFolder
      * @param null|DUPX_TemplateItem $parentName
-     * @throws Exception
      */
     public function __construct($name, $mainFolder, $parent = null)
     {
@@ -82,6 +81,7 @@ class DUPX_TemplateItem
      * Acctept html of php extensions. if the file have unknown extension automatic add the php extension
      *
      * @param string $fileTpl
+     *
      * @return boolean|string return false if don\'t find the template file
      */
     protected function getFileTemplate($fileTpl)

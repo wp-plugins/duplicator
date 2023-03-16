@@ -3,9 +3,8 @@
 /**
  * Installer Hooks Manager
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2021, Snapcreek LLC
- *
  */
 
 namespace Duplicator\Installer\Core\Hooks;
@@ -114,6 +113,7 @@ final class HooksMng
      *                                  and functions with the same priority are executed
      *                                  in the order in which they were added to the action. Default 10.
      * @param int      $accepted_args   Optional. The number of arguments the function accepts. Default 1.
+     *
      * @return true
      */
     public function addFilter($tag, $function_to_add, $priority = 10, $accepted_args = 1)
@@ -133,6 +133,7 @@ final class HooksMng
      *
      * @param string         $tag               The name of the filter hook.
      * @param callable|false $function_to_check Optional. The callback to check for. Default false.
+     *
      * @return bool|int If `$function_to_check` is omitted, returns boolean for whether the hook has
      *                  anything registered. When checking a specific function, the priority of that
      *                  hook is returned, or false if the function is not attached.
@@ -225,6 +226,7 @@ final class HooksMng
      * @param string   $tag                The filter hook to which the function to be removed is hooked.
      * @param callable $function_to_remove The name of the function which should be removed.
      * @param int      $priority           Optional. The priority of the function. Default 10.
+     *
      * @return bool    Whether the function existed before it was removed.
      */
     public function removeFilter($tag, $function_to_remove, $priority = 10)
@@ -245,6 +247,7 @@ final class HooksMng
      *
      * @param string    $tag      The filter to remove hooks from.
      * @param int|false $priority Optional. The priority number to remove. Default false.
+     *
      * @return true True when finished.
      */
     public function removeAllFilters($tag, $priority = false)
@@ -275,6 +278,7 @@ final class HooksMng
      *                                  and functions with the same priority are executed
      *                                  in the order in which they were added to the action.
      * @param int      $accepted_args   Optional. The number of arguments the function accepts. Default 1.
+     *
      * @return true Will always return true.
      */
     public function addAction($tag, $function_to_add, $priority = 10, $accepted_args = 1)
@@ -306,7 +310,6 @@ final class HooksMng
      *      * - 'example_action' is the action hook.
      *      * - $arg1 and $arg2 are the additional arguments passed to the callback.
      *     $value = do_action( 'example_action', $arg1, $arg2 );
-     *
      *
      * @global Hook[] $this->filters         Stores all of the filters and actions.
      * @global string[]  $this->currentFilter Stores the list of current filters with the current one last.
@@ -361,6 +364,7 @@ final class HooksMng
      *
      * @param string         $tag               The name of the action hook.
      * @param callable|false $function_to_check Optional. The callback to check for. Default false.
+     *
      * @return bool|int If `$function_to_check` is omitted, returns boolean for whether the hook has
      *                  anything registered. When checking a specific function, the priority of that
      *                  hook is returned, or false if the function is not attached.
@@ -380,6 +384,7 @@ final class HooksMng
      * @param string   $tag                The action hook to which the function to be removed is hooked.
      * @param callable $function_to_remove The name of the function which should be removed.
      * @param int      $priority           Optional. The priority of the function. Default 10.
+     *
      * @return bool Whether the function is removed.
      */
     public function removeAction($tag, $function_to_remove, $priority = 10)
@@ -392,6 +397,7 @@ final class HooksMng
      *
      * @param string    $tag      The action to remove hooks from.
      * @param int|false $priority The priority number to remove them from. Default false.
+     *
      * @return true True when finished.
      */
     public function removeAllActions($tag, $priority = false)
@@ -431,7 +437,6 @@ final class HooksMng
      * do_action_ref_array() and is not meant to be used from outside those
      * functions. This function does not check for the existence of the all hook, so
      * it will fail unless the all hook exists prior to this function call.
-     *
      *
      * @global Hook[] $this->filters Stores all of the filters and actions.
      *

@@ -4,10 +4,10 @@
  * Search and reaplace manager
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -32,6 +32,7 @@ final class DUPX_S_R_MANAGER
 
     /**
      * full list items not sorted
+     *
      * @var DUPX_S_R_ITEM[]
      */
     private $items = array();
@@ -180,6 +181,7 @@ final class DUPX_S_R_MANAGER
      * get all search and reaple items by scpoe
      *
      * @param null|string $scope if scope is empty get only global scope
+     *
      * @return DUPX_S_R_ITEM[]
      */
     private function getSearchReplaceItems($scope = null, $globalScope = true)
@@ -279,6 +281,7 @@ final class DUPX_S_R_MANAGER
      * Leave the object at lower priority
      *
      * @param DUPX_S_R_ITEM[] $list
+     *
      * @return boolean|DUPX_S_R_ITEM[]
      */
     private static function uniqueSearchListItem($list)
@@ -653,12 +656,12 @@ class DUPX_S_R_ITEM
 
     /**
      * @param $url string The URL whichs domain you want to get
+     *
      * @return string The domain part of the given URL
      *                  www.myurl.co.uk     => myurl.co.uk
      *                  www.google.com      => google.com
      *                  my.test.myurl.co.uk => myurl.co.uk
      *                  www.myurl.localweb  => myurl.localweb
-     *
      */
     public static function getDomain($url)
     {

@@ -4,10 +4,10 @@
  * param descriptor
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 namespace Duplicator\Installer\Core\Params\Items;
@@ -18,7 +18,6 @@ use Duplicator\Installer\Utils\Log\Log;
  * this class describes the value of a parameter.
  * therefore the type of data is sanitization and validation.
  * In addition to other features such as, for example, if it is a persistent parameter.
- *
  */
 class ParamItem
 {
@@ -556,6 +555,7 @@ class ParamItem
 
     /**
      * return array dato to store in json array data
+     *
      * @return array
      */
     public function toArrayData()

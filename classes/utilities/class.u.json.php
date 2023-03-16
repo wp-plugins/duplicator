@@ -7,11 +7,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * Utility class for working with JSON data
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
  * @subpackage classes/utilities
- * @copyright (c) 2017, Snapcreek LLC
- * @license https://opensource.org/licenses/GPL-3.0 GNU Public License
+ * @copyright  (c) 2017, Snapcreek LLC
+ * @license    https://opensource.org/licenses/GPL-3.0 GNU Public License
  */
 
 // Exit if accessed directly
@@ -28,7 +29,7 @@ class DUP_JSON
         JSON_ERROR_STATE_MISMATCH => 'Invalid or malformed JSON',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
-        JSON_ERROR_UTF8 => 'Malformed UTF-8 characters. To resolve see https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=malformed_utf8#faq-package-170-q'
+        JSON_ERROR_UTF8 => 'Malformed UTF-8 characters. To resolve see https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-170-q'
     );
 /**
      * Used on PHP 5.3+ to better handle calling the json_encode method
@@ -76,7 +77,7 @@ class DUP_JSON
         }
 
         if (($jsonString === false) || trim($jsonString) == '') {
-            $jsonString = self::customEncode($value);
+            $jsonString = self::customEncode($data);
             if (($jsonString === false) || trim($jsonString) == '') {
                 throw new Exception('Unable to generate JSON from object');
             }
@@ -127,8 +128,7 @@ class DUP_JSON
     {
         $out = "";
         if (is_object($in)) {
-            $arr[$key] = "\"" . self::escapeString($key) . "\":\"{$val}\"";
-            $in        = get_object_vars($in);
+            $in = get_object_vars($in);
         }
 
         if (is_array($in)) {

@@ -6,7 +6,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <h3 class="title"><?php esc_html_e("Activation"); ?> </h3>
 <hr size="1" />
-<table class="form-table">
+<table class="form-table licenses-table">
 <tr valign="top">
     <th scope="row"><?php esc_html_e("Manage") ?></th>
     <td>
@@ -38,33 +38,35 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     <th scope="row"><label><?php esc_html_e("License Key"); ?></label></th>
     <td>
         <div class="description" style="max-width:700px">
-
-            <b><?php esc_html_e("Duplicator Lite:", 'duplicator');  ?></b>
-
-            <ul style="list-style-type:circle; margin-left:40px">
-                <li>
-                     <?php esc_html_e("The free version of Duplicator does not require a license key.", 'duplicator');  ?>
-                </li>
-                <li>
-                    <?php
-                        esc_html_e("If you would like to purchase the professional version you can ", 'duplicator');
-                        echo '<a href="' . esc_url(Upsell::getCampaignUrl('license-tab', 'get a copy here')) . '" target="_blank">' .
-                            esc_html__("get a copy here", 'duplicator') .
-                            '</a>!';
-                    ?>
-                </li>
-            </ul>
-
-            <b><?php esc_html_e("Duplicator Pro:", 'duplicator');  ?></b>
-            <ul style="list-style-type:circle; margin-left: 40px">
-                <li>
-                    <?php esc_html_e("The professional version is a separate plugin that you download and install. ", 'duplicator');  ?>
-                </li>
-                <li>
-                    <?php esc_html_e("Download professional from the email sent after purchase or login to snapcreek.com", 'duplicator');  ?>
-                </li>
-
-            </ul>
+            <p><?php esc_html_e('You\'re using Duplicator Lite - no license needed. Enjoy!', 'duplicator'); ?> 🙂</p>
+            <p>
+                <?php printf(
+                    wp_kses(
+                        __('To unlock more features consider <strong><a href="%s" target="_blank" rel="noopener noreferrer">upgrading to PRO</a></strong>.', 'duplicator'),
+                        array(
+                            'a'      => array(
+                                'href'   => array(),
+                                'class'  => array(),
+                                'target' => array(),
+                                'rel'    => array(),
+                            ),
+                            'strong' => array(),
+                        )
+                    ),
+                    esc_url(Upsell::getCampaignUrl('license-tab', 'upgrading to PRO'))
+                ); ?>
+            </p>
+            <p class="discount-note">
+                <?php
+                printf(
+                    __(
+                        'As a valued Duplicator Lite user you receive <strong>%1$d%% off</strong>, automatically applied at checkout!',
+                        'duplicator'
+                    ),
+                    DUP_Constants::UPSELL_DEFAULT_DISCOUNT
+                );
+                ?>
+                </p>
         </div>
     </td>
 </tr>

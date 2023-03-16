@@ -4,10 +4,10 @@
  * Chunk manager step 3
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\Chunk
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -123,6 +123,7 @@ class DUPX_chunkS3Manager extends DUPX_ChunkingManager_file
      * load data from previous step if exists adn restore _POST and GLOBALS
      *
      * @param string $key file name
+     *
      * @return mixed
      */
     protected function getStoredData($key)

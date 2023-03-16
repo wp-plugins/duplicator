@@ -6,10 +6,10 @@ defined("DUPXABSPATH") or die("");
  * for .htaccess, web.config and user.ini
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\Crypt
- *
  */
 class DUPX_Crypt
 {

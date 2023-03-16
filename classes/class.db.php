@@ -5,12 +5,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * Lightweight abstraction layer for common simple database routines
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/utilities
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 // Exit if accessed directly
 if (!defined('DUPLICATOR_VERSION')) {
@@ -21,6 +21,7 @@ class DUP_DB extends wpdb
 {
     const MAX_TABLE_COUNT_IN_PACKET                 = 100;
     public static $remove_placeholder_escape_exists = null;
+
     public static function init()
     {
         global $wpdb;
@@ -178,6 +179,7 @@ class DUP_DB extends wpdb
      * Get Sql query to create table which is given.
      *
      * @param string $table Table name
+     *
      * @return string mysql query create table
      */
     private static function getCreateTableQuery($table)
@@ -251,8 +253,8 @@ class DUP_DB extends wpdb
      * Returns list of MySQL engines used by $tablesToInclude in the current DB
      *
      * @param string[] $tablesToInclude tables to check the engines for
+     *
      * @return string[]
-     * @throws Exception
      */
     public static function getTableEngineList($tablesToInclude)
     {
@@ -282,7 +284,7 @@ class DUP_DB extends wpdb
      * @param bool      $removePlaceholderEscape    Patch for how the default WP function works.
      *
      * @return boolean|string
-     * @also see: https://make.wordpress.org/core/2017/10/31/changed-behaviour-of-esc_sql-in-wordpress-4-8-3/
+     * @also   see: https://make.wordpress.org/core/2017/10/31/changed-behaviour-of-esc_sql-in-wordpress-4-8-3/
      */
     public static function escSQL($sql, $removePlaceholderEscape = false)
     {
@@ -299,8 +301,8 @@ class DUP_DB extends wpdb
      * this function escape sql string without add and remove remove_placeholder_escape
      * doesn't work on array
      *
-     * @global type $wpdb
      * @param mixed $sql
+     *
      * @return string
      */
     public static function escValueToQueryString($value)

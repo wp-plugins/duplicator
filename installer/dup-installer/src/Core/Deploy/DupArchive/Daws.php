@@ -3,9 +3,8 @@
 /**
  * Dup archive expander
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2021, Snapcreek LLC
- *
  */
 
 namespace Duplicator\Installer\Core\Deploy\DupArchive;

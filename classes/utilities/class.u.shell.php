@@ -32,7 +32,6 @@ class DUP_Shell_U
     /**
      *
      * @return boolean
-     *
      */
     public static function isPopenEnabled()
     {

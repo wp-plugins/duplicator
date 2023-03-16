@@ -2,9 +2,8 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;
@@ -22,9 +21,9 @@ class SnapIO
     /**
      * Return include file in a string
      *
-     * @param string $path     inclue path
-     * @param array  $args     array key / val where key is the var name in include
-     * @param bool   $required if true is required
+     * @param string               $path     inclue path
+     * @param array<string, mixed> $args     array key/val where key is the var name in include
+     * @param bool                 $required if true is required
      *
      * @return string
      *
@@ -72,6 +71,59 @@ class SnapIO
             }
         }
         return copy($source, $dest);
+    }
+
+    /**
+     * Copy part of file, if offset is 0 anf to file exists is truncated
+     *
+     * @param string|resource $from   file name or resource
+     * @param string|resource $to     file name or resource
+     * @param int<0, max>     $offset copy offset
+     * @param int<-1, max>    $length copy if -1 copy ot the end of file
+     *
+     * @return bool true on success or false on fail.
+     */
+    public static function copyFilePart($from, $to, $offset = 0, $length = -1)
+    {
+        $closeFrom  = false;
+        $closeTo    = false;
+        $fromStream = null;
+        $toStream   = null;
+        if (is_resource($from)) {
+            $fromStream = $from;
+        } else {
+            if (!is_file((string) $from)) {
+                return false;
+            }
+            if (($fromStream = self::fopen($from, 'r')) === false) {
+                return false;
+            }
+            $closeFrom = true;
+        }
+        if (is_resource($to)) {
+            $toStream = $to;
+        } else {
+            $mode = ($offset == 0 ? 'w+' : 'c+');
+            if (($toStream = SnapIO::fopen($to, $mode)) === false) {
+                return false;
+            }
+            $closeTo = true;
+        }
+        if ($offset === 0) {
+            if (ftruncate($toStream, 0) === false) {
+                return false;
+            }
+        }
+        if (fseek($toStream, $offset) === -1) {
+            return false;
+        }
+        if ($closeFrom && is_resource($fromStream)) {
+            fclose($fromStream);
+        }
+        if ($closeTo && is_resource($toStream)) {
+            fclose($toStream);
+        }
+        return (stream_copy_to_stream($fromStream, $toStream, ($length < 0 ? null : $length), $offset) !== false);
     }
 
     /**
@@ -198,7 +250,7 @@ class SnapIO
      *
      * @param string $file path
      *
-     * @return bool <p>Returns <b><code>TRUE</code></b> on success or <b><code>FALSE</code></b> on failure.</p>
+     * @return bool Returns TRUE  on success or  FALSE on failure.
      */
     public static function unlink($file)
     {
@@ -225,7 +277,7 @@ class SnapIO
      * @param string $newname        path
      * @param bool   $removeIfExists if true remove exists file
      *
-     * @return bool <p>Returns <b><code>TRUE</code></b> on success or <b><code>FALSE</code></b> on failure.</p>
+     * @return bool Returns TRUE on success or FALSE on failure.
      */
     public static function rename($oldname, $newname, $removeIfExists = false)
     {
@@ -258,8 +310,8 @@ class SnapIO
      */
     public static function fopen($filepath, $mode, $throwOnError = true)
     {
-        if (strlen($filepath) > SnapOS::maxPathLen()) {
-            throw new Exception('Skipping a file that exceeds allowed max path length [' . SnapOS::maxPathLen() . ']. File: ' . $filepath);
+        if (strlen($filepath) > PHP_MAXPATHLEN) {
+            throw new Exception('Skipping a file that exceeds allowed max path length [' . PHP_MAXPATHLEN . ']. File: ' . $filepath);
         }
 
         if (SnapString::startsWith($mode, 'w') || SnapString::startsWith($mode, 'c') || file_exists($filepath)) {
@@ -350,7 +402,6 @@ class SnapIO
      * @param string   $string fwrite string
      *
      * @return int bytes written
-     *
      */
     public static function fwrite($handle, $string)
     {
@@ -364,7 +415,7 @@ class SnapIO
     }
 
     /**
-     * wrinte file in chunk mode. For big data.
+     * Wrinte file in chunk mode. For big data.
      *
      * @param resource $handle  file handle
      * @param string   $content fwrite string
@@ -597,15 +648,8 @@ class SnapIO
             $filepath = stream_get_meta_data($handle);
             $filepath = $filepath["uri"];
             $filesize = self::filesize($filepath);
-            // For future debug
-            /*
-              error_log('$offset: '.$offset);
-              error_log('$filesize: '.$filesize);
-              error_log($whence. ' == '. SEEK_SET);
-             */
-            if ($ret_val === false) {
-                throw new Exception("Trying to fseek($offset, $whence) and came back false");
-            } elseif (
+
+            if (
                 abs($offset) > self::FILE_SIZE_LIMIT_32BIT ||
                 $filesize > self::FILE_SIZE_LIMIT_32BIT ||
                 ($offset <= 0 && ($whence == SEEK_SET || $whence == SEEK_END))
@@ -642,6 +686,7 @@ class SnapIO
      *
      * @param string $filename file path
      * @param mixed  $data     The data to write. Can be either a string, an array or a stream resource.
+
      * @return bool
      */
     public static function filePutContents($filename, $data)
@@ -795,7 +840,7 @@ class SnapIO
      *
      * @param int|string $perms permssions
      *
-     * @return string|bool // false if fail
+     * @return string|false false if fail
      */
     public static function permsToString($perms)
     {
@@ -806,7 +851,7 @@ class SnapIO
         } elseif (is_string($perms)) {
             return $perms;
         } else {
-            false;
+            return false;
         }
     }
 
@@ -831,8 +876,8 @@ class SnapIO
      */
     public static function mkdir($path, $mode = 0777, $recursive = false, $context = null)
     {
-        if (strlen($path) > SnapOS::maxPathLen()) {
-            throw new Exception('Skipping a file that exceeds allowed max path length [' . SnapOS::maxPathLen() . ']. File: ' . $path);
+        if (strlen($path) > PHP_MAXPATHLEN) {
+            throw new Exception('Skipping a file that exceeds allowed max path length [' . PHP_MAXPATHLEN . ']. File: ' . $path);
         }
 
         if (!file_exists($path)) {
@@ -875,6 +920,7 @@ class SnapIO
      * from wordpress function wp_is_stream
      *
      * @param string $path The resource path or URL.
+     *
      * @return bool True if the path is a stream URL.
      */
     public static function isStream($path)
@@ -899,6 +945,7 @@ class SnapIO
      * Will attempt to set permissions on folders.
      *
      * @param string $target Full path to attempt to create.
+     *
      * @return bool Whether the path was created. True if path already exists.
      */
     public static function mkdirP($target)
@@ -1092,8 +1139,9 @@ class SnapIO
     /**
      * Get common parent path from given paths
      *
-     * @param array $paths - array of paths
-     * @return common parent path
+     * @param string[] $paths list of paths
+     *
+     * @return string common parent path
      */
     public static function getCommonPath($paths = array())
     {
@@ -1152,7 +1200,7 @@ class SnapIO
      * @param string $filepath The full path to the file to be tailed
      * @param int    $lines    The number of lines to return with each tail call
      *
-     * @return string The last N parts of the file
+     * @return false|string The last N parts of the file, flse on failure
      */
     public static function tailFile($filepath, $lines = 2)
     {
@@ -1203,15 +1251,65 @@ class SnapIO
     }
 
     /**
+     * @param string $filepath     path to file to be downloaded
+     * @param string $downloadName name to be downloaded as
+     * @param int    $bufferSize   file chunks to be served
+     * @param bool   $limitRate    if set to true the download rate will be limited to $bufferSize/seconds
+     *
+     * @return void
+     */
+    public static function serveFileForDownload($filepath, $downloadName, $bufferSize = 0, $limitRate = false)
+    {
+        // Process download
+        if (!file_exists($filepath)) {
+            throw new Exception("File does not exist!");
+        }
+
+        if (!is_file($filepath)) {
+            throw new Exception("'$filepath' is not a file!");
+        }
+
+        // Clean output buffers
+        SnapUtil::obCleanAll(false);
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . $downloadName . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filepath));
+        flush(); // Flush system output buffer
+
+        if ($bufferSize <= 0) {
+            readfile($filepath);
+            exit;
+        }
+
+        $fp = @fopen($filepath, 'r');
+        if (!is_resource($fp)) {
+            throw new Exception('Fail to open the file ' . $filepath);
+        }
+
+        while (!feof($fp) && ($data = fread($fp, $bufferSize)) !== false) {
+            echo $data;
+
+            if ($limitRate) {
+                sleep(1);
+            }
+        }
+        @fclose($fp);
+        exit;
+    }
+
+    /**
      * Return lasts fine of file
      *
      * @param string $path      Path to the file
      * @param int    $n         Number of lines to get
      * @param int    $charLimit Number of chars to include in each line
      *
-     * @return bool|array Last $n lines of file
-     *
-     * @throws Exception
+     * @return bool|string[] Last $n lines of file
      */
     public static function getLastLinesOfFile($path, $n, $charLimit = null)
     {
@@ -1259,17 +1357,23 @@ class SnapIO
     /**
      * Thif function scan a folder filter by regex
      *
-     * @param string $dir     dir to scan
-     * @param array  $options array(
-     *                        'regexFile'     => [bool|string|array], if is bool alrays or never match,
-     *                        if is string o array of string check if rexeses match file name
-     *                        'regexFolder'   => [bool|string|array], if is bool alrays or never match,
-     *                        if is string o array of string check if rexeses match file name
-     *                        'checkFullPath' => bool,                if false only current file/folder name is passed at regex if true is passed the full path
-     *                        'recursive'     => bool,                if false check only passed folder or all sub folder recursively
-     *                        'invert'        => bool,                if false pass invert the result
-     *                        'childFirst'    => bool                 if false is parsed parent folters first or child folders first
-     *                        )
+     * Options
+     * regexFile: [bool|string|array]   if is bool alrays or never match, if is string o array of string check if rexeses match file name
+     * regexFolder: [bool|string|array] if is bool alrays or never match, if is string o array of string check if rexeses match file name
+     * checkFullPath: bool              if false only current file/folder name is passed at regex if true is passed the full path
+     * recursive: bool                  if false check only passed folder or all sub folder recursively
+     * invert: bool                     if false pass invert the result
+     * childFirst: bool                 if false is parsed parent folters first or child folders first
+     *
+     * @param string                              $dir     dir to scan
+     * @param array<string, bool|string|string[]> $options array{
+     *                                                     regexFile?: bool|string,
+     *                                                     regexFolder?: bool|string,
+     *                                                     checkFullPath?: bool,
+     *                                                     recursive?: bool,
+     *                                                     invert?: bool,
+     *                                                     childFirst?: bool
+     *                                                     }
      *
      * @return string[] paths lists
      */
@@ -1287,19 +1391,26 @@ class SnapIO
     /**
      * Execute the callback function foreach right element, private function for optimization
      *
-     * @param string   $dir      dir to scan
-     * @param callable $callback callback function
-     * @param array    $options  array(
-     *                           'regexFile'     => [bool|string|array], if is bool alrays or never match,
-     *                           if is string o array of string check if rexeses match file name
-     *                           'regexFolder'   => [bool|string|array], if is bool alrays or never match,
-     *                           if is string o array of string check if rexeses match file name
-     *                           'checkFullPath' => bool,                if false only current file/folder name is passed at regex
-     *                           if true is passed the full path
-     *                           'recursive'     => bool,                if false check only passed folder or all sub folder recursively
-     *                           'invert'        => bool,                if false pass invert the result
-     *                           'childFirst'    => bool                 if false is parsed parent folters first or child folders first
-     *                           )
+     * Options
+     * regexFile: [bool|string|array]   if is bool alrays or never match, if is string o array of string check if rexeses match file name
+     * regexFolder: [bool|string|array] if is bool alrays or never match, if is string o array of string check if rexeses match file name
+     * checkFullPath: bool              if false only current file/folder name is passed at regex if true is passed the full path
+     * recursive: bool                  if false check only passed folder or all sub folder recursively
+     * invert: bool                     if false pass invert the result
+     * childFirst: bool                 if false is parsed parent folters first or child folders first
+     * symlinks: string[]               list a symblink parsed
+     *
+     * @param string                              $dir      dir to scan
+     * @param callable                            $callback callback function
+     * @param array<string, bool|string|string[]> $options  array{
+     *                                                      regexFile?: bool|string,
+     *                                                      regexFolder?: bool|string,
+     *                                                      checkFullPath?: bool,
+     *                                                      recursive?: bool,
+     *                                                      invert?: bool,
+     *                                                      childFirst?: bool,
+     *                                                      symlinks?: string[]
+     *                                                      }
      *
      * @return boolean Returns true on success or false on failure.
      */
@@ -1366,19 +1477,24 @@ class SnapIO
     /**
      * Execute the callback function foreach right element (folder or files)
      *
-     * @param string   $dir      dir to scan
-     * @param callable $callback callback function
-     * @param array    $options  array(
-     *                           'regexFile'     => [bool|string|array], if is bool alrays or never match,
-     *                           if is string o array of string check if rexeses match file name
-     *                           'regexFolder'   => [bool|string|array], if is bool alrays or never match,
-     *                           if is string o array of string check if rexeses match file name
-     *                           'checkFullPath' => bool,                if false only current file/folder name is passed at regex
-     *                           if true is passed the full path
-     *                           'recursive'     => bool,                if false check only passed folder or all sub folder recursively
-     *                           'invert'        => bool,                if false pass invert the result
-     *                           'childFirst'    => bool                 if false is parsed parent folters first or child folders first
-     *                           )
+     * Options
+     * regexFile: [bool|string|array]   if is bool alrays or never match, if is string o array of string check if rexeses match file name
+     * regexFolder: [bool|string|array] if is bool alrays or never match, if is string o array of string check if rexeses match file name
+     * checkFullPath: bool              if false only current file/folder name is passed at regex if true is passed the full path
+     * recursive: bool                  if false check only passed folder or all sub folder recursively
+     * invert: bool                     if false pass invert the result
+     * childFirst: bool                 if false is parsed parent folters first or child folders first
+     *
+     * @param string                              $dir      dir to scan
+     * @param callable                            $callback callback function
+     * @param array<string, bool|string|string[]> $options  array{
+     *                                                      regexFile?: bool|string,
+     *                                                      regexFolder?: bool|string,
+     *                                                      checkFullPath?: bool,
+     *                                                      recursive?: bool,
+     *                                                      invert?: bool,
+     *                                                      childFirst?: bool
+     *                                                      }
      *
      * @return boolean Returns true on success or false on failure.
      */
@@ -1494,7 +1610,7 @@ class SnapIO
     public static function isOpenBaseDirEnabled()
     {
         $iniVar = ini_get("open_basedir");
-        return !empty($iniVar);
+        return (strlen($iniVar) > 0);
     }
 
     /**
@@ -1513,7 +1629,7 @@ class SnapIO
     /**
      * Get open base dir root path of path
      *
-     * @param $path file path
+     * @param string $path file path
      *
      * @return bool|string Path to the base dir of $path if it exists, otherwise false
      */
@@ -1588,5 +1704,45 @@ class SnapIO
         }
 
         return true;
+    }
+
+    /**
+     * Returns the total size of a filesystem or disk partition in bytes
+     *
+     * @param string $directory path
+     *
+     * @return int rturn number of bytes or -1 on failure
+     */
+    public static function diskTotalSpace($directory)
+    {
+        if (!function_exists('disk_total_space')) {
+            return -1;
+        }
+
+        if (($space = disk_total_space($directory)) === false) {
+            return -1;
+        }
+
+        return (int) round($space);
+    }
+
+    /**
+     * Returns available space in directory in bytes
+     *
+     * @param string $directory path
+     *
+     * @return int rturn number of bytes or -1 on failure
+     */
+    public static function diskFreeSpace($directory)
+    {
+        if (!function_exists('disk_free_space')) {
+            return -1;
+        }
+
+        if (($space = disk_free_space($directory)) === false) {
+            return -1;
+        }
+
+        return (int) round($space);
     }
 }

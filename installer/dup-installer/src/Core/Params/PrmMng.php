@@ -3,9 +3,8 @@
 /**
  * Installer Params Manager
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2021, Snapcreek LLC
- *
  */
 
 namespace Duplicator\Installer\Core\Params;
@@ -145,6 +144,7 @@ class PrmMng
     const PARAM_WP_ADMIN_NICKNAME                = 'wp_nickname';
     const PARAM_WP_ADMIN_FIRST_NAME              = 'wp_first_name';
     const PARAM_WP_ADMIN_LAST_NAME               = 'wp_last_name';
+    const PARAM_SUBSCRIBE_EMAIL                  = 'subscribe_email';
     // WP CONFIG
     const PARAM_GEN_WP_AUTH_KEY                        = 'auth_keys_and_salts';
     const PARAM_WP_CONF_WP_SITEURL                     = 'wpc_WP_SITEURL';
@@ -355,7 +355,6 @@ class PrmMng
      * @param boolean $nextStepErrorMessage if true and param isn't valid add next step message
      *
      * @return boolean
-     *
      */
     public function setValueFromInput($key, $method = ParamForm::INPUT_POST, $thowException = true, $nextStepErrorMessage = false)
     {
@@ -735,7 +734,7 @@ class PrmMng
         foreach ($arrayData as $key => $arrayValues) {
             if (isset($this->params[$key])) {
                 $arrayValues      = (array) $arrayValues;
-                $arrayValValToStr = array_map(array('\\Duplicator\\Installer\\Utils\\Log\\Log', 'v2str'), $arrayValues);
+                $arrayValValToStr = array_map(array('Duplicator\\Installer\\Utils\\Log\\Log', 'v2str'), $arrayValues);
 
                 $this->paramsHtmlInfo[] = 'SET PARAM <b>' . $key . '</b> ARRAY DATA: ' .
                     SnapString::implodeKeyVals(', ', $arrayValValToStr, '[<b>%s</b> = %s]');
@@ -781,7 +780,7 @@ class PrmMng
     /**
      *
      * @staticvar string $path
-     * @return string
+     * @return    string
      */
     protected static function getPersistanceFilePath()
     {

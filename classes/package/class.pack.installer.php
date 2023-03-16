@@ -210,7 +210,6 @@ HEADER;
         $ac->dbhost      = (strlen($this->Package->Installer->OptsDBHost) ? $this->Package->Installer->OptsDBHost : null);
         $ac->dbname      = (strlen($this->Package->Installer->OptsDBName) ? $this->Package->Installer->OptsDBName : null);
         $ac->dbuser      = (strlen($this->Package->Installer->OptsDBUser) ? $this->Package->Installer->OptsDBUser : null);
-        $ac->dbpass      = null;
 
         $ac->mu_mode        = DUP_MU::getMode();
         $ac->wp_tableprefix = $wpdb->base_prefix;
@@ -509,6 +508,7 @@ HEADER;
      *
      * @param string $slug      // plugin slug
      * @param array $plugin     // pluhin info from get_plugins function
+     *
      * @return array
      */
     protected static function getPluginArrayData($slug, $plugin)
@@ -567,6 +567,7 @@ HEADER;
      * return plugin formatted data from plugin info
      *
      * @param WP_Theme $theme instance of WP Core class WP_Theme. theme info from get_themes function
+     *
      * @return array
      */
     protected static function getThemeArrayData(WP_Theme $theme)
@@ -595,8 +596,8 @@ HEADER;
      * return list of extra files to att to archive
      *
      * @param bool $checkExists
+     *
      * @return array
-     * @throws Exception
      */
     private function getExtraFilesLists($checkExists = true)
     {
@@ -931,7 +932,6 @@ HEADER;
      * Clear out sensitive database connection information
      *
      * @param $temp_conf_ark_file_path Temp config file path
-     * @throws Exception
      */
     private static function cleanTempWPConfArkFilePath($temp_conf_ark_file_path)
     {

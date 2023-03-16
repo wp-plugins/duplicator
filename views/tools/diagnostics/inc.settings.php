@@ -5,15 +5,15 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     $dbvar_maxtime  = is_null($dbvar_maxtime)  ? __("unknow", 'duplicator') : $dbvar_maxtime;
     $dbvar_maxpacks = is_null($dbvar_maxpacks) ? __("unknow", 'duplicator') : $dbvar_maxpacks;
 
-    $abs_path         = duplicator_get_abs_path();
-    $space            = null;
-    $space_free       = null;
-    $perc             = 0;
-    if (function_exists('disk_total_space') && function_exists('disk_free_space')) {
-        $space            = @disk_total_space($abs_path);
-        $space_free       = @disk_free_space($abs_path);
-        $perc             = @round((100 / $space) * $space_free, 2);
-    }
+    $abs_path   = duplicator_get_abs_path();
+    $space      = null;
+    $space_free = null;
+    $perc       = 0;
+if (function_exists('disk_total_space') && function_exists('disk_free_space')) {
+    $space      = @disk_total_space($abs_path);
+    $space_free = @disk_free_space($abs_path);
+    $perc       = @round((100 / $space) * $space_free, 2);
+}
     $mysqldumpPath    = DUP_DB::getMySqlDumpPath();
     $mysqlDumpSupport = ($mysqldumpPath) ? $mysqldumpPath : 'Path Not Found';
 
@@ -45,10 +45,12 @@ SERVER SETTINGS -->
             <td><?php esc_html_e("Operating System", 'duplicator'); ?></td>
             <td><?php echo esc_html(PHP_OS) ?></td>
         </tr>
+        <?php if (function_exists('wp_timezone_string')) { ?>
         <tr>
             <td><?php esc_html_e("Timezone", 'duplicator'); ?></td>
             <td><?php echo esc_html(wp_timezone_string()); ?> &nbsp; <small><i>This is a <a href='options-general.php'>WordPress setting</a></i></small></td>
         </tr>
+        <?php } ?>
         <tr>
             <td><?php esc_html_e("Server Time", 'duplicator'); ?></td>
             <td><?php echo current_time("Y-m-d H:i:s"); ?></td>
@@ -220,16 +222,16 @@ SERVER SETTINGS -->
              <td><?php esc_html_e('Free space', 'hyper-cache'); ?></td>
              <td>
                  <?php if ($space == null || $space_free == null) : ?>
-                    <?php esc_html_e("Unable to calculate space on this server.", 'duplicator'); ?>
+                        <?php esc_html_e("Unable to calculate space on this server.", 'duplicator'); ?>
                     <br/><br/>
-                 <?php else: ?>
-                    <?php echo esc_html($perc);?>% -- <?php echo esc_html(DUP_Util::byteSize($space_free));?>
+                 <?php else : ?>
+                     <?php echo esc_html($perc);?>% -- <?php echo esc_html(DUP_Util::byteSize($space_free));?>
                     from <?php echo esc_html(DUP_Util::byteSize($space));?><br/>
                      <small>
                          <?php esc_html_e("Note: This value is the physical servers hard-drive allocation.", 'duplicator'); ?> <br/>
                          <?php esc_html_e("On shared hosts check your control panel for the 'TRUE' disk space quota value.", 'duplicator'); ?>
                      </small>
-                <?php endif; ?>
+                 <?php endif; ?>
              </td>
          </tr>
 

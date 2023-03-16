@@ -6,8 +6,7 @@
  * Standard: PSR-2
  *
  * @package SC\DUPX\DB
- * @link http://www.php-fig.org/psr/psr-2/
- *
+ * @link    http://www.php-fig.org/psr/psr-2/
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -79,7 +78,9 @@ class DUPX_DB
      * Modified version of https://developer.wordpress.org/reference/classes/wpdb/parse_db_host/
      *
      * @param string $host The DB_HOST setting to parse
-     * @return array|bool Array containing the host, the port, the socket and whether it is an IPv6 address, in that order. If $host couldn't be parsed, returns false
+     *
+     * @return array|bool Array containing the host, the port, the socket and whether it is an IPv6 address, in that order.
+     *                    If $host couldn't be parsed, returns false
      */
     public static function parseDBHost($host)
     {
@@ -175,6 +176,7 @@ class DUPX_DB
      * Get default character set
      *
      * @param \mysqli $dbh   A valid database link handle
+     *
      * @return string    Default charset
      */
     public static function getDefaultCharSet($dbh)
@@ -199,6 +201,7 @@ class DUPX_DB
      * Get Supported charset list
      *
      * @param \mysqli $dbh   A valid database link handle
+     *
      * @return array     Supported charset list
      */
     public static function getSupportedCharSetList($dbh)
@@ -222,6 +225,7 @@ class DUPX_DB
      * Get Supported collations along with character set
      *
      * @param \mysqli $dbh   A valid database link handle
+     *
      * @return array     Supported collation
      */
     public static function getSupportedCollates($dbh)
@@ -249,6 +253,7 @@ class DUPX_DB
      * Get Supported collations along with character set
      *
      * @param \mysqli $dbh   A valid database link handle
+     *
      * @return array     Supported collation
      */
     public static function getSupportedCollateList($dbh)
@@ -401,6 +406,7 @@ class DUPX_DB
      *
      * @param \mysqli $dbh Database connection handle
      * @param string $feature the feature to check for
+     *
      * @return bool
      */
     public static function hasAbility($dbh, $feature)
@@ -605,8 +611,8 @@ class DUPX_DB
     /**
      *
      * @param \mysqli $dbh     The resource given by mysqli_connect
+     *
      * @return bool|string // return false if current database isent selected or the string name
-     * @throws Exception
      */
     public static function getCurrentDatabase($dbh)
     {

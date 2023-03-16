@@ -39,7 +39,7 @@ final class ParamDescPlugins implements DescriptorInterface
             ParamFormPlugins::FORM_TYPE_PLUGINS_SELECT,
             array(
                 'default'          => array(),
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline')
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline')
             ),
             array(
                 'label'       => 'Plugins',
@@ -61,7 +61,7 @@ final class ParamDescPlugins implements DescriptorInterface
             ParamItem::TYPE_ARRAY_STRING,
             array(
             'default'          => array(),
-            'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline'),
+            'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline'),
             )
         );
 
@@ -70,7 +70,7 @@ final class ParamDescPlugins implements DescriptorInterface
             ParamItem::TYPE_ARRAY_STRING,
             array(
             'default'          => array(),
-            'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline'),
+            'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline'),
             )
         );
     }

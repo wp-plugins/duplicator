@@ -4,10 +4,10 @@
  * Validation object
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -34,6 +34,7 @@ abstract class DUPX_Validation_abstract_item
     /**
      *
      * @param bool $reset
+     *
      * @return int // test result level
      */
     public function test($reset = false)

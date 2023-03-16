@@ -25,8 +25,6 @@ use DUPX_ArchiveConfig;
  */
 final class ParamDescEngines implements DescriptorInterface
 {
-    const AUTO_SKIP_PATH_REPLACE_LIST = ['', '/html'];
-
     /**
      * Init params
      *
@@ -73,7 +71,8 @@ final class ParamDescEngines implements DescriptorInterface
             },
             // Temporarly diabled for inital release 1.5
             //            'proFlagTitle'   => 'Upgrade Features',
-            //            'proFlag'        => 'Enhance the install experience with custom extraction modes.  When performing an overwrite install process users can '
+            //            'proFlag'        => 'Enhance the install experience with custom extraction modes.
+            // When performing an overwrite install process users can '
             //                . 'automate and customize that files they need to be installed.'
             )
         );
@@ -266,7 +265,7 @@ final class ParamDescEngines implements DescriptorInterface
             ParamForm::TYPE_BOOL,
             ParamForm::FORM_TYPE_CHECKBOX,
             array(
-                'default' => in_array($oldHomePath, self::AUTO_SKIP_PATH_REPLACE_LIST)
+                'default' => in_array($oldHomePath, array('', '/html'))
             ),
             array(
                 'label' => 'Skip Path Replace:',

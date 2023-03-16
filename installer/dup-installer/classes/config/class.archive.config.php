@@ -4,10 +4,10 @@
  * Class used to control values about the package meta data
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\ArchiveConfig
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -16,7 +16,6 @@ use Duplicator\Installer\Utils\Log\Log;
 use Duplicator\Installer\Core\Params\PrmMng;
 use Duplicator\Libs\Snap\SnapIO;
 use Duplicator\Libs\Snap\SnapURL;
-use Duplicator\Libs\Snap\SnapUtil;
 use Duplicator\Libs\WpConfig\WPConfigTransformer;
 
 /**
@@ -26,7 +25,8 @@ class DUPX_ArchiveConfig
 {
     const NOTICE_ID_PARAM_EMPTY = 'param_empty_to_validate';
 
-    //READ-ONLY: COMPARE VALUES
+    // READ-ONLY: COMPARE VALUES
+    public $dup_type;
     public $created;
     public $version_dup;
     public $version_wp;
@@ -37,7 +37,7 @@ class DUPX_ArchiveConfig
     public $fileInfo;
     public $dbInfo;
     public $wpInfo;
-    //GENERAL
+    // GENERAL
     public $secure_on;
     public $secure_pass;
     public $installer_base_name   = '';
@@ -54,14 +54,34 @@ class DUPX_ArchiveConfig
     //MULTISITE
     public $mu_mode;
     public $mu_generation;
+    /** @var mixed[] */
     public $subsites     = array();
-    public $main_site_id = null;
+    public $main_site_id = 1;
     public $mu_is_filtered;
     public $mu_siteadmins = array();
     //LICENSING
-    public $license_limit;
+    /** @var int<0, max> */
+    public $license_limit = 0;
+    /** @var int ENUM LICENSE TYPE */
+    public $license_type = 0;
     //PARAMS
     public $overwriteInstallerParams = array();
+    /** @var ?string */
+    public $dbhost = null;
+    /** @var ?string */
+    public $dbname = null;
+    /** @var ?string */
+    public $dbuser = null;
+    /** @var object */
+    public $brand = null;
+    /** @var ?string */
+    public $cpnl_host;
+    /** @var ?string */
+    public $cpnl_user;
+    /** @var ?string */
+    public $cpnl_pass;
+    /** @var ?string */
+    public $cpnl_enable;
 
     /** @var self */
     private static $instance = null;
@@ -119,6 +139,7 @@ class DUPX_ArchiveConfig
     /**
      *
      * @param string $define
+     *
      * @return bool             // return true if define value exists
      */
     public function defineValueExists($define)
@@ -139,6 +160,7 @@ class DUPX_ArchiveConfig
      *
      * @param string $define
      * @param array $default
+     *
      * @return array
      */
     public function getDefineArrayValue($define, $default = array(
@@ -159,6 +181,7 @@ class DUPX_ArchiveConfig
      *
      * @param string $define
      * @param mixed $default
+     *
      * @return mixed
      */
     public function getDefineValue($define, $default = false)
@@ -176,6 +199,7 @@ class DUPX_ArchiveConfig
      *
      * @param string $define
      * @param mixed $default
+     *
      * @return mixed
      */
     public function getWpConfigDefineValue($define, $default = false)
@@ -201,6 +225,7 @@ class DUPX_ArchiveConfig
     /**
      *
      * @param string $key
+     *
      * @return boolean
      */
     public function realValueExists($key)
@@ -213,6 +238,7 @@ class DUPX_ArchiveConfig
      *
      * @param string $key
      * @param mixed $default
+     *
      * @return mixed
      */
     public function getRealValue($key, $default = false)
@@ -407,6 +433,7 @@ class DUPX_ArchiveConfig
      * get relative path in archive of wordpress main paths
      *
      * @param string $pathKey (abs,home,plugins ...)
+     *
      * @return string
      */
     public function getRelativePathsInArchive($pathKey = null)
@@ -435,6 +462,7 @@ class DUPX_ArchiveConfig
      *
      * @param string $path
      * @param string|string[] $pathKeys
+     *
      * @return boolean
      */
     public function isChildOfArchivePath($path, $pathKeys = array())
@@ -463,7 +491,7 @@ class DUPX_ArchiveConfig
     /**
      *
      * @staticvar string|bool $relativePath return false if PARAM_PATH_MUPLUGINS_NEW isn't a sub path of PARAM_PATH_NEW
-     * @return string
+     * @return    string
      */
     public function getRelativeMuPlugins()
     {
@@ -481,11 +509,9 @@ class DUPX_ArchiveConfig
      * return the mapping paths from relative path of archive zip and target folder
      * if exist only one entry return the target folter string
      *
-     * @staticvar string|array $pathsMapping
      * @param bool $reset // if true recalculater path mappintg
-     * @return string|array
      *
-     * @throws Exception
+     * @return string|array
      */
     public function getPathsMapping($reset = false)
     {

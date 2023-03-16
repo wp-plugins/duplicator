@@ -222,7 +222,8 @@ two options you can use to perform the database setup:
             <br/><br/>
 
             <b>Skip Database Extraction</b><br/>
-            This option requires that you manually run your own SQL import to an existing database before running the installer. When this action is selected the
+            This option requires that you manually run your own SQL import to an existing database before running the installer. 
+            When this action is selected the
             dup-database__[hash].sql file found inside the dup-installer folder of the archive.zip file will NOT be processed. The database you're connecting to
             should already be a valid WordPress installed database.  This option is viable when you need to perform custom SQL work or advanced installs.
             <br/><br/>
@@ -258,8 +259,11 @@ two options you can use to perform the database setup:
     </tr>
     <tr>
         <td class="col-opt">User</td>
-        <td>The name of MySQL/MariaDB database server user. This is a special account that has privileges to access a database and can read from or write to that database.
-            <i>This is <b>not</b> the WordPress administrator account</i>.</td>
+        <td>
+            The name of MySQL/MariaDB database server user. 
+            This is a special account that has privileges to access a database and can read from or write to that database.
+            <i>This is <b>not</b> the WordPress administrator account</i>.
+        </td>
     </tr>
     <tr>
         <td class="col-opt">Password</td>

@@ -42,7 +42,7 @@ final class ParamDescSecurity implements DescriptorInterface
             array(
                 'persistence'      => false,
                 'default'          => null,
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline')
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewline')
             ),
             array(
                 'label'    => 'Password:',
@@ -67,7 +67,7 @@ final class ParamDescSecurity implements DescriptorInterface
             array(
                 'persistence'      => false,
                 'default'          => null,
-                'sanitizeCallback' => array('\\Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
+                'sanitizeCallback' => array('Duplicator\\Libs\\Snap\\SnapUtil', 'sanitizeNSCharsNewlineTrim')
             ),
             array(
                 'label' => 'Archive File Name:',

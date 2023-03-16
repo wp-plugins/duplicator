@@ -2,9 +2,8 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;
@@ -14,10 +13,10 @@ use Exception;
 
 class SnapLog
 {
-    public static $logFilepath      = null;
-    public static $logHandle        = null;
-    private static $profileLogArray = null;
-    private static $prevTS          = -1;
+    /** @var ?string */
+    public static $logFilepath = null;
+    /** @var ?resource */
+    public static $logHandle = null;
 
     /**
      * Init log file
@@ -29,6 +28,25 @@ class SnapLog
     public static function init($logFilepath)
     {
         self::$logFilepath = $logFilepath;
+    }
+
+    /**
+     * write in PHP error log with DUP prefix
+     *
+     * @param string $message error message
+     * @param int    $type    error type
+     *
+     * @return bool true on success or false on failure.
+     *
+     * @link https://php.net/manual/en/function.error-log.php
+     */
+    public static function phpErr($message, $type = 0)
+    {
+        if (function_exists('error_log')) {
+            return error_log('DUP:' . $message, $type);
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -66,9 +84,9 @@ class SnapLog
     /**
      * Write in log file
      *
-     * @param string        $s                       string to write
-     * @param boolean       $flush                   if true flush log file
-     * @param null|callback $callingFunctionOverride @deprecated 4.0.4 not used
+     * @param string    $s                       string to write
+     * @param boolean   $flush                   if true flush log file
+     * @param ?callable $callingFunctionOverride @deprecated 4.0.4 not used
      *
      * @return void
      */
@@ -107,48 +125,6 @@ class SnapLog
     }
 
     /**
-     * Init profiling
-     *
-     * @return void
-     */
-    public static function initProfiling()
-    {
-        self::$profileLogArray = array();
-    }
-
-    /**
-     * Write profile to log
-     *
-     * @param string $s profile key
-     *
-     * @return void
-     */
-    public static function writeToPLog($s)
-    {
-        throw new Exception('not implemented');
-        $currentTime = microtime(true);
-
-        if (array_key_exists($s, self::$profileLogArray)) {
-            $dSame = $currentTime - self::$profileLogArray[$s];
-            $dSame = number_format($dSame, 7);
-        } else {
-            $dSame = 'N/A';
-        }
-
-        if (self::$prevTS != -1) {
-            $dPrev = $currentTime - self::$prevTS;
-            $dPrev = number_format($dPrev, 7);
-        } else {
-            $dPrev = 'N/A';
-        }
-
-        self::$profileLogArray[$s] = $currentTime;
-        self::$prevTS              = $currentTime;
-
-        self::log("  {$dPrev}  :  {$dSame}  :  {$currentTime}  :     {$s}");
-    }
-
-    /**
      * Get formatted string fo value
      *
      * @param mixed $var           value to convert to string
@@ -179,6 +155,55 @@ class SnapLog
             default:
                 return gettype($var);
         }
+    }
+
+    /**
+     * Get backtrace of calling line
+     *
+     * @param string $message message
+     *
+     * @return string
+     */
+    public static function getCurrentbacktrace($message = 'getCurrentLineTrace')
+    {
+        $callers = debug_backtrace();
+        array_shift($callers);
+        $file    = $callers[0]['file'];
+        $line    = $callers[0]['line'];
+        $result  = 'BACKTRACE: ' . $message . "\n";
+        $result .= "\t[" . $file . ':' . $line . "]\n";
+        $result .= self::traceToString($callers, 1, true);
+        return $result;
+    }
+
+    /**
+     * Get trace string
+     *
+     * @param mixed[] $callers   result of debug_backtrace
+     * @param int     $fromLevel level to start
+     * @param bool    $tab       if true apply tab foreach line
+     *
+     * @return string
+     */
+    public static function traceToString($callers, $fromLevel = 0, $tab = false)
+    {
+        $result = '';
+        for ($i = $fromLevel; $i < count($callers); $i++) {
+            $result .= ($tab ? "\t" : '');
+            $trace   = $callers[$i];
+            if (!empty($trace['class'])) {
+                $result .= str_pad('TRACE[' . $i . '] CLASS___: ' . $trace['class'] . $trace['type'] . $trace['function'], 45, ' ');
+            } else {
+                $result .= str_pad('TRACE[' . $i . '] FUNCTION: ' . $trace['function'], 45, ' ');
+            }
+            if (isset($trace['file'])) {
+                $result .= ' FILE: ' . $trace['file'] . '[' . $trace['line'] . ']';
+            } else {
+                $result .= ' NO FILE';
+            }
+            $result .= "\n";
+        }
+        return $result;
     }
 
     /**

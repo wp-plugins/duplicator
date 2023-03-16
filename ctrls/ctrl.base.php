@@ -21,7 +21,7 @@ final class DUP_CTRL_Status
 /**
  * Base class for all controllers
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/ctrls
  */
 class DUP_CTRL_Base
@@ -43,7 +43,7 @@ class DUP_CTRL_Base
 /**
  * A class structer used to report on controller methods
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/ctrls
  */
 class DUP_CTRL_Report
@@ -61,12 +61,12 @@ class DUP_CTRL_Report
  * report on the overall status of the controller method
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/ctrls
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 class DUP_CTRL_Result
 {

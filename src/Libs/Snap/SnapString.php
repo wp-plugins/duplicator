@@ -2,9 +2,8 @@
 
 /**
  *
- * @package Duplicator
- * @copyright (c) 2021, Snapcreek LLC
- *
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
  */
 
 namespace Duplicator\Libs\Snap;
@@ -87,9 +86,9 @@ class SnapString
     /**
      * Implode array key values to a string
      *
-     * @param string $glue   separator
-     * @param array  $pieces array fo implode
-     * @param string $format format
+     * @param string  $glue   separator
+     * @param mixed[] $pieces array fo implode
+     * @param string  $format format
      *
      * @return string
      */
@@ -135,5 +134,20 @@ class SnapString
     public static function isHTML($string)
     {
         return ($string != strip_tags($string));
+    }
+
+    /**
+     * Safe way to get number of characters
+     *
+     * @param ?string $string input string
+     *
+     * @return int
+     */
+    public static function stringLength($string)
+    {
+        if (!isset($string) || $string == "") { // null == "" is also true
+            return 0;
+        }
+        return strlen($string);
     }
 }

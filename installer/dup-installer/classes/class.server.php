@@ -42,6 +42,7 @@ class DUPX_Server
      *
      * @param string $checkPath Path to check
      * @param array $pathsArr check against
+     *
      * @return boolean
      */
     private static function isPathPrefixedWithArrayPath($checkPath, $pathsArr)

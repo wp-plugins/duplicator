@@ -9,13 +9,15 @@ class DUPX_CSRF
 {
     private static $packagHash = null;
     private static $mainFolder = null;
-/**
+    /**
      * Session var name prefix
+     *
      * @var string
      */
     public static $prefix = '_DUPX_CSRF';
-/**
+    /**
      * Stores all CSRF values: Key as CSRF name and Val as CRF value
+     *
      * @var array
      */
     private static $CSRFVars = null;
@@ -62,9 +64,9 @@ class DUPX_CSRF
     /**
      * Generate DUPX_CSRF value for form
      *
-     * @param   string  $form    // Form name as session key
+     * @param string  $form    // Form name as session key
      *
-     * @return  string      // token
+     * @return string      // token
      */
     public static function generate($form = null)
     {
@@ -83,9 +85,10 @@ class DUPX_CSRF
     /**
      * Check DUPX_CSRF value of form
      *
-     * @param   string  $token  - Token
-     * @param   string  $form   - Form name as session key
-     * @return  boolean
+     * @param string  $token  - Token
+     * @param string  $form   - Form name as session key
+     *
+     * @return boolean
      */
     public static function check($token, $form = null)
     {
@@ -102,9 +105,10 @@ class DUPX_CSRF
         return false;
     }
 
-    /** Generate token
+    /**
+     * Generate token
      *
-     * @return  string
+     * @return string
      */
     protected static function token()
     {
@@ -114,9 +118,10 @@ class DUPX_CSRF
         return substr($charid, 0, 8) . substr($charid, 8, 4) . substr($charid, 12, 4) . substr($charid, 16, 4) . substr($charid, 20, 12);
     }
 
-    /** Returns "digital fingerprint" of user
+    /**
+     * Returns "digital fingerprint" of user
      *
-     * @return  string  - MD5 hashed data
+     * @return string  - MD5 hashed data
      */
     protected static function fingerprint()
     {
@@ -127,6 +132,7 @@ class DUPX_CSRF
      * Generate CSRF Key name
      *
      * @param string $form the form name for which CSRF key need to generate
+     *
      * @return string CSRF key
      */
     private static function getKeyName($form)
@@ -194,6 +200,7 @@ class DUPX_CSRF
      * Stores all CSRF vars
      *
      * @param array $CSRFVars holds all CSRF key val
+     *
      * @return void
      */
     private static function saveCSRFVars($CSRFVars)

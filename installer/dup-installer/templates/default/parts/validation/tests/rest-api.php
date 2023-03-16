@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -27,7 +26,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 <div class="sub-title">DETAILS</div>
 <p>
-    This test makes sure the <a href="https://developer.wordpress.org/rest-api/" target="_blank">WordPress REST API</a> works properly, which is necessary to create new subsites.
+    This test makes sure the <a href="https://developer.wordpress.org/rest-api/" target="_blank">
+    WordPress REST API</a> works properly, which is necessary to create new subsites.
+    </a>
 </p>
 
 <div class="sub-title">TROUBLESHOOT</div>
@@ -37,18 +38,27 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 <ul>
     <li>
-        <b>The rest API is disabled on WordPress.</b> To test whether the REST API works properly please visit the <a href="<?php echo DUPX_U::esc_attr($restUrl) ?>" target="_blank">following address</a>
-         and make sure you get a valid JSON output. In case you don't get a JSON output, please make sure that you have permalinks enabled. Under "Settings" > "Permalinks" the
+        <b>The rest API is disabled on WordPress.</b> 
+        To test whether the REST API works properly please visit the <a href="<?php echo DUPX_U::esc_attr($restUrl) ?>" target="_blank">
+            following address
+        </a>
+        and make sure you get a valid JSON output. 
+        In case you don't get a JSON output, please make sure that you have permalinks enabled. Under "Settings" > "Permalinks" the
         setting should not be set to "Plain".
     </li>
     <li>
-        <b>SSL certificates are expired or invalid.</b> If this is the case please get in touch with your hosting provider to get everything working and up-to-date.
+        <b>SSL certificates are expired or invalid.</b> 
+        If this is the case please get in touch with your hosting provider to get everything working and up-to-date.
     </li>
     <li>
-        <b>Basic Auth Authentication is enabled.</b> If you have basic auth enabled, please go to <i>Duplicator ❯ Settings ❯ Packages ❯ Advanced Settings</i> and
+        <b>Basic Auth Authentication is enabled.</b> If you have basic auth enabled, please go to 
+        <i>Duplicator ❯ Settings ❯ Packages ❯ Advanced Settings</i> and
         set the "Basic Auth" option to enabled and enter the username and password. After saving the settings restart the import process.
     </li>
     <li>
-        For more information on the topic please check out the <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/" target="_blank"><b>REST API FAQ</b></a>.
+        For more information on the topic please check out the 
+        <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/" target="_blank">
+            <b>REST API FAQ</b>
+        </a>.
     </li>
 </ul>

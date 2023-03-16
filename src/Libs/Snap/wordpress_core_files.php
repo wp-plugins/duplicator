@@ -3,7 +3,7 @@
 /**
  * Core wordpress file list
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2022, Snap Creek LLC
  *
  * >>>>>> THIS FILE IS GENERATED WITH A SCRIPT, DON'T EDIT IT DIRECTLY <<<<<

@@ -4,11 +4,11 @@
  * Auloader calsses
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2021, Snapcreek LLC
- *
  */
 
 namespace Duplicator\Installer\Utils;
@@ -94,7 +94,7 @@ final class Autoloader
     /**
      *
      * @staticvar [string] $mapping
-     * @return [string]
+     * @return    [string]
      */
     protected static function getNamespacesMapping()
     {

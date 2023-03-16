@@ -6,8 +6,7 @@
  * Standard: PSR-2
  *
  * @package SC\DUPX\DB
- * @link http://www.php-fig.org/psr/psr-2/
- *
+ * @link    http://www.php-fig.org/psr/psr-2/
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -18,7 +17,6 @@ use Duplicator\Installer\Core\Params\PrmMng;
  * class for GoDaddy managed hosting
  *
  * @todo not yet implemneted
- *
  */
 class DUPX_GoDaddy_Host implements DUPX_Host_interface
 {

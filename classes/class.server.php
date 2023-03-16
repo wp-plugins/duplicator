@@ -9,12 +9,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . 'classes/utilities/class.u.php');
  * Used to get various pieces of information about the server environment
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/utilities
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 
 class DUP_Server
@@ -144,6 +144,7 @@ class DUP_Server
      *
      * @param string $testStatus Either it is Pass or Fail
      * @param string $errorMessage Error message which should be logged
+     *
      * @return void
      */
     private static function logRequirementFail($testStatus, $errorMessage)
@@ -226,7 +227,7 @@ class DUP_Server
         $files['wp-config.php']     = file_exists($proper_wp_config_file_path);
         self::logCheckFalse($files['wp-config.php'], 'The wp-config.php file doesn\'t exist on the ' . $proper_wp_config_file_path);
 
-        /** searching wp-config in working word press is not worthy
+        /* searching wp-config in working word press is not worthy
          * if this script is executing that means wp-config.php exists :)
          * we need to know the core folders and files added by the user at this point
          * retaining old logic as else for the case if its used some where else
@@ -268,6 +269,7 @@ class DUP_Server
      *
      * @param boolean $check Either it is true or false
      * @param string $errorMessage Error message which should be logged when check is false
+     *
      * @return void
      */
     private static function logCheckFalse($check, $errorMessage)

@@ -5,12 +5,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * Gets the view state of UI elements to remember its viewable state
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/ui
- * @copyright (c) 2017, Snapcreek LLC
- *
+ * @copyright  (c) 2017, Snapcreek LLC
  */
 
 // Exit if accessed directly
@@ -26,7 +26,7 @@ class DUP_UI_ViewState
      * @var string
      */
     private static $optionsViewStateKey = 'duplicator_ui_view_state';
-/**
+    /**
      * Save the view state of UI elements
      *
      * @param string $key A unique key to define the UI element
@@ -55,6 +55,7 @@ class DUP_UI_ViewState
 
     /**
      * Sets all the values from the settings array
+     *
      * @param array $view_state states
      *
      * @return boolean Returns whether updated or not
@@ -68,6 +69,7 @@ class DUP_UI_ViewState
      * Return the value of the of view state item
      *
      * @param type $searchKey The key to search on
+     *
      * @return string Returns the value of the key searched or null if key is not found
      */
     public static function getValue($searchKey)

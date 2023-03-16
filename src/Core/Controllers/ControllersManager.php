@@ -3,9 +3,8 @@
 /**
  * Singlethon class that manages the various controllers of the administration of wordpress
  *
- * @package Duplicator
+ * @package   Duplicator
  * @copyright (c) 2021, Snapcreek LLC
- *
  */
 
 namespace Duplicator\Core\Controllers;
@@ -14,6 +13,18 @@ use Duplicator\Libs\Snap\SnapUtil;
 
 final class ControllersManager
 {
+    const MAIN_MENU_SLUG         = 'duplicator';
+    const PACKAGES_SUBMENU_SLUG  = 'duplicator';
+    const IMPORT_SUBMENU_SLUG    = 'duplicator-import';
+    const SCHEDULES_SUBMENU_SLUG = 'duplicator-schedules';
+    const STORAGE_SUBMENU_SLUG   = 'duplicator-storage';
+    const ABOUT_US_SUBMENU_SLUG  = 'duplicator-about-us';
+    const TEMPLATES_SUBMENU_SLUG = 'duplicator-templates';
+    const TOOLS_SUBMENU_SLUG     = 'duplicator-tools';
+    const SETTINGS_SUBMENU_SLUG  = 'duplicator-settings';
+    const DEBUG_SUBMENU_SLUG     = 'duplicator-debug';
+    const UPSELL_SUBMENU_SLUG    = 'duplicator-pro';
+
     const QUERY_STRING_MENU_KEY_L1     = 'page';
     const QUERY_STRING_MENU_KEY_L2     = 'tab';
     const QUERY_STRING_MENU_KEY_L3     = 'subtab';
@@ -26,8 +37,8 @@ final class ControllersManager
      */
     public static function getMenuLevels()
     {
-        $result                                 = array();
-        $exChars                                = '-_';
+        $result  = array();
+        $exChars = '-_';
         $result[self::QUERY_STRING_MENU_KEY_L1] = SnapUtil::sanitizeStrictInput(
             SnapUtil::INPUT_REQUEST,
             self::QUERY_STRING_MENU_KEY_L1,
@@ -61,11 +72,17 @@ final class ControllersManager
         }
 
         switch (SnapUtil::sanitizeStrictInput(SnapUtil::INPUT_REQUEST, 'page', '', '-_ ')) {
-            case 'duplicator':
-            case 'duplicator-pro':
-            case 'duplicator-settings':
-            case 'duplicator-tools':
-            case 'duplicator-help':
+            case self::MAIN_MENU_SLUG:
+            case self::PACKAGES_SUBMENU_SLUG:
+            case self::IMPORT_SUBMENU_SLUG:
+            case self::SCHEDULES_SUBMENU_SLUG:
+            case self::STORAGE_SUBMENU_SLUG:
+            case self::ABOUT_US_SUBMENU_SLUG:
+            case self::TEMPLATES_SUBMENU_SLUG:
+            case self::TOOLS_SUBMENU_SLUG:
+            case self::SETTINGS_SUBMENU_SLUG:
+            case self::DEBUG_SUBMENU_SLUG:
+            case self::UPSELL_SUBMENU_SLUG:
                 return true;
             default:
                 return false;
@@ -168,5 +185,43 @@ final class ControllersManager
             }
         }
         return $url . '?' . http_build_query($data);
+    }
+
+    /**
+     * Return create package link
+     *
+     * @return string
+     */
+    public static function getPackageBuildUrl()
+    {
+        return self::getMenuLink(
+            self::PACKAGES_SUBMENU_SLUG,
+            'new1',
+            null,
+            array(
+                'inner_page' => 'new1',
+                '_wpnonce' => wp_create_nonce('new1-package')
+            )
+        );
+    }
+
+    /**
+     * Return package detail link
+     *
+     * @param int $packageId package id
+     *
+     * @return string
+     */
+    public static function getPackageDetailUrl($packageId)
+    {
+        return self::getMenuLink(
+            self::PACKAGES_SUBMENU_SLUG,
+            'detail',
+            null,
+            array(
+                'action' => 'detail',
+                'id'     => $packageId
+            )
+        );
     }
 }

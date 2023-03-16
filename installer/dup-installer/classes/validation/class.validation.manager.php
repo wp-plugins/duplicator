@@ -4,10 +4,10 @@
  * Validation object
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -22,6 +22,7 @@ require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.addon.
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.manual.extraction.php');
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.dbonly.iswordpress.php');
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.package.age.php');
+require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.package.size.php');
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.php.version.php');
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.open.basedir.php');
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.memory.limit.php');
@@ -105,7 +106,7 @@ class DUPX_Validation_manager
 
     private function __construct()
     {
-        /** GENERAL * */
+        /* GENERAL * */
         $this->tests[] = new DUPX_Validation_test_archive_check(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_importer_version(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_owrinstall(self::CAT_GENERAL);
@@ -115,6 +116,7 @@ class DUPX_Validation_manager
         $this->tests[] = new DUPX_Validation_test_manual_extraction(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_dbonly_iswordpress(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_package_age(self::CAT_GENERAL);
+        $this->tests[] = new DUPX_Validation_test_package_size(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_replace_paths(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_managed_supported(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_siteground(self::CAT_GENERAL);
@@ -122,7 +124,7 @@ class DUPX_Validation_manager
         $this->tests[] = new DUPX_Validation_test_wordfence(self::CAT_GENERAL);
         $this->tests[] = new DUPX_Validation_test_managed_tprefix(self::CAT_GENERAL);
 
-        /** PHP * */
+        /* PHP * */
         $this->tests[] = new DUPX_Validation_test_php_version(self::CAT_PHP);
         $this->tests[] = new DUPX_Validation_test_open_basedir(self::CAT_PHP);
         $this->tests[] = new DUPX_Validation_test_memory_limit(self::CAT_PHP);
@@ -131,12 +133,12 @@ class DUPX_Validation_manager
         $this->tests[] = new DUPX_Validation_test_tokenizer(self::CAT_PHP);
         $this->tests[] = new DUPX_Validation_test_timeout(self::CAT_PHP);
 
-        /** FILESYSTEM * */
+        /* FILESYSTEM * */
         $this->tests[] = new DUPX_Validation_test_disk_space(self::CAT_FILESYSTEM);
         $this->tests[] = new DUPX_Validation_test_iswritable(self::CAT_FILESYSTEM);
         $this->tests[] = new DUPX_Validation_test_iswritable_configs(self::CAT_FILESYSTEM);
 
-        /** DATABASE * */
+        /* DATABASE * */
         $this->tests[] = new DUPX_Validation_test_db_host_name(self::CAT_DATABASE);
         $this->tests[] = new DUPX_Validation_test_db_connection(self::CAT_DATABASE);
         $this->tests[] = new DUPX_Validation_test_db_version(self::CAT_DATABASE);
@@ -155,6 +157,7 @@ class DUPX_Validation_manager
         $this->tests[] = new DUPX_Validation_test_db_case_sensitive_tables(self::CAT_DATABASE);
         $this->tests[] = new DUPX_Validation_test_db_affected_tables(self::CAT_DATABASE);
         $this->tests[] = new DUPX_Validation_test_db_prefix_too_long(self::CAT_DATABASE);
+
         // after all database tests
         $this->tests[] = new DUPX_Validation_test_db_cleanup(self::CAT_DATABASE);
     }

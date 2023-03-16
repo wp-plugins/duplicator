@@ -7,8 +7,7 @@
  * Standard: PSR-2
  *
  * @package SC\DUPX\DB
- * @link http://www.php-fig.org/psr/psr-2/
- *
+ * @link    http://www.php-fig.org/psr/psr-2/
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -134,6 +133,7 @@ class DUPX_Custom_Host_Manager
      * return true if current identifier hostoing is active
      *
      * @param string $identifier
+     *
      * @return bool
      */
     public function isHosting($identifier)
@@ -167,6 +167,7 @@ class DUPX_Custom_Host_Manager
     /**
      *
      * @param type $identifier
+     *
      * @return boolean|DUPX_Host_interface
      */
     public function getHosting($identifier)
@@ -183,6 +184,7 @@ class DUPX_Custom_Host_Manager
      * This function must be removed in favor of right extraction mode will'be implemented
      *
      * @param string $extract_filename
+     *
      * @return boolean
      */
     public function skipWarningExtractionForManaged($extract_filename)

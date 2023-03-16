@@ -1,8 +1,6 @@
 <?php
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
-if (!defined('MAX_SITES_TO_DEFAULT_ENABLE_CORSS_SEARCH')) {
-    define('MAX_SITES_TO_DEFAULT_ENABLE_CORSS_SEARCH', 10);
-}
 
 ?>
 <!-- ============================================
@@ -91,7 +89,7 @@ $expandClass = $sectionId == $open_section ? 'open' : 'close';
                     <sup class="hlp-pro-lbl">Pro</sup>
                     This option enables the searching and replacing of subsite domains and paths that link to each other within a Multisite network.
                     Check this option if hyperlinks of at least one subsite point to another subsite.  Uncheck this option there if there are at least
-                    <?php echo MAX_SITES_TO_DEFAULT_ENABLE_CORSS_SEARCH ?>  subsites and no subsites hyperlinking to each other.
+                    <?php echo 10; ?>  subsites and no subsites hyperlinking to each other.
                     <br/>
                     <i>
                         Note: Checking this option in this scenario would unnecessarily load your server.  Check this option if you are unsure if
@@ -221,7 +219,9 @@ $expandClass = $sectionId == $open_section ? 'open' : 'close';
                 <td class="col-opt">Constants</td>
                 <td>
                     The wp-config tab contains the list of constants that can be modified directly by the installer.<br>
-                    See the <a href="https://wordpress.org/support/article/editing-wp-config-php/" target="_blank">WordPress documentation for more information</a>.
+                    See the <a href="https://wordpress.org/support/article/editing-wp-config-php/" target="_blank">
+                        WordPress documentation for more information
+                    </a>.
                 </td>
             </tr>
             <tr>

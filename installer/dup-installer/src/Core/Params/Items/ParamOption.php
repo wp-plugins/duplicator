@@ -4,10 +4,10 @@
  * option descriptor for select, radio, multiple checkbox ...
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 namespace Duplicator\Installer\Core\Params\Items;
@@ -46,6 +46,7 @@ class ParamOption
 
     /**
      * get current statis.
+     *
      * @return string
      */
     public function getStatus()

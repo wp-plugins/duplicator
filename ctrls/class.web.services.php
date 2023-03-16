@@ -43,7 +43,7 @@ class DUP_Web_Services
             }
             DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
-            /** Execute function * */
+            /* Execute function * */
             $error  = false;
             $result = array(
                 'data'    => array(),
@@ -55,11 +55,11 @@ class DUP_Web_Services
                 array('op' => '<', 'status' => DUP_PackageStatus::COMPLETE)
             ));
 
-            /** reset active package id * */
+            /* reset active package id * */
             DUP_Settings::Set('active_package_id', -1);
             DUP_Settings::Save();
 
-            /** Clean tmp folder * */
+            /* Clean tmp folder * */
             DUP_Package::not_active_files_tmp_cleanup();
 
             //throw new Exception('force error test');
@@ -68,10 +68,10 @@ class DUP_Web_Services
             $result['message'] = $e->getMessage();
         }
 
-        /** Intercept output * */
+        /* Intercept output * */
         $result['html'] = ob_get_clean();
 
-        /** check error and return json * */
+        /* check error and return json * */
         if ($error) {
             wp_send_json_error($result);
         } else {

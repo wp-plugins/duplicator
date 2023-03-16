@@ -4,9 +4,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * The base class for all filter types Directories/Files/Extentions
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/package
- *
  */
 
 // Exit if accessed directly
@@ -27,9 +26,8 @@ class DUP_Archive_Filter_Scope_Base
 /**
  * The filter types that belong to directories
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/package
- *
  */
 class DUP_Archive_Filter_Scope_Directory extends DUP_Archive_Filter_Scope_Base
 {
@@ -43,9 +41,8 @@ class DUP_Archive_Filter_Scope_Directory extends DUP_Archive_Filter_Scope_Base
 /**
  * The filter types that belong to files
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/package
- *
  */
 class DUP_Archive_Filter_Scope_File extends DUP_Archive_Filter_Scope_Directory
 {
@@ -57,9 +54,8 @@ class DUP_Archive_Filter_Scope_File extends DUP_Archive_Filter_Scope_Directory
  * The filter information object which store all information about the filtered
  * data that is gathered to the execution of a scan process
  *
- * @package Duplicator
+ * @package    Duplicator
  * @subpackage classes/package
- *
  */
 class DUP_Archive_Filter_Info
 {

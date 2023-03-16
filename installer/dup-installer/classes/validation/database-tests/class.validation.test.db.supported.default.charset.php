@@ -4,10 +4,10 @@
  * Validation object
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
  * @package SC\DUPX\U
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -38,9 +38,6 @@ class DUPX_Validation_test_db_supported_default_charset extends DUPX_Validation_
             } elseif (strlen($this->sourceCollate) > 0 && !in_array($this->sourceCollate, $data[$this->sourceCharset]['collations'])) {
                 $this->collateOk = false;
             }
-
-            $this->usedCharset = $dbFuncs->getRealCharsetByParam();
-            $this->usedCollate = $dbFuncs->getRealCollateByParam();
 
             if ($this->charsetOk && $this->collateOk) {
                 return self::LV_PASS;

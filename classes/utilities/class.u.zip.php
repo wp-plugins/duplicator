@@ -5,11 +5,12 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * Utility class for zipping up content
  *
  * Standard: PSR-2
+ *
  * @link http://www.php-fig.org/psr/psr-2
  *
  * @subpackage classes/utilities
- * @copyright (c) 2017, Snapcreek LLC
- * @license https://opensource.org/licenses/GPL-3.0 GNU Public License
+ * @copyright  (c) 2017, Snapcreek LLC
+ * @license    https://opensource.org/licenses/GPL-3.0 GNU Public License
  */
 
 // Exit if accessed directly

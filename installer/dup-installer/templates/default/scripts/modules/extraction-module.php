@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -33,7 +32,7 @@ $processedStr  = DUP_Extraction::getInitialFileProcessedString();
 
         let retryAttemp = 0;
 
-        DUPX.StandarJsonAjaxWrapper(
+        DUPX.StandardJsonAjaxWrapper(
                 extractionAction,
                 extractionToken,
                 {},

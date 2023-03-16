@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -47,11 +46,11 @@ $display       = DUPX_InstallerState::getInstance()->isInstType(
                     <?php
                         echo $overwriteMode ? '<i class="fas fa-exclamation-triangle"></i>&nbsp;' : '';
                         echo DUPX_InstallerState::getInstance()->getHtmlModeHeader();
-                        if ($overwriteMode) {
-                            echo '<div class="overwrite">
+                    if ($overwriteMode) {
+                        echo '<div class="overwrite">
                                      This will clear all site data and the current archive will be installed. This process cannot be undone!
                                   </div>';
-                        }
+                    }
                     ?>
                 </td>
             </tr>

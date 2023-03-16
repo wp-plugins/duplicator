@@ -3,7 +3,6 @@
 /**
  *
  * @package templates/default
- *
  */
 
 use Duplicator\Libs\Snap\SnapJson;
@@ -25,7 +24,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
                 this.content = null;
             }
 
-            DUPX.StandarJsonAjaxWrapper(
+            DUPX.StandardJsonAjaxWrapper(
                 confirmDialogAction,
                 confirmDialogToken,
                 {},
