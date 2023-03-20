@@ -150,7 +150,7 @@ final class DUPX_Ctrl_ajax
 
         switch ($action) {
             case self::ACTION_PWD_CHECK:
-                DUPX_Ctrl_Params::setParamsAfterValidation();
+                $actionData = DUPX_Security::getInstance()->securityCheck();
                 break;
             case self::ACTION_EMAIL_SUBSCRIPTION:
                 $actionData = DUPX_Ctrl_Params::setParamEmail();
