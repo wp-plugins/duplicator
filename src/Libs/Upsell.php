@@ -26,7 +26,7 @@ class Upsell
             'utm_campaign' => 'liteplugin'
         );
 
-        return 'https://snapcreek.com/lite-upgrade/?' . http_build_query($utmData);
+        return 'https://duplicator.com/lite-upgrade/?' . http_build_query($utmData);
     }
 
     /**
@@ -80,7 +80,8 @@ class Upsell
                 __('Drag & Drop Installs', 'duplicator'),
                 __('Larger Site Support', 'duplicator'),
                 __('Multisite Network Support', 'duplicator'),
-                __('Email Alerts', 'duplicator')
+                __('Email Alerts', 'duplicator'),
+                __('Advanced Backup Permissions', 'duplicator')
             );
         } else {
             return array(
@@ -98,6 +99,7 @@ class Upsell
                 'Larger Site Support',
                 'Multisite Network Support',
                 'Email Alerts',
+                'Advanced Backup Permissions'
             );
         }
     }
@@ -128,7 +130,8 @@ class Upsell
                 __('Regenerate SALTS', 'duplicator'),
                 __('Multisite Network', 'duplicator'),
                 __('Email Alerts', 'duplicator'),
-                __('Custom Search & Replace', 'duplicator')
+                __('Custom Search & Replace', 'duplicator'),
+                __('Advanced Backup Permissions', 'duplicator')
             );
         } else {
             return array(
@@ -150,6 +153,7 @@ class Upsell
                 'Multisite Network',
                 'Email Alerts',
                 'Custom Search & Replace',
+                'Advanced Backup Permissions',
             );
         }
     }

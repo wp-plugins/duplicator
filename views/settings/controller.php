@@ -1,6 +1,8 @@
 <?php
 
 use Duplicator\Core\Controllers\ControllersManager;
+use Duplicator\Core\Bootstrap;
+use Duplicator\Core\Views\TplMng;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
@@ -41,6 +43,12 @@ $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) :
             <?php esc_html_e('Storage', 'duplicator'); ?>
         </a>
         <a 
+            href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'access')); ?> " 
+            class="nav-tab <?php echo ($current_tab == 'access') ? 'nav-tab-active' : '' ?>"
+        > 
+            <?php esc_html_e('Access', 'duplicator'); ?>
+        </a>
+        <a 
             href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'license')); ?> " 
             class="nav-tab <?php echo ($current_tab == 'license') ? 'nav-tab-active' : '' ?>"
         > 
@@ -58,6 +66,10 @@ $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) :
             break;
         case 'storage':
             include(DUPLICATOR_PLUGIN_PATH . "views/settings/storage.php");
+            break;
+        case 'access':
+            Bootstrap::mocksStyles();
+            TplMng::getInstance()->render("mocks/settings/access/capabilities");
             break;
         case 'license':
             include(DUPLICATOR_PLUGIN_PATH . "views/settings/license.php");

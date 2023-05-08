@@ -255,7 +255,7 @@ TOOL BAR:STEPS -->
                             <!-- CLASSIC -->
                             <i class="far fa-save fa-sm fa-fw"></i>
                             <a 
-                                href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording2&utm_campaign=duplicator_free#quick-040-q" 
+                                href="https://duplicator.com/knowledge-base/classic-install/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording2&utm_campaign=duplicator_free" 
                                 target="_blank"
                             >
                                 <?php esc_html_e('Install to Empty Directory ', 'duplicator'); ?>
@@ -274,7 +274,7 @@ TOOL BAR:STEPS -->
                             <!-- OVERWRITE -->
                             <i class="far fa-window-close fa-sm fa-fw"></i>
                             <a 
-                                href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording2&utm_campaign=duplicator_free#quick-043-q" 
+                                href="https://duplicator.com/knowledge-base/overwrite-install//?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording2&utm_campaign=duplicator_free" 
                                 target="_blank"
                             >
                                 <?php esc_html_e('Overwrite Site', 'duplicator'); ?>
@@ -291,7 +291,7 @@ TOOL BAR:STEPS -->
                             <!-- IMPORT -->
                             <i class="fas fa-arrow-alt-circle-down fa-sm fa-fw"></i>
                             <a 
-                                href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording2&utm_campaign=duplicator_free#quick-045-q" 
+                                href="https://duplicator.com/knowledge-base/import-install/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording2&utm_campaign=duplicator_free" 
                                 target="_blank"
                             >
                                 <?php esc_html_e('Import Archive and Overwrite Site', 'duplicator'); ?>

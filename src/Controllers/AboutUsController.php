@@ -183,6 +183,14 @@ class AboutUsController
                 'pro_text' => __('Protect and secure the archive file with industry-standard AES-256 encryption!', 'duplicator')
             ),
             array(
+                'title' => __('Advanced Backup Permissions', 'duplicator'),
+                'lite_enabled' => self::LITE_ENABLED_NONE,
+                'pro_text' => __(
+                    'Enjoy granular access control to ensure only authorized users can perform these critical functions.',
+                    'duplicator'
+                )
+            ),
+            array(
                 'title' => __('Enhanced Features', 'duplicator'),
                 'lite_enabled' => self::LITE_ENABLED_NONE,
                 'pro_text' => __(

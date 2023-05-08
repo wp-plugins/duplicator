@@ -160,7 +160,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                             <div class="dup-quick-start" <?php echo ($is_mu) ? 'style="display:none"' : ''; ?>>
                                 <b><?php esc_html_e("New to Duplicator?", 'duplicator'); ?></b><br/>
                                 <a 
-                                    href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty1&utm_campaign=quick_start" 
+                                    href="https://duplicator.com/knowledge-base-article-categories/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty1&utm_campaign=quick_start" 
                                     target="_blank">
                                     <?php esc_html_e("Visit the 'Quick Start' guide!", 'duplicator'); ?>
                                 </a>

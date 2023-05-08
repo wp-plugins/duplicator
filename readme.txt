@@ -2,7 +2,7 @@
 Contributors: seedprod, smub
 Tags: migration, backup, duplicate, move, migrate, restore, transfer, clone, automate, copy site, migrator
 Requires at least: 4.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.3.8
 Stable tag: 1.5.3.1
 License: GPLv2
@@ -12,10 +12,10 @@ WordPress migration and backups are much easier with Duplicator! Clone, backup, 
 
 > With over **30 million downloads** Duplicator successfully gives WordPress users the ability to migrate, copy, move or clone a site from one location to another and also serves as a simple backup utility. Duplicator handles serialized and base64 serialized replacements.  Standard WordPress migration and WordPress backups are easily handled by this plugin as are **zero downtime migrations**.
 
-For complete details visit [snapcreek.com](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=desc_details&utm_campaign=duplicator_free).
+For complete details visit [duplicator.com](https://duplicator.com/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=desc_details&utm_campaign=duplicator_free).
 
 = Quick Video Demo =
-http://www.youtube.com/watch?v=oc73jtvHWYQ
+https://www.youtube.com/watch?v=94wzCqPkQY0
 
 = Overview =
 Duplicator is the most powerful migrator available. It enables you to:
@@ -53,17 +53,16 @@ Duplicator Pro takes Duplicator to the next level with features you'll really ap
 * Professional support
 * ... and much more!
 
-Check out [Duplicator Pro](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=wpo_premium&utm_campaign=duplicator_pro) today!
+Check out [Duplicator Pro](https://duplicator.com/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=wpo_premium&utm_campaign=duplicator_pro) today!
 
 = Please Note =
 The underlying logic to backup WordPress, move WordPress and transfer WordPress are complex and it's impossible to know how each system is setup; this is why your feedback is important to us.  Thanks for helping us to make WordPress the best blogging platform in the world.
 
 = Disclaimer =
-This plugin does require some technical knowledge.  If you plan to migrate WordPress or backup WordPress please use it at your own risk and don't forget to back up your files and databases beforehand. If you need to move or backup WordPress and would like additional help please visit the Duplicator [resources section](https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wp_org&utm_content=free_disclaimer&utm_campaign=duplicator_free#faq-resource-030-q) .
+This plugin does require some technical knowledge.  If you plan to migrate WordPress or backup WordPress please use it at your own risk and don't forget to back up your files and databases beforehand. If you need to move or backup WordPress and would like additional help please visit the Duplicator [resources section](https://duplicator.com/knowledge-base/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=free_disclaimer&utm_campaign=duplicator_free) .
 
 = Active Contributors =
 <li>[Andrea Leoni](https://profiles.wordpress.org/andreamk/) (Development)</li>
-<li>[Paal Joachim Romdahl](http://www.easywebdesigntutorials.com) (Training)</li>
 <li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
 <li>[Nicolas Richer](http://nicolasricher.fr) (French)</li>
 
@@ -78,7 +77,7 @@ This plugin does require some technical knowledge.  If you plan to migrate WordP
 == Frequently Asked Questions ==
 
 = Does Duplicator have a knowledge base or FAQ? =
-Yes. Please see [all documents](https://snapcreek.com/duplicator/docs/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_docs&utm_campaign=duplicator_free) at snapcreek.com.
+Yes. Please see [all documents](https://duplicator.com/knowledge-base/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_docs&utm_campaign=duplicator_free) at duplicator.com
 
 = Installation Instructions =
 1. Upload `duplicator` folder to the `/wp-content/plugins/` directory
@@ -90,22 +89,20 @@ The Duplicator requires php 5.3 or higher.
 
 
 = Are there any videos I can watch? =
-Yes.  Please see the [video section](https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_videos&utm_campaign=duplicator_free#faq-resource-070-q) on the FAQ.
+Yes.  Please see the [video section](https://duplicator.com/knowledge-base-article-categories/quick-start-videos/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_videos&utm_campaign=duplicator_free) on the FAQ.
 
 = Is this plugin compatible with WordPress multisite (MU)? =
-Duplicator isn't, however [Duplicator Pro](https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_dpro_multisiteinfo&utm_campaign=duplicator_pro) supports full multisite network migrations/backups and also can install a multisite subsite as a standalone site.
+Duplicator isn't, however [Duplicator Pro](https://duplicator.com/knowledge-base-article-categories/multisite/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_dpro_multisiteinfo&utm_campaign=duplicator_pro) supports full multisite network migrations/backups and also can install a multisite subsite as a standalone site.
 
 = Where can I get more help and support for this plugin? =
-Visit the [Duplicator support](https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_support&utm_campaign=duplicator_free#faq-resource-030-q) section at snapcreek.com
+Purchase a Pro License for quick support [Duplicator Pro](https://duplicator.com/pricing/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=faq_support&utm_campaign=duplicator_free)
 
 
 == Changelog ==
 
 Please see the following url:
-[https://snapcreek.com/duplicator/docs/changelog?lite](https://snapcreek.com/duplicator/docs/changelog?lite&utm_source=duplicator_free&utm_medium=wp_org&utm_content=changelog_support&utm_campaign=duplicator_free)
+[https://duplicator.com/knowledge-base/changelog/](https://duplicator.com/knowledge-base/changelog/?lite&utm_source=duplicator_free&utm_medium=wp_org&utm_content=changelog_support&utm_campaign=duplicator_free)
 
 
 
 == Upgrade Notice ==
-
-Please use our ticketing system when submitting your logs.  Please do not post to the forums.

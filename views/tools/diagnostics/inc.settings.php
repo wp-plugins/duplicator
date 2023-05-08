@@ -37,8 +37,7 @@ SERVER SETTINGS -->
         <tr>
             <td><?php esc_html_e("Duplicator Version", 'duplicator'); ?></td>
             <td>
-                <?php echo esc_html(DUPLICATOR_VERSION); ?> -
-                <?php echo esc_html(DUPLICATOR_VERSION_BUILD); ?>
+                <?php echo esc_html(DUPLICATOR_VERSION); ?>
             </td>
         </tr>
         <tr>

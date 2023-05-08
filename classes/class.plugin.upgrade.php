@@ -42,10 +42,6 @@ class DUP_LITE_Plugin_Upgrade
         }
         DUP_Settings::Save();
 
-        if ($oldDupVersion === false || version_compare($oldDupVersion, self::DUP_WELCOME_PAGE_VERSION, '<=')) {
-            update_option(WelcomeController::REDIRECT_OPT_KEY, true);
-        }
-
         self::setActivatedTime();
 
         //Init Database & Backup Directories
@@ -76,6 +72,7 @@ class DUP_LITE_Plugin_Upgrade
     {
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
+        update_option(WelcomeController::REDIRECT_OPT_KEY, true);
     }
 
     /**

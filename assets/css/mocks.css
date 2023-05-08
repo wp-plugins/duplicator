@@ -611,3 +611,44 @@ table.package-tbl tfoot td {
     font-size: 14px;
     line-height: 17px;
 }
+
+/* Settings > Access tab */
+.mock-select2 {
+    width: 500px;
+    background: white;
+    border-radius: 3px;
+    min-height: 50px;
+    padding: 3px 5px;
+    border: 1px solid gray;
+    font-size: 14px;
+}
+
+
+.access-mock .form-table th {
+    width: 250px;
+}
+
+.access-mock .form-table th i{
+    color: #888888;
+}
+
+.mock-select2 .select2-option {
+    float: left;
+    background: #e4e4e4;
+    background-color: #e4e4e4;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: default;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
+
+.mock-select2 .select2-option::before {
+    content: "×";
+    color: #999;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 2px;
+}

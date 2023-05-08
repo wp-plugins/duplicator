@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Duplicator 1.5.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/duplicator\n"
-"POT-Creation-Date: 2023-03-16 09:54+0700\n"
+"POT-Creation-Date: 2023-05-03 10:45+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -444,7 +444,7 @@ msgid "Backup Files & Database"
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:105 src/Libs/Upsell.php:74
-#: src/Libs/Upsell.php:118 template/admin_pages/welcome/features.php:71
+#: src/Libs/Upsell.php:120 template/admin_pages/welcome/features.php:71
 msgid "File & Database Table Filters"
 msgstr ""
 
@@ -457,7 +457,7 @@ msgid "Overwrite Live Site"
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:117 src/Libs/Upsell.php:80
-#: src/Libs/Upsell.php:121
+#: src/Libs/Upsell.php:123
 msgid "Drag & Drop Installs"
 msgstr ""
 
@@ -470,7 +470,7 @@ msgid "Drag and Drop migrations and site restores! Simply drag the bundled site 
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:126 src/Libs/Upsell.php:70
-#: src/Libs/Upsell.php:114 template/admin_pages/welcome/features.php:28
+#: src/Libs/Upsell.php:116 template/admin_pages/welcome/features.php:28
 msgid "Scheduled Backups"
 msgstr ""
 
@@ -479,7 +479,7 @@ msgid "Ensure that your important data is regularly and consistently backed up, 
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:134 src/Libs/Upsell.php:71
-#: src/Libs/Upsell.php:115 template/admin_pages/welcome/features.php:45
+#: src/Libs/Upsell.php:117 template/admin_pages/welcome/features.php:45
 msgid "Recovery Points"
 msgstr ""
 
@@ -487,7 +487,7 @@ msgstr ""
 msgid "Recovery Points provide protection against mistakes and bad updates by letting you quickly rollback your system to a known, good state."
 msgstr ""
 
-#: src/Controllers/AboutUsController.php:142 src/Libs/Upsell.php:119
+#: src/Controllers/AboutUsController.php:142 src/Libs/Upsell.php:121
 msgid "Cloud Storage"
 msgstr ""
 
@@ -496,7 +496,7 @@ msgid "Back up to Dropbox, FTP, Google Drive, OneDrive, Amazon S3 or any S3-comp
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:150 src/Libs/Upsell.php:81
-#: src/Libs/Upsell.php:125
+#: src/Libs/Upsell.php:127
 msgid "Larger Site Support"
 msgstr ""
 
@@ -520,7 +520,7 @@ msgstr ""
 msgid "Supports multisite network backup & migration. Subsite As Standalone Install, Standalone Import Into Multisite and Import Subsite Into Multisite"
 msgstr ""
 
-#: src/Controllers/AboutUsController.php:176 src/Libs/Upsell.php:126
+#: src/Controllers/AboutUsController.php:176 src/Libs/Upsell.php:128
 msgid "Installer Branding"
 msgstr ""
 
@@ -536,31 +536,40 @@ msgstr ""
 msgid "Protect and secure the archive file with industry-standard AES-256 encryption!"
 msgstr ""
 
-#: src/Controllers/AboutUsController.php:186
-msgid "Enhanced Features"
+#: src/Controllers/AboutUsController.php:186 src/Libs/Upsell.php:84
+#: src/Libs/Upsell.php:134 template/mocks/settings/access/capabilities.php:123
+msgid "Advanced Backup Permissions"
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:189
-msgid "Enhanced features include: Managed Hosting Support, Shared Database Support, Streamlined Installer, Email Alerts and more..."
+msgid "Enjoy granular access control to ensure only authorized users can perform these critical functions."
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:194
-msgid "Advanced Features"
+msgid "Enhanced Features"
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:197
-msgid "Advanced features included: Hourly Schedules, Custom Search & Replace, Migrate Duplicator Settings, Regenerate Salts and Developer Hooks"
+msgid "Enhanced features include: Managed Hosting Support, Shared Database Support, Streamlined Installer, Email Alerts and more..."
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:202
-msgid "Customer Support"
-msgstr ""
-
-#: src/Controllers/AboutUsController.php:204
-msgid "Limited Support"
+msgid "Advanced Features"
 msgstr ""
 
 #: src/Controllers/AboutUsController.php:205
+msgid "Advanced features included: Hourly Schedules, Custom Search & Replace, Migrate Duplicator Settings, Regenerate Salts and Developer Hooks"
+msgstr ""
+
+#: src/Controllers/AboutUsController.php:210
+msgid "Customer Support"
+msgstr ""
+
+#: src/Controllers/AboutUsController.php:212
+msgid "Limited Support"
+msgstr ""
+
+#: src/Controllers/AboutUsController.php:213
 msgid "Priority Support"
 msgstr ""
 
@@ -617,7 +626,7 @@ msgstr ""
 
 #: src/Core/Bootstrap.php:243 src/Core/Bootstrap.php:244
 #: views/packages/details/controller.php:57
-#: views/packages/main/s3.build.php:135 views/settings/controller.php:35
+#: views/packages/main/s3.build.php:135 views/settings/controller.php:37
 msgid "Packages"
 msgstr ""
 
@@ -632,7 +641,7 @@ msgstr ""
 
 #: src/Core/Bootstrap.php:275 src/Core/Bootstrap.php:276
 #: template/mocks/storage/storage.php:53 views/packages/details/detail.php:269
-#: views/packages/main/s1.setup2.php:117 views/settings/controller.php:41
+#: views/packages/main/s1.setup2.php:117 views/settings/controller.php:43
 msgid "Storage"
 msgstr ""
 
@@ -642,7 +651,7 @@ msgid "Tools"
 msgstr ""
 
 #: src/Core/Bootstrap.php:295 src/Core/Bootstrap.php:296
-#: views/settings/controller.php:22 views/settings/general.php:151
+#: views/settings/controller.php:24 views/settings/general.php:148
 msgid "Settings"
 msgstr ""
 
@@ -716,7 +725,7 @@ msgstr ""
 msgid "Are you enjoying %s?"
 msgstr ""
 
-#: src/Core/Notifications/Review.php:96 views/settings/general.php:226
+#: src/Core/Notifications/Review.php:96 views/settings/general.php:223
 msgid "Yes"
 msgstr ""
 
@@ -761,12 +770,12 @@ msgstr ""
 msgid "Please rate <strong>Duplicator</strong> <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> on <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">WordPress.org</a> to help us spread the word. Thank you from the Duplicator team!"
 msgstr ""
 
-#: src/Libs/Upsell.php:72 src/Libs/Upsell.php:116
+#: src/Libs/Upsell.php:72 src/Libs/Upsell.php:118
 #: template/admin_pages/welcome/features.php:54
 msgid "Secure File Encryption"
 msgstr ""
 
-#: src/Libs/Upsell.php:73 src/Libs/Upsell.php:117
+#: src/Libs/Upsell.php:73 src/Libs/Upsell.php:119
 #: template/admin_pages/welcome/features.php:62
 msgid "Server to Server Import"
 msgstr ""
@@ -795,39 +804,39 @@ msgstr ""
 msgid "Multisite Network Support"
 msgstr ""
 
-#: src/Libs/Upsell.php:83 src/Libs/Upsell.php:130
+#: src/Libs/Upsell.php:83 src/Libs/Upsell.php:132
 msgid "Email Alerts"
 msgstr ""
 
-#: src/Libs/Upsell.php:120
+#: src/Libs/Upsell.php:122
 msgid "Smart Migration Wizard"
 msgstr ""
 
-#: src/Libs/Upsell.php:122
+#: src/Libs/Upsell.php:124
 msgid "Streamlined Installer"
 msgstr ""
 
-#: src/Libs/Upsell.php:123
+#: src/Libs/Upsell.php:125
 msgid "Developer Hooks"
 msgstr ""
 
-#: src/Libs/Upsell.php:124
+#: src/Libs/Upsell.php:126
 msgid "Managed Hosting Support"
 msgstr ""
 
-#: src/Libs/Upsell.php:127
+#: src/Libs/Upsell.php:129
 msgid "Migrate Duplicator Settings"
 msgstr ""
 
-#: src/Libs/Upsell.php:128
+#: src/Libs/Upsell.php:130
 msgid "Regenerate SALTS"
 msgstr ""
 
-#: src/Libs/Upsell.php:129
+#: src/Libs/Upsell.php:131
 msgid "Multisite Network"
 msgstr ""
 
-#: src/Libs/Upsell.php:131
+#: src/Libs/Upsell.php:133
 msgid "Custom Search & Replace"
 msgstr ""
 
@@ -1447,6 +1456,82 @@ msgstr ""
 msgid "Duplicator Lite does not support scheduled backups!"
 msgstr ""
 
+#: template/mocks/settings/access/capabilities.php:15
+msgid "Roles and Permissions"
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:19
+msgid "Select the user roles and/or users that are allowed to manage different aspects of Duplicator."
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:20
+msgid "By default, all permissions are provided only to administrator users."
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:21
+msgid "Some capabilities depend on others so If you select for example storage capability automatically the package read and package edit capabilities are assigned"
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:23
+msgid "It is not possible to self remove the manage settings capabilities."
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:28
+msgid "Package Read "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:32
+#: template/mocks/settings/access/capabilities.php:42
+#: template/mocks/settings/access/capabilities.php:52
+#: template/mocks/settings/access/capabilities.php:62
+#: template/mocks/settings/access/capabilities.php:72
+#: template/mocks/settings/access/capabilities.php:82
+#: template/mocks/settings/access/capabilities.php:92
+#: template/mocks/settings/access/capabilities.php:102
+#: template/mocks/settings/access/capabilities.php:112
+msgid "Administrator"
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:38
+msgid " - Package Edit "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:48
+msgid " - - Manage Schedules "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:58
+msgid " - - Manage Storages "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:68
+msgid " - Restore Backup "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:78
+msgid " - - Package Import "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:88
+msgid " - Package Export "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:98
+msgid " - Manage Settings "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:108
+msgid " -  - Manage License Settings "
+msgstr ""
+
+#: template/mocks/settings/access/capabilities.php:124
+msgid "Advanced Backup Permissions are not available in Duplicator Lite!"
+msgstr ""
+
+#: template/mocks/settings/access/content-popup.php:16
+msgid "Elevate your backup capabilities with advanced permissions, allowing for precise control over the creation, exportation, restoration, and management of control settings. Enjoy granular access control to ensure only authorized users can perform these critical functions."
+msgstr ""
+
 #: template/mocks/storage/popup.php:17
 msgid "Store to Multiple Endpoints with Duplicator Pro"
 msgstr ""
@@ -1565,8 +1650,8 @@ msgstr ""
 
 #: template/parts/DashboardWidget/sections-section.php:51
 #: views/packages/main/s2.scan3.php:42 views/packages/main/s2.scan3.php:382
-#: views/packages/main/s2.scan3.php:631 views/settings/general.php:126
-#: views/tools/diagnostics/inc.settings.php:179
+#: views/packages/main/s2.scan3.php:631 views/settings/general.php:123
+#: views/tools/diagnostics/inc.settings.php:178
 msgid "Enabled"
 msgstr ""
 
@@ -1692,7 +1777,7 @@ msgstr ""
 msgid "Invalid Package ID request.  Please try again!"
 msgstr ""
 
-#: views/packages/details/detail.php:91 views/settings/controller.php:29
+#: views/packages/details/detail.php:91 views/settings/controller.php:31
 #: views/tools/controller.php:25 views/tools/diagnostics/inc.settings.php:35
 msgid "General"
 msgstr ""
@@ -1723,9 +1808,9 @@ msgid "Created"
 msgstr ""
 
 #: views/packages/details/detail.php:129 views/settings/general.php:86
-#: views/tools/diagnostics/inc.settings.php:102
-#: views/tools/diagnostics/inc.settings.php:122
-#: views/tools/diagnostics/inc.settings.php:195
+#: views/tools/diagnostics/inc.settings.php:101
+#: views/tools/diagnostics/inc.settings.php:121
+#: views/tools/diagnostics/inc.settings.php:194
 msgid "Version"
 msgstr ""
 
@@ -1769,7 +1854,7 @@ msgstr ""
 
 #: views/packages/details/detail.php:164 views/packages/details/detail.php:513
 #: views/packages/main/s1.setup2.php:610
-#: views/tools/diagnostics/inc.settings.php:130
+#: views/tools/diagnostics/inc.settings.php:129
 msgid "User"
 msgstr ""
 
@@ -2618,8 +2703,8 @@ msgid "example: DatabaseUserName (value is optional)"
 msgstr ""
 
 #: views/packages/main/s1.setup2.php:623
-#: views/tools/diagnostics/inc.settings.php:110
-#: views/tools/diagnostics/inc.settings.php:203
+#: views/tools/diagnostics/inc.settings.php:109
+#: views/tools/diagnostics/inc.settings.php:202
 msgid "Charset"
 msgstr ""
 
@@ -2806,7 +2891,7 @@ msgid "System"
 msgstr ""
 
 #: views/packages/main/s2.scan2.php:73
-#: views/tools/diagnostics/inc.settings.php:59
+#: views/tools/diagnostics/inc.settings.php:58
 msgid "Web Server"
 msgstr ""
 
@@ -2926,7 +3011,7 @@ msgid ""
 msgstr ""
 
 #: views/packages/main/s2.scan3.php:10
-#: views/tools/diagnostics/inc.settings.php:66
+#: views/tools/diagnostics/inc.settings.php:65
 msgid "Root Path"
 msgstr ""
 
@@ -3315,7 +3400,7 @@ msgid "File Filters"
 msgstr ""
 
 #: views/packages/main/s2.scan3.php:631
-#: views/tools/diagnostics/inc.settings.php:179
+#: views/tools/diagnostics/inc.settings.php:178
 msgid "Disabled"
 msgstr ""
 
@@ -3821,7 +3906,11 @@ msgstr ""
 msgid "LinkedIn"
 msgstr ""
 
-#: views/settings/controller.php:47
+#: views/settings/controller.php:49
+msgid "Access"
+msgstr ""
+
+#: views/settings/controller.php:55
 msgid "License"
 msgstr ""
 
@@ -3833,135 +3922,135 @@ msgstr ""
 msgid "Plugin"
 msgstr ""
 
-#: views/settings/general.php:97
+#: views/settings/general.php:94
 msgid "Uninstall"
 msgstr ""
 
-#: views/settings/general.php:101
+#: views/settings/general.php:98
 msgid "Delete Plugin Settings"
 msgstr ""
 
-#: views/settings/general.php:105
+#: views/settings/general.php:102
 msgid "Delete Entire Storage Directory"
 msgstr ""
 
-#: views/settings/general.php:112
+#: views/settings/general.php:109
 msgid "Debug"
 msgstr ""
 
-#: views/settings/general.php:116
+#: views/settings/general.php:113
 msgid "Debugging"
 msgstr ""
 
-#: views/settings/general.php:119
+#: views/settings/general.php:116
 msgid "Enable debug options throughout user interface"
 msgstr ""
 
-#: views/settings/general.php:123
+#: views/settings/general.php:120
 msgid "Trace Log"
 msgstr ""
 
-#: views/settings/general.php:129
+#: views/settings/general.php:126
 msgid "Turns on detailed operation logging. Logging will occur in both PHP error and local trace logs."
 msgstr ""
 
-#: views/settings/general.php:131
+#: views/settings/general.php:128
 msgid "WARNING: Only turn on this setting when asked to by support as tracing will impact performance."
 msgstr ""
 
-#: views/settings/general.php:139
+#: views/settings/general.php:136
 msgid "Download Trace Log"
 msgstr ""
 
-#: views/settings/general.php:147
+#: views/settings/general.php:144
 msgid "Advanced"
 msgstr ""
 
-#: views/settings/general.php:154
+#: views/settings/general.php:151
 msgid "Reset Packages"
 msgstr ""
 
-#: views/settings/general.php:158
+#: views/settings/general.php:155
 msgid "This process will reset all packages by deleting those without a completed status, reset the active package id and perform a cleanup of the build tmp file."
 msgstr ""
 
-#: views/settings/general.php:162
+#: views/settings/general.php:159
 msgid "Reset Settings"
 msgstr ""
 
-#: views/settings/general.php:163
+#: views/settings/general.php:160
 msgid "This action should only be used if the packages screen is having issues or a build is stuck."
 msgstr ""
 
-#: views/settings/general.php:168
+#: views/settings/general.php:165
 msgid "Archive scan"
 msgstr ""
 
-#: views/settings/general.php:171
+#: views/settings/general.php:168
 msgid "Skip"
 msgstr ""
 
-#: views/settings/general.php:174
+#: views/settings/general.php:171
 msgid "If enabled all files check on scan will be skipped before package creation.  In some cases, this option can be beneficial if the scan process is having issues running or returning errors."
 msgstr ""
 
-#: views/settings/general.php:181
+#: views/settings/general.php:178
 msgid "Foreign JavaScript"
 msgstr ""
 
-#: views/settings/general.php:184 views/settings/general.php:198
+#: views/settings/general.php:181 views/settings/general.php:195
 msgid "Disable"
 msgstr ""
 
-#: views/settings/general.php:187
+#: views/settings/general.php:184
 msgid "Check this option if other plugins/themes JavaScript files are conflicting with Duplicator."
 msgstr ""
 
-#: views/settings/general.php:189 views/settings/general.php:203
+#: views/settings/general.php:186 views/settings/general.php:200
 msgid "Do not modify this setting unless you know the expected result or have talked to support."
 msgstr ""
 
-#: views/settings/general.php:195
+#: views/settings/general.php:192
 msgid "Foreign CSS"
 msgstr ""
 
-#: views/settings/general.php:201
+#: views/settings/general.php:198
 msgid "Check this option if other plugins/themes CSS files are conflicting with Duplicator."
 msgstr ""
 
-#: views/settings/general.php:212
+#: views/settings/general.php:209
 msgid "Save General Settings"
 msgstr ""
 
-#: views/settings/general.php:221
+#: views/settings/general.php:218
 msgid "Reset Packages ?"
 msgstr ""
 
-#: views/settings/general.php:222
+#: views/settings/general.php:219
 msgid "This will clear and reset all of the current temporary packages.  Would you like to continue?"
 msgstr ""
 
-#: views/settings/general.php:223
+#: views/settings/general.php:220
 msgid "Resetting settings, Please Wait..."
 msgstr ""
 
-#: views/settings/general.php:227
+#: views/settings/general.php:224
 msgid "No"
 msgstr ""
 
-#: views/settings/general.php:232
+#: views/settings/general.php:229
 msgid "AJAX Call Error!"
 msgstr ""
 
-#: views/settings/general.php:233
+#: views/settings/general.php:230
 msgid "AJAX error encountered when resetting packages. Please see <a href=\"https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-053-q\" target=\"_blank\">this FAQ entry</a> for possible resolutions."
 msgstr ""
 
-#: views/settings/general.php:240 views/settings/general.php:293
+#: views/settings/general.php:237 views/settings/general.php:290
 msgid "RESPONSE ERROR!"
 msgstr ""
 
-#: views/settings/general.php:283
+#: views/settings/general.php:280
 msgid "Packages successfully reset"
 msgstr ""
 
@@ -4373,150 +4462,150 @@ msgstr ""
 msgid "Duplicator Version"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:45
+#: views/tools/diagnostics/inc.settings.php:44
 msgid "Operating System"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:50
+#: views/tools/diagnostics/inc.settings.php:49
 msgid "Timezone"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:55
+#: views/tools/diagnostics/inc.settings.php:54
 msgid "Server Time"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:70
+#: views/tools/diagnostics/inc.settings.php:69
 msgid "ABSPATH"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:74
+#: views/tools/diagnostics/inc.settings.php:73
 msgid "Plugins Path"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:78
+#: views/tools/diagnostics/inc.settings.php:77
 msgid "Loaded PHP INI"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:82
+#: views/tools/diagnostics/inc.settings.php:81
 msgid "Server IP"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:89
+#: views/tools/diagnostics/inc.settings.php:88
 msgid "Can't detect"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:95
+#: views/tools/diagnostics/inc.settings.php:94
 msgid "Client IP"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:106
+#: views/tools/diagnostics/inc.settings.php:105
 msgid "Language"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:114
+#: views/tools/diagnostics/inc.settings.php:113
 msgid "Memory Limit "
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:115
+#: views/tools/diagnostics/inc.settings.php:114
 msgid "Max"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:134
+#: views/tools/diagnostics/inc.settings.php:133
 msgid "Process"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:138
+#: views/tools/diagnostics/inc.settings.php:137
 msgid "Safe Mode"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:142
+#: views/tools/diagnostics/inc.settings.php:141
 msgid "On"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:142
+#: views/tools/diagnostics/inc.settings.php:141
 msgid "Off"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:147
+#: views/tools/diagnostics/inc.settings.php:146
 msgid "Memory Limit"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:151
+#: views/tools/diagnostics/inc.settings.php:150
 msgid "Memory In Use"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:155
-#: views/tools/diagnostics/inc.settings.php:164
+#: views/tools/diagnostics/inc.settings.php:154
+#: views/tools/diagnostics/inc.settings.php:163
 msgid "Max Execution Time"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:165
+#: views/tools/diagnostics/inc.settings.php:164
 msgid "If the value shows dynamic then this means its possible for PHP to run longer than the default.  If the value is fixed then PHP will not be allowed to run longer than the default."
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:170
+#: views/tools/diagnostics/inc.settings.php:169
 msgid "Shell Exec"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:171
-#: views/tools/diagnostics/inc.settings.php:175
+#: views/tools/diagnostics/inc.settings.php:170
+#: views/tools/diagnostics/inc.settings.php:174
 msgid "Is Supported"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:171
-#: views/tools/diagnostics/inc.settings.php:175
+#: views/tools/diagnostics/inc.settings.php:170
+#: views/tools/diagnostics/inc.settings.php:174
 msgid "Not Supported"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:174
+#: views/tools/diagnostics/inc.settings.php:173
 msgid "Shell Exec Zip"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:178
+#: views/tools/diagnostics/inc.settings.php:177
 msgid "Suhosin Extension"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:182
+#: views/tools/diagnostics/inc.settings.php:181
 msgid "Architecture "
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:188
+#: views/tools/diagnostics/inc.settings.php:187
 msgid "Error Log File "
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:199
+#: views/tools/diagnostics/inc.settings.php:198
 msgid "Comments"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:207
+#: views/tools/diagnostics/inc.settings.php:206
 msgid "Wait Timeout"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:211
+#: views/tools/diagnostics/inc.settings.php:210
 msgid "Max Allowed Packets"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:215
+#: views/tools/diagnostics/inc.settings.php:214
 msgid "msyqldump Path"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:219
+#: views/tools/diagnostics/inc.settings.php:218
 msgid "Server Disk"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:222
+#: views/tools/diagnostics/inc.settings.php:221
 msgid "Free space"
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:225
+#: views/tools/diagnostics/inc.settings.php:224
 msgid "Unable to calculate space on this server."
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:231
+#: views/tools/diagnostics/inc.settings.php:230
 msgid "Note: This value is the physical servers hard-drive allocation."
 msgstr ""
 
-#: views/tools/diagnostics/inc.settings.php:232
+#: views/tools/diagnostics/inc.settings.php:231
 msgid "On shared hosts check your control panel for the 'TRUE' disk space quota value."
 msgstr ""
 

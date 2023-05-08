@@ -122,9 +122,11 @@ self::$corePathList = array(
                 'border.php' => "f",
                 'duotone.php' => "f",
                 'generated-classname.php' => "f",
+                'position.php' => "f",
                 'align.php' => "f",
                 'colors.php' => "f",
                 'typography.php' => "f",
+                'settings.php' => "f",
                 'utils.php' => "f",
                 'custom-classname.php' => "f",
                 'spacing.php' => "f"
@@ -156,6 +158,12 @@ self::$corePathList = array(
             'class-wp-admin-bar.php' => "f",
             'session.php' => "f",
             'class-wp-block-type-registry.php' => "f",
+            'html-api' => array(
+                'class-wp-html-text-replacement.php' => "f",
+                'class-wp-html-tag-processor.php' => "f",
+                'class-wp-html-attribute-token.php' => "f",
+                'class-wp-html-span.php' => "f"
+            ),
             'rewrite.php' => "f",
             'registration-functions.php' => "f",
             'option.php' => "f",
@@ -319,11 +327,15 @@ self::$corePathList = array(
                     'style.min.css' => "f"
                 ),
                 'site-title' => array(
+                    'style-rtl.min.css' => "f",
                     'editor.min.css' => "f",
                     'editor.css' => "f",
                     'editor-rtl.css' => "f",
                     'block.json' => "f",
-                    'editor-rtl.min.css' => "f"
+                    'editor-rtl.min.css' => "f",
+                    'style.css' => "f",
+                    'style-rtl.css' => "f",
+                    'style.min.css' => "f"
                 ),
                 'archives.php' => "f",
                 'spacer' => array(
@@ -395,6 +407,7 @@ self::$corePathList = array(
                     'style.min.css' => "f"
                 ),
                 'image.php' => "f",
+                'heading.php' => "f",
                 'template-part.php' => "f",
                 'subhead' => array(
                     'block.json' => "f"
@@ -552,6 +565,9 @@ self::$corePathList = array(
                     'style.min.css' => "f"
                 ),
                 'post-excerpt.php' => "f",
+                'page-list-item' => array(
+                    'block.json' => "f"
+                ),
                 'post-comments' => array(
                     'style-rtl.min.css' => "f",
                     'editor.min.css' => "f",
@@ -565,7 +581,11 @@ self::$corePathList = array(
                 ),
                 'comments-pagination-next.php' => "f",
                 'post-navigation-link' => array(
-                    'block.json' => "f"
+                    'style-rtl.min.css' => "f",
+                    'block.json' => "f",
+                    'style.css' => "f",
+                    'style-rtl.css' => "f",
+                    'style.min.css' => "f"
                 ),
                 'query-title.php' => "f",
                 'text-columns' => array(
@@ -580,6 +600,9 @@ self::$corePathList = array(
                     'style.min.css' => "f"
                 ),
                 'comment-author-name.php' => "f",
+                'post-author-name' => array(
+                    'block.json' => "f"
+                ),
                 'post-content.php' => "f",
                 'post-title.php' => "f",
                 'post-comments.php' => "f",
@@ -613,6 +636,7 @@ self::$corePathList = array(
                     'style-rtl.css' => "f",
                     'style.min.css' => "f"
                 ),
+                'post-author-name.php' => "f",
                 'list-item' => array(
                     'block.json' => "f"
                 ),
@@ -1075,8 +1099,95 @@ self::$corePathList = array(
                     'cURL.php' => "f",
                     'fsockopen.php' => "f"
                 ),
+                'library' => array(
+                    'Requests.php' => "f"
+                ),
                 'Proxy.php' => "f",
                 'IPv6.php' => "f",
+                'src' => array(
+                    'Port.php' => "f",
+                    'Iri.php' => "f",
+                    'Utility' => array(
+                        'CaseInsensitiveDictionary.php' => "f",
+                        'InputValidator.php' => "f",
+                        'FilteredIterator.php' => "f"
+                    ),
+                    'Transport' => array(
+                        'Curl.php' => "f",
+                        'Fsockopen.php' => "f"
+                    ),
+                    'Autoload.php' => "f",
+                    'Proxy.php' => "f",
+                    'Ssl.php' => "f",
+                    'Capability.php' => "f",
+                    'Exception.php' => "f",
+                    'Hooks.php' => "f",
+                    'Proxy' => array(
+                        'Http.php' => "f"
+                    ),
+                    'Response.php' => "f",
+                    'IdnaEncoder.php' => "f",
+                    'Auth' => array(
+                        'Basic.php' => "f"
+                    ),
+                    'Ipv6.php' => "f",
+                    'Requests.php' => "f",
+                    'Response' => array(
+                        'Headers.php' => "f"
+                    ),
+                    'HookManager.php' => "f",
+                    'Session.php' => "f",
+                    'Exception' => array(
+                        'Http.php' => "f",
+                        'Transport' => array(
+                            'Curl.php' => "f"
+                        ),
+                        'Http' => array(
+                            'Status407.php' => "f",
+                            'Status403.php' => "f",
+                            'Status410.php' => "f",
+                            'Status406.php' => "f",
+                            'Status400.php' => "f",
+                            'Status431.php' => "f",
+                            'Status503.php' => "f",
+                            'Status413.php' => "f",
+                            'Status500.php' => "f",
+                            'Status505.php' => "f",
+                            'Status402.php' => "f",
+                            'StatusUnknown.php' => "f",
+                            'Status305.php' => "f",
+                            'Status304.php' => "f",
+                            'Status511.php' => "f",
+                            'Status405.php' => "f",
+                            'Status501.php' => "f",
+                            'Status306.php' => "f",
+                            'Status404.php' => "f",
+                            'Status504.php' => "f",
+                            'Status411.php' => "f",
+                            'Status401.php' => "f",
+                            'Status418.php' => "f",
+                            'Status417.php' => "f",
+                            'Status502.php' => "f",
+                            'Status412.php' => "f",
+                            'Status428.php' => "f",
+                            'Status416.php' => "f",
+                            'Status414.php' => "f",
+                            'Status429.php' => "f",
+                            'Status415.php' => "f",
+                            'Status408.php' => "f",
+                            'Status409.php' => "f"
+                        ),
+                        'ArgumentCount.php' => "f",
+                        'InvalidArgument.php' => "f",
+                        'Transport.php' => "f"
+                    ),
+                    'Auth.php' => "f",
+                    'Cookie' => array(
+                        'Jar.php' => "f"
+                    ),
+                    'Transport.php' => "f",
+                    'Cookie.php' => "f"
+                ),
                 'Exception.php' => "f",
                 'Hooks.php' => "f",
                 'Proxy' => array(
@@ -1643,6 +1754,7 @@ self::$corePathList = array(
                     'viewport.js' => "f",
                     'edit-site.min.js' => "f",
                     'viewport.min.js' => "f",
+                    'private-apis.js' => "f",
                     'server-side-render.js' => "f",
                     'autop.min.js' => "f",
                     'compose.js' => "f",
@@ -1692,6 +1804,7 @@ self::$corePathList = array(
                     'list-reusable-blocks.min.js' => "f",
                     'block-library.js' => "f",
                     'style-engine.js' => "f",
+                    'private-apis.min.js' => "f",
                     'plugins.min.js' => "f",
                     'nux.min.js' => "f",
                     'media-utils.js' => "f",
@@ -1716,6 +1829,7 @@ self::$corePathList = array(
                         'react.min.js' => "f",
                         'wp-polyfill-dom-rect.js' => "f",
                         'lodash.min.js' => "f",
+                        'wp-polyfill-inert.min.js' => "f",
                         'wp-polyfill-fetch.min.js' => "f",
                         'wp-polyfill-object-fit.js' => "f",
                         'react-dom.min.js' => "f",
@@ -1725,7 +1839,8 @@ self::$corePathList = array(
                         'regenerator-runtime.js' => "f",
                         'wp-polyfill-url.min.js' => "f",
                         'wp-polyfill.js' => "f",
-                        'lodash.js' => "f"
+                        'lodash.js' => "f",
+                        'wp-polyfill-inert.js' => "f"
                     ),
                     'annotations.min.js' => "f",
                     'block-editor.js' => "f",
@@ -1957,7 +2072,11 @@ self::$corePathList = array(
                     'block-editor' => array(
                         'style-rtl.min.css' => "f",
                         'default-editor-styles-rtl.css' => "f",
+                        'content.min.css' => "f",
                         'default-editor-styles.css' => "f",
+                        'content-rtl.css' => "f",
+                        'content-rtl.min.css' => "f",
+                        'content.css' => "f",
                         'style.css' => "f",
                         'style-rtl.css' => "f",
                         'default-editor-styles.min.css' => "f",
@@ -3157,6 +3276,7 @@ self::$corePathList = array(
                 'privacy.svg' => "f",
                 'date-button-2x.gif' => "f",
                 'stars-2x.png' => "f",
+                'dashboard-background.svg' => "f",
                 'no.png' => "f",
                 'date-button.gif' => "f",
                 'bubble_bg-2x.gif' => "f",
