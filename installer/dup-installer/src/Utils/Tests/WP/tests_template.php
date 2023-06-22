@@ -89,7 +89,7 @@ TestsErrorHandler::setShutdownCallabck(function ($errors) {
             $longMessage = '';
         }
         $longMessage .= TestsErrorHandler::errorToString($error) . "\n-----\n\n";
-        $longMessage .= "For solutions to these issues see the online FAQs \nhttps://snapcreek.com/duplicator/docs \n\n";
+        $longMessage .= "For solutions to these issues see the online FAQs \nhttps://duplicator.com/knowledge-base/ \n\n";
 
         MessageCustomizer::applyAllNoticeCustomizations($shortMessage, $longMessage, $noticeId);
         $data = array(

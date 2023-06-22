@@ -30,6 +30,7 @@ use Duplicator\Controllers\WelcomeController;
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Core\Notifications\Notice;
 use Duplicator\Core\Notifications\NoticeBar;
+use Duplicator\Core\Notifications\Notifications;
 use Duplicator\Core\Notifications\Review;
 use Duplicator\Core\Views\TplMng;
 use Duplicator\Libs\Upsell;
@@ -101,6 +102,7 @@ class Bootstrap
             WelcomeController::init();
             DashboardWidget::init();
             EducationElements::init();
+            Notifications::init();
             $dashboardService = new ServicesDashboard();
             $dashboardService->init();
             $extraPlugin = new ServicesExtraPlugins();
@@ -342,6 +344,17 @@ class Bootstrap
                 'ajaxurl'                                    => admin_url('admin-ajax.php')
             )
         );
+
+        wp_enqueue_script('dup-one-click-upgrade-script', DUPLICATOR_PLUGIN_URL . 'assets/js/one-click-upgrade.js', array('jquery'), DUPLICATOR_VERSION, true);
+        wp_localize_script(
+            'dup-one-click-upgrade-script',
+            'dup_one_click_upgrade_script_data',
+            array(
+                'nonce_one_click_upgrade' => wp_create_nonce('duplicator_one_click_upgrade_prepare'),
+                'ajaxurl'                 => admin_url('admin-ajax.php')
+            )
+        );
+
         wp_enqueue_style('dup-plugin-global-style');
     }
 

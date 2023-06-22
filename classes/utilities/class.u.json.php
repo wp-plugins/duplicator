@@ -29,9 +29,9 @@ class DUP_JSON
         JSON_ERROR_STATE_MISMATCH => 'Invalid or malformed JSON',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
-        JSON_ERROR_UTF8 => 'Malformed UTF-8 characters. To resolve see https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-170-q'
+        JSON_ERROR_UTF8 => 'Malformed UTF-8 characters. To resolve see https://duplicator.com/knowledge-base/ how-to-resolve-malformed-utf-8-characters-possibly-incorrectly-encoded-issues/'
     );
-/**
+    /**
      * Used on PHP 5.3+ to better handle calling the json_encode method
      *
      * Returns a string containing the JSON representation of the supplied value

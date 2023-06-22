@@ -39,7 +39,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
             ?>
             <div id="message" class="notice notice-error is-dismissible">
                 <p>
-                    <b><?php esc_html_e('Storage folder move problem'); ?></b>
+                    <b><?php esc_html_e('Storage folder move problem', 'duplicator'); ?></b>
                 </p>
                 <p>
                     <?php echo sprintf(__('Duplicator can\'t change the storage folder to <i>%s</i>', 'duplicator'), esc_html($targetFolder)); ?><br>

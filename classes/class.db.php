@@ -19,6 +19,7 @@ if (!defined('DUPLICATOR_VERSION')) {
 
 class DUP_DB extends wpdb
 {
+    const BUILD_MODE_MYSQLDUMP                      = 'MYSQLDUMP';
     const MAX_TABLE_COUNT_IN_PACKET                 = 100;
     public static $remove_placeholder_escape_exists = null;
 

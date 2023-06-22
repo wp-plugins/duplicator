@@ -340,7 +340,7 @@ class DUP_UI_Notice
                         '<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>',
                         'duplicator'
                     ),
-                    'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-040-q',
+                    DUPLICATOR_DOCS_URL . 'how-to-resolve-duplicator-plugin-user-interface-ui-issues/',
                     __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator')
                 );
             DUP_UI_Notice::displayGeneralAdminNotice($errorMessage, self::GEN_ERROR_NOTICE, true);
@@ -350,10 +350,10 @@ class DUP_UI_Notice
     /**
      * display genral admin notice by printing it
      *
-     * @param string $htmlMsg html code to be printed
-     * @param integer $noticeType constant value of SELF::GEN_
-     * @param boolean $isDismissible whether the notice is dismissable or not. Default is true
-     * @param array|string $extraClasses add more classes to the notice div
+     * @param string       $htmlMsg       html code to be printed
+     * @param integer      $noticeType    constant value of SELF::GEN_
+     * @param boolean      $isDismissible whether the notice is dismissable or not. Default is true
+     * @param array|string $extraClasses  add more classes to the notice div
      *
      * @return void
      */

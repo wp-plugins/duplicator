@@ -285,17 +285,14 @@ class DUP_Archive
     /**
      *  Properly creates the directory filter list that is used for filtering directories
      *
-     * @param string $dirs A semi-colon list of dir paths
-     *  /path1_/path/;/path1_/path2/;
+     * @param string $dirs A semi-colon list of dir paths /path1_/path;/path1_/path2;
      *
-     * @returns string A cleaned up list of directory filters
-     * @return  string
+     * @return string A cleaned up list of directory filters
      */
     public function parseDirectoryFilter($dirs = "")
     {
-        $filters     = "";
-        $dir_array   = array_unique(explode(";", $dirs));
         $clean_array = array();
+        $dir_array   = array_unique(explode(";", $dirs));
         foreach ($dir_array as $val) {
             $val = SnapIO::safePathUntrailingslashit(SnapUtil::sanitizeNSCharsNewlineTrim($val));
             if (strlen($val) >= 2 && is_dir($val)) {
@@ -304,40 +301,35 @@ class DUP_Archive
         }
 
         if (count($clean_array)) {
-            $clean_array = array_unique($clean_array);
-            sort($clean_array);
-            $filters = implode(';', $clean_array) . ';';
+            return implode(';', array_unique($clean_array));
         }
-        return $filters;
+
+        return '';
     }
 
     /**
-     *  Properly creates the file filter list that is used for filtering files
+     * Properly creates the file filter list that is used for filtering files
      *
-     * @param string $files A semi-colon list of file paths
-     *  /path1_/path/file1.ext;/path1_/path2/file2.ext;
+     * @param string $files A semi-colon list of file paths /path1_/path/file1.ext;/path1_/path2/file2.ext;
      *
-     * @returns string A cleaned up list of file filters
-     * @return  string
+     * @return string A cleaned up list of file filters
      */
     public function parseFileFilter($files = "")
     {
-        $filters     = "";
-        $file_array  = array_unique(explode(";", $files));
         $clean_array = array();
+        $file_array  = array_unique(explode(";", $files));
         foreach ($file_array as $val) {
             $val = SnapIO::safePathUntrailingslashit(SnapUtil::sanitizeNSCharsNewlineTrim($val));
-            if (strlen($val) >= 2 && file_exists($val)) {
+            if (strlen($val) >= 2 && !is_dir($val)) {
                 $clean_array[] = $val;
             }
         }
 
         if (count($clean_array)) {
-            $clean_array = array_unique($clean_array);
-            sort($clean_array);
-            $filters = implode(';', $clean_array) . ';';
+            return implode(';', array_unique($clean_array));
         }
-        return $filters;
+
+        return '';
     }
 
     /**
@@ -369,9 +361,9 @@ class DUP_Archive
         //FILTER: INSTANCE ITEMS
         //Add the items generated at create time
         if ($this->FilterOn) {
-            $this->FilterInfo->Dirs->Instance  = array_map('DUP_Util::safePath', explode(";", $this->FilterDirs, -1));
-            $this->FilterInfo->Files->Instance = array_map('DUP_Util::safePath', explode(";", $this->FilterFiles, -1));
-            $this->FilterInfo->Exts->Instance  = explode(";", $this->FilterExts, -1);
+            $this->FilterInfo->Dirs->Instance  = strlen($this->FilterDirs) > 0 ? array_map('DUP_Util::safePath', explode(";", $this->FilterDirs)) : array();
+            $this->FilterInfo->Files->Instance = strlen($this->FilterFiles) > 0 ? array_map('DUP_Util::safePath', explode(";", $this->FilterFiles)) : array();
+            $this->FilterInfo->Exts->Instance  = explode(";", $this->FilterExts);
         }
 
         //FILTER: CORE ITMES
@@ -426,9 +418,15 @@ class DUP_Archive
                 $this->FilterInfo->Dirs->Core[] = $wp_content . '/' . $backwpup_cfg_logfolder;
             }
         }
+
         if ($GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS_ON']) {
             $duplicator_global_file_filters  = apply_filters('duplicator_global_file_filters', $GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS']);
             $this->FilterInfo->Files->Global = $duplicator_global_file_filters;
+        }
+
+        //Config files are handled separately
+        foreach ($this->Package->Installer->getConfigFilePaths() as $config_file_path) {
+            $this->FilterInfo->Files->Global[] = $config_file_path;
         }
 
         $this->FilterDirsAll    = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Core);
@@ -480,10 +478,10 @@ class DUP_Archive
                 continue;
             }
             $currentPath = $path . '/' . $currentName;
-            //DUP_Log::trace(' ANALIZE PATH: '.$currentPath);
 
             if (is_dir($currentPath)) {
-                DUP_Log::trace(' Scan dir: ' . $currentPath);
+                //Don't clutter the log with these
+                //DUP_Log::trace(' Scan dir: ' . $currentPath);
                 $add = true;
                 if (is_link($currentPath)) {
                     //Get real path of link

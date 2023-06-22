@@ -338,7 +338,7 @@ class DUP_Log
     {
         $log_filepath = self::GetTraceFilepath();
 
-        if (@filesize($log_filepath) > DUPLICATOR_MAX_LOG_SIZE) {
+        if (@file_exists($log_filepath) && @filesize($log_filepath) > DUPLICATOR_MAX_LOG_SIZE) {
             $backup_log_filepath = self::GetBackupTraceFilepath();
 
             if (file_exists($backup_log_filepath)) {

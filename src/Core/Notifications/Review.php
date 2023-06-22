@@ -169,11 +169,11 @@ class Review
      */
     public static function getFeedbackUrl()
     {
-        return "https://snapcreek.com/plugin-feedback";
+        return DUPLICATOR_BLOG_URL . "contact/";
     }
 
     /**
-     * When user is on a WPForms related admin page, display footer text
+     * When user is on a Duplicator related admin page, display footer text
      * that graciously asks them to rate us.
      *
      * @param string $text Footer text.

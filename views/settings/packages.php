@@ -124,7 +124,8 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                     <i class="far fa-lightbulb" aria-hidden="true"></i>
                                     <?php
                                     printf(
-                                        "%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+                                        "%s <a target='_blank' href='" . DUPLICATOR_DOCS_URL
+                                        . "what-host-providers-are-recommended-for-duplicator/'>%s</a> %s",
                                         __("Please visit our recommended", 'duplicator'),
                                         __("host list", 'duplicator'),
                                         __("for reliable access to mysqldump", 'duplicator')
@@ -150,7 +151,8 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                         . 'If the problem persist contact your host or server administrator.  ', 'duplicator');
 
                                     printf(
-                                        "%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+                                        "%s <a target='_blank' href='" . DUPLICATOR_DOCS_URL
+                                        . "what-host-providers-are-recommended-for-duplicator/'>%s</a> %s",
                                         __("See the", 'duplicator'),
                                         __("host list", 'duplicator'),
                                         __("for reliable access to mysqldump.", 'duplicator')
@@ -249,7 +251,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                 <div class="engine-radio">
                     <input type="radio" name="archive_build_mode" id="archive_build_mode2"  onclick="Duplicator.Pack.ToggleArchiveEngine()"
                            value="<?php echo esc_attr(DUP_Archive_Build_Mode::DupArchive); ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::DupArchive) ? 'checked="checked"' : ''; ?> />
-                    <label for="archive_build_mode2"><?php esc_html_e('DupArchive'); ?></label> &nbsp; &nbsp;
+                    <label for="archive_build_mode2"><?php esc_html_e('DupArchive', 'duplicator'); ?></label> &nbsp; &nbsp;
                 </div>
 
                 <br style="clear:both"/>
@@ -275,7 +277,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                         <?php
                             $utmCodes = "utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;"
                                       . "utm_content=free_settings_package_duparchive&amp;utm_campaign=duplicator_pro";
-                            $proURL   = "https://snapcreek.com/duplicator?{$utmCodes}";
+                            $proURL   = DUPLICATOR_BLOG_URL . "?" . $utmCodes;
                             esc_html_e('Creates a custom archive format (archive.daf).', 'duplicator');
                         ?>
                         <br/>
@@ -308,7 +310,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                     <?php
                     esc_html_e("This will attempt to keep a network connection established for large archives.", 'duplicator');
                     echo '&nbsp; ';
-                    esc_html_e(" Valid only when Archive Engine for ZipArchive is enabled.");
+                    esc_html_e(' Valid only when Archive Engine for ZipArchive is enabled.', 'duplicator');
                     ?>
                 </p>
             </td>

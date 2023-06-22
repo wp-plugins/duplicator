@@ -159,7 +159,7 @@ class DashboardWidget
     public static function getLastBackupString()
     {
         if (DUP_Package::isPackageRunning()) {
-            return '<span class="spinner"></span> <b>' . esc_html__('A package is currently running.', 'duplicator-pro') . '</b>';
+            return '<span class="spinner"></span> <b>' . esc_html__('A package is currently running.', 'duplicator') . '</b>';
         }
 
         /** @var DUP_Package[] */
@@ -176,7 +176,7 @@ class DashboardWidget
         );
 
         if (empty($lastPackage)) {
-            return '<b>' . esc_html__('No packages have been created yet.', 'duplicator-pro') . '</b>';
+            return '<b>' . esc_html__('No packages have been created yet.', 'duplicator') . '</b>';
         }
 
         $createdTime = date(get_option('date_format'), strtotime($lastPackage[0]->Created));
@@ -188,7 +188,7 @@ class DashboardWidget
         }
 
         $timeDiff = sprintf(
-            _x('%s ago', '%s represents the time diff, eg. 2 days', 'duplicator-pro'),
+            _x('%s ago', '%s represents the time diff, eg. 2 days', 'duplicator'),
             $lastPackage[0]->getPackageLife('human')
         );
 
@@ -207,7 +207,7 @@ class DashboardWidget
     {
         $plugins = array(
             'google-analytics-for-wordpress/googleanalytics.php' => array(
-                'name' => __('MonsterInsights', 'wpforms-lite'),
+                'name' => __('MonsterInsights', 'duplicator'),
                 'slug' => 'google-analytics-for-wordpress',
                 'more' => 'https://www.monsterinsights.com/',
                 'pro'  => array(
@@ -215,7 +215,7 @@ class DashboardWidget
                 ),
             ),
             'all-in-one-seo-pack/all_in_one_seo_pack.php' => array(
-                'name' => __('AIOSEO', 'wpforms-lite'),
+                'name' => __('AIOSEO', 'duplicator'),
                 'slug' => 'all-in-one-seo-pack',
                 'more' => 'https://aioseo.com/',
                 'pro'  => array(
@@ -223,7 +223,7 @@ class DashboardWidget
                 ),
             ),
             'coming-soon/coming-soon.php'                 => array(
-                'name' => __('SeedProd', 'wpforms-lite'),
+                'name' => __('SeedProd', 'duplicator'),
                 'slug' => 'coming-soon',
                 'more' => 'https://www.seedprod.com/',
                 'pro'  => array(
@@ -231,7 +231,7 @@ class DashboardWidget
                 ),
             ),
             'wp-mail-smtp/wp_mail_smtp.php'               => array(
-                'name' => __('WP Mail SMTP', 'wpforms-lite'),
+                'name' => __('WP Mail SMTP', 'duplicator'),
                 'slug' => 'wp-mail-smtp',
                 'more' => 'https://wpmailsmtp.com/',
                 'pro'  => array(

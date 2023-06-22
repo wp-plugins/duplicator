@@ -59,9 +59,9 @@ if (!class_exists('DuplicatorPhpVersionCheck')) {
                     );
                     printf($str, PHP_VERSION);
 
-                    $str  = __('Please ask your host or server administrator to update to PHP %1s or greater.') . '<br/>';
+                    $str  = __('Please ask your host or server administrator to update to PHP %1s or greater.', 'duplicator') . '<br/>';
                     $str .= __('If this is not possible, please visit the FAQ link titled ', 'duplicator');
-                    $str .= '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-017-q" target="blank">';
+                    $str .= '<a href="' . DUPLICATOR_DOCS_URL . 'system-requirements/" target="blank">';
                     $str .= __('"What version of PHP Does Duplicator Support?"', 'duplicator');
                     $str .= '</a>';
                     $str .= __(' for instructions on how to download a previous version of Duplicator compatible with PHP %2s.', 'duplicator');

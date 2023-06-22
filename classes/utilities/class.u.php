@@ -621,8 +621,18 @@ class DUP_Util
                 @unlink($fileName);
             } elseif (!file_exists($fileName)) {
                 $fileContent = <<<HTACCESS
+# Duplicator config, In case of file downloading problem, you can disable/enable it at Duplicator > Settings > Storage > Apache .htaccess
+
 Options -Indexes
-<Files *.php>\n deny from all\n</Files>
+<Files *.php>
+    deny from all
+</Files>
+<IfModule mod_headers.c>
+    <FilesMatch "\.(daf)$">
+        ForceType application/octet-stream
+        Header set Content-Disposition attachment
+    </FilesMatch>
+</IfModule>
 HTACCESS;
                 if (file_put_contents($fileName, $fileContent) === false) {
                     throw new Exception('Can\'t create .haccess');

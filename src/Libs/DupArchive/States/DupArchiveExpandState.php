@@ -40,6 +40,8 @@ abstract class DupArchiveExpandState extends DupArchiveStateBase
     public $directoryModeOverride = -1;
     public $fileModeOverride      = -1;
     public $lastHeaderOffset      = -1;
+    /** @var bool */
+    public $keepFileTime = false;
 
     /**
      * Reset state for file

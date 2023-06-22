@@ -83,7 +83,7 @@ $statusClass = $isOk ? 'green' : 'red';
         </ul>
     </li>
     <li>
-        <a href="<?php echo DUPX_U::esc_attr(DUPX_Constants::FAQ_URL); ?>#faq-installer-100-q" target="_help"
+        <a href="<?php echo DUPX_U::esc_attr(DUPX_Constants::FAQ_URL); ?>how-to-fix-database-connection-issues/" target="_help"
            title="I'm running into issues with the Database what can I do?">
             [Additional FAQ Help]
         </a>

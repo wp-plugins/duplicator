@@ -55,9 +55,10 @@ class DUP_Package_Screen extends DUP_UI_Screen
         $guide    = '#guide-packs';
         $faq      = '#faq-package';
         $content .= "<b>References:</b><br/>"
-                    . "<a href='" . esc_url("https://snapcreek.com/duplicator/docs/guide/" . $guide) . "' target='_sc-guide'>User Guide</a> | "
-                    . "<a href='" . esc_url("https://snapcreek.com/duplicator/docs/faqs-tech/" . $faq) . "' target='_sc-guide'>FAQs</a> | "
-                    . "<a href='https://snapcreek.com/duplicator/docs/quick-start/' target='_sc-guide'>Quick Start</a>";
+                    . "<a href='" . esc_url(DUPLICATOR_DOCS_URL . $guide)
+                    . "' target='_sc-guide'>User Guide</a> | "
+                    . "<a href='" . esc_url(DUPLICATOR_TECH_FAQ_URL . $faq) . "' target='_sc-guide'>FAQs</a> | "
+                    . "<a href='" . DUPLICATOR_BLOG_URL . "knowledge-base-article-categories/quick-start/' target='_sc-guide'>Quick Start</a>";
 
         $this->screen->add_help_tab(array(
                 'id'        => 'dup_help_package_overview',
@@ -85,7 +86,8 @@ class DUP_Package_Screen extends DUP_UI_Screen
                 . "An archive file can be saved as either a .zip file or .daf file.  A zip file is a common archive format used to compress and group files.  The daf file short for "
                 . "'Duplicator Archive Format' is a custom format used specifically  for working with larger packages and scale-ability issues on many shared hosting platforms.  Both "
                 . "formats work very similar.  The main difference is that the daf file can only be extracted using the installer.php file or the "
-                . "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q' target='_blank'>DAF extraction tool</a>.  The zip file can be used by the installer.php "
+                . "<a href='" . DUPLICATOR_DOCS_URL . "how-to-work-with-daf-files-and-the-duparchive-extraction-tool'"
+                . " target='_blank'>DAF extraction tool</a>. The zip file can be used by the installer.php "
                 . "or other zip tools like winrar/7-Zip/winzip or other client-side tools. <br/><br/>",
             'duplicator'
         );
@@ -138,9 +140,10 @@ class DUP_Package_Screen extends DUP_UI_Screen
                 . "your host's webroot accessible from a valid URL such as http://your-domain/your-wp-directory/installer.php to launch the install wizard. On some hosts the root directory "
                 . "will be a something like public_html -or- www.  If your're not sure contact your hosting provider. </li>"
                 . "</ol>"
-                . "For complete instructions see:<br/>
-					<a href='https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=package_built_install_help4&amp;utm_campaign=duplicator_free#quick-040-q' target='_blank'>
-					How do I install this Package?</a><br/><br/>", 'duplicator');
+                . "For complete instructions see:<br/>"
+                . "<a href='" . DUPLICATOR_BLOG_URL . "knowledge-base-article-categories/quick-start/"
+                . "?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=package_built_install_help4&amp;utm_campaign=duplicator_free"
+                . "#quick-040-q' target='_blank'>How do I install this Package?</a><br/><br/>", 'duplicator');
     }
 
     public function get_details_help()

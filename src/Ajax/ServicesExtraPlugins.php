@@ -50,7 +50,7 @@ class ServicesExtraPlugins extends AbstractAjaxService
             array(__CLASS__, 'extraPluginInstallCallback'),
             'duplicator_install_extra_plugin',
             $_POST['nonce'],
-            'export'
+            'install_plugins'
         );
     }
 }

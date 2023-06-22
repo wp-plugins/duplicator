@@ -41,19 +41,19 @@ $recoveryURl  = ControllersManager::getMenuLink(
                             '%s Schedule',
                             '%s Schedules',
                             $tplData['numSchedules'],
-                            'duplicator-pro'
+                            'duplicator'
                         ),
                         $tplData['numSchedules']
                     ));
                     ?></a>
             </span>
             <span>
-                <?php _e('Enabled', 'duplicator-pro'); ?>: 
+                <?php _e('Enabled', 'duplicator'); ?>: 
                 <b class="<?php echo ($tplData['numSchedulesEnabled'] ? 'green' : 'maroon'); ?>">
                     <?php echo $tplData['numSchedulesEnabled']; ?>
                 </b>
                 <?php if (strlen($tplData['nextScheduleString'])) { ?>
-                    - <?php _e('Next', 'duplicator-pro'); ?>: <b><?php echo $tplData['nextScheduleString']; ?></b>
+                    - <?php _e('Next', 'duplicator'); ?>: <b><?php echo $tplData['nextScheduleString']; ?></b>
                 <?php } ?>
             </span>
         </li>
@@ -66,7 +66,7 @@ $recoveryURl  = ControllersManager::getMenuLink(
                             '%s Storage',
                             '%s Storages',
                             $tplData['numStorages'],
-                            'duplicator-pro'
+                            'duplicator'
                         ),
                         $tplData['numStorages']
                     ));
@@ -83,7 +83,7 @@ $recoveryURl  = ControllersManager::getMenuLink(
                             '%s Template',
                             '%s Templates',
                             $tplData['numTemplates'],
-                            'duplicator-pro'
+                            'duplicator'
                         ),
                         $tplData['numTemplates']
                     ));
@@ -95,12 +95,12 @@ $recoveryURl  = ControllersManager::getMenuLink(
             <span class="dup-section-label-fixed-width" >
                 <span class="dashicons dashicons-image-rotate gary"></span>
                 <a href="<?php echo esc_url($recoveryURl); ?>" ><?php
-                    esc_html_e('Recovery Point', 'duplicator-pro');
+                    esc_html_e('Recovery Point', 'duplicator');
                 ?> 
                 </a>
             </span>
             <span>
-                <span class="maroon"><b><?php esc_html_e('Not set', 'duplicator-pro'); ?></b></span>
+                <span class="maroon"><b><?php esc_html_e('Not set', 'duplicator'); ?></b></span>
             </span>
         </li>
     </ul>

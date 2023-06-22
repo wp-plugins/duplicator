@@ -334,7 +334,7 @@ namespace {
                         . "<li>If the archive is not finished downloading please wait for it to complete.</li>"
                         . "<li>Rename the file to it original hash name.  See WordPress-Admin ❯ Packages ❯  Details. </li>"
                         . "<li>When downloading, both files both should be from the same package line. </li>"
-                        . "<li>Also see: <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-050-q' target='_blank'>"
+                        . "<li>Also see: <a href='https://duplicator.com/knowledge-base/how-to-fix-general-installer-ui-bootstrap-archive-issues' target='_blank'>"
                         . "How to fix various errors that show up before step-1 of the installer?</a></li>"
                         . "</ul>";
 
@@ -350,7 +350,7 @@ namespace {
                     $this->log('[ERROR] ' . $error);
                     $error      .= 'Possibibles solutions:<br>';
                     $error      .= '- Use the file filters to get your package lower to support this server or try the package on a Linux server.' . '<br>';
-                    $error      .= '- Perform a <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q">' .
+                    $error      .= '- Perform a <a target="_blank" href="https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios">' .
                         'Manual Extract Install</a>' . '<br>';
 
                     switch ($no_of_bits == 32) {
@@ -363,7 +363,7 @@ namespace {
                     }
 
                     if (self::isWindows()) {
-                        $error .= '- <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q">' .
+                        $error .= '- <a target="_blank" href="https://duplicator.com/knowledge-base/how-to-work-with-daf-files-and-the-duparchive-extraction-tool">' .
                             'Windows DupArchive extractor</a> to extract all files from the archive.' . '<br>';
                     }
 
@@ -455,7 +455,7 @@ namespace {
                 if (!is_writable($destination)) {
                     $this->log("WARNING: The {$destination} directory is not writable.");
                     $error = "NOTICE: The {$destination} directory is not writable on this server please talk to your host or server admin about making ";
-                    $error .= "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-055-q'>" .
+                    $error .= "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-file-permissions-issues'>" .
                         "writable {$destination} directory</a> on this server. <br/>";
                     return $error;
                 }
@@ -485,7 +485,7 @@ namespace {
                         } else {
                             $this->log("WARNING: ZipArchive is not enabled.");
                             $error = "NOTICE: ZipArchive is not enabled on this server please talk to your host or server admin about enabling ";
-                            $error .= "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q'>" .
+                            $error .= "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-work-with-the-different-zip-engines'>" .
                                 "ZipArchive</a> on this server. <br/>";
                         }
                     }
@@ -521,7 +521,7 @@ namespace {
                             $this->log("WARNING: ZipArchive and Shell Exec are not enabled on this server.");
                             $error = "NOTICE: ZipArchive and Shell Exec are not enabled on this server please " .
                                 "talk to your host or server admin about enabling ";
-                            $error .= "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q'>ZipArchive</a> " .
+                            $error .= "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-work-with-the-different-zip-engines'>ZipArchive</a> " .
                                 "or <a target='_blank' href='http://php.net/manual/en/function.shell-exec.php'>Shell Exec</a> " .
                                 "on this server or manually extract archive then choose Advanced > Manual Extract in installer.";
                         }
@@ -660,7 +660,7 @@ namespace {
             if ($error === null) {
                 if (!file_exists($this->targetDupInst)) {
                     $error = 'Can\'t extract installer directory. ' .
-                        'See <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-022-q">this FAQ item</a>' .
+                        'See <a target="_blank" href="https://duplicator.com/knowledge-base/how-to-fix-installer-archive-extraction-issues/">this FAQ item</a>' .
                         ' for details on how to resolve.</a>';
                 }
 
@@ -2059,7 +2059,7 @@ namespace {
                         <div style="font-size:11px">
                             Note: For archive.zip files either ZipArchive or Shell Exec will need to be enabled for the installer to run automatically
                             otherwise a manual extraction will need to be performed.  In order to run the installer manually follow the instructions to
-                            <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q' target='_blank'>manually extract</a> before
+                            <a href='https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios' target='_blank'>manually extract</a> before
                             running the installer.
                         </div>
                         <br/><br/>

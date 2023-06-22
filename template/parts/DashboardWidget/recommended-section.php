@@ -33,21 +33,21 @@ $moreUrl    = $plugin['more'] . '?' . http_build_query(array(
     <div class="dup-flex-content" >
         <div>
             <span class="dup-recommended-label">
-                <?php esc_html_e('Recommended Plugin:', 'duplicator-pro'); ?>
+                <?php esc_html_e('Recommended Plugin:', 'duplicator'); ?>
             </span>
             <b><?php echo esc_html($plugin['name']); ?></b>
             -
             <span class="action-links">
                 <?php if (current_user_can('install_plugins') && current_user_can('activate_plugins')) { ?>
-                    <a href="<?php echo esc_url($installUrl); ?>"><?php esc_html_e('Install', 'wpforms-lite'); ?></a>
+                    <a href="<?php echo esc_url($installUrl); ?>"><?php esc_html_e('Install', 'duplicator'); ?></a>
                 <?php } ?>
                 <a href="<?php echo esc_url($moreUrl); ?>" target="_blank" ><?php
-                    esc_html_e('Learn More', 'duplicator-pro');
+                    esc_html_e('Learn More', 'duplicator');
                 ?></a>
             </span>
         </div>
         <div>
-            <button type="button" id="dup-dash-widget-section-recommended" title="<?php esc_html_e('Dismiss recommended plugin', 'duplicator-pro'); ?>">
+            <button type="button" id="dup-dash-widget-section-recommended" title="<?php esc_html_e('Dismiss recommended plugin', 'duplicator'); ?>">
                 <span class="dashicons dashicons-no-alt"></span>
             </button>
         </div>

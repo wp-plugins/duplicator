@@ -26,6 +26,7 @@ class DUP_UI_Messages
     public $wrap_cont_tag  = 'p';
     public $hide_on_init   = true;
     public $is_dismissible = false;
+
 /**
      *
      * @var int delay in milliseconds
@@ -65,7 +66,7 @@ class DUP_UI_Messages
             $classes[] = 'no_display';
         }
 
-        $this->wrap_tag = empty($this->wrap_tag) ? 'p' : $this->wrap_tag;
+        $this->wrap_cont_tag = empty($this->wrap_cont_tag) ? 'p' : $this->wrap_cont_tag;
         echo '<div id="' . $this->id . '" class="' . $this->get_notice_classes($classes) . '">' .
         '<' . $this->wrap_cont_tag . ' class="msg-content">' .
         $this->content .

@@ -37,17 +37,17 @@ defined('ABSPATH') || exit;
 
         <ul class="list-plain">
             <li>
-                <a href="https://snapcreek.com/duplicator/docs/quick-start/" target="_blank" rel="noopener noreferrer">
+                <a href="<?php echo DUPLICATOR_BLOG_URL; ?>knowledge-base-article-categories/quick-start/" target="_blank" rel="noopener noreferrer">
                     <?php _e('Quick Start Guide', 'duplicator'); ?>
                 </a>
             </li>
             <li>
-                <a href="https://snapcreek.com/duplicator/docs/guide/#guide-packs" target="_blank" rel="noopener noreferrer">
+                <a href="<?php echo DUPLICATOR_DOCS_URL; ?>backup-site/" target="_blank" rel="noopener noreferrer">
                     <?php _e('How to Create a Package', 'duplicator'); ?>
                 </a>
             </li>
             <li>
-                <a href="https://snapcreek.com/duplicator/docs/guide/#guide-install" target="_blank" rel="noopener noreferrer">
+                <a href="<?php echo DUPLICATOR_DOCS_URL; ?>classic-install/" target="_blank" rel="noopener noreferrer">
                     <?php _e('How to Migrate to a New Site', 'duplicator'); ?>
                 </a>
             </li>

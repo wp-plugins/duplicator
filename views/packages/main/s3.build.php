@@ -21,7 +21,8 @@ $atext0 .= __('Help review the plugin', 'duplicator') . '!</a>';
 
 //Get even more power & features with Duplicator Pro
 $atext1  = __('Want more power?  Try', 'duplicator');
-$atext1 .= "&nbsp;<a target='_blank' href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_build_more_power&utm_campaign=duplicator_pro'>";
+$atext1 .= "&nbsp;<a target='_blank' href='" . DUPLICATOR_BLOG_URL . "features/";
+$atext1 .= "?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_build_more_power&utm_campaign=duplicator_pro'>";
 $atext1 .= __('Duplicator Pro', 'duplicator') . '</a>!';
 
 if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MODE_SIMPLE) {
@@ -254,10 +255,12 @@ TOOL BAR:STEPS -->
 
                             <!-- CLASSIC -->
                             <i class="far fa-save fa-sm fa-fw"></i>
-                            <a 
-                                href="https://duplicator.com/knowledge-base/classic-install/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help1_bwording2&utm_campaign=duplicator_free" 
-                                target="_blank"
-                            >
+                            <?php
+                                $url  = DUPLICATOR_DOCS_URL . 'classic-install/';
+                                $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin';
+                                $url .= '&utm_content=package_built_install_help1_bwording1&utm_campaign=duplicator_free';
+                            ?>
+                            <a href="<?php echo esc_attr($url); ?>" target="_blank">
                                 <?php esc_html_e('Install to Empty Directory ', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
@@ -273,10 +276,12 @@ TOOL BAR:STEPS -->
 
                             <!-- OVERWRITE -->
                             <i class="far fa-window-close fa-sm fa-fw"></i>
-                            <a 
-                                href="https://duplicator.com/knowledge-base/overwrite-install//?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help2_bwording2&utm_campaign=duplicator_free" 
-                                target="_blank"
-                            >
+                            <?php
+                                $url  = DUPLICATOR_DOCS_URL . 'overwrite-install/';
+                                $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin';
+                                $url .= '&utm_content=package_built_install_help2_bwording2&utm_campaign=duplicator_free';
+                            ?>
+                            <a href="<?php echo esc_attr($url); ?>" target="_blank">
                                 <?php esc_html_e('Overwrite Site', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
@@ -290,10 +295,12 @@ TOOL BAR:STEPS -->
 
                             <!-- IMPORT -->
                             <i class="fas fa-arrow-alt-circle-down fa-sm fa-fw"></i>
-                            <a 
-                                href="https://duplicator.com/knowledge-base/import-install/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help3_bwording2&utm_campaign=duplicator_free" 
-                                target="_blank"
-                            >
+                            <?php
+                                $url  = DUPLICATOR_DOCS_URL . 'import-install/';
+                                $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin';
+                                $url .= '&utm_content=package_built_install_help3_bwording1&utm_campaign=duplicator_free';
+                            ?>
+                            <a href="<?php echo esc_attr($url); ?>" target="_blank">
                                 <?php esc_html_e('Import Archive and Overwrite Site', 'duplicator'); ?>
                             </a>
                             <sup class="modes">
@@ -342,7 +349,7 @@ TOOL BAR:STEPS -->
                         <a href="<?php echo esc_url(Upsell::getCampaignUrl('package-build-complete', 'Build Failed Get Pro')); ?>" target="_blank">
                             Duplicator Pro,
                         </a>
-                        <?php esc_html_e(' which is capable of migrating sites much larger than 500MB.'); ?>
+                        <?php esc_html_e(' which is capable of migrating sites much larger than 500MB.', 'duplicator'); ?>
                     </div><br/>
 
                     <b><i class="far fa-file-alt fa-sm"></i> <?php esc_html_e('Overview', 'duplicator'); ?></b><br/>
@@ -359,7 +366,9 @@ TOOL BAR:STEPS -->
                     <small style="font-style:italic">
                         <?php esc_html_e('Note:The DupArchive engine will generate an archive.daf file. This file is very similar to a .zip except that it can only be extracted by the '
                             . 'installer.php file or the', 'duplicator'); ?>
-                        <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q" target="_blank"><?php esc_html_e('commandline extraction tool'); ?></a>.
+                        <a href="<?php echo DUPLICATOR_DOCS_URL; ?>how-to-work-with-daf-files-and-the-duparchive-extraction-tool" target="_blank">
+                            <?php esc_html_e('commandline extraction tool', 'duplicator'); ?>
+                        </a>.
                     </small>
                 </div>
             </div>
@@ -391,7 +400,7 @@ TOOL BAR:STEPS -->
                         <?php
                         printf(
                             '<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s',
-                            esc_html__('Build Folder:'),
+                            esc_html__('Build Folder:', 'duplicator'),
                             DUP_Settings::getSsdirTmpPath(),
                             __("On some servers the build will continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see "
                                 . "if the archive file is growing in size or check the main packages screen to see if the package completed. If it is not then your server "
@@ -426,8 +435,9 @@ TOOL BAR:STEPS -->
                             printf(
                                 '%s "<a href="%s" target="faq">%s</a>".',
                                 '',
-                                'https://snapcreek.com/duplicator/docs/quick-start/' .
-                                '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink2&utm_campaign=build_issues#quick-060-q',
+                                DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/' .
+                                '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=' .
+                                'host_interupt_2partlink2&utm_campaign=build_issues#quick-060-q',
                                 esc_html__('Quick Start Two-Part Install Instructions', 'duplicator')
                             );
                             ?>
@@ -458,7 +468,7 @@ TOOL BAR:STEPS -->
                                                 ?><br/><br/>
 
                     <div style="text-align:center; margin:10px; font-size:16px; font-weight:bold">
-                        <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q" target="_blank">
+                        <a href="<?php echo DUPLICATOR_DOCS_URL; ?>how-to-handle-server-timeout-issues/" target="_blank">
                             [<?php esc_html_e('Diagnose Server Setup', 'duplicator'); ?>]
                         </a>
                     </div>

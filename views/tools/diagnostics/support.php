@@ -51,19 +51,31 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 <?php esc_html_e('Complete Online Documentation', 'duplicator'); ?><br/>
                 <select id="dup-support-kb-lnks" style="margin-top:18px; font-size:16px; min-width: 170px">
                     <option disabled selected> <?php esc_html_e('Choose A Section', 'duplicator') ?> </option>
-                    <option value="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_qs"><?php esc_html_e(
+                    <?php
+                        $url  = DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/';
+                        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_qs';
+                    ?>
+                    <option value="<?php echo esc_attr($url); ?>"><?php esc_html_e(
                         'Quick Start',
                         'duplicator'
                     ) ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/guide/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_guide"><?php esc_html_e(
+                    <?php
+                        $url  = DUPLICATOR_DOCS_URL;
+                        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_guide';
+                    ?>
+                    <option value="<?php echo esc_attr($url); ?>"><?php esc_html_e(
                         'User Guide',
                         'duplicator'
                     ) ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_FAQs"><?php esc_html_e(
+                    <?php
+                        $url  = DUPLICATOR_TECH_FAQ_URL;
+                        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_FAQs';
+                    ?>
+                    <option value="<?php echo esc_attr($url); ?>"><?php esc_html_e(
                         'FAQs',
                         'duplicator'
                     ) ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/changelog/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_changelog&lite"><?php esc_html_e(
+                    <option value="<?php echo DUPLICATOR_DOCS_URL; ?>changelog/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_changelog&lite"><?php esc_html_e(
                         'Change Log',
                         'duplicator'
                     ) ?></option>

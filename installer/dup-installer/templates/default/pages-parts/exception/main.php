@@ -52,5 +52,6 @@ if (SnapString::isHTML($exception->getMessage())) {
 <?php } ?>
 
 <div style="text-align:center; margin:10px auto 0px auto">
-    <i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket' target='_blank'>snapcreek.com</a></i>
+    <?php $url = DUPX_Constants::DUP_SITE_URL . 'contact/?form=1'; ?>
+    <i style='font-size:11px'>See online help for more details at <a href='<?php echo DUPX_U::esc_attr($url); ?>' target='_blank'>duplicator.com</a></i>
 </div>

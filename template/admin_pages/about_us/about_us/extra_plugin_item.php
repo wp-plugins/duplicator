@@ -43,7 +43,7 @@ switch ($plugin->getStatus()) {
         </div>
         <div class="actions dup-clear">
             <div class="status">
-                <strong><?php _e("Status:") ?>
+                <strong><?php _e('Status:', 'duplicator') ?>
                     <span class="status-label <?php echo $statusClass; ?>">
                         <?php echo $plugin->getStatusText(); ?>
                     </span>

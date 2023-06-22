@@ -112,15 +112,15 @@ class DUP_Web_Services
             DUP_Util::hasCapability('export', DUP_Util::SECURE_ISSUE_THROW);
 
             if (!$isValid) {
-                throw new Exception(__("Invalid request"));
+                throw new Exception(__('Invalid request.', 'duplicator'));
             }
 
             if (($package = DUP_Package::getByID($packageId)) == null) {
-                throw new Exception(__("Invalid request."));
+                throw new Exception(__('Invalid request.', 'duplicator'));
             }
 
             if ($hash !== $package->Hash) {
-                throw new Exception(__("Invalid request."));
+                throw new Exception(__('Invalid request.', 'duplicator'));
             }
 
             $fileName     = $package->getInstDownloadName();
@@ -134,7 +134,7 @@ class DUP_Web_Services
 
             // Process download
             if (!file_exists($filepath)) {
-                throw new Exception(__("INVALID REQUEST: File not found, please check the backup folder for file."));
+                throw new Exception(__('INVALID REQUEST: File not found, please check the backup folder for file.', 'duplicator'));
             }
 
             // Clean output buffer

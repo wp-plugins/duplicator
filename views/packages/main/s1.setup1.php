@@ -108,7 +108,7 @@ SYSTEM REQUIREMENTS -->
                         <tr>
                             <td><?php printf("%s [%s]", esc_html__("PHP Version", 'duplicator'), phpversion()); ?></td>
                             <td><?php echo esc_html($dup_tests['PHP']['VERSION']); ?></td>
-                            <td><?php esc_html_e('PHP versions 5.2.9+ or higher is required.')?></td>
+                            <td><?php esc_html_e('PHP versions 5.2.9+ or higher is required.', 'duplicator')?></td>
                         </tr>
                         <?php if ($archive_build_mode == 'zip') : ?>
                             <tr>
@@ -128,7 +128,7 @@ SYSTEM REQUIREMENTS -->
                         <tr>
                             <td><?php esc_html_e('Safe Mode Off', 'duplicator'); ?></td>
                             <td><?php echo esc_html($dup_tests['PHP']['SAFE_MODE']); ?></td>
-                            <td><?php esc_html_e('Safe Mode should be set to Off in you php.ini file and is deprecated as of PHP 5.3.0.')?></td>
+                            <td><?php esc_html_e('Safe Mode should be set to Off in you php.ini file and is deprecated as of PHP 5.3.0.', 'duplicator')?></td>
                         </tr>                   
                         <tr>
                             <td><?php esc_html_e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/function.file-get-contents.php" target="_blank">file_get_contents</a></td>
@@ -221,7 +221,8 @@ SYSTEM REQUIREMENTS -->
                         </tr>
                     </table>
                     <small>
-                        <?php esc_html_e("The function mysqli_real_escape_string is not working properly. Please consult host support and ask them to switch to a different PHP version or configuration."); ?>
+                        <?php esc_html_e("The function mysqli_real_escape_string is not working properly. Please consult host " .
+                            "support and ask them to switch to a different PHP version or configuration.", "duplicator"); ?>
                     </small>
                 </div>
             </div>

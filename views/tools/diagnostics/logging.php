@@ -182,7 +182,7 @@ jQuery(document).ready(function($)
                          <i class="far fa-lightbulb" aria-hidden="true"></i>
                             <?php
                                 printf(
-                                    "%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
+                                    "%s <a target='_blank' href='" . DUPLICATOR_DOCS_URL . "what-host-providers-are-recommended-for-duplicator/'>%s</a> %s",
                                     esc_html__("Consider our recommended", 'duplicator'),
                                     esc_html__("host list", 'duplicator'),
                                     esc_html__("if you’re unhappy with your current provider", 'duplicator')

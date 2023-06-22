@@ -79,7 +79,7 @@ $processedStr  = DUP_Extraction::getInitialFileProcessedString();
                     if (textStatus && textStatus.toLowerCase() == "timeout" || textStatus.toLowerCase() == "service unavailable") {
                         default_timeout_message = "<b>Recommendation:</b><br/>";
                         default_timeout_message += "See <a target='_blank' href='" + 
-                            "https://snapcreek.com/duplicator/docs/faqs-tech/?180116102141#faq-trouble-100-q'>";
+                            "https://duplicator.com/knowledge-base/how-to-handle-server-timeout-issues/'>";
                         default_timeout_message += "this FAQ item</a> for possible resolutions.";
                         default_timeout_message += "<hr>";
                         default_timeout_message += "<b>Additional Resources...</b><br/>";
@@ -90,12 +90,12 @@ $processedStr  = DUP_Extraction::getInitialFileProcessedString();
                             "Server timeout issues and ask them if they have any recommendations</li>";
                         default_timeout_message += "<li><strong>Dedicated Help:</strong> " + 
                             "If you're in a time-crunch we suggest that you contact " + 
-                            "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116150030#faq-resource-030-q'>" +
+                            "<a target='_blank' href='https://duplicator.com/knowledge-base/how-should-i-get-help-for-each-duplicator-product/'>" +
                             "professional server administrator</a>. A dedicated resource like this will be able to work with you around " + 
                             "the clock to the solve the issue much faster than we can in most cases.</li>";
                         default_timeout_message += "<li><strong>Consider Upgrading:</strong> If you're on a budget host then you may run into constraints. " + 
                             "If you're running a larger or more complex site it might be worth upgrading to a " + 
-                            "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116150030#faq-resource-040-q'>" + 
+                            "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-handle-server-timeout-issues/'>" + 
                             "managed VPS server</a>. These systems will pretty much give you full control to use the software without constraints and " + 
                             "come with excellent support from the hosting company.</li>";
                         default_timeout_message += "<li><strong>Contact SnapCreek:</strong> We will try our best to help configure and " + 
@@ -112,19 +112,19 @@ $processedStr  = DUP_Extraction::getInitialFileProcessedString();
                                     break;
                                 case 'extract':
                                     status += "<b>Recommendation:</b><br/>";
-                                    status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q'>" + 
+                                    status += "See <a target='_blank' href='https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios'>" + 
                                         "this FAQ item</a> for possible resolutions.<br/><br/>";
                                     break;
                                 case 'ping':
                                     status += "<b>Recommendation:</b><br/>";
                                     status += "See " + 
-                                        "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116152758#faq-trouble-030-q'>" + 
+                                        "<a target='_blank' href='https://duplicator.com/knowledge-base/how-should-i-get-help-for-each-duplicator-product/'>" + 
                                         "this FAQ item</a> for possible resolutions.<br/><br/>";
                                     break;
                                 case 'delete-site':
                                     status += "<b>Recommendation:</b><br/>";
                                     status += "See " + 
-                                        "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116153643#faq-installer-120-q'>" + 
+                                        "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-resolve-403-500-timeout-issues-on-step-3/'>" + 
                                         "this FAQ item</a> for possible resolutions.<br/><br/>";
                                     break;
                             }
@@ -136,13 +136,13 @@ $processedStr  = DUP_Extraction::getInitialFileProcessedString();
                     } else if ((jqXHR.status == 403) || (jqXHR.status == 500)) {
                         status += "<b>Recommendation:</b><br/>";
                         status += "See " + 
-                            "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-120-q'>" + 
+                            "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-resolve-403-500-timeout-issues-on-step-3'>" + 
                             "this FAQ item</a> for possible resolutions.<br/><br/>"
                     } else if ((jqXHR.status == 0) || (jqXHR.status == 200)) {
                         status += "<b>Recommendation:</b><br/>";
                         status += "Possible server timeout! Performing a 'Manual Extraction' can avoid timeouts.";
                         status += "See " + 
-                            "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q'>" + 
+                            "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios'>" + 
                             "this FAQ item</a> for a complete overview.<br/><br/>"
                     }
 

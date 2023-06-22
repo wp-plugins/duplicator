@@ -15,7 +15,8 @@ $expandClass = $sectionId == $open_section ? 'open' : 'close';
             <div style="padding: 0px 10px 10px 10px;">
                 <b>Common Quick Fix Issues:</b>
                 <ul>
-                    <li>Use a <a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>Duplicator approved hosting provider</a></li>
+                    <?php $url = DUPX_Constants::FAQ_URL . 'what-host-providers-are-recommended-for-duplicator/'; ?>
+                    <li>Use a <a href='<?php echo DUPX_U::esc_attr($url); ?>' target='_blank'>Duplicator approved hosting provider</a></li>
                     <li>Validate directory and file permissions (see below)</li>
                     <li>Validate web server configuration file (see below)</li>
                     <li>Clear your browsers cache</li>

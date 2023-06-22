@@ -753,7 +753,7 @@ HEADER;
             DUP_Log::trace("Doing archive file check");
             // Only way it's 2 is if the root was part of the filter in which case the archive won't be there
             if (file_exists($archive_filepath) == false) {
-                $error_text = sprintf(__("Zip archive %1s not present.", 'dup;icator'), $archive_filepath);
+                $error_text = sprintf(__("Zip archive %1s not present.", 'duplicator'), $archive_filepath);
                 DUP_Log::error($error_text, '', Dup_ErrorBehavior::LogOnly);
                 return false;
             }

@@ -877,4 +877,25 @@ class SnapUtil
         }
         return phpinfo($flags);
     }
+
+    /**
+     * Wrapper for set_time_limit to see if it is enabled.
+     *
+     * @since 1.6.4
+     *
+     * @param int $limit Time limit.
+     *
+     * @return void
+     */
+    public static function duplicatorSetTimeLimit($limit = 0)
+    {
+
+        if (
+            function_exists('set_time_limit') &&
+            false === strpos(ini_get('disable_functions'), 'set_time_limit') &&
+            ! ini_get('safe_mode')
+        ) { // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
+            @set_time_limit( $limit ); // @codingStandardsIgnoreLine
+        }
+    }
 }

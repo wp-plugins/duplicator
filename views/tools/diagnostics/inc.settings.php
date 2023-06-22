@@ -218,7 +218,7 @@ SERVER SETTINGS -->
              <td class='dup-settings-diag-header' colspan="2"><?php esc_html_e("Server Disk", 'duplicator'); ?></td>
          </tr>
          <tr valign="top">
-             <td><?php esc_html_e('Free space', 'hyper-cache'); ?></td>
+             <td><?php esc_html_e('Free space', 'duplicator'); ?></td>
              <td>
                  <?php if ($space == null || $space_free == null) : ?>
                         <?php esc_html_e("Unable to calculate space on this server.", 'duplicator'); ?>

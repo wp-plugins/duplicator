@@ -10,7 +10,7 @@ VALIDATION-->
 The system validation checks help to make sure the system is ready for install.  During installation the website will be in maintenance mode and not
 accessible to users.   The series of checks will alert if there are any items that need attention.   An overview of the different status codes can all
 be found online in the FAQ titled
-<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-105-q" target="_blank">How to fix installer validation checks? </a>
+<a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-fix-installer-validation-checks" target="_blank">How to fix installer validation checks? </a>
 <br/><br/>
 
 The validation process requires a connection to the database before starting.   Enter in all the Database Connection fields and click the "Validate" button

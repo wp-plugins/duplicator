@@ -50,7 +50,7 @@ However if you see a large amount of errors or you experience an issue with your
 <ul>
     <li>
         <b>Unknown collation:</b> See Online FAQ:
-        <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-090-q" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a>
+        <a href="https://duplicator.com/knowledge-base/how-to-fix-database-write-issues/" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a>
     </li>
     <li>
         <b>Query Limits:</b> Update MySQL server with the <a href="https://dev.mysql.com/doc/refman/5.5/en/packet-too-large.html" target="_blank">max_allowed_packet</a>

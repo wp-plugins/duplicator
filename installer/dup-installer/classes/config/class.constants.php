@@ -21,8 +21,9 @@ class DUPX_Constants
     const CHUNK_DBINSTALL_TIMEOUT_TIME             = 5;
     const CHUNK_MAX_TIMEOUT_TIME                   = 5;
     const DEFAULT_MAX_STRLEN_SERIALIZED_CHECK_IN_M = 4; // 0 no limit
-    const FAQ_URL                                  = 'https://snapcreek.com/duplicator/docs/faqs-tech';
-    const URL_SUBSCRIBE                            = 'http://snapcreek.com/?lite_email_signup=1';
+    const DUP_SITE_URL                             = 'https://duplicator.com/';
+    const FAQ_URL                                  = 'https://duplicator.com/knowledge-base/';
+    const URL_SUBSCRIBE                            = 'https://duplicator.com/?lite_email_signup=1';
     const MIN_NEW_PASSWORD_LEN                     = 6;
     const BACKUP_RENAME_PREFIX                     = 'dp___bk_';
     const UPSELL_DEFAULT_DISCOUNT                  = 50; // Default discount for upsell
@@ -66,7 +67,8 @@ class DUPX_Constants
         $GLOBALS['ZIP_ARC_CHUNK_EXTRACT_DISP_NOTICE_MIN_EXPECTED_EXTRACT_TIME'] = 10 * 60 * 60; // 10 minutes
         $GLOBALS['ZIP_ARC_CHUNK_EXTRACT_DISP_NEXT_NOTICE_INTERVAL']             = 5 * 60 * 60; // 5 minutes
 
-        $additional_msg                           = ' for additional details <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">click here</a>.';
+        $additional_msg                           = ' for additional details ';
+        $additional_msg                          .= '<a href="' . self::FAQ_URL . 'how-to-handle-various-install-scenarios" target="_blank">click here</a>.';
         $GLOBALS['ZIP_ARC_CHUNK_EXTRACT_NOTICES'] = array(
             'This server looks to be under load or throttled, the extraction process may take some time',
             'This host is currently experiencing very slow I/O. You can continue to wait or try a manual extraction.',

@@ -40,6 +40,6 @@ When this value is lower than the suggested minimum of
 <ul>
     <li>
         Try Increasing the memory_limit.&nbsp;
-        <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?210328131212#faq-trouble-056-q" target="_blank">[Additional FAQ Help]</a>
+        <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-manage-server-resources-cpu-memory-disk/" target="_blank">[Additional FAQ Help]</a>
     </li>
 </ul>

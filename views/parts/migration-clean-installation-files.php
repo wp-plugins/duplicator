@@ -67,7 +67,8 @@ use Duplicator\Utils\CachesPurge\CachesPurge;
             <?php
             _e(
                 'For more details please visit '
-                . 'the FAQ link <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-295-q" target="_blank">'
+                . 'the FAQ link <a href="' . DUPLICATOR_DOCS_URL
+                . 'which-files-need-to-be-removed-after-an-install" target="_blank">'
                 . 'Which files need to be removed after an install?'
                 . '</a>',
                 'duplicator'

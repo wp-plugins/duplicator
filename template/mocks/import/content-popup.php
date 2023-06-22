@@ -27,7 +27,7 @@ defined("ABSPATH") || exit;
                 )
             )
         ),
-        'https://snapcreek.com/how-to-move-a-wordpress-site/'
+        DUPLICATOR_BLOG_URL . 'how-to-move-a-wordpress-site/'
     );
     ?>
 </p>

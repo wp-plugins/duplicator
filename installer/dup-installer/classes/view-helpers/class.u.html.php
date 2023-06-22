@@ -347,11 +347,11 @@ class DUPX_U_Html
 
     /**
      *
-     * @param string $htmlContent
-     * @param string|string[] $classes additional classes on main div
-     * @param int $step pixel foreach more step
-     * @param string $id id on main div
-     * @param bool $echo
+     * @param string          $htmlContent
+     * @param string|string[] $classes     additional classes on main div
+     * @param int             $step        pixel foreach more step
+     * @param string          $id          id on main div
+     * @param bool            $echo
      *
      * @return string|void
      */
@@ -366,7 +366,8 @@ class DUPX_U_Html
         <div <?php echo $idAttr; ?>class="<?php echo implode(' ', $mainClasses); ?>" data-more-step="<?php echo $atStep; ?>" style="max-height: <?php echo $atStep; ?>px">
             <div class="more-wrapper" ><?php echo $htmlContent; ?></div>
             <div class="more-faq-link">
-                Please search the <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">Online Technical FAQs</a>
+            <?php $url = DUPX_Constants::DUP_SITE_URL . 'knowledge-base-article-categories/troubleshooting/'; ?>
+                Please search the <a href="<?php echo DUPX_U::esc_attr($url); ?>" target="_blank">Online Technical FAQs</a>
                 for solutions to these issues.
             </div>
             <button class="more-button" type="button">[show more]</button>

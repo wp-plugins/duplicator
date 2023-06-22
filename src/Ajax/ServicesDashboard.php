@@ -10,7 +10,6 @@ namespace Duplicator\Ajax;
 use DUP_Package;
 use Duplicator\Ajax\AjaxWrapper;
 use Duplicator\Views\DashboardWidget;
-use Duplicator\Views\EducationElements;
 
 class ServicesDashboard extends AbstractAjaxService
 {

@@ -360,7 +360,7 @@ final class ParamDescEngines implements DescriptorInterface
         } else {
             $subNote = <<<SUBNOTEHTML
 * Option enabled when archive has been pre-extracted
-<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">[more info]</a>               
+<a href="https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios" target="_blank">[more info]</a>               
 SUBNOTEHTML;
         }
         if (($zipEnable = ($archiveConfig->isZipArchive() && \DUPX_Conf_Utils::archiveExists() && \DUPX_Conf_Utils::classZipArchiveEnable())) === true) {

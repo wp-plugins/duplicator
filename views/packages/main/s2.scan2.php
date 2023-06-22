@@ -19,44 +19,22 @@ SYSTEM AND WORDPRESS -->
 <div class="scan-item scan-item-first">
 
     <?php
-
     //TODO Login Need to go here
 
     $core_dir_included   = array();
     $core_files_included = array();
-    //by default fault
-    $core_dir_notice  = false;
-    $core_file_notice = false;
+    $core_dir_notice     = false;
+    $core_file_notice    = false;
+    $filterDirs          = explode(';', $Package->Archive->FilterDirs);
+    $filterFiles         = explode(';', $Package->Archive->FilterFiles);
 
-    if (!$Package->Archive->ExportOnlyDB && isset($_POST['filter-on']) && isset($_POST['filter-dirs'])) {
-        //findout matched core directories
-        $filter_dirs = explode(";", trim(sanitize_text_field(($_POST['filter-dirs']))));
-
-        // clean possible blank spaces before and after the paths
-        for ($i = 0; $i < count($filter_dirs); $i++) {
-            $filter_dirs[$i] = trim($filter_dirs[$i]);
-            $filter_dirs[$i] = (substr($filter_dirs[$i], -1) == "/") ? substr($filter_dirs[$i], 0, strlen($filter_dirs[$i]) - 1) : $filter_dirs[$i] ;
-        }
-        $core_dir_included = array_intersect(
-            $filter_dirs,
-            DUP_Util::getWPCoreDirs()
-        );
+    if (!$Package->Archive->ExportOnlyDB && $Package->Archive->FilterOn) {
+        $core_dir_included = array_intersect($filterDirs, DUP_Util::getWPCoreDirs());
         if (count($core_dir_included)) {
             $core_dir_notice = true;
         }
 
-
-        //find out core files
-        $filter_files = explode(";", trim($_POST['filter-files']));
-
-        // clean possible blank spaces before and after the paths
-        for ($i = 0; $i < count($filter_files); $i++) {
-            $filter_files[$i] = trim($filter_files[$i]);
-        }
-        $core_files_included = array_intersect(
-            $filter_files,
-            DUP_Util::getWPCoreFiles()
-        );
+        $core_files_included = array_intersect($filterFiles, DUP_Util::getWPCoreFiles());
         if (count($core_files_included)) {
             $core_file_notice = true;
         }

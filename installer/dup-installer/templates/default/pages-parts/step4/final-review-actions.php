@@ -34,6 +34,6 @@ $archiveConfig = DUPX_ArchiveConfig::getInstance();
         Review the <?php echo $wpconfigNotice->longMsg; ?> and <?php echo $htaccessNorice->longMsg; ?>
     </li>
     <li>
-        For additional help visit the <a href='http://snapcreek.com/support/docs/faqs/' target='_blank'>online FAQs</a>
+        For additional help visit the <a href='<?php echo DUPX_Constants::FAQ_URL; ?>' target='_blank'>online FAQs</a>
     </li>
 </ul>

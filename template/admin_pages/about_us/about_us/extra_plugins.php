@@ -9,6 +9,12 @@ use Duplicator\Utils\ExtraPlugins\ExtraPluginsMng;
  * @var \Duplicator\Core\Views\TplMng  $tplMng
  * @var array<string, mixed> $tplData
  */
+
+defined('ABSPATH') || die();
+
+if (!current_user_can('install_plugins')) {
+    return;
+}
 ?>
 <div id="dup-admin-addons">
     <div id="dup-admin-addons-list">

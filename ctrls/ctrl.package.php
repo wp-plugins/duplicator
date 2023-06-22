@@ -189,7 +189,7 @@ function duplicator_duparchive_package_build()
         DUP_Log::Info('[CTRL DUP ARCIVE] COMPLETED PACKAGE STATUS: ' . $package->Status);
         if ($package->Status == DUP_PackageStatus::ERROR) {
             DUP_Log::Info('[CTRL DUP ARCIVE] ERROR');
-            $error_message = __('Error building DupArchive package') . '<br/>';
+            $error_message = __('Error building DupArchive package', 'duplicator') . '<br/>';
             foreach ($json['failures'] as $failure) {
                 $error_message .= implode(',', $failure->description);
             }
@@ -370,11 +370,13 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
             //CONTROLLER LOGIC
             $package = DUP_Package::getActive();
             //DIRS
-            $dir_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterDirs . ';' . $inputData['dir_paths'] : $inputData['dir_paths'];
+            $dir_filters = ($package->Archive->FilterOn && strlen($package->Archive->FilterDirs) > 0)
+                ? $package->Archive->FilterDirs . ';' . $inputData['dir_paths'] : $inputData['dir_paths'];
             $dir_filters = $package->Archive->parseDirectoryFilter($dir_filters);
             $changed     = $package->Archive->saveActiveItem($package, 'FilterDirs', $dir_filters);
             //FILES
-            $file_filters = ($package->Archive->FilterOn) ? $package->Archive->FilterFiles . ';' . $inputData['file_paths'] : $inputData['file_paths'];
+            $file_filters = ($package->Archive->FilterOn && strlen($package->Archive->FilterFiles) > 0)
+                ? $package->Archive->FilterFiles . ';' . $inputData['file_paths'] : $inputData['file_paths'];
             $file_filters = $package->Archive->parseFileFilter($file_filters);
             $changed      = $package->Archive->saveActiveItem($package, 'FilterFiles', $file_filters);
             if (!$package->Archive->FilterOn && !empty($package->Archive->FilterExts)) {

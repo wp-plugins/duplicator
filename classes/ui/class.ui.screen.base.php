@@ -48,9 +48,9 @@ class DUP_UI_Screen
             return;
         }
 
-        $colorScheme = self::getCurrentColorScheme();
-        if ($colorScheme !== false) {
-            ?>
+        $colorScheme        = self::getCurrentColorScheme();
+        $primaryButtonColor = self::getPrimaryButtonColorByScheme();
+        if ($colorScheme !== false) { ?>
             <style>
                 .link-style {
                     color: <?php echo $colorScheme->colors[2]; ?>;
@@ -59,10 +59,48 @@ class DUP_UI_Screen
                 .link-style:hover {
                     color: <?php echo $colorScheme->colors[3]; ?>;
                 }
+                
+                
+                .dup-radio-button-group-wrapper input[type="radio"] + label {
+                    color: <?php echo $primaryButtonColor; ?>;
+                }
+
+                .dup-radio-button-group-wrapper input[type="radio"] + label:hover,
+                .dup-radio-button-group-wrapper input[type="radio"]:focus + label, 
+                .dup-radio-button-group-wrapper input[type="radio"]:checked + label {
+                    background: <?php echo $primaryButtonColor; ?>;
+                    border-color: <?php echo $primaryButtonColor; ?>;
+                }
             </style>
             <?php
         }
     }
+
+        /**
+     * Unfortunately not all color schemes take the same color as the buttons so you need to make a custom switch/
+     *
+     * @return string
+     */
+    public static function getPrimaryButtonColorByScheme()
+    {
+        $colorScheme = self::getCurrentColorScheme();
+        $name        = strtolower($colorScheme->name);
+        switch ($name) {
+            case 'blue':
+                return '#e3af55';
+            case 'light':
+            case 'midnight':
+                return $colorScheme->colors[3];
+            case 'ocean':
+            case 'ectoplasm':
+            case 'coffee':
+            case 'sunrise':
+            case 'default':
+            default:
+                return $colorScheme->colors[2];
+        }
+    }
+
 
     public static function getCurrentColorScheme()
     {
@@ -83,18 +121,23 @@ class DUP_UI_Screen
     /**
      * Get the help support tab view content shown in the help system
      *
-     * @param string $guide     The target URL to navigate to on the online user guide
-     * @param string $faq       The target URL to navigate to on the online user tech FAQ
+     * @param string $guide The target URL to navigate to on the online user guide
+     * @param string $faq   The target URL to navigate to on the online user tech FAQ
      *
      * @return null
      */
     public function getSupportTab($guide, $faq)
     {
-        $content = __("<b>Need Help?</b>  Please check out these resources first:"
+        $content = __(
+            "<b>Need Help?</b>  Please check out these resources first:"
             . "<ul>"
-            . "<li><a href='https://snapcreek.com/duplicator/docs/guide{$guide}' target='_sc-faq'>Full Online User Guide</a></li>"
-            . "<li><a href='https://snapcreek.com/duplicator/docs/faqs-tech{$faq}' target='_sc-faq'>Frequently Asked Questions</a></li>"
-            . "</ul>", 'duplicator');
+            . "<li><a href='" . DUPLICATOR_DOCS_URL . $guide . "' target='_sc-faq'>"
+            . "Full Online User Guide</a></li>"
+            . "<li><a href='" . DUPLICATOR_TECH_FAQ_URL . $faq . "' target='_sc-faq'>"
+            . "Frequently Asked Questions</a></li>"
+            . "</ul>",
+            'duplicator'
+        );
 
         $this->screen->add_help_tab(array(
             'id'      => 'dup_help_tab_callback',
@@ -117,9 +160,9 @@ class DUP_UI_Screen
         $txt_sets  = __("Package Settings", 'duplicator');
         $this->screen->set_help_sidebar(
             "<div class='dup-screen-hlp-info'><b>" . esc_html($txt_title) . ":</b> <br/>"
-            . "<i class='fa fa-home'></i> <a href='https://snapcreek.com/duplicator/docs/' target='_sc-home'>" . esc_html($txt_home) . "</a> <br/>"
-            . "<i class='fa fa-book'></i> <a href='https://snapcreek.com/duplicator/docs/guide/' target='_sc-guide'>" . esc_html($txt_guide) . "</a> <br/>"
-            . "<i class='far fa-file-code'></i> <a href='https://snapcreek.com/duplicator/docs/faqs-tech/' target='_sc-faq'>" . esc_html($txt_faq) . "</a> <br/>"
+            . "<i class='fa fa-home'></i> <a href='" . DUPLICATOR_DOCS_URL . "' target='_sc-home'>" . esc_html($txt_home) . "</a> <br/>"
+            . "<i class='fa fa-book'></i> <a href='" . DUPLICATOR_DOCS_URL . "' target='_sc-guide'>" . esc_html($txt_guide) . "</a> <br/>"
+            . "<i class='far fa-file-code'></i> <a href='" . DUPLICATOR_TECH_FAQ_URL . "' target='_sc-faq'>" . esc_html($txt_faq) . "</a> <br/>"
             . "<i class='fa fa-cog'></i> <a href='admin.php?page=duplicator-settings&tab=package'>" . esc_html($txt_sets) . "</a></div>"
         );
     }

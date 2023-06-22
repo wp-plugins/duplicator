@@ -15,8 +15,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
             hosting provider or visit the resources below for additional help.
         </i>
         <div style="padding:10px">
-            &raquo; <a href="https://snapcreek.com/duplicator/docs/faqs-tech/" target="_blank">Technical FAQs</a> <br/>
-            &raquo; <a href="https://snapcreek.com/support/docs/" target="_blank">Online Documentation</a> <br/>
+            <?php $url = DUPX_Constants::DUP_SITE_URL . 'knowledge-base-article-categories/troubleshooting/'; ?>
+            &raquo; <a href="<?php echo DUPX_U::esc_attr($url); ?>" target="_blank">Technical FAQs</a> <br/>
+            &raquo; <a href="<?php echo DUPX_Constants::FAQ_URL; ?>" target="_blank">Online Documentation</a> <br/>
         </div>
     </div>
 </div>

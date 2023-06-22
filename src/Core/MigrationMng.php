@@ -359,7 +359,7 @@ class MigrationMng
                 } else {
                     self::$migrationCleanupReport['stored'] = "<div class='success'>"
                         . '<i class="fa fa-exclamation-triangle"></i> '
-                        . sprintf(__('Can\'t move %s to %s', 'duplicagtor'), esc_html($path), $ssdInstallerPath)
+                        . sprintf(__('Can\'t move %s to %s', 'duplicator'), esc_html($path), $ssdInstallerPath)
                         . '</div>';
                 }
             }

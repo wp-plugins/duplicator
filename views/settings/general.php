@@ -123,7 +123,7 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 <label for="trace_log_enabled"><?php esc_html_e("Enabled", 'duplicator') ?> </label><br/>
                 <p class="description">
                     <?php
-                    esc_html_e('Turns on detailed operation logging. Logging will occur in both PHP error and local trace logs.');
+                    esc_html_e('Turns on detailed operation logging. Logging will occur in both PHP error and local trace logs.', 'duplicator');
                     echo ('<br/>');
                     esc_html_e('WARNING: Only turn on this setting when asked to by support as tracing will impact performance.', 'duplicator');
                     ?>
@@ -227,7 +227,12 @@ $reset_confirm->initConfirm();
 
 $msg_ajax_error                 = new DUP_UI_Messages(
     __('AJAX Call Error!', 'duplicator') . '<br>' .
-    __('AJAX error encountered when resetting packages. Please see <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-053-q" target="_blank">this FAQ entry</a> for possible resolutions.', 'duplicator'),
+    __(
+        'AJAX error encountered when resetting packages. Please see <a href="'
+        . DUPLICATOR_DOCS_URL . 'how-to-resolve-duplicator-plugin-user-interface-ui-'
+        . 'issues/" target="_blank">this FAQ entry</a> for possible resolutions.',
+        'duplicator'
+    ),
     DUP_UI_Messages::ERROR
 );
 $msg_ajax_error->hide_on_init   = true;

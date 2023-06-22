@@ -64,7 +64,8 @@ use Duplicator\Libs\Upsell;
                                 if (isset($feature['lite_text'])) {
                                     echo $feature['lite_text'];
                                 } else {
-                                    $feature['lite_enabled'] === AboutUsController::LITE_ENABLED_FULL ? _e('Included') : _e('Not Available');
+                                    $feature['lite_enabled'] === AboutUsController::LITE_ENABLED_FULL ? _e('Included', 'duplicator')
+                                        : _e('Not Available', 'duplicator');
                                 }
                                 ?>
                                 </strong>
@@ -73,7 +74,7 @@ use Duplicator\Libs\Upsell;
                         <td class="dup-admin-column-33">
                             <p class="features-full">
                                 <strong>
-                                <?php echo isset($feature['pro_text']) ? $feature['pro_text'] : __('Included'); ?>
+                                <?php echo isset($feature['pro_text']) ? $feature['pro_text'] : __('Included', 'duplicator'); ?>
                                 </strong>
                             </p>
                         </td>

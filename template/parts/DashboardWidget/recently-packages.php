@@ -25,7 +25,7 @@ $packages = $tplData['packages'];
 ?>
 <div class="dup-section-last-packages">
     <p>
-        <b><?php esc_html_e('Recently Packages', 'duplicator-pro'); ?></b>
+        <b><?php esc_html_e('Recently Packages', 'duplicator'); ?></b>
     </p>
     <?php if (count($packages) > 0) { ?>
     <ul>
@@ -44,6 +44,6 @@ $packages = $tplData['packages'];
     </ul>
     <?php } ?>
     <p class="dup-packages-counts">
-        <?php printf(esc_html__('Packages: %1$d, Failures: %2$d', 'duplicator-pro'), $tplData['totalPackages'], $tplData['totalFailures']); ?>
+        <?php printf(esc_html__('Packages: %1$d, Failures: %2$d', 'duplicator'), $tplData['totalPackages'], $tplData['totalFailures']); ?>
     </p>
 </div>

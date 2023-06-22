@@ -19,16 +19,16 @@ defined("ABSPATH") or die("");
  * @var array<string, mixed> $tplData
  */
 
-$tooltipTitle   = esc_attr__('Package creation', 'duplicator-pro');
+$tooltipTitle   = esc_attr__('Package creation', 'duplicator');
 $tooltipContent = esc_attr__(
     'This will create a new package. If a package is currently running then this button will be disabled.',
-    'duplicator-pro'
+    'duplicator'
 );
 
 ?>
 <div class="dup-section-package-create dup-flex-content">
     <span>
-        <?php esc_html_e('Last backup:', 'duplicator-pro'); ?>
+        <?php esc_html_e('Last backup:', 'duplicator'); ?>
         <span class="dup-last-backup-info">
             <?php echo $tplData['lastBackupString']; ?>
         </span>
@@ -43,7 +43,7 @@ $tooltipContent = esc_attr__(
             class="button button-primary <?php echo DUP_Package::isPackageRunning() ? 'disabled' : ''; ?>"
             href="<?php echo esc_url(ControllersManager::getPackageBuildUrl()); ?>"
         >
-            <?php esc_html_e('Create New', 'duplicator-pro'); ?>
+            <?php esc_html_e('Create New', 'duplicator'); ?>
         </a>
     </span>
 </div>

@@ -83,16 +83,16 @@ $paramsManager = PrmMng::getInstance();
                     if (textStatus && textStatus.toLowerCase() == "timeout" || textStatus.toLowerCase() == "service unavailable") {
                         status += "<b>Recommendation:</b><br/>";
                         status += "To resolve this problem please follow the instructions showing " + 
-                            "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-100-q'>in the FAQ</a>.<br/><br/>";
+                            "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-database-connection-issues'>in the FAQ</a>.<br/><br/>";
                     } else if ((jqXHR.status == 403) || (jqXHR.status == 500)) {
                         status += "<b>Recommendation</b><br/>";
-                        status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-120-q'>this section</a> " + 
-                            "of the Technical FAQ for possible resolutions.<br/><br/>"
+                        status += "See <a target='_blank' href='https://duplicator.com/knowledge-base/how-to-resolve-403-500-timeout-issues-on-step-3'>" +
+                            "this section</a> of the Technical FAQ for possible resolutions.<br/><br/>"
                     } else if (jqXHR.status == 0) {
                         status += "<b>Recommendation</b><br/>";
-                        status += "This may be a server timeout and performing a 'Manual Extract' install can avoid timeouts. " + 
-                            "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?reload=1#faq-installer-015-q'>this section</a> " + 
-                            "of the FAQ for a description of how to do that.<br/><br/>"
+                        status += "This may be a server timeout and performing a 'Manual Extract' install can avoid timeouts. " +
+                            "See <a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-installer-archive-extraction-issues/'>" +
+                            "this section</a> of the FAQ for a description of how to do that.<br/><br/>"
                     }
 
                     result.errorContent.html += status;

@@ -1428,17 +1428,12 @@ class DUP_Package
             $name = sanitize_file_name($name);
             $name = substr(trim($name), 0, 40);
 
-            if (isset($post['filter-dirs'])) {
-                $post_filter_dirs = sanitize_text_field($post['filter-dirs']);
-                $filter_dirs      = $this->Archive->parseDirectoryFilter($post_filter_dirs);
+            if (isset($post['filter-paths'])) {
+                $post_filter_paths = sanitize_text_field($post['filter-paths']);
+                $filter_dirs       = $this->Archive->parseDirectoryFilter($post_filter_paths);
+                $filter_files      = $this->Archive->parseFileFilter($post_filter_paths);
             } else {
-                $filter_dirs = '';
-            }
-
-            if (isset($post['filter-files'])) {
-                $post_filter_files = sanitize_text_field($post['filter-files']);
-                $filter_files      = $this->Archive->parseFileFilter($post_filter_files);
-            } else {
+                $filter_dirs  = '';
                 $filter_files = '';
             }
 
@@ -1480,10 +1475,10 @@ class DUP_Package
             //ARCHIVE
             $this->Archive->Format       = 'ZIP';
             $this->Archive->FilterOn     = isset($post['filter-on']) ? 1 : 0;
-            $this->Archive->ExportOnlyDB = isset($post['export-onlydb']) ? 1 : 0;
+            $this->Archive->ExportOnlyDB = $post['auto-select-components'] === 'database' ? 1 : 0;
             $this->Archive->FilterDirs   = sanitize_textarea_field($filter_dirs);
             $this->Archive->FilterFiles  = sanitize_textarea_field($filter_files);
-            $this->Archive->FilterExts   = str_replace(array('.', ' '), '', $filter_exts);
+            $this->Archive->FilterExts   = $filter_exts;
             //INSTALLER
             $this->Installer->OptsDBHost      = sanitize_text_field($post['dbhost']);
             $this->Installer->OptsDBPort      = sanitize_text_field($post['dbport']);

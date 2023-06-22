@@ -4,6 +4,7 @@ use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Libs\Snap\SnapJson;
 use Duplicator\Libs\Upsell;
 use Duplicator\Views\ViewHelper;
+use Duplicator\Core\Notifications\Notifications;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /* @var $Package DUP_Package */
@@ -80,7 +81,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
     div.sc-footer-left {color:maroon; font-size:11px; font-style: italic; float:left}
     div.sc-footer-right {font-style: italic; float:right; font-size:12px}
 </style>
-
+<?php do_action(Notifications::DUPLICATOR_BEFORE_PACKAGES_HOOK); ?>
 <form id="form-duplicator" method="post">
 
     <!-- ====================
@@ -107,8 +108,8 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                 </a>
                 <a 
                     href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'package')); ?>" 
-                    class="button dup-btn-disabled" 
-                    title="<?php esc_attr_e("Templates", 'duplicator'); ?>"
+                    class="button" 
+                    title="<?php esc_attr_e("Package Settings", 'duplicator'); ?>"
                 >
                     <i class="fas fa-sliders-h"></i>
                 </a>
@@ -159,9 +160,11 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                             <i><?php esc_html_e("Click 'Create New' to Archive Site", 'duplicator'); ?></i><br/>
                             <div class="dup-quick-start" <?php echo ($is_mu) ? 'style="display:none"' : ''; ?>>
                                 <b><?php esc_html_e("New to Duplicator?", 'duplicator'); ?></b><br/>
-                                <a 
-                                    href="https://duplicator.com/knowledge-base-article-categories/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty1&utm_campaign=quick_start" 
-                                    target="_blank">
+                                <?php
+                                    $url  = DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/';
+                                    $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty1&utm_campaign=quick_start';
+                                ?>
+                                <a href="<?php echo esc_attr($url); ?>" target="_blank">
                                     <?php esc_html_e("Visit the 'Quick Start' guide!", 'duplicator'); ?>
                                 </a>
                             </div>
@@ -214,7 +217,11 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                         <i><?php esc_html_e("Click 'Create New' to Archive Site", 'duplicator'); ?></i><br/>
                         <div class="dup-quick-start">
                             <?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty2&utm_campaign=quick_start" target="_blank">
+                            <?php
+                                $url  = DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/';
+                                $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty2&utm_campaign=quick_start';
+                            ?>
+                            <a href="<?php echo esc_attr($url); ?>" target="_blank">
                                 <?php esc_html_e("Visit the 'Quick Start' guide!", 'duplicator'); ?>
                             </a>
                         </div>
@@ -406,16 +413,28 @@ $alertPackRunning->initAlert();
 DIALOG: HELP DIALOG -->
 <div id="dup-help-dlg-info" style="display:none">
     <b><?php esc_html_e("Common Questions:", 'duplicator') ?></b><hr size='1'/>
-    <i class="far fa-file-alt fa-sm"></i> 
-    <a href="https://snapcreek.com/duplicator/docs/quick-start?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_pack_help&utm_campaign=duplicator_free#quick-010-q" target="_blank">
+    <i class="far fa-file-alt fa-sm"></i>
+    <?php
+        $url  = DUPLICATOR_BLOG_URL . 'knowledge-base/backup-site/';
+        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_pack_help&utm_campaign=duplicator_free#quick-010-q';
+    ?> 
+    <a href="<?php echo esc_attr($url); ?>" target="_blank">
         <?php esc_html_e("How do I create a package", 'duplicator') ?>
     </a> <br/>
     <i class="far fa-file-alt fa-sm"></i> 
-    <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#install_site" target="_blank">
+    <?php
+        $url  = DUPLICATOR_BLOG_URL . 'knowledge-base/classic-install/';
+        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#install_site';
+    ?>
+    <a href="<?php echo esc_attr($url); ?>" target="_blank">
         <?php esc_html_e('How do I install a package?', 'duplicator'); ?>
     </a>  <br/>
-    <i class="far fa-file-code"></i> 
-    <a href="https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free" target="_blank">
+    <i class="far fa-file-code"></i>
+    <?php
+        $url  = DUPLICATOR_TECH_FAQ_URL;
+        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free';
+    ?>
+    <a href="<?php echo esc_attr($url); ?>" target="_blank">
         <?php esc_html_e("Frequently Asked Questions!", 'duplicator') ?>
     </a>
     <br/><br/>

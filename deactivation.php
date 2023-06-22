@@ -64,7 +64,7 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
         $slug                     = 'duplicator';
         $plugin_id                = 'duplicator';
         $contact_support_template = __('Need help? We are ready to answer your questions.', 'duplicator') .
-            ' <a href="https://snapcreek.com/ticket/" target="_blank">' . __('Contact Support', 'duplicator') . '</a>';
+            ' <a href="' . DUPLICATOR_BLOG_URL . 'contact/?form=1" target="_blank">' . __('Contact Support', 'duplicator') . '</a>';
         $reasons                  = array(
             array(
                 'id' => 'NOT_WORKING',
@@ -102,7 +102,7 @@ if (!function_exists('duplicator_add_deactivation_feedback_dialog_box')) {
                 'id' => 'SWITCHING_PRO_VERSION',
                 'text' => sprintf(
                     __("I'm switching over to the %s", 'duplicator'),
-                    '<a href="https://snapcreek.com/duplicator/" target="_blank">' . __('Pro version', 'duplicator') . '</a>'
+                    '<a href="' . DUPLICATOR_BLOG_URL . 'features/" target="_blank">' . __('Pro version', 'duplicator') . '</a>'
                 ),
                 'input_type' => '',
                 'input_placeholder' => ''

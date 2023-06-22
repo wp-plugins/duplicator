@@ -43,7 +43,7 @@ defined("ABSPATH") || exit;
                 </a>
             </div>
             <div class="right">
-                <a href="https://snapcreek.com/duplicator/docs/quick-start/"
+                <a href="<?php echo DUPLICATOR_BLOG_URL; ?>knowledge-base-article-categories/quick-start/"
                    class="dup-btn dup-btn-lg dup-btn-grey dup-btn-block"
                    target="_blank" rel="noopener noreferrer">
                     <?php esc_html_e('Read the Full Guide', 'duplicator'); ?>

@@ -8,7 +8,7 @@ if (! defined('DUPLICATOR_VERSION')) {
     exit;
 }
 
-require_once(DUPLICATOR_PLUGIN_PATH . 'classes/package/class.pack.archive.php');
+require_once DUPLICATOR_PLUGIN_PATH . 'classes/package/class.pack.archive.php';
 
 /**
  *  Creates a zip file using the built in PHP ZipArchive class
@@ -225,7 +225,7 @@ class DUP_Zip extends DUP_Archive
                     $error_message,
                     "The ZipArchive engine is having issues zipping up the files on this server. For more details visit the FAQ\n"
                     . "I'm getting a ZipArchive close failure when building. How can I resolve this?\n"
-                    . "[https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-165-q]",
+                    . "[" . DUPLICATOR_DOCS_URL . "how-to-resolve-zip-format-related-build-issues/]",
                     Dup_ErrorBehavior::LogOnly
                 );
                 $buildProgress->set_failed($error_message);
