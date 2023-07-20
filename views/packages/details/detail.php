@@ -1,7 +1,7 @@
 <?php
 
 use Duplicator\Libs\Snap\SnapJson;
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 $view_state     = DUP_UI_ViewState::getArray();

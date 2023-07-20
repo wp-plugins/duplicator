@@ -8,7 +8,7 @@
  */
 
 use Duplicator\Core\Views\TplMng;
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 defined('ABSPATH') || exit;
 

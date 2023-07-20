@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
-use Duplicator\Libs\Upsell;
+use Duplicator\Installer\Utils\InstallerUpsell;
 ?>
 
 If no passwords were set on the installer or archive file then users will initially see step one of the installer.  The installer has two operating views
@@ -32,7 +32,7 @@ other details about the archive file.   Below is an overview of the various stat
 
 <small class="hlp-lite-only">
     Note: Duplicator Lite supports only single WordPress sites, while
-    <a href="<?php echo Upsell::getCampaignUrl('installer', "Help section - Get Pro for Multisite"); ?>" target="_blank">
+    <a href="<?php echo InstallerUpsell::getCampaignUrl('installer', "Help section - Get Pro for Multisite"); ?>" target="_blank">
         Duplicator Pro
     </a> supports single and multisite websites.
 </small>

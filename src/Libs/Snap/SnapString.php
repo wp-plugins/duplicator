@@ -150,4 +150,37 @@ class SnapString
         }
         return strlen($string);
     }
+
+    /**
+     * Returns case insensitive duplicates
+     *
+     * @param string[] $strings The array of strings to check for duplicates
+     *
+     * @return array<string[]>
+     */
+    public static function getCaseInsesitiveDuplicates($strings)
+    {
+        $duplicates = array();
+        for ($i = 0; $i < count($strings) - 1; $i++) {
+            $key = strtolower($strings[$i]);
+
+            //already found all instances so don't check again
+            if (isset($duplicates[$key])) {
+                continue;
+            }
+
+            for ($j = $i + 1; $j < count($strings); $j++) {
+                if ($strings[$i] !== $strings[$j] && $key === strtolower($strings[$j])) {
+                    $duplicates[$key][] = $strings[$j];
+                }
+            }
+
+            //duplicates were found, add the comparing string to list
+            if (isset($duplicates[$key])) {
+                $duplicates[$key][] = $strings[$i];
+            }
+        }
+
+        return $duplicates;
+    }
 }

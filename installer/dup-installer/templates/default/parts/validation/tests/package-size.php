@@ -5,7 +5,7 @@
  * @package templates/default
  */
 
-use Duplicator\Libs\Upsell;
+use Duplicator\Installer\Utils\InstallerUpsell;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
@@ -22,7 +22,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     Duplicator Pro has support for larger sites. Confirmed migration of sites up to 100GB!
 </p>
 <p>
-    <a style="color: green;" href="<?php echo Upsell::getCampaignUrl('installer', 'Large Package') ?>" target="_blank">
+    <a style="color: green;" href="<?php echo InstallerUpsell::getCampaignUrl('installer', 'Large Package') ?>" target="_blank">
         Upgrade Now
     </a>
 </p>

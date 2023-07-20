@@ -689,4 +689,37 @@ class SnapDB
 
         return $result;
     }
+
+    /**
+     * Returns a list of redundant case insensitive duplicate tables
+     *
+     * @param string   $prefix     The WP table prefix
+     * @param string[] $duplicates List of case insensitive duplicate table names
+     *
+     * @return string[]
+     */
+    public static function getRedundantDuplicateTables($prefix, $duplicates)
+    {
+        foreach ($duplicates as $i => $tableName) {
+            if (stripos($tableName, $prefix) === 0) {
+                //table has prefix, the case sensitive match is not redundant
+                if (strpos($tableName, $prefix) === 0) {
+                    unset($duplicates[$i]);
+                    break;
+                }
+
+                //no case sensitive match is present, first table is not redundant
+                if ($i === (count($duplicates) - 1)) {
+                    unset($duplicates[0]);
+                    break;
+                }
+            } else {
+                //no prefix present, first table not redundant
+                unset($duplicates[$i]);
+                break;
+            }
+        }
+
+        return array_values($duplicates);
+    }
 }

@@ -2,8 +2,8 @@
 defined("DUPXABSPATH") or die("");
 
 use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Installer\Utils\InstallerUpsell;
 use Duplicator\Libs\Snap\SnapJson;
-use Duplicator\Libs\Upsell;
 
 $paramsManager = PrmMng::getInstance();
 ?>
@@ -493,7 +493,7 @@ $paramsManager = PrmMng::getInstance();
         });
         
         $('sup.hlp-pro-lbl, sup.small-pro-lbl').click(function() {
-            window.open('<?php echo Upsell::getCampaignUrl('installer', 'Help Section Pro Flag');?>');
+            window.open('<?php echo InstallerUpsell::getCampaignUrl('installer', 'Help Section Pro Flag');?>');
         });
     });
 </script>

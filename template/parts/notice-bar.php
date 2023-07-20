@@ -6,7 +6,7 @@
  * @package Duplicator
  */
 
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 defined("ABSPATH") || exit;
 

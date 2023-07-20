@@ -7,7 +7,7 @@
 namespace Duplicator\Views;
 
 use Duplicator\Core\Views\TplMng;
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 class EducationElements
 {

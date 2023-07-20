@@ -9,7 +9,9 @@
 namespace Duplicator\Libs\Snap;
 
 use Exception;
+use WP_Roles;
 use WP_Site;
+use WP_Theme;
 use wpdb;
 
 /**
@@ -23,6 +25,10 @@ class SnapWP
     const PATH_FULL                    = 0;
     const PATH_RELATIVE                = 1;
     const PATH_AUTO                    = 2;
+
+    const PLUGIN_INFO_ALL      = 0;
+    const PLUGIN_INFO_ACTIVE   = 1;
+    const PLUGIN_INFO_INACTIVE = 2;
 
     /**
      *
@@ -495,6 +501,19 @@ class SnapWP
     }
 
     /**
+     * Get List of core folders inside the wp-content folder
+     *
+     * @return string[]
+     */
+    public static function getWPContentCoreDirs()
+    {
+        return array(
+            'languages',
+            'cache'
+        );
+    }
+
+    /**
      * Returns the main site ID for the network.
      *
      * Copied from the source of the get_main_site_id() except first line in https://developer.wordpress.org/reference/functions/get_main_site_id/
@@ -705,9 +724,9 @@ class SnapWP
 
     /**
      *
-     * @param int $blogId // f multisite and blogId > 0 return the user of blog
+     * @param int $blogId if multisite and blogId > 0 return the user of blog
      *
-     * @return mixed[]
+     * @return array<object{ID: int, user_login: string}>
      */
     public static function getAdminUserLists($blogId = 0)
     {
@@ -725,6 +744,18 @@ class SnapWP
         }
 
         return get_users($args);
+    }
+
+    /**
+     * Get users count
+     *
+     * @return int
+     */
+    public static function getUsersCount()
+    {
+        global $wpdb;
+        $sql = "SELECT COUNT(ID) FROM $wpdb->users";
+        return (int) $wpdb->get_var($sql);
     }
 
     /**
@@ -781,11 +812,91 @@ class SnapWP
     }
 
     /**
-     * Get plugins array info with multisite, must-use and drop-ins
+     * return plugin formatted data from plugin info
+     *
+     * @param WP_Theme $theme instance of WP Core class WP_Theme. theme info from get_themes function
+     *
+     * @return array<string, mixed>
+     */
+    protected static function getThemeArrayData(WP_Theme $theme)
+    {
+        $slug   = $theme->get_stylesheet();
+        $parent = $theme->parent();
+        return array(
+            'slug'         => $slug,
+            'themeName'    => $theme->get('Name'),
+            'version'      => $theme->get('Version'),
+            'themeURI'     => $theme->get('ThemeURI'),
+            'parentTheme'  => (false === $parent) ? false : $parent->get_stylesheet(),
+            'template'     => $theme->get_template(),
+            'stylesheet'   => $theme->get_stylesheet(),
+            'description'  => $theme->get('Description'),
+            'author'       => $theme->get('Author'),
+            "authorURI"    => $theme->get('AuthorURI'),
+            'tags'         => $theme->get('Tags'),
+            'isAllowed'    => $theme->is_allowed(),
+            'isActive'     => (is_multisite() ? array() : false),
+            'defaultTheme' => (defined('WP_DEFAULT_THEME') && WP_DEFAULT_THEME == $slug),
+        );
+    }
+
+    /**
+     * get themes array info with active template, stylesheet
      *
      * @return array<string, mixed[]>
      */
-    public static function getPluginsInfo()
+    public static function getThemesInfo()
+    {
+        if (!function_exists('wp_get_themes')) {
+            require_once ABSPATH . 'wp-admin/includes/theme.php';
+        }
+
+        $result = array();
+
+        foreach (wp_get_themes() as $slug => $theme) {
+            $result[$slug] = self::getThemeArrayData($theme);
+        }
+
+        if (is_multisite()) {
+            foreach (SnapWP::getSitesIds() as $siteId) {
+                switch_to_blog($siteId);
+                $stylesheet = get_stylesheet();
+                if (isset($result[$stylesheet])) {
+                    $result[$stylesheet]['isActive'][] = $siteId;
+                }
+
+                //Also set parent theme to active if it exists
+                $template = get_template();
+                if ($template !== $stylesheet && isset($result[$template])) {
+                    $result[$template]['isActive'][] = $siteId;
+                }
+
+                restore_current_blog();
+            }
+        } else {
+            $stylesheet = get_stylesheet();
+            if (isset($result[$stylesheet])) {
+                $result[$stylesheet]['isActive'] = true;
+            }
+
+            //Also set parent theme to active if it exists
+            $template = get_template();
+            if ($template !== $stylesheet && isset($result[$template])) {
+                $result[$template]['isActive'] = true;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get plugins array info with multisite, must-use and drop-ins
+     *
+     * @param int $filter ENUM: PLUGIN_INFO_ALL, PLUGIN_INFO_ACTIVE, PLUGIN_INFO_INACTIVE
+     *
+     * @return array<string, mixed[]>
+     */
+    public static function getPluginsInfo($filter = self::PLUGIN_INFO_ALL)
     {
         if (!defined('ABSPATH')) {
             throw new Exception('This function can be used only on wp');
@@ -833,7 +944,67 @@ class SnapWP
             $result[$path]['dropIns'] = true;
         }
 
-        return $result;
+        switch ($filter) {
+            case self::PLUGIN_INFO_ACTIVE:
+                return array_filter(
+                    $result,
+                    function ($info) {
+                        return self::isPluginActiveByInfo($info);
+                    }
+                );
+            case self::PLUGIN_INFO_INACTIVE:
+                return array_filter(
+                    $result,
+                    function ($info) {
+                        return !self::isPluginActiveByInfo($info);
+                    }
+                );
+            case self::PLUGIN_INFO_ALL:
+            default:
+                return $result;
+        }
+    }
+
+    /**
+     * Determine if a plugin is active by info
+     *
+     * @param array{active: bool|bool[], networkActive: bool, dropIns: bool, mustUse: bool} $info Plugin info
+     *
+     * @return bool
+     */
+    protected static function isPluginActiveByInfo($info)
+    {
+        return (
+            $info['active'] === true ||
+            $info['networkActive'] ||
+            (
+                is_array($info['active']) &&
+                !empty($info['active'])
+            ) ||
+            $info['dropIns'] ||
+            $info['mustUse']
+        );
+    }
+
+    /**
+     * Check if a plugin is installed
+     *
+     * @param string $pluginSlug plugin slug
+     *
+     * @return bool
+     */
+    public static function isPluginInstalled($pluginSlug)
+    {
+        if (!defined('ABSPATH')) {
+            throw new Exception('This function can be used only on wp');
+        }
+
+        if (!function_exists('get_plugins')) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        $plugins = array_keys(get_plugins());
+        return in_array($pluginSlug, $plugins);
     }
 
     /**
@@ -873,5 +1044,23 @@ class SnapWP
             'mustUse'       => false,
             'dropIns'       => false
         );
+    }
+
+    /**
+     * Retrieves the global WP_Roles instance and instantiates it if necessary.
+     * Added for compatibility with WP < 4.3
+     *
+     * @return WP_Roles WP_Roles global instance if not already instantiated.
+     */
+    public static function wpRoles()
+    {
+        if (function_exists('wp_roles')) {
+            return wp_roles();
+        }
+        global $wp_roles;
+        if (! isset($wp_roles)) {
+            $wp_roles = new WP_Roles();
+        }
+        return $wp_roles;
     }
 }

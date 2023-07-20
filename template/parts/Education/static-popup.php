@@ -7,7 +7,7 @@
 defined("ABSPATH") || exit;
 
 use Duplicator\Core\Views\TplMng;
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 /**
  * Variables

@@ -33,7 +33,7 @@ use Duplicator\Core\Notifications\NoticeBar;
 use Duplicator\Core\Notifications\Notifications;
 use Duplicator\Core\Notifications\Review;
 use Duplicator\Core\Views\TplMng;
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 use Duplicator\Views\DashboardWidget;
 use Duplicator\Views\EducationElements;
 

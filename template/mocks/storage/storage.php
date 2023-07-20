@@ -1,7 +1,7 @@
 <?php
 
 use Duplicator\Controllers\StorageController;
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 defined("ABSPATH") || exit;
 

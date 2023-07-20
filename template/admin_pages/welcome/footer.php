@@ -26,7 +26,7 @@ defined("ABSPATH") || exit;
                 </a>
             </div>
             <div class="right">
-                <a href="<?php echo esc_url(\Duplicator\Libs\Upsell::getCampaignUrl('welcome-page', 'Upgrade to Duplicator Pro')); ?>"
+                <a href="<?php echo esc_url(\Duplicator\Utils\Upsell::getCampaignUrl('welcome-page', 'Upgrade to Duplicator Pro')); ?>"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="dup-btn dup-btn-block dup-btn-lg dup-btn-trans-green">

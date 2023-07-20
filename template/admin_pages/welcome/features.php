@@ -95,7 +95,7 @@ defined("ABSPATH") || exit;
         </div>
 
         <div class="button-wrap">
-            <a href="<?php echo \Duplicator\Libs\Upsell::getCampaignUrl('welcome-page', 'See All Features') ?>"
+            <a href="<?php echo \Duplicator\Utils\Upsell::getCampaignUrl('welcome-page', 'See All Features') ?>"
                class="dup-btn dup-btn-lg dup-btn-grey" rel="noopener noreferrer"
                target="_blank">
                 <?php esc_html_e('See All Features', 'duplicator'); ?>

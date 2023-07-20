@@ -1,6 +1,6 @@
 <?php
 
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
     /*IDE Helper*/

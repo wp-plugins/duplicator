@@ -93,7 +93,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 <?php esc_html_e("Having a problem with your back up or migrations? Upgrade to get our Premium Support.", 'duplicator'); ?>
                 <br/>
                 <div class="dup-support-txts-links" style="margin:10px 0 10px 0">
-                    <a href="<?php echo esc_url(\Duplicator\Libs\Upsell::getCampaignUrl('duplicator_tools-support_tab', 'Upgrade Now')); ?>" target="_blank" class="dup-btn dup-btn-md dup-btn-green" >
+                    <a href="<?php echo esc_url(\Duplicator\Utils\Upsell::getCampaignUrl('duplicator_tools-support_tab', 'Upgrade Now')); ?>" target="_blank" class="dup-btn dup-btn-md dup-btn-green" >
 <?php esc_html_e('Upgrade Now', 'duplicator') ?>
                     </a> <br/>
                 </div>

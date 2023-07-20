@@ -8,10 +8,10 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Params\PrmMng;
-use Duplicator\Libs\Upsell;
+use Duplicator\Installer\Utils\InstallerUpsell;
 
 dupxTplRender('parts/education/did-you-know-blurb', array(
-        'features' => Upsell::getProFeatureList()
+        'features' => InstallerUpsell::getProFeatureList()
 ));
 ?>
 </div>

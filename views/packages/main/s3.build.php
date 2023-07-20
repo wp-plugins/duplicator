@@ -1,6 +1,6 @@
 <?php
 
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 use Duplicator\Views\EducationElements;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;

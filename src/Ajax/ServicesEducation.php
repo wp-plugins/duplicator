@@ -157,7 +157,7 @@ class ServicesEducation extends AbstractAjaxService
         $returnData["success"]   = true;
         $returnData["error_msg"] = "";
 
-        $returnData["oth"]         = $oth;
+        $returnData["oth"]         = self::hashOth($oth);
         $returnData["license_key"] = $licenseKey;
         $returnData["version"]     = DUPLICATOR_VERSION;
         $returnData["redirect"]    = base64_encode(admin_url('admin-ajax.php?action=duplicator_finalize_oneclick_upr'));
@@ -238,6 +238,18 @@ class ServicesEducation extends AbstractAjaxService
 
         $returnData["file"] = base64_encode($data->download_link);
         return $returnData;
+    }
+
+    /**
+     * Returh hashed OTH
+     *
+     * @param string $oth OTH
+     *
+     * @return string Hashed OTH
+     */
+    protected static function hashOth($oth)
+    {
+        return  hash_hmac('sha512', $oth, wp_salt());
     }
 
     /**
@@ -337,7 +349,7 @@ class ServicesEducation extends AbstractAjaxService
 
         $othReceived = sanitize_text_field($_REQUEST["oth"]);
         $oth         = get_option(self::OPTION_KEY_ONE_CLICK_UPGRADE_OTH);
-        if ($oth != $othReceived) { // Verify that oth is fine
+        if (self::hashOth($oth) !== $othReceived) { // Verify that oth is fine
             DUP_Log::trace("ERROR: Wrong oth token.");
             $response["error"] = true;
             print(json_encode($response));

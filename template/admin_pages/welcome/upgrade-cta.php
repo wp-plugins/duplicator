@@ -20,7 +20,7 @@ defined("ABSPATH") || exit;
         <div class="">
             <h2><?php esc_html_e('Upgrade to PRO', 'duplicator'); ?></h2>
             <ul>
-                <?php foreach (\Duplicator\Libs\Upsell::getCalloutCTAFeatureList() as $feature) : ?>
+                <?php foreach (\Duplicator\Utils\Upsell::getCalloutCTAFeatureList() as $feature) : ?>
                     <li>
                         <span class="dashicons dashicons-yes"></span> <?php echo esc_html($feature); ?>
                     </li>
@@ -29,7 +29,7 @@ defined("ABSPATH") || exit;
         </div>
 
         <div class="">
-            <a href="<?php echo esc_url(\Duplicator\Libs\Upsell::getCampaignUrl('welcome-page', 'Upgrade Now')); ?>"
+            <a href="<?php echo esc_url(\Duplicator\Utils\Upsell::getCampaignUrl('welcome-page', 'Upgrade Now')); ?>"
                rel="noopener noreferrer"
                target="_blank"
                class="dup-btn dup-btn-block dup-btn-lg dup-btn-green">

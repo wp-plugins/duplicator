@@ -6,7 +6,7 @@
  * @copyright (c) 2023, Snap Creek LLC
  */
 
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 defined("ABSPATH") || exit;
 

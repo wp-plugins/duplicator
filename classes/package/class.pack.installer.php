@@ -214,7 +214,7 @@ HEADER;
         $ac->mu_mode        = DUP_MU::getMode();
         $ac->wp_tableprefix = $wpdb->base_prefix;
         $ac->mu_generation  = DUP_MU::getGeneration();
-        $ac->mu_is_filtered = !empty($this->Package->Multisite->FilterSites) ? true : false;
+        $ac->mu_is_filtered = false;
 
         $ac->mu_siteadmins = array_values(get_super_admins());
         $filteredTables    = ($this->Package->Database->FilterOn && isset($this->Package->Database->FilterTables)) ? explode(',', $this->Package->Database->FilterTables) : array();
@@ -642,12 +642,6 @@ HEADER;
             'sourcePath'  => DUPLICATOR_LITE_PATH . '/src/Libs/Certificates',
             'archivePath' => 'dup-installer/libs/',
             'label'       => 'SSL certificates'
-        );
-
-        $result[] = array(
-            'sourcePath'  => DUPLICATOR_LITE_PATH . '/src/Libs/Upsell.php',
-            'archivePath' => 'dup-installer/libs/Upsell.php',
-            'label'       => 'Upgrade class'
         );
 
         $result[] = array(

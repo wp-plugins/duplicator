@@ -10,7 +10,7 @@
 defined('ABSPATH') || exit;
 
 use Duplicator\Controllers\AboutUsController;
-use Duplicator\Libs\Upsell;
+use Duplicator\Utils\Upsell;
 
 /**
  * Variables
