@@ -242,9 +242,11 @@ class DUP_Package
         $fileCount = count($this->Archive->Files);
         $fullCount = $dirCount + $fileCount;
 
+        $report['ARC']['USize']                     = $this->Archive->Size;
         $report['ARC']['Size']                      = DUP_Util::byteSize($this->Archive->Size) or "unknown";
         $report['ARC']['DirCount']                  = number_format($dirCount);
         $report['ARC']['FileCount']                 = number_format($fileCount);
+        $report['ARC']['UFullCount']                = $fullCount;
         $report['ARC']['FullCount']                 = number_format($fullCount);
         $report['ARC']['WarnFileCount']             = count($this->Archive->FilterInfo->Files->Warning);
         $report['ARC']['WarnDirCount']              = count($this->Archive->FilterInfo->Dirs->Warning);
@@ -327,6 +329,8 @@ class DUP_Package
         fwrite($fp, SnapJson::jsonEncodePPrint($report));
         fclose($fp);
 
+        do_action('duplicator_after_scan_report', $this, $report);
+
         return $report;
     }
 
@@ -376,6 +380,7 @@ class DUP_Package
 
         //FILTER_VALIDATE_DOMAIN throws notice message on PHP 5.6
         if (defined('FILTER_VALIDATE_DOMAIN')) {
+            // phpcs:ignore PHPCompatibility.Constants.NewConstants.filter_validate_domainFound
             $validator->filter_var($this->Installer->OptsDBHost, FILTER_VALIDATE_DOMAIN, array(
                         'valkey' => 'OptsDBHost' ,
                         'errmsg' => __('MySQL Server Host: <b>%1$s</b> isn\'t a valid host', 'duplicator'),
@@ -904,8 +909,7 @@ class DUP_Package
             $error_message = 'ERROR: Installer file not complete.  The end of file marker was not found.  Please try to re-create the package.';
 
             $this->BuildProgress->set_failed($error_message);
-            $this->Status = DUP_PackageStatus::ERROR;
-            $this->update();
+            $this->setStatus(DUP_PackageStatus::ERROR);
             DUP_Log::error($error_message, '', Dup_ErrorBehavior::LogOnly);
             return;
         }
@@ -918,7 +922,6 @@ class DUP_Package
         if ($this->Archive->file_count != -1) {
             $zip_easy_size = DUP_Util::byteSize($this->Archive->Size);
             if (!($this->Archive->Size)) {
-                //$this->BuildProgress->failed = true;
                 $error_message = "ERROR: The archive file contains no size.";
 
                 $this->BuildProgress->set_failed($error_message);
@@ -936,8 +939,6 @@ class DUP_Package
             } else {
                 $error_message = sprintf(__("Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scan_filepath);
 
-                //$this->BuildProgress->failed = true;
-                //$this->setStatus(DUP_PackageStatus::ERROR);
                 $this->BuildProgress->set_failed($error_message);
                 $this->setStatus(DUP_PackageStatus::ERROR);
 
@@ -987,9 +988,7 @@ class DUP_Package
                     if (($warning_ratio < 0.90) || ($warning_ratio > 1.01)) {
                         $error_message = sprintf('ERROR: File count in archive vs expected suggests a bad archive (%1$d vs %2$d).', $this->Archive->file_count, $expected_filecount);
                         $this->BuildProgress->set_failed($error_message);
-                        $this->Status = DUP_PackageStatus::ERROR;
-                        $this->update();
-
+                        $this->setStatus(DUP_PackageStatus::ERROR);
                         DUP_Log::error($error_message, '');
                         return;
                     }
@@ -1027,8 +1026,7 @@ class DUP_Package
                 }
 
                 $this->BuildProgress->set_failed($consistency_error);
-                $this->Status = DUP_PackageStatus::ERROR;
-                $this->update();
+                $this->setStatus(DUP_PackageStatus::ERROR);
 
                 DUP_LOG::trace($consistency_error);
                 DUP_Log::error($consistency_error, '');
@@ -1556,11 +1554,20 @@ class DUP_Package
      */
     public function setStatus($status)
     {
-        if (!isset($status)) {
+        if (!is_numeric($status) || $status < -6 || $status > 100) {
             DUP_Log::error("Package SetStatus did not receive a proper code.");
         }
+
+        // execute hooks only if status has changed
+        $doHook = ($this->Status !== $status);
+        if ($doHook) {
+            do_action('duplicator_package_before_set_status', $this, $status);
+        }
         $this->Status = $status;
-        $this->update();
+        $this->update(); // alwais update package
+        if ($doHook) {
+            do_action('duplicator_package_after_set_status', $this, $status);
+        }
     }
 
     /**
@@ -1594,6 +1601,7 @@ class DUP_Package
     {
         try {
             if (function_exists('random_bytes') && DUP_Util::PHP53()) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.random_bytesFound
                 return bin2hex(random_bytes(8)) . mt_rand(1000, 9999) . '_' . date("YmdHis");
             } else {
                 return strtolower(md5(uniqid(rand(), true))) . '_' . date("YmdHis");
@@ -1878,5 +1886,23 @@ class DUP_Package
             default:
                 return $delta;
         }
+    }
+
+    /**
+     * Get the number of complete packages
+     *
+     * @return int
+     */
+    public static function getNumCompletePackages()
+    {
+        $ids = self::get_ids_by_status(
+            array(
+                array(
+                    'op'     => '>=',
+                    'status' => DUP_PackageStatus::COMPLETE,
+                ),
+            )
+        );
+        return count($ids);
     }
 }

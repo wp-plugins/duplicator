@@ -657,6 +657,7 @@ class SnapUtil
             $type = INPUT_POST;
         }
 
+        // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.filter_input_array_add_emptyFound
         $result = filter_input_array($type, $definition, $add_empty);
 
         if (!is_array($result)) {
@@ -726,6 +727,7 @@ class SnapUtil
             }
             return null;
         } else {
+            // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.array_key_firstFound
             return array_key_first($arr);
         }
     }
@@ -857,7 +859,8 @@ class SnapUtil
                 // rand() can accept arguments in either order, PHP cannot.
                 $_max = max($min, $_max);
                 $_min = min($min, $_max);
-                $val  = random_int($_min, $_max);
+                // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.random_intFound
+                $val = random_int($_min, $_max);
                 if (false !== $val) {
                     return abs(intval($val));
                 } else { // @phpstan-ignore-line

@@ -34,7 +34,7 @@ if (in_array(basename(dirname(__FILE__)), $disabled_dirs)) {
     die;
 }
 
-define('DUPX_VERSION', '1.5.5.1');
+define('DUPX_VERSION', '1.5.6');
 define('DUPX_INIT', str_replace('\\', '/', dirname(__FILE__)));
 define('DUPX_ROOT', preg_match('/^[\\\\\/]?$/', dirname(DUPX_INIT)) ? '/' : dirname(DUPX_INIT));
 

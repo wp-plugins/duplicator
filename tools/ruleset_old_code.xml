@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<ruleset name="DuplicatorOldPSR12" >
+
+    <arg name="extensions" value="php"/>
+
+    <exclude-pattern>/.git/*</exclude-pattern>
+    <exclude-pattern>/aws/*</exclude-pattern>
+    <exclude-pattern>*/assets/inc.libs.css.php</exclude-pattern>
+    <exclude-pattern>*/assets/wp-config-sample.php</exclude-pattern>
+    <exclude-pattern>/lib/DropPHP</exclude-pattern>
+    <exclude-pattern>/lib/forceutf8</exclude-pattern>
+    <exclude-pattern>/lib/google</exclude-pattern>
+    <exclude-pattern>/lib/onedrive</exclude-pattern>
+    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>/vendor-bin/*</exclude-pattern>
+    <exclude-pattern>/vendor-prefixed/*</exclude-pattern>
+    <exclude-pattern>/installer/dup-installer/api</exclude-pattern>
+    <exclude-pattern>/src/*</exclude-pattern>
+
+    <description>Duplicator PSR12 old coding standard.</description>
+
+    <rule ref="PSR1">
+        <exclude name="PSR1.Classes.ClassDeclaration"/>
+        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
+        <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+    </rule>
+
+    <rule ref="PSR12">
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
+        <exclude name="Generic.NamingConventions.UpperCaseConstantName" />
+    </rule>
+
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="250"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Formatting.MultipleStatementAlignment" />
+
+    <rule ref="Generic.Commenting.DocComment" >
+        <exclude name="Generic.Commenting.DocComment.ContentBeforeClose" />
+        <exclude name="Generic.Commenting.DocComment.ContentAfterOpen" />
+        <exclude name="Generic.Commenting.DocComment.MissingShort" />
+        <exclude name="Generic.Commenting.DocComment.ParamNotFirst" />
+        <exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
+        <exclude name="Generic.Commenting.DocComment.LongNotCapital" />
+    </rule>
+</ruleset>

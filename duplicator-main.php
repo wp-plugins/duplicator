@@ -33,29 +33,26 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
     require_once("helper.php");
     require_once("define.php");
 
-    if (is_admin() == true) {
-        if (defined('DUPLICATOR_DEACTIVATION_FEEDBACK') && DUPLICATOR_DEACTIVATION_FEEDBACK) {
-            require_once 'deactivation.php';
-        }
-        require_once 'classes/class.constants.php';
-        require_once 'classes/host/class.custom.host.manager.php';
-        require_once 'classes/class.settings.php';
-        require_once 'classes/class.logging.php';
-        require_once 'classes/class.plugin.upgrade.php';
-        require_once 'classes/utilities/class.u.php';
-        require_once 'classes/utilities/class.u.string.php';
-        require_once 'classes/utilities/class.u.validator.php';
-        require_once 'classes/class.db.php';
-        require_once 'classes/class.server.php';
-        require_once 'classes/ui/class.ui.viewstate.php';
-        require_once 'classes/ui/class.ui.notice.php';
-        require_once 'classes/package/class.pack.php';
-        require_once 'views/packages/screen.php';
-        require_once 'ctrls/ctrl.package.php';
-        require_once 'ctrls/ctrl.tools.php';
-        require_once 'ctrls/ctrl.ui.php';
-        require_once 'ctrls/class.web.services.php';
-
-        Bootstrap::init();
+    if (defined('DUPLICATOR_DEACTIVATION_FEEDBACK') && DUPLICATOR_DEACTIVATION_FEEDBACK) {
+        require_once 'deactivation.php';
     }
+    require_once 'classes/class.constants.php';
+    require_once 'classes/host/class.custom.host.manager.php';
+    require_once 'classes/class.settings.php';
+    require_once 'classes/class.logging.php';
+    require_once 'classes/class.plugin.upgrade.php';
+    require_once 'classes/utilities/class.u.php';
+    require_once 'classes/utilities/class.u.string.php';
+    require_once 'classes/utilities/class.u.validator.php';
+    require_once 'classes/class.db.php';
+    require_once 'classes/class.server.php';
+    require_once 'classes/ui/class.ui.viewstate.php';
+    require_once 'classes/package/class.pack.php';
+    require_once 'views/packages/screen.php';
+    require_once 'ctrls/ctrl.package.php';
+    require_once 'ctrls/ctrl.tools.php';
+    require_once 'ctrls/ctrl.ui.php';
+    require_once 'ctrls/class.web.services.php';
+
+    Bootstrap::init();
 }

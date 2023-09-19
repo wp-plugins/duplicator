@@ -175,6 +175,7 @@ final class ParamDescDatabase implements DescriptorInterface
                         MYSQLI_CLIENT_SSL,
                     );
                     if (defined("MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT")) {
+                        // phpcs:ignore PHPCompatibility.Constants.NewConstants.mysqli_client_ssl_dont_verify_server_certFound
                         $result[] = MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT;
                     }
                     return $result;

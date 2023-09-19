@@ -85,7 +85,7 @@ class TestsErrorHandler
         self::$errors[] = $newError;
 
         if (function_exists('error_clear_last')) {
-            error_clear_last();
+            error_clear_last(); // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.error_clear_lastFound
         }
     }
 

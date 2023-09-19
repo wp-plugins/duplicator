@@ -858,9 +858,10 @@ class DUPX_DBInstall extends AbstractJsonSerializable
                     }
 
                     if (DUPX_ArchiveConfig::getInstance()->dbInfo->buildMode === self::BUILD_MODE_MYSQLDUMP) {
-                        $skipRegex[] = '/^\s*(?:\/\*!\d+\s)?\s*(?:CREATE|INSERT|ALTER|LOCK)\s.*(?:TABLE|INTO).*[`\s](' . implode('|', $subArray) . ')[`\s]/im';
+                        $skipRegex[] = '/^\s*(?:\/\*!\d+\s)?\s*(?:CREATE|INSERT|ALTER|LOCK)\s.*(?:TABLE|INTO).*[`\s](?-i)(' .
+                            implode('|', $subArray) . ')(?i)[`\s]/im';
                     } else {
-                        $skipRegex[] = '/^\s*(?:CREATE|INSERT)\s.*(?:TABLE|INTO).*[`\s](' . implode('|', $subArray) . ')[`\s]/im';
+                        $skipRegex[] = '/^\s*(?:CREATE|INSERT)\s.*(?:TABLE|INTO).*[`\s](?-i)(' . implode('|', $subArray) . ')(?i)[`\s]/im';
                     }
                 }
             }
@@ -877,7 +878,7 @@ class DUPX_DBInstall extends AbstractJsonSerializable
                         break;
                     }
 
-                    $skipRegex[] = '/^\s*CREATE\s.*TABLE.*[`\s](' . implode('|', $subArray) . ')[`\s]/im';
+                    $skipRegex[] = '/^\s*CREATE\s.*TABLE.*[`\s](?-i)(' . implode('|', $subArray) . ')(?i)[`\s]/im';
                 }
             }
 

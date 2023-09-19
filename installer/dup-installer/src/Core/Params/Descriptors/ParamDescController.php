@@ -15,6 +15,7 @@ namespace Duplicator\Installer\Core\Params\Descriptors;
 use Duplicator\Installer\Core\Params\PrmMng;
 use Duplicator\Installer\Core\Params\Items\ParamItem;
 use Duplicator\Installer\Core\Params\Items\ParamForm;
+use DUPX_InstallerState;
 
 /**
  * class where all parameters are initialized. Used by the param manager
@@ -78,7 +79,7 @@ final class ParamDescController implements DescriptorInterface
             PrmMng::PARAM_OVERWRITE_SITE_DATA,
             ParamItem::TYPE_ARRAY_MIXED,
             array(
-            'default' => array('db')
+                'default' => DUPX_InstallerState::overwriteDataDefault()
             )
         );
 

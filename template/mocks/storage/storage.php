@@ -22,6 +22,13 @@ defined("ABSPATH") || exit;
         margin-left: 5px
     }
 
+    table.storage-tbl img,
+    .advanced-storages-popup-content .storage-icon {
+        vertical-align: middle;
+        margin-right: 5px;
+        width: 20px
+    }
+
     table tr.storage-detail td {
         padding: 3px 0 5px 20px
     }
@@ -117,7 +124,7 @@ defined("ABSPATH") || exit;
                 </td>
             </tr>
             <?php foreach ($tplData['storages'] as $storage) : ?>
-            <tr class="storage-row">
+            <tr class="storage-row" data-name="<?php echo esc_attr($storage['title']); ?>">
                 <td>
                     <input class="item-chk" type="checkbox">
                 </td>
@@ -125,7 +132,12 @@ defined("ABSPATH") || exit;
                     <a href="#"><b><?php echo $storage['title']; ?></b></a>
                 </td>
                 <td>
-                    <i class="<?php echo $storage['fa-class']; ?> fa-fw"></i>&nbsp;<?php echo $storage['label']; ?>
+                    <?php if (isset($storage['fa-class'])) : ?>
+                    <i class="<?php echo $storage['fa-class']; ?> fa-fw"></i>
+                    <?php elseif (isset($storage['iconUrl'])) : ?>
+                    <img src="<?php echo $storage['iconUrl']; ?>" alt="<?php echo $storage['label']; ?>" title="<?php echo $storage['label']; ?>">
+                    <?php endif; ?>
+                    <?php echo $storage['label']; ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -145,7 +157,16 @@ $storageAlert = StorageController::getDialogBox('storage-page');
     jQuery(document).ready(function ($) {
         $(".storage-tbl tr a, .item-chk, #new_storage").click(function (e) {
             e.preventDefault();
-            console.log('triggered')
+            let btn = $('#dup-storage-upgrade-btn');
+            let baseUrl = "<?php echo Upsell::getCampaignUrl($tplData['utm_medium'], 'Popup Upgrade Now'); ?>";
+            let url = baseUrl + '&utm_term=New+Storage';
+
+            if ($(this).is("a") || $(this).hasClass("item-chk")) {
+                url = baseUrl + '&utm_term=' + encodeURIComponent($(this).closest('tr').data('name'));
+            }
+
+            btn.attr('href', url);
+
             <?php $storageAlert->showAlert(); ?>
         });
     });

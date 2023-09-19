@@ -949,14 +949,14 @@ class SnapWP
                 return array_filter(
                     $result,
                     function ($info) {
-                        return self::isPluginActiveByInfo($info);
+                        return SnapWP::isPluginActiveByInfo($info);
                     }
                 );
             case self::PLUGIN_INFO_INACTIVE:
                 return array_filter(
                     $result,
                     function ($info) {
-                        return !self::isPluginActiveByInfo($info);
+                        return !SnapWP::isPluginActiveByInfo($info);
                     }
                 );
             case self::PLUGIN_INFO_ALL:

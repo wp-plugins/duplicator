@@ -27,31 +27,31 @@ $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) :
         <a 
             href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'general')); ?> " 
             class="nav-tab <?php echo ($current_tab == 'general') ? 'nav-tab-active' : '' ?>"
-        > 
+        >
             <?php esc_html_e('General', 'duplicator'); ?>
         </a>
         <a 
             href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'package')); ?> " 
             class="nav-tab <?php echo ($current_tab == 'package') ? 'nav-tab-active' : '' ?>"
-        > 
+        >
             <?php esc_html_e('Packages', 'duplicator'); ?>
         </a>
         <a 
             href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'storage')); ?> " 
             class="nav-tab <?php echo ($current_tab == 'storage') ? 'nav-tab-active' : '' ?>"
-        > 
+        >
             <?php esc_html_e('Storage', 'duplicator'); ?>
         </a>
         <a 
             href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'access')); ?> " 
             class="nav-tab <?php echo ($current_tab == 'access') ? 'nav-tab-active' : '' ?>"
-        > 
+        >
             <?php esc_html_e('Access', 'duplicator'); ?>
         </a>
         <a 
             href="<?php echo esc_url(ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, 'license')); ?> " 
             class="nav-tab <?php echo ($current_tab == 'license') ? 'nav-tab-active' : '' ?>"
-        > 
+        >
             <?php esc_html_e('License', 'duplicator'); ?>
         </a>
     </h2>
@@ -59,7 +59,7 @@ $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) :
     <?php
     switch ($current_tab) {
         case 'general':
-            include(DUPLICATOR_PLUGIN_PATH . "views/settings/general.php");
+            TplMng::getInstance()->render("admin_pages/settings/general/general");
             break;
         case 'package':
             include(DUPLICATOR_PLUGIN_PATH . "views/settings/packages.php");

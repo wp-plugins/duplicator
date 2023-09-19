@@ -26,6 +26,8 @@ final class DUPX_Ctrl_S0
 
         Log::info("INSTALLER INFO\n");
         Log::info(str_pad('TEMPLATE', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str($paramsManager->getValue(PrmMng::PARAM_TEMPLATE)));
+        Log::info(str_pad('SECURE MODE', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str(DUPX_Security::getInstance()->getSecurityType()));
+        Log::info(str_pad('URL PLUGINS', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->getRealValue('pluginsUrl'));
         Log::info(str_pad('VALIDATE ON START', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str($paramsManager->getValue(PrmMng::PARAM_VALIDATION_ACTION_ON_START)));
         Log::info(str_pad('PATH_NEW', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str($paramsManager->getValue(PrmMng::PARAM_PATH_NEW)));
         Log::info(str_pad('URL_NEW', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . Log::v2str($paramsManager->getValue(PrmMng::PARAM_URL_NEW)));
@@ -59,6 +61,7 @@ final class DUPX_Ctrl_S0
         $log .= str_pad('URL PLUGINS', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->getRealValue('pluginsUrl') . "\n";
         $log .= str_pad('URL MU PLUGINS', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->getRealValue('mupluginsUrl') . "\n";
         $log .= str_pad('URL THEMES', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->getRealValue('themesUrl') . "\n";
+
 
         $paths = (array) $archiveConfig->getRealValue('archivePaths');
         foreach ($paths as $key => $value) {

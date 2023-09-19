@@ -1013,7 +1013,7 @@ td.dup-store-promo-area i[data-tooltip].fa-question-circle {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px
+    gap: 20px
 }
 
 .advanced-storages-popup-content img {
@@ -1022,7 +1022,20 @@ td.dup-store-promo-area i[data-tooltip].fa-question-circle {
 
 .advanced-storages-popup-content ul {
     text-align: left;
-    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: #555;
+    font-size: 14px;
+    list-style: none;
+    margin: 0 auto;
+    justify-content: end;
+}
+
+.advanced-storages-popup-content ul li {
+    flex: 45% 0;
+    box-sizing: border-box;
+    padding: 0 0 8px 0;
 }
 
 #dup-settings-upgrade-license-key {

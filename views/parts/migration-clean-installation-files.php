@@ -3,7 +3,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Core\MigrationMng;
-use Duplicator\Utils\CachesPurge\CachesPurge;
+use Duplicator\Views\AdminNotices;
 
 ?>
 <div class="dpro-diagnostic-action-installer">
@@ -50,7 +50,7 @@ use Duplicator\Utils\CachesPurge\CachesPurge;
         </p>
         <?php
     } else {
-        delete_option(DUP_UI_Notice::OPTION_KEY_MIGRATION_SUCCESS_NOTICE);
+        delete_option(AdminNotices::OPTION_KEY_MIGRATION_SUCCESS_NOTICE);
     }
     ?>
     <div style="font-style: italic; max-width:900px; padding:10px 0 25px 0;">

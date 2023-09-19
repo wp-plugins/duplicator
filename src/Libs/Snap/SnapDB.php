@@ -636,6 +636,7 @@ class SnapDB
                 $flagsList[MYSQLI_CLIENT_SSL] = 'MYSQLI_CLIENT_SSL';
             }
             if (defined('MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT')) {
+                // phpcs:ignore PHPCompatibility.Constants.NewConstants.mysqli_client_ssl_dont_verify_server_certFound
                 $flagsList[MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT] = 'MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT';
             }
         }
@@ -700,6 +701,14 @@ class SnapDB
      */
     public static function getRedundantDuplicateTables($prefix, $duplicates)
     {
+        //core tables are not redundant, check with priority
+        foreach (SnapWP::getSiteCoreTables() as $coreTable) {
+            if (($k = array_search($prefix . $coreTable, $duplicates)) !== false) {
+                unset($duplicates[$k]);
+                return array_values($duplicates);
+            }
+        }
+
         foreach ($duplicates as $i => $tableName) {
             if (stripos($tableName, $prefix) === 0) {
                 //table has prefix, the case sensitive match is not redundant

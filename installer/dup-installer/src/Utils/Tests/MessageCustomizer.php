@@ -52,38 +52,38 @@ class MessageCustomizer
         $items   = array();
         $items[] = new MessageCustomizerItem(
             function ($string) {
-                if (self::getArchiveConfigData() == false) {
+                if (MessageCustomizer::getArchiveConfigData() == false) {
                     return false;
                 }
                 return preg_match("/undefined.*create_function/", $string) &&
                     version_compare(phpversion(), "8") >= 0 &&
-                    version_compare(self::getArchiveConfigData()->version_php, "8") < 0;
+                    version_compare(MessageCustomizer::getArchiveConfigData()->version_php, "8") < 0;
             },
             function ($string, $context) {
-                if (self::getArchiveConfigData() == false) {
+                if (MessageCustomizer::getArchiveConfigData() == false) {
                     return $string;
                 }
-                $phpVersionNew = self::getTwoLevelVersion(phpversion());
-                $phpVersionOld = self::getTwoLevelVersion(self::getArchiveConfigData()->version_php);
+                $phpVersionNew = MessageCustomizer::getTwoLevelVersion(phpversion());
+                $phpVersionOld = MessageCustomizer::getTwoLevelVersion(MessageCustomizer::getArchiveConfigData()->version_php);
                 $longMsgPrefix = "There is code in this site that is not compatible with PHP " . $phpVersionNew . ". " .
                     "To make the install work you will either have to\ninstall on PHP " .
                     $phpVersionOld . " or ";
 
                 switch ($context) {
-                    case self::CONTEXT_SHORT_MESSAGE:
+                    case MessageCustomizer::CONTEXT_SHORT_MESSAGE:
                         return "Source site or plugins are incompatible with PHP " . $phpVersionNew;
-                    case self::CONTEXT_LONG_MESSAGE:
-                        if (($plugin = self::getProblematicPluginFromError($string)) !== false) {
+                    case MessageCustomizer::CONTEXT_LONG_MESSAGE:
+                        if (($plugin = MessageCustomizer::getProblematicPluginFromError($string)) !== false) {
                             return $longMsgPrefix . "disable the plugin '{$plugin->name}' (slug: $plugin->slug) using a " .
                                 "file manager of your choice.\nSee full error message below: \n\n" . $string;
-                        } elseif (($theme = self::getProblematicThemeFromError($string)) !== false) {
+                        } elseif (($theme = MessageCustomizer::getProblematicThemeFromError($string)) !== false) {
                             return $longMsgPrefix . "disable the theme '{$theme->themeName}' (slug: $theme->slug) using a " .
                                 "file manager of your choice.\nSee full error message below: \n\n" . $string;
                         } else {
                             return $longMsgPrefix . "manually modify the affected files mentioned in the error trace below: \n\n" .
                                 $string;
                         }
-                    case self::CONTEXT_NOTICE_ID:
+                    case MessageCustomizer::CONTEXT_NOTICE_ID:
                         return $string . '_php8';
                 }
             }

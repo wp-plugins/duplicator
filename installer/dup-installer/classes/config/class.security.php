@@ -256,7 +256,7 @@ class DUPX_Security
                 /**
                  * comment error_clear_last if you want see te exception html on shutdown
                  */
-                error_clear_last();
+                error_clear_last(); // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.error_clear_lastFound
             }
 
             Log::logException($e, Log::LV_DEFAULT, 'SECURITY CHECK: ');
@@ -294,7 +294,7 @@ class DUPX_Security
 
         $archiveConfig = DUPX_ArchiveConfig::getInstance();
 
-        if ($archiveConfig->secure_on === true) {
+        if ($archiveConfig->secure_on) {
             return self::SECURITY_PASSWORD;
         }
 

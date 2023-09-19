@@ -12,7 +12,7 @@ define(
 );
 
 if (function_exists('plugin_dir_url')) {
-    define('DUPLICATOR_VERSION', '1.5.5.1');
+    define('DUPLICATOR_VERSION', '1.5.6');
     define('DUPLICATOR_PLUGIN_URL', plugin_dir_url(__FILE__));
     define('DUPLICATOR_SITE_URL', get_site_url());
 
@@ -126,6 +126,14 @@ if (function_exists('plugin_dir_url')) {
         if (!defined('PHP_RELEASE_VERSION')) {
             define('PHP_RELEASE_VERSION', $version[2]);
         }
+    }
+
+    if (!defined('DUPLICATOR_CUSTOM_STATS_REMOTE_HOST')) {
+        define('DUPLICATOR_CUSTOM_STATS_REMOTE_HOST', '');
+    }
+
+    if (!defined('DUPLICATOR_USTATS_DISALLOW')) {
+        define('DUPLICATOR_USTATS_DISALLOW', false);
     }
 } else {
     error_reporting(0);

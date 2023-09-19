@@ -16,6 +16,8 @@ use Duplicator\Installer\Utils\Log\Log;
 use Duplicator\Installer\Core\Params\PrmMng;
 use Duplicator\Libs\Snap\SnapIO;
 use Duplicator\Libs\Snap\SnapURL;
+use Duplicator\Libs\Snap\SnapDB;
+use Duplicator\Libs\Snap\SnapString;
 use Duplicator\Libs\WpConfig\WPConfigTransformer;
 
 /**
@@ -37,6 +39,10 @@ class DUPX_ArchiveConfig
     public $fileInfo;
     public $dbInfo;
     public $wpInfo;
+    /** @var int<-1,max> */
+    public $defaultStorageId = -1;
+    /** @var string[] */
+    public $components = array();
     // GENERAL
     public $secure_on;
     public $secure_pass;
@@ -393,6 +399,38 @@ class DUPX_ArchiveConfig
         }
         $parsedSubNew['path'] = $newPath;
         return SnapURL::buildUrl($parsedSubNew);
+    }
+
+     /**
+     * Returns case insensitive duplicate tables from source site
+     *
+     * @return array<string[]>
+     */
+    public function getDuplicateTableNames()
+    {
+        $tableList  = (array) $this->dbInfo->tablesList;
+        $allTables  = array_keys($tableList);
+        $duplicates = SnapString::getCaseInsesitiveDuplicates($allTables);
+
+        return $duplicates;
+    }
+
+    /**
+     * Returns list of redundant duplicates
+     *
+     * @return string[]
+     */
+    public function getRedundantDuplicateTableNames()
+    {
+        $duplicateTables = $this->getDuplicateTableNames();
+        $prefix          = DUPX_ArchiveConfig::getInstance()->wp_tableprefix;
+        $redundantTables = array();
+
+        foreach ($duplicateTables as $tables) {
+            $redundantTables = array_merge($redundantTables, SnapDB::getRedundantDuplicateTables($prefix, $tables));
+        }
+
+        return $redundantTables;
     }
 
     /**

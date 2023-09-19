@@ -13,6 +13,7 @@ use Exception;
 use Duplicator\Libs\OneClickUpgrade\PluginSilentUpgrader;
 use Duplicator\Libs\OneClickUpgrade\ConnectSkin;
 use DUP_Log;
+use Duplicator\Libs\Snap\SnapJson;
 
 class ServicesEducation extends AbstractAjaxService
 {
@@ -275,11 +276,11 @@ class ServicesEducation extends AbstractAjaxService
                 /** @var WP_Error  $response */
                 $requestError['code']    = $response->get_error_code();
                 $requestError['message'] = $response->get_error_message();
-                $requestError['details'] = json_encode($response->get_error_data(), JSON_PRETTY_PRINT);
+                $requestError['details'] = SnapJson::jsonEncodePPrint($response->get_error_data());
             } elseif ($response['response']['code'] < 200 || $response['response']['code'] >= 300) {
                 $requestError['code']    = $response['response']['code'];
                 $requestError['message'] = $response['response']['message'];
-                $requestError['details'] = json_encode($response, JSON_PRETTY_PRINT);
+                $requestError['details'] = SnapJson::jsonEncodePPrint($response);
             } else {
                 $data = json_decode(wp_remote_retrieve_body($response));
                 if (!is_object($data)) {

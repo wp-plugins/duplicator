@@ -17,7 +17,13 @@ defined("ABSPATH") || exit;
     <?php esc_html_e('Store to Multiple Endpoints with Duplicator Pro', 'duplicator'); ?>
     <ul>
         <?php foreach ($tplData['storages'] as $storage) : ?>
-            <li><i class="fab <?php echo esc_attr($storage['fa-class']); ?> fa-fw"></i>&nbsp;<?php echo esc_html($storage['title']); ?></li>
+            <li>
+                <?php if (isset($storage['iconUrl'])) : ?>
+                    <img src="<?php echo esc_url($storage['iconUrl']); ?>" class="storage-icon"/>
+                <?php elseif (isset($storage['fa-class'])) : ?>
+                    <i class="fab <?php echo esc_attr($storage['fa-class']); ?> fa-fw"></i>&nbsp;
+                <?php endif; ?>
+                <?php echo esc_html($storage['title']); ?></li>
         <?php endforeach; ?>
     </ul>
     <i>
@@ -26,7 +32,8 @@ defined("ABSPATH") || exit;
     <p>
         <a href="<?php echo esc_url(Upsell::getCampaignUrl($tplData['utm_medium'], 'Popup Upgrade Now')); ?>"
            target="_blank"
-           class="dup-btn dup-btn-green dup-btn-lg" style="padding: 10px 28px;">
+           id="dup-storage-upgrade-btn"
+           class="dup-btn dup-btn-green dup-btn-lg" style="padding: 12px 40px;">
             <?php esc_html_e('Upgrade Now', 'duplicator'); ?>
         </a>
     </p>

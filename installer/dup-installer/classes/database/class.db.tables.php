@@ -302,4 +302,28 @@ final class DUPX_DB_Tables
 
         return $result;
     }
+
+        /**
+     * return param table default filtered
+     *
+     * @param string[] $filterTables Table names to filter
+     *
+     * @return array<string, array{name: string, extract: bool, replace: bool}>
+     */
+    public function getFilteredParamValue($filterTables)
+    {
+        $result = array();
+
+        foreach ($this->tables as $table) {
+            $extract = !in_array($table->getOriginalName(), $filterTables) ? $table->canBeExctracted() : false;
+
+            $result[$table->getOriginalName()] = ParamFormTables::getParamItemValueFromData(
+                $table->getOriginalName(),
+                $extract,
+                $extract
+            );
+        }
+
+        return $result;
+    }
 }

@@ -15,6 +15,7 @@ require_once(dirname(__DIR__) . '/JsonSerializable.php');
 /**
  * Abstract class to extend in order to use the maximum potentialities of JsonSerialize
  */
+// phpcs:ignore PHPCompatibility.Interfaces.NewInterfaces.jsonserializableFound
 abstract class AbstractJsonSerializable extends AbstractJsonSerializeObjData implements \JsonSerializable
 {
     /**

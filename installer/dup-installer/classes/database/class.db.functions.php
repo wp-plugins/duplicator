@@ -170,11 +170,14 @@ class DUPX_DB_Functions
         } elseif (
             !$isLocalhost &&
             defined("MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT") &&
+            // phpcs:ignore PHPCompatibility.Constants.NewConstants.mysqli_client_ssl_dont_verify_server_certFound
             ($dbh = DUPX_DB::connect($dbhost, $dbuser, $dbpass, $dbname, MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT)) != false
         ) {
+            // phpcs:ignore PHPCompatibility.Constants.NewConstants.mysqli_client_ssl_dont_verify_server_certFound
             $dbflag                         = MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT;
             $wpConfigFalgsVal['inWpConfig'] = true;
-            $wpConfigFalgsVal['value']      = array(MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
+            // phpcs:ignore PHPCompatibility.Constants.NewConstants.mysqli_client_ssl_dont_verify_server_certFound
+            $wpConfigFalgsVal['value'] = array(MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
         } else {
             $dbflag = DUPX_DB::MYSQLI_CLIENT_NO_FLAGS;
         }
@@ -731,6 +734,27 @@ class DUPX_DB_Functions
 
         $row = $queryResult->fetch_row();
         return $row[0];
+    }
+
+    /**
+     * Return ustat identifier
+     *
+     * @param string $prefix table prefix
+     *
+     * @return string ustat identifier
+     */
+    public function getUstatIdentifier($prefix)
+    {
+        $optionsTable = self::getOptionsTableName($prefix);
+        $sql          = "SELECT `option_value` FROM `{$optionsTable}` WHERE `option_name` = 'duplicator_plugin_data_stats'";
+
+        if (($queryResult = DUPX_DB::mysqli_query($this->dbh, $sql)) === false || $queryResult->num_rows === 0) {
+            return '';
+        }
+
+        $dataStat = $queryResult->fetch_row();
+        $dataStat = json_decode($dataStat[0], true);
+        return isset($dataStat['identifier']) ? $dataStat['identifier'] : '';
     }
 
     /**

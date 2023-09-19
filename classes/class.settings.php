@@ -1,6 +1,8 @@
 <?php
 
 use Duplicator\Libs\Snap\SnapIO;
+use Duplicator\Utils\Email\EmailSummary;
+use Duplicator\Utils\UsageStatistics\CommStats;
 
 abstract class DUP_Archive_Build_Mode
 {
@@ -79,10 +81,42 @@ class DUP_Settings
     public static function Set($key, $value)
     {
         self::init();
+        if ($key == 'usage_tracking') {
+            self::setUsageTracking($value);
+            return;
+        }
         if (isset(self::$Data[$key])) {
             self::$Data[$key] = ($value == null) ? '' : $value;
         } elseif (!empty($key)) {
             self::$Data[$key] = ($value == null) ? '' : $value;
+        }
+    }
+
+    /**
+     * Set usage tracking
+     *
+     * @param bool $value value
+     *
+     * @return void
+     */
+    public static function setUsageTracking($value)
+    {
+        if (DUPLICATOR_USTATS_DISALLOW) { // @phpstan-ignore-line
+            // If usagfe tracking is hardcoded disabled, don't change the setting value
+            return;
+        }
+
+        if (!isset(self::$Data['usage_tracking'])) {
+            self::$Data['usage_tracking'] = false;
+        }
+
+        $value    = (bool) $value;
+        $oldValue = self::$Data['usage_tracking'];
+
+        self::$Data['usage_tracking'] = $value;
+
+        if ($value == false && $oldValue != $value) {
+            CommStats::disableUsageTracking();
         }
     }
 
@@ -193,6 +227,11 @@ class DUP_Settings
         $default['uninstall_files'] = isset(self::$Data['uninstall_files']) ? self::$Data['uninstall_files'] : true;
         //Flag used to show debug info
         $default['package_debug'] = isset(self::$Data['package_debug']) ? self::$Data['package_debug'] : false;
+        //Frequency of email summary
+        $default['email_summary_frequency'] = isset(self::$Data['email_summary_frequency'])
+            ? self::$Data['email_summary_frequency'] : EmailSummary::SEND_FREQ_WEEKLY;
+        //Setting to enable AM notifications
+        $default['amNotices'] = isset(self::$Data['amNotices']) ? self::$Data['amNotices'] : true;
         //Flag used to enable mysqldump
         $default['package_mysqldump'] = isset(self::$Data['package_mysqldump']) ? self::$Data['package_mysqldump'] : true;
         //Optional mysqldump search path
@@ -221,7 +260,26 @@ class DUP_Settings
         $default['unhook_third_party_js']  = isset(self::$Data['unhook_third_party_js']) ? self::$Data['unhook_third_party_js'] : false;
         $default['unhook_third_party_css'] = isset(self::$Data['unhook_third_party_css']) ? self::$Data['unhook_third_party_css'] : false;
         $default['active_package_id']      = -1;
+        $default['usage_tracking']         = isset(self::$Data['usage_tracking']) ? self::$Data['usage_tracking'] : false;
         return $default;
+    }
+
+    /**
+     * Sets the emaul summary frequency
+     *
+     * @param string $frequency The new frequency
+     *
+     * @return void
+     */
+    public static function setEmailSummaryFrequency($frequency)
+    {
+        $oldFrequency = self::Get('email_summary_frequency');
+        if (EmailSummary::updateFrequency($oldFrequency, $frequency) === false) {
+            DUP_Log::Trace("Invalide email summary frequency: {$frequency}");
+            return;
+        }
+
+        self::Set('email_summary_frequency', $frequency);
     }
 
     public static function get_create_date_format()

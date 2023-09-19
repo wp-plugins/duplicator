@@ -547,7 +547,7 @@ DATABASE -->
             echo '</div>';
             echo '<br/>';
 
-            $lnk = '<a href="' . DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/' .
+            $lnk = '<a href="' . DUPLICATOR_DOCS_URL . 'two-part-install/' .
                 '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=da_size_two_part&utm_campaign=duplicator_pro#quick-060-q" target="_blank">' .
                 esc_html__('covered here.', 'duplicator') .
                 '</a>';

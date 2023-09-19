@@ -1,5 +1,7 @@
 <?php
 
+use Duplicator\Libs\Snap\SnapOS;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
  * Lightweight abstraction layer for common simple database routines
@@ -19,7 +21,9 @@ if (!defined('DUPLICATOR_VERSION')) {
 
 class DUP_DB extends wpdb
 {
-    const BUILD_MODE_MYSQLDUMP                      = 'MYSQLDUMP';
+    const BUILD_MODE_MYSQLDUMP         = 'MYSQLDUMP';
+    const BUILD_MODE_PHP_SINGLE_THREAD = 'PHP';
+
     const MAX_TABLE_COUNT_IN_PACKET                 = 100;
     public static $remove_placeholder_escape_exists = null;
 
@@ -46,6 +50,29 @@ class DUP_DB extends wpdb
             return null;
         }
     }
+
+     /**
+     * Return the value of lower_case_table_names
+     *
+     * @see https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_lower_case_table_names
+     *
+     * @return int
+     */
+    public static function getLowerCaseTableNames()
+    {
+        if (($result = self::getVariable("lower_case_table_names")) === null) {
+            if (SnapOS::isOSX()) {
+                return 2;
+            } elseif (SnapOS::isWindows()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        return (int) $result;
+    }
+
 
     /**
      * Gets the MySQL database version number
@@ -110,7 +137,7 @@ class DUP_DB extends wpdb
     {
         $package_mysqldump = DUP_Settings::Get('package_mysqldump');
         $mysqlDumpPath     = DUP_DB::getMySqlDumpPath();
-        return ($mysqlDumpPath && $package_mysqldump) ? 'MYSQLDUMP' : 'PHP';
+        return ($mysqlDumpPath && $package_mysqldump) ? self::BUILD_MODE_MYSQLDUMP : self::BUILD_MODE_PHP_SINGLE_THREAD;
     }
 
     /**

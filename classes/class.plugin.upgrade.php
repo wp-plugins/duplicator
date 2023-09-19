@@ -15,7 +15,9 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  */
 class DUP_LITE_Plugin_Upgrade
 {
-    const DUP_VERSION_OPT_KEY = 'duplicator_version_plugin';
+    const DUP_VERSION_OPT_KEY          = 'duplicator_version_plugin';
+    const DUP_NEW_INSTALL_INFO_OPT_KEY = 'duplicator_install_info';
+
 
     /**
      * version starting from which the welcome page is shown
@@ -47,6 +49,33 @@ class DUP_LITE_Plugin_Upgrade
         //Init Database & Backup Directories
         self::updateDatabase();
         DUP_Util::initSnapshotDirectory();
+
+        do_action('duplicator_after_activation');
+    }
+
+    /**
+     * Set install info.
+     *
+     * @return void
+     */
+    public static function setNewInstallInfo()
+    {
+        $install_info = array(
+            'version' => DUPLICATOR_VERSION,
+            'time'    => time(),
+        );
+        delete_option(self::DUP_NEW_INSTALL_INFO_OPT_KEY);
+        update_option(self::DUP_NEW_INSTALL_INFO_OPT_KEY, $install_info, false);
+    }
+
+    /**
+     * Get install info.
+     *
+     * @return false|array{version:string,time:int}
+     */
+    public static function getNewInstallInfo()
+    {
+        return get_option(self::DUP_NEW_INSTALL_INFO_OPT_KEY, false);
     }
 
     /**
@@ -73,6 +102,7 @@ class DUP_LITE_Plugin_Upgrade
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
         update_option(WelcomeController::REDIRECT_OPT_KEY, true);
+        self::setNewInstallInfo();
     }
 
     /**

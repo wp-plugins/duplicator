@@ -475,7 +475,7 @@ class DUP_Extraction extends AbstractJsonSerializable
 
         $daws = new Daws();
         $daws->setFailureCallBack(function ($failure) {
-            self::reportExtractionNotices($failure->subject, $failure->description);
+            DUP_Extraction::reportExtractionNotices($failure->subject, $failure->description);
         });
         $dupResult         = $daws->processRequest($params);
         $this->dawn_status = $dupResult->status;

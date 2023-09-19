@@ -270,7 +270,16 @@ final class DUPX_Ctrl_Params
             }
         }
 
-        if ($paramsManager->setValue(PrmMng::PARAM_DB_TABLES, DUPX_DB_Tables::getInstance()->getDefaultParamValue()) === false) {
+        if (
+            DUPX_Validation_database_service::getInstance()->caseSensitiveTablesValue() !== 0
+            && ($redundantTables = DUPX_ArchiveConfig::getInstance()->getRedundantDuplicateTableNames()) !== array()
+        ) {
+            $defaultTables = DUPX_DB_Tables::getInstance()->getFilteredParamValue($redundantTables);
+        } else {
+            $defaultTables = DUPX_DB_Tables::getInstance()->getDefaultParamValue();
+        }
+
+        if ($paramsManager->setValue(PrmMng::PARAM_DB_TABLES, $defaultTables) === false) {
             self::$paramsValidated = false;
         }
 

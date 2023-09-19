@@ -82,16 +82,17 @@ class DbCleanup
 
         $dbh = DUPX_DB_Functions::getInstance()->dbConnection();
 
-        $archiveConfig    = DUPX_ArchiveConfig::getInstance();
-        $optionsTableList = array();
+        $archiveConfig     = DUPX_ArchiveConfig::getInstance();
+        $optionsTableList  = array();
+        $deleteOptionConds = array();
 
         $optionsTableList[]  = mysqli_real_escape_string($dbh, DUPX_DB_Functions::getOptionsTableName());
-        $deleteOptionConds   = array();
+        $deleteOptionConds[] = '`option_name` = "duplicator_plugin_data_stats"';
         $deleteOptionConds[] = '`option_name` LIKE "\_transient%"';
         $deleteOptionConds[] = '`option_name` LIKE "\_site\_transient%"';
 
         $opts_delete = array();
-        foreach ((array) json_decode($archiveConfig->opts_delete) as $value) {
+        foreach ($archiveConfig->opts_delete as $value) {
             $opts_delete[] = '"' . mysqli_real_escape_string($dbh, $value) . '"';
         }
         if (count($opts_delete) > 0) {
@@ -106,7 +107,7 @@ class DbCleanup
             }
             Log::info($log);
             $count += DUPX_DB::chunksDelete($dbh, $optionsTable, implode(' OR ', $deleteOptionConds));
-            Log::info('DATABASE OPTIONS DELETED [ROWS:' . str_pad($count, 6, " ", STR_PAD_LEFT) . ']');
+            Log::info(sprintf('DATABASE OPTIONS DELETED [ROWS:%6d]', $count));
         }
         return $count;
     }

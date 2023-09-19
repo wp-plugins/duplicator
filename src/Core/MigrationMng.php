@@ -9,11 +9,12 @@ namespace Duplicator\Core;
 use DUP_Archive;
 use DUP_CTRL_Tools;
 use DUP_Settings;
-use DUP_UI_Notice;
-use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Libs\Snap\SnapWP;
 use Duplicator\Libs\Snap\SnapIO;
 use Duplicator\Utils\CachesPurge\CachesPurge;
+use Duplicator\Utils\UsageStatistics\CommStats;
+use Duplicator\Utils\UsageStatistics\PluginData;
+use Duplicator\Views\AdminNotices;
 use Error;
 use Exception;
 
@@ -48,6 +49,7 @@ class MigrationMng
         add_action(self::HOOK_FIRST_LOGIN_AFTER_INSTALL, array(__CLASS__, 'renameInstallersPhpFiles'));
         add_action(self::HOOK_FIRST_LOGIN_AFTER_INSTALL, array(__CLASS__, 'storeMigrationFiles'));
         add_action(self::HOOK_FIRST_LOGIN_AFTER_INSTALL, array(__CLASS__, 'setDupSettingsAfterInstall'));
+        add_action(self::HOOK_FIRST_LOGIN_AFTER_INSTALL, array(__CLASS__, 'usageStatistics'));
         // save cleanup report after actions
         add_action(self::HOOK_FIRST_LOGIN_AFTER_INSTALL, array(__CLASS__, 'saveCleanupReport'), 100);
 
@@ -64,7 +66,7 @@ class MigrationMng
     {
         if (self::isFirstLoginAfterInstall()) {
             add_action('current_screen', array(__CLASS__, 'wpAdminHook'), 99999);
-            update_option(DUP_UI_Notice::OPTION_KEY_MIGRATION_SUCCESS_NOTICE, true);
+            update_option(AdminNotices::OPTION_KEY_MIGRATION_SUCCESS_NOTICE, true);
             do_action(self::HOOK_FIRST_LOGIN_AFTER_INSTALL, self::getMigrationData());
         }
     }
@@ -118,6 +120,20 @@ class MigrationMng
         }
 
         return CachesPurge::purgeAll();
+    }
+
+    /**
+     * Clean after install
+     *
+     * @param array $migrationData migration data
+     *
+     * @return void
+     */
+    public static function usageStatistics($migrationData)
+    {
+        $migrationData = (object) $migrationData;
+        PluginData::getInstance()->updateFromMigrateData($migrationData);
+        CommStats::installerSend();
     }
 
     /**
@@ -197,7 +213,7 @@ class MigrationMng
         if (is_null($migrationData)) {
             $migrationData = get_option(self::MIGRATION_DATA_OPTION, false);
             if (is_string($migrationData)) {
-                $migrationData = (array) json_decode($migrationData);
+                $migrationData = json_decode($migrationData, true);
             }
         }
 

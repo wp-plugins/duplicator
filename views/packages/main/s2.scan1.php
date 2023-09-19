@@ -1,8 +1,11 @@
 <?php
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
+use Duplicator\Views\AdminNotices;
+
     //Nonce Check
 if (! isset($_POST['dup_form_opts_nonce_field']) || ! wp_verify_nonce(sanitize_text_field($_POST['dup_form_opts_nonce_field']), 'dup_form_opts')) {
-    DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1&_wpnonce=' . wp_create_nonce('new1-package'));
+    AdminNotices::redirect('admin.php?page=duplicator&tab=new1&_wpnonce=' . wp_create_nonce('new1-package'));
 }
 
     global $wp_version;
@@ -122,9 +125,7 @@ if (empty($_POST)) {
     
     /*WARNING-CONTINUE*/
     div#dup-scan-warning-continue {display:none; text-align:center; padding:0 0 15px 0}
-    div#dup-scan-warning-continue div.msg1 label{font-size:16px; color:#630f0f}
-    div#dup-scan-warning-continue div.msg2 {padding:2px; line-height:13px}
-    div#dup-scan-warning-continue div.msg2 label {font-size:11px !important}
+    div#dup-scan-warning-continue div.msg2 {padding:2px; line-height:13px; font-size:11px !important;}
     div.dup-pro-support {text-align:center; font-style:italic; font-size:13px; margin-top:20px;font-weight:bold}
 
     /*DIALOG WINDOWS*/
@@ -248,30 +249,19 @@ TOOL BAR:STEPS -->
 
         <!-- WARNING CONTINUE -->
         <div id="dup-scan-warning-continue">
-            <div class="msg1">
-                <label for="dup-scan-warning-continue-checkbox">
-                    <?php esc_html_e('A notice status has been detected, are you sure you want to continue?', 'duplicator');?>
-                </label>
-                <div style="padding:8px 0">
-                    <input type="checkbox" id="dup-scan-warning-continue-checkbox" onclick="Duplicator.Pack.warningContinue(this)"/>
-                    <label for="dup-scan-warning-continue-checkbox"><?php esc_html_e('Yes.  Continue with the build process!', 'duplicator');?></label>
-                </div>
-            </div>
             <div class="msg2">
-                <label for="dup-scan-warning-continue-checkbox">
-                    <?php
-                        _e("Scan checks are not required to pass, however they could cause issues on some systems.", 'duplicator');
-                        echo '<br/>';
-                        _e("Please review the details for each section by clicking on the detail title.", 'duplicator');
-                    ?>
-                </label>
+                <?php
+                    _e("Scan checks are not required to pass, however they could cause issues on some systems.", 'duplicator');
+                    echo '<br/>';
+                    _e("Please review the details for each section by clicking on the detail title.", 'duplicator');
+                ?>
             </div>
         </div>
 
         <div id="dup-confirm-area"> 
             <label for="duplicator-confirm-check"><?php esc_html_e('Do you want to continue?', 'duplicator');
             echo '<br/> ';
-            esc_html_e('At least one or more checkboxes was checked in "Quick Filters".', 'duplicator') ?><br/> 
+            esc_html_e('At least one or more checkboxes were checked in "Quick Filters".', 'duplicator') ?><br/> 
             <i style="font-weight:normal"><?php esc_html_e('To apply a "Quick Filter" click the "Add Filters & Rescan" button', 'duplicator') ?></i><br/> 
             <input type="checkbox" id="duplicator-confirm-check" onclick="jQuery('#dup-build-button').removeAttr('disabled');"> 
             <?php esc_html_e('Yes. Continue without applying any file filters.', 'duplicator') ?></label><br/> 
@@ -360,10 +350,6 @@ jQuery(document).ready(function($)
         var warnCount = data.RPT.Warnings || 0;
         if (warnCount > 0) {
             $('#dup-scan-warning-continue').show();
-            $('#dup-build-button').prop("disabled",true).removeClass('button-primary');
-            if ($('#dup-scan-warning-continue-checkbox').is(':checked')) {
-                $('#dup-build-button').removeAttr('disabled').addClass('button-primary');
-            }
         } else {
             $('#dup-scan-warning-continue').hide();
             $('#dup-build-button').prop("disabled",false).addClass('button-primary');

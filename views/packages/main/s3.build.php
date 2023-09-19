@@ -2,11 +2,12 @@
 
 use Duplicator\Utils\Upsell;
 use Duplicator\Views\EducationElements;
+use Duplicator\Views\AdminNotices;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 //Nonce Check
 if (!isset($_POST['dup_form_opts_nonce_field']) || !wp_verify_nonce(sanitize_text_field($_POST['dup_form_opts_nonce_field']), 'dup_form_opts')) {
-    DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1&_wpnonce=' . wp_create_nonce('new1-package'));
+    AdminNotices::redirect('admin.php?page=duplicator&tab=new1&_wpnonce=' . wp_create_nonce('new1-package'));
 }
 require_once(DUPLICATOR_PLUGIN_PATH . 'classes/package/duparchive/class.pack.archive.duparchive.php');
 
@@ -78,7 +79,7 @@ $rand_txt[0] = $atext0;
     div.dup-howto-exe-title a {text-decoration:none; outline:none; box-shadow:none}
     div.dup-howto-exe small {font-weight:normal; display:block; margin-top:-2px; font-style:italic; font-size:12px; color:#444 }
     div.dup-howto-exe a {margin-top:8px; display:inline-block}
-    div.dup-howto-exe-info {display:none; border:1px dotted #b5b5b5; padding:20px; margin:auto; width:500px; background-color:#F0F0F1; border-radius:4px;}
+    div.dup-howto-exe-info {display:block; border:1px dotted #b5b5b5; padding:20px; margin:auto; width:500px; background-color:#F0F0F1; border-radius:4px;}
     div.dup-howto-exe-info a i {display:inline-block; margin:0 2px 0 2px}
     div.dup-howto-exe-area {display: flex; justify-content: center;}
     div.dup-howto-exe-txt {text-align: left; font-size:16px}
@@ -243,11 +244,8 @@ TOOL BAR:STEPS -->
             ?>
 
             <div class="dup-howto-exe">
-                <div class="dup-howto-exe-title" onclick="Duplicator.Pack.ToggleHelpInstall(this)">
-                    <a href="javascript:void(0)">
-                        <i class="far fa-plus-square"></i>
-                        <?php esc_html_e('How to install this package?', 'duplicator'); ?>
-                    </a>
+                <div class="dup-howto-exe-title">
+                    <?php esc_html_e('How to install this package?', 'duplicator'); ?>
                 </div>
                 <div class="dup-howto-exe-info">
                     <div class="dup-howto-exe-area">
@@ -864,19 +862,6 @@ jQuery(document).ready(function ($) {
             $btn.removeAttr("disabled");
         } else {
             $btn.attr("disabled", true);
-        }
-    };
-
-    Duplicator.Pack.ToggleHelpInstall = function (div) {
-        var $div    = $(div);
-        var $icon   = $div.find('i.far')
-        var $info   = $('div.dup-howto-exe-info');
-        if ($icon.hasClass('fa-plus-square')) {
-            $icon.attr('class', 'far fa-minus-square');
-            $info.show();
-        } else {
-            $icon.attr('class', 'far fa-plus-square');
-            $info.hide();
         }
     };
 

@@ -25,6 +25,13 @@ class DUPX_InstallerState
     const INSTALL_SINGLE_SITE_ON_SUBFOLDER = 5;
     const INSTALL_RBACKUP_SINGLE_SITE      = 8;
 
+    const LOGIC_MODE_IMPORT         = 'IMPORT';
+    const LOGIC_MODE_RECOVERY       = 'RECOVERY';
+    const LOGIC_MODE_CLASSIC        = 'CLASSIC';
+    const LOGIC_MODE_OVERWRITE      = 'OVERWRITE';
+    const LOGIC_MODE_BRIDGE         = 'BRIDGE';
+    const LOGIC_MODE_RESTORE_BACKUP = 'RESTORE_BACKUP';
+
     /**
      * min versions
      */
@@ -109,8 +116,8 @@ class DUPX_InstallerState
                 if (!self::isImportFromBackendMode()) {
                     //Add additional overwrite data for standard installs
                     $overwriteData['adminUsers'] = $this->getAdminUsersOnOverwriteDatabase($overwriteData);
-                    $overwriteData['dupVersion'] = $this->getDuplicatorVersionOverwrite($overwriteData);
                     $overwriteData['wpVersion']  = $this->getWordPressVersionOverwrite();
+                    $this->updateOverwriteDataFromDb($overwriteData);
                 }
             }
         } catch (Exception $e) {
@@ -177,7 +184,7 @@ class DUPX_InstallerState
         }
     }
 
-    protected static function overwriteDataDefault()
+    public static function overwriteDataDefault()
     {
         return array(
             'dupVersion'       => '0',
@@ -186,11 +193,12 @@ class DUPX_InstallerState
             'dbname'           => '',
             'dbuser'           => '',
             'dbpass'           => '',
-            'table_prefix'      => '',
+            'table_prefix'     => '',
             'restUrl'          => '',
             'restNonce'        => '',
             'restAuthUser'     => '',
             'restAuthPassword' => '',
+            'ustatIdentifier'  => '',
             'isMultisite'      => false,
             'subdomain'        => false,
             'subsites'         => array(),
@@ -402,45 +410,50 @@ class DUPX_InstallerState
     /**
      * Returns the Duplicator Pro version if it exists, otherwise '0'
      *
-     * @param $overwriteData
+     * @param array<string, mixed> $overwriteData Overwrite data
      *
-     * @return string
+     * @return bool True on success, false on failure
      */
-    protected function getDuplicatorVersionOverwrite($overwriteData)
+    protected function updateOverwriteDataFromDb(&$overwriteData)
     {
-        $duplicatorProVersion = '0';
         try {
+            $dbFuncs = null;
             $dbFuncs = DUPX_DB_Functions::getInstance();
 
             if (!$dbFuncs->dbConnection($overwriteData)) {
-                Log::info('GET DUPLICATOR VERSION ON CURRENT DATABASE FAILED. Can\'t connect');
-                return $duplicatorProVersion;
+                throw new Exception('GET DUPLICATOR VERSION ON CURRENT DATABASE FAILED. Can\'t connect');
             }
 
             $optionsTable = DUPX_DB_Functions::getOptionsTableName($overwriteData['table_prefix']);
 
             if (!$dbFuncs->tablesExist($optionsTable)) {
-                Log::info("GET DUPLICATOR VERSION ON CURRENT DATABASE FAILED. Options tables doesn't exist.\n");
-                $dbFuncs->closeDbConnection();
-                return $duplicatorProVersion;
+                throw new Exception("GET DUPLICATOR VERSION ON CURRENT DATABASE FAILED. Options tables doesn't exist.\n");
             }
 
-            if (($duplicatorProVersion = $dbFuncs->getDuplicatorVersion($overwriteData['table_prefix'])) === false) {
-                Log::info('GET DUPLICATOR VERSION ON CURRENT DATABASE FAILED. OVERWRITE VERSION NOT FOUND');
-                $dbFuncs->closeDbConnection();
-                return '0';
-            }
+            $duplicatorProVersion = $dbFuncs->getDuplicatorVersion($overwriteData['table_prefix']);
 
-            $dbFuncs->closeDbConnection();
+            $overwriteData['dupVersion']      = (empty($duplicatorProVersion) ? '0' : $duplicatorProVersion);
+            $overwriteData['ustatIdentifier'] = $dbFuncs->getUstatIdentifier($overwriteData['table_prefix']);
         } catch (Exception $e) {
+            if ($dbFuncs instanceof DUPX_DB_Functions) {
+                $dbFuncs->closeDbConnection();
+            }
             Log::logException($e, Log::LV_DEFAULT, 'GET DUPLICATOR VERSION EXECPTION BUT CONTINUE');
+            return false;
         } catch (Error $e) {
+            if ($dbFuncs instanceof DUPX_DB_Functions) {
+                $dbFuncs->closeDbConnection();
+            }
             Log::logException($e, Log::LV_DEFAULT, 'GET DUPLICATOR VERSION ERROR BUT CONTINUE');
+            return false;
         }
 
-        return $duplicatorProVersion;
-    }
+        if ($dbFuncs instanceof DUPX_DB_Functions) {
+            $dbFuncs->closeDbConnection();
+        }
 
+        return true;
+    }
 
     /**
      * getHtmlModeHeader
@@ -577,10 +590,15 @@ class DUPX_InstallerState
     {
         $sec           = DUPX_Security::getInstance();
         $paramsManager = PrmMng::getInstance();
+        $ac            = DUPX_ArchiveConfig::getInstance();
+        $overwriteData = $paramsManager->getValue(PrmMng::PARAM_OVERWRITE_SITE_DATA);
 
         return array(
-            'time'                => time(),
+            'plugin'              => 'dup-lite',
+            'installerVersion'    => DUPX_VERSION,
             'installType'         => $paramsManager->getValue(PrmMng::PARAM_INST_TYPE),
+            'logicModes'          => self::getLogicModes(),
+            'template'            => PrmMng::getInstance()->getValue(PrmMng::PARAM_TEMPLATE),
             'restoreBackupMode'   => self::isRestoreBackup(),
             'recoveryMode'        => false,
             'archivePath'         => $sec->getArchivePath(),
@@ -591,7 +609,17 @@ class DUPX_InstallerState
             'dupInstallerPath'    => DUPX_INIT,
             'origFileFolderPath'  => DUPX_Orig_File_Manager::getInstance()->getMainFolder(),
             'safeMode'            => $paramsManager->getValue(PrmMng::PARAM_SAFE_MODE),
-            'cleanInstallerFiles' => $paramsManager->getValue(PrmMng::PARAM_AUTO_CLEAN_INSTALLER_FILES)
+            'cleanInstallerFiles' => $paramsManager->getValue(PrmMng::PARAM_AUTO_CLEAN_INSTALLER_FILES),
+            'licenseType'         => $ac->license_type,
+            'phpVersion'          => $ac->version_php,
+            'archiveType'         => $ac->isZipArchive() ? 'zip' : 'dup',
+            'siteSize'            => $ac->fileInfo->size,
+            'siteNumFiles'        => ($ac->fileInfo->dirCount + $ac->fileInfo->fileCount),
+            'siteDbSize'          => $ac->dbInfo->tablesSizeOnDisk,
+            'siteDBNumTables'     => $ac->dbInfo->tablesFinalCount,
+            'components'          => $ac->components,
+            'ustatIdentifier'     => $overwriteData['ustatIdentifier'],
+            'time'                => time()
         );
     }
 
@@ -634,5 +662,28 @@ class DUPX_InstallerState
         } else {
             return $currentType === $type;
         }
+    }
+
+    /**
+     * Get install logic modes
+     *
+     * @return string[]
+     */
+    public static function getLogicModes()
+    {
+        $modes = array();
+        if (self::isImportFromBackendMode()) {
+            $modes[] = self::LOGIC_MODE_IMPORT;
+        }
+        if (self::isClassicInstall()) {
+            $modes[] = self::LOGIC_MODE_CLASSIC;
+        }
+        if (self::isOverwrite()) {
+            $modes[] = self::LOGIC_MODE_OVERWRITE;
+        }
+        if (self::isRestoreBackup()) {
+            $modes[] = self::LOGIC_MODE_RESTORE_BACKUP;
+        }
+        return $modes;
     }
 }

@@ -173,7 +173,7 @@ HEADER;
         $hasher                  = new DUP_PasswordHash(8, false);
         $pass_hash               = $hasher->HashPassword($this->Package->Installer->OptsSecurePass);
         $this->Package->Database->getScannerData();
-//READ-ONLY: COMPARE VALUES
+        // READ-ONLY: COMPARE VALUES
         $ac->created     = $this->Package->Created;
         $ac->version_dup = DUPLICATOR_VERSION;
         $ac->version_wp  = $this->Package->VersionWP;
@@ -193,7 +193,18 @@ HEADER;
             'size'      => $this->Package->Archive->Size
         );
         $ac->wpInfo      = $this->getWpInfo();
-
+        if ($this->Package->Archive->ExportOnlyDB) {
+            $ac->components = array('package_component_db');
+        } else {
+            $ac->components = array(
+                'package_component_db',
+                'package_component_core',
+                'package_component_plugins',
+                'package_component_themes',
+                'package_component_uploads',
+                'package_component_other'
+            );
+        }
         $ac->installer_base_name   = 'installer' . self::INSTALLER_SERVER_EXTENSION;
         $ac->installer_backup_name = $this->Package->NameHash . '_installer-backup.php';
         $ac->package_name          = "{$this->Package->NameHash}_archive.{$extension}";
@@ -205,7 +216,7 @@ HEADER;
         $ac->exportOnlyDB = $this->Package->Archive->ExportOnlyDB;
 
         // PRE-FILLED: GENERAL
-        $ac->secure_on   = filter_var($this->Package->Installer->OptsSecureOn, FILTER_VALIDATE_BOOLEAN);
+        $ac->secure_on   = (int) filter_var($this->Package->Installer->OptsSecureOn, FILTER_VALIDATE_BOOLEAN);
         $ac->secure_pass = $pass_hash;
         $ac->dbhost      = (strlen($this->Package->Installer->OptsDBHost) ? $this->Package->Installer->OptsDBHost : null);
         $ac->dbname      = (strlen($this->Package->Installer->OptsDBName) ? $this->Package->Installer->OptsDBName : null);

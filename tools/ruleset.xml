@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<ruleset name="DuplicatorPSR12" >
+
+    <arg name="extensions" value="php"/>
+
+    <exclude-pattern>/.git/*</exclude-pattern>
+    <exclude-pattern>/aws/*</exclude-pattern>
+    <exclude-pattern>/classes/*</exclude-pattern>
+    <exclude-pattern>/ctrls/*</exclude-pattern>
+    <exclude-pattern>/debug/*</exclude-pattern>
+    <exclude-pattern>/lib/DropPHP</exclude-pattern>
+    <exclude-pattern>/lib/forceutf8</exclude-pattern>
+    <exclude-pattern>/lib/google</exclude-pattern>
+    <exclude-pattern>/lib/onedrive</exclude-pattern>
+    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>/vendor-bin/*</exclude-pattern>
+    <exclude-pattern>/vendor-prefixed/*</exclude-pattern>
+    <exclude-pattern>/views/packages/*</exclude-pattern>
+    <exclude-pattern>/views/parts/*</exclude-pattern>
+    <exclude-pattern>/views/schedules/*</exclude-pattern>
+    <exclude-pattern>/views/settings/*</exclude-pattern>
+    <exclude-pattern>/views/storage/*</exclude-pattern>
+    <exclude-pattern>/views/tools/*</exclude-pattern>
+    <exclude-pattern>/installer/dup-installer/api</exclude-pattern>
+    <exclude-pattern>*/assets/inc.libs.css.php</exclude-pattern>
+    <exclude-pattern>*/assets/wp-config-sample.php</exclude-pattern>
+    
+    <description>Duplicator PSR12 coding standard.</description>
+
+    <rule ref="PSR12">
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
+    </rule>
+
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="160"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- Implied through the examples: align the assignment operator in a block of assignments. -->
+	<rule ref="Generic.Formatting.MultipleStatementAlignment">
+		<properties>
+			<property name="maxPadding" value="30"/>
+		</properties>
+	</rule>
+
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols" >
+        <exclude-pattern>/helper.php</exclude-pattern>
+        <exclude-pattern>/define.php</exclude-pattern>
+        <exclude-pattern>/duplicator.php</exclude-pattern>
+        <exclude-pattern>/duplicator-main.php</exclude-pattern>
+        <exclude-pattern>/uninstall.php</exclude-pattern>
+        <exclude-pattern>/deactivation.php</exclude-pattern>
+        <exclude-pattern>/src/Utils/DuplicatorPhpVersionCheck.php</exclude-pattern>
+        <exclude-pattern>/installer/dup-installer/main.installer.php</exclude-pattern>
+        <exclude-pattern>/tools/vendor-cleanup.php</exclude-pattern>
+        <exclude-pattern>/tools/file-renamer.php</exclude-pattern>
+        <exclude-pattern>/tools/phpunit-install.php</exclude-pattern>
+        <exclude-pattern>/tests/bootstrap.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.Commenting.DocComment" >
+        <exclude name="Generic.Commenting.DocComment.ContentBeforeClose" />
+        <exclude name="Generic.Commenting.DocComment.ContentAfterOpen" />
+        <exclude name="Generic.Commenting.DocComment.MissingShort" />
+        <exclude name="Generic.Commenting.DocComment.ParamNotFirst" />
+        <exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
+        <exclude name="Generic.Commenting.DocComment.LongNotCapital" />
+    </rule>
+
+    <rule ref="PEAR.Commenting.FunctionComment" >
+    </rule>
+</ruleset>

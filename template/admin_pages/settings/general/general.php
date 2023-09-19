@@ -1,5 +1,21 @@
 <?php
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
+
+/**
+ * @package   Duplicator
+ * @copyright (c) 2022, Snap Creek LLC
+ */
+
+defined("ABSPATH") || exit;
+
+/**
+ * Variables
+ *
+ * @var \Duplicator\Core\Views\TplMng  $tplMng
+ * @var array<string, mixed> $tplData
+ */
+
+use Duplicator\Libs\Snap\SnapUtil;
+use Duplicator\Core\Views\TplMng;
 
 global $wp_version;
 global $wpdb;
@@ -28,6 +44,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 
     $unhook_third_party_css = filter_input(INPUT_POST, 'unhook_third_party_css', FILTER_VALIDATE_BOOLEAN);
     DUP_Settings::Set('unhook_third_party_css', $unhook_third_party_css);
+
+    $email_summary_frequency = SnapUtil::sanitizeStrictInput(INPUT_POST, 'email_summary_frequency');
+    DUP_Settings::setEmailSummaryFrequency($email_summary_frequency);
+
+    $usage_tracking = filter_input(INPUT_POST, 'usage_tracking', FILTER_VALIDATE_BOOLEAN);
+    DUP_Settings::setUsageTracking($usage_tracking);
+
+    $amNotices = !SnapUtil::sanitizeBoolInput(INPUT_POST, 'dup_am_notices');
+    DUP_Settings::Set('amNotices', $amNotices);
 
     if (isset($_REQUEST['trace_log_enabled'])) {
         dup_log::trace("#### trace log enabled");
@@ -103,8 +128,49 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                 </p>
             </td>
         </tr>
+        <tr valign="top">
+            <th scope="row"><label><?php esc_html_e("Usage statistics", 'duplicator'); ?></label></th>
+            <td>
+                <?php if (DUPLICATOR_USTATS_DISALLOW) {  // @phpstan-ignore-line ?>
+                    <span class="maroon">
+                        <?php _e('Usage statistics are hardcoded disallowed.', 'duplicator'); ?>
+                    </span>
+                <?php } else { ?>
+                    <input
+                        type="checkbox"
+                        name="usage_tracking"
+                        id="usage_tracking"
+                        value="1"
+                        <?php checked(DUP_Settings::Get('usage_tracking')); ?>
+                    >
+                    <label for="usage_tracking"><?php _e("Enable usage tracking", 'duplicator'); ?> </label>
+                    <i 
+                            class="fas fa-question-circle fa-sm" 
+                            data-tooltip-title="<?php esc_attr_e("Usage Tracking", 'duplicator'); ?>" 
+                            data-tooltip="<?php echo esc_attr($tplMng->render('admin_pages/settings/general/usage_tracking_tooltip', array(), false)); ?>"
+                            data-tooltip-width="600"
+                    >
+                    </i>
+                <?php } ?>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row"><label><?php esc_html_e("Hide Announcements", 'duplicator'); ?></label></th>
+            <td>
+                <input 
+                    type="checkbox" 
+                    name="dup_am_notices" 
+                    id="dup_am_notices" 
+                    <?php checked(!DUP_Settings::Get('amNotices')); ?>
+                />
+                <label for="dup_am_notices">
+                    <?php esc_html_e("Check this option to hide plugin announcements and update details.", 'duplicator') ?>
+                </label>
+            </td>
+        </tr>
     </table>
 
+    <?php TplMng::getInstance()->render('admin_pages/settings/general/email_summary'); ?>
 
     <h3 class="title"><?php esc_html_e("Debug", 'duplicator') ?> </h3>
     <hr size="1" />
@@ -157,7 +223,9 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
                     ?>
                     <i class="fas fa-question-circle fa-sm"
                        data-tooltip-title="<?php esc_attr_e("Reset Settings", 'duplicator'); ?>"
-                       data-tooltip="<?php esc_attr_e('This action should only be used if the packages screen is having issues or a build is stuck.', 'duplicator'); ?>"></i>
+                       data-tooltip="<?php
+                        esc_attr_e('This action should only be used if the packages screen is having issues or a build is stuck.', 'duplicator'); ?>">
+                    </i>
                 </p>
             </td>
         </tr>
@@ -206,7 +274,14 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
 
     <p class="submit" style="margin: 20px 0px 0xp 5px;">
         <br/>
-        <input type="submit" name="submit" id="submit" class="button-primary" value="<?php esc_attr_e("Save General Settings", 'duplicator') ?>" style="display: inline-block;" />
+        <input 
+            type="submit"
+            name="submit" 
+            id="submit" 
+            class="button-primary" 
+            value="<?php esc_attr_e("Save General Settings", 'duplicator') ?>" 
+            style="display: inline-block;" 
+        />
     </p>
 
 </form>

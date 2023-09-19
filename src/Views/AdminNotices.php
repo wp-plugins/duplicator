@@ -1,23 +1,19 @@
 <?php
 
+namespace Duplicator\Views;
+
+use Closure;
+use DUP_Server;
 use Duplicator\Core\MigrationMng;
 use Duplicator\Libs\Snap\SnapUtil;
+use Duplicator\Core\Controllers\ControllersManager;
+use Duplicator\Utils\Autoloader;
+use Exception;
 
-defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 /**
- * Used to display notices in the WordPress Admin area
- * This class takes advantage of the admin_notice action.
- *
- * Standard: PSR-2
- *
- * @link http://www.php-fig.org/psr/psr-2
- *
- * @package    Duplicator
- * @subpackage classes/ui
- * @copyright  (c) 2017, Snapcreek LLC
+ * Admin Notices
  */
-
-class DUP_UI_Notice
+class AdminNotices
 {
     const OPTION_KEY_MIGRATION_SUCCESS_NOTICE       = 'duplicator_migration_success';
     const OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL = 'duplicator_activate_plugins_after_installation';
@@ -34,12 +30,20 @@ class DUP_UI_Notice
 
     /**
      * init notice actions
+     *
+     * @return void
      */
     public static function init()
     {
         add_action('admin_init', array(__CLASS__, 'adminInit'));
+        add_action('admin_enqueue_scripts', array(__CLASS__, 'unhookThirdPartyNotices'), 99999, 1);
     }
 
+    /**
+     * init notice actions
+     *
+     * @return void
+     */
     public static function adminInit()
     {
         $notices = array();
@@ -72,6 +76,47 @@ class DUP_UI_Notice
     }
 
     /**
+     * Remove all notices coming from other plugins
+     *
+     * @param string $hook Hook string
+     *
+     * @return void
+     */
+    public static function unhookThirdPartyNotices($hook)
+    {
+        if (!ControllersManager::isDuplicatorPage()) {
+            return;
+        }
+
+        global $wp_filter;
+        $filterHooks = array('user_admin_notices', 'admin_notices', 'all_admin_notices', 'network_admin_notices');
+        foreach ($filterHooks as $filterHook) {
+            if (empty($wp_filter[$filterHook]->callbacks) || !is_array($wp_filter[$filterHook]->callbacks)) {
+                continue;
+            }
+
+            foreach ($wp_filter[$filterHook]->callbacks as $priority => $hooks) {
+                foreach ($hooks as $name => $arr) {
+                    if (is_object($arr['function']) && $arr['function'] instanceof Closure) {
+                        unset($wp_filter[$filterHook]->callbacks[$priority][$name]);
+                        continue;
+                    }
+                    if (
+                        !empty($arr['function'][0]) &&
+                        is_object($arr['function'][0]) &&
+                        strpos(get_class($arr['function'][0]), Autoloader::ROOT_NAMESPACE) === 0
+                    ) {
+                        continue;
+                    }
+                    if (!empty($name) && strpos($name, Autoloader::ROOT_NAMESPACE) !== 0) {
+                        unset($wp_filter[$filterHook]->callbacks[$priority][$name]);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Clear installer file action
      *
      * @return void
@@ -79,7 +124,7 @@ class DUP_UI_Notice
     public static function clearInstallerFilesAction()
     {
 
-        if (!DUP_CTRL_Tools::isDiagnosticPage() || get_option(self::OPTION_KEY_MIGRATION_SUCCESS_NOTICE) == true) {
+        if (!\DUP_CTRL_Tools::isDiagnosticPage() || get_option(self::OPTION_KEY_MIGRATION_SUCCESS_NOTICE) == true) {
             return;
         }
 
@@ -109,7 +154,7 @@ class DUP_UI_Notice
             return;
         }
 
-        if (DUP_CTRL_Tools::isDiagnosticPage()) {
+        if (\DUP_CTRL_Tools::isDiagnosticPage()) {
             require DUPLICATOR_LITE_PATH . '/views/parts/migration-message.php';
         } else {
             require DUPLICATOR_LITE_PATH . '/views/parts/migration-almost-complete.php';
@@ -158,16 +203,26 @@ class DUP_UI_Notice
                 $msg2  = __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.  '
                     . 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
 
-                echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> " . esc_html($title) . "</b> <br/> {$safe_html} <b>" . esc_html($msg1) . "</b> <br/>";
-                printf("1. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", esc_html__('Remove Installation Files Now!', 'duplicator'));
-                printf("2. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", esc_html__('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
+                echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> " . esc_html($title) .
+                    "</b> <br/> {$safe_html} <b>" . esc_html($msg1) . "</b> <br/>";
+                printf(
+                    "1. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>",
+                    esc_html__('Remove Installation Files Now!', 'duplicator')
+                );
+                printf(
+                    "2. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ",
+                    esc_html__('Optionally, Review Duplicator at WordPress.org...', 'duplicator')
+                );
                 echo "<div class='pass-msg'>" . esc_html($msg2) . "</div>";
 
                 //All other Pages
             } else {
                 $title = __('Migration Almost Complete!', 'duplicator');
-                $msg   = __('Reserved Duplicator installation files have been detected in the root directory.  Please delete these installation files to '
-                    . 'avoid security issues. <br/> Go to:Duplicator > Tools > Information >Stored Data and click the "Remove Installation Files" button', 'duplicator');
+                $msg   = __(
+                    'Reserved Duplicator installation files have been detected in the root directory.  Please delete these installation files to '
+                    . 'avoid security issues. <br/> Go to:Duplicator > Tools > Information >Stored Data and click the "Remove Installation Files" button',
+                    'duplicator'
+                );
 
                 $nonce = wp_create_nonce('duplicator_cleanup_page');
                 $url   = self_admin_url('admin.php?page=duplicator-tools&tab=diagnostics&section=info&_wpnonce=' . $nonce);
@@ -181,7 +236,9 @@ class DUP_UI_Notice
     /**
      * Shows a message for redirecting a page
      *
-     * @return string   The location to redirect to
+     * @param string $location The location to redirect to
+     *
+     * @return never
      */
     public static function redirect($location)
     {
@@ -194,6 +251,8 @@ class DUP_UI_Notice
 
     /**
      * Shows install deactivated function
+     *
+     * @return void
      */
     public static function installAutoDeactivatePlugins()
     {
@@ -242,7 +301,10 @@ class DUP_UI_Notice
             <p>
                 <?php
                 echo "<b>" . esc_html__("Warning!", "duplicator") . "</b> " . esc_html__("Migration Almost Complete!", "duplicator") . " <br/>";
-                echo esc_html__("Plugin(s) listed here have been deactivated during installation to help prevent issues. Please activate them to finish this migration: ", "duplicator") . "<br/>";
+                echo esc_html__(
+                    "Plugin(s) listed here have been deactivated during installation to help prevent issues. Please activate them to finish this migration: ",
+                    "duplicator"
+                ) . "<br/>";
                 echo implode(' ,', $activatePluginsAnchors);
                 ?>
             </p>
@@ -251,7 +313,9 @@ class DUP_UI_Notice
     }
 
     /**
-     * Shows feedback notices after certain no. of packages successfully created
+     * Shows feedback notices after certain no. of packages successfully created.
+     *
+     * @return void
      */
     public static function showFeedBackNotice()
     {
@@ -277,8 +341,11 @@ class DUP_UI_Notice
             return;
         }
 
-        // not using DUP_Util::getTablePrefix() in place of $tablePrefix because DUP_UI_Notice included initially (Duplicator\Lite\Requirement is depended on the DUP_UI_Notice)
-        $tablePrefix   = (is_multisite() && is_plugin_active_for_network('duplicator/duplicator.php')) ? $GLOBALS['wpdb']->base_prefix : $GLOBALS['wpdb']->prefix;
+        // not using DUP_Util::getTablePrefix() in place of $tablePrefix because AdminNotices included initially (Duplicator\Lite\Requirement
+        // is depended on the AdminNotices)
+        $tablePrefix   = (is_multisite() && is_plugin_active_for_network('duplicator/duplicator.php')) ?
+            $GLOBALS['wpdb']->base_prefix :
+            $GLOBALS['wpdb']->prefix;
         $packagesCount = $GLOBALS['wpdb']->get_var('SELECT count(id) FROM ' . $tablePrefix . 'duplicator_packages WHERE status=100');
 
         if ($packagesCount < DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE) {
@@ -299,7 +366,9 @@ class DUP_UI_Notice
         <div class="notice updated duplicator-message duplicator-message-dismissed" data-notice_id="<?php echo esc_attr($notice_id); ?>">
             <div class="duplicator-message-inner">
                 <div class="duplicator-message-icon">
-                    <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL . "assets/img/logo.png"); ?>" style="text-align:top; margin:0; height:60px; width:60px;" alt="Duplicator">
+                    <img 
+                        src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL . "assets/img/logo.png"); ?>" 
+                        style="text-align:top; margin:0; height:60px; width:60px;" alt="Duplicator">
                 </div>
                 <div class="duplicator-message-content">
                     <p>
@@ -309,15 +378,23 @@ class DUP_UI_Notice
                         <?php
                         printf(
                             esc_html__(
-                                'You created over %d packages with Duplicator. Great job! If you can spare a minute, please help us by leaving a five star review on WordPress.org.',
+                                'You created over %d packages with Duplicator. Great job! If you can spare a minute, 
+                                please help us by leaving a five star review on WordPress.org.',
                                 'duplicator'
                             ),
                             DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE
                         ); ?>
                     </p>
                     <p class="duplicator-message-actions">
-                        <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5/#new-post" target="_blank" class="button button-primary duplicator-notice-rate-now"><?php esc_html_e("Sure! I'd love to help", 'duplicator'); ?></a>
-                        <a href="<?php echo esc_url_raw($dismiss_url); ?>" class="button duplicator-notice-dismiss"><?php esc_html_e('Hide Notification', 'duplicator'); ?></a>
+                        <a 
+                            href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5/#new-post" 
+                            target="_blank" class="button button-primary duplicator-notice-rate-now"
+                        >
+                            <?php esc_html_e("Sure! I'd love to help", 'duplicator'); ?>
+                        </a>
+                        <a href="<?php echo esc_url_raw($dismiss_url); ?>" class="button duplicator-notice-dismiss">
+                            <?php esc_html_e('Hide Notification', 'duplicator'); ?>
+                        </a>
                     </p>
                 </div>
             </div>
@@ -333,17 +410,21 @@ class DUP_UI_Notice
     public static function showNoExportCapabilityNotice()
     {
         if (is_admin() && in_array('administrator', $GLOBALS['current_user']->roles) && !current_user_can('export')) {
-            $errorMessage = __('<strong>Duplicator</strong><hr> Your logged-in user role does not have export capability so you don\'t have access to Duplicator functionality.', 'duplicator') .
-                "<br>" .
-                sprintf(
-                    __(
-                        '<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>',
-                        'duplicator'
-                    ),
-                    DUPLICATOR_DOCS_URL . 'how-to-resolve-duplicator-plugin-user-interface-ui-issues/',
-                    __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator')
-                );
-            DUP_UI_Notice::displayGeneralAdminNotice($errorMessage, self::GEN_ERROR_NOTICE, true);
+            $errorMessage = __(
+                '<strong>Duplicator</strong><hr> Your logged-in user role does not have export 
+                capability so you don\'t have access to Duplicator functionality.',
+                'duplicator'
+            ) .
+            "<br>" .
+            sprintf(
+                __(
+                    '<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>',
+                    'duplicator'
+                ),
+                DUPLICATOR_DOCS_URL . 'how-to-resolve-duplicator-plugin-user-interface-ui-issues/',
+                __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator')
+            );
+            self::displayGeneralAdminNotice($errorMessage, self::GEN_ERROR_NOTICE, true);
         }
     }
 

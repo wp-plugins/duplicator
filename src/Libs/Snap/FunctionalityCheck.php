@@ -138,13 +138,13 @@ class FunctionalityCheck
      *
      * @return bool
      */
-    public static function checkList($funcs, $requiredOnly = false, &$notPassList = [])
+    public static function checkList($funcs, $requiredOnly = false, &$notPassList = array())
     {
         if (!is_array($funcs)) {
             throw new Exception('funcs must be an array');
         }
 
-        $notPassList = [];
+        $notPassList = array();
 
         foreach ($funcs as $func) {
             if ($requiredOnly && !$func->isRequired()) {

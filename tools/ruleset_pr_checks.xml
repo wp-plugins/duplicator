@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<ruleset name="DuplicatorPSR12" >
+
+    <arg name="extensions" value="php"/>
+
+    <!-- Check for cross-version support for PHP 5.6 and higher. -->
+    <config name="testVersion" value="5.3-"/>
+
+    <exclude-pattern>/.git/*</exclude-pattern>
+    <exclude-pattern>/lib/forceutf8</exclude-pattern>
+    <exclude-pattern>/vendor/*</exclude-pattern>
+    
+    <description>Duplicator WP Checks</description>
+
+    <!-- Run against the PHPCompatibility ruleset -->
+    <rule ref="PHPCompatibility" >
+        <exclude-pattern type="relative">../tools</exclude-pattern>
+        <exclude name="PHPCompatibility.ParameterValues.NewHTMLEntitiesEncodingDefault.NotSet" />
+        <exclude name="PHPCompatibility.Classes.NewClasses.errorFound" />
+        <exclude name="PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved" />
+        <exclude name="PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved" />
+        <exclude name="PHPCompatibility.Constants.NewConstants.json_error_utf8Found" />
+        <exclude name="PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection" />
+        <exclude name="PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.Changed" />
+    </rule>
+
+    <!--
+    <rule ref="WordPress.WP" >
+        <exclude-pattern type="relative">../installer</exclude-pattern>
+        <exclude-pattern type="relative">../tools</exclude-pattern>
+        <exclude name="WordPress.WP.AlternativeFunctions" />
+    </rule>
+    -->
+    
+    <!--
+    <rule ref="WordPress.Security" >
+        <exclude-pattern type="relative">../installer</exclude-pattern>
+        <exclude-pattern type="relative">../tools</exclude-pattern>
+    </rule>
+    -->
+
+    <!--
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="duplicator"/>
+                <element value="tgmpa"/>
+            </property>
+        </properties>
+        <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+    </rule>
+    -->
+</ruleset>

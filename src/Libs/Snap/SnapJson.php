@@ -80,6 +80,7 @@ class SnapJson
     public static function jsonEncodePPrint($data, $options = 0, $depth = 512)
     {
         if (defined('JSON_PRETTY_PRINT')) {
+            // phpcs:ignore PHPCompatibility.Constants.NewConstants.json_pretty_printFound
             return self::jsonEncode($data, JSON_PRETTY_PRINT | $options, $depth);
         } else {
             return self::jsonEncode($data, $options, $depth);

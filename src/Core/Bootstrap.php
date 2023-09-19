@@ -20,12 +20,13 @@ use DUP_Log;
 use DUP_Package;
 use DUP_Package_Screen;
 use DUP_Settings;
-use DUP_UI_Notice;
+use Duplicator\Views\AdminNotices;
 use DUP_Util;
 use DUP_Web_Services;
 use Duplicator\Ajax\ServicesDashboard;
 use Duplicator\Ajax\ServicesEducation;
 use Duplicator\Ajax\ServicesExtraPlugins;
+use Duplicator\Controllers\EmailSummaryPreviewPageController;
 use Duplicator\Controllers\WelcomeController;
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Core\Notifications\Notice;
@@ -33,9 +34,12 @@ use Duplicator\Core\Notifications\NoticeBar;
 use Duplicator\Core\Notifications\Notifications;
 use Duplicator\Core\Notifications\Review;
 use Duplicator\Core\Views\TplMng;
+use Duplicator\Utils\CronUtils;
 use Duplicator\Utils\Upsell;
 use Duplicator\Views\DashboardWidget;
 use Duplicator\Views\EducationElements;
+use Duplicator\Utils\Email\EmailSummary;
+use Duplicator\Utils\UsageStatistics\StatsBootstrap;
 
 class Bootstrap
 {
@@ -57,7 +61,12 @@ class Bootstrap
             * ACTIVATE/DEACTIVE/UPDATE HOOKS
             * =====================================================  */
             register_activation_hook(DUPLICATOR_LITE_FILE, array('DUP_LITE_Plugin_Upgrade', 'onActivationAction'));
+            Unistall::registerHooks();
         }
+
+        CronUtils::init();
+        EmailSummary::initHooks();
+        StatsBootstrap::init();
     }
 
     /**
@@ -97,12 +106,13 @@ class Bootstrap
             Notice::init();
             NoticeBar::init();
             Review::init();
-            DUP_UI_Notice::init();
+            AdminNotices::init();
             DUP_Web_Services::init();
             WelcomeController::init();
             DashboardWidget::init();
             EducationElements::init();
             Notifications::init();
+            EmailSummaryPreviewPageController::init();
             $dashboardService = new ServicesDashboard();
             $dashboardService->init();
             $extraPlugin = new ServicesExtraPlugins();
@@ -110,6 +120,8 @@ class Bootstrap
             $educationService = new ServicesEducation();
             $educationService->init();
         }
+
+        EmailSummary::getInstance()->init();
     }
 
     /**

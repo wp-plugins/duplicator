@@ -32,8 +32,8 @@ class StorageController
 
         $storageAlert          = new DUP_UI_Dialog();
         $storageAlert->title   = __('Advanced Storage', 'duplicator');
-        $storageAlert->height  = 520;
-        $storageAlert->width   = 400;
+        $storageAlert->height  = 600;
+        $storageAlert->width   = 550;
         $storageAlert->okText  = '';
         $storageAlert->message = TplMng::getInstance()->render('mocks/storage/popup', array(
             'storages' => self::getStoragesData(),
@@ -55,33 +55,71 @@ class StorageController
             array(
                 'title'    => __('Amazon S3', 'duplicator'),
                 'label'    => __('Amazon S3', 'duplicator'),
-                'fa-class' => 'fab fa-amazon',
-            ),
-            array(
-                'title'    => __('S3-Compatible Provider', 'duplicator'),
-                'label'    => __('S3-Compatible (Generic) Google Cloud Drive, BackBlaze, Wasabi, etc…', 'duplicator'),
-                'fa-class' => 'fab fa-aws',
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/aws.svg',
             ),
             array(
                 'title'    => __('Google Drive', 'duplicator'),
                 'label'    => __('Google Drive', 'duplicator'),
-                'fa-class' => 'fab fa-google-drive',
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/google-drive.svg',
             ),
             array(
                 'title'    => __('OneDrive', 'duplicator'),
                 'label'    => __('OneDrive', 'duplicator'),
-                'fa-class' => 'fas fa-cloud',
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/onedrive.svg',
             ),
             array(
                 'title'    => __('DropBox', 'duplicator'),
                 'label'    => __('DropBox', 'duplicator'),
-                'fa-class' => 'fab fa-dropbox',
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/dropbox.svg',
             ),
             array(
                 'title'    => __('FTP/SFTP', 'duplicator'),
                 'label'    => __('FTP/SFTP', 'duplicator'),
                 'fa-class' => 'fas fa-network-wired',
-            )
+            ),
+            array(
+                'title'    => __('Google Cloud Storage', 'duplicator'),
+                'label'    => __('Google Cloud Storage', 'duplicator'),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/google-cloud.svg',
+            ),
+            array(
+                'title'    => __('Back Blaze', 'duplicator'),
+                'label'    => __('Back Blaze', 'duplicator'),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/backblaze.svg',
+            ),
+            array(
+                'title'    => __('Cloudflare R2', 'duplicator'),
+                'label'    => __('Cloudflare R2', 'duplicator'),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/cloudflare.svg',
+            ),
+            array(
+                'title'    => __('Digital Ocean Spaces', 'duplicator'),
+                'label'    => __('Digital Ocean Spaces', 'duplicator'),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/digital-ocean.svg',
+            ),
+            array(
+                'title'    => __('Vultr Object Storage', 'duplicator'),
+                'label'    => __('Vultr Object Storage', 'duplicator'),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/vultr.svg',
+            ),
+            array(
+                'title'    => __('Dream Objects', 'duplicator'),
+                'label'    => __('Dream Objects', 'duplicator'),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/dreamhost.svg',
+            ),
+            array(
+                'title'    => __('Wasabi', 'duplicator'),
+                'label'    => __('Wasabi', 'duplicator'),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/wasabi.svg',
+            ),
+            array(
+                'title'    => __('S3-Compatible Provider', 'duplicator'),
+                'label'    => __(
+                    'S3-Compatible (Generic) Cloudian, Cloudn, Connectria, Constant, Exoscal, Eucalyptus, Nifty, Nimbula, Minio, etc...',
+                    'duplicator'
+                ),
+                'iconUrl'  => DUPLICATOR_PLUGIN_URL . 'assets/img/aws.svg',
+            ),
         );
     }
 }
