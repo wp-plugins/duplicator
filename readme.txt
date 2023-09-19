@@ -1,10 +1,10 @@
 === Duplicator - WordPress Migration & Backup Plugin ===
-Contributors: seedprod, smub
+Contributors: seedprod, smub, andreamk
 Tags: migration, backup, duplicate, move, migrate, restore, transfer, clone, automate, copy site, migrator
 Requires at least: 4.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.3.8
-Stable tag: 1.5.5.1
+Stable tag: 1.5.6
 License: GPLv2
 WordPress migration and backups are much easier with Duplicator! Clone, backup, move and transfer an entire site from one location to another.
 
@@ -60,11 +60,6 @@ The underlying logic to backup WordPress, move WordPress and transfer WordPress 
 
 = Disclaimer =
 This plugin does require some technical knowledge.  If you plan to migrate WordPress or backup WordPress please use it at your own risk and don't forget to back up your files and databases beforehand. If you need to move or backup WordPress and would like additional help please visit the Duplicator [resources section](https://duplicator.com/knowledge-base/?utm_source=duplicator_free&utm_medium=wp_org&utm_content=free_disclaimer&utm_campaign=duplicator_free) .
-
-= Active Contributors =
-<li>[Andrea Leoni](https://profiles.wordpress.org/andreamk/) (Development)</li>
-<li>[Hans-M. Herbrand](http://www.web266.de) (German) </li>
-<li>[Nicolas Richer](http://nicolasricher.fr) (French)</li>
 
 == Screenshots ==
 
