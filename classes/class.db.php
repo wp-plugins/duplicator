@@ -325,25 +325,20 @@ class DUP_DB extends wpdb
         }
     }
 
-     /**
-     * this function escape sql string without add and remove remove_placeholder_escape
-     * doesn't work on array
+    /**
+     * This function escape sql string without add and remove remove_placeholder_escape
+     * Don't use esc_sql wordpress function
      *
-     * @param mixed $sql
+     * @param null|scalar $value input value
      *
      * @return string
      */
     public static function escValueToQueryString($value)
     {
-        global $wpdb;
         if (is_null($value)) {
             return 'NULL';
         }
-
-        if ($wpdb->use_mysqli) {
-            return '"' . mysqli_real_escape_string($wpdb->dbh, $value) . '"';
-        } else {
-            return '"' . mysql_real_escape_string($value, $wpdb->dbh) . '"';
-        }
+        global $wpdb;
+        return '"' . mysqli_real_escape_string($wpdb->dbh, (string) $value) . '"';
     }
 }
