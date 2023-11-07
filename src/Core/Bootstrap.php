@@ -20,6 +20,7 @@ use DUP_Log;
 use DUP_Package;
 use DUP_Package_Screen;
 use DUP_Settings;
+use Duplicator\Utils\Email\EmailSummaryBootstrap;
 use Duplicator\Views\AdminNotices;
 use DUP_Util;
 use DUP_Web_Services;
@@ -38,7 +39,6 @@ use Duplicator\Utils\CronUtils;
 use Duplicator\Utils\Upsell;
 use Duplicator\Views\DashboardWidget;
 use Duplicator\Views\EducationElements;
-use Duplicator\Utils\Email\EmailSummary;
 use Duplicator\Utils\UsageStatistics\StatsBootstrap;
 
 class Bootstrap
@@ -65,8 +65,8 @@ class Bootstrap
         }
 
         CronUtils::init();
-        EmailSummary::initHooks();
         StatsBootstrap::init();
+        EmailSummaryBootstrap::init();
     }
 
     /**
@@ -120,8 +120,6 @@ class Bootstrap
             $educationService = new ServicesEducation();
             $educationService->init();
         }
-
-        EmailSummary::getInstance()->init();
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
@@ -181,11 +184,15 @@ jQuery(document).ready(function($)
                         data-tooltip="<?php esc_attr_e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
                          <i class="far fa-lightbulb" aria-hidden="true"></i>
                             <?php
+                                $faqUrl = esc_url(LinkManager::getDocUrl('what-host-providers-are-recommended-for-duplicator', 'tools-logging'));
                                 printf(
-                                    "%s <a target='_blank' href='" . DUPLICATOR_DOCS_URL . "what-host-providers-are-recommended-for-duplicator/'>%s</a> %s",
-                                    esc_html__("Consider our recommended", 'duplicator'),
-                                    esc_html__("host list", 'duplicator'),
-                                    esc_html__("if you’re unhappy with your current provider", 'duplicator')
+                                    _x(
+                                        'Consider our recommended %1$shost list%2$s if you’re unhappy with your current provider',
+                                        '%1$s and %2$s are <a> tags',
+                                        'duplicator'
+                                    ),
+                                    '<a target="_blank" href="' . $faqUrl . '">',
+                                    '</a>'
                                 );
                             ?>
                     </i>

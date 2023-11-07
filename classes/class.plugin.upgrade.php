@@ -7,6 +7,7 @@
  */
 
 use Duplicator\Controllers\WelcomeController;
+use Duplicator\Core\Upgrade\UpgradeFunctions;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
@@ -15,9 +16,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  */
 class DUP_LITE_Plugin_Upgrade
 {
-    const DUP_VERSION_OPT_KEY          = 'duplicator_version_plugin';
-    const DUP_NEW_INSTALL_INFO_OPT_KEY = 'duplicator_install_info';
-
+    const DUP_VERSION_OPT_KEY         = 'duplicator_version_plugin';
+    const PLUGIN_INSTALL_INFO_OPT_KEY = 'duplicator_install_info';
 
     /**
      * version starting from which the welcome page is shown
@@ -42,9 +42,8 @@ class DUP_LITE_Plugin_Upgrade
         } else {
             self::updateInstallation($oldDupVersion);
         }
-        DUP_Settings::Save();
 
-        self::setActivatedTime();
+        DUP_Settings::Save();
 
         //Init Database & Backup Directories
         self::updateDatabase();
@@ -54,73 +53,79 @@ class DUP_LITE_Plugin_Upgrade
     }
 
     /**
-     * Set install info.
+     * Update install info.
      *
-     * @return void
+     * @param string $oldVersion The last/previous installed version, is empty for new installs
+     *
+     * @return array{version:string,time:int,updateTime:int}
      */
-    public static function setNewInstallInfo()
+    protected static function setInstallInfo($oldVersion = '')
     {
-        $install_info = array(
-            'version' => DUPLICATOR_VERSION,
-            'time'    => time(),
-        );
-        delete_option(self::DUP_NEW_INSTALL_INFO_OPT_KEY);
-        update_option(self::DUP_NEW_INSTALL_INFO_OPT_KEY, $install_info, false);
+        if (empty($oldVersion) || ($installInfo = get_option(self::PLUGIN_INSTALL_INFO_OPT_KEY, false)) === false) {
+            // If is new installation or install info is not set generate new install info
+            $installInfo = array(
+                'version'    => DUPLICATOR_VERSION,
+                'time'       => time(),
+                'updateTime' => time(),
+            );
+        } else {
+            $installInfo['updateTime'] = time();
+        }
+
+        if (($oldInfos = get_option(self::DUP_ACTIVATED_OPT_KEY, false)) !== false) {
+            // Migrate the previously used option to install info and remove old option if exists
+            $installInfo['version'] = $oldVersion;
+            $installInfo['time']    = $oldInfos['lite'];
+            delete_option(self::DUP_ACTIVATED_OPT_KEY);
+        }
+
+        delete_option(self::PLUGIN_INSTALL_INFO_OPT_KEY);
+        update_option(self::PLUGIN_INSTALL_INFO_OPT_KEY, $installInfo, false);
+        return $installInfo;
     }
 
     /**
      * Get install info.
      *
-     * @return false|array{version:string,time:int}
+     * @return array{version:string,time:int,updateTime:int}
      */
-    public static function getNewInstallInfo()
+    public static function getInstallInfo()
     {
-        return get_option(self::DUP_NEW_INSTALL_INFO_OPT_KEY, false);
+        if (($installInfo = get_option(self::PLUGIN_INSTALL_INFO_OPT_KEY, false)) === false) {
+            $installInfo = self::setInstallInfo();
+        }
+        return $installInfo;
     }
 
     /**
-     * Set time of plugin activation in wp-options
-     *
-     * @return void
-     */
-    public static function setActivatedTime()
-    {
-        if (get_option(self::DUP_ACTIVATED_OPT_KEY, false) !== false) {
-            return;
-        }
-
-        update_option(self::DUP_ACTIVATED_OPT_KEY, array('lite' => time()));
-    }
-
-     /**
      * Runs only on new installs
      *
      * @return void
      */
     protected static function newInstallation()
     {
+        UpgradeFunctions::performUpgrade(false, DUPLICATOR_VERSION);
+
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
         update_option(WelcomeController::REDIRECT_OPT_KEY, true);
-        self::setNewInstallInfo();
+        self::setInstallInfo();
     }
 
     /**
      * Run only on update installs
      *
-     * @param string $oldVersion  The last/previous installed version
+     * @param string $oldVersion The last/previous installed version
      *
      * @return void
      */
     protected static function updateInstallation($oldVersion)
     {
-        //PRE 1.3.35
-        //Do not update to new wp-content storage till after
-        if (version_compare($oldVersion, '1.3.35', '<')) {
-            DUP_Settings::Set('storage_position', DUP_Settings::STORAGE_POSITION_LEGACY);
-        }
+        UpgradeFunctions::performUpgrade($oldVersion, DUPLICATOR_VERSION);
+
         //WordPress Options Hooks
         update_option(self::DUP_VERSION_OPT_KEY, DUPLICATOR_VERSION);
+        self::setInstallInfo($oldVersion);
     }
 
      /**

@@ -1,8 +1,10 @@
 <?php
 
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Core\MigrationMng;
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Views\AdminNotices;
 
 ?>
@@ -65,13 +67,14 @@ use Duplicator\Views\AdminNotices;
             );
             ?><br>
             <?php
-            _e(
-                'For more details please visit '
-                . 'the FAQ link <a href="' . DUPLICATOR_DOCS_URL
-                . 'which-files-need-to-be-removed-after-an-install" target="_blank">'
-                . 'Which files need to be removed after an install?'
-                . '</a>',
-                'duplicator'
+            printf(
+                _x(
+                    'For more details please visit the FAQ link %1$sWhich files need to be removed after an install?%2$s',
+                    '%1$s and %2$s are <a> tags',
+                    'duplicator'
+                ),
+                '<a href="' . esc_url(LinkManager::getDocUrl('which-files-need-to-be-removed-after-an-install', 'migration-notice')) . '" target="_blank">',
+                '</a>'
             );
             ?>
         </p>

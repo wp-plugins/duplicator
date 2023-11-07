@@ -5,6 +5,7 @@ namespace Duplicator\Views;
 use Closure;
 use DUP_Server;
 use Duplicator\Core\MigrationMng;
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Libs\Snap\SnapUtil;
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Utils\Autoloader;
@@ -410,6 +411,11 @@ class AdminNotices
     public static function showNoExportCapabilityNotice()
     {
         if (is_admin() && in_array('administrator', $GLOBALS['current_user']->roles) && !current_user_can('export')) {
+            $faqUrl       = esc_url(LinkManager::getDocUrl(
+                'how-to-resolve-duplicator-plugin-user-interface-ui-issues',
+                'admin_notice',
+                'duplicator menu missing'
+            ));
             $errorMessage = __(
                 '<strong>Duplicator</strong><hr> Your logged-in user role does not have export 
                 capability so you don\'t have access to Duplicator functionality.',
@@ -417,12 +423,14 @@ class AdminNotices
             ) .
             "<br>" .
             sprintf(
-                __(
-                    '<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>',
+                _x(
+                    '<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: ' .
+                    '%1$sWhy is the Duplicator/Packages menu missing from my admin menu?%2$s',
+                    '%1$s and %2$s are <a> tags',
                     'duplicator'
                 ),
-                DUPLICATOR_DOCS_URL . 'how-to-resolve-duplicator-plugin-user-interface-ui-issues/',
-                __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator')
+                '<a target="_blank" href="' . $faqUrl . '">',
+                '</a>'
             );
             self::displayGeneralAdminNotice($errorMessage, self::GEN_ERROR_NOTICE, true);
         }

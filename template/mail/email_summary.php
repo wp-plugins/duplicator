@@ -9,6 +9,7 @@
 
 defined("ABSPATH") or die("");
 
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Utils\Upsell;
 use Duplicator\Utils\Email\EmailHelper;
 use Duplicator\Utils\Email\EmailSummary;
@@ -173,14 +174,14 @@ use Duplicator\Utils\Email\EmailSummary;
                                 ?>
 
                                 <?php
+                                $faqUrl = LinkManager::getDocUrl('how-to-disable-email-summaries', 'email_summary', 'how to disable');
                                 printf(
                                     esc_html_x(
                                         'Learn %1show to disable%2s.',
                                         '%1s and %2s are opening and closing link tags to the documentation.',
                                         'wpforms-lite'
                                     ),
-                                    '<a href="' . DUPLICATOR_DOCS_URL . 'how-to-disable-email-summaries/" ' .
-                                    'style="' . EmailHelper::getStyle('footer-link') . '">',
+                                    '<a href="' . $faqUrl . '" style="' . EmailHelper::getStyle('footer-link') . '">',
                                     '</a>'
                                 );
                                 ?>

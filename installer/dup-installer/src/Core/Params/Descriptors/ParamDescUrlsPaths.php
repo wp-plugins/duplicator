@@ -186,7 +186,9 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizeUrl'),
+                'validateCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'validateUrlWithScheme')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'WP core URL:',
@@ -208,7 +210,8 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'WP-content path:',
@@ -230,7 +233,8 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath'),
             ),
             array(// FORM ATTRIBUTES
             'label'          => 'WP core path:',
@@ -252,7 +256,8 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'Uploads path:',
@@ -274,7 +279,9 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizeUrl'),
+                'validateCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'validateUrlWithScheme')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'WP-content URL:',
@@ -296,7 +303,9 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-            'default'          => ''
+            'default'          => '',
+            'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizeUrl'),
+            'validateCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'validateUrlWithScheme')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'Uploads URL:',
@@ -318,7 +327,9 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizeUrl'),
+                'validateCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'validateUrlWithScheme')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'Plugins URL:',
@@ -340,7 +351,8 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'Plugins path:',
@@ -362,7 +374,9 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizeUrl'),
+                'validateCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'validateUrlWithScheme')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'MU-plugins URL:',
@@ -384,7 +398,8 @@ final class ParamDescUrlsPaths implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_TEXT,
             array(// ITEM ATTRIBUTES
-                'default'          => ''
+                'default'          => '',
+                'sanitizeCallback' => array('Duplicator\\Installer\\Core\\Params\\Descriptors\\ParamsDescriptors', 'sanitizePath')
             ),
             array(// FORM ATTRIBUTES
                 'label'          => 'MU-plugins path:',

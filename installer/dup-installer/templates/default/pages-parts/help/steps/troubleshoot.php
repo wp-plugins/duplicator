@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <!-- ============================================
@@ -15,7 +18,7 @@ $expandClass = $sectionId == $open_section ? 'open' : 'close';
             <div style="padding: 0px 10px 10px 10px;">
                 <b>Common Quick Fix Issues:</b>
                 <ul>
-                    <?php $url = DUPX_Constants::FAQ_URL . 'what-host-providers-are-recommended-for-duplicator/'; ?>
+                    <?php $url = LinkManager::getDocUrl('what-host-providers-are-recommended-for-duplicator', 'install', 'help troubleshoot'); ?>
                     <li>Use a <a href='<?php echo DUPX_U::esc_attr($url); ?>' target='_blank'>Duplicator approved hosting provider</a></li>
                     <li>Validate directory and file permissions (see below)</li>
                     <li>Validate web server configuration file (see below)</li>

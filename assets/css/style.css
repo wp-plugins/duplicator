@@ -79,7 +79,7 @@ div.dup-hdr-error {color:#A62426; font-size:22px; font-weight:bold}
 
 /*DIALOGS:THICKBOX   */
 #TB_title { padding-bottom:3px!important; margin-bottom:5px!important; font-size:16px!important;}
-div.dup-dlg-alert-txt {padding:10px 0; font-size:16px; line-height:22px}
+div.dup-dlg-alert-txt {padding:8px 0; font-size:16px; line-height:22px}
 div.dup-dlg-alert-btns {position:absolute; bottom:20px; right:20px;}
 div.dup-dlg-confirm-txt {padding:10px 0; font-size:16px}
 div.dup-dlg-confirm-btns {position:absolute; bottom:20px; right:20px;}
@@ -1018,6 +1018,12 @@ td.dup-store-promo-area i[data-tooltip].fa-question-circle {
 
 .advanced-storages-popup-content img {
     width: 250px;
+}
+
+.advanced-storages-popup-content .storage-icon {
+    vertical-align: middle;
+    margin-right: 5px;
+    width: 20px
 }
 
 .advanced-storages-popup-content ul {

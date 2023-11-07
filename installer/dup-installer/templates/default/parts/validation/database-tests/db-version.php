@@ -5,6 +5,8 @@
  * @package templates/default
  */
 
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /* Variables */
@@ -38,8 +40,11 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 <ul>
     <li>Contact your host and have them upgrade your MySQL server.</li>
     <li>
-        <a href="<?php echo DUPX_U::esc_attr(DUPX_Constants::FAQ_URL); ?>how-to-fix-database-connection-issues/" target="_help"
-           title="I'm running into issues with the Database what can I do?">
+        <a 
+            href="<?php echo LinkManager::getDocUrl('how-to-fix-database-connection-issues', 'install', 'validation db version'); ?>" 
+            target="_help"
+            title="I'm running into issues with the Database what can I do?"
+        >
             [Additional FAQ Help]
         </a>
     </li>

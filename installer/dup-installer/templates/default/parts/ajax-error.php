@@ -8,6 +8,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Installer\Utils\LinkManager;
 
 $recoveryLink = PrmMng::getInstance()->getValue(PrmMng::PARAM_RECOVERY_LINK);
 ?>
@@ -23,8 +24,8 @@ $recoveryLink = PrmMng::getInstance()->getValue(PrmMng::PARAM_RECOVERY_LINK);
 </div>
 <p>
     <b>Additional Resources:</b><br/>
-    &raquo; <a target='_blank' href='<?php echo DUPX_Constants::FAQ_URL; ?>'>Help Resources</a><br/>
-    &raquo; <a target='_blank' href='<?php echo DUPX_Constants::DUP_SITE_URL; ?>knowledge-base-article-categories/troubleshooting/'>Technical FAQ</a>
+    &raquo; <a target='_blank' href='<?php echo LinkManager::getDocUrl('', 'install', 'Help Resources'); ?>'>Help Resources</a><br/>
+    &raquo; <a target='_blank' href='<?php echo LinkManager::getCategoryUrl(LinkManager::TROUBLESHOOTING_CAT, 'install', 'Technical FAQ'); ?>'>Technical FAQ</a>
 </p>
 <p class="text-center">
     <input id="ajax-error-try-again" type="button" class="default-btn" value="&laquo; Try Again" />

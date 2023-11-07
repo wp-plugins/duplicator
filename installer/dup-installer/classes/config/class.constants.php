@@ -13,6 +13,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Bootstrap;
+use Duplicator\Installer\Utils\LinkManager;
 
 class DUPX_Constants
 {
@@ -67,8 +68,10 @@ class DUPX_Constants
         $GLOBALS['ZIP_ARC_CHUNK_EXTRACT_DISP_NOTICE_MIN_EXPECTED_EXTRACT_TIME'] = 10 * 60 * 60; // 10 minutes
         $GLOBALS['ZIP_ARC_CHUNK_EXTRACT_DISP_NEXT_NOTICE_INTERVAL']             = 5 * 60 * 60; // 5 minutes
 
-        $additional_msg                           = ' for additional details ';
-        $additional_msg                          .= '<a href="' . self::FAQ_URL . 'how-to-handle-various-install-scenarios" target="_blank">click here</a>.';
+        $helpUrl         = LinkManager::getDocUrl('how-to-handle-various-install-scenarios', 'install', 'additional help');
+        $additional_msg  = ' for additional details ';
+        $additional_msg .= '<a href="' . $helpUrl . '" target="_blank">click here</a>.';
+
         $GLOBALS['ZIP_ARC_CHUNK_EXTRACT_NOTICES'] = array(
             'This server looks to be under load or throttled, the extraction process may take some time',
             'This host is currently experiencing very slow I/O. You can continue to wait or try a manual extraction.',

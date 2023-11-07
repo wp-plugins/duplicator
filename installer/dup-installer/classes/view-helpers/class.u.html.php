@@ -10,6 +10,8 @@
  * @package SC\DUPX\U
  */
 
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /**
@@ -366,7 +368,7 @@ class DUPX_U_Html
         <div <?php echo $idAttr; ?>class="<?php echo implode(' ', $mainClasses); ?>" data-more-step="<?php echo $atStep; ?>" style="max-height: <?php echo $atStep; ?>px">
             <div class="more-wrapper" ><?php echo $htmlContent; ?></div>
             <div class="more-faq-link">
-            <?php $url = DUPX_Constants::DUP_SITE_URL . 'knowledge-base-article-categories/troubleshooting/'; ?>
+            <?php $url = LinkManager::getCategoryUrl(LinkManager::TROUBLESHOOTING_CAT, 'install', 'Technical FAQs'); ?>
                 Please search the <a href="<?php echo DUPX_U::esc_attr($url); ?>" target="_blank">Online Technical FAQs</a>
                 for solutions to these issues.
             </div>

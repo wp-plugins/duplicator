@@ -2,6 +2,8 @@
 
 namespace Duplicator\Core\Notifications;
 
+use DUP_LITE_Plugin_Upgrade;
+use DUP_Package;
 use Duplicator\Core\MigrationMng;
 
 /**
@@ -63,18 +65,14 @@ class Review
         $display = false;
 
         // Fetch when plugin was initially installed.
-        $activated = get_option(\DUP_LITE_Plugin_Upgrade::DUP_ACTIVATED_OPT_KEY, array());
-        if (empty($activated['lite'])) {
-            \DUP_LITE_Plugin_Upgrade::setActivatedTime();
-        } else {
-            $numberOfPackages = \DUP_Package::count_by_status(array(
-                array('op' => '=' , 'status' => \DUP_PackageStatus::COMPLETE )
-            ));
+        $installInfo      = DUP_LITE_Plugin_Upgrade::getInstallInfo();
+        $numberOfPackages = DUP_Package::count_by_status(array(
+            array('op' => '=' , 'status' => \DUP_PackageStatus::COMPLETE )
+        ));
 
-            // Display if plugin has been installed for at least 3 days and has a package installed
-            if ((($activated['lite'] + (DAY_IN_SECONDS * 3)) < time() && $numberOfPackages > 0)) {
-                $display = true;
-            }
+        // Display if plugin has been installed for at least 3 days and has a package installed
+        if ((($installInfo['time'] + (DAY_IN_SECONDS * 3)) < time() && $numberOfPackages > 0)) {
+            $display = true;
         }
 
         //Display if it's been 3 days after a successful migration

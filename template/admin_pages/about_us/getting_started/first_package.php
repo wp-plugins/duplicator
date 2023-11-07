@@ -7,6 +7,8 @@
  * @copyright (c) 2022, Snap Creek LLC
  */
 
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -37,17 +39,29 @@ defined('ABSPATH') || exit;
 
         <ul class="list-plain">
             <li>
-                <a href="<?php echo DUPLICATOR_BLOG_URL; ?>knowledge-base-article-categories/quick-start/" target="_blank" rel="noopener noreferrer">
+                <a 
+                    href="<?php echo esc_url(LinkManager::getCategoryUrl(LinkManager::QUICK_START_CAT, 'about-getting_started', 'Quick Start Guide')); ?>" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                >
                     <?php _e('Quick Start Guide', 'duplicator'); ?>
                 </a>
             </li>
             <li>
-                <a href="<?php echo DUPLICATOR_DOCS_URL; ?>backup-site/" target="_blank" rel="noopener noreferrer">
+                <a 
+                    href="<?php echo esc_url(LinkManager::getDocUrl('backup-site', 'about-getting_started', 'Create Package')); ?>" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                >
                     <?php _e('How to Create a Package', 'duplicator'); ?>
                 </a>
             </li>
             <li>
-                <a href="<?php echo DUPLICATOR_DOCS_URL; ?>classic-install/" target="_blank" rel="noopener noreferrer">
+                <a 
+                    href="<?php echo esc_url(LinkManager::getDocUrl('classic-install', 'about-getting_started', 'Migrate')); ?>" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                >
                     <?php _e('How to Migrate to a New Site', 'duplicator'); ?>
                 </a>
             </li>

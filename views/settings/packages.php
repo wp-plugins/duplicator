@@ -1,5 +1,8 @@
 <?php
 
+use Duplicator\Installer\Utils\LinkManager;
+use Duplicator\Utils\Upsell;
+use Duplicator\Libs\Snap\SnapIO;
 use Duplicator\Libs\Snap\SnapUtil;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
@@ -24,8 +27,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     if (isset($_POST['package_mysqldump_path'])) {
         $mysqldump_exe_file = SnapUtil::sanitizeNSCharsNewlineTabs($_POST['package_mysqldump_path']);
         $mysqldump_exe_file = preg_match('/^([A-Za-z]\:)?[\/\\\\]/', $mysqldump_exe_file) ? $mysqldump_exe_file : '';
-        $mysqldump_exe_file = preg_replace('/[\'"]/m', '', $mysqldump_exe_file);
-        $mysqldump_exe_file = DUP_Util::safePath($mysqldump_exe_file);
+        $mysqldump_exe_file = preg_replace('/[\'";]/m', '', $mysqldump_exe_file);
+        $mysqldump_exe_file = SnapIO::safePathUntrailingslashit($mysqldump_exe_file);
         $mysqldump_exe_file = DUP_DB::escSQL(strip_tags($mysqldump_exe_file), true);
     }
 
@@ -124,11 +127,15 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                     <i class="far fa-lightbulb" aria-hidden="true"></i>
                                     <?php
                                     printf(
-                                        "%s <a target='_blank' href='" . DUPLICATOR_DOCS_URL
-                                        . "what-host-providers-are-recommended-for-duplicator/'>%s</a> %s",
-                                        __("Please visit our recommended", 'duplicator'),
-                                        __("host list", 'duplicator'),
-                                        __("for reliable access to mysqldump", 'duplicator')
+                                        _x(
+                                            'Please visit our recommended %1$shost list%2$s for reliable access to mysqldump.',
+                                            '%1s and %2s represents the opening and closing HTML tags for an anchor or link',
+                                            'duplicator'
+                                        ),
+                                        '<a target="_blank" href="'
+                                        . esc_url(LinkManager::getDocUrl('what-host-providers-are-recommended-for-duplicator', 'settings', 'host list tooltip'))
+                                        . '">',
+                                        '</a>'
                                     );
                                     ?>
                                 </i>
@@ -151,11 +158,15 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                         . 'If the problem persist contact your host or server administrator.  ', 'duplicator');
 
                                     printf(
-                                        "%s <a target='_blank' href='" . DUPLICATOR_DOCS_URL
-                                        . "what-host-providers-are-recommended-for-duplicator/'>%s</a> %s",
-                                        __("See the", 'duplicator'),
-                                        __("host list", 'duplicator'),
-                                        __("for reliable access to mysqldump.", 'duplicator')
+                                        _x(
+                                            'See the %1$shost list%2$s for reliable access to mysqldump.',
+                                            '%1s and %2s represents the opening and closing HTML tags for an anchor or link',
+                                            'duplicator'
+                                        ),
+                                        '<a target="_blank" href="'
+                                        . esc_url(LinkManager::getDocUrl('what-host-providers-are-recommended-for-duplicator', 'settings', 'host list'))
+                                        . '">',
+                                        '</a>'
                                     );
                                     ?>
                                 </div><br/>
@@ -274,12 +285,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                 <!-- DUPARCHIVE -->
                 <div id="engine-details-2" style="display:none">
                     <p class="description">
-                        <?php
-                            $utmCodes = "utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;"
-                                      . "utm_content=free_settings_package_duparchive&amp;utm_campaign=duplicator_pro";
-                            $proURL   = DUPLICATOR_BLOG_URL . "?" . $utmCodes;
-                            esc_html_e('Creates a custom archive format (archive.daf).', 'duplicator');
-                        ?>
+                        <?php esc_html_e('Creates a custom archive format (archive.daf).', 'duplicator'); ?>
                         <br/>
                         <i>
                             <?php esc_html_e('This option is recommended for large sites or sites on constrained servers.', 'duplicator'); ?>
@@ -291,7 +297,7 @@ $installerNameMode      = DUP_Settings::Get('installer_name_mode');
                                         '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
                                         'duplicator'
                                     ),
-                                    "<a href='{$proURL}' target='_blank'>",
+                                    '<a href="' . esc_url(Upsell::getCampaignUrl('package_settings_daf', 'Duplicator Pro')) . '" target="_blank">',
                                     '</a>'
                                 );
                                 ?>

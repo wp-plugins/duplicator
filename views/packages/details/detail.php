@@ -1,5 +1,6 @@
 <?php
 
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Libs\Snap\SnapJson;
 use Duplicator\Utils\Upsell;
 
@@ -250,12 +251,17 @@ DIALOG: QUICK PATH -->
         <i style='font-size:11px'>
             <?php
                 printf(
-                    "%s <a href='" . DUPLICATOR_DOCS_URL . "how-to-work-with-daf-files-and-the-duparchive-extraction-tool' "
-                    . "target='_blank'>%s</a>",
-                    esc_html__("A copy of the database.sql and installer.php files can both be found inside of the archive.zip/daf file.  "
+                    esc_html_x(
+                        "A copy of the database.sql and installer.php files can both be found inside of the archive.zip/daf file.  "
                         . "Download and extract the archive file to get a copy of the installer which will be named 'installer-backup.php'. "
-                        . "For details on how to extract a archive.daf file please see: ", 'duplicator'),
-                    esc_html__("How to work with DAF files and the DupArchive extraction tool?", 'duplicator')
+                        . "For details on how to extract a archive.daf file please see: "
+                        . '%1$sHow to work with DAF files and the DupArchive extraction tool?%2$s',
+                        '%1$s and %2$s are opening and closing <a> tags',
+                        'duplicator'
+                    ),
+                    '<a href="' . esc_url(LinkManager::getDocUrl('how-to-work-with-daf-files-and-the-duparchive-extraction-tool', 'package-deatils')) . '" '
+                    . 'target="_blank">',
+                    '</a>'
                 );
                 ?>
         </i>

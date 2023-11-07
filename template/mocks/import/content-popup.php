@@ -1,5 +1,7 @@
 <?php
 
+use Duplicator\Installer\Utils\LinkManager;
+
 defined("ABSPATH") || exit;
 
 /**
@@ -27,7 +29,7 @@ defined("ABSPATH") || exit;
                 )
             )
         ),
-        DUPLICATOR_BLOG_URL . 'how-to-move-a-wordpress-site/'
+        LinkManager::getPostUrl('how-to-move-a-wordpress-website-to-a-new-host', 'import_popup', 'classic installer method')
     );
     ?>
 </p>

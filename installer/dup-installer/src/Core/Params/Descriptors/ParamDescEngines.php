@@ -19,6 +19,7 @@ use Duplicator\Installer\Core\Params\Items\ParamForm;
 use Duplicator\Installer\Core\Params\Items\ParamOption;
 use DUPX_InstallerState;
 use DUPX_ArchiveConfig;
+use Duplicator\Installer\Utils\LinkManager;
 
 /**
  * class where all parameters are initialized. Used by the param manager
@@ -358,9 +359,10 @@ final class ParamDescEngines implements DescriptorInterface
         if (($manualEnable = \DUPX_Conf_Utils::isManualExtractFilePresent()) === true) {
             $acceptValues[] = DUP_Extraction::ENGINE_MANUAL;
         } else {
+            $faqUrl  = LinkManager::getDocUrl('how-to-handle-various-install-scenarios', 'install', 'archive engine subnote');
             $subNote = <<<SUBNOTEHTML
 * Option enabled when archive has been pre-extracted
-<a href="https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios" target="_blank">[more info]</a>               
+<a href="{$faqUrl}" target="_blank">[more info]</a>               
 SUBNOTEHTML;
         }
         if (($zipEnable = ($archiveConfig->isZipArchive() && \DUPX_Conf_Utils::archiveExists() && \DUPX_Conf_Utils::classZipArchiveEnable())) === true) {

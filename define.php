@@ -5,14 +5,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 define('DUPLICATOR_BLOG_URL', 'https://duplicator.com/');
 define('DUPLICATOR_DOCS_URL', DUPLICATOR_BLOG_URL . 'knowledge-base/');
-define('DUPLICATOR_USER_GUIDE_URL', DUPLICATOR_DOCS_URL);
 define(
     'DUPLICATOR_TECH_FAQ_URL',
     DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/troubleshooting/'
 );
 
 if (function_exists('plugin_dir_url')) {
-    define('DUPLICATOR_VERSION', '1.5.6.1');
+    define('DUPLICATOR_VERSION', '1.5.7');
     define('DUPLICATOR_PLUGIN_URL', plugin_dir_url(__FILE__));
     define('DUPLICATOR_SITE_URL', get_site_url());
 

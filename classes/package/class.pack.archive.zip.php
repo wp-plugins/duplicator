@@ -1,5 +1,6 @@
 <?php
 
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Libs\Snap\SnapUtil;
 
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;

@@ -11,6 +11,7 @@ use Duplicator\Installer\Core\Deploy\DupArchive\Daws;
 use Duplicator\Installer\Core\Deploy\Files\FilterMng;
 use Duplicator\Installer\Core\Deploy\Files\Filters;
 use Duplicator\Installer\Core\Deploy\Files\RemoveFiles;
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Installer\Utils\Log\Log;
 use Duplicator\Installer\Utils\Log\LogHandler;
 use Duplicator\Installer\Core\Params\PrmMng;
@@ -511,9 +512,9 @@ class DUP_Extraction extends AbstractJsonSerializable
         Log::info('DUP INSTALLER ARCHIVE PATH:"' . $dupInstallerZipPath . '"', Log::LV_DETAILED);
 
         if ($zip->open($this->archive_path) !== true) {
+            $faqURL       = LinkManager::getDocUrl('how-to-fix-installer-archive-extraction-issues', 'install');
             $zip_err_msg  = ERR_ZIPOPEN;
-            $zip_err_msg .= "<br/><br/><b>To resolve error see <a href='" .
-                DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues/' target='_blank'>" .
+            $zip_err_msg .= '<br/><br/><b>To resolve error see <a href="' . $faqURL . '" target="_blank">' .
                 DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues/</a></b>";
             Log::info($zip_err_msg);
             throw new Exception("Couldn't open zip archive.");
@@ -1013,9 +1014,10 @@ class DUP_Extraction extends AbstractJsonSerializable
         Log::info('SHELL COMMAND: ' . Log::v2str($command));
         $stderr = shell_exec($command);
         if ($stderr != '') {
+            $faqUrl       = LinkManager::getDocUrl('how-to-fix-installer-archive-extraction-issues', 'install', 'shell exec error');
             $zip_err_msg  = ERR_SHELLEXEC_ZIPOPEN . ": $stderr";
-            $zip_err_msg .= "<br/><br/><b>To resolve error see <a href='" . DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues' " .
-            "target='_blank'>" . DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues</a></b>";
+            $zip_err_msg .= '<br/><br/><b>To resolve error see <a href="' . $faqUrl . '" target="_blank">'
+                . DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues</a></b>";
             Log::error($zip_err_msg);
         }
     }

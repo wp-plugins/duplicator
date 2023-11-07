@@ -2,6 +2,7 @@
 
 namespace Duplicator\Core\Notifications;
 
+use DUP_LITE_Plugin_Upgrade;
 use DUP_Settings;
 use Duplicator\Ajax\ServicesNotifications;
 use Duplicator\Core\Views\TplMng;
@@ -332,11 +333,8 @@ class Notifications
      */
     private static function isExisted($notification)
     {
-        $activated = get_option(\DUP_LITE_Plugin_Upgrade::DUP_ACTIVATED_OPT_KEY, false);
-
-        return $activated['lite'] !== false &&
-            !empty($notification['start']) &&
-            $activated['lite'] > strtotime($notification['start']);
+        $installInfo = DUP_LITE_Plugin_Upgrade::getInstallInfo();
+        return (!empty($notification['start']) && $installInfo['time'] > strtotime($notification['start']));
     }
 
     /**

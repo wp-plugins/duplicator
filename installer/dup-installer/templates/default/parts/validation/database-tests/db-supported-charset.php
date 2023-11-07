@@ -5,6 +5,8 @@
  * @package templates/default
  */
 
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /* Variables */
@@ -125,7 +127,7 @@ $subTitle             = '';
 <ul>
     <li>
         <i class="far fa-file-code"></i> 
-        <a href='<?php echo DUPX_U::esc_attr(DUPX_Constants::FAQ_URL); ?>how-to-fix-database-write-issues/' target='_help'>
+        <a href="<?php echo LinkManager::getDocUrl('how-to-fix-database-write-issues', 'install', 'validation db charset'); ?>" target="_help">
             What is Compatibility mode & 'Unknown Collation' errors?
         </a>
     </li>

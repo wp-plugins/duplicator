@@ -8,6 +8,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Installer\Utils\LinkManager;
 
 /**
  * Variables
@@ -117,12 +118,17 @@ use Duplicator\Installer\Core\Params\PrmMng;
     <li>
         Generally if the folders have write permissions but it is not possible to extract the PHP files, 
         the cause could be an external security service like "Imunify 360".
-        If this is the case <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-fix-installer-archive-extraction-issues/" target="_blank">
+        If this is the case 
+        <a 
+            href="<?php echo LinkManager::getDocUrl('how-to-fix-installer-archive-extraction-issues', 'install', 'validation writable deactivate checks'); ?>" 
+            target="_blank"
+        >
             deactivate the checks
         </a> 
         temporarily, and run the installation again.
     </li>
+    <?php $faqUrl = LinkManager::getDocUrl('how-to-fix-installer-archive-extraction-issues', 'install', 'validation writable documentation'); ?>
     <li>
-        Check <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-fix-installer-archive-extraction-issues/" target="_blank">our online documentation</a>
+        Check <a href="<?php echo $faqUrl; ?>" target="_blank">our online documentation</a>
     </li>
 </ul>

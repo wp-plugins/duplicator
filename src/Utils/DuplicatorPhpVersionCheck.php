@@ -52,20 +52,38 @@ if (!class_exists('DuplicatorPhpVersionCheck')) {
             ?>
             <div class="error notice">
                 <p>
+                    
                     <?php
-                    $str = 'DUPLICATOR: ' . __(
-                        'Your system is running a very old version of PHP (%s) that is no longer supported by Duplicator.  ',
-                        'duplicator'
+                    printf(
+                        __(
+                            'DUPLICATOR: Your system is running a very old version of PHP (%s) that is no longer supported by Duplicator.  ',
+                            'duplicator'
+                        ),
+                        PHP_VERSION
                     );
-                    printf($str, PHP_VERSION);
-
-                    $str  = __('Please ask your host or server administrator to update to PHP %1s or greater.', 'duplicator') . '<br/>';
-                    $str .= __('If this is not possible, please visit the FAQ link titled ', 'duplicator');
-                    $str .= '<a href="' . DUPLICATOR_DOCS_URL . 'system-requirements/" target="blank">';
-                    $str .= __('"What version of PHP Does Duplicator Support?"', 'duplicator');
-                    $str .= '</a>';
-                    $str .= __(' for instructions on how to download a previous version of Duplicator compatible with PHP %2s.', 'duplicator');
-                    printf($str, self::$suggestedVer, PHP_VERSION);
+                    ?><br><br>
+                    <b>
+                    <?php
+                        printf(
+                            __(
+                                'Please ask your host or server administrator to update to PHP %1s or greater.',
+                                'duplicator'
+                            ),
+                            self::$suggestedVer
+                        );
+                    ?></b><br>
+                    <?php
+                    printf(
+                        __(
+                            'If this is not possible, please visit the FAQ link titled 
+                            %1$s"What version of PHP Does Duplicator Support?"%2$s
+                            for instructions on how to download a previous version of Duplicator compatible with PHP %3$s.',
+                            'duplicator'
+                        ),
+                        '<a href="' . esc_url('https://duplicator.com/knowledge-base/system-requirements') . '" target="blank">',
+                        '</a>',
+                        self::$minVer
+                    );
                     ?>
                 </p>
             </div>

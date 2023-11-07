@@ -8,6 +8,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Installer\Utils\LinkManager;
 
 $paramsManager = PrmMng::getInstance();
 ?><p>
@@ -25,5 +26,10 @@ The installer has detected that the archive file has been extracted to the deplo
     Note: This test looks for a file named <i>dup-manual-extract__[HASH]</i> in the <?php echo DUPX_U::esc_html(DUPX_INIT); ?> directory. 
     If the file exists then this notice is shown.
     The <i>dup-manual-extract__[HASH]</i> file is created with every archive and removed once the install is complete.  For more details on this process see the
-    <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-handle-various-install-scenarios" target="_blank">manual extraction FAQ</a>.
+    <a 
+        href="<?php echo LinkManager::getDocUrl('how-to-handle-various-install-scenarios', 'install', 'validation manual extraction'); ?>" 
+        target="_blank"
+    >
+        manual extraction FAQ
+    </a>.
 </small>

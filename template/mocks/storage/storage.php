@@ -22,8 +22,7 @@ defined("ABSPATH") || exit;
         margin-left: 5px
     }
 
-    table.storage-tbl img,
-    .advanced-storages-popup-content .storage-icon {
+    table.storage-tbl img {
         vertical-align: middle;
         margin-right: 5px;
         width: 20px

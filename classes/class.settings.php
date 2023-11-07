@@ -2,6 +2,7 @@
 
 use Duplicator\Libs\Snap\SnapIO;
 use Duplicator\Utils\Email\EmailSummary;
+use Duplicator\Utils\Email\EmailSummaryBootstrap;
 use Duplicator\Utils\UsageStatistics\CommStats;
 
 abstract class DUP_Archive_Build_Mode
@@ -274,7 +275,7 @@ class DUP_Settings
     public static function setEmailSummaryFrequency($frequency)
     {
         $oldFrequency = self::Get('email_summary_frequency');
-        if (EmailSummary::updateFrequency($oldFrequency, $frequency) === false) {
+        if (EmailSummaryBootstrap::updateFrequency($oldFrequency, $frequency) === false) {
             DUP_Log::Trace("Invalide email summary frequency: {$frequency}");
             return;
         }

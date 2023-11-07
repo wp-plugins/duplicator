@@ -7,6 +7,7 @@
  * @copyright (c) 2022, Snap Creek LLC
  */
 
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Libs\Snap\SnapIO;
 use Duplicator\Utils\Upsell;
 
@@ -215,7 +216,10 @@ $extensionFilterTooltip   = __("File extension filters allow you to exclude file
                 )
             );
             ?>
-            <a href="<?php echo DUPLICATOR_DOCS_URL; ?>database-install" target="_blank">
+            <a 
+                href="<?php echo esc_url(LinkManager::getDocUrl('database-install', 'backup_step_1', 'db only quick start')); ?>" 
+                target="_blank"
+            >
                 <?php esc_html_e('database only quick start', 'duplicator'); ?>
             </a>
         </div>

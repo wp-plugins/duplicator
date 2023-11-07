@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <!-- ============================================
@@ -90,7 +93,12 @@ $expandClass = $sectionId == $open_section ? 'open' : 'close';
         <small>
             For forgotten passwords users can log in to the site where the package was created and check the package details for the original password.
             For detail on how to override this setting visit the online FAQ for
-            <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-fix-installer-security-protection-issues" target="_blankopen_section">more details</a>.
+            <a 
+                href="<?php echo LinkManager::getDocUrl('how-to-fix-installer-security-protection-issues', 'install', 'help security'); ?>"
+                target="_blankopen_section"
+            >
+                more details
+            </a>.
         </small>
         <br/><br/>
 

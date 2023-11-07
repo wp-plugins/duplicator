@@ -2,6 +2,7 @@
 
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Libs\Snap\SnapJson;
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Utils\Upsell;
 use Duplicator\Views\ViewHelper;
 use Duplicator\Core\Notifications\Notifications;
@@ -160,11 +161,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                             <i><?php esc_html_e("Click 'Create New' to Archive Site", 'duplicator'); ?></i><br/>
                             <div class="dup-quick-start" <?php echo ($is_mu) ? 'style="display:none"' : ''; ?>>
                                 <b><?php esc_html_e("New to Duplicator?", 'duplicator'); ?></b><br/>
-                                <?php
-                                    $url  = DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/';
-                                    $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty1&utm_campaign=quick_start';
-                                ?>
-                                <a href="<?php echo esc_attr($url); ?>" target="_blank">
+                                <a href="<?php echo esc_url(LinkManager::getCategoryUrl(LinkManager::QUICK_START_CAT, 'package_list_no_package', 'Quick Start')); ?>" target="_blank">
                                     <?php esc_html_e("Visit the 'Quick Start' guide!", 'duplicator'); ?>
                                 </a>
                             </div>
@@ -217,11 +214,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                         <i><?php esc_html_e("Click 'Create New' to Archive Site", 'duplicator'); ?></i><br/>
                         <div class="dup-quick-start">
                             <?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
-                            <?php
-                                $url  = DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/';
-                                $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty2&utm_campaign=quick_start';
-                            ?>
-                            <a href="<?php echo esc_attr($url); ?>" target="_blank">
+                            <a href="<?php echo esc_url(LinkManager::getCategoryUrl(LinkManager::QUICK_START_CAT, 'package_list_processing', 'Quick Start')); ?>" target="_blank">
                                 <?php esc_html_e("Visit the 'Quick Start' guide!", 'duplicator'); ?>
                             </a>
                         </div>
@@ -414,27 +407,15 @@ DIALOG: HELP DIALOG -->
 <div id="dup-help-dlg-info" style="display:none">
     <b><?php esc_html_e("Common Questions:", 'duplicator') ?></b><hr size='1'/>
     <i class="far fa-file-alt fa-sm"></i>
-    <?php
-        $url  = DUPLICATOR_BLOG_URL . 'knowledge-base/backup-site/';
-        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_pack_help&utm_campaign=duplicator_free#quick-010-q';
-    ?> 
-    <a href="<?php echo esc_attr($url); ?>" target="_blank">
+    <a href="<?php echo esc_url(LinkManager::getDocUrl('backup-site', 'packages_help_popup', 'create_package')); ?>" target="_blank">
         <?php esc_html_e("How do I create a package", 'duplicator') ?>
     </a> <br/>
     <i class="far fa-file-alt fa-sm"></i> 
-    <?php
-        $url  = DUPLICATOR_BLOG_URL . 'knowledge-base/classic-install/';
-        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#install_site';
-    ?>
-    <a href="<?php echo esc_attr($url); ?>" target="_blank">
+    <a href="<?php echo esc_url(LinkManager::getDocUrl('classic-install', 'packages_help_popup', 'classic_install')); ?>" target="_blank">
         <?php esc_html_e('How do I install a package?', 'duplicator'); ?>
     </a>  <br/>
     <i class="far fa-file-code"></i>
-    <?php
-        $url  = DUPLICATOR_TECH_FAQ_URL;
-        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free';
-    ?>
-    <a href="<?php echo esc_attr($url); ?>" target="_blank">
+    <a href="<?php echo esc_url(LinkManager::getCategoryUrl(LinkManager::TROUBLESHOOTING_CAT, 'packages_help_popup', 'FAQ')); ?>" target="_blank">
         <?php esc_html_e("Frequently Asked Questions!", 'duplicator') ?>
     </a>
     <br/><br/>

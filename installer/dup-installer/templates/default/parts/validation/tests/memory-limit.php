@@ -5,6 +5,8 @@
  * @package templates/default
  */
 
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 /* Variables */
@@ -40,6 +42,8 @@ When this value is lower than the suggested minimum of
 <ul>
     <li>
         Try Increasing the memory_limit.&nbsp;
-        <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-manage-server-resources-cpu-memory-disk/" target="_blank">[Additional FAQ Help]</a>
+        <a href="<?php echo LinkManager::getDocUrl('how-to-manage-server-resources-cpu-memory-disk', 'install', 'validation memory limit'); ?>" target="_blank">
+            [Additional FAQ Help]
+        </a>
     </li>
 </ul>

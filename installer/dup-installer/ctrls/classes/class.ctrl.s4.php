@@ -8,6 +8,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Params\PrmMng;
+use Duplicator\Installer\Utils\LinkManager;
 
 final class DUPX_Ctrl_S4
 {
@@ -37,12 +38,13 @@ final class DUPX_Ctrl_S4
         $paramsManager   = PrmMng::getInstance();
         $finalReportData = $paramsManager->getValue(PrmMng::PARAM_FINAL_REPORT_DATA);
         $nManager        = DUPX_NOTICE_MANAGER::getInstance();
+        $logLink         = DUPX_View_Funcs::installerLogLink(false);
+        $faqUrl          = LinkManager::getDocUrl('how-to-fix-database-write-issues', 'final-report', 'How to Fix Database Write Issues');
 
         if ($finalReportData['extraction']['query_errs'] > 0) {
-            $longMsg  = 'Queries that error during the deploy step are logged to the ' . DUPX_View_Funcs::installerLogLink(false);
-            $longMsg .= <<<LONGMSG
-file and
-and marked with an **ERROR** status.   If you experience a few errors (under 5), in many cases they can be ignored as long as your site is working correctly.
+            $longMsg = <<<LONGMSG
+Queries that error during the deploy step are logged to the {$logLink} file and
+marked with an **ERROR** status.   If you experience a few errors (under 5), in many cases they can be ignored as long as your site is working correctly.
 However if you see a large amount of errors or you experience an issue with your site then the error messages in the log file will need to be investigated.
 <br/><br/>
 
@@ -50,7 +52,7 @@ However if you see a large amount of errors or you experience an issue with your
 <ul>
     <li>
         <b>Unknown collation:</b> See Online FAQ:
-        <a href="https://duplicator.com/knowledge-base/how-to-fix-database-write-issues/" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a>
+        <a href="{$faqUrl}" target="_blank">What is Compatibility mode & 'Unknown collation' errors?</a>
     </li>
     <li>
         <b>Query Limits:</b> Update MySQL server with the <a href="https://dev.mysql.com/doc/refman/5.5/en/packet-too-large.html" target="_blank">max_allowed_packet</a>

@@ -14,6 +14,7 @@ defined("ABSPATH") || exit;
  * @var array<string, mixed> $tplData
  */
 
+use Duplicator\Installer\Utils\LinkManager;
 use Duplicator\Libs\Snap\SnapUtil;
 use Duplicator\Core\Views\TplMng;
 
@@ -300,16 +301,21 @@ $reset_confirm->cancelText     = __('No', 'duplicator');
 $reset_confirm->closeOnConfirm = true;
 $reset_confirm->initConfirm();
 
-$msg_ajax_error                 = new DUP_UI_Messages(
+$faqUrl         = esc_url(LinkManager::getDocUrl('how-to-resolve-duplicator-plugin-user-interface-ui-issues', 'settings-admin_notice'));
+$msg_ajax_error = new DUP_UI_Messages(
     __('AJAX Call Error!', 'duplicator') . '<br>' .
-    __(
-        'AJAX error encountered when resetting packages. Please see <a href="'
-        . DUPLICATOR_DOCS_URL . 'how-to-resolve-duplicator-plugin-user-interface-ui-'
-        . 'issues/" target="_blank">this FAQ entry</a> for possible resolutions.',
-        'duplicator'
+    sprintf(
+        _x(
+            'AJAX error encountered when resetting packages. Please see %1$sthis FAQ entry%2$s for possible resolutions.',
+            '1 and 2 are opening and closing <a> tags',
+            'duplicator'
+        ),
+        '<a href="' . $faqUrl . '" target="_blank">',
+        '</a>'
     ),
     DUP_UI_Messages::ERROR
 );
+
 $msg_ajax_error->hide_on_init   = true;
 $msg_ajax_error->is_dismissible = true;
 $msg_ajax_error->initMessage();

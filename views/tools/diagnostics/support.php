@@ -1,4 +1,7 @@
 <?php
+
+use Duplicator\Installer\Utils\LinkManager;
+
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 ?>
 <style>
@@ -48,37 +51,28 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
                 <div><?php esc_html_e('Knowledgebase', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
-<?php esc_html_e('Complete Online Documentation', 'duplicator'); ?><br/>
+                <?php esc_html_e('Complete Online Documentation', 'duplicator'); ?>
+                <br/>
                 <select id="dup-support-kb-lnks" style="margin-top:18px; font-size:16px; min-width: 170px">
-                    <option disabled selected> <?php esc_html_e('Choose A Section', 'duplicator') ?> </option>
-                    <?php
-                        $url  = DUPLICATOR_BLOG_URL . 'knowledge-base-article-categories/quick-start/';
-                        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_qs';
-                    ?>
-                    <option value="<?php echo esc_attr($url); ?>"><?php esc_html_e(
-                        'Quick Start',
-                        'duplicator'
-                    ) ?></option>
-                    <?php
-                        $url  = DUPLICATOR_DOCS_URL;
-                        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_guide';
-                    ?>
-                    <option value="<?php echo esc_attr($url); ?>"><?php esc_html_e(
-                        'User Guide',
-                        'duplicator'
-                    ) ?></option>
-                    <?php
-                        $url  = DUPLICATOR_TECH_FAQ_URL;
-                        $url .= '?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_FAQs';
-                    ?>
-                    <option value="<?php echo esc_attr($url); ?>"><?php esc_html_e(
-                        'FAQs',
-                        'duplicator'
-                    ) ?></option>
-                    <option value="<?php echo DUPLICATOR_DOCS_URL; ?>changelog/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_changelog&lite"><?php esc_html_e(
-                        'Change Log',
-                        'duplicator'
-                    ) ?></option>
+                    <option disabled selected>
+                        <?php esc_html_e('Choose A Section', 'duplicator') ?>
+                    </option>
+                    <option 
+                        value="<?php echo esc_url(LinkManager::getCategoryUrl(LinkManager::QUICK_START_CAT, 'tools_support', 'Quick Start')); ?>
+                    ">
+                        <?php esc_html_e('Quick Start', 'duplicator') ?>
+                    </option>
+                    <option value="<?php echo esc_url(LinkManager::getDocUrl('', 'tools_support', 'User Guide')); ?>">
+                        <?php esc_html_e('User Guide', 'duplicator'); ?>
+                    </option>
+                    <option 
+                        value="<?php echo esc_url(LinkManager::getCategoryUrl(LinkManager::TROUBLESHOOTING_CAT, 'tools_support', 'FAQs')); ?>
+                    ">
+                        <?php esc_html_e('FAQs', 'duplicator'); ?>
+                    </option>
+                    <option value="<?php echo esc_url(LinkManager::getDocUrl('changelog', 'tools_support', 'Change Log')); ?>">
+                        <?php esc_html_e('Change Log', 'duplicator') ?>
+                    </option>
                 </select>
             </div>
         </div>
