@@ -1,14 +1,13 @@
-<?php function duplicator_header($title) { ?>
-<!-- !!DO NOT CHANGE OR EDIT PRODUCT NAME!!
-If your interested in Private Label Rights please contact us for 
-customizations to product labeling: lifeinthegrid.com	-->
+<?php
 
-
-<div class="dup-header" style="margin:0px 0px 10px 0px">
-	<h2>Duplicator &raquo; <?php echo $title ?><br/></h2>
-</div>
-
-<?php } ?>
-
-
-
+/**
+ * Display header
+ *
+ * @param string $title Header title
+ *
+ * @return void
+ */
+function duplicator_header($title)
+{
+    echo "<h1>" . esc_html($title) . "</h1>";
+}

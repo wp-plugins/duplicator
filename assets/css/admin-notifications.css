@@ -1,0 +1,212 @@
+#dup-notifications {
+    position: relative;
+    background: #ffffff 0 0 no-repeat padding-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    opacity: 1;
+    min-height: 48px;
+    margin: 10px 0 20px 0;
+}
+
+#dup-notifications * {
+    box-sizing: border-box;
+}
+
+#dup-notifications .dup-notifications-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(204, 208, 212, 0.5);
+}
+
+#dup-notifications .dup-notifications-header .dup-notifications-bell {
+    position: relative;
+    width: 16px;
+    height: 20px;
+    top: 3px;
+    margin-right: 10px;
+}
+
+#dup-notifications .dup-notifications-header .dup-notifications-circle {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    top: -4px;
+    right: -1px;
+    border: 2px solid #ffffff;
+}
+
+#dup-notifications .dup-notifications-header .dup-notifications-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #23282d;
+}
+
+#dup-notifications .dup-notifications-body {
+    position: relative;
+}
+
+#dup-notifications .dup-notifications-messages {
+    padding: 16px 100px 16px 16px;
+}
+
+#dup-notifications .dup-notifications-messages .dup-notifications-message {
+    display: none;
+}
+
+#dup-notifications .dup-notifications-messages .dup-notifications-message.current {
+    display: block;
+}
+
+#dup-notifications .dup-notifications-messages .dup-notifications-title {
+    color: #444444;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 17px;
+    margin: 0 0 -2px 0;
+    min-height: 19px;
+}
+
+#dup-notifications .dup-notifications-messages .dup-notifications-content {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    margin: 8px 0 20px 0;
+    color: #777777;
+}
+
+#dup-notifications .dup-notifications-messages .dup-notifications-content p {
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0 0 5px;
+}
+
+#dup-notifications .dup-notifications-messages .dup-notifications-buttons {
+    margin: -30px 80px 0 0;
+}
+
+#dup-notifications .dup-notifications-messages .dup-notifications-buttons a {
+    margin: 0 10px 0 0;
+    min-height: unset;
+}
+
+#dup-notifications .dup-notifications-badge {
+    background-color: #f6f7f7;
+    border-radius: 3px;
+    color: #2c3338;
+    cursor: pointer;
+    font-size: 11px;
+    margin-left: 10px;
+    padding: 6px 8px;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    top: -1px;
+    white-space: nowrap;
+}
+
+#dup-notifications .dup-notifications-badge:focus, #dup-notifications .dup-notifications-badge:hover {
+    background-color: #f0f0f1;
+    box-shadow: none;
+    color: initial;
+}
+
+#dup-notifications .dup-notifications-badge .fa {
+    color: black;
+    padding-right: 6px;
+    position: relative;
+}
+
+#dup-notifications .dismiss {
+    position: absolute;
+    top: 15px;
+    right: 16px;
+    width: 16px;
+    height: 16px;
+    color: #a7aaad;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 16px;
+}
+
+#dup-notifications .dismiss:hover {
+    color: #dc3232;
+}
+
+#dup-notifications .navigation {
+    position: absolute;
+    bottom: 20px;
+    right: 16px;
+    width: 63px;
+    height: 30px;
+}
+
+#dup-notifications .navigation a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #7e8993;
+    border-radius: 3px;
+    font-size: 16px;
+    line-height: 1.625;
+    text-align: center;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #41454a;
+}
+
+#dup-notifications .navigation a:hover {
+    background-color: #f1f1f1;
+}
+
+#dup-notifications .navigation .prev {
+    float: left;
+}
+
+#dup-notifications .navigation .next {
+    float: right;
+}
+
+#dup-notifications .navigation .disabled {
+    border-color: #dddddd;
+    color: #a0a5aa;
+    cursor: default;
+}
+
+#dup-notifications .navigation .disabled:hover {
+    background-color: #ffffff;
+}
+
+.lity-iframe .lity-content {
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+    #dup-notifications .dup-notifications-messages {
+        padding: 15px 50px 20px 16px;
+    }
+    #dup-notifications .dup-notifications-messages .dup-notifications-message .dup-notifications-title {
+        line-height: 22px;
+        margin: 0 30px -2px 0;
+        min-height: 24px;
+    }
+    #dup-notifications .dup-notifications-messages .dup-notifications-message .dup-notifications-content {
+        font-size: 16px;
+        line-height: 22px;
+    }
+    #dup-notifications .dup-notifications-messages .dup-notifications-message .dup-notifications-buttons {
+        margin: -30px 80px 0 0;
+    }
+    #dup-notifications .dup-notifications-messages .dup-notifications-message .dup-notifications-buttons a {
+        margin: 0;
+        display: table;
+    }
+    #dup-notifications .dup-notifications-messages .dup-notifications-message .dup-notifications-buttons .button-secondary {
+        margin-top: 6px;
+    }
+}

@@ -1,0 +1,654 @@
+/* GENERAL STYLES */
+
+.margin-bottom-0 {
+    margin-bottom: 0;
+}
+
+.margin-bottom-1 {
+    margin-bottom: 20px;
+}
+
+.green {
+    color: #008000;
+}
+
+/* IMPORT MOCK STYLE */
+
+.dup-pro-import-header {
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.dup-pro-import-header .title {
+    margin: 0;
+    line-height: 40px;
+    font-size:20px;
+}
+
+.dup-pro-import-header hr {
+    margin: 0;
+}
+
+.dup-pro-import-header .options .button {
+    width: 34px;
+    height: 34px;
+    box-sizing: border-box;
+    line-height: 34px;
+    text-align: center;
+    padding: 0;
+}
+
+.dup-pro-import-upload-box {
+    background: #fff;
+    border: 3px dashed #607d8b;
+    border-radius: 2px;
+    height: 220px;
+    box-sizing: border-box;
+    position: relative;
+    text-align: center;
+    font-size: 14px;
+}
+
+#dup-pro-import-upload-file .fs-upload-target {
+    border: 0 none;
+    border-radius: 0;
+    height: 214px;
+    box-sizing: border-box;
+}
+
+#dup-pro-import-upload-file .fs-upload-target {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dup-pro-import-upload-file-footer {
+    padding: 5px;
+    text-align: right;
+}
+
+.dup-drag-drop-message {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin: 20px 0;
+}
+
+#dup-pro-import-mode-tab-header {
+    height: 51px;
+    border-bottom: 1px solid silver;
+}
+
+#dup-pro-import-mode-tab-header > div {
+    float: left;
+    padding:10px 0 15px 0;
+    font-size: 16px;
+    border-bottom: 2px solid transparent;
+    min-width: 250px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#dup-pro-import-mode-tab-header > div.active {
+    border-bottom: 3px solid #91BCE3;
+    font-weight: bold;
+}
+
+.dup-pro-import-upload-box > div {
+    width: 100%;
+}
+
+.dup-pro-import-upload-box .dup-import-button {
+    display: inline-block;
+    padding: 0 30px !important;
+    font-weight: normal;
+    box-sizing: border-box;
+    height: 40px;
+}
+
+table.dup-import-avail-packs th {
+    background-color: #e2e2e2;
+}
+
+table.dup-import-avail-packs tbody tr:nth-child(even) {
+    border: 1px solid #e2e2e2;
+}
+
+table.dup-import-avail-packs {
+    width: 100%;
+    min-height: inherit;
+    border: 1px solid #ccd0d4;
+    border-collapse: collapse;
+}
+
+table.dup-import-avail-packs thead {
+    border-bottom: 1px solid #ccd0d4;
+}
+
+table.dup-import-avail-packs th {
+    font-weight: bold;
+}
+
+table.dup-import-avail-packs th,
+table.dup-import-avail-packs td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+    line-height: 30px;
+}
+
+table.dup-import-avail-packs .size {
+    width: 100px;
+}
+
+table.dup-import-avail-packs .created {
+    text-align: left;
+    width: 125px;
+}
+
+table.dup-import-avail-packs .funcs {
+    text-align: center;
+    width: 400px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+table.dup-import-avail-packs .funcs button,
+table.dup-import-avail-packs .funcs .button {
+    min-width: 120px;
+}
+
+table.dup-import-avail-packs .funcs .separator {
+    margin-left: 5px;
+}
+
+table.dup-import-avail-packs .funcs div.actions {
+    text-align: right;
+}
+
+div#dpro-pro-import-available-packages {
+    background-color: #fff;
+}
+
+@media only screen and (max-width: 1200px) {
+    #dpro-pro-import-available-packages.view-list-item .size,
+    #dpro-pro-import-available-packages.view-list-item .created,
+    #dpro-pro-import-available-packages.view-list-item thead .funcs {
+        display: none;
+    }
+
+    #dpro-pro-import-available-packages.view-list-item td {
+        display: block;
+        text-align: left !important;
+        padding: 0 20px;
+    }
+
+    #dpro-pro-import-available-packages.view-list-item tbody tr {
+        border-bottom: 1px solid #ccd0d4;
+        padding-bottom: 10px;
+        display: block;
+    }
+}
+
+.fs-upload-input{
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:-1;
+    opacity:0;
+    pointer-events:none
+}
+
+.margin-bottom-2 {
+    margin-bottom: 40px;
+}
+
+/* IMPORT MOCK STYLE */
+
+.dup-pro-recovery-widget-wrapper {
+    font-size: 14px;
+}
+
+.dup-pro-recovery-widget-wrapper .button {
+    margin-left: 10px;
+    min-width: 150px;
+    text-align: center;
+}
+
+.dup-pro-recovery-details-max-width-wrapper {
+    max-width: 900px;
+}
+
+.dup-pro-recovery-point-selector .recovery-select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 10px 0;
+}
+
+.dup-pro-recovery-point-selector-area-wrapper {
+    margin-bottom: 20px;
+}
+
+.dup-pro-recovery-widget-wrapper label {
+    margin-bottom: 5px;
+    display: block;
+}
+
+.dup-pro-recovery-point-selector-area-wrapper .dup-pro-opening-packages-windows {
+    float: right;
+}
+
+.dup-pro-recovery-point-selector-area {
+    text-align: right;
+}
+
+.dup-pro-recovery-package-detail-content {
+    margin-top: 30px;
+}
+
+.dup-pro-recovery-package-small-icon i {
+    font-size: 14px;
+    position: relative;
+}
+
+.dup-pro-recovery-package-info table {
+    border-collapse: collapse;
+}
+
+.dup-pro-recovery-package-info table td {
+    padding: 0 5px 5px 0;
+}
+
+.dup-pro-recovery-active-link-header > .main-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    color: #000;
+    text-align: center;
+    line-height: 30px;
+    font-size: 23px;
+    margin-right: 10px;
+}
+
+.dup-pro-recovery-active-link-header > .main-title {
+    font-size: 16px;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.dup-pro-recovery-active-link-header > .main-subtitle {
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.dup-pro-recovery-point-actions > .copy-link {
+    position: relative;
+    white-space: nowrap;
+    box-sizing: border-box;
+    border: 1px solid silver;
+    height: 30px;
+    line-height: 30px;
+    background: #fff;
+    color: #000;
+    padding: 0 35px 0 5px;
+    border-radius: 2px;
+}
+
+.dup-pro-recovery-point-actions > .copy-link .content {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dup-pro-recovery-point-actions > .copy-link .copy-icon {
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: white;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    background-color: silver;
+}
+
+.dup-pro-recovery-point-actions > .dup-pro-recovery-buttons {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.dup-pro-recovery-details-max-width-wrapper .dup-pro-recovery-buttons {
+    text-align: right;
+}
+
+.toplevel_page_duplicator-pro .dup-pro-opening-packages-windows {
+    display: none;
+}
+
+/* SCHEDULES MOCK STYLE */
+
+table.schedule-tbl tr:nth-child(odd),
+table.storage-tbl tr:nth-child(odd) {
+    background-color: #f6f7f7;
+}
+
+table.schedule-tbl td {
+    height: 45px
+}
+
+table.schedule-tbl a.name {
+    font-weight: bold
+}
+
+table.schedule-tbl input[type='checkbox'] {
+    margin-left: 5px
+}
+
+table.schedule-tbl div.sub-menu {
+    margin: 5px 0 0 2px;
+    display: none
+}
+
+table.schedule-tbl div.sub-menu a:hover {
+    text-decoration: underline
+}
+
+tr.schedule-detail td {
+    padding: 2px 2px 2px 15px;
+    margin: -5px 0 2px 0;
+    height: 22px
+}
+
+.dpro-edit-toolbar {
+    margin: 15px 0 5px 0;
+    width: 100%;
+}
+
+.dpro-edit-toolbar .btnnav {
+    float: right;
+}
+
+/* SCHEDULES MOCK STYLE */
+
+.dup-template-list-tbl td {
+    height: 45px
+}
+
+.dup-template-list-tbl a.name {
+    font-weight: bold
+}
+
+.dup-template-list-tbl input[type='checkbox'] {
+    margin-left: 5px
+}
+
+.dup-template-list-tbl tr.package-detail td {
+    padding: 2px 2px 2px 15px;
+    margin: -5px 0 2px 0;
+    height: 22px
+}
+
+.dup-template-list-tbl .col-check {
+    width: 10px;
+}
+
+.dup-template-list-tbl .col-name {
+    width: 425px;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+.dup-template-list-tbl .col-empty {
+    width: 25px;
+}
+
+/* TRANSFER TAB */
+
+h3 {
+    margin: 10px 0 5px 5px
+}
+
+h2.title {
+    font-size: 18px
+}
+
+div.transfer-panel {
+    padding: 5px 5px 10px 10px;
+}
+
+div.transfer-hdr {
+    margin: 0 0 20px 0
+}
+
+div.transfer-hdr hr {
+    margin: -10px 0 0 0
+}
+
+div#step2-section {
+    margin: 5px 0 40px 0
+}
+
+div#location-quick-opts input[type=text] {
+    width: 300px
+}
+
+div.dup-box-title {
+    font-size: 15px
+}
+
+div.dpro-progress-bar-container {
+    margin: 0 auto 10px auto;
+    text-align: center;
+}
+
+div#step3-section {
+    margin: 65px 0 0 0
+}
+
+div#dpro-progress-bar-area {
+    width: 300px;
+    margin: 5px auto 0 auto;
+    ext-align: center
+}
+
+div.dpro-active-status-area {
+    display: none;
+}
+
+tr.dup-choose-loc-new-pack td {
+    text-align: right;
+    padding: 5px 15px 5px 5px;
+    border-top: 1px solid #c3c4c7
+}
+
+button#dup-pro-transfer-btn {
+    float: right;
+    margin: -20px 15px 0 0;
+    font-size: 14px;
+    padding: 2px 20px 2px 20px;
+    font-size: 14px
+}
+
+#dup-pro-stop-transfer-btn {
+    margin-top: 10px;
+}
+
+button.dpro-btn-stop {
+    width: 150px !important
+}
+
+tr.status-pending td {
+    font-style: italic;
+    color: #999
+}
+
+tr.status-running td {
+    font-style: italic;
+    color: green
+}
+
+tr.status-failed td {
+    color: maroon
+}
+
+tr.status-normal td {
+    color: #000
+}
+
+table.package-tbl tfoot td {
+    font-size: 12px;
+    text-align: right
+}
+
+/* STATIC POPUP STYLE */
+
+.static-popup {
+    text-align: center;
+    width: 730px;
+    box-shadow: 0 0 60px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    position: fixed;
+    top: calc(50% + 16px);
+    left: calc(50% + 80px);
+    z-index: 100;
+    overflow: hidden;
+    transform: translate(-50%, -50%);
+}
+
+.static-popup *,
+.static-popup *::before,
+.static-popup *::after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.static-popup h2 {
+    font-size: 20px;
+    margin: 0 0 16px 0;
+    padding: 0;
+}
+
+.static-popup p {
+    font-size: 16px;
+    line-height: 24px;
+    color: #777777;
+    margin: 0 0 30px 0;
+    padding: 0;
+}
+
+.static-popup p:last-of-type {
+    margin: 20px 0;
+}
+
+.static-popup-content-top-notice {
+    padding: 10px;
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: #444444;
+    background: #fcf9e8;
+}
+
+.static-popup-content-top-notice .fa-exclamation-triangle {
+    margin-right: 10px;
+    color: #e27730;
+    font-size: 16px;
+}
+
+.static-popup-content {
+    background-color: #ffffff;
+    border-radius: 3px 3px 0 0;
+    padding: 40px 40px 20px;
+}
+
+.static-popup ul {
+    float: left;
+    width: 50%;
+    margin: 0;
+    padding: 0 0 0 30px;
+    text-align: left;
+}
+
+.static-popup li {
+    color: #777777;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 6px 0;
+}
+
+.static-popup li .fa {
+    color: #2a9b39;
+    margin: 0 8px 0 0;
+}
+
+.static-popup-button {
+    border-radius: 0 0 3px 3px;
+    padding: 30px;
+    background: #f5f5f5;
+    text-align: center;
+}
+
+.static-popup-button p {
+    margin: 20px 0 0 0;
+    font-size: 15px;
+    line-height: 18px;
+    text-align: center;
+}
+
+.static-popup-button p span {
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: bottom;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+/* Settings > Access tab */
+.mock-select2 {
+    width: 500px;
+    background: white;
+    border-radius: 3px;
+    min-height: 50px;
+    padding: 3px 5px;
+    border: 1px solid gray;
+    font-size: 14px;
+}
+
+
+.access-mock .form-table th {
+    width: 250px;
+}
+
+.access-mock .form-table th i{
+    color: #888888;
+}
+
+.mock-select2 .select2-option {
+    float: left;
+    background: #e4e4e4;
+    background-color: #e4e4e4;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: default;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
+
+.mock-select2 .select2-option::before {
+    content: "×";
+    color: #999;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 2px;
+}
